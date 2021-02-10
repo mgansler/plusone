@@ -1,10 +1,25 @@
-import React from 'react';
+import React from 'react'
+import { useQuery } from 'react-query'
+import { useOctokit } from './octokit-provider/octokit-provider'
 
-import { ReactComponent as Logo } from './logo.svg';
-import star from './star.svg';
+export const App: React.FC = () => {
+  const octokit = useOctokit()
+  const { data, isLoading, error } = useQuery('test', async () => {
+    return await octokit.graphql(`
+      query {
+        viewer {
+          login
+          location
+        }
+      }
+    `)
+  })
 
-export function App() {
-  return <h1>Welcome to github-pipeline-status!</h1>;
+  console.log(data, isLoading, error)
+
+  return (
+    <React.Fragment>
+      <h1>Welcome to github-pipeline-status!</h1>
+    </React.Fragment>
+  )
 }
-
-export default App;
