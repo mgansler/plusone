@@ -5,7 +5,9 @@ import { App } from './app/app'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { OctokitProvider } from './app/octokit-provider/octokit-provider'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: 0 } },
+})
 
 ReactDOM.render(
   <React.StrictMode>

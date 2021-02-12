@@ -1,11 +1,11 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 
-import { UserInfo } from './user-info'
+import { Organizations } from './organizations'
 
-describe('UserInfo', () => {
+describe('Organizations', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<UserInfo />)
+    const { baseElement } = render(<Organizations />)
     expect(baseElement).toBeTruthy()
   })
 })

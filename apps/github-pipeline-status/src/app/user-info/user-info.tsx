@@ -13,7 +13,7 @@ export const UserInfo: React.FC = () => {
   const octokit = useOctokit()
   const logout = useLogout()
 
-  const { data, isLoading } = useQuery('test', async () => {
+  const { data, isLoading } = useQuery('currentUser', async () => {
     return await octokit.graphql<User>(`
       query {
         viewer {

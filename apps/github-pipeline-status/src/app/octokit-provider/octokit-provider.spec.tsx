@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 
-import OctokitProvider from './octokit-provider'
+import { OctokitProvider } from './octokit-provider'
 
 describe('OctokitProvider', () => {
   it('should render successfully', () => {
