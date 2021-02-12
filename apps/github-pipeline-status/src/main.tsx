@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { App } from './app/app'
-import { QueryClient, QueryClientProvider } from 'react-query'
 import { OctokitProvider } from './app/octokit-provider/octokit-provider'
 
 const queryClient = new QueryClient({

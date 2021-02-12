@@ -1,6 +1,7 @@
 import React from 'react'
-import { useLogout, useOctokit } from '../octokit-provider/octokit-provider'
 import { useQuery } from 'react-query'
+
+import { useLogout, useOctokit } from '../octokit-provider/octokit-provider'
 
 type User = {
   viewer: {

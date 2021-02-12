@@ -1,7 +1,8 @@
 import React from 'react'
-import { useOctokit } from '../octokit-provider/octokit-provider'
 import { useQuery } from 'react-query'
 import { User } from '@plusone/github-schema'
+
+import { useOctokit } from '../octokit-provider/octokit-provider'
 
 export const Organizations: React.FC = () => {
   const octokit = useOctokit()
