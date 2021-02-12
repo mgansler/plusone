@@ -1,3 +1,6 @@
 module.exports = {
-  projects: ['<rootDir>/apps/github-pipeline-status'],
-};
+  projects: [
+    '<rootDir>/apps/github-pipeline-status',
+    '<rootDir>/libs/github-schema',
+  ],
+}

@@ -1,43 +1,28 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useOctokit } from '../octokit-provider/octokit-provider'
 import { useQuery } from 'react-query'
-
-type Repository = {
-  id: string
-  name: string
-}
-
-type Organization = {
-  id: string
-  name: string
-  repositories: {
-    totalCount: number
-    nodes: Repository[]
-  }
-}
+import { User } from '@plusone/github-schema'
 
 export const Organizations: React.FC = () => {
   const octokit = useOctokit()
 
   const { data, isLoading } = useQuery('organizations', async () => {
     return await octokit.graphql<{
-      viewer: { organizations: { nodes: Organization[] } }
+      viewer: Partial<User>
     }>(`
       query {
         viewer {
           organizations(first: 100) {
             totalCount
+            pageInfo {
+              endCursor
+              hasNextPage
+              hasPreviousPage
+              startCursor
+            }
             nodes {
               id
               name
-              repositories(first: 100) {
-                totalCount
-                pageInfo
-                nodes {
-                  id
-                  name
-                }
-              }
             }
           }
         }
@@ -52,16 +37,7 @@ export const Organizations: React.FC = () => {
   return (
     <div>
       {data.viewer.organizations.nodes.map((organization) => {
-        return (
-          <div key={organization.id}>
-            {organization.name} ({organization.repositories.totalCount})
-            {organization.repositories.nodes.map((repository) => {
-              return (
-                <div key={repository.id}>&nbsp;&nbsp;{repository.name}</div>
-              )
-            })}
-          </div>
-        )
+        return <div key={organization.id}>{organization.name}</div>
       })}
     </div>
   )
