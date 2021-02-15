@@ -1,23 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useQuery } from 'react-query'
-import { PageInfo, User } from '@plusone/github-schema'
+import { User } from '@plusone/github-schema'
+import { useGitHubPagination } from '@plusone/hooks'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
-
-type Pages = Record<number, PageInfo> & { currentPage: number }
-
-const getPageQuery = (pages: Pages): string => {
-  if (pages[pages.currentPage - 1]) {
-    return `, after: "${pages[pages.currentPage - 1].endCursor}"`
-  }
-
-  return ''
-}
 
 export const Organizations: React.FC = () => {
   const octokit = useOctokit()
 
-  const [pages, setPages] = useState<Pages>({ currentPage: 0 })
+  const {
+    pages,
+    onSuccess,
+    nextPage,
+    prevPage,
+    getPageRequest,
+  } = useGitHubPagination()
 
   const { data, isLoading } = useQuery(
     ['organizations', pages.currentPage],
@@ -27,7 +24,7 @@ export const Organizations: React.FC = () => {
       }>(`
       query {
         viewer {
-          organizations(first: 2${getPageQuery(pages)}) {
+          organizations(first: 2${getPageRequest()}) {
             totalCount
             pageInfo {
               endCursor
@@ -46,30 +43,10 @@ export const Organizations: React.FC = () => {
     },
     {
       keepPreviousData: true,
-      onSuccess: (response) => {
-        if (!pages[pages.currentPage]) {
-          setPages((prevState) => ({
-            ...prevState,
-            [pages.currentPage]: response.viewer.organizations.pageInfo,
-          }))
-        }
-      },
+      onSuccess: (response) =>
+        onSuccess(response.viewer.organizations.pageInfo),
     },
   )
-
-  const prevPage = () => {
-    setPages((prevState) => ({
-      ...prevState,
-      currentPage: prevState.currentPage - 1,
-    }))
-  }
-
-  const nextPage = () => {
-    setPages((prevState) => ({
-      ...prevState,
-      currentPage: prevState.currentPage + 1,
-    }))
-  }
 
   if (isLoading) {
     return <div>loading...</div>
