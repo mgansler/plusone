@@ -6,7 +6,7 @@ import { App } from './app/app'
 import { OctokitProvider } from './app/octokit-provider/octokit-provider'
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: 0 } },
+  defaultOptions: { queries: { retry: 0, refetchOnWindowFocus: false } },
 })
 
 ReactDOM.render(
