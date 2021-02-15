@@ -1,7 +1,6 @@
 import React, { useContext, useMemo, useRef } from 'react'
 import { Octokit } from '@octokit/core'
-
-const PERSONAL_ACCESS_TOKEN_LOCAL_STORAGE_KEY = 'github-personal-access-token'
+import { useLocalStorage } from '@plusone/hooks'
 
 interface Context {
   octokit: Octokit
@@ -10,15 +9,14 @@ interface Context {
 
 const OctokitContext = React.createContext<Context>(null)
 
-const TokenInput: React.FC = () => {
+const TokenInput: React.FC<{
+  setToken: (value: string) => void
+}> = ({ setToken }) => {
   const inputRef = useRef<HTMLInputElement>()
 
   const handleSubmit = () => {
     if (inputRef.current) {
-      localStorage.setItem(
-        PERSONAL_ACCESS_TOKEN_LOCAL_STORAGE_KEY,
-        inputRef.current.value,
-      )
+      setToken(inputRef.current.value)
     }
   }
 
@@ -34,7 +32,9 @@ const TokenInput: React.FC = () => {
 }
 
 export const OctokitProvider: React.FC = ({ children }) => {
-  const token = localStorage.getItem(PERSONAL_ACCESS_TOKEN_LOCAL_STORAGE_KEY)
+  const [token, setToken, removeToken] = useLocalStorage<string>(
+    'github-personal-access-token',
+  )
 
   const octokit = useMemo(() => {
     return new Octokit({
@@ -43,15 +43,11 @@ export const OctokitProvider: React.FC = ({ children }) => {
   }, [token])
 
   if (!token) {
-    return <TokenInput />
-  }
-
-  const logout = () => {
-    localStorage.removeItem(PERSONAL_ACCESS_TOKEN_LOCAL_STORAGE_KEY)
+    return <TokenInput setToken={setToken} />
   }
 
   return (
-    <OctokitContext.Provider value={{ octokit, logout }}>
+    <OctokitContext.Provider value={{ octokit, logout: removeToken }}>
       {children}
     </OctokitContext.Provider>
   )
