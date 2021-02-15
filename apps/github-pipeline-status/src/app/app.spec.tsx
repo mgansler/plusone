@@ -3,6 +3,14 @@ import { render } from '@testing-library/react'
 
 import { App } from './app'
 
+jest.mock('./user-info/user-info', () => ({
+  UserInfo: () => <div>UserInfoMock</div>,
+}))
+
+jest.mock('./organizations/organizations', () => ({
+  Organizations: () => <div>OrganizationsMock</div>,
+}))
+
 describe('App', () => {
   it('should render successfully', () => {
     const { baseElement } = render(<App />)
