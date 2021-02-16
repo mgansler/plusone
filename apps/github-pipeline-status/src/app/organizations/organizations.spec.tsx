@@ -41,8 +41,8 @@ describe('Organizations', () => {
     await waitFor(() => {
       expect(nock.isDone()).toBeTruthy()
     })
-    screen.getByText(/prev/i)
-    screen.getByText(/next/i)
+    expect(screen.getByText(/prev/i)).toBeInTheDocument()
+    expect(screen.getByText(/next/i)).toBeInTheDocument()
   })
 
   it('should render successfully with an entry', async () => {
@@ -75,6 +75,6 @@ describe('Organizations', () => {
       expect(nock.isDone()).toBeTruthy()
     })
 
-    screen.getByText('organization-name')
+    expect(screen.getByText('organization-name')).toBeInTheDocument()
   })
 })
