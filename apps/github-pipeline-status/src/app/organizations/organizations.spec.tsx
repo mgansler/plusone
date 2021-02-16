@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitFor } from '@testing-library/react'
+import { render, waitFor, screen } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import nock from 'nock'
 
@@ -12,7 +12,7 @@ describe('Organizations', () => {
     defaultOptions: { queries: { retry: 0, refetchOnWindowFocus: false } },
   })
 
-  it('should render successfully', async () => {
+  it('should render successfully with empty result', async () => {
     nock('https://api.github.com')
       .post('/graphql')
       .reply(200, {
@@ -32,15 +32,49 @@ describe('Organizations', () => {
         },
       })
 
-    const { baseElement } = render(
+    render(
       <QueryClientProvider client={queryClient}>
         <Organizations />
       </QueryClientProvider>,
     )
 
-    expect(baseElement).toBeTruthy()
     await waitFor(() => {
       expect(nock.isDone()).toBeTruthy()
     })
+    screen.getByText(/prev/i)
+    screen.getByText(/next/i)
+  })
+
+  it('should render successfully with an entry', async () => {
+    nock('https://api.github.com')
+      .post('/graphql')
+      .reply(200, {
+        data: {
+          viewer: {
+            organizations: {
+              totalCount: 1,
+              nodes: [{ id: 'organization-id', name: 'organization-name' }],
+              pageInfo: {
+                endCursor: 'cursor',
+                hasNextPage: false,
+                hasPreviousPage: false,
+                startCursor: 'cursor',
+              },
+            },
+          },
+        },
+      })
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Organizations />
+      </QueryClientProvider>,
+    )
+
+    await waitFor(() => {
+      expect(nock.isDone()).toBeTruthy()
+    })
+
+    screen.getByText('organization-name')
   })
 })
