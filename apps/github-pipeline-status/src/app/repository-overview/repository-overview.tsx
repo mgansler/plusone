@@ -53,6 +53,7 @@ export const RepositoryOverview = () => {
             ... on Repository {
               name
               id
+              url
               pullRequests(first: 20, states: OPEN) {
                 totalCount
                 nodes {

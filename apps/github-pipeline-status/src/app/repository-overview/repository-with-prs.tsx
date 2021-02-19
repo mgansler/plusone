@@ -5,6 +5,7 @@ type RepositoryWithPRsProps = Repository
 
 export const RepositoryWithPrs: React.FC<RepositoryWithPRsProps> = ({
   name,
+  url,
   pullRequests: { totalCount: prCount, nodes },
 }) => {
   const prCheckState = nodes
@@ -26,8 +27,17 @@ export const RepositoryWithPrs: React.FC<RepositoryWithPRsProps> = ({
 
   return (
     <div>
-      {name} ({prCount} PRs): {prsWithSuccessfulCheck}|{prsWithFailedCheck}|
-      {prsWithOtherCheckState}
+      {name}
+      {prCount > 0 ? (
+        <React.Fragment>
+          &nbsp;
+          <a href={url + '/pulls'}>({prCount} PRs)</a>
+          &nbsp;
+          {`${prsWithSuccessfulCheck}\xa0\u2713\xa0|\xa0${prsWithFailedCheck}\xa0\u2717\xa0|\xa0${prsWithOtherCheckState}`}
+        </React.Fragment>
+      ) : (
+        ''
+      )}
     </div>
   )
 }
