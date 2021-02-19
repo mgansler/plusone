@@ -1,8 +1,11 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nrwl/nx", "import","jest-dom","testing-library"],
-  "extends": ["plugin:jest-dom/recommended","plugin:testing-library/recommended"],
+  "plugins": ["@nrwl/nx", "import", "jest-dom", "testing-library"],
+  "extends": [
+    "plugin:jest-dom/recommended",
+    "plugin:testing-library/recommended"
+  ],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

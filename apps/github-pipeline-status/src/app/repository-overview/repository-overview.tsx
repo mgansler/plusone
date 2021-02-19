@@ -1,5 +1,10 @@
 import React, { useState } from 'react'
-import { PageInfo, Repository, SearchType } from '@plusone/github-schema'
+import {
+  PageInfo,
+  PullRequestState,
+  Repository,
+  SearchType,
+} from '@plusone/github-schema'
 import { useGitHubPagination } from '@plusone/hooks'
 import { useQuery } from 'react-query'
 import { useHistory, useParams } from 'react-router-dom'
@@ -54,7 +59,7 @@ export const RepositoryOverview = () => {
               name
               id
               url
-              pullRequests(first: 20, states: OPEN) {
+              pullRequests(first: 20, states: ${PullRequestState.Open}) {
                 totalCount
                 nodes {
                   number
