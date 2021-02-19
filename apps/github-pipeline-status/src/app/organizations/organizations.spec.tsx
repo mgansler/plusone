@@ -1,7 +1,8 @@
 import React from 'react'
-import { render, waitFor, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import nock from 'nock'
+import { BrowserRouter } from 'react-router-dom'
 
 import { Organizations } from './organizations'
 
@@ -34,7 +35,9 @@ describe('Organizations', () => {
 
     render(
       <QueryClientProvider client={queryClient}>
-        <Organizations />
+        <BrowserRouter>
+          <Organizations />
+        </BrowserRouter>
       </QueryClientProvider>,
     )
 
@@ -67,7 +70,9 @@ describe('Organizations', () => {
 
     render(
       <QueryClientProvider client={queryClient}>
-        <Organizations />
+        <BrowserRouter>
+          <Organizations />
+        </BrowserRouter>
       </QueryClientProvider>,
     )
 

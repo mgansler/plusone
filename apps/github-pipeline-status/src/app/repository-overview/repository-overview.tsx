@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
-import {
-  Organization,
-  PageInfo,
-  Repository,
-  SearchType,
-} from '@plusone/github-schema'
+import { PageInfo, Repository, SearchType } from '@plusone/github-schema'
 import { useGitHubPagination } from '@plusone/hooks'
 import { useQuery } from 'react-query'
+import { useHistory, useParams } from 'react-router-dom'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
@@ -14,14 +10,14 @@ import { RepositoryWithPrs } from './repository-with-prs'
 
 const PAGE_SIZE = 20
 
-export interface RepositoryOverviewProps {
-  organizationName: Organization['name']
-}
+export const RepositoryOverview = () => {
+  const { organizationName } = useParams<{ organizationName: string }>()
+  const history = useHistory()
 
-export const RepositoryOverview = ({
-  organizationName,
-}: RepositoryOverviewProps) => {
-  const octokit = useOctokit()
+  const [queryString, setQueryString] = useState<string>(() => {
+    const urlSearchParams = new URLSearchParams(history.location.search)
+    return urlSearchParams.get('filter') || ''
+  })
 
   const {
     pages,
@@ -31,8 +27,7 @@ export const RepositoryOverview = ({
     getPageRequest,
   } = useGitHubPagination(PAGE_SIZE)
 
-  const [queryString, setQueryString] = useState<string>('')
-
+  const octokit = useOctokit()
   const { data, isLoading } = useQuery(
     ['repositories', organizationName, queryString, pages.currentPage],
     async () => {
@@ -91,8 +86,12 @@ export const RepositoryOverview = ({
     },
     {
       keepPreviousData: true,
-      onSuccess: (response) =>
-        onSuccess(response.search.pageInfo, response.search.repositoryCount),
+      onSuccess: (response) => {
+        history.push({
+          search: `filter=${queryString}`,
+        })
+        onSuccess(response.search.pageInfo, response.search.repositoryCount)
+      },
     },
   )
 
@@ -108,6 +107,7 @@ export const RepositoryOverview = ({
         Filter
         <input
           type={'text'}
+          value={queryString}
           onChange={(event) => setQueryString(event.currentTarget.value)}
         />
       </label>

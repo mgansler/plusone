@@ -2,6 +2,7 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import nock from 'nock'
+import { BrowserRouter } from 'react-router-dom'
 
 import { RepositoryOverview } from './repository-overview'
 
@@ -39,7 +40,9 @@ describe('RepositoryOverview', () => {
 
     render(
       <QueryClientProvider client={queryClient}>
-        <RepositoryOverview organizationName={'someOrganization'} />
+        <BrowserRouter>
+          <RepositoryOverview />
+        </BrowserRouter>
       </QueryClientProvider>,
     )
 

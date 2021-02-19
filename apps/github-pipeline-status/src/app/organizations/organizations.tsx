@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useQuery } from 'react-query'
-import { Organization, User } from '@plusone/github-schema'
+import { User } from '@plusone/github-schema'
 import { useGitHubPagination } from '@plusone/hooks'
+import { Route, Switch, useHistory } from 'react-router-dom'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryOverview } from '../repository-overview/repository-overview'
@@ -9,7 +10,7 @@ import { RepositoryOverview } from '../repository-overview/repository-overview'
 const PAGE_SIZE = 10
 
 export const Organizations: React.FC = () => {
-  const octokit = useOctokit()
+  const history = useHistory()
 
   const {
     pages,
@@ -19,6 +20,7 @@ export const Organizations: React.FC = () => {
     getPageRequest,
   } = useGitHubPagination(PAGE_SIZE)
 
+  const octokit = useOctokit()
   const { data, isLoading } = useQuery(
     ['organizations', pages.currentPage],
     async () => {
@@ -55,10 +57,6 @@ export const Organizations: React.FC = () => {
     },
   )
 
-  const [openOrganization, setOpenOrganization] = useState<
-    Organization['name']
-  >()
-
   if (isLoading) {
     return <div>loading...</div>
   }
@@ -69,7 +67,11 @@ export const Organizations: React.FC = () => {
         return (
           <div key={organization.id}>
             {organization.name}
-            <button onClick={() => setOpenOrganization(organization.login)}>
+            <button
+              onClick={() =>
+                history.push(`/organization/${organization.login}`)
+              }
+            >
               Expand
             </button>
           </div>
@@ -87,9 +89,11 @@ export const Organizations: React.FC = () => {
       >
         Next
       </button>
-      {openOrganization ? (
-        <RepositoryOverview organizationName={openOrganization} />
-      ) : null}
+      <Switch>
+        <Route exact={true} path={'/organization/:organizationName'}>
+          <RepositoryOverview />
+        </Route>
+      </Switch>
     </div>
   )
 }

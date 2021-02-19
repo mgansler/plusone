@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './app/app'
 import { OctokitProvider } from './app/octokit-provider/octokit-provider'
@@ -13,7 +14,9 @@ ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <OctokitProvider>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </OctokitProvider>
     </QueryClientProvider>
   </React.StrictMode>,
