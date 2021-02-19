@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Organization,
   PageInfo,
@@ -30,8 +30,10 @@ export const RepositoryOverview = ({
     getPageRequest,
   } = useGitHubPagination(PAGE_SIZE)
 
+  const [queryString, setQueryString] = useState<string>('')
+
   const { data, isLoading } = useQuery(
-    ['repositories', organizationName, pages.currentPage],
+    ['repositories', organizationName, queryString, pages.currentPage],
     async () => {
       return await octokit.graphql<{
         search: {
@@ -43,7 +45,7 @@ export const RepositoryOverview = ({
       query {
         search(first: ${PAGE_SIZE}, type: ${
         SearchType.Repository
-      }, query: "org:${organizationName}"${getPageRequest()}) {
+      }, query: "org:${organizationName} ${queryString}"${getPageRequest()}) {
           repositoryCount
           pageInfo {
             endCursor
@@ -75,13 +77,24 @@ export const RepositoryOverview = ({
   return (
     <div>
       <h1>Repositories of {organizationName}</h1>
+
+      <label>
+        Filter
+        <input
+          type={'text'}
+          onChange={(event) => setQueryString(event.currentTarget.value)}
+        />
+      </label>
+
       <h4>
         {pages.currentPage + 1} of {pages.totalPages} (
         {data.search.repositoryCount})
       </h4>
+
       {data.search.nodes.map((repository) => {
         return <div key={repository.id}>{repository.name}</div>
       })}
+
       <button
         disabled={!pages[pages.currentPage]?.hasPreviousPage}
         onClick={prevPage}
