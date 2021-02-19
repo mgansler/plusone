@@ -6,6 +6,7 @@ import nock from 'nock'
 import { RepositoryOverview } from './repository-overview'
 
 jest.mock('../octokit-provider/octokit-provider')
+jest.mock('./repository-with-prs')
 
 describe('RepositoryOverview', () => {
   const queryClient = new QueryClient({

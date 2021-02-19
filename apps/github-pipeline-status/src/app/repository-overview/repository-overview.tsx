@@ -10,9 +10,10 @@ import { useQuery } from 'react-query'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
+import { RepositoryWithPrs } from './repository-with-prs'
+
 const PAGE_SIZE = 20
 
-/* eslint-disable-next-line */
 export interface RepositoryOverviewProps {
   organizationName: Organization['name']
 }
@@ -57,6 +58,31 @@ export const RepositoryOverview = ({
             ... on Repository {
               name
               id
+              pullRequests(first: 20, states: OPEN) {
+                totalCount
+                nodes {
+                  number
+                  title
+                  commits (last: 1) {
+                    totalCount
+                    nodes {
+                      commit {
+                        checkSuites(last: 1) {
+                          nodes {
+                            conclusion
+                          }
+                        }
+                      }
+                    }
+                  }
+                  headRef {
+                    name
+                  }
+                  author {
+                    login
+                  }
+                }
+              }
             }
           }
         }
@@ -87,12 +113,12 @@ export const RepositoryOverview = ({
       </label>
 
       <h4>
-        {pages.currentPage + 1} of {pages.totalPages} (
-        {data.search.repositoryCount})
+        Page {pages.currentPage + 1} of {pages.totalPages} (
+        {data.search.repositoryCount} entries)
       </h4>
 
       {data.search.nodes.map((repository) => {
-        return <div key={repository.id}>{repository.name}</div>
+        return <RepositoryWithPrs key={repository.id} {...repository} />
       })}
 
       <button
