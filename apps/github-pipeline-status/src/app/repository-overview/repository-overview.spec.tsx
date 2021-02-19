@@ -3,11 +3,11 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import nock from 'nock'
 import { BrowserRouter } from 'react-router-dom'
+import { CheckConclusionState } from '@plusone/github-schema'
 
 import { RepositoryOverview } from './repository-overview'
 
 jest.mock('../octokit-provider/octokit-provider')
-jest.mock('./repository-with-prs')
 
 describe('RepositoryOverview', () => {
   const queryClient = new QueryClient({
@@ -31,8 +31,36 @@ describe('RepositoryOverview', () => {
               {
                 name: 'repo 1',
                 id: '1',
+                pullRequests: {
+                  totalCount: 1,
+                  nodes: [
+                    {
+                      commits: {
+                        totalCount: 1,
+                        nodes: [
+                          {
+                            commit: {
+                              checkSuites: {
+                                nodes: [
+                                  { conclusion: CheckConclusionState.Success },
+                                ],
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
               },
-              { name: 'repo 2', id: '2' },
+              {
+                name: 'repo 2',
+                id: '2',
+                pullRequests: {
+                  totalCount: 0,
+                  nodes: [],
+                },
+              },
             ],
           },
         },
