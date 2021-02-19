@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from 'react-query'
-import { User } from '@plusone/github-schema'
+import { Organization, User } from '@plusone/github-schema'
 import { useGitHubPagination } from '@plusone/hooks'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
+import { RepositoryOverview } from '../repository-overview/repository-overview'
+
+const PAGE_SIZE = 10
 
 export const Organizations: React.FC = () => {
   const octokit = useOctokit()
@@ -14,7 +17,7 @@ export const Organizations: React.FC = () => {
     nextPage,
     prevPage,
     getPageRequest,
-  } = useGitHubPagination()
+  } = useGitHubPagination(PAGE_SIZE)
 
   const { data, isLoading } = useQuery(
     ['organizations', pages.currentPage],
@@ -24,7 +27,7 @@ export const Organizations: React.FC = () => {
       }>(`
       query {
         viewer {
-          organizations(first: 2${getPageRequest()}) {
+          organizations(first: ${PAGE_SIZE}${getPageRequest()}) {
             totalCount
             pageInfo {
               endCursor
@@ -35,6 +38,7 @@ export const Organizations: React.FC = () => {
             nodes {
               id
               name
+              login
             }
           }
         }
@@ -44,9 +48,16 @@ export const Organizations: React.FC = () => {
     {
       keepPreviousData: true,
       onSuccess: (response) =>
-        onSuccess(response.viewer.organizations.pageInfo),
+        onSuccess(
+          response.viewer.organizations.pageInfo,
+          response.viewer.organizations.totalCount,
+        ),
     },
   )
+
+  const [openOrganization, setOpenOrganization] = useState<
+    Organization['name']
+  >()
 
   if (isLoading) {
     return <div>loading...</div>
@@ -55,7 +66,14 @@ export const Organizations: React.FC = () => {
   return (
     <div>
       {data.viewer.organizations.nodes.map((organization) => {
-        return <div key={organization.id}>{organization.name}</div>
+        return (
+          <div key={organization.id}>
+            {organization.name}
+            <button onClick={() => setOpenOrganization(organization.login)}>
+              Expand
+            </button>
+          </div>
+        )
       })}
       <button
         disabled={!pages[pages.currentPage]?.hasPreviousPage}
@@ -69,6 +87,9 @@ export const Organizations: React.FC = () => {
       >
         Next
       </button>
+      {openOrganization ? (
+        <RepositoryOverview organizationName={openOrganization} />
+      ) : null}
     </div>
   )
 }

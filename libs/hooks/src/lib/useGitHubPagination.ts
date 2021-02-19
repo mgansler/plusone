@@ -1,17 +1,23 @@
 import { PageInfo } from '@plusone/github-schema'
 import { useState } from 'react'
 
-type Pages = Record<number, PageInfo> & { currentPage: number }
+type PageMeta = {
+  currentPage: number
+  totalPages: number
+}
+
+type Pages = Record<number, PageInfo> & PageMeta
+
 type GitHubPagination = {
   pages: Pages
-  onSuccess: (pageInfo: PageInfo) => void
+  onSuccess: (pageInfo: PageInfo, elementCount: number) => void
   nextPage: () => void
   prevPage: () => void
   getPageRequest: () => string
 }
 
-export const useGitHubPagination = (): GitHubPagination => {
-  const [pages, setPages] = useState<Pages>({ currentPage: 0 })
+export const useGitHubPagination = (pageSize: number): GitHubPagination => {
+  const [pages, setPages] = useState<Pages>({ currentPage: 0, totalPages: 0 })
 
   const prevPage = () => {
     setPages((prevState) => ({
@@ -27,13 +33,12 @@ export const useGitHubPagination = (): GitHubPagination => {
     }))
   }
 
-  const onSuccess = (pageInfo: PageInfo) => {
-    if (!pages[pages.currentPage]) {
-      setPages((prevState) => ({
-        ...prevState,
-        [pages.currentPage]: pageInfo,
-      }))
-    }
+  const onSuccess = (pageInfo: PageInfo, elementCount: number) => {
+    setPages((prevState) => ({
+      ...prevState,
+      totalPages: Math.floor(elementCount / pageSize) + 1,
+      [pages.currentPage]: pageInfo,
+    }))
   }
 
   const getPageRequest = () => {
