@@ -1,16 +1,19 @@
 version: 1
-frontend:
-  phases:
-    preBuild:
-      commands:
-        - yarn install
-    build:
-      commands:
-        - yarn nx build github-pipeline-status
-  artifacts:
-    baseDirectory: /dist/apps/github-pipeline-status
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - node_modules/**/*
+applications:
+  - frontend:
+      phases:
+        preBuild:
+          commands:
+            - cd ../..
+            - yarn install
+        build:
+          commands:
+            - yarn nx build github-pipeline-status
+      artifacts:
+        baseDirectory: ../../dist/apps/github-pipeline-status
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+    appRoot: apps/github-pipeline-status
