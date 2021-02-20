@@ -1,6 +1,7 @@
 version: 1
 applications:
-  - frontend:
+  - appRoot: apps/github-pipeline-status
+    frontend:
       phases:
         preBuild:
           commands:
@@ -16,4 +17,3 @@ applications:
       cache:
         paths:
           - node_modules/**/*
-    appRoot: apps/github-pipeline-status
