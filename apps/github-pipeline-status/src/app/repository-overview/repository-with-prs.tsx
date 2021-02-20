@@ -26,18 +26,12 @@ export const RepositoryWithPrs: React.FC<RepositoryWithPRsProps> = ({
   ).length
 
   return (
-    <div>
-      {name}
-      {prCount > 0 ? (
-        <React.Fragment>
-          &nbsp;
-          <a href={url + '/pulls'}>({prCount} PRs)</a>
-          &nbsp;
-          {`${prsWithSuccessfulCheck}\xa0\u2713\xa0|\xa0${prsWithFailedCheck}\xa0\u2717\xa0|\xa0${prsWithOtherCheckState}`}
-        </React.Fragment>
-      ) : (
-        ''
-      )}
-    </div>
+    <tr>
+      <td>{name}</td>
+      <td>{prCount > 0 ? <a href={url + '/pulls'}>({prCount} PRs)</a> : ''}</td>
+      <td>{prsWithSuccessfulCheck > 0 && prsWithSuccessfulCheck}</td>
+      <td>{prsWithFailedCheck > 0 && prsWithFailedCheck}</td>
+      <td>{prsWithOtherCheckState > 0 && prsWithOtherCheckState}</td>
+    </tr>
   )
 }

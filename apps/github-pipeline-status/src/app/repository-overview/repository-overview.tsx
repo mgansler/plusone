@@ -123,9 +123,22 @@ export const RepositoryOverview = () => {
         {data.search.repositoryCount} entries)
       </h4>
 
-      {data.search.nodes.map((repository) => {
-        return <RepositoryWithPrs key={repository.id} {...repository} />
-      })}
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Open PRs</th>
+            <th>&#x2713;</th>
+            <th>&#x2717;</th>
+            <th>other</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.search.nodes.map((repository) => {
+            return <RepositoryWithPrs key={repository.id} {...repository} />
+          })}
+        </tbody>
+      </table>
 
       <button
         disabled={!pages[pages.currentPage]?.hasPreviousPage}
