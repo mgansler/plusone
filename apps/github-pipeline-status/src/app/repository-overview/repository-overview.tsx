@@ -118,11 +118,6 @@ export const RepositoryOverview = () => {
         />
       </label>
 
-      <h4>
-        Page {pages.currentPage + 1} of {pages.totalPages} (
-        {data.search.repositoryCount} entries)
-      </h4>
-
       <table>
         <thead>
           <tr>
@@ -139,6 +134,11 @@ export const RepositoryOverview = () => {
           })}
         </tbody>
       </table>
+
+      <h4>
+        Page {pages.currentPage + 1} of {pages.totalPages} (
+        {data.search.repositoryCount} entries)
+      </h4>
 
       <button
         disabled={!pages[pages.currentPage]?.hasPreviousPage}
