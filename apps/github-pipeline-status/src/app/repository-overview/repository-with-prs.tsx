@@ -28,7 +28,9 @@ export const RepositoryWithPrs: React.FC<RepositoryWithPRsProps> = ({
 
   return (
     <tr>
-      <td>{name}</td>
+      <td>
+        <a href={url}>{name}</a>
+      </td>
       <td>{defaultBranchName}</td>
       <td>{prCount > 0 ? <a href={url + '/pulls'}>({prCount} PRs)</a> : ''}</td>
       <td>{prsWithSuccessfulCheck > 0 && prsWithSuccessfulCheck}</td>

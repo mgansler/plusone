@@ -68,7 +68,7 @@ describe('RepositoryOverview', () => {
         },
       })
 
-    render(
+    const { container } = render(
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <RepositoryOverview />
@@ -82,5 +82,6 @@ describe('RepositoryOverview', () => {
 
     expect(screen.getByText(/repo 1/i)).toBeInTheDocument()
     expect(screen.getByText(/repo 2/i)).toBeInTheDocument()
+    expect(container).toMatchSnapshot()
   })
 })
