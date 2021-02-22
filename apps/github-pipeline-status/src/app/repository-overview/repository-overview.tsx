@@ -61,8 +61,19 @@ export const RepositoryOverview = () => {
               url
               defaultBranchRef {
                 name
+                ... on Ref {
+                  target {
+                    ... on Commit {
+                      checkSuites (last: 1) {
+                        nodes {
+                          conclusion
+                        }
+                      }
+                    }
+                  }
+                }
               }
-              pullRequests(first: 20, states: ${PullRequestState.Open}) {
+              pullRequests (first: 20, states: ${PullRequestState.Open}) {
                 totalCount
                 nodes {
                   number
@@ -71,7 +82,7 @@ export const RepositoryOverview = () => {
                     totalCount
                     nodes {
                       commit {
-                        checkSuites(last: 1) {
+                        checkSuites (last: 1) {
                           nodes {
                             conclusion
                           }
