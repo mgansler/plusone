@@ -31,6 +31,7 @@ describe('RepositoryOverview', () => {
               {
                 name: 'repo 1',
                 id: '1',
+                url: 'http://localhost/repo-1',
                 defaultBranchRef: { name: 'main' },
                 pullRequests: {
                   totalCount: 1,
@@ -57,6 +58,7 @@ describe('RepositoryOverview', () => {
               {
                 name: 'repo 2',
                 id: '2',
+                url: 'http://localhost/repo-2',
                 defaultBranchRef: { name: 'develop' },
                 pullRequests: {
                   totalCount: 0,
@@ -80,8 +82,13 @@ describe('RepositoryOverview', () => {
       expect(nock.isDone()).toBeTruthy()
     })
 
-    expect(screen.getByText(/repo 1/i)).toBeInTheDocument()
-    expect(screen.getByText(/repo 2/i)).toBeInTheDocument()
-    expect(container).toMatchSnapshot()
+    expect(screen.getByText(/repo 1/i)).toHaveAttribute(
+      'href',
+      'http://localhost/repo-1',
+    )
+    expect(screen.getByText(/repo 2/i)).toHaveAttribute(
+      'href',
+      'http://localhost/repo-2',
+    )
   })
 })
