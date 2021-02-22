@@ -32,7 +32,14 @@ describe('RepositoryOverview', () => {
                 name: 'repo 1',
                 id: '1',
                 url: 'http://localhost/repo-1',
-                defaultBranchRef: { name: 'main' },
+                defaultBranchRef: {
+                  name: 'main',
+                  target: {
+                    checkSuites: {
+                      nodes: [{ conclusion: CheckConclusionState.Success }],
+                    },
+                  },
+                },
                 pullRequests: {
                   totalCount: 1,
                   nodes: [
@@ -59,7 +66,14 @@ describe('RepositoryOverview', () => {
                 name: 'repo 2',
                 id: '2',
                 url: 'http://localhost/repo-2',
-                defaultBranchRef: { name: 'develop' },
+                defaultBranchRef: {
+                  name: 'develop',
+                  target: {
+                    checkSuites: {
+                      nodes: [{ conclusion: CheckConclusionState.Neutral }],
+                    },
+                  },
+                },
                 pullRequests: {
                   totalCount: 0,
                   nodes: [],
@@ -70,7 +84,7 @@ describe('RepositoryOverview', () => {
         },
       })
 
-    const { container } = render(
+    render(
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <RepositoryOverview />
