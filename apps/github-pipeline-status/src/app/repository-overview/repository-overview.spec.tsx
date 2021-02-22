@@ -31,6 +31,7 @@ describe('RepositoryOverview', () => {
               {
                 name: 'repo 1',
                 id: '1',
+                defaultBranchRef: { name: 'main' },
                 pullRequests: {
                   totalCount: 1,
                   nodes: [
@@ -56,6 +57,7 @@ describe('RepositoryOverview', () => {
               {
                 name: 'repo 2',
                 id: '2',
+                defaultBranchRef: { name: 'develop' },
                 pullRequests: {
                   totalCount: 0,
                   nodes: [],

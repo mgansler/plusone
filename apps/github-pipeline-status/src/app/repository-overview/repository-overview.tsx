@@ -59,6 +59,9 @@ export const RepositoryOverview = () => {
               name
               id
               url
+              defaultBranchRef {
+                name
+              }
               pullRequests(first: 20, states: ${PullRequestState.Open}) {
                 totalCount
                 nodes {
@@ -122,6 +125,7 @@ export const RepositoryOverview = () => {
         <thead>
           <tr>
             <th>Name</th>
+            <th>Default Branch</th>
             <th>Open PRs</th>
             <th>&#x2713;</th>
             <th>&#x2717;</th>
