@@ -95,6 +95,7 @@ export const RepositoryOverview = () => {
     },
     {
       keepPreviousData: true,
+      refetchInterval: 30000,
       onSuccess: (response) => {
         history.push({
           search: `filter=${queryString}`,
