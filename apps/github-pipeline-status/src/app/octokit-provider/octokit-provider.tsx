@@ -24,7 +24,7 @@ const TokenInput: React.FC<{
     <form onSubmit={handleSubmit}>
       <label>
         Personal Access Token
-        <input type={'text'} ref={inputRef} />
+        <input type={'password'} ref={inputRef} />
       </label>
       <input type={'submit'} value={'save'} />
     </form>
