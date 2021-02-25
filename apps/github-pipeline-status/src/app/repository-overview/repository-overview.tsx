@@ -78,6 +78,10 @@ export const RepositoryOverview = () => {
                 nodes {
                   number
                   title
+                  author {
+                    login
+                  }
+                  url
                   commits (last: 1) {
                     totalCount
                     nodes {
@@ -142,6 +146,7 @@ export const RepositoryOverview = () => {
             <th>&#x2713;</th>
             <th>&#x2717;</th>
             <th>other</th>
+            <th>Details</th>
           </tr>
         </thead>
         <tbody>

@@ -5,21 +5,10 @@ import {
   Repository,
 } from '@plusone/github-schema'
 
-type RepositoryWithPRsProps = Repository
+import { PrDetails } from './pr-details'
+import { CheckConclusionResult } from './check-conclusion-result'
 
-const CheckConclusionResult: Record<CheckConclusionState, string> = {
-  ACTION_REQUIRED: '\u26a0',
-  CANCELLED: '',
-  FAILURE: '\u2717',
-  NEUTRAL: '',
-  SKIPPED: '',
-  STALE: '',
-  STARTUP_FAILURE: '',
-  TIMED_OUT: '',
-  SUCCESS: '\u2713',
-}
-
-export const RepositoryWithPrs: React.FC<RepositoryWithPRsProps> = ({
+export const RepositoryWithPrs: React.FC<Repository> = ({
   name,
   url,
   defaultBranchRef,
@@ -60,6 +49,9 @@ export const RepositoryWithPrs: React.FC<RepositoryWithPRsProps> = ({
       <td>{prsWithSuccessfulCheck > 0 && prsWithSuccessfulCheck}</td>
       <td>{prsWithFailedCheck > 0 && prsWithFailedCheck}</td>
       <td>{prsWithOtherCheckState > 0 && prsWithOtherCheckState}</td>
+      <td>
+        <PrDetails pullRequest={nodes} />
+      </td>
     </tr>
   )
 }
