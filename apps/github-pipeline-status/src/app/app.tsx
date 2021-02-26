@@ -24,6 +24,9 @@ const useAppStyles = createUseStyles({
   },
   main: {
     padding: 8,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
   },
 })
 

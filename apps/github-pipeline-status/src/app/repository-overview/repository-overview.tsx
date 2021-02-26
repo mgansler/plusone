@@ -9,6 +9,7 @@ import { useGitHubPagination, useLocalStorage } from '@plusone/hooks'
 import { useQuery } from 'react-query'
 import { useHistory, useParams } from 'react-router-dom'
 import { Input, Select } from '@plusone/input'
+import { createUseStyles } from 'react-jss'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
@@ -16,7 +17,21 @@ import { RepositoryWithPrs, UserFilter } from './repository-with-prs'
 
 const PAGE_SIZE = 20
 
+const useRepositoryStyles = createUseStyles({
+  toolbar: {
+    display: 'flex',
+    gap: 8,
+  },
+  pagination: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    gap: 8,
+  },
+})
+
 export const RepositoryOverview = () => {
+  const classNames = useRepositoryStyles()
   const { organizationName } = useParams<{ organizationName: string }>()
   const history = useHistory()
 
@@ -131,27 +146,29 @@ export const RepositoryOverview = () => {
   }
 
   return (
-    <div>
-      <h1>Repositories of {organizationName}</h1>
+    <React.Fragment>
+      <h2>Repositories of {organizationName}</h2>
 
-      <Input
-        label={'Repository Name'}
-        type={'text'}
-        value={queryString}
-        onChange={(event) => setQueryString(event.currentTarget.value)}
-      />
+      <div className={classNames.toolbar}>
+        <Input
+          label={'Repository Name'}
+          type={'text'}
+          value={queryString}
+          onChange={(event) => setQueryString(event.currentTarget.value)}
+        />
 
-      <Select
-        label={'Filter details by user'}
-        onChange={(event) =>
-          setUserFilter(event.currentTarget.value as UserFilter)
-        }
-        value={userFilter}
-      >
-        <option value="all">Show all</option>
-        <option value="dependabot">Show dependabot only</option>
-        <option value="user">Show user only</option>
-      </Select>
+        <Select
+          label={'Filter details by user'}
+          onChange={(event) =>
+            setUserFilter(event.currentTarget.value as UserFilter)
+          }
+          value={userFilter}
+        >
+          <option value="all">Show all</option>
+          <option value="dependabot">Show dependabot only</option>
+          <option value="user">Show user only</option>
+        </Select>
+      </div>
 
       <table>
         <thead>
@@ -178,23 +195,25 @@ export const RepositoryOverview = () => {
         </tbody>
       </table>
 
-      <h4>
-        Page {pages.currentPage + 1} of {pages.totalPages} (
-        {data.search.repositoryCount} entries)
-      </h4>
+      <div className={classNames.pagination}>
+        <h4>
+          Page {pages.currentPage + 1} of {pages.totalPages} (
+          {data.search.repositoryCount} entries)
+        </h4>
 
-      <button
-        disabled={!pages[pages.currentPage]?.hasPreviousPage}
-        onClick={prevPage}
-      >
-        Prev
-      </button>
-      <button
-        disabled={!pages[pages.currentPage]?.hasNextPage}
-        onClick={nextPage}
-      >
-        Next
-      </button>
-    </div>
+        <button
+          disabled={!pages[pages.currentPage]?.hasPreviousPage}
+          onClick={prevPage}
+        >
+          Prev
+        </button>
+        <button
+          disabled={!pages[pages.currentPage]?.hasNextPage}
+          onClick={nextPage}
+        >
+          Next
+        </button>
+      </div>
+    </React.Fragment>
   )
 }
