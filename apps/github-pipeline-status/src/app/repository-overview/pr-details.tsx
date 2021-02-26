@@ -17,7 +17,7 @@ export const PrDetails: React.FC<PrDetailsProps> = ({ pullRequest }) => {
       >
         {isOpen ? 'Hide Details' : 'Show Details'}
       </button>
-      {isOpen ? (
+      {isOpen && pullRequest.length > 0 ? (
         <table>
           <thead>
             <tr>
