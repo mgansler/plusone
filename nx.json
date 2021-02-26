@@ -1,8 +1,4 @@
 {
-  "npmScope": "plusone",
-  "affected": {
-    "defaultBase": "main"
-  },
   "implicitDependencies": {
     "workspace.json": "*",
     "package.json": {
@@ -14,6 +10,10 @@
     ".eslintrc.json": "*",
     "nx.json": "*"
   },
+  "affected": {
+    "defaultBase": "main"
+  },
+  "npmScope": "plusone",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
@@ -41,6 +41,9 @@
       "tags": []
     },
     "hooks": {
+      "tags": []
+    },
+    "input": {
       "tags": []
     }
   }

@@ -3,13 +3,8 @@ import { render } from '@testing-library/react'
 
 import { App } from './app'
 
-jest.mock('./user-info/user-info', () => ({
-  UserInfo: () => <div>UserInfoMock</div>,
-}))
-
-jest.mock('./organizations/organizations', () => ({
-  Organizations: () => <div>OrganizationsMock</div>,
-}))
+jest.mock('./user-info/user-info')
+jest.mock('./organizations/organizations')
 
 describe('App', () => {
   it('should render successfully', () => {
@@ -21,6 +16,6 @@ describe('App', () => {
   it('should have a greeting as the title', () => {
     const { getByText } = render(<App />)
 
-    expect(getByText('Welcome to github-pipeline-status!')).toBeTruthy()
+    expect(getByText(/github pipeline status/i)).toBeTruthy()
   })
 })
