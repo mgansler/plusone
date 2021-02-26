@@ -8,6 +8,7 @@ import {
 import { useGitHubPagination, useLocalStorage } from '@plusone/hooks'
 import { useQuery } from 'react-query'
 import { useHistory, useParams } from 'react-router-dom'
+import { Input, Select } from '@plusone/input'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
@@ -133,28 +134,24 @@ export const RepositoryOverview = () => {
     <div>
       <h1>Repositories of {organizationName}</h1>
 
-      <label>
-        Repository Name
-        <input
-          type={'text'}
-          value={queryString}
-          onChange={(event) => setQueryString(event.currentTarget.value)}
-        />
-      </label>
+      <Input
+        label={'Repository Name'}
+        type={'text'}
+        value={queryString}
+        onChange={(event) => setQueryString(event.currentTarget.value)}
+      />
 
-      <label>
-        Filter details by user
-        <select
-          onChange={(event) =>
-            setUserFilter(event.currentTarget.value as UserFilter)
-          }
-          value={userFilter}
-        >
-          <option value="all">Show all</option>
-          <option value="dependabot">Show dependabot only</option>
-          <option value="user">Show user only</option>
-        </select>
-      </label>
+      <Select
+        label={'Filter details by user'}
+        onChange={(event) =>
+          setUserFilter(event.currentTarget.value as UserFilter)
+        }
+        value={userFilter}
+      >
+        <option value="all">Show all</option>
+        <option value="dependabot">Show dependabot only</option>
+        <option value="user">Show user only</option>
+      </Select>
 
       <table>
         <thead>

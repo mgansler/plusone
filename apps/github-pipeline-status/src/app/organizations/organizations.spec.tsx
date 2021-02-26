@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import nock from 'nock'
-import { BrowserRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 
 import { Organizations } from './organizations'
 
@@ -35,17 +35,15 @@ describe('Organizations', () => {
 
     render(
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/organizations/myorg']}>
           <Organizations />
-        </BrowserRouter>
+        </MemoryRouter>
       </QueryClientProvider>,
     )
 
     await waitFor(() => {
       expect(nock.isDone()).toBeTruthy()
     })
-    expect(screen.getByText(/prev/i)).toBeInTheDocument()
-    expect(screen.getByText(/next/i)).toBeInTheDocument()
   })
 
   it('should render successfully with an entry', async () => {
@@ -70,9 +68,9 @@ describe('Organizations', () => {
 
     render(
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/organizations/myorg']}>
           <Organizations />
-        </BrowserRouter>
+        </MemoryRouter>
       </QueryClientProvider>,
     )
 

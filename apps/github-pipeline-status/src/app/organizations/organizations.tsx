@@ -2,23 +2,23 @@ import React from 'react'
 import { useQuery } from 'react-query'
 import { User } from '@plusone/github-schema'
 import { useGitHubPagination } from '@plusone/hooks'
-import { Route, Switch, useHistory } from 'react-router-dom'
+import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
+import { Select } from '@plusone/input'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryOverview } from '../repository-overview/repository-overview'
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 100
 
 export const Organizations: React.FC = () => {
   const history = useHistory()
+  const match = useRouteMatch<{ organizationName: string }>({
+    strict: true,
+    path: '/organization/:organizationName',
+  })
+  const organizationName = match ? match.params.organizationName : ''
 
-  const {
-    pages,
-    onSuccess,
-    nextPage,
-    prevPage,
-    getPageRequest,
-  } = useGitHubPagination(PAGE_SIZE)
+  const { pages, onSuccess, getPageRequest } = useGitHubPagination(PAGE_SIZE)
 
   const octokit = useOctokit()
   const { data, isLoading } = useQuery(
@@ -62,38 +62,26 @@ export const Organizations: React.FC = () => {
   }
 
   return (
-    <div>
-      {data.viewer.organizations.nodes.map((organization) => {
-        return (
-          <div key={organization.id}>
+    <React.Fragment>
+      <Select
+        label={'Select Organization'}
+        value={organizationName}
+        onChange={(event) =>
+          history.push(`/organization/${event.currentTarget.value}`)
+        }
+      >
+        {organizationName === '' && <option value="" />}
+        {data.viewer.organizations.nodes.map((organization) => (
+          <option key={organization.id} value={organization.login}>
             {organization.name}
-            <button
-              onClick={() =>
-                history.push(`/organization/${organization.login}`)
-              }
-            >
-              Expand
-            </button>
-          </div>
-        )
-      })}
-      <button
-        disabled={!pages[pages.currentPage]?.hasPreviousPage}
-        onClick={prevPage}
-      >
-        Prev
-      </button>
-      <button
-        disabled={!pages[pages.currentPage]?.hasNextPage}
-        onClick={nextPage}
-      >
-        Next
-      </button>
+          </option>
+        ))}
+      </Select>
       <Switch>
         <Route exact={true} path={'/organization/:organizationName'}>
           <RepositoryOverview />
         </Route>
       </Switch>
-    </div>
+    </React.Fragment>
   )
 }
