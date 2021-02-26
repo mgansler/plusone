@@ -3,13 +3,8 @@ import { render } from '@testing-library/react'
 
 import { App } from './app'
 
-jest.mock('./user-info/user-info', () => ({
-  UserInfo: () => <div>UserInfoMock</div>,
-}))
-
-jest.mock('./organizations/organizations', () => ({
-  Organizations: () => <div>OrganizationsMock</div>,
-}))
+jest.mock('./user-info/user-info')
+jest.mock('./organizations/organizations')
 
 describe('App', () => {
   it('should render successfully', () => {
