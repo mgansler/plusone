@@ -1,5 +1,25 @@
 {
   "version": 2,
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
+  "defaultProject": "github-pipeline-status",
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "none",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "none"
+      },
+      "library": {
+        "style": "none",
+        "linter": "eslint"
+      }
+    }
+  },
   "projects": {
     "github-pipeline-status": {
       "root": "apps/github-pipeline-status",
@@ -150,26 +170,31 @@
           }
         }
       }
-    }
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/react"
-  },
-  "generators": {
-    "@nrwl/react": {
-      "application": {
-        "style": "none",
-        "linter": "eslint",
-        "babel": true
-      },
-      "component": {
-        "style": "none"
-      },
-      "library": {
-        "style": "none",
-        "linter": "eslint"
+    },
+    "input": {
+      "root": "libs/input",
+      "sourceRoot": "libs/input/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/input/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/input"
+          ],
+          "options": {
+            "jestConfig": "libs/input/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
       }
     }
-  },
-  "defaultProject": "github-pipeline-status"
+  }
 }
