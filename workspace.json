@@ -8,7 +8,9 @@
       "targets": {
         "build": {
           "executor": "@nrwl/web:build",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/github-pipeline-status",
             "index": "apps/github-pipeline-status/src/index.html",
@@ -69,7 +71,9 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/github-pipeline-status"],
+          "outputs": [
+            "coverage/apps/github-pipeline-status"
+          ],
           "options": {
             "jestConfig": "apps/github-pipeline-status/jest.config.js",
             "passWithNoTests": true
@@ -98,7 +102,9 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/github-pipeline-status-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/github-pipeline-status-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }
@@ -128,12 +134,16 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/hooks/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/hooks/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/hooks"],
+          "outputs": [
+            "coverage/libs/hooks"
+          ],
           "options": {
             "jestConfig": "libs/hooks/jest.config.js",
             "passWithNoTests": true
