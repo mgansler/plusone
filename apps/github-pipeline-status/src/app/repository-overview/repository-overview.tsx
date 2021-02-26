@@ -22,6 +22,7 @@ const useRepositoryStyles = createUseStyles({
     display: 'flex',
     gap: 8,
   },
+  table: { tableLayout: 'fixed', width: '100%' },
   pagination: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -170,7 +171,17 @@ export const RepositoryOverview = () => {
         </Select>
       </div>
 
-      <table>
+      <table className={classNames.table}>
+        <colgroup>
+          <col style={{ width: '30%' }} />
+          <col style={{ width: '10%' }} />
+          <col style={{ width: '10%' }} />
+          <col style={{ width: '2%' }} />
+          <col style={{ width: '2%' }} />
+          <col style={{ width: '2%' }} />
+          <col style={{ width: '50%' }} />
+        </colgroup>
+
         <thead>
           <tr>
             <th>Name</th>

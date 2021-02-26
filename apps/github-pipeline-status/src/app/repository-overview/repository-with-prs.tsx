@@ -4,11 +4,18 @@ import {
   Commit,
   Repository,
 } from '@plusone/github-schema'
+import { createUseStyles } from 'react-jss'
 
 import { PrDetails } from './pr-details'
 import { CheckConclusionResult } from './check-conclusion-result'
 
 export type UserFilter = 'all' | 'dependabot' | 'user'
+
+const useRowStyles = createUseStyles({
+  center: {
+    textAlign: 'center',
+  },
+})
 
 interface RepositoryWithPrsProps {
   userFilter: UserFilter
@@ -24,6 +31,8 @@ export const RepositoryWithPrs: React.FC<RepositoryWithPrsProps> = ({
     pullRequests: { totalCount: prCount, nodes },
   },
 }) => {
+  const classNames = useRowStyles()
+
   const prCheckState = nodes
     .flatMap((node) => node.commits.nodes)
     .flatMap((node) => node.commit.checkSuites.nodes)
@@ -67,15 +76,23 @@ export const RepositoryWithPrs: React.FC<RepositoryWithPrsProps> = ({
       <td>
         <a href={url}>{name}</a>
       </td>
-      <td>
+      <td className={classNames.center}>
         {`${defaultBranchRef.name} ${
           CheckConclusionResult[defaultBranchCheckConclusion] ?? ''
         }`}
       </td>
-      <td>{prCount > 0 ? <a href={url + '/pulls'}>{prCount} PRs</a> : ''}</td>
-      <td>{prsWithSuccessfulCheck > 0 && prsWithSuccessfulCheck}</td>
-      <td>{prsWithFailedCheck > 0 && prsWithFailedCheck}</td>
-      <td>{prsWithOtherCheckState > 0 && prsWithOtherCheckState}</td>
+      <td className={classNames.center}>
+        {prCount > 0 ? <a href={url + '/pulls'}>{prCount} PRs</a> : ''}
+      </td>
+      <td className={classNames.center}>
+        {prsWithSuccessfulCheck > 0 && prsWithSuccessfulCheck}
+      </td>
+      <td className={classNames.center}>
+        {prsWithFailedCheck > 0 && prsWithFailedCheck}
+      </td>
+      <td className={classNames.center}>
+        {prsWithOtherCheckState > 0 && prsWithOtherCheckState}
+      </td>
       <td>
         <PrDetails pullRequest={filteredPullRequests} />
       </td>
