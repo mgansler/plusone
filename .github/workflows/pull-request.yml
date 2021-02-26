@@ -29,5 +29,8 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
 
+      - name: Lint
+        run: yarn nx affected:lint --base origin/main
+
       - name: Unit tests
         run: yarn nx affected:test --base origin/main
