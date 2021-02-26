@@ -5,13 +5,13 @@ import {
   Repository,
   SearchType,
 } from '@plusone/github-schema'
-import { useGitHubPagination } from '@plusone/hooks'
+import { useGitHubPagination, useLocalStorage } from '@plusone/hooks'
 import { useQuery } from 'react-query'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
-import { RepositoryWithPrs } from './repository-with-prs'
+import { RepositoryWithPrs, UserFilter } from './repository-with-prs'
 
 const PAGE_SIZE = 20
 
@@ -23,6 +23,11 @@ export const RepositoryOverview = () => {
     const urlSearchParams = new URLSearchParams(history.location.search)
     return urlSearchParams.get('filter') || ''
   })
+
+  const [userFilter, setUserFilter] = useLocalStorage<UserFilter>(
+    'userDetailsFilter',
+    'all',
+  )
 
   const {
     pages,
@@ -129,12 +134,26 @@ export const RepositoryOverview = () => {
       <h1>Repositories of {organizationName}</h1>
 
       <label>
-        Filter
+        Repository Name
         <input
           type={'text'}
           value={queryString}
           onChange={(event) => setQueryString(event.currentTarget.value)}
         />
+      </label>
+
+      <label>
+        Filter details by user
+        <select
+          onChange={(event) =>
+            setUserFilter(event.currentTarget.value as UserFilter)
+          }
+          value={userFilter}
+        >
+          <option value="all">Show all</option>
+          <option value="dependabot">Show dependabot only</option>
+          <option value="user">Show user only</option>
+        </select>
       </label>
 
       <table>
@@ -151,7 +170,13 @@ export const RepositoryOverview = () => {
         </thead>
         <tbody>
           {data.search.nodes.map((repository) => {
-            return <RepositoryWithPrs key={repository.id} {...repository} />
+            return (
+              <RepositoryWithPrs
+                key={repository.id}
+                repository={repository}
+                userFilter={userFilter}
+              />
+            )
           })}
         </tbody>
       </table>

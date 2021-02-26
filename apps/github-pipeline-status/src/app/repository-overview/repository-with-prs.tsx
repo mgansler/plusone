@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
   CheckConclusionState,
   Commit,
@@ -8,11 +8,21 @@ import {
 import { PrDetails } from './pr-details'
 import { CheckConclusionResult } from './check-conclusion-result'
 
-export const RepositoryWithPrs: React.FC<Repository> = ({
-  name,
-  url,
-  defaultBranchRef,
-  pullRequests: { totalCount: prCount, nodes },
+export type UserFilter = 'all' | 'dependabot' | 'user'
+
+interface RepositoryWithPrsProps {
+  userFilter: UserFilter
+  repository: Repository
+}
+
+export const RepositoryWithPrs: React.FC<RepositoryWithPrsProps> = ({
+  userFilter,
+  repository: {
+    name,
+    url,
+    defaultBranchRef,
+    pullRequests: { totalCount: prCount, nodes },
+  },
 }) => {
   const prCheckState = nodes
     .flatMap((node) => node.commits.nodes)
@@ -35,6 +45,23 @@ export const RepositoryWithPrs: React.FC<Repository> = ({
     .flatMap((node) => node.conclusion)
     .pop()
 
+  const filteredPullRequests = useMemo(
+    () =>
+      nodes.filter((node) => {
+        switch (userFilter) {
+          case 'all':
+            return true
+          case 'dependabot':
+            return node.author.login === 'dependabot'
+          case 'user':
+            return node.author.login !== 'dependabot'
+          default:
+            return false
+        }
+      }),
+    [nodes, userFilter],
+  )
+
   return (
     <tr>
       <td>
@@ -45,12 +72,12 @@ export const RepositoryWithPrs: React.FC<Repository> = ({
           CheckConclusionResult[defaultBranchCheckConclusion] ?? ''
         }`}
       </td>
-      <td>{prCount > 0 ? <a href={url + '/pulls'}>({prCount} PRs)</a> : ''}</td>
+      <td>{prCount > 0 ? <a href={url + '/pulls'}>{prCount} PRs</a> : ''}</td>
       <td>{prsWithSuccessfulCheck > 0 && prsWithSuccessfulCheck}</td>
       <td>{prsWithFailedCheck > 0 && prsWithFailedCheck}</td>
       <td>{prsWithOtherCheckState > 0 && prsWithOtherCheckState}</td>
       <td>
-        <PrDetails pullRequest={nodes} />
+        <PrDetails pullRequest={filteredPullRequests} />
       </td>
     </tr>
   )
