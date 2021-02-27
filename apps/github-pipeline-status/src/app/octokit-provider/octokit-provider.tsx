@@ -32,9 +32,9 @@ const TokenInput: React.FC<{
 }
 
 export const OctokitProvider: React.FC = ({ children }) => {
-  const [token, setToken, removeToken] = useLocalStorage<string>(
-    'github-personal-access-token',
-  )
+  const [token, setToken, removeToken] = useLocalStorage<string>({
+    key: 'github-personal-access-token',
+  })
 
   const octokit = useMemo(() => {
     return new Octokit({

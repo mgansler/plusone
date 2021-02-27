@@ -41,10 +41,10 @@ export const RepositoryOverview = () => {
     return urlSearchParams.get('filter') || ''
   })
 
-  const [userFilter, setUserFilter] = useLocalStorage<UserFilter>(
-    'userDetailsFilter',
-    'all',
-  )
+  const [userFilter, setUserFilter] = useLocalStorage<UserFilter>({
+    key: 'userDetailsFilter',
+    defaultValue: 'all',
+  })
 
   const {
     pages,
