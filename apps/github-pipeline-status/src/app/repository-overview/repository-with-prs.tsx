@@ -15,6 +15,9 @@ const useRowStyles = createUseStyles({
   center: {
     textAlign: 'center',
   },
+  top: {
+    verticalAlign: 'top',
+  },
 })
 
 interface RepositoryWithPrsProps {
@@ -73,24 +76,24 @@ export const RepositoryWithPrs: React.FC<RepositoryWithPrsProps> = ({
 
   return (
     <tr>
-      <td>
+      <td className={classNames.top}>
         <a href={url}>{name}</a>
       </td>
-      <td className={classNames.center}>
+      <td className={[classNames.center, classNames.top].join(' ')}>
         {`${defaultBranchRef.name} ${
           CheckConclusionResult[defaultBranchCheckConclusion] ?? ''
         }`}
       </td>
-      <td className={classNames.center}>
+      <td className={[classNames.center, classNames.top].join(' ')}>
         {prCount > 0 ? <a href={url + '/pulls'}>{prCount} PRs</a> : ''}
       </td>
-      <td className={classNames.center}>
+      <td className={[classNames.center, classNames.top].join(' ')}>
         {prsWithSuccessfulCheck > 0 && prsWithSuccessfulCheck}
       </td>
-      <td className={classNames.center}>
+      <td className={[classNames.center, classNames.top].join(' ')}>
         {prsWithFailedCheck > 0 && prsWithFailedCheck}
       </td>
-      <td className={classNames.center}>
+      <td className={[classNames.center, classNames.top].join(' ')}>
         {prsWithOtherCheckState > 0 && prsWithOtherCheckState}
       </td>
       <td>
