@@ -7,11 +7,18 @@ const getItem = (key: string) => {
     return undefined
   }
 }
-
-export const useLocalStorage = <ItemType>(
-  key: string,
-  defaultValue?: ItemType,
-): [ItemType, (newValue: ItemType) => void, () => void] => {
+type UseLocalStorageProps<ItemType> = {
+  key: string
+  defaultValue?: ItemType
+}
+export const useLocalStorage = <ItemType>({
+  key,
+  defaultValue,
+}: UseLocalStorageProps<ItemType>): [
+  ItemType,
+  (newValue: ItemType) => void,
+  () => void,
+] => {
   const [value, setValue] = useState<ItemType>()
 
   useEffect(() => {
