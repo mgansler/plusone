@@ -4,10 +4,12 @@ import { useLabelStyles } from '../styles'
 
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   label: string
+  inputRef?: React.Ref<HTMLInputElement>
 }
 
 export const Input: React.FC<InputProps> = ({
   label,
+  inputRef,
   children,
   ...inputProps
 }) => {
@@ -15,7 +17,7 @@ export const Input: React.FC<InputProps> = ({
   return (
     <label className={classNames.label}>
       {label}
-      <input {...inputProps} />
+      <input {...inputProps} ref={inputRef} />
     </label>
   )
 }
