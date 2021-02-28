@@ -195,6 +195,114 @@
           }
         }
       }
+    },
+    "quick-zoom": {
+      "root": "apps/quick-zoom",
+      "sourceRoot": "apps/quick-zoom/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/apps/quick-zoom",
+            "index": "apps/quick-zoom/src/index.html",
+            "main": "apps/quick-zoom/src/main.tsx",
+            "polyfills": "apps/quick-zoom/src/polyfills.ts",
+            "tsConfig": "apps/quick-zoom/tsconfig.app.json",
+            "assets": [
+              "apps/quick-zoom/src/favicon.ico",
+              "apps/quick-zoom/src/assets"
+            ],
+            "styles": [],
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/quick-zoom/src/environments/environment.ts",
+                  "with": "apps/quick-zoom/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "quick-zoom:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "quick-zoom:build:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/quick-zoom/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/quick-zoom"
+          ],
+          "options": {
+            "jestConfig": "apps/quick-zoom/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "quick-zoom-e2e": {
+      "root": "apps/quick-zoom-e2e",
+      "sourceRoot": "apps/quick-zoom-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/quick-zoom-e2e/cypress.json",
+            "tsConfig": "apps/quick-zoom-e2e/tsconfig.e2e.json",
+            "devServerTarget": "quick-zoom:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "quick-zoom:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/quick-zoom-e2e/**/*.{js,ts}"
+            ]
+          }
+        }
+      }
     }
   }
 }
