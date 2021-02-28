@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react'
+import { useGitHubPagination, useLocalStorage } from '@plusone/hooks'
+import { useHistory, useParams } from 'react-router-dom'
+import { Input, Select } from '@plusone/input'
+import { createUseStyles } from 'react-jss'
+import { useQuery } from 'react-query'
 import {
   PageInfo,
   PullRequestState,
   Repository,
   SearchType,
 } from '@plusone/github-schema'
-import { useGitHubPagination, useLocalStorage } from '@plusone/hooks'
-import { useQuery } from 'react-query'
-import { useHistory, useParams } from 'react-router-dom'
-import { Input, Select } from '@plusone/input'
-import { createUseStyles } from 'react-jss'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
 import { RepositoryWithPrs, UserFilter } from './repository-with-prs'
-
-const PAGE_SIZE = 20
 
 const useRepositoryStyles = createUseStyles({
   toolbar: {
@@ -31,20 +29,18 @@ const useRepositoryStyles = createUseStyles({
   },
 })
 
-export const RepositoryOverview = () => {
-  const classNames = useRepositoryStyles()
-  const { organizationName } = useParams<{ organizationName: string }>()
+const PAGE_SIZE = 20
+
+interface UseFetchRepositoryDataProps {
+  organizationName: string
+  queryString: string
+}
+
+const useFetchRepositoryData = ({
+  organizationName,
+  queryString,
+}: UseFetchRepositoryDataProps) => {
   const history = useHistory()
-
-  const [queryString, setQueryString] = useState<string>(() => {
-    const urlSearchParams = new URLSearchParams(history.location.search)
-    return urlSearchParams.get('filter') || ''
-  })
-
-  const [userFilter, setUserFilter] = useLocalStorage<UserFilter>({
-    key: 'userDetailsFilter',
-    defaultValue: 'all',
-  })
 
   const {
     pages,
@@ -146,6 +142,31 @@ export const RepositoryOverview = () => {
   )
 
   useEffect(() => goToPage(0), [goToPage, queryString])
+
+  return { data, isLoading, pages, prevPage, nextPage }
+}
+
+export const RepositoryOverview = () => {
+  const classNames = useRepositoryStyles()
+
+  // Get the request params
+  const { organizationName } = useParams<{ organizationName: string }>()
+  const history = useHistory()
+  const [queryString, setQueryString] = useState<string>(
+    () => new URLSearchParams(history.location.search).get('filter') || '',
+  )
+  const [userFilter, setUserFilter] = useLocalStorage<UserFilter>({
+    key: 'userDetailsFilter',
+    defaultValue: 'all',
+  })
+
+  // Fetch the data
+  const { data, isLoading, pages, prevPage, nextPage } = useFetchRepositoryData(
+    {
+      organizationName,
+      queryString,
+    },
+  )
 
   if (isLoading) {
     return <div>loading...</div>

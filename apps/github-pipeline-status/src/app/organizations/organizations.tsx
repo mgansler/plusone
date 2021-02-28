@@ -8,16 +8,16 @@ import { Select } from '@plusone/input'
 import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryOverview } from '../repository-overview/repository-overview'
 
-const PAGE_SIZE = 100
-
-export const Organizations: React.FC = () => {
-  const history = useHistory()
+const useOrganizationName = () => {
   const match = useRouteMatch<{ organizationName: string }>({
     strict: true,
     path: '/organization/:organizationName',
   })
-  const organizationName = match ? match.params.organizationName : ''
+  return match ? match.params.organizationName : ''
+}
 
+const PAGE_SIZE = 100
+const useFetchOrganizations = () => {
   const { pages, onSuccess, getPageRequest } = useGitHubPagination(PAGE_SIZE)
 
   const octokit = useOctokit()
@@ -56,6 +56,15 @@ export const Organizations: React.FC = () => {
         ),
     },
   )
+
+  return { data, isLoading }
+}
+
+export const Organizations: React.FC = () => {
+  const history = useHistory()
+  const organizationName = useOrganizationName()
+
+  const { data, isLoading } = useFetchOrganizations()
 
   if (isLoading) {
     return <div>loading...</div>
