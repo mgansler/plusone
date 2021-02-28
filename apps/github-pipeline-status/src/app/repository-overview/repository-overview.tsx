@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   PageInfo,
   PullRequestState,
@@ -51,6 +51,7 @@ export const RepositoryOverview = () => {
     onSuccess,
     nextPage,
     prevPage,
+    goToPage,
     getPageRequest,
   } = useGitHubPagination(PAGE_SIZE)
 
@@ -134,13 +135,17 @@ export const RepositoryOverview = () => {
       keepPreviousData: true,
       refetchInterval: 30000,
       onSuccess: (response) => {
+        const urlSearchParams = new URLSearchParams(history.location.search)
+        urlSearchParams.set('filter', queryString)
         history.push({
-          search: `filter=${queryString}`,
+          search: urlSearchParams.toString(),
         })
         onSuccess(response.search.pageInfo, response.search.repositoryCount)
       },
     },
   )
+
+  useEffect(() => goToPage(0), [goToPage, queryString])
 
   if (isLoading) {
     return <div>loading...</div>

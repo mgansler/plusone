@@ -14,7 +14,7 @@ describe('RepositoryOverview', () => {
     defaultOptions: { queries: { retry: 0, refetchOnWindowFocus: false } },
   })
 
-  it('should render successfully', async () => {
+  it('should fetch data and render successfully', async () => {
     nock('https://api.github.com')
       .post('/graphql')
       .reply(200, {
@@ -92,9 +92,13 @@ describe('RepositoryOverview', () => {
       </QueryClientProvider>,
     )
 
+    expect(screen.queryByText(/loading.../i)).toBeInTheDocument()
+
     await waitFor(() => {
       expect(nock.isDone()).toBeTruthy()
     })
+
+    expect(screen.queryByText(/loading.../i)).not.toBeInTheDocument()
 
     expect(screen.getByText(/repo 1/i)).toHaveAttribute(
       'href',

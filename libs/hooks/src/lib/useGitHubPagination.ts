@@ -1,5 +1,5 @@
 import { PageInfo } from '@plusone/github-schema'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 type PageMeta = {
   currentPage: number
@@ -13,6 +13,7 @@ type GitHubPagination = {
   onSuccess: (pageInfo: PageInfo, elementCount: number) => void
   nextPage: () => void
   prevPage: () => void
+  goToPage: (page: number) => void
   getPageRequest: () => string
 }
 
@@ -49,11 +50,16 @@ export const useGitHubPagination = (pageSize: number): GitHubPagination => {
     return ''
   }
 
+  const goToPage = useCallback((page: number) => {
+    setPages((prevState) => ({ ...prevState, currentPage: page }))
+  }, [])
+
   return {
     pages,
     onSuccess,
     nextPage,
     prevPage,
+    goToPage,
     getPageRequest,
   }
 }
