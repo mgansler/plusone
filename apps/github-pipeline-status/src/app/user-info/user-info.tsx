@@ -17,11 +17,8 @@ const useUserInfoStyles = createUseStyles({
   },
 })
 
-export const UserInfo: React.FC = () => {
-  const classnames = useUserInfoStyles()
-
+const useFetchUserInfo = () => {
   const octokit = useOctokit()
-  const logout = useLogout()
 
   const { data, isLoading } = useQuery('currentUser', async () => {
     return await octokit.graphql<{ viewer: Partial<User> }>(`
@@ -33,6 +30,15 @@ export const UserInfo: React.FC = () => {
       }
     `)
   })
+
+  return { data, isLoading }
+}
+
+export const UserInfo: React.FC = () => {
+  const classnames = useUserInfoStyles()
+
+  const logout = useLogout()
+  const { data, isLoading } = useFetchUserInfo()
 
   if (isLoading) {
     return null

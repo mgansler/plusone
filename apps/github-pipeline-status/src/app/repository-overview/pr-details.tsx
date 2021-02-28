@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { PullRequest, Repository } from '@plusone/github-schema'
+import { PullRequest } from '@plusone/github-schema'
 
 import { CheckConclusionResult } from './check-conclusion-result'
 
@@ -9,6 +9,7 @@ interface PrDetailsProps {
 
 export const PrDetails: React.FC<PrDetailsProps> = ({ pullRequest }) => {
   const [isOpen, setIsOpen] = useState(false)
+
   return (
     <React.Fragment>
       <button
