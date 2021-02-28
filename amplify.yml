@@ -1,6 +1,6 @@
 version: 1
 applications:
-  - appRoot: apps/github-pipeline-status
+  - appRoot: /apps/github-pipeline-status
     frontend:
       phases:
         preBuild:
@@ -17,7 +17,7 @@ applications:
       cache:
         paths:
           - node_modules/**/*
-  - appRoot: apps/quick-zoom
+  - appRoot: /apps/quick-zoom
     frontend:
       phases:
         preBuild:
