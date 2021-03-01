@@ -4,21 +4,12 @@ import {
   Commit,
   Repository,
 } from '@plusone/github-schema'
-import { createUseStyles } from 'react-jss'
 
 import { PrDetails } from './pr-details'
 import { CheckConclusionResult } from './check-conclusion-result'
+import { useTableStyles } from './use-table-styles'
 
 export type UserFilter = 'all' | 'dependabot' | 'user'
-
-const useRowStyles = createUseStyles({
-  center: {
-    textAlign: 'center',
-  },
-  top: {
-    verticalAlign: 'top',
-  },
-})
 
 interface RepositoryWithPrsProps {
   userFilter: UserFilter
@@ -34,7 +25,7 @@ export const RepositoryWithPrs: React.FC<RepositoryWithPrsProps> = ({
     pullRequests: { totalCount: prCount, nodes },
   },
 }) => {
-  const classNames = useRowStyles()
+  const classNames = useTableStyles()
 
   const prCheckState = nodes
     .flatMap((node) => node.commits.nodes)

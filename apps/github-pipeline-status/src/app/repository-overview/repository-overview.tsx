@@ -14,13 +14,13 @@ import {
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
 import { RepositoryWithPrs, UserFilter } from './repository-with-prs'
+import { useTableStyles } from './use-table-styles'
 
 const useRepositoryStyles = createUseStyles({
   toolbar: {
     display: 'flex',
     gap: 8,
   },
-  table: { tableLayout: 'fixed', width: '100%' },
   pagination: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -116,8 +116,13 @@ const useFetchRepositoryData = ({
                   headRef {
                     name
                   }
-                  author {
-                    login
+                  reviews (last: 20) {
+                    nodes {
+                      author {
+                        login
+                      }
+                      state
+                    }
                   }
                 }
               }
@@ -147,7 +152,7 @@ const useFetchRepositoryData = ({
 }
 
 export const RepositoryOverview = () => {
-  const classNames = useRepositoryStyles()
+  const classNames = { ...useRepositoryStyles(), ...useTableStyles() }
 
   // Get the request params
   const { organizationName } = useParams<{ organizationName: string }>()
@@ -219,6 +224,7 @@ export const RepositoryOverview = () => {
             <th>Details</th>
           </tr>
         </thead>
+
         <tbody>
           {data.search.nodes.map((repository) => {
             return (

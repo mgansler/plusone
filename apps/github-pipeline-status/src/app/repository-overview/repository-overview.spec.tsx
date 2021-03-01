@@ -3,7 +3,10 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import nock from 'nock'
 import { BrowserRouter } from 'react-router-dom'
-import { CheckConclusionState } from '@plusone/github-schema'
+import {
+  CheckConclusionState,
+  PullRequestReviewState,
+} from '@plusone/github-schema'
 
 import { RepositoryOverview } from './repository-overview'
 
@@ -44,6 +47,12 @@ describe('RepositoryOverview', () => {
                   totalCount: 1,
                   nodes: [
                     {
+                      number: 1,
+                      title: 'my first pr',
+                      author: {
+                        login: 'testuser',
+                      },
+                      url: 'http://localhost/repo-1/pr/1',
                       commits: {
                         totalCount: 1,
                         nodes: [
@@ -57,6 +66,17 @@ describe('RepositoryOverview', () => {
                             },
                           },
                         ],
+                      },
+                      headRef: {
+                        name: 'feature/1-my-first-branch',
+                      },
+                      reviews: {
+                        nodes: {
+                          author: {
+                            login: 'another user',
+                          },
+                          state: PullRequestReviewState.ChangesRequested,
+                        },
                       },
                     },
                   ],
