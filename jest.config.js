@@ -4,6 +4,5 @@ module.exports = {
     '<rootDir>/apps/quick-zoom',
     '<rootDir>/libs/github-schema',
     '<rootDir>/libs/hooks',
-    '<rootDir>/libs/input',
   ],
 }

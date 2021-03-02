@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useGitHubPagination, useLocalStorage } from '@plusone/hooks'
 import { useHistory, useParams } from 'react-router-dom'
-import { Input, Select } from '@plusone/input'
 import { createUseStyles } from 'react-jss'
 import { useQuery } from 'react-query'
 import {
@@ -10,6 +9,15 @@ import {
   Repository,
   SearchType,
 } from '@plusone/github-schema'
+import {
+  createStyles,
+  FormControl,
+  InputLabel,
+  makeStyles,
+  MenuItem,
+  Select,
+  TextField,
+} from '@material-ui/core'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
@@ -28,6 +36,14 @@ const useRepositoryStyles = createUseStyles({
     gap: 8,
   },
 })
+
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    formControl: {
+      minWidth: 200,
+    },
+  }),
+)
 
 const PAGE_SIZE = 20
 
@@ -152,7 +168,11 @@ const useFetchRepositoryData = ({
 }
 
 export const RepositoryOverview = () => {
-  const classNames = { ...useRepositoryStyles(), ...useTableStyles() }
+  const classNames = {
+    ...useRepositoryStyles(),
+    ...useTableStyles(),
+    ...useStyles(),
+  }
 
   // Get the request params
   const { organizationName } = useParams<{ organizationName: string }>()
@@ -182,24 +202,31 @@ export const RepositoryOverview = () => {
       <h2>Repositories of {organizationName}</h2>
 
       <div className={classNames.toolbar}>
-        <Input
+        <TextField
+          className={classNames.formControl}
           label={'Repository Name'}
           type={'text'}
           value={queryString}
-          onChange={(event) => setQueryString(event.currentTarget.value)}
+          onChange={(event) => setQueryString(event.target.value)}
         />
 
-        <Select
-          label={'Filter details by user'}
-          onChange={(event) =>
-            setUserFilter(event.currentTarget.value as UserFilter)
-          }
-          value={userFilter}
-        >
-          <option value="all">Show all</option>
-          <option value="dependabot">Show dependabot only</option>
-          <option value="user">Show user only</option>
-        </Select>
+        <FormControl className={classNames.formControl}>
+          <InputLabel id={'user-details-filter-label'}>
+            Filter details by user
+          </InputLabel>
+          <Select
+            labelId={'user-details-filter-label'}
+            id={'user-details-filter'}
+            onChange={(event) =>
+              setUserFilter(event.target.value as UserFilter)
+            }
+            value={userFilter}
+          >
+            <MenuItem value="all">Show all</MenuItem>
+            <MenuItem value="dependabot">Show dependabot only</MenuItem>
+            <MenuItem value="user">Show user only</MenuItem>
+          </Select>
+        </FormControl>
       </div>
 
       <table className={classNames.table}>

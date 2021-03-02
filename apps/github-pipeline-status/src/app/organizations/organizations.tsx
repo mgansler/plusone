@@ -3,7 +3,13 @@ import { useQuery } from 'react-query'
 import { User } from '@plusone/github-schema'
 import { useGitHubPagination } from '@plusone/hooks'
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
-import { Select } from '@plusone/input'
+import {
+  FormControl,
+  InputLabel,
+  makeStyles,
+  MenuItem,
+} from '@material-ui/core'
+import { Select } from '@material-ui/core'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryOverview } from '../repository-overview/repository-overview'
@@ -60,7 +66,15 @@ const useFetchOrganizations = () => {
   return { data, isLoading }
 }
 
+const useStyles = makeStyles({
+  formControl: {
+    maxWidth: 300,
+  },
+})
+
 export const Organizations: React.FC = () => {
+  const classNames = useStyles()
+
   const history = useHistory()
   const organizationName = useOrganizationName()
 
@@ -72,20 +86,24 @@ export const Organizations: React.FC = () => {
 
   return (
     <React.Fragment>
-      <Select
-        label={'Select Organization'}
-        value={organizationName}
-        onChange={(event) =>
-          history.push(`/organization/${event.currentTarget.value}`)
-        }
-      >
-        {organizationName === '' && <option value="" />}
-        {data.viewer.organizations.nodes.map((organization) => (
-          <option key={organization.id} value={organization.login}>
-            {organization.name}
-          </option>
-        ))}
-      </Select>
+      <FormControl className={classNames.formControl}>
+        <InputLabel id={'select-org-label'}>Select Organization</InputLabel>
+        <Select
+          labelId={'select-org-label'}
+          value={organizationName}
+          onChange={(event) =>
+            history.push(`/organization/${event.target.value}`)
+          }
+        >
+          {organizationName === '' && <option value="" />}
+          {data.viewer.organizations.nodes.map((organization) => (
+            <MenuItem key={organization.id} value={organization.login}>
+              {organization.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
       <Switch>
         <Route exact={true} path={'/organization/:organizationName'}>
           <RepositoryOverview />
