@@ -3,7 +3,6 @@ import {
   AppBar,
   createStyles,
   makeStyles,
-  Paper,
   Toolbar,
   Typography,
 } from '@material-ui/core'
@@ -41,9 +40,9 @@ export const App: React.FC = () => {
           <UserInfo />
         </Toolbar>
       </AppBar>
-      <Paper component={'main'} className={classNames.main}>
+      <main className={classNames.main}>
         <Organizations />
-      </Paper>
+      </main>
     </React.Fragment>
   )
 }
