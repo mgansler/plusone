@@ -23,8 +23,27 @@ import { UserFilter } from './repository-overview'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
+    expanded: {},
+    accordionRoot: {
+      '&:before': {
+        display: 'none',
+      },
+      '&$expanded': {
+        margin: 'auto',
+      },
+    },
+    accordionSummaryRoot: {
+      minHeight: theme.spacing(6),
+      '&$expanded': {
+        minHeight: theme.spacing(6),
+      },
+    },
     accordionSummaryContent: {
       alignItems: 'center',
+      margin: 0,
+      '&$expanded': {
+        margin: 0,
+      },
     },
     accordionDetails: {
       display: 'flex',
@@ -36,6 +55,9 @@ const useStyles = makeStyles((theme) =>
     },
     linkColumn: {
       flexBasis: '5%',
+    },
+    pullRequestLink: {
+      marginLeft: theme.spacing(1),
     },
     titleColumn: {
       flexBasis: '50%',
@@ -130,14 +152,22 @@ export const RepositoryAccordion: React.FC<RepositoryAccordionProps> = ({
   )
 
   return (
-    <Accordion>
+    <Accordion
+      classes={{
+        root: classNames.accordionRoot,
+        expanded: classNames.expanded,
+      }}
+    >
       <AccordionSummary
-        classes={{ content: classNames.accordionSummaryContent }}
+        classes={{
+          root: classNames.accordionSummaryRoot,
+          content: classNames.accordionSummaryContent,
+          expanded: classNames.expanded,
+        }}
         expandIcon={<ExpandMore />}
       >
         <IconButton
           className={classNames.linkColumn}
-          size={'small'}
           href={url}
           target={'_blank'}
           rel={'noreferrer'}
@@ -186,8 +216,10 @@ export const RepositoryAccordion: React.FC<RepositoryAccordionProps> = ({
           return (
             <div className={classNames.row} key={pr.number}>
               <IconButton
-                className={classNames.linkColumn}
-                size={'small'}
+                className={[
+                  classNames.linkColumn,
+                  classNames.pullRequestLink,
+                ].join(' ')}
                 href={pr.url}
                 target={'_blank'}
                 rel={'noreferrer'}
