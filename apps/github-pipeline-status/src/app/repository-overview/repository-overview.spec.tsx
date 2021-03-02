@@ -106,10 +106,12 @@ describe('RepositoryOverview', () => {
         },
       })
 
+    const toolbarRef = React.createRef<HTMLDivElement>()
+
     render(
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <RepositoryOverview />
+          <RepositoryOverview toolbarRef={toolbarRef} />
         </BrowserRouter>
       </QueryClientProvider>,
     )

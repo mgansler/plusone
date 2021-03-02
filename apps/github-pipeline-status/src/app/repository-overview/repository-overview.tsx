@@ -14,9 +14,9 @@ import {
   InputLabel,
   makeStyles,
   MenuItem,
+  Portal,
   Select,
   TextField,
-  Toolbar,
 } from '@material-ui/core'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
@@ -25,11 +25,9 @@ import { RepositoryAccordion } from './repository-accordion'
 
 export type UserFilter = 'all' | 'dependabot' | 'user'
 
+// TODO: remove me when pagination is styled
 const useRepositoryStyles = makeStyles((theme) =>
   createStyles({
-    toolbar: {
-      gap: theme.spacing(1),
-    },
     pagination: {
       display: 'flex',
       justifyContent: 'flex-end',
@@ -170,7 +168,13 @@ const useFetchRepositoryData = ({
   return { data, isLoading, pages, prevPage, nextPage }
 }
 
-export const RepositoryOverview = () => {
+interface RepositoryOverviewProps {
+  toolbarRef: React.MutableRefObject<HTMLDivElement>
+}
+
+export const RepositoryOverview: React.FC<RepositoryOverviewProps> = ({
+  toolbarRef,
+}) => {
   const classNames = {
     ...useRepositoryStyles(),
     ...useStyles(),
@@ -201,7 +205,7 @@ export const RepositoryOverview = () => {
 
   return (
     <React.Fragment>
-      <Toolbar className={classNames.toolbar}>
+      <Portal container={toolbarRef.current}>
         <TextField
           className={classNames.formControl}
           label={'Repository Name'}
@@ -227,7 +231,7 @@ export const RepositoryOverview = () => {
             <MenuItem value="user">Show user only</MenuItem>
           </Select>
         </FormControl>
-      </Toolbar>
+      </Portal>
 
       {data.search.nodes.map((repo) => (
         <RepositoryAccordion
