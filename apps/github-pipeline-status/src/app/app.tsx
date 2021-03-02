@@ -4,18 +4,6 @@ import { createUseStyles } from 'react-jss'
 import { UserInfo } from './user-info/user-info'
 import { Organizations } from './organizations/organizations'
 
-const useGlobalStyles = createUseStyles({
-  '@global': {
-    '*': {
-      margin: 0,
-    },
-    body: {
-      height: '100vh',
-      width: '100vw',
-    },
-  },
-})
-
 const useAppStyles = createUseStyles({
   header: {
     display: 'flex',
@@ -31,7 +19,6 @@ const useAppStyles = createUseStyles({
 })
 
 export const App: React.FC = () => {
-  useGlobalStyles()
   const classNames = useAppStyles()
   return (
     <React.Fragment>
