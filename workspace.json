@@ -171,31 +171,6 @@
         }
       }
     },
-    "input": {
-      "root": "libs/input",
-      "sourceRoot": "libs/input/src",
-      "projectType": "library",
-      "targets": {
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/input/**/*.{ts,tsx,js,jsx}"
-            ]
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/input"
-          ],
-          "options": {
-            "jestConfig": "libs/input/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "quick-zoom": {
       "root": "apps/quick-zoom",
       "sourceRoot": "apps/quick-zoom/src",

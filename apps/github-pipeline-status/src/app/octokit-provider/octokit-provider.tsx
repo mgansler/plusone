@@ -1,8 +1,15 @@
 import React, { useContext, useMemo, useRef } from 'react'
 import { Octokit } from '@octokit/core'
 import { useLocalStorage } from '@plusone/hooks'
-import { Input } from '@plusone/input'
-import { createUseStyles } from 'react-jss'
+import {
+  Button,
+  Card,
+  CardContent,
+  createStyles,
+  makeStyles,
+  TextField,
+  Typography,
+} from '@material-ui/core'
 
 interface Context {
   octokit: Octokit
@@ -11,18 +18,20 @@ interface Context {
 
 const OctokitContext = React.createContext<Context>(null)
 
-const useTokenInputStyles = createUseStyles({
-  description: {
-    margin: '4em auto',
-    width: '24em',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 8,
-  },
-})
+const useTokenInputStyles = makeStyles((theme) =>
+  createStyles({
+    card: {
+      margin: '4rem auto',
+      width: '30rem',
+    },
+    form: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: theme.spacing(1),
+    },
+  }),
+)
 
 const TokenInput: React.FC<{
   setToken: (value: string) => void
@@ -38,12 +47,12 @@ const TokenInput: React.FC<{
   }
 
   return (
-    <React.Fragment>
-      <section className={classNames.description}>
-        <p>
+    <Card className={classNames.card}>
+      <CardContent>
+        <Typography>
           In order to use this application you need to provide an access token
           with the following permissions:
-        </p>
+        </Typography>
 
         <dl>
           <dt>
@@ -61,17 +70,20 @@ const TokenInput: React.FC<{
           </dt>
           <dd>Read ALL user profile data</dd>
         </dl>
-      </section>
 
-      <form onSubmit={handleSubmit} className={classNames.form}>
-        <Input
-          label={'Personal Access Token'}
-          type={'password'}
-          inputRef={inputRef}
-        />
-        <input type={'submit'} value={'save'} />
-      </form>
-    </React.Fragment>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth={true}
+            label={'Personal Access Token'}
+            type={'password'}
+            inputRef={inputRef}
+          />
+          <Button type={'submit'} color={'primary'}>
+            Save
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   )
 }
 
