@@ -71,12 +71,14 @@ describe('RepositoryOverview', () => {
                         name: 'feature/1-my-first-branch',
                       },
                       reviews: {
-                        nodes: {
-                          author: {
-                            login: 'another user',
+                        nodes: [
+                          {
+                            author: {
+                              login: 'another user',
+                            },
+                            state: PullRequestReviewState.ChangesRequested,
                           },
-                          state: PullRequestReviewState.ChangesRequested,
-                        },
+                        ],
                       },
                     },
                   ],
@@ -120,13 +122,7 @@ describe('RepositoryOverview', () => {
 
     expect(screen.queryByText(/loading.../i)).not.toBeInTheDocument()
 
-    expect(screen.getByText(/repo 1/i)).toHaveAttribute(
-      'href',
-      'http://localhost/repo-1',
-    )
-    expect(screen.getByText(/repo 2/i)).toHaveAttribute(
-      'href',
-      'http://localhost/repo-2',
-    )
+    expect(screen.getByText(/repo 1/i)).toBeInTheDocument()
+    expect(screen.getByText(/repo 2/i)).toBeInTheDocument()
   })
 })
