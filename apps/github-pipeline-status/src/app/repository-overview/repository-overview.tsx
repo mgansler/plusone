@@ -21,8 +21,9 @@ import {
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
-import { RepositoryWithPrs, UserFilter } from './repository-with-prs'
-import { useTableStyles } from './use-table-styles'
+import { RepositoryAccordion } from './repository-accordion'
+
+export type UserFilter = 'all' | 'dependabot' | 'user'
 
 const useRepositoryStyles = makeStyles((theme) =>
   createStyles({
@@ -171,7 +172,6 @@ const useFetchRepositoryData = ({
 export const RepositoryOverview = () => {
   const classNames = {
     ...useRepositoryStyles(),
-    ...useTableStyles(),
     ...useStyles(),
   }
 
@@ -228,41 +228,13 @@ export const RepositoryOverview = () => {
         </FormControl>
       </Toolbar>
 
-      <table className={classNames.table}>
-        <colgroup>
-          <col style={{ width: '30%' }} />
-          <col style={{ width: '10%' }} />
-          <col style={{ width: '10%' }} />
-          <col style={{ width: '2%' }} />
-          <col style={{ width: '2%' }} />
-          <col style={{ width: '2%' }} />
-          <col style={{ width: '50%' }} />
-        </colgroup>
-
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Default Branch</th>
-            <th>Open PRs</th>
-            <th>&#x2713;</th>
-            <th>&#x2717;</th>
-            <th>other</th>
-            <th>Details</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {data.search.nodes.map((repository) => {
-            return (
-              <RepositoryWithPrs
-                key={repository.id}
-                repository={repository}
-                userFilter={userFilter}
-              />
-            )
-          })}
-        </tbody>
-      </table>
+      {data.search.nodes.map((repo) => (
+        <RepositoryAccordion
+          key={repo.id}
+          userFilter={userFilter}
+          repository={repo}
+        />
+      ))}
 
       <div className={classNames.pagination}>
         <h4>
