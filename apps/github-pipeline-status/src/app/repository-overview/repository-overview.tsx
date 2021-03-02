@@ -153,6 +153,7 @@ const useFetchRepositoryData = ({
     {
       keepPreviousData: true,
       refetchInterval: 30000,
+      refetchIntervalInBackground: true,
       onSuccess: (response) => {
         const urlSearchParams = new URLSearchParams(history.location.search)
         urlSearchParams.set('filter', queryString)
