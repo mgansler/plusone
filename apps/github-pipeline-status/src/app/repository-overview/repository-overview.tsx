@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useGitHubPagination, useLocalStorage } from '@plusone/hooks'
 import { useHistory, useParams } from 'react-router-dom'
-import { createUseStyles } from 'react-jss'
 import { useQuery } from 'react-query'
 import {
   PageInfo,
@@ -17,6 +16,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Toolbar,
 } from '@material-ui/core'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
@@ -24,18 +24,19 @@ import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryWithPrs, UserFilter } from './repository-with-prs'
 import { useTableStyles } from './use-table-styles'
 
-const useRepositoryStyles = createUseStyles({
-  toolbar: {
-    display: 'flex',
-    gap: 8,
-  },
-  pagination: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    gap: 8,
-  },
-})
+const useRepositoryStyles = makeStyles((theme) =>
+  createStyles({
+    toolbar: {
+      gap: theme.spacing(1),
+    },
+    pagination: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      gap: theme.spacing(1),
+    },
+  }),
+)
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -199,9 +200,7 @@ export const RepositoryOverview = () => {
 
   return (
     <React.Fragment>
-      <h2>Repositories of {organizationName}</h2>
-
-      <div className={classNames.toolbar}>
+      <Toolbar className={classNames.toolbar}>
         <TextField
           className={classNames.formControl}
           label={'Repository Name'}
@@ -227,7 +226,7 @@ export const RepositoryOverview = () => {
             <MenuItem value="user">Show user only</MenuItem>
           </Select>
         </FormControl>
-      </div>
+      </Toolbar>
 
       <table className={classNames.table}>
         <colgroup>

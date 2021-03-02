@@ -4,12 +4,15 @@ import { User } from '@plusone/github-schema'
 import { useGitHubPagination } from '@plusone/hooks'
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
 import {
+  createStyles,
   FormControl,
   InputLabel,
   makeStyles,
   MenuItem,
+  Paper,
+  Select,
+  Toolbar,
 } from '@material-ui/core'
-import { Select } from '@material-ui/core'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryOverview } from '../repository-overview/repository-overview'
@@ -66,11 +69,16 @@ const useFetchOrganizations = () => {
   return { data, isLoading }
 }
 
-const useStyles = makeStyles({
-  formControl: {
-    maxWidth: 300,
-  },
-})
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    toolbar: {
+      gap: theme.spacing(1),
+    },
+    formControl: {
+      minWidth: 200,
+    },
+  }),
+)
 
 export const Organizations: React.FC = () => {
   const classNames = useStyles()
@@ -85,30 +93,32 @@ export const Organizations: React.FC = () => {
   }
 
   return (
-    <React.Fragment>
-      <FormControl className={classNames.formControl}>
-        <InputLabel id={'select-org-label'}>Select Organization</InputLabel>
-        <Select
-          labelId={'select-org-label'}
-          value={organizationName}
-          onChange={(event) =>
-            history.push(`/organization/${event.target.value}`)
-          }
-        >
-          {organizationName === '' && <option value="" />}
-          {data.viewer.organizations.nodes.map((organization) => (
-            <MenuItem key={organization.id} value={organization.login}>
-              {organization.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+    <Paper>
+      <Toolbar className={classNames.toolbar}>
+        <FormControl className={classNames.formControl}>
+          <InputLabel id={'select-org-label'}>Select Organization</InputLabel>
+          <Select
+            labelId={'select-org-label'}
+            value={organizationName}
+            onChange={(event) =>
+              history.push(`/organization/${event.target.value}`)
+            }
+          >
+            {organizationName === '' && <MenuItem value="" />}
+            {data.viewer.organizations.nodes.map((organization) => (
+              <MenuItem key={organization.id} value={organization.login}>
+                {organization.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Toolbar>
 
       <Switch>
         <Route exact={true} path={'/organization/:organizationName'}>
           <RepositoryOverview />
         </Route>
       </Switch>
-    </React.Fragment>
+    </Paper>
   )
 }

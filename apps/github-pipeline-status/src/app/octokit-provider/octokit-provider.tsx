@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   CardContent,
+  createStyles,
   makeStyles,
   TextField,
   Typography,
@@ -17,18 +18,20 @@ interface Context {
 
 const OctokitContext = React.createContext<Context>(null)
 
-const useTokenInputStyles = makeStyles({
-  card: {
-    margin: '4rem auto',
-    width: '30rem',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 8,
-  },
-})
+const useTokenInputStyles = makeStyles((theme) =>
+  createStyles({
+    card: {
+      margin: '4rem auto',
+      width: '30rem',
+    },
+    form: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: theme.spacing(1),
+    },
+  }),
+)
 
 const TokenInput: React.FC<{
   setToken: (value: string) => void

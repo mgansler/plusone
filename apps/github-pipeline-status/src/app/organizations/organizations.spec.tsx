@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import nock from 'nock'
 import { MemoryRouter } from 'react-router-dom'
+import userEvent from '@testing-library/user-event'
 
 import { Organizations } from './organizations'
 
@@ -77,6 +78,8 @@ describe('Organizations', () => {
     await waitFor(() => {
       expect(nock.isDone()).toBeTruthy()
     })
+
+    userEvent.click(screen.getByLabelText(/select organization/i))
 
     expect(screen.getByText('organization-name')).toBeInTheDocument()
   })
