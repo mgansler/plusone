@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useQuery } from 'react-query'
 import { User } from '@plusone/github-schema'
 import { useGitHubPagination } from '@plusone/hooks'
@@ -88,13 +88,15 @@ export const Organizations: React.FC = () => {
 
   const { data, isLoading } = useFetchOrganizations()
 
+  const toolbar = useRef<HTMLDivElement>(null)
+
   if (isLoading) {
     return <div>loading...</div>
   }
 
   return (
     <Paper>
-      <Toolbar className={classNames.toolbar}>
+      <Toolbar className={classNames.toolbar} ref={toolbar}>
         <FormControl className={classNames.formControl}>
           <InputLabel id={'select-org-label'}>Select Organization</InputLabel>
           <Select
@@ -116,7 +118,7 @@ export const Organizations: React.FC = () => {
 
       <Switch>
         <Route exact={true} path={'/organization/:organizationName'}>
-          <RepositoryOverview />
+          <RepositoryOverview toolbarRef={toolbar} />
         </Route>
       </Switch>
     </Paper>
