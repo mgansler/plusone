@@ -47,6 +47,7 @@ describe('RepositoryOverview', () => {
                   totalCount: 1,
                   nodes: [
                     {
+                      isDraft: false,
                       number: 1,
                       title: 'my first pr',
                       author: {

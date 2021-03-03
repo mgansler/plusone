@@ -111,6 +111,7 @@ const useFetchRepositoryData = ({
               pullRequests (first: 20, states: ${PullRequestState.Open}) {
                 totalCount
                 nodes {
+                  isDraft
                   number
                   title
                   author {

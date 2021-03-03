@@ -15,6 +15,7 @@ import {
   createStyles,
   IconButton,
   makeStyles,
+  Tooltip,
   Typography,
 } from '@material-ui/core'
 import { Check, Error, ExpandMore, OpenInNew } from '@material-ui/icons'
@@ -73,6 +74,13 @@ const useStyles = makeStyles((theme) =>
       display: 'flex',
       alignItems: 'center',
       gap: theme.spacing(1),
+    },
+    draftTooltip: {
+      color: theme.palette.warning.contrastText,
+      backgroundColor: theme.palette.warning.light,
+    },
+    draftTooltipArrow: {
+      color: theme.palette.warning.light,
     },
   }),
 )
@@ -227,13 +235,26 @@ export const RepositoryAccordion: React.FC<RepositoryAccordionProps> = ({
               >
                 <OpenInNew />
               </IconButton>
-              <div className={classNames.titleColumn}>
-                <Typography variant={'caption'}>
+
+              <Tooltip
+                classes={{
+                  tooltip: classNames.draftTooltip,
+                  arrow: classNames.draftTooltipArrow,
+                }}
+                title={pr.isDraft ? 'Draft' : ''}
+                arrow={true}
+              >
+                <Typography
+                  className={classNames.titleColumn}
+                  variant={'caption'}
+                  color={pr.isDraft ? 'textSecondary' : 'initial'}
+                >
                   {pr.title} by {pr.author.login}
                 </Typography>
-              </div>
+              </Tooltip>
+
               <div className={classNames.workflowColumn}>
-                <Typography variant={'caption'}>Workflow Actions</Typography>
+                <Typography variant={'caption'}>Workflows</Typography>
                 {CheckConclusionIconMap[prCheckState]}
               </div>
               <div className={classNames.pullRequestsOrReviewsColumn}>
