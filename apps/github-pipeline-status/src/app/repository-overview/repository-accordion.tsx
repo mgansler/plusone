@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme) =>
     row: {
       display: 'flex',
       alignItems: 'center',
+      maxHeight: theme.spacing(4.5),
     },
     linkColumn: {
       flexBasis: '5%',
