@@ -13,6 +13,7 @@ const useFetchUserInfo = () => {
       query {
         viewer {
           login
+          name
           avatarUrl
         }
       }
@@ -33,7 +34,7 @@ export const UserInfo: React.FC = () => {
   return (
     <React.Fragment>
       <Avatar src={data.viewer.avatarUrl} alt={data.viewer.login} />
-      <Typography>{data.viewer.login}</Typography>
+      <Typography>{data.viewer.name ?? data.viewer.login}</Typography>
       <Button variant={'contained'} onClick={logout}>
         Logout
       </Button>

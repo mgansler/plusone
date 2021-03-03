@@ -52,6 +52,7 @@ describe('RepositoryOverview', () => {
                       title: 'my first pr',
                       author: {
                         login: 'testuser',
+                        name: 'Test User',
                       },
                       url: 'http://localhost/repo-1/pr/1',
                       commits: {
@@ -75,7 +76,8 @@ describe('RepositoryOverview', () => {
                         nodes: [
                           {
                             author: {
-                              login: 'another user',
+                              login: 'anotherUser',
+                              name: 'Another User',
                             },
                             state: PullRequestReviewState.ChangesRequested,
                           },

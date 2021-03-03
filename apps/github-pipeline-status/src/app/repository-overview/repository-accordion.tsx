@@ -5,6 +5,7 @@ import {
   PullRequestReview,
   PullRequestReviewState,
   Repository,
+  User,
 } from '@plusone/github-schema'
 import {
   Accordion,
@@ -112,7 +113,7 @@ const getLastReviewStatePerAuthor = (
   reviews
     .filter(({ state }) => state !== PullRequestReviewState.Commented)
     .map((review) => ({
-      author: review.author.login,
+      author: (review.author as User).name ?? review.author.login,
       state: review.state,
     }))
     .reduce(
@@ -250,7 +251,7 @@ export const RepositoryAccordion: React.FC<RepositoryAccordionProps> = ({
                   variant={'caption'}
                   color={pr.isDraft ? 'textSecondary' : 'initial'}
                 >
-                  {pr.title} by {pr.author.login}
+                  {pr.title} by {(pr.author as User).name ?? pr.author.login}
                 </Typography>
               </Tooltip>
 

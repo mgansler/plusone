@@ -116,6 +116,9 @@ const useFetchRepositoryData = ({
                   title
                   author {
                     login
+                    ... on User {
+                      name
+                    }
                   }
                   url
                   commits (last: 1) {
@@ -137,6 +140,9 @@ const useFetchRepositoryData = ({
                     nodes {
                       author {
                         login
+                        ... on User {
+                          name
+                        }
                       }
                       state
                     }
