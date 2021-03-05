@@ -1,5 +1,6 @@
 import React, { useCallback, useRef } from 'react'
 import { Button } from '@material-ui/core'
+import { useFileDownload } from '@plusone/hooks'
 
 import { ZoomLinkProps } from '../zoom-link/zoom-link'
 import { fromJson } from '../app'
@@ -24,18 +25,10 @@ export const ImportExport: React.FC<ImportExportProps> = ({ links, load }) => {
     }
   }, [load])
 
-  const handleExport = useCallback(() => {
-    const fileContent = new Blob([JSON.stringify(links)], {
-      type: 'application/json',
-    })
-    const anchorElement = document.createElement('a')
-    anchorElement.setAttribute('href', URL.createObjectURL(fileContent))
-    anchorElement.setAttribute('download', 'export.json')
-
-    anchorElement.click()
-
-    anchorElement.remove()
-  }, [links])
+  const handleExport = useFileDownload({
+    content: links,
+    filename: 'export.json',
+  })
 
   return (
     <React.Fragment>
