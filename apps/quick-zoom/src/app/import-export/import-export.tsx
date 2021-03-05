@@ -3,7 +3,7 @@ import { Button } from '@material-ui/core'
 import { useFileDownload } from '@plusone/hooks'
 
 import { ZoomLinkProps } from '../zoom-link/zoom-link'
-import { fromJson } from '../app'
+import { fromJson } from '../from-json/from-json'
 
 interface ImportExportProps {
   links: ZoomLinkProps[]
