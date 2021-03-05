@@ -119,8 +119,15 @@ export const NewZoomLink: React.FC<{
       <Dialog open={isOpen}>
         <DialogTitle>New Zoom Link</DialogTitle>
         <DialogContent dividers={true}>
-          <TextField fullWidth={true} inputRef={nameInputRef} label={'Name'} />
           <TextField
+            id={'name'}
+            fullWidth={true}
+            inputRef={nameInputRef}
+            label={'Name'}
+          />
+
+          <TextField
+            id={'zoomlink'}
             fullWidth={true}
             inputRef={linkInputRef}
             label={'Zoom Link'}
