@@ -6,6 +6,7 @@ import {
   PullRequestCommit,
   PullRequestReview,
   PullRequestReviewState,
+  Ref,
   Repository,
   User,
 } from '@plusone/github-schema'
@@ -127,26 +128,56 @@ const getLastReviewStatePerAuthor = (
     )
 
 interface CanBeMergedProps {
+  className: HTMLDivElement['className']
   commits: PullRequestCommit[]
   mergeable: MergeableState
 }
 
-const CanBeMerged: React.FC<CanBeMergedProps> = ({ commits, mergeable }) => {
+const CanBeMerged: React.FC<CanBeMergedProps> = ({
+  className,
+  commits,
+  mergeable,
+}) => {
   const prCheckState = commits
     .flatMap((node) => node.commit.checkSuites.nodes)
     .flatMap((node) => node.conclusion)
     .pop()
 
   return mergeable === MergeableState.Conflicting ? (
-    <React.Fragment>
+    <div className={className}>
       <Typography variant={'caption'}>Merge Conflicts</Typography>
       <Error />
-    </React.Fragment>
+    </div>
   ) : (
-    <React.Fragment>
+    <div className={className}>
       <Typography variant={'caption'}>Workflows</Typography>
       {CheckConclusionIconMap[prCheckState]}
-    </React.Fragment>
+    </div>
+  )
+}
+
+interface DefaultBranchStateProps {
+  className: HTMLDivElement['className']
+  defaultBranchRef?: Ref
+}
+
+const DefaultBranchState: React.FC<DefaultBranchStateProps> = ({
+  className,
+  defaultBranchRef,
+}) => {
+  if (!defaultBranchRef) {
+    return null
+  }
+
+  const defaultBranchCheckConclusion = (defaultBranchRef.target as Commit).checkSuites.nodes
+    .flatMap((node) => node.conclusion)
+    .pop()
+
+  return (
+    <div className={className}>
+      <Typography>{defaultBranchRef.name}</Typography>
+      {CheckConclusionIconMap[defaultBranchCheckConclusion]}
+    </div>
   )
 }
 
@@ -165,10 +196,6 @@ export const RepositoryAccordion: React.FC<RepositoryAccordionProps> = ({
   },
 }) => {
   const classNames = useStyles()
-
-  const defaultBranchCheckConclusion = (defaultBranchRef.target as Commit).checkSuites.nodes
-    .flatMap((node) => node.conclusion)
-    .pop()
 
   const filteredPullRequests = useMemo(
     () =>
@@ -216,10 +243,10 @@ export const RepositoryAccordion: React.FC<RepositoryAccordionProps> = ({
           <Typography>{name}</Typography>
         </div>
 
-        <div className={classNames.workflowColumn}>
-          <Typography>{defaultBranchRef.name}</Typography>
-          {CheckConclusionIconMap[defaultBranchCheckConclusion]}
-        </div>
+        <DefaultBranchState
+          className={classNames.workflowColumn}
+          defaultBranchRef={defaultBranchRef}
+        />
 
         <div className={classNames.pullRequestsOrReviewsColumn}>
           {pullRequestCount > 0 && (
@@ -276,12 +303,12 @@ export const RepositoryAccordion: React.FC<RepositoryAccordionProps> = ({
                 </Typography>
               </Tooltip>
 
-              <div className={classNames.workflowColumn}>
-                <CanBeMerged
-                  commits={pr.commits.nodes}
-                  mergeable={pr.mergeable}
-                />
-              </div>
+              <CanBeMerged
+                className={classNames.workflowColumn}
+                commits={pr.commits.nodes}
+                mergeable={pr.mergeable}
+              />
+
               <div className={classNames.pullRequestsOrReviewsColumn}>
                 {Object.entries(lastReviewStatePerAuthor).map(
                   ([login, state]) => (
