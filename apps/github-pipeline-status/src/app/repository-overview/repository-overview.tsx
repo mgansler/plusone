@@ -11,11 +11,13 @@ import {
 import {
   createStyles,
   FormControl,
+  FormControlLabel,
   InputLabel,
   makeStyles,
   MenuItem,
   Portal,
   Select,
+  Switch,
   TextField,
 } from '@material-ui/core'
 
@@ -199,6 +201,11 @@ export const RepositoryOverview: React.FC<RepositoryOverviewProps> = ({
     defaultValue: 'all',
   })
 
+  const [showOnlyOpenPRs, setShowReposWithoutPRs] = useLocalStorage<boolean>({
+    key: '',
+    defaultValue: false,
+  })
+
   // Fetch the data
   const { data, isLoading, pages, prevPage, nextPage } = useFetchRepositoryData(
     {
@@ -210,6 +217,10 @@ export const RepositoryOverview: React.FC<RepositoryOverviewProps> = ({
   if (isLoading) {
     return <div>loading...</div>
   }
+
+  const filteredRepositories = data.search.nodes.filter(
+    (repo) => !showOnlyOpenPRs || repo.pullRequests.totalCount > 0,
+  )
 
   return (
     <React.Fragment>
@@ -239,9 +250,20 @@ export const RepositoryOverview: React.FC<RepositoryOverviewProps> = ({
             <MenuItem value="user">Show user only</MenuItem>
           </Select>
         </FormControl>
+
+        <FormControlLabel
+          label={'Show only open PRs'}
+          control={
+            <Switch
+              checked={showOnlyOpenPRs}
+              onChange={() => setShowReposWithoutPRs(!showOnlyOpenPRs)}
+              color={'primary'}
+            />
+          }
+        />
       </Portal>
 
-      {data.search.nodes.map((repo) => (
+      {filteredRepositories.map((repo) => (
         <RepositoryAccordion
           key={repo.id}
           userFilter={userFilter}
