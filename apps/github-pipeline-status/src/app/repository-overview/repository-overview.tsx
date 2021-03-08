@@ -112,6 +112,7 @@ const useFetchRepositoryData = ({
                 totalCount
                 nodes {
                   isDraft
+                  mergeable
                   number
                   title
                   author {
