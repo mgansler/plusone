@@ -2,6 +2,8 @@ import React, { useMemo } from 'react'
 import {
   CheckConclusionState,
   Commit,
+  MergeableState,
+  PullRequestCommit,
   PullRequestReview,
   PullRequestReviewState,
   Repository,
@@ -124,6 +126,30 @@ const getLastReviewStatePerAuthor = (
       {},
     )
 
+interface CanBeMergedProps {
+  commits: PullRequestCommit[]
+  mergeable: MergeableState
+}
+
+const CanBeMerged: React.FC<CanBeMergedProps> = ({ commits, mergeable }) => {
+  const prCheckState = commits
+    .flatMap((node) => node.commit.checkSuites.nodes)
+    .flatMap((node) => node.conclusion)
+    .pop()
+
+  return mergeable === MergeableState.Conflicting ? (
+    <React.Fragment>
+      <Typography variant={'caption'}>Merge Conflicts</Typography>
+      <Error />
+    </React.Fragment>
+  ) : (
+    <React.Fragment>
+      <Typography variant={'caption'}>Workflows</Typography>
+      {CheckConclusionIconMap[prCheckState]}
+    </React.Fragment>
+  )
+}
+
 interface RepositoryAccordionProps {
   userFilter: UserFilter
   repository: Repository
@@ -214,11 +240,6 @@ export const RepositoryAccordion: React.FC<RepositoryAccordionProps> = ({
       </AccordionSummary>
       <AccordionDetails className={classNames.accordionDetails}>
         {filteredPullRequests.map((pr) => {
-          const prCheckState = pr.commits.nodes
-            .flatMap((node) => node.commit.checkSuites.nodes)
-            .flatMap((node) => node.conclusion)
-            .pop()
-
           const lastReviewStatePerAuthor = getLastReviewStatePerAuthor(
             pr.reviews.nodes,
           )
@@ -256,8 +277,10 @@ export const RepositoryAccordion: React.FC<RepositoryAccordionProps> = ({
               </Tooltip>
 
               <div className={classNames.workflowColumn}>
-                <Typography variant={'caption'}>Workflows</Typography>
-                {CheckConclusionIconMap[prCheckState]}
+                <CanBeMerged
+                  commits={pr.commits.nodes}
+                  mergeable={pr.mergeable}
+                />
               </div>
               <div className={classNames.pullRequestsOrReviewsColumn}>
                 {Object.entries(lastReviewStatePerAuthor).map(

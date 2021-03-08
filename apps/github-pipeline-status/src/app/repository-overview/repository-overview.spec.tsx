@@ -5,6 +5,7 @@ import nock from 'nock'
 import { BrowserRouter } from 'react-router-dom'
 import {
   CheckConclusionState,
+  MergeableState,
   PullRequestReviewState,
 } from '@plusone/github-schema'
 
@@ -48,6 +49,7 @@ describe('RepositoryOverview', () => {
                   nodes: [
                     {
                       isDraft: false,
+                      mergeable: MergeableState.Mergeable,
                       number: 1,
                       title: 'my first pr',
                       author: {
