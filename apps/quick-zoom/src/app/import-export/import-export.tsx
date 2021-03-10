@@ -1,13 +1,11 @@
 import React, { useCallback, useRef } from 'react'
 import { Button } from '@material-ui/core'
 import { useFileDownload } from '@plusone/hooks'
-
-import { ZoomLinkProps } from '../zoom-link/zoom-link'
-import { fromJson } from '../from-json/from-json'
+import { ConferenceLink, fromJson } from '@plusone/conference-links'
 
 interface ImportExportProps {
-  links: ZoomLinkProps[]
-  load: (links: ZoomLinkProps[]) => void
+  links: ConferenceLink[]
+  load: (links: ConferenceLink[]) => void
 }
 
 export const ImportExport: React.FC<ImportExportProps> = ({ links, load }) => {
@@ -19,7 +17,7 @@ export const ImportExport: React.FC<ImportExportProps> = ({ links, load }) => {
       const file = fileInputRef.current.files[0]
       fileReader.readAsText(file)
       fileReader.onload = () => {
-        const items = fromJson(fileReader.result as string)
+        const items = JSON.parse(fileReader.result as string)
         load(items)
       }
     }

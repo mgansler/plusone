@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   AppBar,
@@ -8,15 +8,15 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core'
+import { ConferenceLink } from '@plusone/conference-links'
+import { useLocalStorage } from '@plusone/hooks'
 
 import {
-  fromUrl,
-  NewZoomLink,
-  ZoomLink,
-  ZoomLinkProps,
-} from './zoom-link/zoom-link'
+  NewConferenceLink,
+  ConferenceLinkButton,
+} from './conference-link-button/conference-link-button'
 import { ImportExport } from './import-export/import-export'
-import { fromJson } from './from-json/from-json'
+import { useMigrations } from './migrations/use-migrations'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -41,53 +41,30 @@ const useStyles = makeStyles((theme) =>
   }),
 )
 
-type ZoomLinkState = ZoomLinkProps[]
-
-type ZoomLinkAction =
-  | {
-      type: 'add'
-      payload: ZoomLinkProps
-    }
-  | {
-      type: 'load'
-      payload: ZoomLinkProps[]
-    }
-
-const reducer = (
-  state: ZoomLinkState,
-  { type, payload }: ZoomLinkAction,
-): ZoomLinkState => {
-  switch (type) {
-    case 'add': {
-      return [...state, payload as ZoomLinkProps]
-    }
-    case 'load': {
-      return payload as ZoomLinkProps[]
-    }
-  }
-  return state
-}
-
-const loadFromStorage = (): ZoomLinkProps[] => {
-  return fromJson(localStorage.getItem('zoomLinks') ?? '[]')
-}
-
 export const App: React.FC = () => {
   const classNames = useStyles()
 
-  const [state, dispatch] = useReducer(reducer, [], loadFromStorage)
+  useMigrations()
 
-  const addNewLink = useCallback((link: ZoomLinkProps) => {
-    dispatch({ type: 'add', payload: link })
-  }, [])
+  const [storedLinks = [], setStoredLinks] = useLocalStorage({
+    key: 'zoomLinks',
+    defaultValue: undefined,
+  })
 
-  const loadLinks = useCallback((links: ZoomLinkProps[]) => {
-    dispatch({ type: 'load', payload: links })
-  }, [])
+  const addNewLink = useCallback(
+    (link: ConferenceLink) => {
+      setStoredLinks([...storedLinks, link])
+    },
+    [setStoredLinks, storedLinks],
+  )
 
-  useEffect(() => {
-    localStorage.setItem('zoomLinks', JSON.stringify(state))
-  }, [state])
+  const loadLinks = useCallback(
+    (links: ConferenceLink[]) => {
+      console.log(links)
+      setStoredLinks(links)
+    },
+    [setStoredLinks],
+  )
 
   return (
     <React.Fragment>
@@ -98,12 +75,12 @@ export const App: React.FC = () => {
       </AppBar>
       <Container maxWidth={'sm'}>
         <Paper className={classNames.grid}>
-          {state.map((link) => (
-            <ZoomLink key={link.url.href} {...link} />
+          {storedLinks.map((conference) => (
+            <ConferenceLinkButton key={conference.url} {...conference} />
           ))}
-          <NewZoomLink addNewLink={addNewLink} />
+          <NewConferenceLink addNewLink={addNewLink} />
         </Paper>
-        <ImportExport links={state} load={loadLinks} />
+        <ImportExport links={storedLinks} load={loadLinks} />
       </Container>
     </React.Fragment>
   )
