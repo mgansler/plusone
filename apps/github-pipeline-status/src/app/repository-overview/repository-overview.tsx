@@ -202,7 +202,7 @@ export const RepositoryOverview: React.FC<RepositoryOverviewProps> = ({
   })
 
   const [showOnlyOpenPRs, setShowReposWithoutPRs] = useLocalStorage<boolean>({
-    key: '',
+    key: 'showOnlyOpenPRs',
     defaultValue: false,
   })
 
