@@ -93,18 +93,34 @@ const useStyles = makeStyles((theme) =>
 const CheckConclusionIconMap: Record<CheckConclusionState, JSX.Element> = {
   ACTION_REQUIRED: undefined,
   CANCELLED: undefined,
-  FAILURE: <Error />,
+  FAILURE: (
+    <Tooltip title={'Pipeline failed'}>
+      <Error />
+    </Tooltip>
+  ),
   NEUTRAL: undefined,
   SKIPPED: undefined,
   STALE: undefined,
   STARTUP_FAILURE: undefined,
-  SUCCESS: <Check />,
+  SUCCESS: (
+    <Tooltip title={'Pipeline succeeded'}>
+      <Check />
+    </Tooltip>
+  ),
   TIMED_OUT: undefined,
 }
 
 const ReviewStateIconMap: Record<PullRequestReviewState, JSX.Element> = {
-  APPROVED: <Check />,
-  CHANGES_REQUESTED: <Error />,
+  APPROVED: (
+    <Tooltip title={'Pull request approved'}>
+      <Check />
+    </Tooltip>
+  ),
+  CHANGES_REQUESTED: (
+    <Tooltip title={'Changes requested'}>
+      <Error />
+    </Tooltip>
+  ),
   COMMENTED: undefined,
   DISMISSED: undefined,
   PENDING: undefined,
@@ -146,7 +162,9 @@ const CanBeMerged: React.FC<CanBeMergedProps> = ({
   return mergeable === MergeableState.Conflicting ? (
     <div className={className}>
       <Typography variant={'caption'}>Merge Conflicts</Typography>
-      <Error />
+      <Tooltip title={'Merge conflicts'}>
+        <Error />
+      </Tooltip>
     </div>
   ) : (
     <div className={className}>
