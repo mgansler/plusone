@@ -10,6 +10,20 @@
   "overrides": [
     {
       "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js",
+        "*.jsx"
+      ],
+      "parserOptions": {
+        "project": [
+          "apps/quick-zoom-e2e/tsconfig.*?.json"
+        ]
+      },
+      "rules": {}
+    },
+    {
+      "files": [
         "src/plugins/index.js"
       ],
       "rules": {
