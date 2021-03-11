@@ -223,6 +223,7 @@
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
+            "port": 4201,
             "buildTarget": "quick-zoom:build"
           },
           "configurations": {
