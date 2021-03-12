@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 
 const getItem = (key: string) => {
+  const jsonString = localStorage.getItem(key)
   try {
-    return JSON.parse(localStorage.getItem(key))
-  } catch {
+    return JSON.parse(jsonString)
+  } catch (e) {
+    console.error(`Could not parse JSON '${jsonString}' ${e}`)
     return undefined
   }
 }

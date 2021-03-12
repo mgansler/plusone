@@ -13,7 +13,7 @@ describe('quick-zoom', () => {
     cy.findByRole('dialog').within(() => {
       cy.findByText('New Zoom Link')
 
-      cy.findByLabelText('Name').type('Hello World')
+      cy.findByLabelText('Title').type('Hello World')
       cy.findByLabelText('Zoom Link').type(
         'https://example.zoom.us/j/0123456789?pwd=some_password',
       )

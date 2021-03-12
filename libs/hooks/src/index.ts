@@ -1,3 +1,3 @@
-export * from './lib/useFileDownload'
-export * from './lib/useGitHubPagination'
-export * from './lib/useLocalStorage'
+export * from './lib/use-file-download'
+export * from './lib/use-github-pagination'
+export * from './lib/use-localstorage'
