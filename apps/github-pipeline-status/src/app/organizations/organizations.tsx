@@ -7,6 +7,7 @@ import {
   createStyles,
   FormControl,
   InputLabel,
+  LinearProgress,
   makeStyles,
   MenuItem,
   Paper,
@@ -91,7 +92,7 @@ export const Organizations: React.FC = () => {
   const toolbar = useRef<HTMLDivElement>(null)
 
   if (isLoading) {
-    return <div>loading...</div>
+    return <LinearProgress />
   }
 
   return (

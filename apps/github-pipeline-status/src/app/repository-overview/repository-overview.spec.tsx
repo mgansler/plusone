@@ -121,7 +121,7 @@ describe('RepositoryOverview', () => {
       </QueryClientProvider>,
     )
 
-    expect(screen.queryByText(/loading.../i)).toBeInTheDocument()
+    expect(nock.isDone()).toBeFalsy()
 
     await waitFor(() => {
       expect(nock.isDone()).toBeTruthy()
