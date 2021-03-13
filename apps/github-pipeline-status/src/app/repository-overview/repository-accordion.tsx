@@ -23,6 +23,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { Check, Error, ExpandMore, OpenInNew } from '@material-ui/icons'
+import { Skeleton } from '@material-ui/lab'
 
 import { UserFilter } from './repository-overview'
 
@@ -42,6 +43,9 @@ const useStyles = makeStyles((theme) =>
       '&$expanded': {
         minHeight: theme.spacing(6),
       },
+    },
+    accordionSummarySkeleton: {
+      gap: theme.spacing(3),
     },
     accordionSummaryContent: {
       alignItems: 'center',
@@ -342,6 +346,27 @@ export const RepositoryAccordion: React.FC<RepositoryAccordionProps> = ({
           )
         })}
       </AccordionDetails>
+    </Accordion>
+  )
+}
+
+export function AccordionSkeleton() {
+  const classNames = useStyles()
+
+  return (
+    <Accordion>
+      <AccordionSummary
+        classes={{ content: classNames.accordionSummarySkeleton }}
+        expandIcon={<ExpandMore />}
+      >
+        <Skeleton variant={'circle'} width={28} height={28} />
+        <Skeleton className={classNames.titleColumn} variant={'text'} />
+        <Skeleton className={classNames.workflowColumn} variant={'text'} />
+        <Skeleton
+          className={classNames.pullRequestsOrReviewsColumn}
+          variant={'text'}
+        />
+      </AccordionSummary>
     </Accordion>
   )
 }

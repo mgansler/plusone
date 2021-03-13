@@ -23,7 +23,7 @@ import {
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
-import { RepositoryAccordion } from './repository-accordion'
+import { AccordionSkeleton, RepositoryAccordion } from './repository-accordion'
 
 export type UserFilter = 'all' | 'dependabot' | 'user'
 
@@ -215,7 +215,13 @@ export const RepositoryOverview: React.FC<RepositoryOverviewProps> = ({
   )
 
   if (isLoading) {
-    return <div>loading...</div>
+    return (
+      <React.Fragment>
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((value) => (
+          <AccordionSkeleton key={value} />
+        ))}
+      </React.Fragment>
+    )
   }
 
   const filteredRepositories = data.search.nodes.filter(
