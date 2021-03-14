@@ -1,1 +1,4 @@
-export const getGreeting = () => cy.get('h1')
+export const login = () => {
+  cy.findByLabelText(/personal access token/i).type('super_secret')
+  cy.findByText(/save/i).click()
+}

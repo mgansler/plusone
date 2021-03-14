@@ -233,6 +233,7 @@ export const RepositoryOverview: React.FC<RepositoryOverviewProps> = ({
       <Portal container={toolbarRef.current}>
         <TextField
           className={classNames.formControl}
+          id={'repository-name'}
           label={'Repository Name'}
           type={'text'}
           value={queryString}
