@@ -74,6 +74,7 @@ const TokenInput: React.FC<{
 
           <form onSubmit={handleSubmit}>
             <TextField
+              id={'personal-access-token'}
               fullWidth={true}
               label={'Personal Access Token'}
               type={'password'}

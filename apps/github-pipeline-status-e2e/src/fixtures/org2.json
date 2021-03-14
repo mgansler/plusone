@@ -1,0 +1,79 @@
+{
+  "data": {
+    "search": {
+      "repositoryCount": 2,
+      "pageInfo": {
+        "endCursor": "Y3Vyc29yOjIK",
+        "hasNextPage": false,
+        "hasPreviousPage": false,
+        "startCursor": "Y3Vyc29yOjE="
+      },
+      "nodes": [
+        {
+          "name": "repo-one",
+          "id": "MDEwOlJlcG9zaXRvcnkwMDAwMDAwMDEK",
+          "url": "https://github.com/org2/repo-one",
+          "defaultBranchRef": {
+            "name": "main",
+            "target": {
+              "checkSuites": {
+                "nodes": []
+              }
+            }
+          },
+          "pullRequests": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "name": "repo-two",
+          "id": "MDEwOlJlcG9zaXRvcnkwMDAwMDAwMDIK",
+          "url": "https://github.com/org2/repo-two",
+          "defaultBranchRef": {
+            "name": "main",
+            "target": {
+              "checkSuites": {
+                "nodes": []
+              }
+            }
+          },
+          "pullRequests": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "isDraft": false,
+                "mergeable": "MERGEABLE",
+                "number": 14,
+                "title": "PR title",
+                "author": {
+                  "login": "test-user",
+                  "name": "Test User"
+                },
+                "url": "https://github.com/org2/repo-two/pull/1",
+                "commits": {
+                  "totalCount": 1,
+                  "nodes": [
+                    {
+                      "commit": {
+                        "checkSuites": {
+                          "nodes": []
+                        }
+                      }
+                    }
+                  ]
+                },
+                "headRef": {
+                  "name": "feature/1-very-important-change"
+                },
+                "reviews": {
+                  "nodes": []
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
