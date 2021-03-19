@@ -6,14 +6,7 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "types": [
-      "cypress",
-      "node",
-      "@testing-library/cypress"
-    ]
+    "types": ["cypress", "node", "@testing-library/cypress"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.js"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.js"]
 }

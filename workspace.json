@@ -28,9 +28,7 @@
       "targets": {
         "build": {
           "executor": "@nrwl/web:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/github-pipeline-status",
             "index": "apps/github-pipeline-status/src/index.html",
@@ -91,9 +89,7 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/github-pipeline-status"
-          ],
+          "outputs": ["coverage/apps/github-pipeline-status"],
           "options": {
             "jestConfig": "apps/github-pipeline-status/jest.config.js",
             "passWithNoTests": true
@@ -122,9 +118,7 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/github-pipeline-status-e2e/**/*.{js,ts}"
-            ]
+            "lintFilePatterns": ["apps/github-pipeline-status-e2e/**/*.{js,ts}"]
           }
         }
       }
@@ -154,16 +148,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/hooks/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["libs/hooks/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/hooks"
-          ],
+          "outputs": ["coverage/libs/hooks"],
           "options": {
             "jestConfig": "libs/hooks/jest.config.js",
             "passWithNoTests": true
@@ -178,9 +168,7 @@
       "targets": {
         "build": {
           "executor": "@nrwl/web:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/quick-zoom",
             "index": "apps/quick-zoom/src/index.html",
@@ -235,16 +223,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/quick-zoom/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["apps/quick-zoom/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/quick-zoom"
-          ],
+          "outputs": ["coverage/apps/quick-zoom"],
           "options": {
             "jestConfig": "apps/quick-zoom/jest.config.js",
             "passWithNoTests": true
@@ -273,9 +257,7 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/quick-zoom-e2e/**/*.{js,ts}"
-            ]
+            "lintFilePatterns": ["apps/quick-zoom-e2e/**/*.{js,ts}"]
           }
         }
       }
@@ -288,16 +270,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/dom-utils/**/*.ts"
-            ]
+            "lintFilePatterns": ["libs/dom-utils/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/dom-utils"
-          ],
+          "outputs": ["coverage/libs/dom-utils"],
           "options": {
             "jestConfig": "libs/dom-utils/jest.config.js",
             "passWithNoTests": true
@@ -313,16 +291,12 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/conference-links/**/*.ts"
-            ]
+            "lintFilePatterns": ["libs/conference-links/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/conference-links"
-          ],
+          "outputs": ["coverage/libs/conference-links"],
           "options": {
             "jestConfig": "libs/conference-links/jest.config.js",
             "passWithNoTests": true

@@ -18,12 +18,7 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ]
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
       }
     }
   },
@@ -33,9 +28,7 @@
     },
     "github-pipeline-status-e2e": {
       "tags": [],
-      "implicitDependencies": [
-        "github-pipeline-status"
-      ]
+      "implicitDependencies": ["github-pipeline-status"]
     },
     "dom-utils": {
       "tags": []
@@ -51,9 +44,7 @@
     },
     "quick-zoom-e2e": {
       "tags": [],
-      "implicitDependencies": [
-        "quick-zoom"
-      ]
+      "implicitDependencies": ["quick-zoom"]
     },
     "conference-links": {
       "tags": []

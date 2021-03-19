@@ -10,31 +10,16 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2017",
-      "es2019",
-      "dom"
-    ],
+    "lib": ["es2017", "es2019", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@plusone/github-schema": [
-        "libs/github-schema/src/index.ts"
-      ],
-      "@plusone/dom-utils": [
-        "libs/dom-utils/src/index.ts"
-      ],
-      "@plusone/hooks": [
-        "libs/hooks/src/index.ts"
-      ],
-      "@plusone/conference-links": [
-        "libs/conference-links/src/index.ts"
-      ]
+      "@plusone/github-schema": ["libs/github-schema/src/index.ts"],
+      "@plusone/dom-utils": ["libs/dom-utils/src/index.ts"],
+      "@plusone/hooks": ["libs/hooks/src/index.ts"],
+      "@plusone/conference-links": ["libs/conference-links/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }
