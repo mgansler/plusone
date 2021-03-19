@@ -6,5 +6,6 @@ module.exports = {
     '<rootDir>/libs/dom-utils',
     '<rootDir>/libs/github-schema',
     '<rootDir>/libs/hooks',
+    '<rootDir>/libs/github-hooks',
   ],
 }
