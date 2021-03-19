@@ -1148,6 +1148,8 @@ export type CheckRun = Node &
     /** A reference for the check run on the integrator's system. */
     externalId?: Maybe<Scalars['String']>
     id: Scalars['ID']
+    /** Whether this check run is required to pass before merging. */
+    isRequired: Scalars['Boolean']
     /** The name of the check for this check run. */
     name: Scalars['String']
     /** The permalink to the check run summary. */
@@ -1176,6 +1178,11 @@ export type CheckRunAnnotationsArgs = {
   before?: Maybe<Scalars['String']>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
+}
+
+/** A check run. */
+export type CheckRunIsRequiredArgs = {
+  pullRequestId: Scalars['ID']
 }
 
 /** Possible further actions the integrator can perform. */
@@ -10131,7 +10138,7 @@ export type Organization = Actor &
     isSponsoredBy: Scalars['Boolean']
     /** True if the viewer is sponsored by this user/organization. */
     isSponsoringViewer: Scalars['Boolean']
-    /** Whether the organization has verified its profile email and website, always false on Enterprise. */
+    /** Whether the organization has verified its profile email and website. */
     isVerified: Scalars['Boolean']
     /**
      * Showcases a selection of repositories and gists that the profile owner has
@@ -17230,6 +17237,8 @@ export type StatusContext = Node & {
   /** The description for this status context. */
   description?: Maybe<Scalars['String']>
   id: Scalars['ID']
+  /** Whether this status is required to pass before merging. */
+  isRequired: Scalars['Boolean']
   /** The state of this status context. */
   state: StatusState
   /** The URL for this status context. */
@@ -17239,6 +17248,11 @@ export type StatusContext = Node & {
 /** Represents an individual commit status context */
 export type StatusContextAvatarUrlArgs = {
   size?: Maybe<Scalars['Int']>
+}
+
+/** Represents an individual commit status context */
+export type StatusContextIsRequiredArgs = {
+  pullRequestId: Scalars['ID']
 }
 
 /** The possible commit status states. */
