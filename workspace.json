@@ -128,6 +128,10 @@
       "sourceRoot": "libs/github-schema/src",
       "projectType": "library",
       "targets": {
+        "graphql-schema": {
+          "executor": "./tools/executors:graphql-schema",
+          "options": {}
+        },
         "codegen": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
@@ -299,6 +303,27 @@
           "outputs": ["coverage/libs/conference-links"],
           "options": {
             "jestConfig": "libs/conference-links/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "github-hooks": {
+      "root": "libs/github-hooks",
+      "sourceRoot": "libs/github-hooks/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/github-hooks/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/github-hooks"],
+          "options": {
+            "jestConfig": "libs/github-hooks/jest.config.js",
             "passWithNoTests": true
           }
         }

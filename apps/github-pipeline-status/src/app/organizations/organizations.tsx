@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { useQuery } from 'react-query'
+import { useGitHubPagination } from '@plusone/github-hooks'
 import { User } from '@plusone/github-schema'
-import { useGitHubPagination } from '@plusone/hooks'
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
 import {
   createStyles,

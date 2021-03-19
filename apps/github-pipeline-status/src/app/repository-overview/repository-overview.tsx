@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useGitHubPagination, useLocalStorage } from '@plusone/hooks'
+import { useGitHubPagination } from '@plusone/github-hooks'
+import { useLocalStorage } from '@plusone/hooks'
 import { useHistory, useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import {
