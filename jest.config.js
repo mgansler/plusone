@@ -7,5 +7,6 @@ module.exports = {
     '<rootDir>/libs/github-schema',
     '<rootDir>/libs/hooks',
     '<rootDir>/libs/github-hooks',
+    '<rootDir>/apps/feeds-frontend',
   ],
 }

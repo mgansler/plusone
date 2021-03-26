@@ -54,6 +54,13 @@
     },
     "feeds-backend": {
       "tags": []
+    },
+    "feeds-frontend": {
+      "tags": []
+    },
+    "feeds-frontend-e2e": {
+      "tags": [],
+      "implicitDependencies": ["feeds-frontend"]
     }
   }
 }
