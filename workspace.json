@@ -321,76 +321,76 @@
     },
     "feeds-backend": {
       "projectType": "application",
-      "root": "apps/feeds-backend",
-      "sourceRoot": "apps/feeds-backend/src",
+      "root": "apps/feeds/backend",
+      "sourceRoot": "apps/feeds/backend/src",
       "targets": {
         "run": {
           "executor": "@nxrocks/nx-spring-boot:run",
           "options": {
-            "root": "apps/feeds-backend"
+            "root": "apps/feeds/backend"
           }
         },
         "serve": {
           "executor": "@nxrocks/nx-spring-boot:serve",
           "options": {
-            "root": "apps/feeds-backend"
+            "root": "apps/feeds/backend"
           }
         },
         "test": {
           "executor": "@nxrocks/nx-spring-boot:test",
           "options": {
-            "root": "apps/feeds-backend"
+            "root": "apps/feeds/backend"
           }
         },
         "clean": {
           "executor": "@nxrocks/nx-spring-boot:clean",
           "options": {
-            "root": "apps/feeds-backend"
+            "root": "apps/feeds/backend"
           }
         },
         "buildJar": {
           "executor": "@nxrocks/nx-spring-boot:buildJar",
           "options": {
-            "root": "apps/feeds-backend"
+            "root": "apps/feeds/backend"
           }
         },
         "buildWar": {
           "executor": "@nxrocks/nx-spring-boot:buildWar",
           "options": {
-            "root": "apps/feeds-backend"
+            "root": "apps/feeds/backend"
           }
         },
         "buildImage": {
           "executor": "@nxrocks/nx-spring-boot:buildImage",
           "options": {
-            "root": "apps/feeds-backend"
+            "root": "apps/feeds/backend"
           }
         },
         "buildInfo": {
           "executor": "@nxrocks/nx-spring-boot:buildInfo",
           "options": {
-            "root": "apps/feeds-backend"
+            "root": "apps/feeds/backend"
           }
         }
       }
     },
     "feeds-frontend": {
-      "root": "apps/feeds-frontend",
-      "sourceRoot": "apps/feeds-frontend/src",
+      "root": "apps/feeds/frontend",
+      "sourceRoot": "apps/feeds/frontend/src",
       "projectType": "application",
       "targets": {
         "build": {
           "executor": "@nrwl/web:build",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/apps/feeds-frontend",
-            "index": "apps/feeds-frontend/src/index.html",
-            "main": "apps/feeds-frontend/src/main.tsx",
-            "polyfills": "apps/feeds-frontend/src/polyfills.ts",
-            "tsConfig": "apps/feeds-frontend/tsconfig.app.json",
+            "outputPath": "dist/apps/feeds/frontend",
+            "index": "apps/feeds/frontend/src/index.html",
+            "main": "apps/feeds/frontend/src/main.tsx",
+            "polyfills": "apps/feeds/frontend/src/polyfills.ts",
+            "tsConfig": "apps/feeds/frontend/tsconfig.app.json",
             "assets": [
-              "apps/feeds-frontend/src/favicon.ico",
-              "apps/feeds-frontend/src/assets"
+              "apps/feeds/frontend/src/favicon.ico",
+              "apps/feeds/frontend/src/assets"
             ],
             "styles": [],
             "scripts": [],
@@ -400,8 +400,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "apps/feeds-frontend/src/environments/environment.ts",
-                  "with": "apps/feeds-frontend/src/environments/environment.prod.ts"
+                  "replace": "apps/feeds/frontend/src/environments/environment.ts",
+                  "with": "apps/feeds/frontend/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -425,7 +425,7 @@
           "executor": "@nrwl/web:dev-server",
           "options": {
             "buildTarget": "feeds-frontend:build",
-            "proxyConfig": "apps/feeds-frontend/proxy.conf.json"
+            "proxyConfig": "apps/feeds/frontend/proxy.conf.json"
           },
           "configurations": {
             "production": {
@@ -436,29 +436,29 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/feeds-frontend/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": ["apps/feeds/frontend/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/feeds-frontend"],
+          "outputs": ["coverage/apps/feeds/frontend"],
           "options": {
-            "jestConfig": "apps/feeds-frontend/jest.config.js",
+            "jestConfig": "apps/feeds/frontend/jest.config.js",
             "passWithNoTests": true
           }
         }
       }
     },
-    "feeds-frontend-e2e": {
-      "root": "apps/feeds-frontend-e2e",
-      "sourceRoot": "apps/feeds-frontend-e2e/src",
+    "feeds-e2e": {
+      "root": "apps/feeds/e2e",
+      "sourceRoot": "apps/feeds/e2e/src",
       "projectType": "application",
       "targets": {
         "e2e": {
           "executor": "@nrwl/cypress:cypress",
           "options": {
-            "cypressConfig": "apps/feeds-frontend-e2e/cypress.json",
-            "tsConfig": "apps/feeds-frontend-e2e/tsconfig.e2e.json",
+            "cypressConfig": "apps/feeds/e2e/cypress.json",
+            "tsConfig": "apps/feeds/e2e/tsconfig.e2e.json",
             "devServerTarget": "feeds-frontend:serve"
           },
           "configurations": {
@@ -470,7 +470,7 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/feeds-frontend-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": ["apps/feeds/e2e/**/*.{js,ts}"]
           }
         }
       }

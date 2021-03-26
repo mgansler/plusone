@@ -58,9 +58,9 @@
     "feeds-frontend": {
       "tags": []
     },
-    "feeds-frontend-e2e": {
+    "feeds-e2e": {
       "tags": [],
-      "implicitDependencies": ["feeds-frontend"]
+      "implicitDependencies": ["feeds-frontend", "feeds-backend"]
     }
   }
 }
