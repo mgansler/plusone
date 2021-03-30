@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import App from './app/app'
+import { AppWithProviders } from './app/app'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AppWithProviders />
   </React.StrictMode>,
   document.getElementById('root'),
 )

@@ -1,10 +1,82 @@
+import {
+  createStyles,
+  CssBaseline,
+  makeStyles,
+  ThemeProvider,
+} from '@material-ui/core'
 import React from 'react'
+import { ApolloProvider } from 'react-apollo'
 
-import { ReactComponent as Logo } from './logo.svg'
-import star from './star.svg'
+import { AuthenticationProvider } from './components/authentication'
+import { FeedDrawerList } from './components/drawer'
+import { ArticleCardList } from './components/feed'
+import { Header } from './components/header'
+import { ToolbarMixin } from './components/mixins'
+import {
+  KeyboardControlProvider,
+  SelectedArticleProvider,
+  SelectedFeedsProvider,
+} from './context'
+import { apolloClient } from './graphql'
+import { theme } from './theme'
 
-export function App() {
-  return <h1>Welcome to feeds-frontend!</h1>
+const useAppStyles = makeStyles((theme) =>
+  createStyles({
+    content: {
+      display: 'flex',
+      minWidth: 0,
+      minHeight: 0,
+      flexGrow: 1,
+    },
+    contentContainer: {
+      flexGrow: 1,
+      height: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+
+    root: {
+      display: 'flex',
+      width: '100vw',
+    },
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1,
+    },
+  }),
+)
+
+export const App: React.FC = () => {
+  const classNames = useAppStyles()
+
+  return (
+    <div className={classNames.root}>
+      <Header />
+
+      <FeedDrawerList />
+
+      <main className={classNames.contentContainer}>
+        <ToolbarMixin />
+        <div className={classNames.content}>
+          <SelectedArticleProvider>
+            <ArticleCardList />
+          </SelectedArticleProvider>
+        </div>
+      </main>
+    </div>
+  )
 }
 
-export default App
+export const AppWithProviders: React.FC = () => (
+  <ApolloProvider client={apolloClient}>
+    <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <KeyboardControlProvider>
+        <AuthenticationProvider>
+          <SelectedFeedsProvider>
+            <App />
+          </SelectedFeedsProvider>
+        </AuthenticationProvider>
+      </KeyboardControlProvider>
+    </ThemeProvider>
+  </ApolloProvider>
+)
