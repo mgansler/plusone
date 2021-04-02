@@ -424,6 +424,7 @@
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
+            "port": 3000,
             "buildTarget": "feeds-frontend:build",
             "proxyConfig": "apps/feeds/frontend/proxy.conf.json"
           },
