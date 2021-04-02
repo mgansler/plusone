@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  database:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: super_secret
+      POSTGRES_DB: feeds
+    ports:
+      - 5433:5432
