@@ -1,4 +1,11 @@
-import { Button, CircularProgress, Paper, Typography } from '@material-ui/core'
+import {
+  Button,
+  Card,
+  CardContent,
+  CircularProgress,
+  Container,
+  Typography,
+} from '@material-ui/core'
 import React from 'react'
 import { useQuery } from 'react-apollo'
 
@@ -16,9 +23,18 @@ export const LoginPage: React.FC = () => {
   }
 
   return (
-    <Paper className={classNames.root}>
-      <Typography align={'center'}>Please login</Typography>
-      <Button href={data?.authorizationUri}>Login with GitLab</Button>
-    </Paper>
+    <Container maxWidth={'sm'} className={classNames.container}>
+      <Card>
+        <CardContent className={classNames.root}>
+          <Typography variant={'h3'} align={'center'}>
+            Welcome to Feeds
+          </Typography>
+          <Typography align={'center'}>Please login</Typography>
+          <Button variant={'contained'} href={data?.authorizationUri}>
+            Login with GitLab
+          </Button>
+        </CardContent>
+      </Card>
+    </Container>
   )
 }
