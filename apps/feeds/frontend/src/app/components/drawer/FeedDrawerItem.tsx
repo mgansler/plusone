@@ -7,10 +7,10 @@ import {
 } from '@material-ui/core'
 import { RssFeed } from '@material-ui/icons'
 import React from 'react'
+import { FeedFieldsFragment } from '@plusone/feeds-schema'
 
 import { useSelectedFeeds } from '../../context'
 import { SelectionType } from '../../context/SelectedFeedsContext'
-import { FeedFieldsFragment } from '../../graphql'
 
 import { EditFeed } from './EditFeed'
 import { useFeedStyles } from './style'

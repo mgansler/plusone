@@ -9,10 +9,10 @@ import {
 } from '@material-ui/core'
 import { ExpandLess, ExpandMore, Inbox } from '@material-ui/icons'
 import React, { useState } from 'react'
+import { FeedFieldsFragment, GroupFieldsFragment } from '@plusone/feeds-schema'
 
 import { useSelectedFeeds } from '../../context'
 import { SelectionType } from '../../context/SelectedFeedsContext'
-import { FeedFieldsFragment, GroupFieldsFragment } from '../../graphql'
 
 import { FeedDrawerItem } from './FeedDrawerItem'
 import { useFeedStyles } from './style'

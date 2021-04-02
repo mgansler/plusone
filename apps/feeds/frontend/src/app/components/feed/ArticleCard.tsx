@@ -12,13 +12,12 @@ import {
 } from '@material-ui/icons'
 import React, { RefObject, useRef } from 'react'
 import { useMutation } from 'react-apollo'
-
 import {
   ArticleFieldsFragment,
   MutationToggleArticleUnreadArgs,
   ToggleArticleUnread,
   ToggleArticleUnreadMutation,
-} from '../../graphql'
+} from '@plusone/feeds-schema'
 
 import { useFeedStyles } from './style'
 

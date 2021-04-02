@@ -8,8 +8,7 @@ import {
 } from '@material-ui/core'
 import React from 'react'
 import { useQuery } from 'react-apollo'
-
-import { AuthorizationUri, AuthorizationUriQuery } from '../../graphql'
+import { AuthorizationUri, AuthorizationUriQuery } from '@plusone/feeds-schema'
 
 import { useAuthenticationStyles } from './styles'
 

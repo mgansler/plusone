@@ -12,7 +12,6 @@ import { Edit } from '@material-ui/icons'
 import gql from 'graphql-tag'
 import React, { ChangeEvent } from 'react'
 import { useApolloClient, useMutation } from 'react-apollo'
-
 import {
   AddFeedToGroup,
   AddFeedToGroupMutation,
@@ -23,7 +22,8 @@ import {
   FeedsAndGroups,
   Group,
   MutationDeleteFeedArgs,
-} from '../../graphql'
+} from '@plusone/feeds-schema'
+
 import { useBoolean } from '../../hooks'
 
 import { useFeedStyles } from './style'

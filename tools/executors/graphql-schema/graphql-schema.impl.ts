@@ -18,6 +18,9 @@ export default function (
   const graphqlCodegen = spawn('graphql-codegen', ['--config', configFilePath])
 
   return new Promise<{ success: boolean }>((resolve) => {
+    graphqlCodegen.stdout.on('data', (data) => console.log(data.toString()))
+    graphqlCodegen.stderr.on('data', (data) => console.error(data.toString()))
+
     graphqlCodegen.on('close', (code) => {
       if (code !== 0) {
         resolve({ success: false })
