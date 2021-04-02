@@ -3,14 +3,12 @@ import { Octokit } from '@octokit/core'
 import { useLocalStorage } from '@plusone/hooks'
 import {
   Button,
-  Card,
-  CardContent,
-  Container,
   createStyles,
   makeStyles,
   TextField,
   Typography,
 } from '@material-ui/core'
+import { LoginCard } from '@plusone/components'
 
 interface Context {
   octokit: Octokit
@@ -19,25 +17,11 @@ interface Context {
 
 const OctokitContext = React.createContext<Context>(null)
 
-const useTokenInputStyles = makeStyles((theme) =>
-  createStyles({
-    container: {
-      marginTop: theme.spacing(8),
-    },
-    form: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: theme.spacing(1),
-    },
-  }),
-)
-
-const TokenInput: React.FC<{
+interface TokenInputProps {
   setToken: (value: string) => void
-}> = ({ setToken }) => {
-  const classNames = useTokenInputStyles()
+}
 
+const TokenInput: React.FC<TokenInputProps> = ({ setToken }) => {
   const inputRef = useRef<HTMLInputElement>()
 
   const handleSubmit = () => {
@@ -47,46 +31,42 @@ const TokenInput: React.FC<{
   }
 
   return (
-    <Container maxWidth={'sm'} className={classNames.container}>
-      <Card>
-        <CardContent>
-          <Typography>
-            In order to use this application you need to provide an access token
-            with the following permissions:
-          </Typography>
+    <LoginCard>
+      <Typography>
+        In order to use this application you need to provide an access token
+        with the following permissions:
+      </Typography>
 
-          <dl>
-            <dt>
-              <code>repo</code>
-            </dt>
-            <dd>Full control of private repositories</dd>
+      <dl>
+        <dt>
+          <code>repo</code>
+        </dt>
+        <dd>Full control of private repositories</dd>
 
-            <dt>
-              <code>read:org</code>
-            </dt>
-            <dd>Read org and team membership, read org projects</dd>
+        <dt>
+          <code>read:org</code>
+        </dt>
+        <dd>Read org and team membership, read org projects</dd>
 
-            <dt>
-              <code>read:user</code>
-            </dt>
-            <dd>Read ALL user profile data</dd>
-          </dl>
+        <dt>
+          <code>read:user</code>
+        </dt>
+        <dd>Read ALL user profile data</dd>
+      </dl>
 
-          <form onSubmit={handleSubmit}>
-            <TextField
-              id={'personal-access-token'}
-              fullWidth={true}
-              label={'Personal Access Token'}
-              type={'password'}
-              inputRef={inputRef}
-            />
-            <Button type={'submit'} color={'primary'}>
-              Save
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </Container>
+      <form onSubmit={handleSubmit}>
+        <TextField
+          id={'personal-access-token'}
+          fullWidth={true}
+          label={'Personal Access Token'}
+          type={'password'}
+          inputRef={inputRef}
+        />
+        <Button type={'submit'} color={'primary'}>
+          Save
+        </Button>
+      </form>
+    </LoginCard>
   )
 }
 
