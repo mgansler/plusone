@@ -8,8 +8,7 @@ import {
   Me,
   MeQuery,
 } from '@plusone/feeds-schema'
-
-import { useBoolean } from '../../hooks'
+import { useBoolean } from '@plusone/hooks'
 
 import { LoginPage } from './LoginPage'
 import { useAuthenticationStyles } from './styles'

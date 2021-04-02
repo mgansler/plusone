@@ -23,8 +23,7 @@ import {
   Group,
   MutationDeleteFeedArgs,
 } from '@plusone/feeds-schema'
-
-import { useBoolean } from '../../hooks'
+import { useBoolean } from '@plusone/hooks'
 
 import { useFeedStyles } from './style'
 
