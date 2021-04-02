@@ -12,6 +12,12 @@ function default_1(schema, context) {
     configFilePath,
   ])
   return new Promise(function (resolve) {
+    graphqlCodegen.stdout.on('data', function (data) {
+      return console.log(data.toString())
+    })
+    graphqlCodegen.stderr.on('data', function (data) {
+      return console.error(data.toString())
+    })
     graphqlCodegen.on('close', function (code) {
       if (code !== 0) {
         resolve({ success: false })

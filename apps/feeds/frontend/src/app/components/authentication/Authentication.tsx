@@ -1,15 +1,14 @@
 import { CircularProgress } from '@material-ui/core'
 import React, { createContext, useEffect } from 'react'
 import { useQuery } from 'react-apollo'
-
 import {
   Login,
   LoginQuery,
   LoginQueryVariables,
   Me,
   MeQuery,
-} from '../../graphql'
-import { useBoolean } from '../../hooks'
+} from '@plusone/feeds-schema'
+import { useBoolean } from '@plusone/hooks'
 
 import { LoginPage } from './LoginPage'
 import { useAuthenticationStyles } from './styles'

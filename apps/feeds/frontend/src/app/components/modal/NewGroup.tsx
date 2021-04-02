@@ -12,14 +12,13 @@ import {
 import { Add } from '@material-ui/icons'
 import React, { forwardRef, useState } from 'react'
 import { useMutation } from 'react-apollo'
-
 import {
   AddGroup,
   AddGroupMutation,
   AddGroupMutationVariables,
   FeedsAndGroups,
   GroupInput,
-} from '../../graphql'
+} from '@plusone/feeds-schema'
 
 import { Modal } from './index'
 

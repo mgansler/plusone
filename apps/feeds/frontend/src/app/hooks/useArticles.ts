@@ -1,14 +1,14 @@
 import { uniqBy } from 'lodash'
 import { useEffect } from 'react'
 import { useQuery } from 'react-apollo'
-
-import { useSelectedArticle, useSelectedFeeds } from '../context'
 import {
   ArticleFieldsFragment,
   Articles,
   ArticlesQuery,
   ArticlesQueryVariables,
-} from '../graphql'
+} from '@plusone/feeds-schema'
+
+import { useSelectedArticle, useSelectedFeeds } from '../context'
 
 const ARTICLES_PER_PAGE = 10
 const NTH_TO_LAST_ARTICLE = 10

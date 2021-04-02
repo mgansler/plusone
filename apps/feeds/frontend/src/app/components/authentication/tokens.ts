@@ -1,4 +1,4 @@
-import { Token } from '../../graphql'
+import { Token } from '@plusone/feeds-schema'
 
 const LOCAL_STORAGE_KEY = 'token'
 

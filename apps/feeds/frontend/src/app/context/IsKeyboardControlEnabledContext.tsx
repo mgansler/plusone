@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect } from 'react'
-
-import { useBoolean } from '../hooks'
+import { useBoolean } from '@plusone/hooks'
 
 interface ContextValue {
   isEnabled: boolean

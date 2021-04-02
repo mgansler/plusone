@@ -12,15 +12,15 @@ import {
 import { Add } from '@material-ui/icons'
 import React, { useState } from 'react'
 import { useMutation } from 'react-apollo'
-
-import { useDisableKeyboardControl } from '../../context'
 import {
   AddFeed,
   AddFeedMutation,
   AddFeedMutationVariables,
   FeedInput,
   FeedsAndGroups,
-} from '../../graphql'
+} from '@plusone/feeds-schema'
+
+import { useDisableKeyboardControl } from '../../context'
 
 import { Modal } from './index'
 

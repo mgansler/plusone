@@ -10,10 +10,10 @@ import { MoreVert, RssFeed } from '@material-ui/icons'
 import gql from 'graphql-tag'
 import React from 'react'
 import { useApolloClient } from 'react-apollo'
+import { Feed } from '@plusone/feeds-schema'
 
 import { DefaultGroups, useSelectedFeeds } from '../../context'
 import { SelectionType } from '../../context/SelectedFeedsContext'
-import { Feed } from '../../graphql'
 
 import { useFeedStyles } from './style'
 

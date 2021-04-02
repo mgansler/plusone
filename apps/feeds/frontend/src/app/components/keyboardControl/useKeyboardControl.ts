@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { useMutation } from 'react-apollo'
-
-import { useIsKeyboardControlEnabled, useSelectedArticle } from '../../context'
 import {
   MutationToggleArticleUnreadArgs,
   ToggleArticleUnread,
   ToggleArticleUnreadMutation,
-} from '../../graphql'
+} from '@plusone/feeds-schema'
+
+import { useIsKeyboardControlEnabled, useSelectedArticle } from '../../context'
 import { useArticles } from '../../hooks'
 
 interface Modifiers {
