@@ -1,7 +1,7 @@
 import React, { useCallback, useRef } from 'react'
 import { Button } from '@material-ui/core'
 import { useFileDownload } from '@plusone/hooks'
-import { ConferenceLink, fromJson } from '@plusone/conference-links'
+import { ConferenceLink } from '@plusone/conference-links'
 
 interface ImportExportProps {
   links: ConferenceLink[]
