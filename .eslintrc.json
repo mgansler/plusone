@@ -1,7 +1,13 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nrwl/nx", "import", "jest-dom", "testing-library"],
+  "plugins": [
+    "@nrwl/nx",
+    "import",
+    "unused-imports",
+    "jest-dom",
+    "testing-library"
+  ],
   "extends": [
     "plugin:jest-dom/recommended",
     "plugin:testing-library/recommended"
@@ -23,6 +29,7 @@
             ]
           }
         ],
+        "unused-imports/no-unused-imports": "error",
         "import/order": [
           "error",
           {
