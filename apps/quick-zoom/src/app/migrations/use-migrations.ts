@@ -1,5 +1,6 @@
-import { ConferenceLink, fromLink } from '@plusone/conference-links'
 import { useEffect } from 'react'
+
+import { ConferenceLink, fromLink } from '@plusone/conference-links'
 
 type V1 = {
   name: string

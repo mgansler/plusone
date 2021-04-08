@@ -1,6 +1,7 @@
 import { Button, CircularProgress, Typography } from '@material-ui/core'
 import React from 'react'
 import { useQuery } from 'react-apollo'
+
 import { AuthorizationUri, AuthorizationUriQuery } from '@plusone/feeds-schema'
 import { LoginCard } from '@plusone/components'
 

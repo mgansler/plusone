@@ -1,16 +1,5 @@
 import React, { useMemo } from 'react'
 import {
-  CheckConclusionState,
-  Commit,
-  MergeableState,
-  PullRequestCommit,
-  PullRequestReview,
-  PullRequestReviewState,
-  Ref,
-  Repository,
-  User,
-} from '@plusone/github-schema'
-import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
@@ -24,6 +13,18 @@ import {
 } from '@material-ui/core'
 import { Check, Error, ExpandMore, OpenInNew } from '@material-ui/icons'
 import { Skeleton } from '@material-ui/lab'
+
+import {
+  CheckConclusionState,
+  Commit,
+  MergeableState,
+  PullRequestCommit,
+  PullRequestReview,
+  PullRequestReviewState,
+  Ref,
+  Repository,
+  User,
+} from '@plusone/github-schema'
 
 import { UserFilter } from './repository-overview'
 

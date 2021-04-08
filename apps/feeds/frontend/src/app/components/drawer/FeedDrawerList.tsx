@@ -1,6 +1,7 @@
 import { Divider, Drawer, List } from '@material-ui/core'
 import React from 'react'
 import { useQuery, useSubscription } from 'react-apollo'
+
 import {
   FeedsAndGroups,
   FeedsAndGroupsQuery,

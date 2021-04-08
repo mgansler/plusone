@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useGitHubPagination } from '@plusone/github-hooks'
-import { useLocalStorage } from '@plusone/hooks'
 import { useHistory, useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
-import {
-  PageInfo,
-  PullRequestState,
-  Repository,
-  SearchType,
-} from '@plusone/github-schema'
 import {
   createStyles,
   FormControl,
@@ -21,6 +13,15 @@ import {
   Switch,
   TextField,
 } from '@material-ui/core'
+
+import { useGitHubPagination } from '@plusone/github-hooks'
+import { useLocalStorage } from '@plusone/hooks'
+import {
+  PageInfo,
+  PullRequestState,
+  Repository,
+  SearchType,
+} from '@plusone/github-schema'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 

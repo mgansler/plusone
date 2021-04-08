@@ -33,7 +33,15 @@
         "import/order": [
           "error",
           {
-            "newlines-between": "always"
+            "newlines-between": "always",
+            "pathGroups": [
+              {
+                "pattern": "@plusone/**",
+                "group": "external",
+                "position": "after"
+              }
+            ],
+            "pathGroupsExcludedImportTypes": ["builtin"]
           }
         ]
       }

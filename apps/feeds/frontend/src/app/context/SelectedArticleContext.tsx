@@ -5,6 +5,7 @@ import React, {
   useContext,
   useState,
 } from 'react'
+
 import { ArticleFieldsFragment } from '@plusone/feeds-schema'
 
 interface ContextState {

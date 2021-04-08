@@ -1,5 +1,6 @@
-import { PageInfo } from '@plusone/github-schema'
 import { useCallback, useState } from 'react'
+
+import { PageInfo } from '@plusone/github-schema'
 
 type PageMeta = {
   currentPage: number

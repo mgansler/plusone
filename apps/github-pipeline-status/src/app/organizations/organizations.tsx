@@ -1,7 +1,5 @@
 import React, { useRef } from 'react'
 import { useQuery } from 'react-query'
-import { useGitHubPagination } from '@plusone/github-hooks'
-import { User } from '@plusone/github-schema'
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
 import {
   createStyles,
@@ -14,6 +12,9 @@ import {
   Select,
   Toolbar,
 } from '@material-ui/core'
+
+import { useGitHubPagination } from '@plusone/github-hooks'
+import { User } from '@plusone/github-schema'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryOverview } from '../repository-overview/repository-overview'

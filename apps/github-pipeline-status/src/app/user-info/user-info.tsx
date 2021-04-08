@@ -1,7 +1,8 @@
-import { User } from '@plusone/github-schema'
 import React from 'react'
 import { useQuery } from 'react-query'
 import { Avatar, Button, Typography } from '@material-ui/core'
+
+import { User } from '@plusone/github-schema'
 
 import { useLogout, useOctokit } from '../octokit-provider/octokit-provider'
 

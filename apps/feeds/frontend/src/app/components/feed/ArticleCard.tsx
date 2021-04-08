@@ -12,6 +12,7 @@ import {
 } from '@material-ui/icons'
 import React, { RefObject, useRef } from 'react'
 import { useMutation } from 'react-apollo'
+
 import {
   ArticleFieldsFragment,
   MutationToggleArticleUnreadArgs,

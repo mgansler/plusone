@@ -1,7 +1,8 @@
 import React, { useContext, useMemo, useRef } from 'react'
 import { Octokit } from '@octokit/core'
-import { useLocalStorage } from '@plusone/hooks'
 import { Button, TextField, Typography } from '@material-ui/core'
+
+import { useLocalStorage } from '@plusone/hooks'
 import { LoginCard } from '@plusone/components'
 
 interface Context {
