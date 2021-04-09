@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { useQuery } from 'react-query'
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
 import {
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) =>
   }),
 )
 
-export const Organizations: React.FC = () => {
+export function Organizations() {
   const classNames = useStyles()
 
   const history = useHistory()

@@ -1,6 +1,6 @@
-import React from 'react'
 import { Card, CardContent, Container, createStyles } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import React, { ReactNode } from 'react'
 
 const useClassNames = makeStyles((theme) =>
   createStyles({
@@ -16,7 +16,11 @@ const useClassNames = makeStyles((theme) =>
   }),
 )
 
-export const LoginCard: React.FC = ({ children }) => {
+type LoginCardProps = {
+  children: ReactNode
+}
+
+export function LoginCard({ children }: LoginCardProps) {
   const classNames = useClassNames()
 
   return (

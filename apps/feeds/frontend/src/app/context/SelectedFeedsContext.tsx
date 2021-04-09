@@ -1,6 +1,7 @@
-import React, {
+import {
   createContext,
   Dispatch,
+  ReactNode,
   Reducer,
   ReducerAction,
   useContext,
@@ -66,7 +67,13 @@ const reducer: Reducer<ContextState, SelectFeed | SelectGroup> = (
   }
 }
 
-export const SelectedFeedsProvider: React.FC = ({ children }) => {
+type SelectedFeedsProviderProps = {
+  children: ReactNode
+}
+
+export function SelectedFeedsProvider({
+  children,
+}: SelectedFeedsProviderProps) {
   const [state, select] = useReducer(reducer, defaultValue)
 
   return (

@@ -10,8 +10,9 @@ import {
 } from '@material-ui/core'
 import { Edit } from '@material-ui/icons'
 import gql from 'graphql-tag'
-import React, { ChangeEvent } from 'react'
+import { ChangeEvent } from 'react'
 import { useApolloClient, useMutation } from 'react-apollo'
+import React from 'react'
 
 import {
   AddFeedToGroup,
@@ -28,7 +29,11 @@ import { useBoolean } from '@plusone/hooks'
 
 import { useFeedStyles } from './style'
 
-export const EditFeed: React.FC<{ feed: FeedFieldsFragment }> = ({ feed }) => {
+type EditFeedProps = {
+  feed: FeedFieldsFragment
+}
+
+export function EditFeed({ feed }: EditFeedProps) {
   const classNames = useFeedStyles()
   const [isOpen, open, close] = useBoolean(false)
 

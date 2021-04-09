@@ -12,7 +12,7 @@ import React, { useCallback, useContext, useState } from 'react'
 import { AuthenticationContext } from '../authentication'
 import { CheatSheet, ModalIdentifier, NewFeed, NewGroup } from '../modal'
 
-export const UserMenu: React.FC = () => {
+export function UserMenu() {
   const { logout } = useContext(AuthenticationContext)
 
   const [userMenuAnchor, setUserMenuAnchor] = useState<HTMLElement | null>()

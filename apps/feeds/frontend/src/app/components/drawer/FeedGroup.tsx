@@ -8,7 +8,8 @@ import {
   ListItemText,
 } from '@material-ui/core'
 import { ExpandLess, ExpandMore, Inbox } from '@material-ui/icons'
-import React, { useState } from 'react'
+import { useState } from 'react'
+import React from 'react'
 
 import { FeedFieldsFragment, GroupFieldsFragment } from '@plusone/feeds-schema'
 

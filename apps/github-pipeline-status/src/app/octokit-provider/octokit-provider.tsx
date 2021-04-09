@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useRef } from 'react'
+import { createContext, FC, useContext, useMemo, useRef } from 'react'
 import { Octokit } from '@octokit/core'
 import { Button, TextField, Typography } from '@material-ui/core'
 
@@ -10,13 +10,13 @@ interface Context {
   logout: () => void
 }
 
-const OctokitContext = React.createContext<Context>(null)
+const OctokitContext = createContext<Context>(null)
 
 interface TokenInputProps {
   setToken: (value: string) => void
 }
 
-const TokenInput: React.FC<TokenInputProps> = ({ setToken }) => {
+const TokenInput: FC<TokenInputProps> = ({ setToken }) => {
   const inputRef = useRef<HTMLInputElement>()
 
   const handleSubmit = () => {

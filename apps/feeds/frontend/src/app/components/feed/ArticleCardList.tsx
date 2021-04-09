@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useSelectedArticle } from '../../context'
 import { useArticles } from '../../hooks'
@@ -7,7 +7,7 @@ import { useKeyboardControl } from '../keyboardControl'
 import { ArticleCard } from './ArticleCard'
 import { useFeedStyles } from './style'
 
-export const ArticleCardList: React.FC = () => {
+export function ArticleCardList() {
   const classNames = useFeedStyles()
   const articles = useArticles()
   useKeyboardControl()

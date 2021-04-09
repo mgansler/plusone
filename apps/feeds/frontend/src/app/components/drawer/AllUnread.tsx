@@ -8,7 +8,6 @@ import {
 } from '@material-ui/core'
 import { MoreVert, RssFeed } from '@material-ui/icons'
 import gql from 'graphql-tag'
-import React from 'react'
 import { useApolloClient } from 'react-apollo'
 
 import { Feed } from '@plusone/feeds-schema'
@@ -18,7 +17,7 @@ import { SelectionType } from '../../context/SelectedFeedsContext'
 
 import { useFeedStyles } from './style'
 
-export const AllUnread: React.FC = () => {
+export function AllUnread() {
   const classNames = useFeedStyles()
   const { selectedGroup, select } = useSelectedFeeds()
 

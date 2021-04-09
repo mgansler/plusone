@@ -1,6 +1,7 @@
-import React, {
+import {
   createContext,
   Dispatch,
+  ReactNode,
   SetStateAction,
   useContext,
   useState,
@@ -23,7 +24,13 @@ const defaultValue: ContextValue = {
 
 const Context = createContext<ContextValue>(defaultValue)
 
-export const SelectedArticleProvider: React.FC = ({ children }) => {
+type SelectedArticleProviderProps = {
+  children: ReactNode
+}
+
+export function SelectedArticleProvider({
+  children,
+}: SelectedArticleProviderProps) {
   const [article, setArticle] = useState<ArticleFieldsFragment | undefined>(
     defaultValue.article,
   )

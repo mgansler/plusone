@@ -4,7 +4,6 @@ import {
   makeStyles,
   ThemeProvider,
 } from '@material-ui/core'
-import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 
 import { AuthenticationProvider } from './components/authentication'
@@ -45,7 +44,7 @@ const useAppStyles = makeStyles((theme) =>
   }),
 )
 
-export const App: React.FC = () => {
+export function App() {
   const classNames = useAppStyles()
 
   return (
@@ -66,17 +65,19 @@ export const App: React.FC = () => {
   )
 }
 
-export const AppWithProviders: React.FC = () => (
-  <ApolloProvider client={apolloClient}>
-    <CssBaseline />
-    <ThemeProvider theme={theme}>
-      <KeyboardControlProvider>
-        <AuthenticationProvider>
-          <SelectedFeedsProvider>
-            <App />
-          </SelectedFeedsProvider>
-        </AuthenticationProvider>
-      </KeyboardControlProvider>
-    </ThemeProvider>
-  </ApolloProvider>
-)
+export function AppWithProviders() {
+  return (
+    <ApolloProvider client={apolloClient}>
+      <CssBaseline />
+      <ThemeProvider theme={theme}>
+        <KeyboardControlProvider>
+          <AuthenticationProvider>
+            <SelectedFeedsProvider>
+              <App />
+            </SelectedFeedsProvider>
+          </AuthenticationProvider>
+        </KeyboardControlProvider>
+      </ThemeProvider>
+    </ApolloProvider>
+  )
+}

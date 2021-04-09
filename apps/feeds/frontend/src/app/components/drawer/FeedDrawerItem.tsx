@@ -6,7 +6,6 @@ import {
   Typography,
 } from '@material-ui/core'
 import { RssFeed } from '@material-ui/icons'
-import React from 'react'
 
 import { FeedFieldsFragment } from '@plusone/feeds-schema'
 
@@ -16,10 +15,12 @@ import { SelectionType } from '../../context/SelectedFeedsContext'
 import { EditFeed } from './EditFeed'
 import { useFeedStyles } from './style'
 
-export const FeedDrawerItem: React.FC<{
+type FeedDrawerItemProps = {
   feed: FeedFieldsFragment
   subItem?: boolean
-}> = ({ feed, subItem }) => {
+}
+
+export function FeedDrawerItem({ feed, subItem }: FeedDrawerItemProps) {
   const classNames = useFeedStyles()
   const { selectedFeeds, select } = useSelectedFeeds()
 

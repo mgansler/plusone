@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { MutableRefObject, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import {
@@ -181,12 +181,10 @@ const useFetchRepositoryData = ({
 }
 
 interface RepositoryOverviewProps {
-  toolbarRef: React.MutableRefObject<HTMLDivElement>
+  toolbarRef: MutableRefObject<HTMLDivElement>
 }
 
-export const RepositoryOverview: React.FC<RepositoryOverviewProps> = ({
-  toolbarRef,
-}) => {
+export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
   const classNames = {
     ...useRepositoryStyles(),
     ...useStyles(),

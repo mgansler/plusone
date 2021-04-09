@@ -39,13 +39,13 @@ interface CheatSheetEntryProps {
   description: string
 }
 
-const CheatSheetEntry: React.FC<CheatSheetEntryProps> = ({
+function CheatSheetEntry({
   keyCombination,
   description,
-}) => {
+}: CheatSheetEntryProps) {
   const classNames = useCheatSheetStyles()
   return (
-    <>
+    <React.Fragment>
       <Button
         className={classNames.button}
         variant={'contained'}
@@ -54,7 +54,7 @@ const CheatSheetEntry: React.FC<CheatSheetEntryProps> = ({
         {keyCombination}
       </Button>
       <DialogContentText>{description}</DialogContentText>
-    </>
+    </React.Fragment>
   )
 }
 
