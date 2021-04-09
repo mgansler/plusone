@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   AppBar,
@@ -8,6 +8,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core'
+import React from 'react'
 
 import { ConferenceLink } from '@plusone/conference-links'
 import { useLocalStorage } from '@plusone/hooks'
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) =>
   }),
 )
 
-export const App: React.FC = () => {
+export function App() {
   const classNames = useStyles()
 
   useMigrations()

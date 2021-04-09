@@ -1,5 +1,4 @@
 import { AppBar, Toolbar, Typography } from '@material-ui/core'
-import React from 'react'
 
 import { useHeaderStyles } from './styles'
 import { UserMenu } from './UserMenu'

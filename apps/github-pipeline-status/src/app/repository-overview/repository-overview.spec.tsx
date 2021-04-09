@@ -1,8 +1,8 @@
-import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import nock from 'nock'
 import { BrowserRouter } from 'react-router-dom'
+import { createRef } from 'react'
 
 import {
   CheckConclusionState,
@@ -112,7 +112,7 @@ describe('RepositoryOverview', () => {
         },
       })
 
-    const toolbarRef = React.createRef<HTMLDivElement>()
+    const toolbarRef = createRef<HTMLDivElement>()
 
     render(
       <QueryClientProvider client={queryClient}>

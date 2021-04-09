@@ -10,7 +10,7 @@ import {
   CheckBoxOutlined,
   OpenInNew,
 } from '@material-ui/icons'
-import React, { RefObject, useRef } from 'react'
+import { RefObject, useRef } from 'react'
 import { useMutation } from 'react-apollo'
 
 import {
@@ -42,10 +42,7 @@ const subheader = (article: ArticleFieldsFragment): string => {
   return dateTime + author
 }
 
-export const ArticleCard: React.FC<ExternalProps> = ({
-  article,
-  scrollTargetRef,
-}) => {
+export function ArticleCard({ article, scrollTargetRef }: ExternalProps) {
   const classNames = useFeedStyles()
 
   const [toggleUnread] = useMutation<

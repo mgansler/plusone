@@ -1,5 +1,5 @@
 import { CircularProgress } from '@material-ui/core'
-import React, { createContext, useEffect } from 'react'
+import { createContext, ReactNode, useEffect } from 'react'
 import { useQuery } from 'react-apollo'
 
 import {
@@ -25,7 +25,13 @@ export const AuthenticationContext = createContext<Authentication>({
   logout: () => undefined,
 })
 
-export const AuthenticationProvider: React.FC = ({ children }) => {
+type AuthenticationProviderProps = {
+  children: ReactNode
+}
+
+export function AuthenticationProvider({
+  children,
+}: AuthenticationProviderProps) {
   const classNames = useAuthenticationStyles()
   const [isAuthenticated, login, logout] = useBoolean(false)
 

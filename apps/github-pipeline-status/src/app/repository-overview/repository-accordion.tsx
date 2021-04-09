@@ -154,11 +154,7 @@ interface CanBeMergedProps {
   mergeable: MergeableState
 }
 
-const CanBeMerged: React.FC<CanBeMergedProps> = ({
-  className,
-  commits,
-  mergeable,
-}) => {
+function CanBeMerged({ className, commits, mergeable }: CanBeMergedProps) {
   const prCheckState = commits
     .flatMap((node) => node.commit.checkSuites.nodes)
     .flatMap((node) => node.conclusion)
@@ -184,10 +180,10 @@ interface DefaultBranchStateProps {
   defaultBranchRef?: Ref
 }
 
-const DefaultBranchState: React.FC<DefaultBranchStateProps> = ({
+function DefaultBranchState({
   className,
   defaultBranchRef,
-}) => {
+}: DefaultBranchStateProps) {
   if (!defaultBranchRef) {
     return null
   }
@@ -209,7 +205,7 @@ interface RepositoryAccordionProps {
   repository: Repository
 }
 
-export const RepositoryAccordion: React.FC<RepositoryAccordionProps> = ({
+export function RepositoryAccordion({
   userFilter,
   repository: {
     name,
@@ -217,7 +213,7 @@ export const RepositoryAccordion: React.FC<RepositoryAccordionProps> = ({
     defaultBranchRef,
     pullRequests: { totalCount: pullRequestCount, nodes: pullRequests },
   },
-}) => {
+}: RepositoryAccordionProps) {
   const classNames = useStyles()
 
   const filteredPullRequests = useMemo(

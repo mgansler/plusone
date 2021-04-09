@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import {
   Button,
   Card,
@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Add, VideoCall } from '@material-ui/icons'
+import React from 'react'
 
 import { ConferenceLink, fromLink } from '@plusone/conference-links'
 
@@ -29,10 +30,7 @@ const useStyles = makeStyles((theme) =>
   }),
 )
 
-export const ConferenceLinkButton: React.FC<ConferenceLink> = ({
-  title,
-  url,
-}) => {
+export function ConferenceLinkButton({ title, url }: ConferenceLink) {
   const classNames = useStyles()
 
   return (
@@ -43,9 +41,11 @@ export const ConferenceLinkButton: React.FC<ConferenceLink> = ({
   )
 }
 
-export const NewConferenceLink: React.FC<{
+type NewConferenceLinkProps = {
   addNewLink: (conference: ConferenceLink) => void
-}> = ({ addNewLink }) => {
+}
+
+export function NewConferenceLink({ addNewLink }: NewConferenceLinkProps) {
   const classNames = useStyles()
 
   const [isOpen, setIsOpen] = useState<boolean>(false)

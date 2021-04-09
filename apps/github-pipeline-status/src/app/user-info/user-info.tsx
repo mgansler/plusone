@@ -24,7 +24,7 @@ const useFetchUserInfo = () => {
   return { data, isLoading }
 }
 
-export const UserInfo: React.FC = () => {
+export function UserInfo() {
   const logout = useLogout()
   const { data, isLoading } = useFetchUserInfo()
 

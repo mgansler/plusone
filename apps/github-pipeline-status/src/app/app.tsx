@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   AppBar,
   createStyles,
@@ -6,6 +5,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core'
+import React from 'react'
 
 import { UserInfo } from './user-info/user-info'
 import { Organizations } from './organizations/organizations'
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) =>
   }),
 )
 
-export const App: React.FC = () => {
+export function App() {
   const classNames = useStyles()
   return (
     <React.Fragment>

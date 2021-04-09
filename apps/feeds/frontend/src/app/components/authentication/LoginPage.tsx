@@ -1,5 +1,4 @@
 import { Button, CircularProgress, Typography } from '@material-ui/core'
-import React from 'react'
 import { useQuery } from 'react-apollo'
 
 import { AuthorizationUri, AuthorizationUriQuery } from '@plusone/feeds-schema'
@@ -7,7 +6,7 @@ import { LoginCard } from '@plusone/components'
 
 import { useAuthenticationStyles } from './styles'
 
-export const LoginPage: React.FC = () => {
+export function LoginPage() {
   const classNames = useAuthenticationStyles()
 
   const { loading, data } = useQuery<AuthorizationUriQuery>(AuthorizationUri)

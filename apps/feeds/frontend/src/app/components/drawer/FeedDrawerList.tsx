@@ -1,5 +1,4 @@
 import { Divider, Drawer, List } from '@material-ui/core'
-import React from 'react'
 import { useQuery, useSubscription } from 'react-apollo'
 
 import {
@@ -15,7 +14,7 @@ import { FeedDrawerItem } from './FeedDrawerItem'
 import { FeedGroup } from './FeedGroup'
 import { useFeedStyles } from './style'
 
-export const FeedDrawerList: React.FC = () => {
+export function FeedDrawerList() {
   const classNames = useFeedStyles()
 
   const { loading, data } = useQuery<FeedsAndGroupsQuery>(FeedsAndGroups)

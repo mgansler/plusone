@@ -9,7 +9,7 @@ interface ImportExportProps {
   load: (links: ConferenceLink[]) => void
 }
 
-export const ImportExport: React.FC<ImportExportProps> = ({ links, load }) => {
+export function ImportExport({ links, load }: ImportExportProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleImport = useCallback(() => {
