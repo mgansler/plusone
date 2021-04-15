@@ -2082,6 +2082,18 @@
     yargs "15.4.1"
     yargs-parser "20.0.0"
 
+"@nrwl/cli@12.0.6":
+  version "12.0.6"
+  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-12.0.6.tgz#76c713df2c50672cefa988088f23e588c54b52fb"
+  integrity sha512-e5DdfSXPGk97d1lYBx3YUI0/xd+TuQsdQOKcq6Gf6Ga72EuP6Zks80sfFa8BwML4+UpEqL5RyVs+sxFX6V93Pg==
+  dependencies:
+    "@nrwl/tao" "12.0.6"
+    chalk "4.1.0"
+    tmp "0.0.33"
+    v8-compile-cache "2.3.0"
+    yargs "15.4.1"
+    yargs-parser "20.0.0"
+
 "@nrwl/cypress@12.0.4":
   version "12.0.4"
   resolved "https://registry.yarnpkg.com/@nrwl/cypress/-/cypress-12.0.4.tgz#396eb374ab6c6ff427ca40fbd12a38d246785cf4"
@@ -2186,6 +2198,23 @@
   version "12.0.4"
   resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-12.0.4.tgz#d81ddb72baa2ddb7236db49b63f6a407a17495b0"
   integrity sha512-EduZbCXDjtXaSq5PsLDyCh/ZVEtQ0Id0ySP0/DhxkPH7DpVB1m8d4CtFfwMzBUlOaGBKZqmsnTvCLbKvTfhRfg==
+  dependencies:
+    chalk "4.1.0"
+    enquirer "~2.3.6"
+    fs-extra "7.0.1"
+    minimist "^1.2.5"
+    rxjs "^6.5.4"
+    rxjs-for-await "0.0.2"
+    semver "7.3.4"
+    strip-json-comments "2.0.1"
+    tmp "0.0.33"
+    tslib "^2.0.0"
+    yargs-parser "20.0.0"
+
+"@nrwl/tao@12.0.6":
+  version "12.0.6"
+  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-12.0.6.tgz#4f030ceae7790d41e63e5cc50bd2c27f2487b7e1"
+  integrity sha512-pMu6xFM6jOawSOOrhP459DFaQBmWgyGkktKCHooKm2qYvBG4NIcSw/v330dsoDD5/xUdLVv0J0mgA8wSVsLyFA==
   dependencies:
     chalk "4.1.0"
     enquirer "~2.3.6"
