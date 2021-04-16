@@ -2,4 +2,5 @@
 . "$(dirname "$0")/_/husky.sh"
 
 yarn run nx format --base HEAD
+yarn run nx format:write --files workspace.json,nx.json
 yarn run nx affected:lint --base HEAD
