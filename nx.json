@@ -1,40 +1,73 @@
 {
   "implicitDependencies": {
     "workspace.json": "*",
-    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
     "tsconfig.base.json": "*",
     "tslint.json": "*",
     ".eslintrc.json": "*",
-    "nx.json": "*"
+    "nx.json": "*",
+    ".github/workflows/pull_request.yml": "*"
   },
-  "affected": { "defaultBase": "main" },
+  "affected": {
+    "defaultBase": "main"
+  },
   "npmScope": "plusone",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
     }
   },
   "projects": {
-    "github-pipeline-status": { "tags": [] },
+    "github-pipeline-status": {
+      "tags": []
+    },
     "github-pipeline-status-e2e": {
       "tags": [],
       "implicitDependencies": ["github-pipeline-status"]
     },
-    "dom-utils": { "tags": [] },
-    "github-schema": { "tags": [] },
-    "hooks": { "tags": [] },
-    "quick-zoom": { "tags": [] },
-    "quick-zoom-e2e": { "tags": [], "implicitDependencies": ["quick-zoom"] },
-    "conference-links": { "tags": [] },
-    "github-hooks": { "tags": [] },
-    "feeds-backend": { "tags": [] },
-    "feeds-frontend": { "tags": [] },
+    "dom-utils": {
+      "tags": []
+    },
+    "github-schema": {
+      "tags": []
+    },
+    "hooks": {
+      "tags": []
+    },
+    "quick-zoom": {
+      "tags": []
+    },
+    "quick-zoom-e2e": {
+      "tags": [],
+      "implicitDependencies": ["quick-zoom"]
+    },
+    "conference-links": {
+      "tags": []
+    },
+    "github-hooks": {
+      "tags": []
+    },
+    "feeds-backend": {
+      "tags": []
+    },
+    "feeds-frontend": {
+      "tags": []
+    },
     "feeds-e2e": {
       "tags": [],
       "implicitDependencies": ["feeds-frontend", "feeds-backend"]
     },
-    "feeds-schema": { "tags": [] },
-    "components": { "tags": [] }
+    "feeds-schema": {
+      "tags": []
+    },
+    "components": {
+      "tags": []
+    }
   }
 }
