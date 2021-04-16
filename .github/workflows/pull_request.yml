@@ -11,6 +11,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Debug
+        run: |
+          npx -q nx print-affected --base origin/main --target lint
+
       - name: Configure matrix
         id: configure-matrix
         run: |
