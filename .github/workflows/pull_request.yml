@@ -29,7 +29,7 @@ jobs:
           echo "::set-output name=lint::$(yarn nx print-affected --base origin/main --target lint   |sed '$ d'|tail -n +3|jq '.tasks'|jq -c 'map(.target.project)')"
           echo "::set-output name=test::$(yarn nx print-affected --base origin/main --target test   |sed '$ d'|tail -n +3|jq '.tasks'|jq -c 'map(.target.project)')"
           echo "::set-output name=build::$(yarn nx print-affected --base origin/main --target build |sed '$ d'|tail -n +3|jq '.tasks'|jq -c 'map(.target.project)')"
-          echo "::set-output name=e2e::$(yarn nx print-affected --base origin/main --target e2e |sed '$ d'|tail -n +3|jq '.tasks'|jq -c 'map(.target.project)')"
+          echo "::set-output name=e2e::$(yarn nx print-affected --base origin/main --target e2e     |sed '$ d'|tail -n +3|jq '.tasks'|jq -c 'map(.target.project)')"
 
     outputs:
       lint: ${{ steps.configure-matrix.outputs.lint }}
