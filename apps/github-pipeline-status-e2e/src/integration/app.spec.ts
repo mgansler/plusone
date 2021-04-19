@@ -1,29 +1,18 @@
 import { currentUser, org1, org2, organizations } from '../fixtures'
 import { login } from '../support/app.po'
+import { mapGraphqlResponse } from '../support/map-graphql-response'
 
 describe('github-pipeline-status', () => {
   beforeEach(() => {
     cy.visit('/')
 
     cy.intercept('POST', 'https://api.github.com/graphql', (req) => {
-      switch (true) {
-        case req.body.query.includes('avatarUrl'): {
-          req.reply(currentUser)
-          break
-        }
-        case req.body.query.includes('organizations'): {
-          req.reply(organizations)
-          break
-        }
-        case req.body.query.includes('org:org1'): {
-          req.reply(org1)
-          break
-        }
-        case req.body.query.includes('org:org2'): {
-          req.reply(org2)
-          break
-        }
-      }
+      mapGraphqlResponse(req, {
+        avatarUrl: currentUser,
+        organizations: organizations,
+        'org:org1': org1,
+        'org:org2': org2,
+      })
     })
 
     login()
