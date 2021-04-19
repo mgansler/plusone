@@ -41,9 +41,7 @@ const httpLink = new HttpLink({
 
 const link = split(
   ({ query }) => {
-    const { kind, operation } = getMainDefinition(
-      query,
-    ) as OperationDefinitionNode
+    const { kind, operation } = getMainDefinition(query) as OperationDefinitionNode
     return kind === 'OperationDefinition' && operation === 'subscription'
   },
   wsLink,

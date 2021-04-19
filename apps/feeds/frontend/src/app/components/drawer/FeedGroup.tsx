@@ -45,11 +45,7 @@ export const FeedGroup: React.FC<FeedGroupProps> = ({ group, feeds }) => {
 
   return (
     <React.Fragment>
-      <ListItem
-        button={true}
-        onClick={handleSelect}
-        selected={group.id === selectedGroup}
-      >
+      <ListItem button={true} onClick={handleSelect} selected={group.id === selectedGroup}>
         <ListItemIcon className={classNames.avatar}>
           <Inbox />
         </ListItemIcon>
@@ -58,10 +54,7 @@ export const FeedGroup: React.FC<FeedGroupProps> = ({ group, feeds }) => {
           <ListItemText primary={group.name} />
         </Badge>
 
-        <IconButton
-          className={classNames.drawerDelete}
-          onClick={() => setIsOpen(!isOpen)}
-        >
+        <IconButton className={classNames.drawerDelete} onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <ExpandLess /> : <ExpandMore />}
         </IconButton>
       </ListItem>

@@ -27,10 +27,7 @@ import { Modal } from './index'
 
 export const NewFeed: React.FC<Modal> = ({ isOpen, open, close }) => {
   const [feedInput, setFeedInput] = useState<FeedInput>({ uri: '' })
-  const [createNewFeed] = useMutation<
-    AddFeedMutation,
-    AddFeedMutationVariables
-  >(AddFeed, {
+  const [createNewFeed] = useMutation<AddFeedMutation, AddFeedMutationVariables>(AddFeed, {
     refetchQueries: [{ query: FeedsAndGroups }],
   })
 

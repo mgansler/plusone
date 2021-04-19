@@ -64,9 +64,7 @@ describe('RepositoryOverview', () => {
                           {
                             commit: {
                               checkSuites: {
-                                nodes: [
-                                  { conclusion: CheckConclusionState.Success },
-                                ],
+                                nodes: [{ conclusion: CheckConclusionState.Success }],
                               },
                             },
                           },

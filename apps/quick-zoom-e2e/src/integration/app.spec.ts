@@ -14,9 +14,7 @@ describe('quick-zoom', () => {
       cy.findByText('New Zoom Link')
 
       cy.findByLabelText('Title').type('Hello World')
-      cy.findByLabelText('Zoom Link').type(
-        'https://example.zoom.us/j/0123456789?pwd=some_password',
-      )
+      cy.findByLabelText('Zoom Link').type('https://example.zoom.us/j/0123456789?pwd=some_password')
 
       cy.findByText('Add').click()
     })

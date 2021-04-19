@@ -28,8 +28,8 @@ const TokenInput: FC<TokenInputProps> = ({ setToken }) => {
   return (
     <LoginCard>
       <Typography>
-        In order to use this application you need to provide an access token
-        with the following permissions:
+        In order to use this application you need to provide an access token with the following
+        permissions:
       </Typography>
 
       <dl>

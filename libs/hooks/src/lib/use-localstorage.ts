@@ -16,11 +16,7 @@ type UseLocalStorageProps<ItemType> = {
 export const useLocalStorage = <ItemType>({
   key,
   defaultValue,
-}: UseLocalStorageProps<ItemType>): [
-  ItemType,
-  (newValue: ItemType) => void,
-  () => void,
-] => {
+}: UseLocalStorageProps<ItemType>): [ItemType, (newValue: ItemType) => void, () => void] => {
   const [value, setValue] = useState<ItemType>()
 
   useEffect(() => {

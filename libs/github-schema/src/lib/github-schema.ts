@@ -2,10 +2,8 @@ export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
 }
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]?: Maybe<T[SubKey]> }
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]: Maybe<T[SubKey]> }
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -3006,9 +3004,7 @@ export type CreatedIssueContributionEdge = {
 }
 
 /** Represents either a issue the viewer can access or a restricted contribution. */
-export type CreatedIssueOrRestrictedContribution =
-  | CreatedIssueContribution
-  | RestrictedContribution
+export type CreatedIssueOrRestrictedContribution = CreatedIssueContribution | RestrictedContribution
 
 /** Represents the contribution a user made on GitHub by opening a pull request. */
 export type CreatedPullRequestContribution = Contribution & {
@@ -9673,9 +9669,7 @@ export type OrgRemoveOutsideCollaboratorAuditEntry = AuditEntry &
     createdAt: Scalars['PreciseDateTime']
     id: Scalars['ID']
     /** The types of membership the outside collaborator has with the organization. */
-    membershipTypes?: Maybe<
-      Array<OrgRemoveOutsideCollaboratorAuditEntryMembershipType>
-    >
+    membershipTypes?: Maybe<Array<OrgRemoveOutsideCollaboratorAuditEntryMembershipType>>
     /** The corresponding operation type for the action */
     operationType?: Maybe<OperationType>
     /** The Organization associated with the Audit Entry. */

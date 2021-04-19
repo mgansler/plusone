@@ -60,9 +60,7 @@ export function AllUnread() {
         className={classNames.drawerBadge}
         max={999}
       >
-        <ListItemText
-          primary={<Typography noWrap={true}>All Unread</Typography>}
-        />
+        <ListItemText primary={<Typography noWrap={true}>All Unread</Typography>} />
       </Badge>
       <IconButton className={classNames.drawerDelete}>
         <MoreVert />

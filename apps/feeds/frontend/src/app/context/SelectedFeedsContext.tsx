@@ -47,10 +47,7 @@ type SelectGroup = {
 
 const Context = createContext<ContextValue>(defaultValue)
 
-const reducer: Reducer<ContextState, SelectFeed | SelectGroup> = (
-  state,
-  action,
-) => {
+const reducer: Reducer<ContextState, SelectFeed | SelectGroup> = (state, action) => {
   switch (action.type) {
     case SelectionType.Feed:
       return {
@@ -71,14 +68,10 @@ type SelectedFeedsProviderProps = {
   children: ReactNode
 }
 
-export function SelectedFeedsProvider({
-  children,
-}: SelectedFeedsProviderProps) {
+export function SelectedFeedsProvider({ children }: SelectedFeedsProviderProps) {
   const [state, select] = useReducer(reducer, defaultValue)
 
-  return (
-    <Context.Provider value={{ ...state, select }}>{children}</Context.Provider>
-  )
+  return <Context.Provider value={{ ...state, select }}>{children}</Context.Provider>
 }
 
 export const useSelectedFeeds = () => useContext<ContextValue>(Context)

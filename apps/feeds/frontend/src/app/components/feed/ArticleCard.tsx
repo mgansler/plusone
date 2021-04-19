@@ -1,15 +1,5 @@
-import {
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  IconButton,
-} from '@material-ui/core'
-import {
-  CheckBoxOutlineBlank,
-  CheckBoxOutlined,
-  OpenInNew,
-} from '@material-ui/icons'
+import { Card, CardActions, CardContent, CardHeader, IconButton } from '@material-ui/core'
+import { CheckBoxOutlineBlank, CheckBoxOutlined, OpenInNew } from '@material-ui/icons'
 import { RefObject, useRef } from 'react'
 import { useMutation } from 'react-apollo'
 
@@ -45,12 +35,10 @@ const subheader = (article: ArticleFieldsFragment): string => {
 export function ArticleCard({ article, scrollTargetRef }: ExternalProps) {
   const classNames = useFeedStyles()
 
-  const [toggleUnread] = useMutation<
-    ToggleArticleUnreadMutation,
-    MutationToggleArticleUnreadArgs
-  >(ToggleArticleUnread, {
-    variables: { id: article.id },
-  })
+  const [toggleUnread] = useMutation<ToggleArticleUnreadMutation, MutationToggleArticleUnreadArgs>(
+    ToggleArticleUnread,
+    { variables: { id: article.id } },
+  )
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
   const handleOnLoad = () => {
@@ -103,11 +91,7 @@ export function ArticleCard({ article, scrollTargetRef }: ExternalProps) {
           )}
         </IconButton>
 
-        <IconButton
-          color={color}
-          href={article.link}
-          style={{ marginLeft: 'auto' }}
-        >
+        <IconButton color={color} href={article.link} style={{ marginLeft: 'auto' }}>
           <OpenInNew />
         </IconButton>
       </CardActions>

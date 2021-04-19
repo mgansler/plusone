@@ -1,11 +1,7 @@
 import { Divider, Drawer, List } from '@material-ui/core'
 import { useQuery, useSubscription } from 'react-apollo'
 
-import {
-  FeedsAndGroups,
-  FeedsAndGroupsQuery,
-  FeedSubscription,
-} from '@plusone/feeds-schema'
+import { FeedsAndGroups, FeedsAndGroupsQuery, FeedSubscription } from '@plusone/feeds-schema'
 
 import { ToolbarMixin } from '../mixins'
 
@@ -21,14 +17,10 @@ export function FeedDrawerList() {
   useSubscription(FeedSubscription)
 
   const feedsWithUnreadArticles = data
-    ? data.feeds.filter(
-        ({ unreadCount, group }) => group === null && (unreadCount ?? 0) > 0,
-      )
+    ? data.feeds.filter(({ unreadCount, group }) => group === null && (unreadCount ?? 0) > 0)
     : []
   const feedsWithoutUnreadArticles = data
-    ? data.feeds.filter(
-        ({ unreadCount, group }) => group === null && (unreadCount ?? 0) === 0,
-      )
+    ? data.feeds.filter(({ unreadCount, group }) => group === null && (unreadCount ?? 0) === 0)
     : []
 
   if (loading || data === undefined) {

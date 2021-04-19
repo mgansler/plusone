@@ -24,8 +24,7 @@ function migrateStoredLinks(current: unknown[]) {
 
 export function useMigrations() {
   useEffect(() => {
-    const oldLinks =
-      (JSON.parse(localStorage.getItem('zoomLinks')) as unknown[]) ?? []
+    const oldLinks = (JSON.parse(localStorage.getItem('zoomLinks')) as unknown[]) ?? []
     const newLinks = migrateStoredLinks(oldLinks)
     localStorage.setItem('zoomLinks', JSON.stringify(newLinks))
   }, [])

@@ -11,10 +11,7 @@ describe('feeds-frontend', () => {
   })
 
   it('should display welcome message on login page', () => {
-    cy.findByRole('heading', { level: 3 }).should(
-      'have.text',
-      'Welcome to Feeds',
-    )
+    cy.findByRole('heading', { level: 3 }).should('have.text', 'Welcome to Feeds')
 
     cy.findByRole('link')
       .should('have.text', 'Login with GitLab')

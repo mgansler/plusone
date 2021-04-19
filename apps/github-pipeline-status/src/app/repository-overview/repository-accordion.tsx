@@ -180,10 +180,7 @@ interface DefaultBranchStateProps {
   defaultBranchRef?: Ref
 }
 
-function DefaultBranchState({
-  className,
-  defaultBranchRef,
-}: DefaultBranchStateProps) {
+function DefaultBranchState({ className, defaultBranchRef }: DefaultBranchStateProps) {
   if (!defaultBranchRef) {
     return null
   }
@@ -286,17 +283,12 @@ export function RepositoryAccordion({
       </AccordionSummary>
       <AccordionDetails className={classNames.accordionDetails}>
         {filteredPullRequests.map((pr) => {
-          const lastReviewStatePerAuthor = getLastReviewStatePerAuthor(
-            pr.reviews.nodes,
-          )
+          const lastReviewStatePerAuthor = getLastReviewStatePerAuthor(pr.reviews.nodes)
 
           return (
             <div className={classNames.row} key={pr.number}>
               <IconButton
-                className={[
-                  classNames.linkColumn,
-                  classNames.pullRequestLink,
-                ].join(' ')}
+                className={[classNames.linkColumn, classNames.pullRequestLink].join(' ')}
                 href={pr.url}
                 target={'_blank'}
                 rel={'noreferrer'}
@@ -329,15 +321,9 @@ export function RepositoryAccordion({
               />
 
               <div className={classNames.pullRequestsOrReviewsColumn}>
-                {Object.entries(lastReviewStatePerAuthor).map(
-                  ([login, state]) => (
-                    <Chip
-                      key={login}
-                      label={login}
-                      icon={ReviewStateIconMap[state]}
-                    />
-                  ),
-                )}
+                {Object.entries(lastReviewStatePerAuthor).map(([login, state]) => (
+                  <Chip key={login} label={login} icon={ReviewStateIconMap[state]} />
+                ))}
               </div>
             </div>
           )
@@ -359,10 +345,7 @@ export function AccordionSkeleton() {
         <Skeleton variant={'circle'} width={28} height={28} />
         <Skeleton className={classNames.titleColumn} variant={'text'} />
         <Skeleton className={classNames.workflowColumn} variant={'text'} />
-        <Skeleton
-          className={classNames.pullRequestsOrReviewsColumn}
-          variant={'text'}
-        />
+        <Skeleton className={classNames.pullRequestsOrReviewsColumn} variant={'text'} />
       </AccordionSummary>
     </Accordion>
   )

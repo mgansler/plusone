@@ -18,26 +18,20 @@ export const useArticles = (): ArticleFieldsFragment[] => {
   const { selectedFeeds: feedIds } = useSelectedFeeds()
   const { article: selectedArticle, setArticle } = useSelectedArticle()
 
-  const { data, fetchMore } = useQuery<ArticlesQuery, ArticlesQueryVariables>(
-    Articles,
-    {
-      fetchPolicy: 'network-only',
-      variables: {
-        filter: {
-          feedIds,
-          offset: 0,
-          limit: ARTICLES_PER_PAGE,
-        },
+  const { data, fetchMore } = useQuery<ArticlesQuery, ArticlesQueryVariables>(Articles, {
+    fetchPolicy: 'network-only',
+    variables: {
+      filter: {
+        feedIds,
+        offset: 0,
+        limit: ARTICLES_PER_PAGE,
       },
     },
-  )
+  })
 
   // Fetch More effect
   useEffect(() => {
-    const index =
-      data?.articles.findIndex(
-        (article) => article.id === selectedArticle?.id,
-      ) ?? -1
+    const index = data?.articles.findIndex((article) => article.id === selectedArticle?.id) ?? -1
 
     if (data?.articles && index > data.articles.length - NTH_TO_LAST_ARTICLE) {
       fetchMore({
@@ -51,10 +45,7 @@ export const useArticles = (): ArticleFieldsFragment[] => {
         updateQuery: (prev, { fetchMoreResult }) => {
           return fetchMoreResult
             ? {
-                articles: uniqBy(
-                  [...prev.articles, ...fetchMoreResult.articles],
-                  'id',
-                ),
+                articles: uniqBy([...prev.articles, ...fetchMoreResult.articles], 'id'),
               }
             : prev
         },
@@ -66,9 +57,7 @@ export const useArticles = (): ArticleFieldsFragment[] => {
   useEffect(() => {
     if (
       selectedArticle === undefined ||
-      data?.articles.findIndex(
-        (article) => article.id === selectedArticle?.id,
-      ) === -1
+      data?.articles.findIndex((article) => article.id === selectedArticle?.id) === -1
     ) {
       setArticle(data?.articles[0])
     }

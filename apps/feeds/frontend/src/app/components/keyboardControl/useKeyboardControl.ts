@@ -36,12 +36,12 @@ export const useKeyboardControl = () => {
   const { article, setArticle } = useSelectedArticle()
   const articles = useArticles()
 
-  const [toggleUnread] = useMutation<
-    ToggleArticleUnreadMutation,
-    MutationToggleArticleUnreadArgs
-  >(ToggleArticleUnread, {
-    variables: { id: article ? article.id : '' },
-  })
+  const [toggleUnread] = useMutation<ToggleArticleUnreadMutation, MutationToggleArticleUnreadArgs>(
+    ToggleArticleUnread,
+    {
+      variables: { id: article ? article.id : '' },
+    },
+  )
 
   const isEnabled = useIsKeyboardControlEnabled()
 

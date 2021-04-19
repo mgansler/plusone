@@ -76,19 +76,9 @@ export function NewConferenceLink({ addNewLink }: NewConferenceLinkProps) {
       <Dialog open={isOpen}>
         <DialogTitle>New Zoom Link</DialogTitle>
         <DialogContent dividers={true}>
-          <TextField
-            id={'title'}
-            fullWidth={true}
-            inputRef={titleInputRef}
-            label={'Title'}
-          />
+          <TextField id={'title'} fullWidth={true} inputRef={titleInputRef} label={'Title'} />
 
-          <TextField
-            id={'zoomlink'}
-            fullWidth={true}
-            inputRef={linkInputRef}
-            label={'Zoom Link'}
-          />
+          <TextField id={'zoomlink'} fullWidth={true} inputRef={linkInputRef} label={'Zoom Link'} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
