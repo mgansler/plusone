@@ -1,11 +1,4 @@
-import {
-  Badge,
-  IconButton,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from '@material-ui/core'
+import { Badge, IconButton, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core'
 import { MoreVert, RssFeed } from '@material-ui/icons'
 import gql from 'graphql-tag'
 import { useApolloClient } from 'react-apollo'
@@ -33,10 +26,7 @@ export function AllUnread() {
     `,
   })
 
-  const totalUnreadCount = data?.feeds.reduce(
-    (currentTotal, { unreadCount }) => currentTotal + (unreadCount ?? 0),
-    0,
-  )
+  const totalUnreadCount = data?.feeds.reduce((currentTotal, { unreadCount }) => currentTotal + (unreadCount ?? 0), 0)
 
   const handleSelect = () =>
     select({
@@ -54,15 +44,8 @@ export function AllUnread() {
       <ListItemIcon className={classNames.avatar}>
         <RssFeed />
       </ListItemIcon>
-      <Badge
-        badgeContent={totalUnreadCount}
-        color={'primary'}
-        className={classNames.drawerBadge}
-        max={999}
-      >
-        <ListItemText
-          primary={<Typography noWrap={true}>All Unread</Typography>}
-        />
+      <Badge badgeContent={totalUnreadCount} color={'primary'} className={classNames.drawerBadge} max={999}>
+        <ListItemText primary={<Typography noWrap={true}>All Unread</Typography>} />
       </Badge>
       <IconButton className={classNames.drawerDelete}>
         <MoreVert />

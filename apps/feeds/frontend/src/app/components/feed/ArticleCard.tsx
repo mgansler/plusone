@@ -1,15 +1,5 @@
-import {
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  IconButton,
-} from '@material-ui/core'
-import {
-  CheckBoxOutlineBlank,
-  CheckBoxOutlined,
-  OpenInNew,
-} from '@material-ui/icons'
+import { Card, CardActions, CardContent, CardHeader, IconButton } from '@material-ui/core'
+import { CheckBoxOutlineBlank, CheckBoxOutlined, OpenInNew } from '@material-ui/icons'
 import { RefObject, useRef } from 'react'
 import { useMutation } from 'react-apollo'
 
@@ -45,18 +35,15 @@ const subheader = (article: ArticleFieldsFragment): string => {
 export function ArticleCard({ article, scrollTargetRef }: ExternalProps) {
   const classNames = useFeedStyles()
 
-  const [toggleUnread] = useMutation<
-    ToggleArticleUnreadMutation,
-    MutationToggleArticleUnreadArgs
-  >(ToggleArticleUnread, {
-    variables: { id: article.id },
-  })
+  const [toggleUnread] = useMutation<ToggleArticleUnreadMutation, MutationToggleArticleUnreadArgs>(
+    ToggleArticleUnread,
+    { variables: { id: article.id } },
+  )
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
   const handleOnLoad = () => {
     if (iframeRef.current) {
-      iframeRef.current.height =
-        48 + (iframeRef.current.contentDocument?.body.scrollHeight || 0) + 'px'
+      iframeRef.current.height = 48 + (iframeRef.current.contentDocument?.body.scrollHeight || 0) + 'px'
     }
   }
 
@@ -67,11 +54,7 @@ export function ArticleCard({ article, scrollTargetRef }: ExternalProps) {
       <CardHeader
         avatar={
           <IconButton onClick={() => toggleUnread()}>
-            {article.unread ? (
-              <CheckBoxOutlineBlank color={color} />
-            ) : (
-              <CheckBoxOutlined color={color} />
-            )}
+            {article.unread ? <CheckBoxOutlineBlank color={color} /> : <CheckBoxOutlined color={color} />}
           </IconButton>
         }
         title={article.title}
@@ -96,18 +79,10 @@ export function ArticleCard({ article, scrollTargetRef }: ExternalProps) {
 
       <CardActions>
         <IconButton onClick={() => toggleUnread()}>
-          {article.unread ? (
-            <CheckBoxOutlineBlank color={color} />
-          ) : (
-            <CheckBoxOutlined color={color} />
-          )}
+          {article.unread ? <CheckBoxOutlineBlank color={color} /> : <CheckBoxOutlined color={color} />}
         </IconButton>
 
-        <IconButton
-          color={color}
-          href={article.link}
-          style={{ marginLeft: 'auto' }}
-        >
+        <IconButton color={color} href={article.link} style={{ marginLeft: 'auto' }}>
           <OpenInNew />
         </IconButton>
       </CardActions>

@@ -1,11 +1,4 @@
-import {
-  Divider,
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-} from '@material-ui/core'
+import { Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@material-ui/core'
 import { Lock, MoreVert } from '@material-ui/icons'
 import React, { useCallback, useContext, useState } from 'react'
 
@@ -17,9 +10,7 @@ export function UserMenu() {
 
   const [userMenuAnchor, setUserMenuAnchor] = useState<HTMLElement | null>()
   const isUserMenuOpen = Boolean(userMenuAnchor)
-  const [openModal, setOpenModal] = useState<ModalIdentifier>(
-    ModalIdentifier.None,
-  )
+  const [openModal, setOpenModal] = useState<ModalIdentifier>(ModalIdentifier.None)
 
   const handleLogout = useCallback(() => {
     setUserMenuAnchor(null)
@@ -40,12 +31,7 @@ export function UserMenu() {
         <MoreVert />
       </IconButton>
 
-      <Menu
-        id={'user-menu'}
-        anchorEl={userMenuAnchor}
-        open={isUserMenuOpen}
-        onClose={() => setUserMenuAnchor(null)}
-      >
+      <Menu id={'user-menu'} anchorEl={userMenuAnchor} open={isUserMenuOpen} onClose={() => setUserMenuAnchor(null)}>
         <NewGroup
           isOpen={openModal === ModalIdentifier.NewGroup}
           open={() => setOpenModal(ModalIdentifier.NewGroup)}

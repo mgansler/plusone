@@ -11,11 +11,7 @@ import {
   MenuItem,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import {
-  Keyboard,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-} from '@material-ui/icons'
+import { Keyboard, KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons'
 import React from 'react'
 
 import { Modal } from './index'
@@ -39,18 +35,11 @@ interface CheatSheetEntryProps {
   description: string
 }
 
-function CheatSheetEntry({
-  keyCombination,
-  description,
-}: CheatSheetEntryProps) {
+function CheatSheetEntry({ keyCombination, description }: CheatSheetEntryProps) {
   const classNames = useCheatSheetStyles()
   return (
     <React.Fragment>
-      <Button
-        className={classNames.button}
-        variant={'contained'}
-        disableRipple={true}
-      >
+      <Button className={classNames.button} variant={'contained'} disableRipple={true}>
         {keyCombination}
       </Button>
       <DialogContentText>{description}</DialogContentText>
@@ -73,26 +62,11 @@ export const CheatSheet: React.FC<Modal> = ({ isOpen, open, close }) => {
         <DialogTitle>Keyboard CheatSheet</DialogTitle>
 
         <DialogContent className={classNames.dialogContent}>
-          <CheatSheetEntry
-            keyCombination={<KeyboardArrowUp />}
-            description={'Previous article'}
-          />
-          <CheatSheetEntry
-            keyCombination={<KeyboardArrowDown />}
-            description={'Next article'}
-          />
-          <CheatSheetEntry
-            keyCombination={'Space'}
-            description={'Toggle unread'}
-          />
-          <CheatSheetEntry
-            keyCombination={'N'}
-            description={'Mark article as read and next article'}
-          />
-          <CheatSheetEntry
-            keyCombination={'O'}
-            description={'Open article in new tab/window'}
-          />
+          <CheatSheetEntry keyCombination={<KeyboardArrowUp />} description={'Previous article'} />
+          <CheatSheetEntry keyCombination={<KeyboardArrowDown />} description={'Next article'} />
+          <CheatSheetEntry keyCombination={'Space'} description={'Toggle unread'} />
+          <CheatSheetEntry keyCombination={'N'} description={'Mark article as read and next article'} />
+          <CheatSheetEntry keyCombination={'O'} description={'Open article in new tab/window'} />
         </DialogContent>
 
         <DialogActions>

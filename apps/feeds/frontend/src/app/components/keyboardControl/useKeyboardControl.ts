@@ -16,11 +16,7 @@ interface Modifiers {
   metaKey?: KeyboardEvent['metaKey']
 }
 
-const isKeyCombo = (
-  event: KeyboardEvent,
-  code: KeyboardEvent['code'],
-  modifiers?: Modifiers,
-): boolean => {
+const isKeyCombo = (event: KeyboardEvent, code: KeyboardEvent['code'], modifiers?: Modifiers): boolean => {
   const matches =
     event.code === code &&
     event.altKey === (modifiers?.altKey ?? false) &&
@@ -36,12 +32,12 @@ export const useKeyboardControl = () => {
   const { article, setArticle } = useSelectedArticle()
   const articles = useArticles()
 
-  const [toggleUnread] = useMutation<
-    ToggleArticleUnreadMutation,
-    MutationToggleArticleUnreadArgs
-  >(ToggleArticleUnread, {
-    variables: { id: article ? article.id : '' },
-  })
+  const [toggleUnread] = useMutation<ToggleArticleUnreadMutation, MutationToggleArticleUnreadArgs>(
+    ToggleArticleUnread,
+    {
+      variables: { id: article ? article.id : '' },
+    },
+  )
 
   const isEnabled = useIsKeyboardControlEnabled()
 

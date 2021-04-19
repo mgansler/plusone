@@ -13,13 +13,7 @@ import { Add } from '@material-ui/icons'
 import React, { useState } from 'react'
 import { useMutation } from 'react-apollo'
 
-import {
-  AddFeed,
-  AddFeedMutation,
-  AddFeedMutationVariables,
-  FeedInput,
-  FeedsAndGroups,
-} from '@plusone/feeds-schema'
+import { AddFeed, AddFeedMutation, AddFeedMutationVariables, FeedInput, FeedsAndGroups } from '@plusone/feeds-schema'
 
 import { useDisableKeyboardControl } from '../../context'
 
@@ -27,10 +21,7 @@ import { Modal } from './index'
 
 export const NewFeed: React.FC<Modal> = ({ isOpen, open, close }) => {
   const [feedInput, setFeedInput] = useState<FeedInput>({ uri: '' })
-  const [createNewFeed] = useMutation<
-    AddFeedMutation,
-    AddFeedMutationVariables
-  >(AddFeed, {
+  const [createNewFeed] = useMutation<AddFeedMutation, AddFeedMutationVariables>(AddFeed, {
     refetchQueries: [{ query: FeedsAndGroups }],
   })
 
@@ -62,9 +53,7 @@ export const NewFeed: React.FC<Modal> = ({ isOpen, open, close }) => {
             type={'text'}
             id={'new-feed-title'}
             value={feedInput.title}
-            onChange={({ currentTarget: { value } }) =>
-              setFeedInput((prevState) => ({ ...prevState, title: value }))
-            }
+            onChange={({ currentTarget: { value } }) => setFeedInput((prevState) => ({ ...prevState, title: value }))}
           />
           <TextField
             label={'Feed URI'}
@@ -73,9 +62,7 @@ export const NewFeed: React.FC<Modal> = ({ isOpen, open, close }) => {
             id={'new-feed-uri'}
             required={true}
             value={feedInput.uri}
-            onChange={({ currentTarget: { value } }) =>
-              setFeedInput((prevState) => ({ ...prevState, uri: value }))
-            }
+            onChange={({ currentTarget: { value } }) => setFeedInput((prevState) => ({ ...prevState, uri: value }))}
           />
         </DialogContent>
 

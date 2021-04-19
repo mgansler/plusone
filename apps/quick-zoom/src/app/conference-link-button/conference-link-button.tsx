@@ -57,10 +57,7 @@ export function NewConferenceLink({ addNewLink }: NewConferenceLinkProps) {
   const handleCloseDialog = useCallback(() => setIsOpen(false), [])
   const handleNewZoomLink = useCallback(() => {
     if (titleInputRef.current && linkInputRef.current) {
-      const newLink: ConferenceLink = fromLink(
-        linkInputRef.current.value,
-        titleInputRef.current.value,
-      )
+      const newLink: ConferenceLink = fromLink(linkInputRef.current.value, titleInputRef.current.value)
       addNewLink(newLink)
       setIsOpen(false)
     }
@@ -76,19 +73,9 @@ export function NewConferenceLink({ addNewLink }: NewConferenceLinkProps) {
       <Dialog open={isOpen}>
         <DialogTitle>New Zoom Link</DialogTitle>
         <DialogContent dividers={true}>
-          <TextField
-            id={'title'}
-            fullWidth={true}
-            inputRef={titleInputRef}
-            label={'Title'}
-          />
+          <TextField id={'title'} fullWidth={true} inputRef={titleInputRef} label={'Title'} />
 
-          <TextField
-            id={'zoomlink'}
-            fullWidth={true}
-            inputRef={linkInputRef}
-            label={'Zoom Link'}
-          />
+          <TextField id={'zoomlink'} fullWidth={true} inputRef={linkInputRef} label={'Zoom Link'} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>

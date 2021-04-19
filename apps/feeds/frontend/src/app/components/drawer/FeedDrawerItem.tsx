@@ -1,10 +1,4 @@
-import {
-  Badge,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from '@material-ui/core'
+import { Badge, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core'
 import { RssFeed } from '@material-ui/icons'
 
 import { FeedFieldsFragment } from '@plusone/feeds-schema'
@@ -37,25 +31,16 @@ export function FeedDrawerItem({ feed, subItem }: FeedDrawerItemProps) {
       onClick={handleSelect}
       selected={selectedFeeds.includes(feed.id)}
     >
-      <ListItemIcon
-        className={
-          feed.hasFetchError ? classNames.feedWithError : classNames.avatar
-        }
-      >
+      <ListItemIcon className={feed.hasFetchError ? classNames.feedWithError : classNames.avatar}>
         <RssFeed />
       </ListItemIcon>
 
       <Badge
         badgeContent={feed.unreadCount}
         color={'primary'}
-        className={
-          subItem ? classNames.drawerBadgeNested : classNames.drawerBadge
-        }
+        className={subItem ? classNames.drawerBadgeNested : classNames.drawerBadge}
       >
-        <ListItemText
-          disableTypography={true}
-          primary={<Typography noWrap={true}>{feed.title}</Typography>}
-        />
+        <ListItemText disableTypography={true} primary={<Typography noWrap={true}>{feed.title}</Typography>} />
       </Badge>
 
       <EditFeed feed={feed} />

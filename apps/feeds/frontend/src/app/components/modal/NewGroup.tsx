@@ -23,55 +23,48 @@ import {
 
 import { Modal } from './index'
 
-export const NewGroup = forwardRef<unknown, Modal>(
-  ({ isOpen, open, close }, ref) => {
-    const [groupInput, setGroupInput] = useState<GroupInput>({ name: '' })
+export const NewGroup = forwardRef<unknown, Modal>(({ isOpen, open, close }, ref) => {
+  const [groupInput, setGroupInput] = useState<GroupInput>({ name: '' })
 
-    const [createNewGroup] = useMutation<
-      AddGroupMutation,
-      AddGroupMutationVariables
-    >(AddGroup)
+  const [createNewGroup] = useMutation<AddGroupMutation, AddGroupMutationVariables>(AddGroup)
 
-    const handleConfirm = () => {
-      createNewGroup({
-        variables: { group: groupInput },
-        refetchQueries: [{ query: FeedsAndGroups }],
-      }).then(() => {
-        close()
-        setGroupInput({ name: '' })
-      })
-    }
+  const handleConfirm = () => {
+    createNewGroup({
+      variables: { group: groupInput },
+      refetchQueries: [{ query: FeedsAndGroups }],
+    }).then(() => {
+      close()
+      setGroupInput({ name: '' })
+    })
+  }
 
-    return (
-      <React.Fragment>
-        <MenuItem color={'inherit'} onClick={open}>
-          <ListItemIcon>
-            <Add />
-          </ListItemIcon>
-          <ListItemText primary={'Add new Group'} />
-        </MenuItem>
+  return (
+    <React.Fragment>
+      <MenuItem color={'inherit'} onClick={open}>
+        <ListItemIcon>
+          <Add />
+        </ListItemIcon>
+        <ListItemText primary={'Add new Group'} />
+      </MenuItem>
 
-        <Dialog open={isOpen} onClose={close}>
-          <DialogTitle>New Group</DialogTitle>
+      <Dialog open={isOpen} onClose={close}>
+        <DialogTitle>New Group</DialogTitle>
 
-          <DialogContent>
-            <TextField
-              label={'Group Name'}
-              fullWidth={true}
-              type={'text'}
-              id={'new-group-name'}
-              value={groupInput.name}
-              onChange={({ currentTarget: { value } }) =>
-                setGroupInput((prevState) => ({ ...prevState, name: value }))
-              }
-            />
-          </DialogContent>
+        <DialogContent>
+          <TextField
+            label={'Group Name'}
+            fullWidth={true}
+            type={'text'}
+            id={'new-group-name'}
+            value={groupInput.name}
+            onChange={({ currentTarget: { value } }) => setGroupInput((prevState) => ({ ...prevState, name: value }))}
+          />
+        </DialogContent>
 
-          <DialogActions>
-            <Button onClick={handleConfirm}>Create</Button>
-          </DialogActions>
-        </Dialog>
-      </React.Fragment>
-    )
-  },
-)
+        <DialogActions>
+          <Button onClick={handleConfirm}>Create</Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
+  )
+})

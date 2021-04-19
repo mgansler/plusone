@@ -19,11 +19,7 @@ const Context = createContext<ContextValue>(defaultValue)
 export const KeyboardControlProvider: React.FC = ({ children }) => {
   const [isEnabled, enable, disable] = useBoolean(true)
 
-  return (
-    <Context.Provider value={{ isEnabled, enable, disable }}>
-      {children}
-    </Context.Provider>
-  )
+  return <Context.Provider value={{ isEnabled, enable, disable }}>{children}</Context.Provider>
 }
 
 export const useIsKeyboardControlEnabled = () => {

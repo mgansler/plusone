@@ -24,10 +24,7 @@
             "main": "apps/github-pipeline-status/src/main.tsx",
             "polyfills": "apps/github-pipeline-status/src/polyfills.ts",
             "tsConfig": "apps/github-pipeline-status/tsconfig.app.json",
-            "assets": [
-              "apps/github-pipeline-status/src/favicon.ico",
-              "apps/github-pipeline-status/src/assets"
-            ],
+            "assets": ["apps/github-pipeline-status/src/favicon.ico", "apps/github-pipeline-status/src/assets"],
             "styles": [],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
@@ -69,9 +66,7 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/github-pipeline-status/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["apps/github-pipeline-status/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
@@ -154,10 +149,7 @@
             "main": "apps/quick-zoom/src/main.tsx",
             "polyfills": "apps/quick-zoom/src/polyfills.ts",
             "tsConfig": "apps/quick-zoom/tsconfig.app.json",
-            "assets": [
-              "apps/quick-zoom/src/favicon.ico",
-              "apps/quick-zoom/src/assets"
-            ],
+            "assets": ["apps/quick-zoom/src/favicon.ico", "apps/quick-zoom/src/assets"],
             "styles": [],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
@@ -346,10 +338,7 @@
             "main": "apps/feeds/frontend/src/main.tsx",
             "polyfills": "apps/feeds/frontend/src/polyfills.ts",
             "tsConfig": "apps/feeds/frontend/tsconfig.app.json",
-            "assets": [
-              "apps/feeds/frontend/src/favicon.ico",
-              "apps/feeds/frontend/src/assets"
-            ],
+            "assets": ["apps/feeds/frontend/src/favicon.ico", "apps/feeds/frontend/src/assets"],
             "styles": [],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"

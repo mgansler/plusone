@@ -1,11 +1,4 @@
-import {
-  createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useContext,
-  useState,
-} from 'react'
+import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react'
 
 import { ArticleFieldsFragment } from '@plusone/feeds-schema'
 
@@ -28,18 +21,10 @@ type SelectedArticleProviderProps = {
   children: ReactNode
 }
 
-export function SelectedArticleProvider({
-  children,
-}: SelectedArticleProviderProps) {
-  const [article, setArticle] = useState<ArticleFieldsFragment | undefined>(
-    defaultValue.article,
-  )
+export function SelectedArticleProvider({ children }: SelectedArticleProviderProps) {
+  const [article, setArticle] = useState<ArticleFieldsFragment | undefined>(defaultValue.article)
 
-  return (
-    <Context.Provider value={{ article, setArticle }}>
-      {children}
-    </Context.Provider>
-  )
+  return <Context.Provider value={{ article, setArticle }}>{children}</Context.Provider>
 }
 
 export const useSelectedArticle = () => useContext<ContextValue>(Context)

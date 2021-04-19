@@ -131,9 +131,7 @@ const ReviewStateIconMap: Record<PullRequestReviewState, JSX.Element> = {
   PENDING: undefined,
 }
 
-const getLastReviewStatePerAuthor = (
-  reviews: PullRequestReview[],
-): Record<string, PullRequestReviewState> =>
+const getLastReviewStatePerAuthor = (reviews: PullRequestReview[]): Record<string, PullRequestReviewState> =>
   reviews
     .filter(({ state }) => state !== PullRequestReviewState.Commented)
     .map((review) => ({
@@ -180,10 +178,7 @@ interface DefaultBranchStateProps {
   defaultBranchRef?: Ref
 }
 
-function DefaultBranchState({
-  className,
-  defaultBranchRef,
-}: DefaultBranchStateProps) {
+function DefaultBranchState({ className, defaultBranchRef }: DefaultBranchStateProps) {
   if (!defaultBranchRef) {
     return null
   }
@@ -262,10 +257,7 @@ export function RepositoryAccordion({
           <Typography>{name}</Typography>
         </div>
 
-        <DefaultBranchState
-          className={classNames.workflowColumn}
-          defaultBranchRef={defaultBranchRef}
-        />
+        <DefaultBranchState className={classNames.workflowColumn} defaultBranchRef={defaultBranchRef} />
 
         <div className={classNames.pullRequestsOrReviewsColumn}>
           {pullRequestCount > 0 && (
@@ -286,17 +278,12 @@ export function RepositoryAccordion({
       </AccordionSummary>
       <AccordionDetails className={classNames.accordionDetails}>
         {filteredPullRequests.map((pr) => {
-          const lastReviewStatePerAuthor = getLastReviewStatePerAuthor(
-            pr.reviews.nodes,
-          )
+          const lastReviewStatePerAuthor = getLastReviewStatePerAuthor(pr.reviews.nodes)
 
           return (
             <div className={classNames.row} key={pr.number}>
               <IconButton
-                className={[
-                  classNames.linkColumn,
-                  classNames.pullRequestLink,
-                ].join(' ')}
+                className={[classNames.linkColumn, classNames.pullRequestLink].join(' ')}
                 href={pr.url}
                 target={'_blank'}
                 rel={'noreferrer'}
@@ -322,22 +309,12 @@ export function RepositoryAccordion({
                 </Typography>
               </Tooltip>
 
-              <CanBeMerged
-                className={classNames.workflowColumn}
-                commits={pr.commits.nodes}
-                mergeable={pr.mergeable}
-              />
+              <CanBeMerged className={classNames.workflowColumn} commits={pr.commits.nodes} mergeable={pr.mergeable} />
 
               <div className={classNames.pullRequestsOrReviewsColumn}>
-                {Object.entries(lastReviewStatePerAuthor).map(
-                  ([login, state]) => (
-                    <Chip
-                      key={login}
-                      label={login}
-                      icon={ReviewStateIconMap[state]}
-                    />
-                  ),
-                )}
+                {Object.entries(lastReviewStatePerAuthor).map(([login, state]) => (
+                  <Chip key={login} label={login} icon={ReviewStateIconMap[state]} />
+                ))}
               </div>
             </div>
           )
@@ -352,17 +329,11 @@ export function AccordionSkeleton() {
 
   return (
     <Accordion>
-      <AccordionSummary
-        classes={{ content: classNames.accordionSummarySkeleton }}
-        expandIcon={<ExpandMore />}
-      >
+      <AccordionSummary classes={{ content: classNames.accordionSummarySkeleton }} expandIcon={<ExpandMore />}>
         <Skeleton variant={'circle'} width={28} height={28} />
         <Skeleton className={classNames.titleColumn} variant={'text'} />
         <Skeleton className={classNames.workflowColumn} variant={'text'} />
-        <Skeleton
-          className={classNames.pullRequestsOrReviewsColumn}
-          variant={'text'}
-        />
+        <Skeleton className={classNames.pullRequestsOrReviewsColumn} variant={'text'} />
       </AccordionSummary>
     </Accordion>
   )

@@ -22,31 +22,23 @@ export function ArticleCardList() {
     }
   }, [selectedArticle])
 
-  const containerHeight = (container.current?.lastChild as HTMLDivElement)
-    ?.clientHeight
+  const containerHeight = (container.current?.lastChild as HTMLDivElement)?.clientHeight
   const [height, setHeight] = useState<number>(0)
   useEffect(() => {
     if (container.current) {
-      const lastElHeight =
-        (container.current.lastChild as HTMLDivElement)?.clientHeight ?? 0
+      const lastElHeight = (container.current.lastChild as HTMLDivElement)?.clientHeight ?? 0
       const containerHeight = container.current.clientHeight
       setHeight(containerHeight - lastElHeight)
     }
   }, [articles, containerHeight])
 
   return (
-    <div
-      className={classNames.articleList}
-      style={{ paddingBottom: height - 16 }}
-      ref={container}
-    >
+    <div className={classNames.articleList} style={{ paddingBottom: height - 16 }} ref={container}>
       {articles.map((article) => (
         <ArticleCard
           key={article.id}
           article={article}
-          scrollTargetRef={
-            article.id === selectedArticle?.id ? scrollTarget : undefined
-          }
+          scrollTargetRef={article.id === selectedArticle?.id ? scrollTarget : undefined}
         />
       ))}
     </div>

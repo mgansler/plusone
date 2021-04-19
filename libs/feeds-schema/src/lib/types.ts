@@ -2,10 +2,8 @@ export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
 }
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]?: Maybe<T[SubKey]> }
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]: Maybe<T[SubKey]> }
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -145,29 +143,19 @@ export type ArticleFieldsFragment = { __typename: 'Article' } & Pick<
 
 export type FeedFieldsFragment = { __typename: 'Feed' } & Pick<
   Feed,
-  | 'id'
-  | 'uri'
-  | 'title'
-  | 'icon'
-  | 'unreadCount'
-  | 'totalCount'
-  | 'hasFetchError'
+  'id' | 'uri' | 'title' | 'icon' | 'unreadCount' | 'totalCount' | 'hasFetchError'
 > & { group?: Maybe<{ __typename: 'Group' } & Pick<Group, 'id' | 'name'>> }
 
-export type GroupFieldsFragment = { __typename: 'Group' } & Pick<
-  Group,
-  'id' | 'name'
-> & { feeds: Array<{ __typename: 'Feed' } & Pick<Feed, 'id'>> }
+export type GroupFieldsFragment = { __typename: 'Group' } & Pick<Group, 'id' | 'name'> & {
+    feeds: Array<{ __typename: 'Feed' } & Pick<Feed, 'id'>>
+  }
 
 export type TokenFieldsFragment = { __typename?: 'Token' } & Pick<
   Token,
   'access_token' | 'refresh_token' | 'scope' | 'token_type'
 >
 
-export type UserFieldsFragment = { __typename?: 'User' } & Pick<
-  User,
-  'username' | 'name' | 'avatar_url' | 'email'
->
+export type UserFieldsFragment = { __typename?: 'User' } & Pick<User, 'username' | 'name' | 'avatar_url' | 'email'>
 
 export type FeedsAndGroupsQueryVariables = Exact<{ [key: string]: never }>
 
@@ -186,10 +174,7 @@ export type ArticlesQuery = { __typename?: 'Query' } & {
 
 export type AuthorizationUriQueryVariables = Exact<{ [key: string]: never }>
 
-export type AuthorizationUriQuery = { __typename?: 'Query' } & Pick<
-  Query,
-  'authorizationUri'
->
+export type AuthorizationUriQuery = { __typename?: 'Query' } & Pick<Query, 'authorizationUri'>
 
 export type LoginQueryVariables = Exact<{
   code: Scalars['String']
@@ -217,10 +202,7 @@ export type DeleteFeedMutationVariables = Exact<{
   feedId: Scalars['ID']
 }>
 
-export type DeleteFeedMutation = { __typename?: 'Mutation' } & Pick<
-  Mutation,
-  'deleteFeed'
->
+export type DeleteFeedMutation = { __typename?: 'Mutation' } & Pick<Mutation, 'deleteFeed'>
 
 export type AddGroupMutationVariables = Exact<{
   group: GroupInput

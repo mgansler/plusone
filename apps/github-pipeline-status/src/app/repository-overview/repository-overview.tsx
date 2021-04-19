@@ -16,12 +16,7 @@ import {
 
 import { useGitHubPagination } from '@plusone/github-hooks'
 import { useLocalStorage } from '@plusone/hooks'
-import {
-  PageInfo,
-  PullRequestState,
-  Repository,
-  SearchType,
-} from '@plusone/github-schema'
+import { PageInfo, PullRequestState, Repository, SearchType } from '@plusone/github-schema'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
@@ -56,20 +51,10 @@ interface UseFetchRepositoryDataProps {
   queryString: string
 }
 
-const useFetchRepositoryData = ({
-  organizationName,
-  queryString,
-}: UseFetchRepositoryDataProps) => {
+const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepositoryDataProps) => {
   const history = useHistory()
 
-  const {
-    pages,
-    onSuccess,
-    nextPage,
-    prevPage,
-    goToPage,
-    getPageRequest,
-  } = useGitHubPagination(PAGE_SIZE)
+  const { pages, onSuccess, nextPage, prevPage, goToPage, getPageRequest } = useGitHubPagination(PAGE_SIZE)
 
   const octokit = useOctokit()
   const { data, isLoading } = useQuery(
@@ -207,12 +192,10 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
   })
 
   // Fetch the data
-  const { data, isLoading, pages, prevPage, nextPage } = useFetchRepositoryData(
-    {
-      organizationName,
-      queryString,
-    },
-  )
+  const { data, isLoading, pages, prevPage, nextPage } = useFetchRepositoryData({
+    organizationName,
+    queryString,
+  })
 
   if (isLoading) {
     return (
@@ -224,9 +207,7 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
     )
   }
 
-  const filteredRepositories = data.search.nodes.filter(
-    (repo) => !showOnlyOpenPRs || repo.pullRequests.totalCount > 0,
-  )
+  const filteredRepositories = data.search.nodes.filter((repo) => !showOnlyOpenPRs || repo.pullRequests.totalCount > 0)
 
   return (
     <React.Fragment>
@@ -241,15 +222,11 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
         />
 
         <FormControl className={classNames.formControl}>
-          <InputLabel id={'user-details-filter-label'}>
-            Filter details by user
-          </InputLabel>
+          <InputLabel id={'user-details-filter-label'}>Filter details by user</InputLabel>
           <Select
             labelId={'user-details-filter-label'}
             id={'user-details-filter'}
-            onChange={(event) =>
-              setUserFilter(event.target.value as UserFilter)
-            }
+            onChange={(event) => setUserFilter(event.target.value as UserFilter)}
             value={userFilter}
           >
             <MenuItem value="all">Show all</MenuItem>
@@ -271,29 +248,18 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
       </Portal>
 
       {filteredRepositories.map((repo) => (
-        <RepositoryAccordion
-          key={repo.id}
-          userFilter={userFilter}
-          repository={repo}
-        />
+        <RepositoryAccordion key={repo.id} userFilter={userFilter} repository={repo} />
       ))}
 
       <div className={classNames.pagination}>
         <h4>
-          Page {pages.currentPage + 1} of {pages.totalPages} (
-          {data.search.repositoryCount} entries)
+          Page {pages.currentPage + 1} of {pages.totalPages} ({data.search.repositoryCount} entries)
         </h4>
 
-        <button
-          disabled={!pages[pages.currentPage]?.hasPreviousPage}
-          onClick={prevPage}
-        >
+        <button disabled={!pages[pages.currentPage]?.hasPreviousPage} onClick={prevPage}>
           Prev
         </button>
-        <button
-          disabled={!pages[pages.currentPage]?.hasNextPage}
-          onClick={nextPage}
-        >
+        <button disabled={!pages[pages.currentPage]?.hasNextPage} onClick={nextPage}>
           Next
         </button>
       </div>

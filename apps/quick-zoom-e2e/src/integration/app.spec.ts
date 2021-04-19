@@ -14,9 +14,7 @@ describe('quick-zoom', () => {
       cy.findByText('New Zoom Link')
 
       cy.findByLabelText('Title').type('Hello World')
-      cy.findByLabelText('Zoom Link').type(
-        'https://example.zoom.us/j/0123456789?pwd=some_password',
-      )
+      cy.findByLabelText('Zoom Link').type('https://example.zoom.us/j/0123456789?pwd=some_password')
 
       cy.findByText('Add').click()
     })
@@ -25,9 +23,6 @@ describe('quick-zoom', () => {
 
     cy.window()
       .its('open')
-      .should(
-        'be.calledWith',
-        'zoommtg://example.zoom.us/join?action=join&confno=0123456789&pwd=some_password',
-      )
+      .should('be.calledWith', 'zoommtg://example.zoom.us/join?action=join&confno=0123456789&pwd=some_password')
   })
 })

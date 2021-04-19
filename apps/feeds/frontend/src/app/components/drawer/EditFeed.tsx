@@ -37,18 +37,12 @@ export function EditFeed({ feed }: EditFeedProps) {
   const classNames = useFeedStyles()
   const [isOpen, open, close] = useBoolean(false)
 
-  const [deleteFeed] = useMutation<DeleteFeedMutation, MutationDeleteFeedArgs>(
-    DeleteFeed,
-    {
-      refetchQueries: [{ query: FeedsAndGroups }],
-      variables: { feedId: feed.id },
-    },
-  )
+  const [deleteFeed] = useMutation<DeleteFeedMutation, MutationDeleteFeedArgs>(DeleteFeed, {
+    refetchQueries: [{ query: FeedsAndGroups }],
+    variables: { feedId: feed.id },
+  })
 
-  const [addToGroup] = useMutation<
-    AddFeedToGroupMutation,
-    AddFeedToGroupMutationVariables
-  >(AddFeedToGroup, {
+  const [addToGroup] = useMutation<AddFeedToGroupMutation, AddFeedToGroupMutationVariables>(AddFeedToGroup, {
     refetchQueries: [{ query: FeedsAndGroups }],
   })
 
@@ -82,11 +76,7 @@ export function EditFeed({ feed }: EditFeedProps) {
         <DialogTitle>{`Edit ${feed.title}`}</DialogTitle>
 
         <DialogContent>
-          <Select
-            value={feed.group?.id}
-            fullWidth={true}
-            onChange={handleSelectGroup}
-          >
+          <Select value={feed.group?.id} fullWidth={true} onChange={handleSelectGroup}>
             {groupData?.groups.map((group) => (
               <MenuItem key={group.id} value={group.id}>
                 {group.name}

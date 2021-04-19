@@ -61,10 +61,7 @@ const useFetchOrganizations = () => {
     {
       keepPreviousData: true,
       onSuccess: (response) =>
-        onSuccess(
-          response.viewer.organizations.pageInfo,
-          response.viewer.organizations.totalCount,
-        ),
+        onSuccess(response.viewer.organizations.pageInfo, response.viewer.organizations.totalCount),
     },
   )
 
@@ -104,9 +101,7 @@ export function Organizations() {
           <Select
             labelId={'select-org-label'}
             value={organizationName}
-            onChange={(event) =>
-              history.push(`/organization/${event.target.value}`)
-            }
+            onChange={(event) => history.push(`/organization/${event.target.value}`)}
           >
             {organizationName === '' && <MenuItem value="" />}
             {data.viewer.organizations.nodes.map((organization) => (

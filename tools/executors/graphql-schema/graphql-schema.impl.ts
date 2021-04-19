@@ -6,13 +6,9 @@ interface Schema {
   config: string
 }
 
-export default function (
-  schema: Schema,
-  context: ExecutorContext,
-): Promise<{ success: boolean }> {
+export default function (schema: Schema, context: ExecutorContext): Promise<{ success: boolean }> {
   const projectRoot = context.workspace.projects[context.projectName].root
-  const projectSourceRoot =
-    context.workspace.projects[context.projectName].sourceRoot
+  const projectSourceRoot = context.workspace.projects[context.projectName].sourceRoot
   const configFilePath = path.join(projectRoot, schema.config)
 
   const graphqlCodegen = spawn('graphql-codegen', ['--config', configFilePath])

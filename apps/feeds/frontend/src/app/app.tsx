@@ -1,9 +1,4 @@
-import {
-  createStyles,
-  CssBaseline,
-  makeStyles,
-  ThemeProvider,
-} from '@material-ui/core'
+import { createStyles, CssBaseline, makeStyles, ThemeProvider } from '@material-ui/core'
 import { ApolloProvider } from 'react-apollo'
 
 import { AuthenticationProvider } from './components/authentication'
@@ -11,11 +6,7 @@ import { FeedDrawerList } from './components/drawer'
 import { ArticleCardList } from './components/feed'
 import { Header } from './components/header'
 import { ToolbarMixin } from './components/mixins'
-import {
-  KeyboardControlProvider,
-  SelectedArticleProvider,
-  SelectedFeedsProvider,
-} from './context'
+import { KeyboardControlProvider, SelectedArticleProvider, SelectedFeedsProvider } from './context'
 import { apolloClient } from './graphql'
 import { theme } from './theme'
 
