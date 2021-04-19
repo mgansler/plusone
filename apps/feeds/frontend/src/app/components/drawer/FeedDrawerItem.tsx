@@ -40,10 +40,7 @@ export function FeedDrawerItem({ feed, subItem }: FeedDrawerItemProps) {
         color={'primary'}
         className={subItem ? classNames.drawerBadgeNested : classNames.drawerBadge}
       >
-        <ListItemText
-          disableTypography={true}
-          primary={<Typography noWrap={true}>{feed.title}</Typography>}
-        />
+        <ListItemText disableTypography={true} primary={<Typography noWrap={true}>{feed.title}</Typography>} />
       </Badge>
 
       <EditFeed feed={feed} />

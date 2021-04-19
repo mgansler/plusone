@@ -31,12 +31,7 @@ export function UserMenu() {
         <MoreVert />
       </IconButton>
 
-      <Menu
-        id={'user-menu'}
-        anchorEl={userMenuAnchor}
-        open={isUserMenuOpen}
-        onClose={() => setUserMenuAnchor(null)}
-      >
+      <Menu id={'user-menu'} anchorEl={userMenuAnchor} open={isUserMenuOpen} onClose={() => setUserMenuAnchor(null)}>
         <NewGroup
           isOpen={openModal === ModalIdentifier.NewGroup}
           open={() => setOpenModal(ModalIdentifier.NewGroup)}

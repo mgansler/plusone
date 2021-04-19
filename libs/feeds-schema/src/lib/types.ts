@@ -155,10 +155,7 @@ export type TokenFieldsFragment = { __typename?: 'Token' } & Pick<
   'access_token' | 'refresh_token' | 'scope' | 'token_type'
 >
 
-export type UserFieldsFragment = { __typename?: 'User' } & Pick<
-  User,
-  'username' | 'name' | 'avatar_url' | 'email'
->
+export type UserFieldsFragment = { __typename?: 'User' } & Pick<User, 'username' | 'name' | 'avatar_url' | 'email'>
 
 export type FeedsAndGroupsQueryVariables = Exact<{ [key: string]: never }>
 

@@ -42,12 +42,9 @@ export function EditFeed({ feed }: EditFeedProps) {
     variables: { feedId: feed.id },
   })
 
-  const [addToGroup] = useMutation<AddFeedToGroupMutation, AddFeedToGroupMutationVariables>(
-    AddFeedToGroup,
-    {
-      refetchQueries: [{ query: FeedsAndGroups }],
-    },
-  )
+  const [addToGroup] = useMutation<AddFeedToGroupMutation, AddFeedToGroupMutationVariables>(AddFeedToGroup, {
+    refetchQueries: [{ query: FeedsAndGroups }],
+  })
 
   const groupData = useApolloClient().readQuery<{
     groups: Pick<Group, 'id' | 'name'>[]

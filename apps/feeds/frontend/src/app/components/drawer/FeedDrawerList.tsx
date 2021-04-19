@@ -28,21 +28,14 @@ export function FeedDrawerList() {
   }
 
   return (
-    <Drawer
-      classes={{ root: classNames.drawer, paper: classNames.drawerPaper }}
-      variant={'permanent'}
-    >
+    <Drawer classes={{ root: classNames.drawer, paper: classNames.drawerPaper }} variant={'permanent'}>
       <ToolbarMixin />
 
       <List className={classNames.feedList}>
         <AllUnread />
         <Divider className={classNames.divider} />
         {data?.groups.map((group) => (
-          <FeedGroup
-            key={group.id}
-            group={group}
-            feeds={data?.feeds.filter((feed) => feed.group?.id === group.id)}
-          />
+          <FeedGroup key={group.id} group={group} feeds={data?.feeds.filter((feed) => feed.group?.id === group.id)} />
         ))}
         <Divider className={classNames.divider} />
         {feedsWithUnreadArticles.map((feed) => (

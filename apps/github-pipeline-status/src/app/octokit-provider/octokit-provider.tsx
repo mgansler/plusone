@@ -28,8 +28,7 @@ const TokenInput: FC<TokenInputProps> = ({ setToken }) => {
   return (
     <LoginCard>
       <Typography>
-        In order to use this application you need to provide an access token with the following
-        permissions:
+        In order to use this application you need to provide an access token with the following permissions:
       </Typography>
 
       <dl>
@@ -80,11 +79,7 @@ export const OctokitProvider: React.FC = ({ children }) => {
     return <TokenInput setToken={setToken} />
   }
 
-  return (
-    <OctokitContext.Provider value={{ octokit, logout: removeToken }}>
-      {children}
-    </OctokitContext.Provider>
-  )
+  return <OctokitContext.Provider value={{ octokit, logout: removeToken }}>{children}</OctokitContext.Provider>
 }
 
 export const useOctokit = () => useContext<Context>(OctokitContext).octokit

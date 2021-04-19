@@ -57,9 +57,7 @@ export const NewGroup = forwardRef<unknown, Modal>(({ isOpen, open, close }, ref
             type={'text'}
             id={'new-group-name'}
             value={groupInput.name}
-            onChange={({ currentTarget: { value } }) =>
-              setGroupInput((prevState) => ({ ...prevState, name: value }))
-            }
+            onChange={({ currentTarget: { value } }) => setGroupInput((prevState) => ({ ...prevState, name: value }))}
           />
         </DialogContent>
 

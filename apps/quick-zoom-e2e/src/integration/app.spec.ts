@@ -23,9 +23,6 @@ describe('quick-zoom', () => {
 
     cy.window()
       .its('open')
-      .should(
-        'be.calledWith',
-        'zoommtg://example.zoom.us/join?action=join&confno=0123456789&pwd=some_password',
-      )
+      .should('be.calledWith', 'zoommtg://example.zoom.us/join?action=join&confno=0123456789&pwd=some_password')
   })
 })

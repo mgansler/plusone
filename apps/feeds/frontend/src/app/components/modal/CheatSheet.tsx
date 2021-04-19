@@ -65,10 +65,7 @@ export const CheatSheet: React.FC<Modal> = ({ isOpen, open, close }) => {
           <CheatSheetEntry keyCombination={<KeyboardArrowUp />} description={'Previous article'} />
           <CheatSheetEntry keyCombination={<KeyboardArrowDown />} description={'Next article'} />
           <CheatSheetEntry keyCombination={'Space'} description={'Toggle unread'} />
-          <CheatSheetEntry
-            keyCombination={'N'}
-            description={'Mark article as read and next article'}
-          />
+          <CheatSheetEntry keyCombination={'N'} description={'Mark article as read and next article'} />
           <CheatSheetEntry keyCombination={'O'} description={'Open article in new tab/window'} />
         </DialogContent>
 

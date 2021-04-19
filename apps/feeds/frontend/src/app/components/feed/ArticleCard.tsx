@@ -43,8 +43,7 @@ export function ArticleCard({ article, scrollTargetRef }: ExternalProps) {
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
   const handleOnLoad = () => {
     if (iframeRef.current) {
-      iframeRef.current.height =
-        48 + (iframeRef.current.contentDocument?.body.scrollHeight || 0) + 'px'
+      iframeRef.current.height = 48 + (iframeRef.current.contentDocument?.body.scrollHeight || 0) + 'px'
     }
   }
 
@@ -55,11 +54,7 @@ export function ArticleCard({ article, scrollTargetRef }: ExternalProps) {
       <CardHeader
         avatar={
           <IconButton onClick={() => toggleUnread()}>
-            {article.unread ? (
-              <CheckBoxOutlineBlank color={color} />
-            ) : (
-              <CheckBoxOutlined color={color} />
-            )}
+            {article.unread ? <CheckBoxOutlineBlank color={color} /> : <CheckBoxOutlined color={color} />}
           </IconButton>
         }
         title={article.title}
@@ -84,11 +79,7 @@ export function ArticleCard({ article, scrollTargetRef }: ExternalProps) {
 
       <CardActions>
         <IconButton onClick={() => toggleUnread()}>
-          {article.unread ? (
-            <CheckBoxOutlineBlank color={color} />
-          ) : (
-            <CheckBoxOutlined color={color} />
-          )}
+          {article.unread ? <CheckBoxOutlineBlank color={color} /> : <CheckBoxOutlined color={color} />}
         </IconButton>
 
         <IconButton color={color} href={article.link} style={{ marginLeft: 'auto' }}>

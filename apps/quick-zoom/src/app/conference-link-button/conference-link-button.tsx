@@ -57,10 +57,7 @@ export function NewConferenceLink({ addNewLink }: NewConferenceLinkProps) {
   const handleCloseDialog = useCallback(() => setIsOpen(false), [])
   const handleNewZoomLink = useCallback(() => {
     if (titleInputRef.current && linkInputRef.current) {
-      const newLink: ConferenceLink = fromLink(
-        linkInputRef.current.value,
-        titleInputRef.current.value,
-      )
+      const newLink: ConferenceLink = fromLink(linkInputRef.current.value, titleInputRef.current.value)
       addNewLink(newLink)
       setIsOpen(false)
     }

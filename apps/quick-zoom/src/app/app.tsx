@@ -6,10 +6,7 @@ import React from 'react'
 import { ConferenceLink } from '@plusone/conference-links'
 import { useLocalStorage } from '@plusone/hooks'
 
-import {
-  NewConferenceLink,
-  ConferenceLinkButton,
-} from './conference-link-button/conference-link-button'
+import { NewConferenceLink, ConferenceLinkButton } from './conference-link-button/conference-link-button'
 import { ImportExport } from './import-export/import-export'
 import { useMigrations } from './migrations/use-migrations'
 

@@ -131,9 +131,7 @@ const ReviewStateIconMap: Record<PullRequestReviewState, JSX.Element> = {
   PENDING: undefined,
 }
 
-const getLastReviewStatePerAuthor = (
-  reviews: PullRequestReview[],
-): Record<string, PullRequestReviewState> =>
+const getLastReviewStatePerAuthor = (reviews: PullRequestReview[]): Record<string, PullRequestReviewState> =>
   reviews
     .filter(({ state }) => state !== PullRequestReviewState.Commented)
     .map((review) => ({
@@ -259,10 +257,7 @@ export function RepositoryAccordion({
           <Typography>{name}</Typography>
         </div>
 
-        <DefaultBranchState
-          className={classNames.workflowColumn}
-          defaultBranchRef={defaultBranchRef}
-        />
+        <DefaultBranchState className={classNames.workflowColumn} defaultBranchRef={defaultBranchRef} />
 
         <div className={classNames.pullRequestsOrReviewsColumn}>
           {pullRequestCount > 0 && (
@@ -314,11 +309,7 @@ export function RepositoryAccordion({
                 </Typography>
               </Tooltip>
 
-              <CanBeMerged
-                className={classNames.workflowColumn}
-                commits={pr.commits.nodes}
-                mergeable={pr.mergeable}
-              />
+              <CanBeMerged className={classNames.workflowColumn} commits={pr.commits.nodes} mergeable={pr.mergeable} />
 
               <div className={classNames.pullRequestsOrReviewsColumn}>
                 {Object.entries(lastReviewStatePerAuthor).map(([login, state]) => (
@@ -338,10 +329,7 @@ export function AccordionSkeleton() {
 
   return (
     <Accordion>
-      <AccordionSummary
-        classes={{ content: classNames.accordionSummarySkeleton }}
-        expandIcon={<ExpandMore />}
-      >
+      <AccordionSummary classes={{ content: classNames.accordionSummarySkeleton }} expandIcon={<ExpandMore />}>
         <Skeleton variant={'circle'} width={28} height={28} />
         <Skeleton className={classNames.titleColumn} variant={'text'} />
         <Skeleton className={classNames.workflowColumn} variant={'text'} />

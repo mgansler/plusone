@@ -2,12 +2,7 @@ import { uniqBy } from 'lodash'
 import { useEffect } from 'react'
 import { useQuery } from 'react-apollo'
 
-import {
-  ArticleFieldsFragment,
-  Articles,
-  ArticlesQuery,
-  ArticlesQueryVariables,
-} from '@plusone/feeds-schema'
+import { ArticleFieldsFragment, Articles, ArticlesQuery, ArticlesQueryVariables } from '@plusone/feeds-schema'
 
 import { useSelectedArticle, useSelectedFeeds } from '../context'
 

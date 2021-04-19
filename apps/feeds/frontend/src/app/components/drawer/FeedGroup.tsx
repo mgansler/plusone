@@ -1,12 +1,4 @@
-import {
-  Badge,
-  Collapse,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from '@material-ui/core'
+import { Badge, Collapse, IconButton, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import { ExpandLess, ExpandMore, Inbox } from '@material-ui/icons'
 import { useState } from 'react'
 import React from 'react'
@@ -38,10 +30,7 @@ export const FeedGroup: React.FC<FeedGroupProps> = ({ group, feeds }) => {
     })
 
   const [isOpen, setIsOpen] = useState<boolean>(true)
-  const totalUnreadCount = feeds.reduce(
-    (currentTotal, { unreadCount }) => currentTotal + (unreadCount ?? 0),
-    0,
-  )
+  const totalUnreadCount = feeds.reduce((currentTotal, { unreadCount }) => currentTotal + (unreadCount ?? 0), 0)
 
   return (
     <React.Fragment>

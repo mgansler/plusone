@@ -3050,9 +3050,7 @@ export type CreatedPullRequestContributionEdge = {
 }
 
 /** Represents either a pull request the viewer can access or a restricted contribution. */
-export type CreatedPullRequestOrRestrictedContribution =
-  | CreatedPullRequestContribution
-  | RestrictedContribution
+export type CreatedPullRequestOrRestrictedContribution = CreatedPullRequestContribution | RestrictedContribution
 
 /** Represents the contribution a user made by leaving a review on a pull request. */
 export type CreatedPullRequestReviewContribution = Contribution & {
@@ -3145,9 +3143,7 @@ export type CreatedRepositoryContributionEdge = {
 }
 
 /** Represents either a repository the viewer can access or a restricted contribution. */
-export type CreatedRepositoryOrRestrictedContribution =
-  | CreatedRepositoryContribution
-  | RestrictedContribution
+export type CreatedRepositoryOrRestrictedContribution = CreatedRepositoryContribution | RestrictedContribution
 
 /** Represents a mention made by one issue or pull request to another. */
 export type CrossReferencedEvent = Node &
@@ -16369,14 +16365,7 @@ export enum SavedReplyOrderField {
 }
 
 /** The results of a search. */
-export type SearchResultItem =
-  | App
-  | Issue
-  | MarketplaceListing
-  | Organization
-  | PullRequest
-  | Repository
-  | User
+export type SearchResultItem = App | Issue | MarketplaceListing | Organization | PullRequest | Repository | User
 
 /** A list of results that matched against a search query. */
 export type SearchResultItemConnection = {

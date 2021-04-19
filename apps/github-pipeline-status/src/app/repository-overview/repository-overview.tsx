@@ -54,9 +54,7 @@ interface UseFetchRepositoryDataProps {
 const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepositoryDataProps) => {
   const history = useHistory()
 
-  const { pages, onSuccess, nextPage, prevPage, goToPage, getPageRequest } = useGitHubPagination(
-    PAGE_SIZE,
-  )
+  const { pages, onSuccess, nextPage, prevPage, goToPage, getPageRequest } = useGitHubPagination(PAGE_SIZE)
 
   const octokit = useOctokit()
   const { data, isLoading } = useQuery(
@@ -209,9 +207,7 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
     )
   }
 
-  const filteredRepositories = data.search.nodes.filter(
-    (repo) => !showOnlyOpenPRs || repo.pullRequests.totalCount > 0,
-  )
+  const filteredRepositories = data.search.nodes.filter((repo) => !showOnlyOpenPRs || repo.pullRequests.totalCount > 0)
 
   return (
     <React.Fragment>

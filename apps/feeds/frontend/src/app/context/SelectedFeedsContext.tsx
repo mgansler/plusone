@@ -1,12 +1,4 @@
-import {
-  createContext,
-  Dispatch,
-  ReactNode,
-  Reducer,
-  ReducerAction,
-  useContext,
-  useReducer,
-} from 'react'
+import { createContext, Dispatch, ReactNode, Reducer, ReducerAction, useContext, useReducer } from 'react'
 
 export enum DefaultGroups {
   AllUnread = 'AllUnread',
