@@ -1,7 +1,5 @@
 export type Maybe<T> = T | null
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K]
-}
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
 /** All built-in and custom scalars, mapped to their actual values */
@@ -1129,6 +1127,7 @@ export enum CheckConclusionState {
 
 /** A check run. */
 export type CheckRun = Node &
+  RequirableByPullRequest &
   UniformResourceLocatable & {
     __typename?: 'CheckRun'
     /** The check run's annotations */
@@ -1146,7 +1145,7 @@ export type CheckRun = Node &
     /** A reference for the check run on the integrator's system. */
     externalId?: Maybe<Scalars['String']>
     id: Scalars['ID']
-    /** Whether this check run is required to pass before merging. */
+    /** Whether this is required to pass before merging for a specific pull request. */
     isRequired: Scalars['Boolean']
     /** The name of the check for this check run. */
     name: Scalars['String']
@@ -1180,7 +1179,8 @@ export type CheckRunAnnotationsArgs = {
 
 /** A check run. */
 export type CheckRunIsRequiredArgs = {
-  pullRequestId: Scalars['ID']
+  pullRequestId?: Maybe<Scalars['ID']>
+  pullRequestNumber?: Maybe<Scalars['Int']>
 }
 
 /** Possible further actions the integrator can perform. */
@@ -1636,7 +1636,11 @@ export type Commit = GitObject &
     abbreviatedOid: Scalars['String']
     /** The number of additions in this commit. */
     additions: Scalars['Int']
-    /** The pull requests associated with a commit */
+    /**
+     * The merged Pull Request that introduced the commit to the repository. If the
+     * commit is not present in the default branch, additionally returns open Pull
+     * Requests associated with the commit
+     */
     associatedPullRequests?: Maybe<PullRequestConnection>
     /** Authorship details of the commit. */
     author?: Maybe<GitActor>
@@ -4757,7 +4761,7 @@ export type EnterprisePendingMemberInvitationEdge = {
 export type EnterpriseRepositoryInfo = Node & {
   __typename?: 'EnterpriseRepositoryInfo'
   id: Scalars['ID']
-  /** Identifies if the repository is private. */
+  /** Identifies if the repository is private or internal. */
   isPrivate: Scalars['Boolean']
   /** The repository's name. */
   name: Scalars['String']
@@ -11871,6 +11875,10 @@ export type PullRequest = Assignable &
     viewerCannotUpdateReasons: Array<CommentCannotUpdateReason>
     /** Did the viewer author this comment. */
     viewerDidAuthor: Scalars['Boolean']
+    /** The latest review given from the viewer. */
+    viewerLatestReview?: Maybe<PullRequestReview>
+    /** The person who has requested the viewer for review on this pull request. */
+    viewerLatestReviewRequest?: Maybe<ReviewRequest>
     /** The merge body text for the viewer and method. */
     viewerMergeBodyText: Scalars['String']
     /** The merge headline text for the viewer and method. */
@@ -13435,10 +13443,14 @@ export type RefUpdateRule = {
   requiredApprovingReviewCount?: Maybe<Scalars['Int']>
   /** List of required status check contexts that must pass for commits to be accepted to matching branches. */
   requiredStatusCheckContexts?: Maybe<Array<Maybe<Scalars['String']>>>
+  /** Are reviews from code owners required to update matching branches. */
+  requiresCodeOwnerReviews: Scalars['Boolean']
   /** Are merge commits prohibited from being pushed to this branch. */
   requiresLinearHistory: Scalars['Boolean']
   /** Are commits required to be signed. */
   requiresSignatures: Scalars['Boolean']
+  /** Is the viewer allowed to dismiss reviews. */
+  viewerAllowedToDismissReviews: Scalars['Boolean']
   /** Can the viewer push to the branch */
   viewerCanPush: Scalars['Boolean']
 }
@@ -15062,7 +15074,7 @@ export type Repository = Node &
     isLocked: Scalars['Boolean']
     /** Identifies if the repository is a mirror. */
     isMirror: Scalars['Boolean']
-    /** Identifies if the repository is private. */
+    /** Identifies if the repository is private or internal. */
     isPrivate: Scalars['Boolean']
     /** Returns true if this repository has a security policy */
     isSecurityPolicyEnabled?: Maybe<Scalars['Boolean']>
@@ -15611,7 +15623,7 @@ export type RepositoryInfo = {
   isLocked: Scalars['Boolean']
   /** Identifies if the repository is a mirror. */
   isMirror: Scalars['Boolean']
-  /** Identifies if the repository is private. */
+  /** Identifies if the repository is private or internal. */
   isPrivate: Scalars['Boolean']
   /** Identifies if the repository is a template that can be used to generate new repositories. */
   isTemplate: Scalars['Boolean']
@@ -16090,6 +16102,18 @@ export enum RequestableCheckStatusState {
 
 /** Types that can be requested reviewers. */
 export type RequestedReviewer = Mannequin | Team | User
+
+/** Represents a type that can be required by a pull request for merging. */
+export type RequirableByPullRequest = {
+  /** Whether this is required to pass before merging for a specific pull request. */
+  isRequired: Scalars['Boolean']
+}
+
+/** Represents a type that can be required by a pull request for merging. */
+export type RequirableByPullRequestIsRequiredArgs = {
+  pullRequestId?: Maybe<Scalars['ID']>
+  pullRequestNumber?: Maybe<Scalars['Int']>
+}
 
 /** Autogenerated input type of RerequestCheckSuite */
 export type RerequestCheckSuiteInput = {
@@ -16904,6 +16928,12 @@ export type SponsorsTier = Node & {
   __typename?: 'SponsorsTier'
   /** SponsorsTier information only visible to users that can administer the associated Sponsors listing. */
   adminInfo?: Maybe<SponsorsTierAdminInfo>
+  /**
+   * Get a different tier for this tier's maintainer that is at the same frequency
+   * as this tier but with a lesser cost. Returns the published tier with the
+   * monthly price closest to this tier's without going over.
+   */
+  closestLesserValueTier?: Maybe<SponsorsTier>
   /** Identifies the date and time when the object was created. */
   createdAt: Scalars['DateTime']
   /** The description of the tier. */
@@ -16911,6 +16941,13 @@ export type SponsorsTier = Node & {
   /** The tier description rendered to HTML */
   descriptionHTML: Scalars['HTML']
   id: Scalars['ID']
+  /**
+   * Whether this tier was chosen at checkout time by the sponsor rather than
+   * defined ahead of time by the maintainer who manages the Sponsors listing.
+   */
+  isCustomAmount: Scalars['Boolean']
+  /** Whether this tier is only for use with one-time sponsorships. */
+  isOneTime: Scalars['Boolean']
   /** How much this tier costs per month in cents. */
   monthlyPriceInCents: Scalars['Int']
   /** How much this tier costs per month in dollars. */
@@ -16984,6 +17021,8 @@ export type Sponsorship = Node & {
   /** Identifies the date and time when the object was created. */
   createdAt: Scalars['DateTime']
   id: Scalars['ID']
+  /** Whether this sponsorship represents a one-time payment versus a recurring sponsorship. */
+  isOneTimePayment: Scalars['Boolean']
   /**
    * The entity that is being sponsored
    * @deprecated `Sponsorship.maintainer` will be removed. Use `Sponsorship.sponsorable` instead. Removal on 2020-04-01 UTC.
@@ -17002,6 +17041,8 @@ export type Sponsorship = Node & {
   sponsorable: Sponsorable
   /** The associated sponsorship tier */
   tier?: Maybe<SponsorsTier>
+  /** Identifies the date and time when the current tier was chosen for this sponsorship. */
+  tierSelectedAt?: Maybe<Scalars['DateTime']>
 }
 
 /** The connection type for Sponsorship. */
@@ -17205,28 +17246,29 @@ export type StatusCheckRollupContextEdge = {
 }
 
 /** Represents an individual commit status context */
-export type StatusContext = Node & {
-  __typename?: 'StatusContext'
-  /** The avatar of the OAuth application or the user that created the status */
-  avatarUrl?: Maybe<Scalars['URI']>
-  /** This commit this status context is attached to. */
-  commit?: Maybe<Commit>
-  /** The name of this status context. */
-  context: Scalars['String']
-  /** Identifies the date and time when the object was created. */
-  createdAt: Scalars['DateTime']
-  /** The actor who created this status context. */
-  creator?: Maybe<Actor>
-  /** The description for this status context. */
-  description?: Maybe<Scalars['String']>
-  id: Scalars['ID']
-  /** Whether this status is required to pass before merging. */
-  isRequired: Scalars['Boolean']
-  /** The state of this status context. */
-  state: StatusState
-  /** The URL for this status context. */
-  targetUrl?: Maybe<Scalars['URI']>
-}
+export type StatusContext = Node &
+  RequirableByPullRequest & {
+    __typename?: 'StatusContext'
+    /** The avatar of the OAuth application or the user that created the status */
+    avatarUrl?: Maybe<Scalars['URI']>
+    /** This commit this status context is attached to. */
+    commit?: Maybe<Commit>
+    /** The name of this status context. */
+    context: Scalars['String']
+    /** Identifies the date and time when the object was created. */
+    createdAt: Scalars['DateTime']
+    /** The actor who created this status context. */
+    creator?: Maybe<Actor>
+    /** The description for this status context. */
+    description?: Maybe<Scalars['String']>
+    id: Scalars['ID']
+    /** Whether this is required to pass before merging for a specific pull request. */
+    isRequired: Scalars['Boolean']
+    /** The state of this status context. */
+    state: StatusState
+    /** The URL for this status context. */
+    targetUrl?: Maybe<Scalars['URI']>
+  }
 
 /** Represents an individual commit status context */
 export type StatusContextAvatarUrlArgs = {
@@ -17235,7 +17277,8 @@ export type StatusContextAvatarUrlArgs = {
 
 /** Represents an individual commit status context */
 export type StatusContextIsRequiredArgs = {
-  pullRequestId: Scalars['ID']
+  pullRequestId?: Maybe<Scalars['ID']>
+  pullRequestNumber?: Maybe<Scalars['Int']>
 }
 
 /** The possible commit status states. */
