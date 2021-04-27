@@ -2309,15 +2309,16 @@
     yargs "15.4.1"
     yargs-parser "20.0.0"
 
-"@nxrocks/nx-spring-boot@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@nxrocks/nx-spring-boot/-/nx-spring-boot-2.0.1.tgz#2ad9372be1008371ab2933cdec833da0cfbd938a"
-  integrity sha512-4XBDQs8an6AtTwH7cReR+b+TwNTD38qc4jBlsNvMSCW58TE7I9xAzNQs1CXRfCh4YNr5PZBqYvV4OXwKhtcYIQ==
+"@nxrocks/nx-spring-boot@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@nxrocks/nx-spring-boot/-/nx-spring-boot-2.1.0.tgz#9c53db91a8e5d58dd70cd3dc678a77ce0d344ec8"
+  integrity sha512-xalNzrBWCntSd9Fvu7/jWmT/MU2L6AeFV/ZKFwV5JzAJDFy43rrSxQ/oMqv8udI32w5Snsh71mIB66JJqjPnzg==
   dependencies:
     "@nrwl/devkit" "*"
     "@nrwl/workspace" "*"
     node-fetch "^2.6.1"
     unzipper "^0.10.11"
+    xmldoc "^1.1.2"
 
 "@octokit/auth-token@^2.4.4":
   version "2.4.5"
@@ -12639,7 +12640,7 @@ sax@0.5.x:
   resolved "https://registry.yarnpkg.com/sax/-/sax-0.5.8.tgz#d472db228eb331c2506b0e8c15524adb939d12c1"
   integrity sha1-1HLbIo6zMcJQaw6MFVJK25OdEsE=
 
-sax@~1.2.4:
+sax@^1.2.1, sax@~1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
@@ -14768,6 +14769,13 @@ xmlchars@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
+
+xmldoc@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/xmldoc/-/xmldoc-1.1.2.tgz#6666e029fe25470d599cd30e23ff0d1ed50466d7"
+  integrity sha512-ruPC/fyPNck2BD1dpz0AZZyrEwMOrWTO5lDdIXS91rs3wtm4j+T8Rp2o+zoOYkkAxJTZRPOSnOGei1egoRmKMQ==
+  dependencies:
+    sax "^1.2.1"
 
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.2"
