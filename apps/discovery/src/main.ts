@@ -1,27 +1,25 @@
-import { connect } from 'amqplib/callback_api'
+/**
+ * This is not a production server yet!
+ * This is only a minimal backend to get started.
+ */
 
-connect('amqp://localhost', (connectErr, connection) => {
-  if (connectErr) {
-    throw connectErr
-  }
+import { Logger } from '@nestjs/common'
+import { NestFactory } from '@nestjs/core'
 
-  connection.createChannel((channelErr, channel) => {
-    if (channelErr) {
-      throw channelErr
-    }
+import { AppModule } from './app/app.module'
+import { Transport } from '@nestjs/microservices'
 
-    const queue = 'discover'
-
-    channel.assertQueue(queue, { durable: false })
-
-    console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queue)
-
-    channel.consume(
-      queue,
-      (msg) => {
-        console.log(' [x] Received %s', msg.content.toString())
-      },
-      { noAck: true },
-    )
+async function bootstrap() {
+  const app = await NestFactory.createMicroservice(AppModule, {
+    transport: Transport.RMQ,
+    options: {
+      urls: ['amqp://localhost'],
+      queue: 'discover',
+      queueOptions: { durable: false },
+    },
   })
-})
+
+  await app.listen(() => Logger.log('Discovery Microservice is listening'))
+}
+
+bootstrap()
