@@ -1,3 +1,3 @@
 module.exports = {
-  projects: ['<rootDir>/apps/controller', '<rootDir>/apps/discovery'],
+  projects: ['<rootDir>/apps/core', '<rootDir>/apps/discovery'],
 }
