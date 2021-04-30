@@ -1,5 +1,7 @@
-import { Controller, Logger } from '@nestjs/common'
+import { Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
+
+import { FeedUri } from '@feeds/types'
 
 import { DiscoveryService } from './discovery.service'
 
@@ -8,9 +10,7 @@ export class DiscoveryController {
   constructor(private readonly discoveryService: DiscoveryService) {}
 
   @MessagePattern('website')
-  async discoverWebsite(data: { uri: string }): Promise<string> {
-    const feedUri = await this.discoveryService.discoverFeedForWebsite(data.uri)
-    Logger.log(feedUri)
-    return feedUri
+  async discoverWebsite(data: { uri: string }): Promise<FeedUri> {
+    return this.discoveryService.discoverFeedForWebsite(data.uri)
   }
 }

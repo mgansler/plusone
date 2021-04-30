@@ -4,14 +4,13 @@ import * as Parser from 'rss-parser'
 
 @Injectable()
 export class DiscoveryService {
-  private parser: Parser
+  private parser = new Parser()
+  private logger = new Logger(DiscoveryService.name)
 
-  constructor(private readonly httpService: HttpService) {
-    this.parser = new Parser()
-  }
+  constructor(private readonly httpService: HttpService) {}
 
   async discoverFeedForWebsite(uri: string): Promise<string | null> {
-    Logger.log('Starting feed discovery for: ' + uri)
+    this.logger.log('Starting feed discovery for: ' + uri)
 
     const website = await this.httpService.get(uri).toPromise()
     const $ = cheerio.load(website.data)
@@ -21,6 +20,7 @@ export class DiscoveryService {
       const href = el.attribs['href']
       const feed = await this.parser.parseURL(href)
       if (feed) {
+        this.logger.log(href)
         return href
       }
     }
