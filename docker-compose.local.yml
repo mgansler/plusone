@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  amqp:
+    image: rabbitmq:3-management
+    hostname: feeds-rabbit
+    container_name: feeds-rabbit
+    ports:
+      - 5672:5672
+      - 15672:15672
