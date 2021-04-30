@@ -1,7 +1,44 @@
 {
   "version": 2,
-  "projects": {},
-  "cli": {
-    "defaultCollection": "@nrwl/workspace"
+  "cli": { "defaultCollection": "@nrwl/node" },
+  "defaultProject": "discovery",
+  "projects": {
+    "discovery": {
+      "root": "apps/discovery",
+      "sourceRoot": "apps/discovery/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/discovery",
+            "main": "apps/discovery/src/main.ts",
+            "tsConfig": "apps/discovery/tsconfig.app.json",
+            "assets": ["apps/discovery/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/discovery/src/environments/environment.ts",
+                  "with": "apps/discovery/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": { "executor": "@nrwl/node:execute", "options": { "buildTarget": "discovery:build" } },
+        "lint": { "executor": "@nrwl/linter:eslint", "options": { "lintFilePatterns": ["apps/discovery/**/*.ts"] } },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/discovery"],
+          "options": { "jestConfig": "apps/discovery/jest.config.js", "passWithNoTests": true }
+        }
+      }
+    }
   }
 }
