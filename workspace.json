@@ -1,8 +1,60 @@
 {
   "version": 2,
-  "cli": { "defaultCollection": "@nrwl/node" },
-  "defaultProject": "discovery",
+  "cli": {
+    "defaultCollection": "@nrwl/node"
+  },
+  "defaultProject": "controller",
   "projects": {
+    "controller": {
+      "root": "apps/controller",
+      "sourceRoot": "apps/controller/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/controller",
+            "main": "apps/controller/src/main.ts",
+            "tsConfig": "apps/controller/tsconfig.app.json",
+            "assets": ["apps/controller/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/controller/src/environments/environment.ts",
+                  "with": "apps/controller/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "controller:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/controller/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/controller"],
+          "options": {
+            "jestConfig": "apps/controller/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "discovery": {
       "root": "apps/discovery",
       "sourceRoot": "apps/discovery/src",
@@ -31,12 +83,25 @@
             }
           }
         },
-        "serve": { "executor": "@nrwl/node:execute", "options": { "buildTarget": "discovery:build" } },
-        "lint": { "executor": "@nrwl/linter:eslint", "options": { "lintFilePatterns": ["apps/discovery/**/*.ts"] } },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "discovery:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/discovery/**/*.ts"]
+          }
+        },
         "test": {
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/discovery"],
-          "options": { "jestConfig": "apps/discovery/jest.config.js", "passWithNoTests": true }
+          "options": {
+            "jestConfig": "apps/discovery/jest.config.js",
+            "passWithNoTests": true
+          }
         }
       }
     }
