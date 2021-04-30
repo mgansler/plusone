@@ -7,10 +7,10 @@ import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { Transport } from '@nestjs/microservices'
 
-import { AppModule } from './app/app.module'
+import { DiscoveryModule } from './discovery/discovery.module'
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice(AppModule, {
+  const app = await NestFactory.createMicroservice(DiscoveryModule, {
     transport: Transport.RMQ,
     options: {
       urls: ['amqp://localhost'],
