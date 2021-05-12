@@ -4,6 +4,7 @@ import { Observable } from 'rxjs'
 import { Cron, CronExpression } from '@nestjs/schedule'
 
 import { FeedUri } from '@feeds/types'
+import { FETCH_SERVICE } from '@feeds/fetch'
 
 import { FeedsService } from '../feeds/feeds.service'
 
@@ -13,7 +14,7 @@ export class AppService {
 
   constructor(
     @Inject('DISCOVER_SERVICE') private discoverClient: ClientProxy,
-    @Inject('FETCH_SERVICE') private fetchClient: ClientProxy,
+    @Inject(FETCH_SERVICE) private fetchClient: ClientProxy,
     private readonly feedsService: FeedsService,
   ) {}
 

@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { ScheduleModule } from '@nestjs/schedule'
 
+import { fetchOptions } from '@feeds/fetch'
+
 import { FeedsModule } from '../feeds/feeds.module'
 
 import { AppController } from './app.controller'
@@ -25,17 +27,7 @@ describe.skip('AppController', () => {
             },
           },
         ]),
-        ClientsModule.register([
-          {
-            name: 'FETCH_SERVICE',
-            transport: Transport.RMQ,
-            options: {
-              urls: ['amqp://localhost'],
-              queue: 'fetch',
-              queueOptions: { durable: false, arguments: { 'x-message-ttl': 3000 } },
-            },
-          },
-        ]),
+        ClientsModule.register([fetchOptions]),
         ScheduleModule.forRoot(),
         FeedsModule,
       ],
