@@ -8,7 +8,10 @@
       "parserOptions": {
         "project": ["apps/quick-zoom-e2e/tsconfig.*?.json"]
       },
-      "rules": {}
+      "rules": {
+        "testing-library/await-async-query": "off",
+        "testing-library/prefer-screen-queries": "off"
+      }
     },
     {
       "files": ["src/plugins/index.js"],
