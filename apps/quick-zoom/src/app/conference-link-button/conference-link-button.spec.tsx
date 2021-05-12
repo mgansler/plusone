@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ConferenceLinkButton } from './conference-link-button'
@@ -11,9 +11,9 @@ describe('ConferenceLinkButton', () => {
   `('should open the correct url for $title', ({ title, given, expected }) => {
     const windowOpenSpy = jest.spyOn(global, 'open').mockImplementation()
 
-    const { getByText } = render(<ConferenceLinkButton title={title} url={given} type={'zoom'} />)
+    render(<ConferenceLinkButton title={title} url={given} type={'zoom'} />)
 
-    userEvent.click(getByText(title))
+    userEvent.click(screen.getByText(title))
 
     expect(windowOpenSpy).toHaveBeenCalledWith(expected)
   })
