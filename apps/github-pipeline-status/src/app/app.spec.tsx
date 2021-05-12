@@ -15,6 +15,6 @@ describe('App', () => {
   it('should have a greeting as the title', () => {
     const { getByText } = render(<App />)
 
-    expect(getByText(/github pipeline status/i)).toBeTruthy()
+    expect(getByText(/github pipeline status/i)).toBeInTheDocument()
   })
 })
