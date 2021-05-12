@@ -117,6 +117,56 @@
           }
         }
       }
+    },
+    "fetch": {
+      "root": "apps/fetch",
+      "sourceRoot": "apps/fetch/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/fetch",
+            "main": "apps/fetch/src/main.ts",
+            "tsConfig": "apps/fetch/tsconfig.app.json",
+            "assets": ["apps/fetch/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/fetch/src/environments/environment.ts",
+                  "with": "apps/fetch/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "fetch:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/fetch/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/fetch"],
+          "options": {
+            "jestConfig": "apps/fetch/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }
