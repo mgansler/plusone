@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'fetch',
+  displayName: 'discovery-app',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' },
@@ -8,5 +8,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/fetch',
+  coverageDirectory: '../../coverage/apps/discovery-app',
 }

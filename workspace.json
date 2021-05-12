@@ -3,108 +3,8 @@
   "cli": {
     "defaultCollection": "@nrwl/node"
   },
-  "defaultProject": "core",
+  "defaultProject": "core-app",
   "projects": {
-    "discovery": {
-      "root": "apps/discovery",
-      "sourceRoot": "apps/discovery/src",
-      "projectType": "application",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
-          "options": {
-            "outputPath": "dist/apps/discovery",
-            "main": "apps/discovery/src/main.ts",
-            "tsConfig": "apps/discovery/tsconfig.app.json",
-            "assets": ["apps/discovery/src/assets"]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/discovery/src/environments/environment.ts",
-                  "with": "apps/discovery/src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "executor": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "discovery:build"
-          }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/discovery/**/*.ts"]
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/discovery"],
-          "options": {
-            "jestConfig": "apps/discovery/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "core": {
-      "root": "apps/core",
-      "sourceRoot": "apps/core/src",
-      "projectType": "application",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
-          "options": {
-            "outputPath": "dist/apps/core",
-            "main": "apps/core/src/main.ts",
-            "tsConfig": "apps/core/tsconfig.app.json",
-            "assets": ["apps/core/src/assets"]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/core/src/environments/environment.ts",
-                  "with": "apps/core/src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "executor": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "core:build"
-          }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/core/**/*.ts"]
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/core"],
-          "options": {
-            "jestConfig": "apps/core/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "types": {
       "root": "libs/types",
       "sourceRoot": "libs/types/src",
@@ -118,19 +18,19 @@
         }
       }
     },
-    "fetch": {
-      "root": "apps/fetch",
-      "sourceRoot": "apps/fetch/src",
+    "core-app": {
+      "root": "apps/core-app",
+      "sourceRoot": "apps/core-app/src",
       "projectType": "application",
       "targets": {
         "build": {
           "executor": "@nrwl/node:build",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/apps/fetch",
-            "main": "apps/fetch/src/main.ts",
-            "tsConfig": "apps/fetch/tsconfig.app.json",
-            "assets": ["apps/fetch/src/assets"]
+            "outputPath": "dist/apps/core-app",
+            "main": "apps/core-app/src/main.ts",
+            "tsConfig": "apps/core-app/tsconfig.app.json",
+            "assets": ["apps/core-app/src/assets"]
           },
           "configurations": {
             "production": {
@@ -139,8 +39,8 @@
               "inspect": false,
               "fileReplacements": [
                 {
-                  "replace": "apps/fetch/src/environments/environment.ts",
-                  "with": "apps/fetch/src/environments/environment.prod.ts"
+                  "replace": "apps/core-app/src/environments/environment.ts",
+                  "with": "apps/core-app/src/environments/environment.prod.ts"
                 }
               ]
             }
@@ -149,20 +49,120 @@
         "serve": {
           "executor": "@nrwl/node:execute",
           "options": {
-            "buildTarget": "fetch:build"
+            "buildTarget": "core-app:build"
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/fetch/**/*.ts"]
+            "lintFilePatterns": ["apps/core-app/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/fetch"],
+          "outputs": ["coverage/apps/core-app"],
           "options": {
-            "jestConfig": "apps/fetch/jest.config.js",
+            "jestConfig": "apps/core-app/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "fetch-app": {
+      "root": "apps/fetch-app",
+      "sourceRoot": "apps/fetch-app/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/fetch-app",
+            "main": "apps/fetch-app/src/main.ts",
+            "tsConfig": "apps/fetch-app/tsconfig.app.json",
+            "assets": ["apps/fetch-app/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/fetch-app/src/environments/environment.ts",
+                  "with": "apps/fetch-app/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "fetch-app:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/fetch-app/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/fetch-app"],
+          "options": {
+            "jestConfig": "apps/fetch-app/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "discovery-app": {
+      "root": "apps/discovery-app",
+      "sourceRoot": "apps/discovery-app/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/discovery-app",
+            "main": "apps/discovery-app/src/main.ts",
+            "tsConfig": "apps/discovery-app/tsconfig.app.json",
+            "assets": ["apps/discovery-app/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/discovery-app/src/environments/environment.ts",
+                  "with": "apps/discovery-app/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "discovery-app:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/discovery-app/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/discovery-app"],
+          "options": {
+            "jestConfig": "apps/discovery-app/jest.config.js",
             "passWithNoTests": true
           }
         }
