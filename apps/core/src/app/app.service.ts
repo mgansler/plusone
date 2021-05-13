@@ -2,6 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 import { Observable } from 'rxjs'
 import { Cron, CronExpression } from '@nestjs/schedule'
+import { Item } from 'rss-parser'
 
 import { FETCH_MESSAGE_PATTERN, FETCH_SERVICE, UpdateFeedRequest, UpdateFeedResponse } from '@feeds/fetch'
 import { DISCOVER_MESSAGE_PATTERN, DISCOVER_SERVICE, DiscoverFeedRequest, DiscoverFeedResponse } from '@feeds/discover'
@@ -32,16 +33,19 @@ export class AppService {
         this.logger.log(`Requesting update of ${feed.title}`)
         this.fetchClient
           .send<UpdateFeedResponse, UpdateFeedRequest>(FETCH_MESSAGE_PATTERN, feed.uri)
-          .subscribe(async (items) => {
-            let newArticles = 0
-            for (const item of items) {
-              if (await this.articleService.create(item)) {
-                newArticles++
-              }
-            }
-            this.logger.log(`Got ${newArticles} new articles for ${feed.title}`)
-          })
+          .subscribe((articles) => this.saveNewArticles(articles, feed.title))
       })
     })
+  }
+
+  private async saveNewArticles(articles: Item[], title: string): Promise<number> {
+    let newArticleCount = 0
+    for (const article of articles) {
+      if (await this.articleService.create(article)) {
+        newArticleCount++
+      }
+    }
+    this.logger.log(`Got ${newArticleCount} new articles for ${title}`)
+    return newArticleCount
   }
 }
