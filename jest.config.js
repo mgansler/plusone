@@ -7,5 +7,6 @@ module.exports = {
     '<rootDir>/libs/discover',
     '<rootDir>/libs/article',
     '<rootDir>/libs/database',
+    '<rootDir>/libs/feed',
   ],
 }

@@ -5,8 +5,7 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { fetchOptions } from '@feeds/fetch'
 import { discoverOptions } from '@feeds/discover'
 import { ArticleModule } from '@feeds/article'
-
-import { FeedsModule } from '../feeds/feeds.module'
+import { FeedModule } from '@feeds/feed'
 
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
@@ -16,7 +15,7 @@ import { AppService } from './app.service'
     ClientsModule.register([discoverOptions]),
     ClientsModule.register([fetchOptions]),
     ScheduleModule.forRoot(),
-    FeedsModule,
+    FeedModule,
     ArticleModule,
   ],
   controllers: [AppController],

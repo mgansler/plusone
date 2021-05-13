@@ -7,8 +7,8 @@ import { DiscoverFeedRequest, DiscoverFeedResponse, UpdateFeedRequest, UpdateFee
 import { FETCH_MESSAGE_PATTERN, FETCH_SERVICE } from '@feeds/fetch'
 import { DISCOVER_MESSAGE_PATTERN, DISCOVER_SERVICE } from '@feeds/discover'
 import { ArticleService } from '@feeds/article'
+import { FeedService } from '@feeds/feed'
 
-import { FeedsService } from '../feeds/feeds.service'
 import { AddWebsiteDto } from '../dto/add-website.dto'
 
 @Injectable()
@@ -18,7 +18,7 @@ export class AppService {
   constructor(
     @Inject(DISCOVER_SERVICE) private discoverClient: ClientProxy,
     @Inject(FETCH_SERVICE) private fetchClient: ClientProxy,
-    private readonly feedsService: FeedsService,
+    private readonly feedService: FeedService,
     private readonly articleService: ArticleService,
   ) {}
 
@@ -28,7 +28,7 @@ export class AppService {
 
   @Cron(CronExpression.EVERY_10_MINUTES)
   handleCron() {
-    this.feedsService.findAll().then((feeds) => {
+    this.feedService.findAll().then((feeds) => {
       feeds.forEach((feed) => {
         this.logger.log(`Requesting update of ${feed.title}`)
         this.fetchClient
