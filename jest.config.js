@@ -6,5 +6,6 @@ module.exports = {
     '<rootDir>/libs/fetch',
     '<rootDir>/libs/discover',
     '<rootDir>/libs/article',
+    '<rootDir>/libs/database',
   ],
 }

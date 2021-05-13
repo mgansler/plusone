@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 
-import { DatabaseModule } from '../database/database.module'
+import { DatabaseModule } from '@feeds/database'
 
 import { FeedsService } from './feeds.service'
 import { feedsProviders } from './feeds.providers'
