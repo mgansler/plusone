@@ -57,7 +57,7 @@ jobs:
             node_modules/
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Lint
+      - name: Test
         run: yarn nx run-many --target=test --all
 
   build:
@@ -75,5 +75,5 @@ jobs:
             node_modules/
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Lint
+      - name: Build
         run: yarn nx run-many --target=build --all
