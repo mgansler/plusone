@@ -23,8 +23,8 @@ export class DiscoverService {
       const href = el.attribs['href']
       const feed = await this.parser.parseURL(href)
       if (feed) {
-        this.logger.log(`Feed discovered: ${feed.title} - ${feed.feedUrl}`)
-        return feed
+        this.logger.log(`Feed discovered: ${feed.title} - ${href}`)
+        return { ...feed, feedUrl: feed.feedUrl ?? href }
       }
     }
 

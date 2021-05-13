@@ -6,6 +6,7 @@ import { Cron, CronExpression } from '@nestjs/schedule'
 import { DiscoverFeedRequest, DiscoverFeedResponse, UpdateFeedRequest, UpdateFeedResponse } from '@feeds/types'
 import { FETCH_MESSAGE_PATTERN, FETCH_SERVICE } from '@feeds/fetch'
 import { DISCOVER_MESSAGE_PATTERN, DISCOVER_SERVICE } from '@feeds/discover'
+import { ArticleService } from '@feeds/article'
 
 import { FeedsService } from '../feeds/feeds.service'
 import { AddWebsiteDto } from '../dto/add-website.dto'
@@ -18,21 +19,28 @@ export class AppService {
     @Inject(DISCOVER_SERVICE) private discoverClient: ClientProxy,
     @Inject(FETCH_SERVICE) private fetchClient: ClientProxy,
     private readonly feedsService: FeedsService,
+    private readonly articleService: ArticleService,
   ) {}
 
   addWebsite({ uri }: AddWebsiteDto): Observable<DiscoverFeedResponse> {
     return this.discoverClient.send<DiscoverFeedResponse, DiscoverFeedRequest>(DISCOVER_MESSAGE_PATTERN, uri)
   }
 
-  @Cron(CronExpression.EVERY_5_SECONDS)
+  @Cron(CronExpression.EVERY_10_MINUTES)
   handleCron() {
     this.feedsService.findAll().then((feeds) => {
       feeds.forEach((feed) => {
         this.logger.log(`Requesting update of ${feed.title}`)
         this.fetchClient
           .send<UpdateFeedResponse, UpdateFeedRequest>(FETCH_MESSAGE_PATTERN, feed.uri)
-          .subscribe((items) => {
-            this.logger.log(`Got ${items.length} articles for ${feed.title}`)
+          .subscribe(async (items) => {
+            let newArticles = 0
+            for (const item of items) {
+              if (await this.articleService.create(item)) {
+                newArticles++
+              }
+            }
+            this.logger.log(`Got ${newArticles} new articles for ${feed.title}`)
           })
       })
     })

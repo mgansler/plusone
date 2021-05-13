@@ -5,5 +5,6 @@ module.exports = {
     '<rootDir>/apps/fetch-ms',
     '<rootDir>/libs/fetch',
     '<rootDir>/libs/discover',
+    '<rootDir>/libs/article',
   ],
 }
