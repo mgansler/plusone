@@ -1,1 +1,2 @@
-export * from './lib/discovery'
+export * from './lib/discover'
+export * from './lib/fetch'

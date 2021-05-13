@@ -12,8 +12,8 @@ export class AppController {
   @Post()
   addWebsite(@Body() addWebsiteDto: AddWebsiteDto) {
     const res = this.appService.addWebsite(addWebsiteDto)
-    res.subscribe((feedUri) => {
-      this.feedsService.create({ title: addWebsiteDto.uri, uri: feedUri })
+    res.subscribe((feed) => {
+      this.feedsService.create({ title: feed.title, uri: feed.feedUrl })
     })
     return res
   }

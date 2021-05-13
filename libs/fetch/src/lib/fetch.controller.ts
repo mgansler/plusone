@@ -1,6 +1,9 @@
 import { Controller, Logger } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 
+import { UpdateFeedRequest } from '@feeds/types'
+
+import { FETCH_MESSAGE_PATTERN } from './fetch.constants'
 import { FetchService } from './fetch.service'
 
 @Controller()
@@ -9,9 +12,8 @@ export class FetchController {
 
   constructor(private readonly fetchService: FetchService) {}
 
-  @MessagePattern('update')
-  async fetchFeed(data: string) {
-    this.logger.log(data)
-    await this.fetchService.fetch(data)
+  @MessagePattern(FETCH_MESSAGE_PATTERN)
+  async fetchFeed(data: UpdateFeedRequest) {
+    return this.fetchService.fetchFeedArticles(data)
   }
 }

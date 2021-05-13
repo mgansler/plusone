@@ -1,13 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common'
 import * as Parser from 'rss-parser'
 
+import { UpdateFeedRequest } from '@feeds/types'
+
 @Injectable()
 export class FetchService {
   private parser = new Parser()
   private logger = new Logger(FetchService.name)
 
-  async fetch(uri: string) {
+  async fetchFeedArticles(uri: UpdateFeedRequest) {
     const feed = await this.parser.parseURL(uri)
-    this.logger.log(`${uri}: ${feed.items.length}`)
+    this.logger.log(`Fetched ${feed.items.length} articles for ${feed.title}`)
+    return feed.items
   }
 }
