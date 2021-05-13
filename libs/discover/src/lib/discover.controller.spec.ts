@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { HttpModule } from '@nestjs/common'
 
-import { DiscoveryController } from './discovery.controller'
-import { DiscoveryService } from './discovery.service'
+import { DiscoverController } from './discover.controller'
+import { DiscoverService } from './discover.service'
 
 describe.skip('AppController', () => {
   let app: TestingModule
@@ -10,14 +10,14 @@ describe.skip('AppController', () => {
   beforeAll(async () => {
     app = await Test.createTestingModule({
       imports: [HttpModule],
-      controllers: [DiscoveryController],
-      providers: [DiscoveryService],
+      controllers: [DiscoverController],
+      providers: [DiscoverService],
     }).compile()
   })
 
   describe('discoverWebsite', () => {
     it('should return "Welcome to discover!"', () => {
-      const appController = app.get<DiscoveryController>(DiscoveryController)
+      const appController = app.get<DiscoverController>(DiscoverController)
 
       expect(appController.discoverWebsite({ uri: 'https://google.com' })).toEqual('Got ya!')
     })

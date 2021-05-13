@@ -3,14 +3,14 @@ import { MessagePattern } from '@nestjs/microservices'
 
 import { FeedUri } from '@feeds/types'
 
-import { DiscoveryService } from './discovery.service'
+import { DiscoverService } from './discover.service'
 
 @Controller()
-export class DiscoveryController {
-  constructor(private readonly discoveryService: DiscoveryService) {}
+export class DiscoverController {
+  constructor(private readonly discoverService: DiscoverService) {}
 
   @MessagePattern('website')
   async discoverWebsite(data: { uri: string }): Promise<FeedUri> {
-    return this.discoveryService.discoverFeedForWebsite(data.uri)
+    return this.discoverService.discoverFeedForWebsite(data.uri)
   }
 }

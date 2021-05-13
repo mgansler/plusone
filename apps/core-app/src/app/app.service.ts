@@ -5,6 +5,7 @@ import { Cron, CronExpression } from '@nestjs/schedule'
 
 import { FeedUri } from '@feeds/types'
 import { FETCH_SERVICE } from '@feeds/fetch'
+import { DISCOVER_SERVICE } from '@feeds/discover'
 
 import { FeedsService } from '../feeds/feeds.service'
 
@@ -13,7 +14,7 @@ export class AppService {
   private logger = new Logger(AppService.name)
 
   constructor(
-    @Inject('DISCOVER_SERVICE') private discoverClient: ClientProxy,
+    @Inject(DISCOVER_SERVICE) private discoverClient: ClientProxy,
     @Inject(FETCH_SERVICE) private fetchClient: ClientProxy,
     private readonly feedsService: FeedsService,
   ) {}

@@ -5,19 +5,11 @@
 
 import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
-import { Transport } from '@nestjs/microservices'
 
-import { DiscoveryModule } from './discovery/discovery.module'
+import { DiscoverModule, discoverOptions } from '@feeds/discover'
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice(DiscoveryModule, {
-    transport: Transport.RMQ,
-    options: {
-      urls: ['amqp://localhost'],
-      queue: 'discover',
-      queueOptions: { durable: false },
-    },
-  })
+  const app = await NestFactory.createMicroservice(DiscoverModule, discoverOptions)
 
   await app.listen(() => Logger.log('Discovery Microservice is listening'))
 }

@@ -188,6 +188,27 @@
           }
         }
       }
+    },
+    "discover": {
+      "root": "libs/discover",
+      "sourceRoot": "libs/discover/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/discover/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/discover"],
+          "options": {
+            "jestConfig": "libs/discover/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@feeds/types": ["libs/types/src/index.ts"],
-      "@feeds/fetch": ["libs/fetch/src/index.ts"]
+      "@feeds/fetch": ["libs/fetch/src/index.ts"],
+      "@feeds/discover": ["libs/discover/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

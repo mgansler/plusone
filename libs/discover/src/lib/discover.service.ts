@@ -3,9 +3,9 @@ import * as cheerio from 'cheerio'
 import * as Parser from 'rss-parser'
 
 @Injectable()
-export class DiscoveryService {
+export class DiscoverService {
   private parser = new Parser()
-  private logger = new Logger(DiscoveryService.name)
+  private logger = new Logger(DiscoverService.name)
 
   constructor(private readonly httpService: HttpService) {}
 
