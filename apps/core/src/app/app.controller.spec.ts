@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { ClientsModule, Transport } from '@nestjs/microservices'
+import { ClientsModule } from '@nestjs/microservices'
 import { ScheduleModule } from '@nestjs/schedule'
 
 import { fetchOptions } from '@feeds/fetch'
-
-import { FeedsModule } from '../feeds/feeds.module'
+import { discoverOptions } from '@feeds/discover'
+import { FeedModule } from '@feeds/feed'
+import { ArticleModule } from '@feeds/article'
 
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
@@ -16,20 +17,11 @@ describe.skip('AppController', () => {
   beforeAll(async () => {
     app = await Test.createTestingModule({
       imports: [
-        ClientsModule.register([
-          {
-            name: 'DISCOVER_SERVICE',
-            transport: Transport.RMQ,
-            options: {
-              urls: ['amqp://localhost'],
-              queue: 'discover',
-              queueOptions: { durable: false },
-            },
-          },
-        ]),
+        ClientsModule.register([discoverOptions]),
         ClientsModule.register([fetchOptions]),
         ScheduleModule.forRoot(),
-        FeedsModule,
+        FeedModule,
+        ArticleModule,
       ],
       controllers: [AppController],
       providers: [AppService],
