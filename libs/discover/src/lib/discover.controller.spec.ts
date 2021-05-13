@@ -19,7 +19,7 @@ describe.skip('AppController', () => {
     it('should return "Welcome to discover!"', () => {
       const appController = app.get<DiscoverController>(DiscoverController)
 
-      expect(appController.discoverWebsite({ uri: 'https://google.com' })).toEqual('Got ya!')
+      expect(appController.discoverWebsite('https://google.com')).toEqual('Got ya!')
     })
   })
 })
