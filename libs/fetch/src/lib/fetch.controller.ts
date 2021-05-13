@@ -1,8 +1,7 @@
 import { Controller, Logger } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 
-import { UpdateFeedRequest } from '@feeds/types'
-
+import { UpdateFeedRequest } from './fetch.types'
 import { FETCH_MESSAGE_PATTERN } from './fetch.constants'
 import { FetchService } from './fetch.service'
 

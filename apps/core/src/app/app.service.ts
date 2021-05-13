@@ -3,9 +3,8 @@ import { ClientProxy } from '@nestjs/microservices'
 import { Observable } from 'rxjs'
 import { Cron, CronExpression } from '@nestjs/schedule'
 
-import { DiscoverFeedRequest, DiscoverFeedResponse, UpdateFeedRequest, UpdateFeedResponse } from '@feeds/types'
-import { FETCH_MESSAGE_PATTERN, FETCH_SERVICE } from '@feeds/fetch'
-import { DISCOVER_MESSAGE_PATTERN, DISCOVER_SERVICE } from '@feeds/discover'
+import { FETCH_MESSAGE_PATTERN, FETCH_SERVICE, UpdateFeedRequest, UpdateFeedResponse } from '@feeds/fetch'
+import { DISCOVER_MESSAGE_PATTERN, DISCOVER_SERVICE, DiscoverFeedRequest, DiscoverFeedResponse } from '@feeds/discover'
 import { ArticleService } from '@feeds/article'
 import { FeedService } from '@feeds/feed'
 

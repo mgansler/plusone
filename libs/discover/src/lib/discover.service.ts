@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio'
 import * as Parser from 'rss-parser'
 import { Output } from 'rss-parser'
 
-import { DiscoverFeedRequest } from '@feeds/types'
+import { DiscoverFeedRequest } from './discover.types'
 
 @Injectable()
 export class DiscoverService {
