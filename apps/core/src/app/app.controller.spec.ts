@@ -17,8 +17,7 @@ describe.skip('AppController', () => {
   beforeAll(async () => {
     app = await Test.createTestingModule({
       imports: [
-        ClientsModule.register([discoverOptions]),
-        ClientsModule.register([fetchOptions]),
+        ClientsModule.register([discoverOptions, fetchOptions]),
         ScheduleModule.forRoot(),
         FeedModule,
         ArticleModule,

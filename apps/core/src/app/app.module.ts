@@ -12,8 +12,7 @@ import { AppService } from './app.service'
 
 @Module({
   imports: [
-    ClientsModule.register([discoverOptions]),
-    ClientsModule.register([fetchOptions]),
+    ClientsModule.register([discoverOptions, fetchOptions]),
     ScheduleModule.forRoot(),
     FeedModule,
     ArticleModule,
@@ -21,4 +20,5 @@ import { AppService } from './app.service'
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+}

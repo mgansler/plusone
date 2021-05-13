@@ -16,8 +16,7 @@ describe.skip('AppService', () => {
   beforeAll(async () => {
     const app = await Test.createTestingModule({
       imports: [
-        ClientsModule.register([discoverOptions]),
-        ClientsModule.register([fetchOptions]),
+        ClientsModule.register([discoverOptions, fetchOptions]),
         ScheduleModule.forRoot(),
         FeedModule,
         ArticleModule,
