@@ -24,10 +24,13 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-  lint:
-    name: Linting
+  all:
+    name: All
     runs-on: ubuntu-latest
     needs: install_dependencies
+    strategy:
+      matrix:
+        target: [ lint, test, build ]
 
     steps:
       - uses: actions/checkout@v2
@@ -39,41 +42,5 @@ jobs:
             node_modules/
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Lint
-        run: yarn nx run-many --target=lint --all
-
-  test:
-    name: Testing
-    runs-on: ubuntu-latest
-    needs: install_dependencies
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cache/Cypress
-            node_modules/
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Test
-        run: yarn nx run-many --target=test --all
-
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    needs: install_dependencies
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cache/Cypress
-            node_modules/
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Build
-        run: yarn nx run-many --target=build --all
+      - name: ${{ matrix.target }}
+        run: yarn nx run-many --target=${{ matrix.target }} --all
