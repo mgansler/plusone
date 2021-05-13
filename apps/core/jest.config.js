@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'discovery-app',
+  displayName: 'core',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' },
@@ -8,5 +8,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/discovery-app',
+  coverageDirectory: '../../coverage/apps/core',
 }

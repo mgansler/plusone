@@ -1,8 +1,8 @@
 module.exports = {
   projects: [
-    '<rootDir>/apps/core-app',
-    '<rootDir>/apps/discovery-app',
-    '<rootDir>/apps/fetch-app',
+    '<rootDir>/apps/core',
+    '<rootDir>/apps/discover-ms',
+    '<rootDir>/apps/fetch-ms',
     '<rootDir>/libs/fetch',
     '<rootDir>/libs/discover',
   ],
