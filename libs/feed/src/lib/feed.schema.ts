@@ -1,11 +1,14 @@
-import { Document, Schema } from 'mongoose'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Document } from 'mongoose'
 
-export const FeedSchema = new Schema({
-  title: String,
-  feedUrl: String,
-})
+@Schema()
+export class Feed {
+  @Prop()
+  title: string
 
-export interface Feed extends Document {
-  readonly title: string
-  readonly feedUrl: string
+  @Prop()
+  feedUrl: string
 }
+
+export const FeedSchema = SchemaFactory.createForClass(Feed)
+export type FeedDocument = Feed & Document

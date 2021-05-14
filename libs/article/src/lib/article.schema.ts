@@ -1,18 +1,24 @@
-import { Schema } from 'mongoose'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Document } from 'mongoose'
 import { Item } from 'rss-parser'
 
-export const ArticleSchema = new Schema({
-  content: String,
-  contentBody: String,
-  guid: String,
-  link: String,
-  title: String,
-})
+@Schema()
+export class Article {
+  @Prop({ type: String })
+  content: Item['content']
 
-export interface Article extends Document {
-  readonly content: Item['content']
-  readonly contentBody: string
-  readonly guid: Item['guid']
-  readonly link: Item['link']
-  readonly title: Item['title']
+  @Prop()
+  contentBody: string
+
+  @Prop({ type: String })
+  guid: Item['guid']
+
+  @Prop({ type: String })
+  link: Item['link']
+
+  @Prop({ type: String })
+  title: Item['title']
 }
+
+export const ArticleSchema = SchemaFactory.createForClass(Article)
+export type ArticleDocument = Article & Document
