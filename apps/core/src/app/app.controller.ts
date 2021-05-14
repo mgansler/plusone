@@ -12,11 +12,7 @@ export class AppController {
 
   @Post()
   addWebsite(@Body() addWebsiteDto: AddWebsiteDto) {
-    const res = this.appService.addWebsite(addWebsiteDto)
-    res.subscribe((feed) => {
-      this.feedService.create({ title: feed.title, uri: feed.feedUrl })
-    })
-    return res
+    return this.appService.addWebsite(addWebsiteDto)
   }
 
   @Get()

@@ -9,8 +9,13 @@ export class FetchService {
   private logger = new Logger(FetchService.name)
 
   async fetchFeedArticles(uri: UpdateFeedRequest) {
-    const feed = await this.parser.parseURL(uri)
-    this.logger.log(`Fetched ${feed.items.length} articles for ${feed.title}`)
-    return feed.items
+    try {
+      const feed = await this.parser.parseURL(uri)
+      this.logger.log(`Fetched ${feed.items.length} articles for ${feed.title}`)
+      return feed.items
+    } catch (e) {
+      this.logger.error(e)
+      return []
+    }
   }
 }

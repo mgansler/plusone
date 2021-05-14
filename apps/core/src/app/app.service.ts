@@ -1,6 +1,5 @@
-import { Inject, Injectable, Logger } from '@nestjs/common'
+import { HttpException, Inject, Injectable, Logger } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
-import { Observable } from 'rxjs'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { Item } from 'rss-parser'
 
@@ -22,8 +21,16 @@ export class AppService {
     private readonly articleService: ArticleService,
   ) {}
 
-  addWebsite({ uri }: AddWebsiteDto): Observable<DiscoverFeedResponse> {
-    return this.discoverClient.send<DiscoverFeedResponse, DiscoverFeedRequest>(DISCOVER_MESSAGE_PATTERN, uri)
+  async addWebsite({ uri }: AddWebsiteDto) {
+    const discoveredFeed = await this.discoverClient
+      .send<DiscoverFeedResponse, DiscoverFeedRequest>(DISCOVER_MESSAGE_PATTERN, uri)
+      .toPromise()
+    if (discoveredFeed) {
+      await this.feedService.create({ title: discoveredFeed.title, feedUrl: discoveredFeed.feedUrl })
+      return { title: discoveredFeed.title, feedUrl: discoveredFeed.feedUrl, description: discoveredFeed.description }
+    } else {
+      throw new HttpException('No feed found', 404)
+    }
   }
 
   @Cron(CronExpression.EVERY_10_MINUTES)
@@ -32,8 +39,10 @@ export class AppService {
       feeds.forEach((feed) => {
         this.logger.log(`Requesting update of ${feed.title}`)
         this.fetchClient
-          .send<UpdateFeedResponse, UpdateFeedRequest>(FETCH_MESSAGE_PATTERN, feed.uri)
-          .subscribe((articles) => this.saveNewArticles(articles, feed.title))
+          .send<UpdateFeedResponse, UpdateFeedRequest>(FETCH_MESSAGE_PATTERN, feed.feedUrl)
+          .toPromise()
+          .then((articles) => this.saveNewArticles(articles, feed.title))
+          .catch(() => this.logger.error(`Failed to fetch articles for ${feed.title} (${feed.feedUrl})`))
       })
     })
   }

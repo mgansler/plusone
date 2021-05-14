@@ -15,20 +15,24 @@ export class DiscoverService {
   async discoverFeedForWebsite(requestedUri: DiscoverFeedRequest): Promise<Output<unknown> | null> {
     this.logger.log('Starting feed discovery for: ' + requestedUri)
 
-    const website = await this.httpService.get(requestedUri).toPromise()
-    const $ = cheerio.load(website.data)
+    try {
+      const website = await this.httpService.get(requestedUri, { timeout: 5_000 }).toPromise()
+      console.log(website)
+      const $ = cheerio.load(website.data)
 
-    const linkElements = $("link[type*='rss']", 'head').get()
-    for (const el of linkElements) {
-      const href = el.attribs['href']
-      const feed = await this.parser.parseURL(href)
-      if (feed) {
-        this.logger.log(`Feed discovered: ${feed.title} - ${href}`)
-        return { ...feed, feedUrl: feed.feedUrl ?? href }
+      const linkElements = $("link[type*='rss']", 'head').get()
+      for (const el of linkElements) {
+        const href = el.attribs['href']
+        const feed = await this.parser.parseURL(href)
+        if (feed) {
+          this.logger.log(`Feed discovered: ${feed.title} - ${href}`)
+          return { ...feed, feedUrl: feed.feedUrl ?? href }
+        }
       }
+    } catch (e) {
+      this.logger.warn(`No feed discovered for ${requestedUri}`)
+      this.logger.error(e)
+      return null
     }
-
-    this.logger.warn(`No feed discovered for ${requestedUri}`)
-    return null
   }
 }
