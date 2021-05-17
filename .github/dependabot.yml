@@ -4,6 +4,18 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     open-pull-requests-limit: 20
+    ignore:
+      - dependency-name: '@nrwl/cli'
+      - dependency-name: '@nrwl/cypress'
+      - dependency-name: '@nrwl/devkit'
+      - dependency-name: '@nrwl/eslint-plugin-nx'
+      - dependency-name: '@nrwl/jest'
+      - dependency-name: '@nrwl/linter'
+      - dependency-name: '@nrwl/node'
+      - dependency-name: '@nrwl/react'
+      - dependency-name: '@nrwl/storybook'
+      - dependency-name: '@nrwl/tao'
+      - dependency-name: '@nrwl/web'
     schedule:
       # Check for updates to GitHub Actions every weekday
       interval: 'daily'
