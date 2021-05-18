@@ -5,7 +5,7 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { fetchOptions } from '@feeds/fetch'
 import { FeedModule } from '@feeds/feed'
 import { ArticleModule } from '@feeds/article'
-import { discoverOptions } from '@feeds/discover'
+import { discoverOptions } from '@plusone/feeds/discover'
 
 import { AppService } from './app.service'
 

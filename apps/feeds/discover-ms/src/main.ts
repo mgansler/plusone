@@ -6,7 +6,7 @@
 import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 
-import { DiscoverModule, discoverOptions } from '@feeds/discover'
+import { DiscoverModule, discoverOptions } from '@plusone/feeds/discover'
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice(DiscoverModule, discoverOptions)

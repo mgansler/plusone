@@ -3,10 +3,15 @@ import { ClientProxy } from '@nestjs/microservices'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { Item } from 'rss-parser'
 
-import { FETCH_MESSAGE_PATTERN, FETCH_SERVICE, UpdateFeedRequest, UpdateFeedResponse } from '@feeds/fetch'
-import { DISCOVER_MESSAGE_PATTERN, DISCOVER_SERVICE, DiscoverFeedRequest, DiscoverFeedResponse } from '@feeds/discover'
-import { ArticleService } from '@feeds/article'
-import { FeedService } from '@feeds/feed'
+import { FETCH_MESSAGE_PATTERN, FETCH_SERVICE, UpdateFeedRequest, UpdateFeedResponse } from '@plusone/feeds/fetch'
+import {
+  DISCOVER_MESSAGE_PATTERN,
+  DISCOVER_SERVICE,
+  DiscoverFeedRequest,
+  DiscoverFeedResponse,
+} from '@plusone/feeds/discover'
+import { ArticleService } from '@plusone/feeds/article'
+import { FeedService } from '@plusone/feeds/feed'
 
 import { AddWebsiteDto } from '../dto/add-website.dto'
 
