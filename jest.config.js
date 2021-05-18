@@ -1,9 +1,9 @@
 module.exports = {
   projects: [
-    '<rootDir>/apps/core',
-    '<rootDir>/apps/discover-ms',
+    '<rootDir>/apps/feeds/core',
+    '<rootDir>/apps/feeds/discover-ms',
     '<rootDir>/apps/feeds/frontend',
-    '<rootDir>/apps/fetch-ms',
+    '<rootDir>/apps/feeds/fetch-ms',
     '<rootDir>/apps/github-pipeline-status',
     '<rootDir>/apps/quick-zoom',
     '<rootDir>/libs/article',
