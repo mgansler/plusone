@@ -4,7 +4,7 @@ import { HttpModule } from '@nestjs/common'
 import { DiscoverController } from './discover.controller'
 import { DiscoverService } from './discover.service'
 
-describe.skip('AppController', () => {
+describe.skip('DiscoverController', () => {
   let app: TestingModule
 
   beforeAll(async () => {
@@ -17,9 +17,9 @@ describe.skip('AppController', () => {
 
   describe('discoverWebsite', () => {
     it('should return "Welcome to discover!"', () => {
-      const appController = app.get<DiscoverController>(DiscoverController)
+      const discoverController = app.get<DiscoverController>(DiscoverController)
 
-      expect(appController.discoverWebsite('https://google.com')).toEqual('Got ya!')
+      expect(discoverController.discoverWebsite('https://google.com')).toEqual('Got ya!')
     })
   })
 })

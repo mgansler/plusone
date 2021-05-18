@@ -1,4 +1,4 @@
-import { HttpException, Inject, Injectable, Logger } from '@nestjs/common'
+import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { Item } from 'rss-parser'
@@ -29,7 +29,7 @@ export class AppService {
       await this.feedService.create({ title: discoveredFeed.title, feedUrl: discoveredFeed.feedUrl })
       return { title: discoveredFeed.title, feedUrl: discoveredFeed.feedUrl, description: discoveredFeed.description }
     } else {
-      throw new HttpException('No feed found', 404)
+      throw new HttpException('No feed found', HttpStatus.NOT_FOUND)
     }
   }
 

@@ -8,5 +8,7 @@ module.exports = {
     '<rootDir>/libs/article',
     '<rootDir>/libs/database',
     '<rootDir>/libs/feed',
+    '<rootDir>/libs/authentication',
+    '<rootDir>/libs/user',
   ],
 }

@@ -19,7 +19,9 @@
       "@feeds/discover": ["libs/discover/src/index.ts"],
       "@feeds/article": ["libs/article/src/index.ts"],
       "@feeds/database": ["libs/database/src/index.ts"],
-      "@feeds/feed": ["libs/feed/src/index.ts"]
+      "@feeds/feed": ["libs/feed/src/index.ts"],
+      "@feeds/authentication": ["libs/authentication/src/index.ts"],
+      "@feeds/user": ["libs/user/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

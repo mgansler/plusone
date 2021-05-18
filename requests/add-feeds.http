@@ -1,0 +1,82 @@
+GET http://localhost:3333/api
+Accept: application/json
+
+<> 2021-05-13T102456.200.json
+<> 2021-05-12T114612.200.json
+<> 2021-05-07T140720.200.json
+<> 2021-05-07T123608.200.json
+<> 2021-05-07T102832.200.json
+<> 2021-05-07T102702.200.json
+<> 2021-05-07T102540.500.json
+<> 2021-05-07T092328.500.json
+
+###
+POST http://localhost:3333/api
+Content-Type: application/json
+Accept: application/json
+
+{
+  "uri": "https://www.mtb-news.de"
+}
+
+<> 2021-05-13T114113.201.json
+<> 2021-05-13T113616.201.json
+<> 2021-05-13T102445.201.json
+<> 2021-05-07T153102.201.html
+<> 2021-05-07T102820.201.html
+<> 2021-05-07T102732.500.json
+<> 2021-05-07T092158.201.html
+<> 2021-05-07T091646.201.html
+<> 2021-04-30T190714.201.json
+
+###
+
+POST http://localhost:3333/api
+Content-Type: application/json
+
+{
+"uri": "https://arstechnica.com"
+}
+
+<> 2021-05-14T081805.201.json
+<> 2021-05-13T144425.201.json
+<> 2021-05-13T144407.201.json
+<> 2021-05-13T144256.500.json
+<> 2021-05-13T144015.201.json
+<> 2021-05-13T143206.201.json
+<> 2021-05-13T143138.201.json
+<> 2021-05-13T143110.201.json
+<> 2021-05-13T114507.201.json
+<> 2021-05-13T114153.201.json
+<> 2021-05-12T114539.201.html
+<> 2021-05-07T143710.201.html
+<> 2021-05-07T140701.201.html
+<> 2021-05-01T093645.201.html
+
+###
+
+POST http://localhost:3333/api
+Content-Type: application/json
+
+{
+  "uri": "https://heise.de"
+}
+
+<> 2021-05-14T082000.201.json
+<> 2021-05-13T122816.201.json
+<> 2021-05-13T081927.201.html
+<> 2021-05-07T153105.201.html
+<> 2021-05-07T140709.201.html
+<> 2021-05-01T093646.201.html
+
+###
+POST http://localhost:3333/api
+Content-Type: application/json
+Accept: application/json
+
+{
+  "uri": "https://gooooogle.com"
+}
+
+<> 2021-05-14T081937.404.json
+###
