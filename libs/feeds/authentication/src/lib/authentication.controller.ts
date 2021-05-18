@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 
-import { User, UserRegisterDto } from '@feeds/user'
+import { User, UserRegisterDto } from '@plusone/feeds/user'
 
 import { AuthenticationService } from './authentication.service'
 import { JwtAuthGuard } from './jwt-auth.guard'

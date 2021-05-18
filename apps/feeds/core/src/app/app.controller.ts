@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common'
 
-import { FeedService } from '@feeds/feed'
+import { FeedService } from '@plusone/feeds/feed'
 
 import { AddWebsiteDto } from '../dto/add-website.dto'
 

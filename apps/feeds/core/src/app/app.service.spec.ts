@@ -2,10 +2,10 @@ import { Test } from '@nestjs/testing'
 import { ClientsModule } from '@nestjs/microservices'
 import { ScheduleModule } from '@nestjs/schedule'
 
-import { fetchOptions } from '@feeds/fetch'
-import { FeedModule } from '@feeds/feed'
-import { ArticleModule } from '@feeds/article'
+import { ArticleModule } from '@plusone/feeds/article'
 import { discoverOptions } from '@plusone/feeds/discover'
+import { FeedModule } from '@plusone/feeds/feed'
+import { fetchOptions } from '@plusone/feeds/fetch'
 
 import { AppService } from './app.service'
 
