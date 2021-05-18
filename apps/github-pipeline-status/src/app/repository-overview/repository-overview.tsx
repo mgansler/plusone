@@ -83,6 +83,7 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
               name
               id
               url
+              isArchived
               defaultBranchRef {
                 name
                 ... on Ref {
@@ -191,6 +192,11 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
     defaultValue: false,
   })
 
+  const [showArchivedRepositories, setShowArchivedRepositories] = useLocalStorage<boolean>({
+    key: 'showArchivedRepositories',
+    defaultValue: false,
+  })
+
   // Fetch the data
   const { data, isLoading, pages, prevPage, nextPage } = useFetchRepositoryData({
     organizationName,
@@ -207,7 +213,9 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
     )
   }
 
-  const filteredRepositories = data.search.nodes.filter((repo) => !showOnlyOpenPRs || repo.pullRequests.totalCount > 0)
+  const filteredRepositories = data.search.nodes
+    .filter((repo) => showArchivedRepositories || !repo.isArchived)
+    .filter((repo) => !showOnlyOpenPRs || repo.pullRequests.totalCount > 0)
 
   return (
     <React.Fragment>
@@ -241,6 +249,17 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
             <Switch
               checked={showOnlyOpenPRs}
               onChange={() => setShowReposWithoutPRs(!showOnlyOpenPRs)}
+              color={'primary'}
+            />
+          }
+        />
+
+        <FormControlLabel
+          label={'Show archived repositories'}
+          control={
+            <Switch
+              checked={showArchivedRepositories}
+              onChange={() => setShowArchivedRepositories(!showArchivedRepositories)}
               color={'primary'}
             />
           }
