@@ -1,0 +1,49 @@
+POST http://localhost:3333/api/authentication/register
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "just_secret"
+}
+
+###
+POST http://localhost:3333/api/authentication/register
+Content-Type: application/json
+
+{
+  "username": "root",
+  "password": "super_secret"
+}
+
+###
+POST http://localhost:3333/api/authentication/login
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "just_secret"
+}
+
+> {%
+  client.global.set("auth_token", response.body.access_token)
+%}
+
+###
+POST http://localhost:3333/api/authentication/login
+Content-Type: application/json
+
+{
+  "username": "root",
+  "password": "super_secret"
+}
+
+> {%
+  client.global.set("auth_token", response.body.access_token)
+%}
+
+###
+GET http://localhost:3333/api/authentication/profile
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+###

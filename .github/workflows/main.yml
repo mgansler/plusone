@@ -1,0 +1,46 @@
+name: Main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  install_dependencies:
+    name: Install dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/Cypress
+            node_modules/
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install
+
+  all:
+    name: All
+    runs-on: ubuntu-latest
+    needs: install_dependencies
+    strategy:
+      matrix:
+        target: [ lint, test, build ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/Cypress
+            node_modules/
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: ${{ matrix.target }}
+        run: yarn nx run-many --target=${{ matrix.target }} --all
