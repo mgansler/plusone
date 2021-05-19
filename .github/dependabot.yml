@@ -5,6 +5,10 @@ updates:
     directory: '/'
     open-pull-requests-limit: 20
     ignore:
+      - dependency-name: '@nestjs/common'
+      - dependency-name: '@nestjs/microservices'
+      - dependency-name: '@nestjs/platform-express'
+      - dependency-name: '@nestjs/testing'
       - dependency-name: '@nrwl/cli'
       - dependency-name: '@nrwl/cypress'
       - dependency-name: '@nrwl/devkit'
