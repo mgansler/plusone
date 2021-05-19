@@ -41,6 +41,15 @@
             "jestConfig": "libs/components/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "ct": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "testingType": "component",
+            "cypressConfig": "libs/components/cypress.json",
+            "tsConfig": "libs/components/tsconfig.ct.json",
+            "devServerTarget": ""
+          }
         }
       }
     },
