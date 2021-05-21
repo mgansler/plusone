@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link, Route, useRouteMatch } from 'react-router-dom'
 
+import { Week } from './week/week'
+
 /* eslint-disable-next-line */
 export interface DinnerPlanProps {}
 
@@ -27,14 +29,17 @@ export function DinnerPlan(props: DinnerPlanProps) {
 
       <Route path={`${path}/last-week`} exact={true}>
         <h3>Last Week</h3>
+        <Week />
       </Route>
 
       <Route path={path} exact={true}>
         <h3>This Week</h3>
+        <Week isCurrent={true} />
       </Route>
 
       <Route path={`${path}/next-week`} exact={true}>
         <h3>Next Week</h3>
+        <Week />
       </Route>
     </>
   )

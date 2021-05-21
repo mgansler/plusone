@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { Link, Route } from 'react-router-dom'
 
-const DinnerPlan = lazy(() => import(`@plusone/dinner-plan`))
+const DinnerPlan = lazy(() => import('@plusone/dinner-plan'))
 
 export function App() {
   return (
