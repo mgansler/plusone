@@ -2,7 +2,8 @@ module.exports = {
   displayName: 'dinner-plan',
   preset: '../../jest.preset.js',
   transform: {
-    '^.+\\.[tj]sx?$': 'babel-jest',
+    '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest',
+    '^.+\\.[tj]sx?$': ['babel-jest', { cwd: __dirname, configFile: './babel-jest.config.json' }],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/libs/dinner-plan',
