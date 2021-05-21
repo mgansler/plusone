@@ -1,5 +1,10 @@
 import React from 'react'
 import { createStyles, makeStyles } from '@material-ui/core'
+import { useParams } from 'react-router-dom'
+
+import { getWeekOfYearFor } from '@plusone/date-utils'
+
+import { Day } from '../day/day'
 
 const useClassNames = makeStyles((theme) =>
   createStyles({
@@ -10,38 +15,22 @@ const useClassNames = makeStyles((theme) =>
   }),
 )
 
-export interface WeekProps {
-  isCurrent?: boolean
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface WeekProps {}
 
-export function Week({ isCurrent }: WeekProps) {
-  console.log({ isCurrent: isCurrent })
-
+export function Week(props: WeekProps) {
   const classNames = useClassNames()
+  const currentWeekNumber = getWeekOfYearFor(new Date())
+  const { week } = useParams<{ week: string; year: string }>()
 
   return (
-    <div className={classNames.week}>
-      <div>
-        <h4>Monday</h4>
+    <>
+      <h4>KW {week}</h4>
+      <div className={classNames.week}>
+        {[1, 2, 3, 4, 5, 6, 7].map((dayOfWeek) => (
+          <Day key={dayOfWeek} dayOfWeek={dayOfWeek} isCurrentWeek={Number(week) === currentWeekNumber} />
+        ))}
       </div>
-      <div>
-        <h4>Tuesday</h4>
-      </div>
-      <div>
-        <h4>Wednesday</h4>
-      </div>
-      <div>
-        <h4>Thursday</h4>
-      </div>
-      <div>
-        <h4>Friday</h4>
-      </div>
-      <div>
-        <h4>Saturday</h4>
-      </div>
-      <div>
-        <h4>Sunday</h4>
-      </div>
-    </div>
+    </>
   )
 }

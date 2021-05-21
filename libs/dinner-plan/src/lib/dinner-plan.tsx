@@ -1,5 +1,7 @@
 import React from 'react'
-import { Link, Route, useRouteMatch } from 'react-router-dom'
+import { Link, Redirect, Route, useRouteMatch } from 'react-router-dom'
+
+import { getDateFor, getWeekOfYearFor, getYearFor } from '@plusone/date-utils'
 
 import { Week } from './week/week'
 
@@ -9,6 +11,13 @@ export interface DinnerPlanProps {}
 export function DinnerPlan(props: DinnerPlanProps) {
   const { path, url } = useRouteMatch()
 
+  const lastWeeksYear = getYearFor('last-week')
+  const lastWeek = getWeekOfYearFor(getDateFor('last-week'))
+  const todaysYear = getYearFor('today')
+  const todaysWeek = getWeekOfYearFor(getDateFor('today'))
+  const nextWeeksYear = getYearFor('next-week')
+  const nextWeek = getWeekOfYearFor(getDateFor('next-week'))
+
   return (
     <>
       <h2>Welcome to dinner-plan!</h2>
@@ -16,29 +25,22 @@ export function DinnerPlan(props: DinnerPlanProps) {
       <nav>
         <ul>
           <li>
-            <Link to={`${url}/last-week`}>Last Week</Link>
+            <Link to={`${url}/${lastWeeksYear}/${lastWeek}`}>Last Week</Link>
           </li>
           <li>
-            <Link to={`${url}`}>This Week</Link>
+            <Link to={`${url}/${todaysYear}/${todaysWeek}`}>This Week</Link>
           </li>
           <li>
-            <Link to={`${url}/next-week`}>Next Week</Link>
+            <Link to={`${url}/${nextWeeksYear}/${nextWeek}`}>Next Week</Link>
           </li>
         </ul>
       </nav>
 
-      <Route path={`${path}/last-week`} exact={true}>
-        <h3>Last Week</h3>
-        <Week />
+      <Route exact={true} path={path}>
+        <Redirect to={`${url}/${todaysYear}/${todaysWeek}`} />
       </Route>
 
-      <Route path={path} exact={true}>
-        <h3>This Week</h3>
-        <Week isCurrent={true} />
-      </Route>
-
-      <Route path={`${path}/next-week`} exact={true}>
-        <h3>Next Week</h3>
+      <Route exact={true} path={`${path}/:year/:week`}>
         <Week />
       </Route>
     </>

@@ -1,4 +1,7 @@
 describe('dinner plan', () => {
+  // '/YYYY/DD'
+  const pathRegex = /\/\d\d\d\d\/\d\d?$/
+
   beforeEach(() => {
     cy.visit('/')
     cy.findByRole('link', { name: /dinner plan/i }).click()
@@ -9,16 +12,16 @@ describe('dinner plan', () => {
   })
 
   it('should show the current week', () => {
-    cy.findAllByRole('heading', { name: /this week/i })
+    cy.url().should('match', pathRegex)
   })
 
   it('should show the previous week', () => {
     cy.findByRole('link', { name: /last week/i }).click()
-    cy.findAllByRole('heading', { name: /last week/i })
+    cy.url().should('match', pathRegex)
   })
 
   it('should show the next week', () => {
     cy.findByRole('link', { name: /next week/i }).click()
-    cy.findAllByRole('heading', { name: /next week/i })
+    cy.url().should('match', pathRegex)
   })
 })
