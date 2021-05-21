@@ -6,7 +6,7 @@ export interface DinnerPlanProps {}
 export function DinnerPlan(props: DinnerPlanProps) {
   return (
     <div>
-      <h1>Welcome to dinner-plan!</h1>
+      <h2>Welcome to dinner-plan!</h2>
     </div>
   )
 }

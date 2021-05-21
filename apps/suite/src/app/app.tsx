@@ -1,5 +1,7 @@
 import { Route, Link } from 'react-router-dom'
 
+import { DinnerPlan } from '@plusone/dinner-plan'
+
 export function App() {
   return (
     <>
@@ -10,15 +12,15 @@ export function App() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/page-2">Page 2</Link>
+            <Link to="/dinner-plan">Dinner Plan</Link>
           </li>
         </ul>
       </nav>
       <Route path="/" exact={true}>
         <div>Homepage</div>
       </Route>
-      <Route path="/page-2" exact={true}>
-        <div>Page 2</div>
+      <Route path="/dinner-plan" exact={true}>
+        <DinnerPlan />
       </Route>
     </>
   )
