@@ -1,6 +1,8 @@
+import { Suspense } from 'react'
 import { Route, Link } from 'react-router-dom'
+import { lazy } from 'react'
 
-import { DinnerPlan } from '@plusone/dinner-plan'
+const DinnerPlan = lazy(() => import('@plusone/dinner-plan'))
 
 export function App() {
   return (
@@ -20,7 +22,9 @@ export function App() {
         <div>Homepage</div>
       </Route>
       <Route path="/dinner-plan" exact={true}>
-        <DinnerPlan />
+        <Suspense fallback={<div>Loading...</div>}>
+          <DinnerPlan />
+        </Suspense>
       </Route>
     </>
   )
