@@ -894,6 +894,27 @@
           }
         }
       }
+    },
+    "dinner-plan": {
+      "root": "libs/dinner-plan",
+      "sourceRoot": "libs/dinner-plan/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/dinner-plan/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/dinner-plan"],
+          "options": {
+            "jestConfig": "libs/dinner-plan/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }
