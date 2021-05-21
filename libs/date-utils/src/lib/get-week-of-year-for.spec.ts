@@ -1,5 +1,4 @@
-import { getWeekOfYearFor } from '@plusone/date-utils'
-
+import { getWeekOfYearFor } from './get-week-of-year-for'
 import { getDateFor } from './get-date-for'
 
 describe('getWeekOfYear', () => {

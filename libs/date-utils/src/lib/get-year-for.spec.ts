@@ -1,4 +1,4 @@
-import { getYearFor } from '@plusone/date-utils'
+import { getYearFor } from './get-year-for'
 
 describe('getYearFor', () => {
   describe('last-week', () => {
