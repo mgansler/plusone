@@ -10,18 +10,18 @@ export function App() {
       <nav>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to={'/'}>Home</Link>
           </li>
           <li>
-            <Link to="/dinner-plan">Dinner Plan</Link>
+            <Link to={'/dinner-plan'}>Dinner Plan</Link>
           </li>
         </ul>
       </nav>
       <main>
-        <Route path="/" exact={true}>
+        <Route path={'/'} exact={true}>
           <div>Homepage</div>
         </Route>
-        <Route path="/dinner-plan" exact={true}>
+        <Route path={'/dinner-plan'}>
           <Suspense fallback={<div>Loading...</div>}>
             <DinnerPlan />
           </Suspense>
