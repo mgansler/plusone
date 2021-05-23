@@ -2,7 +2,7 @@ import { getWeekOfYearFor } from './get-week-of-year-for'
 import { getDateFor } from './get-date-for'
 
 describe('getWeekOfYear', () => {
-  describe('today', () => {
+  describe('this-week', () => {
     test.each`
       year    | month | day   | expectedWeek
       ${2020} | ${12} | ${27} | ${52}
@@ -13,7 +13,7 @@ describe('getWeekOfYear', () => {
       ${2021} | ${1}  | ${11} | ${2}
     `('should return $expectedWeek for $year/$month/$day', ({ year, month, day, expectedWeek }) => {
       const date = new Date(Date.UTC(year, month - 1, day))
-      const actualWeek = getWeekOfYearFor(date)
+      const actualWeek = getWeekOfYearFor(getDateFor('this-week', date))
 
       expect(actualWeek).toEqual(expectedWeek)
     })

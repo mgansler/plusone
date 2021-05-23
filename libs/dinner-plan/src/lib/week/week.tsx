@@ -23,12 +23,14 @@ export function Week(props: WeekProps) {
   const currentWeekNumber = getWeekOfYearFor(new Date())
   const { week } = useParams<{ week: string; year: string }>()
 
+  const isCurrentWeek = Number(week) === currentWeekNumber
+
   return (
     <>
       <h4>KW {week}</h4>
       <div className={classNames.week}>
         {[1, 2, 3, 4, 5, 6, 7].map((dayOfWeek) => (
-          <Day key={dayOfWeek} dayOfWeek={dayOfWeek} isCurrentWeek={Number(week) === currentWeekNumber} />
+          <Day key={dayOfWeek} dayOfWeek={dayOfWeek} isCurrentWeek={isCurrentWeek} />
         ))}
       </div>
     </>

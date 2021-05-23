@@ -13,8 +13,8 @@ export function DinnerPlan(props: DinnerPlanProps) {
 
   const lastWeeksYear = getYearFor('last-week')
   const lastWeek = getWeekOfYearFor(getDateFor('last-week'))
-  const todaysYear = getYearFor('today')
-  const todaysWeek = getWeekOfYearFor(getDateFor('today'))
+  const thisWeeksYear = getYearFor('this-week')
+  const thisWeek = getWeekOfYearFor(getDateFor('this-week'))
   const nextWeeksYear = getYearFor('next-week')
   const nextWeek = getWeekOfYearFor(getDateFor('next-week'))
 
@@ -28,7 +28,7 @@ export function DinnerPlan(props: DinnerPlanProps) {
             <Link to={`${url}/${lastWeeksYear}/${lastWeek}`}>Last Week</Link>
           </li>
           <li>
-            <Link to={`${url}/${todaysYear}/${todaysWeek}`}>This Week</Link>
+            <Link to={`${url}/${thisWeeksYear}/${thisWeek}`}>This Week</Link>
           </li>
           <li>
             <Link to={`${url}/${nextWeeksYear}/${nextWeek}`}>Next Week</Link>
@@ -37,7 +37,7 @@ export function DinnerPlan(props: DinnerPlanProps) {
       </nav>
 
       <Route exact={true} path={path}>
-        <Redirect to={`${url}/${todaysYear}/${todaysWeek}`} />
+        <Redirect to={`${url}/${thisWeeksYear}/${thisWeek}`} />
       </Route>
 
       <Route exact={true} path={`${path}/:year/:week`}>
