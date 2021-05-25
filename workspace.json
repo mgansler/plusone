@@ -840,6 +840,13 @@
             }
           }
         },
+        "docker": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [],
+          "options": {
+            "commands": ["docker build -f apps/suite/Dockerfile -t suite ."]
+          }
+        },
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
