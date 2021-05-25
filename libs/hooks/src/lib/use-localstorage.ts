@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 const getItem = (key: string) => {
   const jsonString = localStorage.getItem(key)
@@ -17,17 +17,7 @@ export const useLocalStorage = <ItemType>({
   key,
   defaultValue,
 }: UseLocalStorageProps<ItemType>): [ItemType, (newValue: ItemType) => void, () => void] => {
-  const [value, setValue] = useState<ItemType>()
-
-  useEffect(() => {
-    const initialValue = getItem(key)
-
-    if (initialValue) {
-      setValue(initialValue)
-    } else {
-      setValue(defaultValue)
-    }
-  }, [defaultValue, key])
+  const [value, setValue] = useState<ItemType>(() => getItem(key) ?? defaultValue)
 
   const setItem = useCallback(
     (newValue: ItemType): void => {

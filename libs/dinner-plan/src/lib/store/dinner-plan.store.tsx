@@ -1,9 +1,11 @@
-import { createContext, ReactNode, useContext, useReducer } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react'
+
+import { useLocalStorage } from '@plusone/hooks'
 
 import { DinnerPlanActions, DinnerPlanReducer, DinnerPlanState, Dish } from './types'
 import { dinnerPlanReducer } from './reducer'
 
-const initialState: DinnerPlanState = {
+const defaultState: DinnerPlanState = {
   plan: {},
   dishes: [],
   ingredients: [],
@@ -14,14 +16,24 @@ interface DinnerPlanStoreContext {
   dispatch: (action: DinnerPlanActions) => void
 }
 
-const Context = createContext<DinnerPlanStoreContext>({ state: initialState, dispatch: () => undefined })
+const Context = createContext<DinnerPlanStoreContext>({ state: defaultState, dispatch: () => undefined })
 
 interface DinnerPlanStoreProps {
   children: ReactNode
 }
 
 export function DinnerPlanStore({ children }: DinnerPlanStoreProps) {
+  const [initialState, storeState] = useLocalStorage<DinnerPlanState>({
+    key: 'dinner-plan',
+    defaultValue: defaultState,
+  })
+
   const [state, dispatch] = useReducer<DinnerPlanReducer>(dinnerPlanReducer, initialState)
+
+  useEffect(() => {
+    storeState(state)
+  }, [state, storeState])
+
   return <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
 }
 
