@@ -1,6 +1,9 @@
-import React, { DragEventHandler } from 'react'
+import { DragEventHandler } from 'react'
 import { createStyles, makeStyles } from '@material-ui/core'
 import classnames from 'classnames'
+import { useParams } from 'react-router-dom'
+
+import { useDinnerPlanStoreDispatch, useDishForDay } from '../store/dinner-plan.store'
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
@@ -11,7 +14,7 @@ const useClassNames = makeStyles((theme) =>
     },
     dropzone: {
       backgroundColor: 'red',
-      paddingBottom: '100%',
+      height: 60,
       '&:hover': {
         backgroundColor: 'blue',
       },
@@ -26,18 +29,28 @@ export interface DayProps {
 
 export function Day({ dayOfWeek, isCurrentWeek }: DayProps) {
   const classNames = useClassNames()
+  const { year, week } = useParams<{ week: string; year: string }>()
 
   const isToday = isCurrentWeek && new Date().getDay() === dayOfWeek
   const weekday = DAYS[dayOfWeek - 1]
 
+  const dispatch = useDinnerPlanStoreDispatch()
+  const dish = useDishForDay({ year, week, weekday })
+
   const onDrop: DragEventHandler<HTMLDivElement> = (event) => {
-    console.log('I will eat', event.dataTransfer?.getData('text/plain'), 'on', weekday)
+    const name = event.dataTransfer?.getData('text/plain')
+    dispatch({
+      type: 'plan-dish',
+      payload: { week, year, weekday, dish: { name, ingredients: [] } },
+    })
   }
 
   return (
     <div className={classnames({ [classNames.today]: isToday })}>
       <h4>{weekday}</h4>
-      <div className={classNames.dropzone} onDrop={onDrop} onDragOver={(e) => e.preventDefault()} />
+      <div className={classNames.dropzone} onDrop={onDrop} onDragOver={(e) => e.preventDefault()}>
+        {dish ? <div>{dish.name}</div> : null}
+      </div>
     </div>
   )
 }

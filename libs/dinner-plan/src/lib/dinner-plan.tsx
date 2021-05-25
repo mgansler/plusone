@@ -4,6 +4,8 @@ import { Link, Redirect, Route, useRouteMatch } from 'react-router-dom'
 import { getDateFor, getWeekOfYearFor, getYearFor } from '@plusone/date-utils'
 
 import { Week } from './week/week'
+import { DinnerPlanStore } from './store/dinner-plan.store'
+import { Dishes } from './dishes/dishes'
 
 /* eslint-disable-next-line */
 export interface DinnerPlanProps {}
@@ -19,7 +21,7 @@ export function DinnerPlan(props: DinnerPlanProps) {
   const nextWeek = getWeekOfYearFor(getDateFor('next-week'))
 
   return (
-    <>
+    <DinnerPlanStore>
       <h2>Welcome to dinner-plan!</h2>
 
       <nav>
@@ -43,6 +45,8 @@ export function DinnerPlan(props: DinnerPlanProps) {
       <Route exact={true} path={`${path}/:year/:week`}>
         <Week />
       </Route>
-    </>
+
+      <Dishes />
+    </DinnerPlanStore>
   )
 }
