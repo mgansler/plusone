@@ -1,7 +1,7 @@
 import { DragEventHandler } from 'react'
 import { createStyles, makeStyles } from '@material-ui/core'
-import classnames from 'classnames'
 import { useParams } from 'react-router-dom'
+import clsx from 'clsx'
 
 import { useDinnerPlanStoreDispatch, useDishForDay } from '../store/dinner-plan.store'
 
@@ -46,7 +46,7 @@ export function Day({ dayOfWeek, isCurrentWeek }: DayProps) {
   }
 
   return (
-    <div className={classnames({ [classNames.today]: isToday })}>
+    <div className={clsx({ [classNames.today]: isToday })}>
       <h4>{weekday}</h4>
       <div className={classNames.dropzone} onDrop={onDrop} onDragOver={(e) => e.preventDefault()}>
         {dish ? <div>{dish.name}</div> : null}
