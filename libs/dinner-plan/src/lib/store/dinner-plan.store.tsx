@@ -16,7 +16,7 @@ interface DinnerPlanStoreContext {
   dispatch: (action: DinnerPlanActions) => void
 }
 
-const Context = createContext<DinnerPlanStoreContext>({ state: defaultState, dispatch: () => undefined })
+const Context = createContext<DinnerPlanStoreContext | undefined>(undefined)
 
 interface DinnerPlanStoreProps {
   children: ReactNode
@@ -54,6 +54,7 @@ export function useDishForDay({ year, week, weekday }: UseDishForDayProps): Dish
   if (context === undefined) {
     throw new Error('useDishForDay must be used within DinnerPlanStore')
   }
+
   return context.state.plan[[year, week, weekday].join('.')]
 }
 
