@@ -23,16 +23,11 @@ interface DinnerPlanStoreProps {
 }
 
 export function DinnerPlanStore({ children }: DinnerPlanStoreProps) {
-  const [initialState, storeState] = useLocalStorage<DinnerPlanState>({
-    key: 'dinner-plan',
-    defaultValue: defaultState,
-  })
+  const [initialState = defaultState, storeState] = useLocalStorage<DinnerPlanState>({ key: 'dinner-plan' })
 
   const [state, dispatch] = useReducer<DinnerPlanReducer>(dinnerPlanReducer, initialState)
 
-  useEffect(() => {
-    storeState(state)
-  }, [state, storeState])
+  useEffect(() => storeState(state), [state, storeState])
 
   return <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
 }
