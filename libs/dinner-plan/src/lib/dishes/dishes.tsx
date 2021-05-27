@@ -1,5 +1,5 @@
 import { DragEventHandler, FormEventHandler } from 'react'
-import { createStyles, makeStyles } from '@material-ui/core'
+import { Chip, createStyles, makeStyles } from '@material-ui/core'
 
 import { useDinnerPlanStoreDispatch, useDishes } from '../store/dinner-plan.store'
 
@@ -7,12 +7,11 @@ const useClassNames = makeStyles((theme) =>
   createStyles({
     dishes: {
       display: 'flex',
-      justifyContent: 'flex-start',
-    },
-    draggable: {
-      margin: 5,
-      padding: 5,
-      backgroundColor: 'green',
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+      '& > *': {
+        margin: theme.spacing(0.5),
+      },
     },
   }),
 )
@@ -42,9 +41,14 @@ export function Dishes() {
       </form>
       <div className={classNames.dishes}>
         {dishes.map((dish) => (
-          <span key={dish.name} draggable={true} onDragStart={onDragStart} className={classNames.draggable}>
-            {dish.name}
-          </span>
+          <Chip
+            key={dish.name}
+            draggable={true}
+            onDragStart={onDragStart}
+            color={'primary'}
+            variant={'outlined'}
+            label={dish.name}
+          />
         ))}
       </div>
     </div>

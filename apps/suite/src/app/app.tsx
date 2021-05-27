@@ -1,22 +1,26 @@
 import { lazy, Suspense } from 'react'
-import { Link, Route } from 'react-router-dom'
+import { Route, Link as RouterLink } from 'react-router-dom'
+import { AppBar, Breadcrumbs, Toolbar, Link, CssBaseline } from '@material-ui/core'
 
 const DinnerPlan = lazy(() => import('@plusone/dinner-plan'))
 
 export function App() {
   return (
     <>
-      <h1>Welcome to suite!</h1>
-      <nav>
-        <ul>
-          <li>
-            <Link to={'/'}>Home</Link>
-          </li>
-          <li>
-            <Link to={'/dinner-plan'}>Dinner Plan</Link>
-          </li>
-        </ul>
-      </nav>
+      <CssBaseline />
+      <AppBar position={'static'}>
+        <Toolbar>
+          <Breadcrumbs separator={'›'}>
+            <Link color={'textPrimary'} component={RouterLink} to={'/'}>
+              Martin's App Suite
+            </Link>
+            <Link color={'textPrimary'} component={RouterLink} to={'/dinner-plan'}>
+              Dinner Plan
+            </Link>
+          </Breadcrumbs>
+        </Toolbar>
+      </AppBar>
+
       <main>
         <Route path={'/'} exact={true}>
           <div>Homepage</div>

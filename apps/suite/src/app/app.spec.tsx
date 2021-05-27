@@ -11,6 +11,7 @@ describe('App', () => {
       </BrowserRouter>,
     )
 
-    expect(screen.getByText('Welcome to suite!')).toBeInTheDocument()
+    expect(screen.getByText(/martin's app suite/i)).toBeInTheDocument()
+    expect(screen.getByText(/homepage/i)).toBeInTheDocument()
   })
 })

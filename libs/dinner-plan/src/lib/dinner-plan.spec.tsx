@@ -11,6 +11,9 @@ describe('DinnerPlan', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('Welcome to dinner-plan!')).toBeInTheDocument()
+    expect(screen.getByText(/kw \d\d/i)).toBeInTheDocument()
+    expect(screen.getByText(/last week/i)).toBeInTheDocument()
+    expect(screen.getByText(/this week/i)).toBeInTheDocument()
+    expect(screen.getByText(/next week/i)).toBeInTheDocument()
   })
 })

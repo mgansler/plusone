@@ -7,10 +7,7 @@ import { Week } from './week/week'
 import { DinnerPlanStore } from './store/dinner-plan.store'
 import { Dishes } from './dishes/dishes'
 
-/* eslint-disable-next-line */
-export interface DinnerPlanProps {}
-
-export function DinnerPlan(props: DinnerPlanProps) {
+export function DinnerPlan() {
   const { path, url } = useRouteMatch()
 
   const lastWeeksYear = getYearFor('last-week')
@@ -22,8 +19,6 @@ export function DinnerPlan(props: DinnerPlanProps) {
 
   return (
     <DinnerPlanStore>
-      <h2>Welcome to dinner-plan!</h2>
-
       <nav>
         <ul>
           <li>

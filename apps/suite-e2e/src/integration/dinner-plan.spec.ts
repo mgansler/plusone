@@ -8,7 +8,7 @@ describe('dinner plan', () => {
   })
 
   it('should display welcome message', () => {
-    cy.get('h2').contains('Welcome to dinner-plan!')
+    cy.get('a').contains('Dinner Plan')
   })
 
   it('should show the current week', () => {
