@@ -17,24 +17,18 @@ const useClassNames = makeStyles((theme) =>
   }),
 )
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface WeekProps {}
-
-export function Week(props: WeekProps) {
+export function Week() {
   const classNames = useClassNames()
   const currentWeekNumber = getWeekOfYearFor(new Date())
-  const { week } = useParams<{ week: string; year: string }>()
+  const { week } = useParams<{ week: string }>()
 
   const isCurrentWeek = Number(week) === currentWeekNumber
 
   return (
-    <>
-      <h4>KW {week}</h4>
-      <div className={classNames.week}>
-        {[1, 2, 3, 4, 5, 6, 7].map((dayOfWeek) => (
-          <Day key={dayOfWeek} dayOfWeek={dayOfWeek} isCurrentWeek={isCurrentWeek} />
-        ))}
-      </div>
-    </>
+    <div className={classNames.week}>
+      {[1, 2, 3, 4, 5, 6, 7].map((dayOfWeek) => (
+        <Day key={dayOfWeek} dayOfWeek={dayOfWeek} isCurrentWeek={isCurrentWeek} />
+      ))}
+    </div>
   )
 }
