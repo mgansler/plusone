@@ -8,7 +8,6 @@ import { dinnerPlanReducer } from './reducer'
 const defaultState: DinnerPlanState = {
   plan: {},
   dishes: [],
-  ingredients: [],
 }
 
 interface DinnerPlanStoreContext {
@@ -66,14 +65,4 @@ export function useDishes() {
   }
 
   return context.state.dishes
-}
-
-export function useIngredients() {
-  const context = useContext(Context)
-
-  if (context === undefined) {
-    throw new Error('useIngredients must be used within DinnerPlanStore')
-  }
-
-  return context.state.ingredients
 }

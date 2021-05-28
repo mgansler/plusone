@@ -39,7 +39,7 @@ export function Day({ dayOfWeek, isCurrentWeek }: DayProps) {
     const name = event.dataTransfer?.getData('text/plain')
     dispatch({
       type: 'plan-dish',
-      payload: { week, year, weekday, dish: { name, ingredients: [] } },
+      payload: { week, year, weekday, dish: name },
     })
   }
 
@@ -47,7 +47,7 @@ export function Day({ dayOfWeek, isCurrentWeek }: DayProps) {
     <div className={clsx({ [classNames.today]: isToday })}>
       <h4>{weekday}</h4>
       <div className={classNames.dropzone} onDrop={onDrop} onDragOver={(e) => e.preventDefault()}>
-        {dish ? <Chip label={dish.name} color={'primary'} /> : null}
+        {dish ? <Chip label={dish} color={'primary'} /> : null}
       </div>
     </div>
   )

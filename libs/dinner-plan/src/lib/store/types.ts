@@ -1,20 +1,14 @@
 import { Reducer } from 'react'
 
-import { AddDish, AddIngredient, PlanDish } from './actions'
+import { AddDish, PlanDish, RemoveDish } from './actions'
 
-export type Ingredient = string
-
-export type Dish = {
-  name: string
-  ingredients: Ingredient[]
-}
+export type Dish = string
 
 export type DinnerPlanState = {
   plan: Record<string, Dish>
   dishes: Dish[]
-  ingredients: Ingredient[]
 }
 
-export type DinnerPlanActions = AddDish | AddIngredient | PlanDish
+export type DinnerPlanActions = AddDish | PlanDish | RemoveDish
 
 export type DinnerPlanReducer = Reducer<DinnerPlanState, DinnerPlanActions>
