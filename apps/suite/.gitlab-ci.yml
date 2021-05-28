@@ -1,0 +1,67 @@
+image: node:14-alpine
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - ~/.cache/Cypress
+
+default:
+  before_script:
+    - yarn install
+
+variables:
+  APP_SUITE_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/suite/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}
+
+suite:lint:
+  stage: test
+  tags:
+    - docker
+  script:
+    - yarn nx run-many --target=lint --projects=suite-e2e --with-deps
+
+suite:test:
+  stage: test
+  tags:
+    - docker
+  script:
+    - yarn nx run-many --target=test --projects=suite-e2e --with-deps
+
+suite:build:
+  stage: build
+  tags:
+    - docker
+  script:
+    - yarn nx run suite:build:production
+  artifacts:
+    paths:
+      - dist/apps/suite
+    expire_in: 1 hour
+
+suite:package:
+  stage: package
+  needs:
+    - suite:build
+  tags:
+    - docker
+  only:
+    - main
+  image: docker
+  before_script:
+    - echo "Skip yarn install"
+  script:
+    - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
+    - docker build -f apps/suite/Dockerfile -t ${APP_SUITE_DOCKER_IMAGE} .
+    - docker push ${APP_SUITE_DOCKER_IMAGE}
+
+suite:deploy:
+  stage: deploy
+  tags:
+    - deploy
+  only:
+    - main
+  before_script:
+    - echo "Skip yarn install"
+  script:
+    - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
+    - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+    - docker-compose -f apps/suite/docker-compose.deploy.yml up -d --remove-orphans

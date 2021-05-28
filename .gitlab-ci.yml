@@ -1,0 +1,8 @@
+stages:
+  - test
+  - build
+  - package
+  - deploy
+
+include:
+  - /apps/suite/.gitlab-ci.yml
