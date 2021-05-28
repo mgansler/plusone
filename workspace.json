@@ -840,6 +840,13 @@
             }
           }
         },
+        "docker": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [],
+          "options": {
+            "commands": ["docker build -f apps/suite/Dockerfile -t suite ."]
+          }
+        },
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
@@ -911,6 +918,27 @@
           "outputs": ["coverage/libs/dinner-plan"],
           "options": {
             "jestConfig": "libs/dinner-plan/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "date-utils": {
+      "root": "libs/date-utils",
+      "sourceRoot": "libs/date-utils/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/date-utils/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/date-utils"],
+          "options": {
+            "jestConfig": "libs/date-utils/jest.config.js",
             "passWithNoTests": true
           }
         }

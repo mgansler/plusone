@@ -1,0 +1,17 @@
+version: '3'
+
+networks:
+  traefik:
+    external:
+      name: traefik
+
+services:
+  web:
+    image: ${APP_SUITE_DOCKER_IMAGE}
+    networks:
+      - traefik
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik
+      traefik.default.port: 80
+      traefik.default.frontend.rule: 'Host:apps.martingansler.de'

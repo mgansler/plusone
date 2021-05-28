@@ -9,6 +9,7 @@ module.exports = {
     '<rootDir>/apps/suite',
     '<rootDir>/libs/components',
     '<rootDir>/libs/conference-links',
+    '<rootDir>/libs/date-utils',
     '<rootDir>/libs/dinner-plan',
     '<rootDir>/libs/dom-utils',
     '<rootDir>/libs/feeds-schema',

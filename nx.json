@@ -100,13 +100,17 @@
       "tags": []
     },
     "suite": {
-      "tags": []
+      "tags": [],
+      "implicitDependencies": ["dinner-plan"]
     },
     "suite-e2e": {
       "tags": [],
       "implicitDependencies": ["suite"]
     },
     "dinner-plan": {
+      "tags": []
+    },
+    "date-utils": {
       "tags": []
     }
   }
