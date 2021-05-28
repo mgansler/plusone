@@ -1,5 +1,5 @@
 import { DragEventHandler } from 'react'
-import { createStyles, makeStyles } from '@material-ui/core'
+import { Chip, createStyles, makeStyles } from '@material-ui/core'
 import { useParams } from 'react-router-dom'
 import clsx from 'clsx'
 
@@ -10,14 +10,12 @@ const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
 const useClassNames = makeStyles((theme) =>
   createStyles({
     today: {
-      backgroundColor: 'azure',
+      border: '1px solid grey',
     },
     dropzone: {
-      backgroundColor: 'red',
+      backgroundColor: 'lightgrey',
       height: 60,
-      '&:hover': {
-        backgroundColor: 'blue',
-      },
+      '&:hover': {},
     },
   }),
 )
@@ -49,7 +47,7 @@ export function Day({ dayOfWeek, isCurrentWeek }: DayProps) {
     <div className={clsx({ [classNames.today]: isToday })}>
       <h4>{weekday}</h4>
       <div className={classNames.dropzone} onDrop={onDrop} onDragOver={(e) => e.preventDefault()}>
-        {dish ? <div>{dish.name}</div> : null}
+        {dish ? <Chip label={dish.name} color={'primary'} /> : null}
       </div>
     </div>
   )
