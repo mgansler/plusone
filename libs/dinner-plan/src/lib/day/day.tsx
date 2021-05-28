@@ -1,7 +1,6 @@
 import { DragEventHandler } from 'react'
-import { Chip, createStyles, makeStyles } from '@material-ui/core'
+import { Card, CardContent, CardHeader, createStyles, makeStyles, Typography } from '@material-ui/core'
 import { useParams } from 'react-router-dom'
-import clsx from 'clsx'
 
 import { useDinnerPlanStoreDispatch, useDishForDay } from '../store/dinner-plan.store'
 
@@ -9,12 +8,8 @@ const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
 
 const useClassNames = makeStyles((theme) =>
   createStyles({
-    today: {
-      border: '1px solid grey',
-    },
     dropzone: {
-      backgroundColor: 'lightgrey',
-      height: 60,
+      minHeight: 72,
       '&:hover': {},
     },
   }),
@@ -44,11 +39,11 @@ export function Day({ dayOfWeek, isCurrentWeek }: DayProps) {
   }
 
   return (
-    <div className={clsx({ [classNames.today]: isToday })}>
-      <h4>{weekday}</h4>
-      <div className={classNames.dropzone} onDrop={onDrop} onDragOver={(e) => e.preventDefault()}>
-        {dish ? <Chip label={dish} color={'primary'} /> : null}
-      </div>
-    </div>
+    <Card>
+      <CardHeader titleTypographyProps={{ color: isToday ? 'primary' : 'inherit' }} title={weekday} />
+      <CardContent className={classNames.dropzone} onDrop={onDrop} onDragOver={(e) => e.preventDefault()}>
+        {dish ? <Typography paragraph={true}>{dish}</Typography> : null}
+      </CardContent>
+    </Card>
   )
 }

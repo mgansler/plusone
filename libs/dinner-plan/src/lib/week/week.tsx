@@ -9,9 +9,10 @@ import { Day } from '../day/day'
 const useClassNames = makeStyles((theme) =>
   createStyles({
     week: {
+      padding: theme.spacing(4),
       display: 'grid',
       gridTemplateColumns: 'repeat(7, 1fr)',
-      gridGap: 12,
+      gridGap: theme.spacing(2),
     },
   }),
 )
