@@ -10,6 +10,7 @@ const useClassNames = makeStyles((theme) =>
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      paddingBottom: theme.spacing(2),
     },
     dishes: {
       display: 'flex',

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Redirect, Route, useHistory, useRouteMatch } from 'react-router-dom'
-import { Button, createStyles, makeStyles, Toolbar, Typography } from '@material-ui/core'
+import { Button, Container, createStyles, makeStyles, Paper, Toolbar, Typography } from '@material-ui/core'
 
 import { getDateFor, getWeekOfYearFor, getYearFor } from '@plusone/date-utils'
 
@@ -38,30 +38,34 @@ export function DinnerPlan() {
 
   return (
     <DinnerPlanStore>
-      <Toolbar className={classNames.toolbar}>
-        <Typography>KW {match?.params.week}</Typography>
-        <nav className={classNames.navigation}>
-          <Button variant={'outlined'} onClick={() => history.push(`${url}/${lastWeeksYear}/${lastWeek}`)}>
-            Last Week
-          </Button>
-          <Button variant={'outlined'} onClick={() => history.push(`${url}/${thisWeeksYear}/${thisWeek}`)}>
-            This Week
-          </Button>
-          <Button variant={'outlined'} onClick={() => history.push(`${url}/${nextWeeksYear}/${nextWeek}`)}>
-            Next Week
-          </Button>
-        </nav>
-      </Toolbar>
+      <Container>
+        <Paper>
+          <Toolbar className={classNames.toolbar}>
+            <Typography>KW {match?.params.week}</Typography>
+            <nav className={classNames.navigation}>
+              <Button variant={'outlined'} onClick={() => history.push(`${url}/${lastWeeksYear}/${lastWeek}`)}>
+                Last Week
+              </Button>
+              <Button variant={'outlined'} onClick={() => history.push(`${url}/${thisWeeksYear}/${thisWeek}`)}>
+                This Week
+              </Button>
+              <Button variant={'outlined'} onClick={() => history.push(`${url}/${nextWeeksYear}/${nextWeek}`)}>
+                Next Week
+              </Button>
+            </nav>
+          </Toolbar>
 
-      <Route exact={true} path={path}>
-        <Redirect to={`${url}/${thisWeeksYear}/${thisWeek}`} />
-      </Route>
+          <Route exact={true} path={path}>
+            <Redirect to={`${url}/${thisWeeksYear}/${thisWeek}`} />
+          </Route>
 
-      <Route exact={true} path={`${path}/:year/:week`}>
-        <Week />
-      </Route>
+          <Route exact={true} path={`${path}/:year/:week`}>
+            <Week />
+          </Route>
 
-      <Dishes />
+          <Dishes />
+        </Paper>
+      </Container>
     </DinnerPlanStore>
   )
 }
