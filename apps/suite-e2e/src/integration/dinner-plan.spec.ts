@@ -16,12 +16,12 @@ describe('dinner plan', () => {
   })
 
   it('should show the previous week', () => {
-    cy.findByRole('link', { name: /last week/i }).click()
+    cy.findByRole('button', { name: /last week/i }).click()
     cy.url().should('match', pathRegex)
   })
 
   it('should show the next week', () => {
-    cy.findByRole('link', { name: /next week/i }).click()
+    cy.findByRole('button', { name: /next week/i }).click()
     cy.url().should('match', pathRegex)
   })
 })

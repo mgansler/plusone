@@ -9,31 +9,26 @@ import { Day } from '../day/day'
 const useClassNames = makeStyles((theme) =>
   createStyles({
     week: {
+      padding: theme.spacing(3),
       display: 'grid',
       gridTemplateColumns: 'repeat(7, 1fr)',
-      gridGap: 12,
+      gridGap: theme.spacing(2),
     },
   }),
 )
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface WeekProps {}
-
-export function Week(props: WeekProps) {
+export function Week() {
   const classNames = useClassNames()
   const currentWeekNumber = getWeekOfYearFor(new Date())
-  const { week } = useParams<{ week: string; year: string }>()
+  const { week } = useParams<{ week: string }>()
 
   const isCurrentWeek = Number(week) === currentWeekNumber
 
   return (
-    <>
-      <h4>KW {week}</h4>
-      <div className={classNames.week}>
-        {[1, 2, 3, 4, 5, 6, 7].map((dayOfWeek) => (
-          <Day key={dayOfWeek} dayOfWeek={dayOfWeek} isCurrentWeek={isCurrentWeek} />
-        ))}
-      </div>
-    </>
+    <div className={classNames.week}>
+      {[1, 2, 3, 4, 5, 6, 7].map((dayOfWeek) => (
+        <Day key={dayOfWeek} dayOfWeek={dayOfWeek} isCurrentWeek={isCurrentWeek} />
+      ))}
+    </div>
   )
 }

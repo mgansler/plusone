@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link, Redirect, Route, useRouteMatch } from 'react-router-dom'
+import { Redirect, Route, useHistory, useRouteMatch } from 'react-router-dom'
+import { Button, Container, createStyles, makeStyles, Paper, Toolbar, Typography } from '@material-ui/core'
 
 import { getDateFor, getWeekOfYearFor, getYearFor } from '@plusone/date-utils'
 
@@ -7,8 +8,24 @@ import { Week } from './week/week'
 import { DinnerPlanStore } from './store/dinner-plan.store'
 import { Dishes } from './dishes/dishes'
 
+const useClassNames = makeStyles((theme) =>
+  createStyles({
+    toolbar: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 50% 1fr',
+    },
+    navigation: {
+      display: 'flex',
+      justifyContent: 'space-around',
+    },
+  }),
+)
+
 export function DinnerPlan() {
   const { path, url } = useRouteMatch()
+  const match = useRouteMatch<{ week: string }>(`${path}/:year/:week`)
+
+  const classNames = useClassNames()
 
   const lastWeeksYear = getYearFor('last-week')
   const lastWeek = getWeekOfYearFor(getDateFor('last-week'))
@@ -17,31 +34,38 @@ export function DinnerPlan() {
   const nextWeeksYear = getYearFor('next-week')
   const nextWeek = getWeekOfYearFor(getDateFor('next-week'))
 
+  const history = useHistory()
+
   return (
     <DinnerPlanStore>
-      <nav>
-        <ul>
-          <li>
-            <Link to={`${url}/${lastWeeksYear}/${lastWeek}`}>Last Week</Link>
-          </li>
-          <li>
-            <Link to={`${url}/${thisWeeksYear}/${thisWeek}`}>This Week</Link>
-          </li>
-          <li>
-            <Link to={`${url}/${nextWeeksYear}/${nextWeek}`}>Next Week</Link>
-          </li>
-        </ul>
-      </nav>
+      <Container>
+        <Paper>
+          <Toolbar className={classNames.toolbar}>
+            <Typography>KW {match?.params.week}</Typography>
+            <nav className={classNames.navigation}>
+              <Button variant={'outlined'} onClick={() => history.push(`${url}/${lastWeeksYear}/${lastWeek}`)}>
+                Last Week
+              </Button>
+              <Button variant={'outlined'} onClick={() => history.push(`${url}/${thisWeeksYear}/${thisWeek}`)}>
+                This Week
+              </Button>
+              <Button variant={'outlined'} onClick={() => history.push(`${url}/${nextWeeksYear}/${nextWeek}`)}>
+                Next Week
+              </Button>
+            </nav>
+          </Toolbar>
 
-      <Route exact={true} path={path}>
-        <Redirect to={`${url}/${thisWeeksYear}/${thisWeek}`} />
-      </Route>
+          <Route exact={true} path={path}>
+            <Redirect to={`${url}/${thisWeeksYear}/${thisWeek}`} />
+          </Route>
 
-      <Route exact={true} path={`${path}/:year/:week`}>
-        <Week />
-      </Route>
+          <Route exact={true} path={`${path}/:year/:week`}>
+            <Week />
+          </Route>
 
-      <Dishes />
+          <Dishes />
+        </Paper>
+      </Container>
     </DinnerPlanStore>
   )
 }
