@@ -9,16 +9,19 @@ updates:
     directory: '/'
     open-pull-requests-limit: 20
     ignore:
+      # @nestjs/* dependencies will be updated via the @nestjs/core package.
       - dependency-name: '@nestjs/common'
       - dependency-name: '@nestjs/microservices'
       - dependency-name: '@nestjs/platform-express'
       - dependency-name: '@nestjs/testing'
+      # @nrwl/* dependencies will be updated via the @nrwl/workspace package.
       - dependency-name: '@nrwl/cli'
       - dependency-name: '@nrwl/cypress'
       - dependency-name: '@nrwl/devkit'
       - dependency-name: '@nrwl/eslint-plugin-nx'
       - dependency-name: '@nrwl/jest'
       - dependency-name: '@nrwl/linter'
+      - dependency-name: '@nrwl/nest'
       - dependency-name: '@nrwl/node'
       - dependency-name: '@nrwl/react'
       - dependency-name: '@nrwl/storybook'
