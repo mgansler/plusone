@@ -24,4 +24,12 @@ describe('dinner plan', () => {
     cy.findByRole('button', { name: /next week/i }).click()
     cy.url().should('match', pathRegex)
   })
+
+  it('should be possible to plan dinner', () => {
+    cy.findByRole('textbox').type('spaghetti{enter}')
+    cy.findByRole('textbox').type('risotto{enter}')
+
+    cy.drag('risotto', 'Monday')
+    cy.drag('spaghetti', 'Friday')
+  })
 })
