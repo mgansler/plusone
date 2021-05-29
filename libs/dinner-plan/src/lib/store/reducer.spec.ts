@@ -17,13 +17,35 @@ describe('reducer', () => {
 
       const expectedState: DinnerPlanState = {
         ...initialState,
-        dishes: ['spaghetti', 'risotto'],
+        dishes: ['risotto', 'spaghetti'],
       }
 
       const actualState = dinnerPlanReducer(initialState, action)
 
       expect(actualState).toEqual(expectedState)
     })
+
+    it('should sort when adding a new dish', () => {
+      const action: AddDish = {
+        type: 'add-dish',
+        payload: 'risotto',
+      }
+
+      const unsortedInitialState: DinnerPlanState = {
+        plan: {},
+        dishes: ['a', 'z', 'y', 'b'],
+      }
+
+      const expectedState: DinnerPlanState = {
+        plan: {},
+        dishes: ['a', 'b', 'risotto', 'y', 'z'],
+      }
+
+      const actualState = dinnerPlanReducer(unsortedInitialState, action)
+
+      expect(actualState).toEqual(expectedState)
+    })
+
     it('should not add a duplicate', () => {
       const action: AddDish = {
         type: 'add-dish',
