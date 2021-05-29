@@ -6,5 +6,5 @@ export type AddDish = {
 }
 
 export function addDish(state: DinnerPlanState, action: AddDish): DinnerPlanState {
-  return { ...state, dishes: Array.from(new Set([...state.dishes, action.payload])) as Dish[] }
+  return { ...state, dishes: Array.from(new Set([...state.dishes, action.payload])).sort() as Dish[] }
 }
