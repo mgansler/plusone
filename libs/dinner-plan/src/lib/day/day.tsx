@@ -24,7 +24,7 @@ export function Day({ dayOfWeek, isCurrentWeek }: DayProps) {
   const classNames = useClassNames()
   const { year, week } = useParams<{ week: string; year: string }>()
 
-  const isToday = isCurrentWeek && new Date().getDay() === dayOfWeek
+  const isToday = isCurrentWeek && (new Date().getDay() || 7) === dayOfWeek
   const weekday = DAYS[dayOfWeek - 1]
 
   const dispatch = useDinnerPlanStoreDispatch()
