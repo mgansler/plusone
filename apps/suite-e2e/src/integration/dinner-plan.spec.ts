@@ -31,5 +31,18 @@ describe('dinner plan', () => {
 
     cy.drag('risotto', 'Monday')
     cy.drag('spaghetti', 'Friday')
+
+    cy.findDropzoneByName('Monday').findByText('risotto').should('be.visible')
+    cy.findDropzoneByName('Friday').findByText('spaghetti').should('be.visible')
+
+    cy.findByRole('button', { name: /next week/i }).click()
+
+    // Dishes should still be available
+    cy.findByRole('button', { name: 'risotto' })
+    cy.findByRole('button', { name: 'spaghetti' })
+
+    // No dishes should be planned
+    cy.findDropzoneByName('Monday').findByText('risotto').should('not.exist')
+    cy.findDropzoneByName('Friday').findByText('spaghetti').should('not.exist')
   })
 })
