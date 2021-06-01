@@ -1,12 +1,27 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useMemo } from 'react'
 import { Route, Link as RouterLink } from 'react-router-dom'
-import { AppBar, Breadcrumbs, Toolbar, Link, CssBaseline } from '@material-ui/core'
+import {
+  AppBar,
+  Breadcrumbs,
+  Toolbar,
+  Link,
+  CssBaseline,
+  createMuiTheme,
+  ThemeProvider,
+  useMediaQuery,
+} from '@material-ui/core'
 
 const DinnerPlan = lazy(() => import('@plusone/dinner-plan'))
 
 export function App() {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+  const theme = useMemo(
+    () => createMuiTheme({ palette: { type: prefersDarkMode ? 'dark' : 'light' } }),
+    [prefersDarkMode],
+  )
+
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <AppBar position={'static'}>
         <Toolbar>
@@ -31,6 +46,6 @@ export function App() {
           </Suspense>
         </Route>
       </main>
-    </>
+    </ThemeProvider>
   )
 }
