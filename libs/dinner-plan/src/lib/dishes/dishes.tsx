@@ -73,7 +73,7 @@ export function Dishes() {
             draggable={true}
             onDragStart={onDragStart}
             color={'primary'}
-            variant={'outlined'}
+            variant={'default'}
             label={dish}
             onDelete={() => dispatch({ type: 'remove-dish', payload: dish })}
           />
