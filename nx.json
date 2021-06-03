@@ -112,6 +112,13 @@
     },
     "date-utils": {
       "tags": []
+    },
+    "feeds-web": {
+      "tags": []
+    },
+    "feeds-web-e2e": {
+      "tags": [],
+      "implicitDependencies": ["feeds-web", "feeds-core", "feeds-discover-ms", "feeds-fetch-ms"]
     }
   }
 }

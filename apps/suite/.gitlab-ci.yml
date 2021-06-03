@@ -46,21 +46,21 @@ suite:package:
     - main
   image: docker
   before_script:
-    - echo "Skip yarn install"
-  script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
+  script:
     - docker build -f apps/suite/Dockerfile -t ${APP_SUITE_DOCKER_IMAGE} .
     - docker push ${APP_SUITE_DOCKER_IMAGE}
 
 suite:deploy:
   stage: deploy
+  needs:
+    - suite:package
   tags:
     - deploy
   only:
     - main
   before_script:
-    - echo "Skip yarn install"
-  script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
+  script:
     - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
     - docker-compose -f apps/suite/docker-compose.deploy.yml up -d --remove-orphans

@@ -5,4 +5,5 @@ stages:
   - deploy
 
 include:
+  - /apps/feeds/.gitlab-ci.yml
   - /apps/suite/.gitlab-ci.yml

@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  core:
+    image: ${FEEDS_CORE_DOCKER_IMAGE}
+    depends_on:
+      - mongo
+      - amqp
+    environment:
+      JWT_SECRET: not_so_secret
+      DB_HOST: mongo
+      AMQP_HOST: amqp
+    ports:
+      - 3333:3333
+
+  fetch:
+    image: ${FEEDS_FETCH_MS_DOCKER_IMAGE}
+    depends_on:
+      - amqp
+    environment:
+      AMQP_HOST: amqp
+    scale: 2
+
+  discover:
+    image: ${FEEDS_DISCOVER_MS_DOCKER_IMAGE}
+    depends_on:
+      - amqp
+    environment:
+      AMQP_HOST: amqp
+
+  mongo:
+    image: mongo:4.4
+
+  amqp:
+    image: rabbitmq:3-management
+    hostname: feeds-rabbit
+    container_name: feeds-rabbit
+
+networks:
+  traefik:
+    external:
+      name: traefik

@@ -6,7 +6,7 @@ export const fetchOptions: ClientProviderOptions = {
   name: FETCH_SERVICE,
   transport: Transport.RMQ,
   options: {
-    urls: ['amqp://localhost'],
+    urls: [`amqp://${process.env.AMQP_HOST}`],
     queue: 'fetch',
     queueOptions: { durable: false, arguments: { 'x-message-ttl': 3000 } },
   },

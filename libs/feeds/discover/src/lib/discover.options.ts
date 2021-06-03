@@ -6,7 +6,7 @@ export const discoverOptions: ClientProviderOptions = {
   name: DISCOVER_SERVICE,
   transport: Transport.RMQ,
   options: {
-    urls: ['amqp://localhost'],
+    urls: [`amqp://${process.env.AMQP_HOST}`],
     queue: 'discover',
     queueOptions: { durable: false },
   },

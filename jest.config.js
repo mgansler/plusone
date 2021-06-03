@@ -4,6 +4,7 @@ module.exports = {
     '<rootDir>/apps/feeds/discover-ms',
     '<rootDir>/apps/feeds/fetch-ms',
     '<rootDir>/apps/feeds/frontend',
+    '<rootDir>/apps/feeds/web',
     '<rootDir>/apps/github-pipeline-status',
     '<rootDir>/apps/quick-zoom',
     '<rootDir>/apps/suite',
