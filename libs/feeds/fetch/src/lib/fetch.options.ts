@@ -1,8 +1,9 @@
-import { ClientProviderOptions, Transport } from '@nestjs/microservices'
+import { Transport } from '@nestjs/microservices'
+import { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface'
 
 import { FETCH_SERVICE } from './fetch.constants'
 
-export const fetchOptions: ClientProviderOptions = {
+export const fetchOptions: RmqOptions & { name: string } = {
   name: FETCH_SERVICE,
   transport: Transport.RMQ,
   options: {

@@ -1,4 +1,11 @@
 image: node:14-alpine
+
+variables:
+  DOCKER_HOST: 'tcp://docker:2375'
+  DOCKER_TLS_CERTDIR: ''
+  DOCKER_DRIVER: overlay2
+  APP_SUITE_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/suite/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}
+
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
@@ -7,9 +14,6 @@ cache:
 default:
   before_script:
     - yarn install
-
-variables:
-  APP_SUITE_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/suite/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}
 
 suite:lint:
   stage: test
@@ -44,6 +48,9 @@ suite:build:
     expire_in: 1 hour
 
 suite:package:
+  image: docker
+  services:
+    - docker:dind
   stage: package
   needs:
     - suite:build
@@ -51,7 +58,6 @@ suite:package:
     - docker
   only:
     - main
-  image: docker
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
   script:

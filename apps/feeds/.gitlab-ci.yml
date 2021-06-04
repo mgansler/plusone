@@ -1,5 +1,10 @@
 image: node:14-alpine
 
+variables:
+  DOCKER_HOST: 'tcp://docker:2375'
+  DOCKER_TLS_CERTDIR: ''
+  DOCKER_DRIVER: overlay2
+
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
@@ -17,6 +22,8 @@ feeds:lint:
     - yarn nx run-many --target=lint --projects=feeds-web-e2e --with-deps
 
 feeds:test:
+  services:
+    - docker:dind
   stage: test
   tags:
     - docker
@@ -49,6 +56,9 @@ feeds:build:
     expire_in: 1 hour
 
 feeds:package:
+  image: docker
+  services:
+    - docker:dind
   stage: package
   needs:
     - feeds:build
@@ -60,9 +70,9 @@ feeds:package:
           - core
           - discover-ms
           - fetch-ms
+  when: manual
   only:
-    - disabled
-  image: docker
+    - main
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - export DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds-${FEEDS_APP}/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}
@@ -76,8 +86,9 @@ feeds:deploy:
     - feeds:package
   tags:
     - deploy
+  when: manual
   only:
-    - disabled
+    - main
   variables:
     FEEDS_CORE_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-core/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}
     FEEDS_FETCH_MS_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-fetch-ms/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}
