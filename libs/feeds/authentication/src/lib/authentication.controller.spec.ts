@@ -9,7 +9,7 @@ import { AuthenticationService } from './authentication.service'
 import { jwtConstants } from './authentication.constants'
 
 describe('AuthenticationController', () => {
-  jest.setTimeout(10_000)
+  jest.setTimeout(60_000)
   let mongoContainer: StartedTestContainer
   beforeAll(async () => {
     mongoContainer = await new GenericContainer('mongo:4.4')

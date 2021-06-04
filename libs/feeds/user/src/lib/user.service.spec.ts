@@ -7,7 +7,7 @@ import { UserService } from './user.service'
 import { userProviders } from './user.providers'
 
 describe('UserService', () => {
-  jest.setTimeout(10_000)
+  jest.setTimeout(60_000)
   let mongoContainer: StartedTestContainer
   beforeAll(async () => {
     mongoContainer = await new GenericContainer('mongo:4.4')

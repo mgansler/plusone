@@ -13,7 +13,7 @@ import { AppService } from './app.service'
 describe('AppService', () => {
   let service: AppService
 
-  jest.setTimeout(45_000)
+  jest.setTimeout(60_000)
   let mongoContainer: StartedTestContainer
   let ampqContainer: StartedTestContainer
   let app: TestingModule
