@@ -22,19 +22,19 @@ describe('AppService', () => {
       .withExposedPorts(27017)
       .withWaitStrategy(Wait.forLogMessage(/Waiting for connections/))
       .start()
-    process.env.DB_HOST = `localhost:${mongoContainer.getMappedPort(27017)}`
+    process.env.DB_HOST = `${mongoContainer.getHost()}:${mongoContainer.getMappedPort(27017)}`
 
     ampqContainer = await new GenericContainer('rabbitmq:3')
       .withExposedPorts(5672)
       .withWaitStrategy(Wait.forLogMessage(/Server startup complete/))
       .start()
-    process.env.AMQP_HOST = `localhost:${ampqContainer.getMappedPort(5672)}`
+    const AMQP_HOST = `${ampqContainer.getHost()}:${ampqContainer.getMappedPort(5672)}`
 
     const configuredDiscoverOptions = { ...discoverOptions }
-    configuredDiscoverOptions.options.urls = [`amqp://${process.env.AMQP_HOST}`]
+    configuredDiscoverOptions.options.urls = [`amqp://${AMQP_HOST}`]
 
     const configuredFetchOptions = { ...fetchOptions }
-    configuredFetchOptions.options.urls = [`amqp://${process.env.AMQP_HOST}`]
+    configuredFetchOptions.options.urls = [`amqp://${AMQP_HOST}`]
 
     app = await Test.createTestingModule({
       imports: [

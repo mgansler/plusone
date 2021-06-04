@@ -15,7 +15,7 @@ describe('UserService', () => {
       .withWaitStrategy(Wait.forLogMessage(/Waiting for connections/))
       .start()
 
-    process.env.DB_HOST = `localhost:${mongoContainer.getMappedPort(27017)}`
+    process.env.DB_HOST = `${mongoContainer.getHost()}:${mongoContainer.getMappedPort(27017)}`
   })
 
   afterAll(async () => {
