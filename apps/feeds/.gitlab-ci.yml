@@ -1,5 +1,10 @@
 image: node:14-alpine
 
+variables:
+  DOCKER_HOST: 'tcp://docker:2375'
+  DOCKER_TLS_CERTDIR: ''
+  DOCKER_DRIVER: overlay2
+
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
@@ -17,16 +22,8 @@ feeds:lint:
     - yarn nx run-many --target=lint --projects=feeds-web-e2e --with-deps
 
 feeds:test:
-  # DinD service is required for Testcontainers
   services:
     - docker:dind
-  variables:
-    # Instruct Testcontainers to use the daemon of DinD.
-    DOCKER_HOST: 'tcp://docker:2375'
-    # Instruct Docker not to start over TLS.
-    DOCKER_TLS_CERTDIR: ''
-    # Improve performance with overlayfs.
-    DOCKER_DRIVER: overlay2
   stage: test
   tags:
     - docker
@@ -59,6 +56,8 @@ feeds:build:
     expire_in: 1 hour
 
 feeds:package:
+  services:
+    - docker:dind
   stage: package
   needs:
     - feeds:build
@@ -70,7 +69,9 @@ feeds:package:
           - core
           - discover-ms
           - fetch-ms
+  when: on_success
   only:
+    - main
     - testcontainers
   image: docker
   before_script:
@@ -86,8 +87,9 @@ feeds:deploy:
     - feeds:package
   tags:
     - deploy
+  when: manual
   only:
-    - disabled
+    - main
   variables:
     FEEDS_CORE_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-core/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}
     FEEDS_FETCH_MS_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-fetch-ms/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}
