@@ -23,7 +23,14 @@ suite:test:
   tags:
     - docker
   script:
-    - yarn nx run-many --target=test --projects=suite-e2e --with-deps
+    - yarn nx run-many --target=test --projects=suite-e2e --with-deps --skip-nx-cache
+  after_script:
+    - yarn jrm reports/test/junit-suite.xml reports/test/test-*.xml
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - reports/test/junit-suite.xml
 
 suite:build:
   stage: build
