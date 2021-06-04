@@ -1,9 +1,6 @@
 image: node:14-alpine
 
 variables:
-  DOCKER_HOST: 'tcp://docker:2375'
-  DOCKER_TLS_CERTDIR: ''
-  DOCKER_DRIVER: overlay2
   APP_SUITE_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/suite/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}
 
 cache:
@@ -49,6 +46,10 @@ suite:build:
 
 suite:package:
   image: docker
+  variables:
+    DOCKER_HOST: 'tcp://docker:2375'
+    DOCKER_TLS_CERTDIR: ''
+    DOCKER_DRIVER: overlay2
   services:
     - docker:dind
   stage: package
