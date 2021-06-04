@@ -1,17 +1,5 @@
 image: node:14-alpine
 
-# DinD service is required for Testcontainers
-services:
-  - docker:dind
-
-variables:
-  # Instruct Testcontainers to use the daemon of DinD.
-  DOCKER_HOST: 'tcp://docker:2375'
-  # Instruct Docker not to start over TLS.
-  DOCKER_TLS_CERTDIR: ''
-  # Improve performance with overlayfs.
-  DOCKER_DRIVER: overlay2
-
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
@@ -29,6 +17,16 @@ feeds:lint:
     - yarn nx run-many --target=lint --projects=feeds-web-e2e --with-deps
 
 feeds:test:
+  # DinD service is required for Testcontainers
+  services:
+    - docker:dind
+  variables:
+    # Instruct Testcontainers to use the daemon of DinD.
+    DOCKER_HOST: 'tcp://docker:2375'
+    # Instruct Docker not to start over TLS.
+    DOCKER_TLS_CERTDIR: ''
+    # Improve performance with overlayfs.
+    DOCKER_DRIVER: overlay2
   stage: test
   tags:
     - docker
