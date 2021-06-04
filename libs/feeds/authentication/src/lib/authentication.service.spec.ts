@@ -1,14 +1,29 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { PassportModule } from '@nestjs/passport'
 import { JwtModule } from '@nestjs/jwt'
+import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers'
 
 import { UserModule } from '@plusone/feeds/user'
 
 import { AuthenticationService } from './authentication.service'
 import { jwtConstants } from './authentication.constants'
 
-// needs a mongo db instance
-describe.skip('AuthenticationService', () => {
+describe('AuthenticationService', () => {
+  jest.setTimeout(10_000)
+  let mongoContainer: StartedTestContainer
+  beforeAll(async () => {
+    mongoContainer = await new GenericContainer('mongo:4.4')
+      .withExposedPorts(27017)
+      .withWaitStrategy(Wait.forLogMessage(/Waiting for connections/))
+      .start()
+
+    process.env.DB_HOST = `localhost:${mongoContainer.getMappedPort(27017)}`
+  })
+
+  afterAll(async () => {
+    await mongoContainer.stop()
+  })
+
   let service: AuthenticationService
 
   beforeEach(async () => {
