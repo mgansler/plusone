@@ -48,6 +48,7 @@ suite:build:
     expire_in: 1 hour
 
 suite:package:
+  image: docker
   services:
     - docker:dind
   stage: package
@@ -57,7 +58,6 @@ suite:package:
     - docker
   only:
     - main
-  image: docker
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
   script:

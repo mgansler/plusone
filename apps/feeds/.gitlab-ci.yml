@@ -56,6 +56,7 @@ feeds:build:
     expire_in: 1 hour
 
 feeds:package:
+  image: docker
   services:
     - docker:dind
   stage: package
@@ -69,11 +70,9 @@ feeds:package:
           - core
           - discover-ms
           - fetch-ms
-  when: on_success
+  when: manual
   only:
     - main
-    - testcontainers
-  image: docker
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - export DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds-${FEEDS_APP}/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}
