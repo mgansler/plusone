@@ -1,6 +1,6 @@
 overwrite: true
-schema: 'apps/feeds/backend/src/main/resources/graphql/**'
-documents: 'apps/feeds/backend/src/main/resources/graphql/**'
+schema: 'apps/feeds/spring-backend/src/main/resources/graphql/**'
+documents: 'apps/feeds/spring-backend/src/main/resources/graphql/**'
 
 generates:
   libs/feeds-schema/src/lib/types.ts:

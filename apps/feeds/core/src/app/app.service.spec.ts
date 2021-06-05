@@ -3,10 +3,10 @@ import { ClientsModule } from '@nestjs/microservices'
 import { ScheduleModule } from '@nestjs/schedule'
 import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers'
 
-import { ArticleModule } from '@plusone/feeds/article'
-import { discoverOptions } from '@plusone/feeds/discover'
-import { FeedModule } from '@plusone/feeds/feed'
-import { fetchOptions } from '@plusone/feeds/fetch'
+import { ArticleModule } from '@plusone/feeds/backend/article'
+import { discoverOptions } from '@plusone/feeds/backend/discover'
+import { FeedModule } from '@plusone/feeds/backend/feed'
+import { fetchOptions } from '@plusone/feeds/backend/fetch'
 
 import { AppService } from './app.service'
 

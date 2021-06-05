@@ -17,20 +17,20 @@
     "paths": {
       "@plusone/components": ["libs/components/src/index.ts"],
       "@plusone/conference-links": ["libs/conference-links/src/index.ts"],
+      "@plusone/date-utils": ["libs/date-utils/src/index.ts"],
+      "@plusone/dinner-plan": ["libs/dinner-plan/src/index.ts"],
       "@plusone/dom-utils": ["libs/dom-utils/src/index.ts"],
       "@plusone/feeds-schema": ["libs/feeds-schema/src/index.ts"],
-      "@plusone/feeds/article": ["libs/feeds/article/src/index.ts"],
-      "@plusone/feeds/authentication": ["libs/feeds/authentication/src/index.ts"],
-      "@plusone/feeds/database": ["libs/feeds/database/src/index.ts"],
-      "@plusone/feeds/discover": ["libs/feeds/discover/src/index.ts"],
-      "@plusone/feeds/feed": ["libs/feeds/feed/src/index.ts"],
-      "@plusone/feeds/fetch": ["libs/feeds/fetch/src/index.ts"],
-      "@plusone/feeds/user": ["libs/feeds/user/src/index.ts"],
+      "@plusone/feeds/backend/article": ["libs/feeds/backend/article/src/index.ts"],
+      "@plusone/feeds/backend/authentication": ["libs/feeds/backend/authentication/src/index.ts"],
+      "@plusone/feeds/backend/database": ["libs/feeds/backend/database/src/index.ts"],
+      "@plusone/feeds/backend/discover": ["libs/feeds/backend/discover/src/index.ts"],
+      "@plusone/feeds/backend/feed": ["libs/feeds/backend/feed/src/index.ts"],
+      "@plusone/feeds/backend/fetch": ["libs/feeds/backend/fetch/src/index.ts"],
+      "@plusone/feeds/backend/user": ["libs/feeds/backend/user/src/index.ts"],
       "@plusone/github-hooks": ["libs/github-hooks/src/index.ts"],
       "@plusone/github-schema": ["libs/github-schema/src/index.ts"],
-      "@plusone/hooks": ["libs/hooks/src/index.ts"],
-      "@plusone/dinner-plan": ["libs/dinner-plan/src/index.ts"],
-      "@plusone/date-utils": ["libs/date-utils/src/index.ts"]
+      "@plusone/hooks": ["libs/hooks/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
