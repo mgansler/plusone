@@ -11,8 +11,8 @@ export function FeedsWebLogin({ onSubmit }: FeedsWebLoginProps) {
     <div>
       <h1>Welcome to feeds-web-login!</h1>
       <form onSubmit={onSubmit}>
-        <TextField name={'username'} type={'text'} label={'Username'} />
-        <TextField name={'password'} type={'password'} label={'Password'} />
+        <TextField id={'username'} name={'username'} type={'text'} label={'Username'} />
+        <TextField id={'password'} name={'password'} type={'password'} label={'Password'} />
         <Button type={'submit'}>Login</Button>
       </form>
     </div>
