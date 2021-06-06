@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
-import App from './app'
+import { App } from './app'
 
 describe('App', () => {
   it('should render successfully', () => {
@@ -21,6 +21,6 @@ describe('App', () => {
       </BrowserRouter>,
     )
 
-    expect(screen.getByText('Welcome to web!')).toBeInTheDocument()
+    expect(screen.getByText('Welcome to feeds-web-login!')).toBeInTheDocument()
   })
 })
