@@ -2,7 +2,8 @@ module.exports = {
   displayName: 'feeds-web-login',
   preset: '../../../../jest.preset.js',
   transform: {
-    '^.+\\.[tj]sx?$': 'babel-jest',
+    '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest',
+    '^.+\\.[tj]sx?$': ['babel-jest', { cwd: __dirname, configFile: '../../../../babel-jest.config.json' }],
   },
   setupFilesAfterEnv: ['@testing-library/jest-dom', 'whatwg-fetch'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],

@@ -4,7 +4,13 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {}
+      "parserOptions": {
+        "project": ["apps/feeds/web-e2e/tsconfig.*?.json"]
+      },
+      "rules": {
+        "testing-library/await-async-query": "off",
+        "testing-library/prefer-screen-queries": "off"
+      }
     },
     {
       "files": ["src/plugins/index.js"],

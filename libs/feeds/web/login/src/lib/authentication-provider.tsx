@@ -1,7 +1,10 @@
-import { createContext, Dispatch, FormEventHandler, ReactNode, SetStateAction, useContext, useState } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { createContext, ReactNode, useContext } from 'react'
+
+import { useLocalStorage } from '@plusone/hooks'
 
 import { FeedsWebLogin } from './feeds-web-login'
+import { useFetchProfile } from './use-fetch-profile'
+import { Token } from './types'
 
 interface User {
   username: string
@@ -18,54 +21,16 @@ interface AuthenticationProviderProps {
   children: ReactNode
 }
 
-function useFetchProfile(token: string): User | undefined {
-  const { data: user } = useQuery<User>(
-    'user',
-    () =>
-      fetch('/api/authentication/profile', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((res) => (res.ok ? res.json() : null)),
-    {
-      enabled: Boolean(token),
-    },
-  )
-  return user
-}
-
-function useLogin(setToken: Dispatch<SetStateAction<string>>) {
-  const { mutate: login } = useMutation<{ access_token: string }, unknown, { username: string; password: string }>(
-    (vars) => {
-      return fetch('/api/authentication/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(vars),
-      }).then((res) => (res.ok ? res.json() : null))
-    },
-    {
-      onSuccess: ({ access_token }) => setToken(access_token),
-    },
-  )
-  return login
-}
-
 export function AuthenticationProvider({ children }: AuthenticationProviderProps) {
-  const [token, setToken] = useState<string>('')
-  const user = useFetchProfile(token)
-  const login = useLogin(setToken)
+  const [token = '', setToken] = useLocalStorage<Token>({ key: 'feeds-access-token', defaultValue: '' })
+  const { data: user, isLoading } = useFetchProfile({ token, setToken })
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault()
-
-    const username = (event.currentTarget.elements.namedItem('username') as HTMLInputElement).value
-    const password = (event.currentTarget.elements.namedItem('password') as HTMLInputElement).value
-
-    login({ username, password })
+  if (isLoading) {
+    return null
   }
 
   if (!user) {
-    return <FeedsWebLogin onSubmit={onSubmit} />
+    return <FeedsWebLogin setToken={setToken} />
   }
 
   return <Context.Provider value={{ user, token }} children={children} />

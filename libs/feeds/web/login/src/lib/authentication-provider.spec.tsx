@@ -10,6 +10,7 @@ describe('AuthenticationProvider', () => {
 
   afterEach(() => {
     testQueryClient.clear()
+    localStorage.clear()
   })
 
   it('should show the login page', () => {
@@ -19,7 +20,7 @@ describe('AuthenticationProvider', () => {
       </QueryClientProvider>,
     )
 
-    expect(screen.getByText('Welcome to feeds-web-login!'))
+    expect(screen.getByText('Welcome to feeds-web-login!')).toBeInTheDocument()
   })
 
   it('should allow to login', async () => {
@@ -42,5 +43,28 @@ describe('AuthenticationProvider', () => {
     await waitFor(() => expect(nock.isDone()).toBeTruthy())
 
     await waitFor(() => expect(screen.getByText(/child component/i)).toBeInTheDocument())
+  })
+
+  it('should allow to register', async () => {
+    nock(/localhost/)
+      .post('/api/authentication/register')
+      .reply(201, { username: 'myuser' })
+
+    render(
+      <QueryClientProvider client={testQueryClient}>
+        <AuthenticationProvider children={<span>child component</span>} />
+      </QueryClientProvider>,
+    )
+
+    await waitFor(() => expect(screen.getByText('Welcome to feeds-web-login!')).toBeInTheDocument())
+
+    userEvent.click(screen.getByRole('tab', { name: /register/i }))
+    userEvent.type(screen.getByLabelText(/username/i), 'myuser')
+    userEvent.type(screen.getByLabelText(/password/i), 'do-not-tell')
+    userEvent.click(screen.getByRole('button', { name: /register/i }))
+
+    await waitFor(() => expect(nock.isDone()).toBeTruthy())
+
+    await waitFor(() => expect(screen.getByText(/successfully registered 'myuser'/i)).toBeInTheDocument())
   })
 })
