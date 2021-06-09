@@ -4,12 +4,15 @@ services:
   core:
     image: ${FEEDS_CORE_DOCKER_IMAGE}
     depends_on:
-      - mongo
       - amqp
+      - feeds-ms-postgres
     environment:
       JWT_SECRET: not_so_secret
-      DB_HOST: mongo
       AMQP_HOST: amqp
+      DB_HOST: feeds-ms-postgres
+      DB_USER: postgres
+      DB_PASS: super_secret
+      DB_NAME: feeds
     ports:
       - 3333:3333
 
@@ -28,8 +31,12 @@ services:
     environment:
       AMQP_HOST: amqp
 
-  mongo:
-    image: mongo:4.4
+  feeds-ms-postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: super_secret
+      POSTGRES_DB: feeds
 
   amqp:
     image: rabbitmq:3-management
