@@ -16,8 +16,8 @@ export class AuthenticationService {
   async validateUser(username: string, password: string): Promise<Omit<User, 'password'> | null> {
     const userWithPassword = await this.userService.findOne(username)
     if (userWithPassword && (await compare(password, userWithPassword.password))) {
-      const { username, id } = userWithPassword
-      return { username, id }
+      const { password, ...user } = userWithPassword
+      return user
     }
 
     return null

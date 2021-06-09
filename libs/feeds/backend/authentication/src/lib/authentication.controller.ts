@@ -18,9 +18,9 @@ export class AuthenticationController {
   }
 
   @Post('register')
-  async register(@Body() user: UserRegisterDto): Promise<Omit<User, 'password'>> {
-    const { username, id } = await this.authenticationService.register(user)
-    return { username, id }
+  async register(@Body() userRegisterDto: UserRegisterDto): Promise<Omit<User, 'password'>> {
+    const { password, ...user } = await this.authenticationService.register(userRegisterDto)
+    return user
   }
 
   @UseGuards(JwtAuthGuard)

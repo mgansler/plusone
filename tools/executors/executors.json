@@ -3,6 +3,10 @@
     "graphql-schema": {
       "implementation": "./graphql-schema/graphql-schema.impl",
       "schema": "./graphql-schema/schema.json"
+    },
+    "typeorm-generate-migration": {
+      "implementation": "./typeorm/generate.impl",
+      "schema": "./typeorm/generate.json"
     }
   }
 }
