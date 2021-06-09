@@ -53,15 +53,12 @@
     "github-hooks": {
       "tags": []
     },
-    "feeds-backend": {
-      "tags": []
-    },
     "feeds-frontend": {
       "tags": []
     },
     "feeds-e2e": {
       "tags": [],
-      "implicitDependencies": ["feeds-frontend", "feeds-backend"]
+      "implicitDependencies": ["feeds-frontend", "feeds-spring-backend"]
     },
     "feeds-schema": {
       "tags": []
@@ -76,27 +73,6 @@
       "tags": []
     },
     "feeds-discover-ms": {
-      "tags": []
-    },
-    "feeds-article": {
-      "tags": []
-    },
-    "feeds-feed": {
-      "tags": []
-    },
-    "feeds-user": {
-      "tags": []
-    },
-    "feeds-authentication": {
-      "tags": []
-    },
-    "feeds-database": {
-      "tags": []
-    },
-    "feeds-discover": {
-      "tags": []
-    },
-    "feeds-fetch": {
       "tags": []
     },
     "suite": {
@@ -119,6 +95,33 @@
     "feeds-web-e2e": {
       "tags": [],
       "implicitDependencies": ["feeds-web", "feeds-core", "feeds-discover-ms", "feeds-fetch-ms"]
+    },
+    "feeds-backend-fetch": {
+      "tags": []
+    },
+    "feeds-backend-article": {
+      "tags": []
+    },
+    "feeds-backend-authentication": {
+      "tags": []
+    },
+    "feeds-backend-database": {
+      "tags": []
+    },
+    "feeds-backend-discover": {
+      "tags": []
+    },
+    "feeds-backend-user": {
+      "tags": []
+    },
+    "feeds-backend-feed": {
+      "tags": []
+    },
+    "feeds-spring-backend": {
+      "tags": []
+    },
+    "feeds-web-login": {
+      "tags": []
     }
   }
 }

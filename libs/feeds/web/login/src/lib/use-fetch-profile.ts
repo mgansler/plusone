@@ -1,0 +1,28 @@
+import { useQuery } from 'react-query'
+
+import { User } from './types'
+
+interface UseFetchProfileProps {
+  token: string
+  setToken: (newToken: string) => void
+}
+
+export function useFetchProfile({ token, setToken }: UseFetchProfileProps) {
+  return useQuery<User>(
+    'user',
+    () =>
+      fetch('/api/authentication/profile', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then((res) => {
+        if (res.ok) return res.json()
+
+        setToken('')
+        throw new Error(`${res.status}: ${res.statusText}`)
+      }),
+    {
+      enabled: Boolean(token),
+    },
+  )
+}

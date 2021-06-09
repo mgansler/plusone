@@ -1,7 +1,5 @@
 export type Maybe<T> = T | null
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K]
-}
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
 /** All built-in and custom scalars, mapped to their actual values */
@@ -67,40 +65,6 @@ export type GroupInput = {
   name: Scalars['String']
 }
 
-export type Token = {
-  __typename?: 'Token'
-  access_token: Scalars['String']
-  refresh_token: Scalars['String']
-  scope: Scalars['String']
-  token_type: Scalars['String']
-}
-
-export type User = {
-  __typename?: 'User'
-  username: Scalars['String']
-  name?: Maybe<Scalars['String']>
-  avatar_url?: Maybe<Scalars['String']>
-  email?: Maybe<Scalars['String']>
-}
-
-export type Query = {
-  __typename?: 'Query'
-  articles: Array<Article>
-  feeds: Array<Feed>
-  groups: Array<Group>
-  authorizationUri: Scalars['String']
-  login?: Maybe<Token>
-  me?: Maybe<User>
-}
-
-export type QueryArticlesArgs = {
-  filter: ArticleFilterCriteria
-}
-
-export type QueryLoginArgs = {
-  code: Scalars['String']
-}
-
 export type Mutation = {
   __typename?: 'Mutation'
   addFeed?: Maybe<Feed>
@@ -131,9 +95,43 @@ export type MutationToggleArticleUnreadArgs = {
   id: Scalars['ID']
 }
 
+export type Query = {
+  __typename?: 'Query'
+  articles: Array<Article>
+  feeds: Array<Feed>
+  groups: Array<Group>
+  authorizationUri: Scalars['String']
+  login?: Maybe<Token>
+  me?: Maybe<User>
+}
+
+export type QueryArticlesArgs = {
+  filter: ArticleFilterCriteria
+}
+
+export type QueryLoginArgs = {
+  code: Scalars['String']
+}
+
 export type Subscription = {
   __typename?: 'Subscription'
   feed?: Maybe<Feed>
+}
+
+export type Token = {
+  __typename?: 'Token'
+  access_token: Scalars['String']
+  refresh_token: Scalars['String']
+  scope: Scalars['String']
+  token_type: Scalars['String']
+}
+
+export type User = {
+  __typename?: 'User'
+  username: Scalars['String']
+  name?: Maybe<Scalars['String']>
+  avatar_url?: Maybe<Scalars['String']>
+  email?: Maybe<Scalars['String']>
 }
 
 export type ArticleFieldsFragment = { __typename: 'Article' } & Pick<
@@ -180,15 +178,11 @@ export type LoginQueryVariables = Exact<{
   code: Scalars['String']
 }>
 
-export type LoginQuery = { __typename?: 'Query' } & {
-  login?: Maybe<{ __typename?: 'Token' } & TokenFieldsFragment>
-}
+export type LoginQuery = { __typename?: 'Query' } & { login?: Maybe<{ __typename?: 'Token' } & TokenFieldsFragment> }
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>
 
-export type MeQuery = { __typename?: 'Query' } & {
-  me?: Maybe<{ __typename?: 'User' } & Pick<User, 'username'>>
-}
+export type MeQuery = { __typename?: 'Query' } & { me?: Maybe<{ __typename?: 'User' } & Pick<User, 'username'>> }
 
 export type AddFeedMutationVariables = Exact<{
   feed: FeedInput
@@ -231,9 +225,7 @@ export type ToggleArticleUnreadMutation = { __typename?: 'Mutation' } & {
   } & ArticleFieldsFragment
 }
 
-export type FeedSubscriptionSubscriptionVariables = Exact<{
-  [key: string]: never
-}>
+export type FeedSubscriptionSubscriptionVariables = Exact<{ [key: string]: never }>
 
 export type FeedSubscriptionSubscription = { __typename?: 'Subscription' } & {
   feed?: Maybe<{ __typename?: 'Feed' } & FeedFieldsFragment>
