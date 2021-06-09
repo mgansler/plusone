@@ -2,7 +2,7 @@ import { join } from 'path'
 
 import { TypeOrmModuleOptions } from '@nestjs/typeorm'
 
-import { Article, Feed, User } from '@plusone/feeds/backend/database'
+import { Article, Feed, User } from './entity'
 
 const ormConfig: TypeOrmModuleOptions = {
   type: 'postgres',
