@@ -14,15 +14,23 @@ describe('AppService', () => {
   let service: AppService
 
   jest.setTimeout(60_000)
-  let mongoContainer: StartedTestContainer
+  let postgresContainer: StartedTestContainer
   let ampqContainer: StartedTestContainer
   let app: TestingModule
   beforeAll(async () => {
-    mongoContainer = await new GenericContainer('mongo:4.4')
-      .withExposedPorts(27017)
-      .withWaitStrategy(Wait.forLogMessage(/Waiting for connections/))
+    postgresContainer = await new GenericContainer('postgres:12-alpine')
+      .withExposedPorts(5432)
+      .withEnv('POSTGRES_USER', 'postgres')
+      .withEnv('POSTGRES_PASSWORD', 'postgres')
+      .withEnv('POSTGRES_DB', 'feeds')
+      .withWaitStrategy(Wait.forLogMessage(/database system is ready to accept connections/))
       .start()
-    process.env.DB_HOST = `${mongoContainer.getHost()}:${mongoContainer.getMappedPort(27017)}`
+
+    process.env.DB_HOST = postgresContainer.getHost()
+    process.env.DB_PORT = postgresContainer.getMappedPort(5432).toString()
+    process.env.DB_USER = 'postgres'
+    process.env.DB_PASS = 'postgres'
+    process.env.DB_NAME = 'feeds'
 
     ampqContainer = await new GenericContainer('rabbitmq:3')
       .withExposedPorts(5672)
@@ -50,7 +58,7 @@ describe('AppService', () => {
   })
 
   afterAll(async () => {
-    await mongoContainer.stop()
+    await postgresContainer.stop()
     await ampqContainer.stop()
   })
 

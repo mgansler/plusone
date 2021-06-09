@@ -32,7 +32,7 @@ services:
       AMQP_HOST: amqp
 
   feeds-ms-postgres:
-    image: postgres
+    image: postgres:12-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: super_secret
