@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.lib.json",
+  "include": ["src/_migrations_/**/*.ts"],
+  "compilerOptions": {
+    "rootDir": "src/_migrations_",
+    "outDir": "../../../../dist/apps/feeds/core/_migrations_"
+  }
+}

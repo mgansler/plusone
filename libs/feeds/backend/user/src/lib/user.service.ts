@@ -1,19 +1,21 @@
-import { Inject, Injectable } from '@nestjs/common'
-import { Model } from 'mongoose'
+import { Injectable } from '@nestjs/common'
+import { Repository } from 'typeorm'
+import { InjectRepository } from '@nestjs/typeorm'
 
-import { UserWithPasswordDocument } from './user.schema'
-import { USER_MODEL } from './user.constants'
+import { User } from '@plusone/feeds/backend/database'
+
+import { UserRegisterDto } from './user-register.dto'
 
 @Injectable()
 export class UserService {
-  constructor(@Inject(USER_MODEL) private userModel: Model<UserWithPasswordDocument>) {}
+  constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
-  async create(user): Promise<UserWithPasswordDocument> {
-    const createdUser = new this.userModel(user)
-    return createdUser.save()
+  async create(user: UserRegisterDto): Promise<User> {
+    const createdUser = await this.userRepository.create(user)
+    return this.userRepository.save(createdUser)
   }
 
-  async findOne(username: string): Promise<UserWithPasswordDocument | undefined> {
-    return this.userModel.findOne({ username })
+  async findOne(username: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ where: { username } })
   }
 }

@@ -1,15 +1,24 @@
 version: '3'
 
 services:
-  mongo:
-    image: mongo:4.4
-    ports:
-      - 27017:27017
+  #  mongo:
+  #    image: mongo:4.4
+  #    ports:
+  #      - 27017:27017
+  #
+  #  mongo-express:
+  #    image: mongo-express
+  #    ports:
+  #      - 8081:8081
 
-  mongo-express:
-    image: mongo-express
+  feeds-ms-postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: super_secret
+      POSTGRES_DB: feeds
     ports:
-      - 8081:8081
+      - 5434:5432
 
   amqp:
     image: rabbitmq:3-management

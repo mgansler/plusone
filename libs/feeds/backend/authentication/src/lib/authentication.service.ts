@@ -2,7 +2,8 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { compare, hash } from 'bcrypt'
 
-import { User, UserRegisterDto, UserService } from '@plusone/feeds/backend/user'
+import { UserRegisterDto, UserService } from '@plusone/feeds/backend/user'
+import { User } from '@plusone/feeds/backend/database'
 
 import { JwtPayload } from './jwt.payload'
 
@@ -12,11 +13,11 @@ export class AuthenticationService {
 
   constructor(private userService: UserService, private jwtService: JwtService) {}
 
-  async validateUser(username: string, password: string): Promise<User | null> {
+  async validateUser(username: string, password: string): Promise<Omit<User, 'password'> | null> {
     const userWithPassword = await this.userService.findOne(username)
     if (userWithPassword && (await compare(password, userWithPassword.password))) {
-      const { username } = userWithPassword
-      return { username }
+      const { username, id } = userWithPassword
+      return { username, id }
     }
 
     return null

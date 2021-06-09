@@ -1,20 +1,21 @@
-import { Inject, Injectable } from '@nestjs/common'
-import { Model } from 'mongoose'
+import { Injectable } from '@nestjs/common'
+import { Repository } from 'typeorm'
+import { InjectRepository } from '@nestjs/typeorm'
 
-import { FeedDocument } from './feed.schema'
-import { FEED_MODEL } from './feed.constants'
+import { Feed } from '@plusone/feeds/backend/database'
+
 import { FeedDto } from './feed.dto'
 
 @Injectable()
 export class FeedService {
-  constructor(@Inject(FEED_MODEL) private feedModel: Model<FeedDocument>) {}
+  constructor(@InjectRepository(Feed) private feedRepository: Repository<Feed>) {}
 
-  async create(feedDto: FeedDto): Promise<FeedDocument> {
-    const createdFeed = new this.feedModel(feedDto)
-    return createdFeed.save()
+  async create(feedDto: FeedDto): Promise<Feed> {
+    const createdFeed = this.feedRepository.create(feedDto)
+    return this.feedRepository.save(createdFeed)
   }
 
-  async findAll(): Promise<FeedDocument[]> {
-    return this.feedModel.find().exec()
+  async findAll(): Promise<Feed[]> {
+    return this.feedRepository.find()
   }
 }
