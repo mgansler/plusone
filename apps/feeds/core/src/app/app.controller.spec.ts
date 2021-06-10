@@ -12,7 +12,7 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 
 describe('AppController', () => {
-  jest.setTimeout(180_000)
+  jest.setTimeout(60_000)
   let app: TestingModule
   let postgresContainer: StartedTestContainer
   let ampqContainer: StartedTestContainer
@@ -25,13 +25,7 @@ describe('AppController', () => {
       .withWaitStrategy(Wait.forLogMessage(/listening on IPv4 address/))
       .start()
 
-    const stream = await postgresContainer.logs()
-    stream
-      .on('data', (line) => console.log(line))
-      .on('err', (line) => console.error(line))
-      .on('end', () => console.log('Stream closed'))
-
-    process.env.DB_HOST = 'docker'
+    process.env.DB_HOST = postgresContainer.getHost()
     process.env.DB_PORT = postgresContainer.getMappedPort(5432).toString()
     process.env.DB_USER = 'postgres'
     process.env.DB_PASS = 'postgres'
