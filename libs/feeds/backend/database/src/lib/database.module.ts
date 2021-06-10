@@ -10,7 +10,7 @@ import * as ormConfig from './ormConfig'
       useFactory: async () =>
         Promise.resolve({
           ...ormConfig,
-          host: Number(process.env.DB_HOST) || (ormConfig as PostgresConnectionOptions).host,
+          host: process.env.DB_HOST || (ormConfig as PostgresConnectionOptions).host,
           port: Number(process.env.DB_PORT) || (ormConfig as PostgresConnectionOptions).port,
           username: process.env.DB_USER || (ormConfig as PostgresConnectionOptions).username,
           password: process.env.DB_PASS || (ormConfig as PostgresConnectionOptions).password,
