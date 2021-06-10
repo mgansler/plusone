@@ -10,7 +10,7 @@ import { fetchOptions } from '@plusone/feeds/backend/fetch'
 
 import { AppService } from './app.service'
 
-describe('AppService', () => {
+describe.skip('AppService', () => {
   let service: AppService
 
   jest.setTimeout(60_000)
