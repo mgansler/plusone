@@ -1,6 +1,7 @@
-import { ExecutorContext, Tree } from '@nrwl/devkit'
 import path = require('path')
 import { spawn } from 'child_process'
+
+import { ExecutorContext } from '@nrwl/devkit'
 
 interface Schema {
   config: string

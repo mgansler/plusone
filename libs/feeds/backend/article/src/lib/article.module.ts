@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { DatabaseModule } from '@plusone/feeds/backend/database'
+import { Article, DatabaseModule } from '@plusone/feeds/backend/database'
 
 import { ArticleService } from './article.service'
-import { articleProviders } from './article.providers'
 
 @Module({
-  imports: [DatabaseModule],
-  providers: [ArticleService, ...articleProviders],
+  imports: [DatabaseModule, TypeOrmModule.forFeature([Article])],
+  providers: [ArticleService],
   exports: [ArticleService],
 })
 export class ArticleModule {}

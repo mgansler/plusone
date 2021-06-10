@@ -1,21 +1,20 @@
-import { Inject, Injectable, Logger } from '@nestjs/common'
-import { Model } from 'mongoose'
+import { Injectable } from '@nestjs/common'
+import { Repository } from 'typeorm'
+import { Item } from 'rss-parser'
+import { InjectRepository } from '@nestjs/typeorm'
 
-import { ARTICLE_MODEL } from './article.constants'
-import { ArticleDocument } from './article.schema'
+import { Article } from '@plusone/feeds/backend/database'
 
 @Injectable()
 export class ArticleService {
-  private logger = new Logger(ArticleService.name)
+  constructor(@InjectRepository(Article) private articleRepository: Repository<Article>) {}
 
-  constructor(@Inject(ARTICLE_MODEL) private articleModel: Model<ArticleDocument>) {}
-
-  async create(article): Promise<ArticleDocument | undefined> {
-    if (await this.articleModel.findOne({ guid: article.guid })) {
+  async create(article: Item): Promise<Article | undefined> {
+    if (await this.articleRepository.findOne({ where: { guid: article.guid } })) {
       return
     }
 
-    const createdArticle = new this.articleModel({ ...article, contentBody: article['content:encoded'] })
-    return createdArticle.save()
+    const createdArticle = this.articleRepository.create({ ...article, contentBody: article['content:encoded'] })
+    return this.articleRepository.save(createdArticle)
   }
 }

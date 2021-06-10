@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 
-import { User, UserRegisterDto } from '@plusone/feeds/backend/user'
+import { UserRegisterDto } from '@plusone/feeds/backend/user'
+import { User } from '@plusone/feeds/backend/database'
 
 import { AuthenticationService } from './authentication.service'
 import { JwtAuthGuard } from './jwt-auth.guard'
@@ -17,9 +18,9 @@ export class AuthenticationController {
   }
 
   @Post('register')
-  async register(@Body() user: UserRegisterDto): Promise<User> {
-    const { username } = await this.authenticationService.register(user)
-    return { username }
+  async register(@Body() userRegisterDto: UserRegisterDto): Promise<Omit<User, 'password'>> {
+    const { password, ...user } = await this.authenticationService.register(userRegisterDto)
+    return user
   }
 
   @UseGuards(JwtAuthGuard)
