@@ -31,7 +31,7 @@ describe('AppController', () => {
       .on('err', (line) => console.error(line))
       .on('end', () => console.log('Stream closed'))
 
-    process.env.DB_HOST = postgresContainer.getHost()
+    process.env.DB_HOST = 'docker'
     process.env.DB_PORT = postgresContainer.getMappedPort(5432).toString()
     process.env.DB_USER = 'postgres'
     process.env.DB_PASS = 'postgres'
