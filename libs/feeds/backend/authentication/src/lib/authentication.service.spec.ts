@@ -5,6 +5,8 @@ import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers'
 
 import { UserModule } from '@plusone/feeds/backend/user'
 
+import ormConfig = require('../../../database/src/lib/ormConfig')
+
 import { AuthenticationService } from './authentication.service'
 import { jwtConstants } from './authentication.constants'
 
@@ -17,7 +19,7 @@ describe('AuthenticationService', () => {
       .withEnv('POSTGRES_USER', 'postgres')
       .withEnv('POSTGRES_PASSWORD', 'postgres')
       .withEnv('POSTGRES_DB', 'feeds')
-      .withWaitStrategy(Wait.forLogMessage(/database system is ready to accept connections/))
+      .withWaitStrategy(Wait.forLogMessage(/listening on IPv4 address/))
       .start()
 
     process.env.DB_HOST = postgresContainer.getHost()
