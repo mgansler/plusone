@@ -25,6 +25,12 @@ describe('AppController', () => {
       .withWaitStrategy(Wait.forLogMessage(/listening on IPv4 address/))
       .start()
 
+    const stream = await postgresContainer.logs()
+    stream
+      .on('data', (line) => console.log(line))
+      .on('err', (line) => console.error(line))
+      .on('end', () => console.log('Stream closed'))
+
     process.env.DB_HOST = postgresContainer.getHost()
     process.env.DB_PORT = postgresContainer.getMappedPort(5432).toString()
     process.env.DB_USER = 'postgres'
