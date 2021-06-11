@@ -916,6 +916,7 @@
         "generate": {
           "executor": "./tools/executors:typeorm-generate-migration",
           "options": {
+            "app": "feeds-core",
             "ormConfig": "lib/ormConfig.ts"
           }
         },
