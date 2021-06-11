@@ -14,10 +14,10 @@ const ormConfig: TypeOrmModuleOptions = {
   database: 'feeds',
   entities: [Article, Feed, User],
   autoLoadEntities: true,
-  migrations: [join(__dirname, '../**/_migrations_/**/*{.js,.ts}')],
+  migrations: [join(__dirname, '/_migrations_/**/*{.js,.ts}')],
   migrationsRun: true,
   cli: {
-    migrationsDir: 'libs/feeds/backend/database/src/_migrations_',
+    migrationsDir: 'apps/feeds/core/src/_migrations_',
   },
 }
 

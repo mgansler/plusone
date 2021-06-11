@@ -18,9 +18,16 @@ export default async function (options: GenerateOptions, context: ExecutorContex
     '--config',
     join(projectSourceRoot, options.ormConfig),
     'migration:generate',
+    '--outputJs',
     '-n',
     options.name,
   ]
+
+  if (options.check) {
+    args.push('--check')
+  } else if (options.dryrun) {
+    args.push('--dryrun')
+  }
 
   const generate = spawn('ts-node', args)
 

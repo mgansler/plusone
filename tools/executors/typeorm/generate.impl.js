@@ -140,9 +140,15 @@ function default_1(options, context) {
         '--config',
         path_1.join(projectSourceRoot, options.ormConfig),
         'migration:generate',
+        '--outputJs',
         '-n',
         options.name,
       ]
+      if (options.check) {
+        args.push('--check')
+      } else if (options.dryrun) {
+        args.push('--dryrun')
+      }
       generate = child_process_1.spawn('ts-node', args)
       return [
         2 /*return*/,

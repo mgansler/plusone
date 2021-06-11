@@ -3,6 +3,16 @@
   "id": "typeorm",
   "type": "object",
   "properties": {
+    "check": {
+      "description": "Verifies that the current database is up to date and that no migrations are needed.",
+      "type": "boolean",
+      "default": false
+    },
+    "dryrun": {
+      "description": "Prints out the contents of the migration instead of writing it to a file",
+      "type": "boolean",
+      "default": false
+    },
     "name": {
       "description": "The name of the migration.",
       "type": "string"

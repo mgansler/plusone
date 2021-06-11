@@ -48,7 +48,7 @@ feeds:build:
           - fetch-ms
           - web
   script:
-    - yarn nx run feeds-${FEEDS_APP}:build:production --with-deps
+    - yarn nx run feeds-${FEEDS_APP}:build:production
   artifacts:
     paths:
       - dist/apps/feeds/${FEEDS_APP}

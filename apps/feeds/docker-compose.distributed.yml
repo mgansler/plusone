@@ -1,6 +1,19 @@
 version: '3'
 
 services:
+  #  feeds-core:
+  #    image: feeds-core
+  #    environment:
+  #      JWT_SECRET: not_so_secret
+  #      AMQP_HOST: amqp
+  #      DB_HOST: feeds-ms-postgres
+  #      DB_PORT: 5432
+  #      DB_USER: postgres
+  #      DB_PASS: super_secret
+  #      DB_NAME: feeds
+  #    ports:
+  #      - 3333:3333
+
   feeds-ms-postgres:
     image: postgres:12-alpine
     environment:
