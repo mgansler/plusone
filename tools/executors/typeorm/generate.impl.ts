@@ -11,6 +11,7 @@ export default async function (options: GenerateOptions, context: ExecutorContex
 
   const args = [
     '-P',
+    // TODO: check if we are a library or an application
     join(projectRoot, 'tsconfig.lib.json'),
     '-r',
     'tsconfig-paths/register',
@@ -18,9 +19,16 @@ export default async function (options: GenerateOptions, context: ExecutorContex
     '--config',
     join(projectSourceRoot, options.ormConfig),
     'migration:generate',
+    '--outputJs',
     '-n',
     options.name,
   ]
+
+  if (options.check) {
+    args.push('--check')
+  } else if (options.dryrun) {
+    args.push('--dryrun')
+  }
 
   const generate = spawn('ts-node', args)
 
@@ -32,7 +40,12 @@ export default async function (options: GenerateOptions, context: ExecutorContex
       if (code !== 0) {
         resolve({ success: false })
       }
-      const format = spawn('yarn', ['prettier', '--write', `${projectSourceRoot}/_migrations_/*.ts`])
+
+      const format = spawn('yarn', [
+        'prettier',
+        '--write',
+        `${options.app ? context.workspace.projects[options.app].sourceRoot : projectSourceRoot}/_migrations_/*.js`,
+      ])
       format.on('close', (code) => {
         resolve({ success: code === 0 })
       })

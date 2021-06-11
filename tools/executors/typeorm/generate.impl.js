@@ -133,6 +133,7 @@ function default_1(options, context) {
       projectSourceRoot = context.workspace.projects[context.projectName].sourceRoot
       args = [
         '-P',
+        // TODO: check if we are a library or an application
         path_1.join(projectRoot, 'tsconfig.lib.json'),
         '-r',
         'tsconfig-paths/register',
@@ -140,9 +141,15 @@ function default_1(options, context) {
         '--config',
         path_1.join(projectSourceRoot, options.ormConfig),
         'migration:generate',
+        '--outputJs',
         '-n',
         options.name,
       ]
+      if (options.check) {
+        args.push('--check')
+      } else if (options.dryrun) {
+        args.push('--dryrun')
+      }
       generate = child_process_1.spawn('ts-node', args)
       return [
         2 /*return*/,
@@ -160,7 +167,8 @@ function default_1(options, context) {
             var format = child_process_1.spawn('yarn', [
               'prettier',
               '--write',
-              projectSourceRoot + '/_migrations_/*.ts',
+              (options.app ? context.workspace.projects[options.app].sourceRoot : projectSourceRoot) +
+                '/_migrations_/*.js',
             ])
             format.on('close', function (code) {
               resolve({ success: code === 0 })

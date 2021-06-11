@@ -457,7 +457,7 @@
             "main": "apps/feeds/core/src/main.ts",
             "generatePackageJson": true,
             "tsConfig": "apps/feeds/core/tsconfig.app.json",
-            "assets": ["apps/feeds/core/src/assets"]
+            "assets": ["apps/feeds/core/src/assets", "apps/feeds/core/src/_migrations_"]
           },
           "configurations": {
             "production": {
@@ -476,8 +476,7 @@
         "serve": {
           "executor": "@nrwl/node:execute",
           "options": {
-            "buildTarget": "feeds-core:build",
-            "waitUntilTargets": ["feeds-backend-database:build"]
+            "buildTarget": "feeds-core:build"
           }
         },
         "lint": {
@@ -914,19 +913,10 @@
       "sourceRoot": "libs/feeds/backend/database/src",
       "projectType": "library",
       "targets": {
-        "build": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              "yarn rimraf dist/apps/feeds/core/_migrations_",
-              "yarn tsc -p libs/feeds/backend/database/tsconfig.migrations.json "
-            ],
-            "parallel": false
-          }
-        },
         "generate": {
           "executor": "./tools/executors:typeorm-generate-migration",
           "options": {
+            "app": "feeds-core",
             "ormConfig": "lib/ormConfig.ts"
           }
         },
