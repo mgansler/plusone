@@ -2,10 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { PassportModule } from '@nestjs/passport'
 import { JwtModule } from '@nestjs/jwt'
 import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { UserModule } from '@plusone/feeds/backend/user'
-
-import ormConfig = require('../../../database/src/lib/ormConfig')
+import { DatabaseModule, User } from '@plusone/feeds/backend/database'
 
 import { AuthenticationService } from './authentication.service'
 import { jwtConstants } from './authentication.constants'
@@ -38,7 +37,8 @@ describe('AuthenticationService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        UserModule,
+        DatabaseModule,
+        TypeOrmModule.forFeature([User]),
         PassportModule,
         JwtModule.register({
           secret: jwtConstants.secret,

@@ -1,22 +1,31 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { compare, hash } from 'bcrypt'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
 
-import { UserRegisterDto, UserService } from '@plusone/feeds/backend/user'
 import { User } from '@plusone/feeds/backend/database'
 
 import { JwtPayload } from './jwt.payload'
+import { UserRegisterDto } from './user-register-dto'
 
 @Injectable()
-export class AuthenticationService {
+export class AuthenticationService implements OnModuleInit {
   private logger = new Logger(AuthenticationService.name)
 
-  constructor(private userService: UserService, private jwtService: JwtService) {}
+  constructor(@InjectRepository(User) private userRepository: Repository<User>, private jwtService: JwtService) {}
+
+  async onModuleInit(): Promise<void> {
+    await this.createRootUser()
+  }
 
   async validateUser(username: string, password: string): Promise<Omit<User, 'password'> | null> {
-    const userWithPassword = await this.userService.findOne(username)
-    if (userWithPassword && (await compare(password, userWithPassword.password))) {
-      const { password, ...user } = userWithPassword
+    const user = await this.userRepository.findOne({
+      select: ['username', 'password', 'email', 'isAdmin'],
+      where: { username },
+    })
+    if (user && (await compare(password, user.password))) {
+      user.password = undefined
       return user
     }
 
@@ -30,16 +39,36 @@ export class AuthenticationService {
     }
   }
 
-  async register(user: UserRegisterDto) {
+  async register(userRegisterDto: UserRegisterDto): Promise<Omit<User, 'password'>> {
     try {
-      return await this.userService.create({ username: user.username, password: await hash(user.password, 10) })
+      const createdUser = await this.userRepository.create({
+        ...userRegisterDto,
+        password: await hash(userRegisterDto.password, 10),
+      })
+      const user = await this.userRepository.save(createdUser)
+      user.password = undefined
+      return user
     } catch (e) {
       if (e.code === 11000) {
-        this.logger.warn(`Registration failed, user with username '${user.username}' already exists.`)
-        throw new HttpException(`User '${user.username}' already exists`, HttpStatus.CONFLICT)
+        this.logger.warn(`Registration failed, user with username '${userRegisterDto.username}' already exists.`)
+        throw new HttpException(`User '${userRegisterDto.username}' already exists`, HttpStatus.CONFLICT)
       }
       this.logger.error(e)
       throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  private async createRootUser() {
+    const rootUsername = process.env.ADMIN_USER
+    const rootPassword = process.env.ADMIN_PASSWORD
+    if (!(await this.userRepository.findOne({ where: { username: rootUsername } }))) {
+      this.logger.log(`Admin user does not exist, creating account '${rootUsername}'`)
+      const rootUser = await this.userRepository.create({
+        username: rootUsername,
+        password: await hash(rootPassword, 10),
+        isAdmin: true,
+      })
+      await this.userRepository.save(rootUser)
     }
   }
 }

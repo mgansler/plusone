@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { JwtModule } from '@nestjs/jwt'
 import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { UserModule } from '@plusone/feeds/backend/user'
+import { DatabaseModule, User } from '@plusone/feeds/backend/database'
 
 import { AuthenticationController } from './authentication.controller'
 import { AuthenticationService } from './authentication.service'
@@ -36,7 +37,8 @@ describe('AuthenticationController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        UserModule,
+        DatabaseModule,
+        TypeOrmModule.forFeature([User]),
         JwtModule.register({
           secret: jwtConstants.secret,
           signOptions: { expiresIn: '3600s' },
