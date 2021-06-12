@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common'
 import { PassportModule } from '@nestjs/passport'
 import { JwtModule } from '@nestjs/jwt'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { UserModule } from '@plusone/feeds/backend/user'
+import { DatabaseModule, User } from '@plusone/feeds/backend/database'
 
 import { AuthenticationController } from './authentication.controller'
 import { AuthenticationService } from './authentication.service'
@@ -12,7 +13,8 @@ import { jwtConstants } from './authentication.constants'
 
 @Module({
   imports: [
-    UserModule,
+    DatabaseModule,
+    TypeOrmModule.forFeature([User]),
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,

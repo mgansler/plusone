@@ -74,3 +74,11 @@ export function useLogout() {
 
   return context.logout
 }
+
+export function MockAuthenticationProvider({
+  children,
+  token = 'fake_token',
+  user = { username: 'user', isAdmin: false },
+}: AuthenticationProviderProps & Partial<AuthenticationContext>) {
+  return <Context.Provider value={{ token, user, logout: () => undefined }} children={children} />
+}

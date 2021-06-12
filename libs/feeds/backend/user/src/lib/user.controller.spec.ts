@@ -1,15 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { JwtModule } from '@nestjs/jwt'
-import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers'
 
 import { DatabaseModule, User } from '@plusone/feeds/backend/database'
 
-import { AuthenticationController } from './authentication.controller'
-import { AuthenticationService } from './authentication.service'
-import { jwtConstants } from './authentication.constants'
+import { UserController } from './user.controller'
+import { UserService } from './user.service'
 
-describe('AuthenticationController', () => {
+describe('UserController', () => {
   jest.setTimeout(60_000)
   let postgresContainer: StartedTestContainer
   beforeAll(async () => {
@@ -32,23 +30,16 @@ describe('AuthenticationController', () => {
     await postgresContainer.stop()
   })
 
-  let controller: AuthenticationController
+  let controller: UserController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        DatabaseModule,
-        TypeOrmModule.forFeature([User]),
-        JwtModule.register({
-          secret: jwtConstants.secret,
-          signOptions: { expiresIn: '3600s' },
-        }),
-      ],
-      providers: [AuthenticationService],
-      controllers: [AuthenticationController],
+      imports: [DatabaseModule, TypeOrmModule.forFeature([User])],
+      controllers: [UserController],
+      providers: [UserService],
     }).compile()
 
-    controller = module.get<AuthenticationController>(AuthenticationController)
+    controller = module.get<UserController>(UserController)
   })
 
   it('should be defined', () => {
