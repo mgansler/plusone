@@ -27,5 +27,6 @@ module.exports = {
     '<rootDir>/libs/hooks',
     '<rootDir>/libs/feeds/web/admin-view',
     '<rootDir>/libs/feeds/web/user-view',
+    '<rootDir>/libs/dark-mode-theme-provider',
   ],
 }
