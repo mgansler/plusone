@@ -1080,6 +1080,48 @@
           }
         }
       }
+    },
+    "feeds-web-admin-view": {
+      "root": "libs/feeds/web/admin-view",
+      "sourceRoot": "libs/feeds/web/admin-view/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/feeds/web/admin-view/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/feeds/web/admin-view"],
+          "options": {
+            "jestConfig": "libs/feeds/web/admin-view/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "feeds-web-user-view": {
+      "root": "libs/feeds/web/user-view",
+      "sourceRoot": "libs/feeds/web/user-view/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/feeds/web/user-view/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/feeds/web/user-view"],
+          "options": {
+            "jestConfig": "libs/feeds/web/user-view/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

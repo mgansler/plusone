@@ -25,5 +25,7 @@ module.exports = {
     '<rootDir>/libs/github-hooks',
     '<rootDir>/libs/github-schema',
     '<rootDir>/libs/hooks',
+    '<rootDir>/libs/feeds/web/admin-view',
+    '<rootDir>/libs/feeds/web/user-view',
   ],
 }
