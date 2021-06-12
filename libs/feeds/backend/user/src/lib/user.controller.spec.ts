@@ -2,10 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers'
 
-import { UserService } from '@plusone/feeds/backend/user'
 import { DatabaseModule, User } from '@plusone/feeds/backend/database'
 
 import { UserController } from './user.controller'
+import { UserService } from './user.service'
 
 describe('UserController', () => {
   jest.setTimeout(60_000)
