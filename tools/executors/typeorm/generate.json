@@ -3,16 +3,12 @@
   "id": "typeorm",
   "type": "object",
   "properties": {
-    "app": {
-      "description": "The name of the application where the migration files should be generated.",
-      "type": "string"
-    },
     "check": {
       "description": "Verifies that the current database is up to date and that no migrations are needed.",
       "type": "boolean",
       "default": false
     },
-    "dryrun": {
+    "dry-run": {
       "description": "Prints out the contents of the migration instead of writing it to a file.",
       "type": "boolean",
       "default": false

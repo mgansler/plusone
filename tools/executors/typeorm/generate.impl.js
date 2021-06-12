@@ -147,7 +147,7 @@ function default_1(options, context) {
       ]
       if (options.check) {
         args.push('--check')
-      } else if (options.dryrun) {
+      } else if (options['dry-run']) {
         args.push('--dryrun')
       }
       generate = child_process_1.spawn('ts-node', args)
@@ -167,8 +167,7 @@ function default_1(options, context) {
             var format = child_process_1.spawn('yarn', [
               'prettier',
               '--write',
-              (options.app ? context.workspace.projects[options.app].sourceRoot : projectSourceRoot) +
-                '/_migrations_/*.js',
+              projectSourceRoot + '/_migrations_/*.js',
             ])
             format.on('close', function (code) {
               resolve({ success: code === 0 })

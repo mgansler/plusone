@@ -26,7 +26,7 @@ export default async function (options: GenerateOptions, context: ExecutorContex
 
   if (options.check) {
     args.push('--check')
-  } else if (options.dryrun) {
+  } else if (options['dry-run']) {
     args.push('--dryrun')
   }
 
@@ -41,11 +41,7 @@ export default async function (options: GenerateOptions, context: ExecutorContex
         resolve({ success: false })
       }
 
-      const format = spawn('yarn', [
-        'prettier',
-        '--write',
-        `${options.app ? context.workspace.projects[options.app].sourceRoot : projectSourceRoot}/_migrations_/*.js`,
-      ])
+      const format = spawn('yarn', ['prettier', '--write', `${projectSourceRoot}/_migrations_/*.js`])
       format.on('close', (code) => {
         resolve({ success: code === 0 })
       })

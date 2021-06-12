@@ -457,7 +457,14 @@
             "main": "apps/feeds/core/src/main.ts",
             "generatePackageJson": true,
             "tsConfig": "apps/feeds/core/tsconfig.app.json",
-            "assets": ["apps/feeds/core/src/assets", "apps/feeds/core/src/_migrations_"]
+            "assets": [
+              "apps/feeds/core/src/assets",
+              {
+                "input": "libs/feeds/backend/database/src/_migrations_",
+                "glob": "*.js",
+                "output": "_migrations_"
+              }
+            ]
           },
           "configurations": {
             "production": {
