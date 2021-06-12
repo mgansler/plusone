@@ -13,6 +13,8 @@ services:
       DB_USER: postgres
       DB_PASS: super_secret
       DB_NAME: feeds
+      ADMIN_USER: root
+      ADMIN_PASSWORD: keep_this_secret
     ports:
       - 3333:3333
 
