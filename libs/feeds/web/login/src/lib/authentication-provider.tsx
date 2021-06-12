@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useCallback, useContext } from 'react'
+import React, { createContext, ReactNode, useCallback, useContext } from 'react'
 
 import { useLocalStorage } from '@plusone/hooks'
 

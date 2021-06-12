@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) =>
   }),
 )
 
-function AppWithProviders() {
+export function AppWithProviders() {
   const classNames = useStyles()
   return (
     <React.Fragment>

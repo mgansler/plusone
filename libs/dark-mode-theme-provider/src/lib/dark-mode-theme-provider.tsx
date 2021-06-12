@@ -1,5 +1,5 @@
 import { createMuiTheme, ThemeProvider, useMediaQuery } from '@material-ui/core'
-import { ReactNode, useMemo } from 'react'
+import React, { ReactNode, useMemo } from 'react'
 
 export interface DarkModeThemeProviderProps {
   children: ReactNode
