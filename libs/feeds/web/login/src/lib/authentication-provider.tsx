@@ -1,21 +1,18 @@
-import { createContext, ReactNode, useContext } from 'react'
+import { createContext, ReactNode, useCallback, useContext } from 'react'
 
 import { useLocalStorage } from '@plusone/hooks'
 
 import { FeedsWebLogin } from './feeds-web-login'
 import { useFetchProfile } from './use-fetch-profile'
-import { Token } from './types'
-
-interface User {
-  username: string
-}
+import { Token, User } from './types'
 
 interface AuthenticationContext {
   user: User
   token: string
+  logout: () => void
 }
 
-const Context = createContext<AuthenticationContext | null | undefined>(undefined)
+const Context = createContext<AuthenticationContext | undefined>(undefined)
 
 interface AuthenticationProviderProps {
   children: ReactNode
@@ -23,7 +20,11 @@ interface AuthenticationProviderProps {
 
 export function AuthenticationProvider({ children }: AuthenticationProviderProps) {
   const [token = '', setToken] = useLocalStorage<Token>({ key: 'feeds-access-token', defaultValue: '' })
-  const { data: user, isLoading } = useFetchProfile({ token, setToken })
+  const { data: user, isLoading, remove } = useFetchProfile({ token, setToken })
+  const logout = useCallback(() => {
+    setToken('')
+    remove()
+  }, [remove, setToken])
 
   if (isLoading) {
     return null
@@ -33,7 +34,7 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
     return <FeedsWebLogin setToken={setToken} />
   }
 
-  return <Context.Provider value={{ user, token }} children={children} />
+  return <Context.Provider value={{ user, token, logout }} children={children} />
 }
 
 export function useUser(): User {
@@ -43,7 +44,7 @@ export function useUser(): User {
     throw new Error('useUser must be used within an AuthenticationProvider')
   }
 
-  if (context?.user === undefined) {
+  if (context.user === undefined) {
     throw new Error('no User in AuthenticationContext, make sure the user is logged in')
   }
 
@@ -57,9 +58,19 @@ export function useToken(): string {
     throw new Error('useToken must be used within an AuthenticationProvider')
   }
 
-  if (!context?.token) {
+  if (!context.token) {
     throw new Error('no token in AuthenticationContext, make sure the user is logged in')
   }
 
   return context.token
+}
+
+export function useLogout() {
+  const context = useContext(Context)
+
+  if (context === undefined) {
+    throw new Error('useLogout must be used within an AuthenticationProvider')
+  }
+
+  return context.logout
 }
