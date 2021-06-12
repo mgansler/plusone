@@ -1122,6 +1122,27 @@
           }
         }
       }
+    },
+    "dark-mode-theme-provider": {
+      "root": "libs/dark-mode-theme-provider",
+      "sourceRoot": "libs/dark-mode-theme-provider/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/dark-mode-theme-provider/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/dark-mode-theme-provider"],
+          "options": {
+            "jestConfig": "libs/dark-mode-theme-provider/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

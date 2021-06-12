@@ -1,8 +1,12 @@
-import { AppBar, createStyles, makeStyles, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, createStyles, CssBaseline, makeStyles, Toolbar, Typography } from '@material-ui/core'
 import React from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+import { DarkModeThemeProvider } from '@plusone/dark-mode-theme-provider'
 
 import { UserInfo } from './user-info/user-info'
 import { Organizations } from './organizations/organizations'
+import { OctokitProvider } from './octokit-provider/octokit-provider'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -22,7 +26,7 @@ const useStyles = makeStyles((theme) =>
   }),
 )
 
-export function App() {
+function AppWithProviders() {
   const classNames = useStyles()
   return (
     <React.Fragment>
@@ -34,9 +38,27 @@ export function App() {
           <UserInfo />
         </Toolbar>
       </AppBar>
+
       <main className={classNames.main}>
         <Organizations />
       </main>
     </React.Fragment>
+  )
+}
+
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: 0, refetchOnWindowFocus: false } },
+})
+
+export function App() {
+  return (
+    <DarkModeThemeProvider>
+      <CssBaseline />
+      <QueryClientProvider client={queryClient}>
+        <OctokitProvider>
+          <AppWithProviders />
+        </OctokitProvider>
+      </QueryClientProvider>
+    </DarkModeThemeProvider>
   )
 }

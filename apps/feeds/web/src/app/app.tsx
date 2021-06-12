@@ -1,14 +1,14 @@
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { lazy, Suspense } from 'react'
+import { CssBaseline } from '@material-ui/core'
 
 import { AuthenticationProvider, useUser } from '@plusone/feeds/web/login'
+import { DarkModeThemeProvider } from '@plusone/dark-mode-theme-provider'
 
 import { Logout } from './logout'
 
 const FeedsWebAdminView = lazy(() => import('@plusone/feeds/web/admin-view'))
 const FeedsWebUserView = lazy(() => import('@plusone/feeds/web/user-view'))
-
-const queryClient = new QueryClient()
 
 function AppWithProviders() {
   const user = useUser()
@@ -29,12 +29,17 @@ function AppWithProviders() {
   )
 }
 
+const queryClient = new QueryClient()
+
 export function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthenticationProvider>
-        <AppWithProviders />
-      </AuthenticationProvider>
-    </QueryClientProvider>
+    <DarkModeThemeProvider>
+      <CssBaseline />
+      <QueryClientProvider client={queryClient}>
+        <AuthenticationProvider>
+          <AppWithProviders />
+        </AuthenticationProvider>
+      </QueryClientProvider>
+    </DarkModeThemeProvider>
   )
 }

@@ -1,28 +1,14 @@
-import { lazy, Suspense, useMemo } from 'react'
-import { Route, Link as RouterLink } from 'react-router-dom'
-import {
-  AppBar,
-  Breadcrumbs,
-  Toolbar,
-  Link,
-  CssBaseline,
-  createMuiTheme,
-  ThemeProvider,
-  useMediaQuery,
-} from '@material-ui/core'
+import { lazy, Suspense } from 'react'
+import { Link as RouterLink, Route } from 'react-router-dom'
+import { AppBar, Breadcrumbs, CssBaseline, Link, Toolbar } from '@material-ui/core'
+
+import { DarkModeThemeProvider } from '@plusone/dark-mode-theme-provider'
 
 const DinnerPlan = lazy(() => import('@plusone/dinner-plan'))
 
-export function App() {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-  const theme = useMemo(
-    () => createMuiTheme({ palette: { type: prefersDarkMode ? 'dark' : 'light' } }),
-    [prefersDarkMode],
-  )
-
+function AppWithProviders() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <>
       <AppBar position={'static'}>
         <Toolbar>
           <Breadcrumbs separator={'›'}>
@@ -46,6 +32,15 @@ export function App() {
           </Suspense>
         </Route>
       </main>
-    </ThemeProvider>
+    </>
+  )
+}
+
+export function App() {
+  return (
+    <DarkModeThemeProvider>
+      <CssBaseline />
+      <AppWithProviders />
+    </DarkModeThemeProvider>
   )
 }
