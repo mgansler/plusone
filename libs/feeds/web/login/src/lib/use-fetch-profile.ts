@@ -23,6 +23,8 @@ export function useFetchProfile({ token, setToken }: UseFetchProfileProps) {
       }),
     {
       enabled: Boolean(token),
+      refetchInterval: 30_000,
+      refetchIntervalInBackground: true,
     },
   )
 }

@@ -22,7 +22,7 @@ feeds:test:
   tags:
     - docker
   script:
-    - yarn nx run-many --target=test --projects=feeds-web-e2e --with-deps --skip-nx-cache
+    - yarn nx run-many --target=test --projects=feeds-web-e2e --with-deps
   after_script:
     - yarn jrm reports/test/junit-feeds.xml reports/test/test-*.xml
   artifacts:
@@ -35,6 +35,8 @@ feeds:build:
   stage: build
   tags:
     - docker
+  only:
+    - main
   parallel:
     matrix:
       - FEEDS_APP:

@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useCallback, useContext } from 'react'
+import React, { createContext, ReactNode, useContext, useEffect, useMemo } from 'react'
 
 import { useLocalStorage } from '@plusone/hooks'
 
@@ -7,7 +7,7 @@ import { useFetchProfile } from './use-fetch-profile'
 import { Token, User } from './types'
 
 interface AuthenticationContext {
-  user: User
+  user?: User
   token: string
   logout: () => void
 }
@@ -21,20 +21,24 @@ interface AuthenticationProviderProps {
 export function AuthenticationProvider({ children }: AuthenticationProviderProps) {
   const [token = '', setToken] = useLocalStorage<Token>({ key: 'feeds-access-token', defaultValue: '' })
   const { data: user, isLoading, remove } = useFetchProfile({ token, setToken })
-  const logout = useCallback(() => {
-    setToken('')
-    remove()
-  }, [remove, setToken])
+  // TODO: this is not really necessary
+  const value = useMemo(() => ({ user, token, logout: () => setToken('') }), [setToken, token, user])
+
+  useEffect(() => {
+    if (token === '') {
+      remove()
+    }
+  }, [remove, token])
 
   if (isLoading) {
     return null
   }
 
-  if (!user) {
+  if (!user || !token) {
     return <FeedsWebLogin setToken={setToken} />
   }
 
-  return <Context.Provider value={{ user, token, logout }} children={children} />
+  return <Context.Provider value={value} children={children} />
 }
 
 export function useUser(): User {
