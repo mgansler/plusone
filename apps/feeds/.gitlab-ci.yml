@@ -35,6 +35,8 @@ feeds:build:
   stage: build
   tags:
     - docker
+  only:
+    - main
   parallel:
     matrix:
       - FEEDS_APP:
