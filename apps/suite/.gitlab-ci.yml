@@ -3,11 +3,6 @@ image: node:14-alpine
 variables:
   APP_SUITE_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/suite/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}
 
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - node_modules/
-
 default:
   before_script:
     - yarn install

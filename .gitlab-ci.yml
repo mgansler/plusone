@@ -4,6 +4,13 @@ stages:
   - package
   - deploy
 
+cache:
+  key:
+    files:
+      - yarn.lock
+  paths:
+    - node_modules/
+
 include:
   - /apps/feeds/.gitlab-ci.yml
   - /apps/suite/.gitlab-ci.yml
