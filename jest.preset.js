@@ -2,7 +2,6 @@ const nxPreset = require('@nrwl/jest/preset')
 
 module.exports = {
   ...nxPreset,
-  testEnvironment: 'jsdom',
   reporters: [
     'default',
     [
