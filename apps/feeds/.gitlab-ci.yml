@@ -4,6 +4,17 @@ default:
   before_script:
     - yarn install
 
+feeds:prepare:
+  stage: prepare
+  tags:
+    - docker
+  script:
+    - yarn prisma generate --schema libs/feeds/backend/persistence/src/lib/schema.prisma
+  artifacts:
+    paths:
+      - libs/feeds/backend/persistence/src/lib/client
+    expire_in: 1 hour
+
 feeds:lint:
   stage: test
   tags:
@@ -19,6 +30,8 @@ feeds:test:
     DOCKER_TLS_CERTDIR: ''
     DOCKER_DRIVER: overlay2
   stage: test
+  needs:
+    - feeds:prepare
   tags:
     - docker
   script:
@@ -33,6 +46,8 @@ feeds:test:
 
 feeds:build:
   stage: build
+  needs:
+    - feeds:prepare
   tags:
     - docker
   only:
@@ -45,7 +60,6 @@ feeds:build:
           - fetch-ms
           - web
   script:
-    - yarn prisma generate --schema libs/feeds/backend/persistence/src/lib/schema.prisma
     - yarn nx run feeds-${FEEDS_APP}:build:production
   artifacts:
     paths:
