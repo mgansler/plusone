@@ -191,33 +191,6 @@
         }
       }
     },
-    "feeds-backend-database": {
-      "root": "libs/feeds/backend/database",
-      "sourceRoot": "libs/feeds/backend/database/src",
-      "projectType": "library",
-      "targets": {
-        "generate": {
-          "executor": "./tools/executors:typeorm-generate-migration",
-          "options": {
-            "ormConfig": "lib/ormConfig.ts"
-          }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/feeds/backend/database/**/*.ts"]
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/feeds/backend/database"],
-          "options": {
-            "jestConfig": "libs/feeds/backend/database/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "feeds-backend-discover": {
       "root": "libs/feeds/backend/discover",
       "sourceRoot": "libs/feeds/backend/discover/src",
@@ -281,6 +254,30 @@
         }
       }
     },
+    "feeds-backend-persistence": {
+      "root": "libs/feeds/backend/persistence",
+      "sourceRoot": "libs/feeds/backend/persistence/src",
+      "projectType": "library",
+      "targets": {
+        "generate": {
+          "executor": "./tools/executors:prisma-generate"
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/feeds/backend/persistence/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/feeds/backend/persistence"],
+          "options": {
+            "jestConfig": "libs/feeds/backend/persistence/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "feeds-backend-user": {
       "root": "libs/feeds/backend/user",
       "sourceRoot": "libs/feeds/backend/user/src",
@@ -318,9 +315,19 @@
             "assets": [
               "apps/feeds/core/src/assets",
               {
-                "input": "libs/feeds/backend/database/src/_migrations_",
-                "glob": "*.js",
-                "output": "_migrations_"
+                "input": "libs/feeds/backend/persistence/src/lib/client",
+                "glob": "schema.prisma",
+                "output": ""
+              },
+              {
+                "input": "libs/feeds/backend/persistence/src/lib/",
+                "glob": "migrations",
+                "output": "migrations"
+              },
+              {
+                "input": "libs/feeds/backend/persistence/src/lib/client",
+                "glob": "query-engine-linux-musl",
+                "output": ""
               }
             ]
           },
@@ -341,7 +348,8 @@
         "serve": {
           "executor": "@nrwl/node:execute",
           "options": {
-            "buildTarget": "feeds-core:build"
+            "buildTarget": "feeds-core:build",
+            "waitUntilTargets": ["feeds-backend-persistence:generate"]
           }
         },
         "lint": {

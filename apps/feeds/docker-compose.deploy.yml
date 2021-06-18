@@ -9,10 +9,7 @@ services:
     environment:
       JWT_SECRET: not_so_secret
       AMQP_HOST: amqp
-      DB_HOST: feeds-ms-postgres
-      DB_USER: postgres
-      DB_PASS: super_secret
-      DB_NAME: feeds
+      DATABASE_URL: postgres://postgres:super_secret@feeds-ms-postgres/feeds
       ADMIN_USER: root
       ADMIN_PASSWORD: keep_this_secret
     ports:

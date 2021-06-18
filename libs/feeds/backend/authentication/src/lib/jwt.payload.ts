@@ -1,4 +1,4 @@
-import { User } from '@plusone/feeds/backend/database'
+import { User } from '@plusone/feeds/backend/persistence'
 
 export type JwtPayload = {
   username: User['username']

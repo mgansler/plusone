@@ -1,20 +1,33 @@
-import { Injectable } from '@nestjs/common'
-import { Repository } from 'typeorm'
+import { Injectable, Logger } from '@nestjs/common'
 import { Item } from 'rss-parser'
-import { InjectRepository } from '@nestjs/typeorm'
 
-import { Article } from '@plusone/feeds/backend/database'
+import { Feed, PrismaService } from '@plusone/feeds/backend/persistence'
 
 @Injectable()
 export class ArticleService {
-  constructor(@InjectRepository(Article) private articleRepository: Repository<Article>) {}
+  private logger = new Logger(ArticleService.name)
 
-  async create(article: Item): Promise<Article | undefined> {
-    if (await this.articleRepository.findOne({ where: { guid: article.guid } })) {
+  constructor(private prismaService: PrismaService) {}
+
+  async create(article: Item, feed: Feed) {
+    if (!article.guid) {
+      this.logger.warn(`Could not store article for ${feed.title} as guid is undefined`)
       return
     }
 
-    const createdArticle = this.articleRepository.create({ ...article, contentBody: article['content:encoded'] })
-    return this.articleRepository.save(createdArticle)
+    if (
+      await this.prismaService.article.findUnique({ where: { guid_feedId: { guid: article.guid, feedId: feed.id } } })
+    ) {
+      return
+    }
+
+    return this.prismaService.article.create({
+      data: {
+        ...article,
+        guid: article.guid,
+        contentBody: article['content:encoded'],
+        feed: { connect: feed },
+      },
+    })
   }
 }

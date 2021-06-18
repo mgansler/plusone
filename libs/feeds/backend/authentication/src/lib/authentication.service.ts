@@ -1,10 +1,8 @@
 import { HttpException, HttpStatus, Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { compare, hash } from 'bcrypt'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
 
-import { User } from '@plusone/feeds/backend/database'
+import { Prisma, PrismaService, User } from '@plusone/feeds/backend/persistence'
 
 import { JwtPayload } from './jwt.payload'
 import { UserRegisterDto } from './user-register-dto'
@@ -13,17 +11,14 @@ import { UserRegisterDto } from './user-register-dto'
 export class AuthenticationService implements OnModuleInit {
   private logger = new Logger(AuthenticationService.name)
 
-  constructor(@InjectRepository(User) private userRepository: Repository<User>, private jwtService: JwtService) {}
+  constructor(private prismaService: PrismaService, private jwtService: JwtService) {}
 
   async onModuleInit(): Promise<void> {
     await this.createRootUser()
   }
 
   async validateUser(username: string, password: string): Promise<Omit<User, 'password'> | null> {
-    const user = await this.userRepository.findOne({
-      select: ['username', 'password', 'email', 'isAdmin'],
-      where: { username },
-    })
+    const user = await this.prismaService.user.findUnique({ where: { username } })
     if (user && (await compare(password, user.password))) {
       user.password = undefined
       return user
@@ -41,17 +36,20 @@ export class AuthenticationService implements OnModuleInit {
 
   async register(userRegisterDto: UserRegisterDto): Promise<Omit<User, 'password'>> {
     try {
-      const createdUser = await this.userRepository.create({
-        ...userRegisterDto,
-        password: await hash(userRegisterDto.password, 10),
+      const user = await this.prismaService.user.create({
+        data: {
+          ...userRegisterDto,
+          password: await hash(userRegisterDto.password, 10),
+        },
+        select: { username: true, email: true, id: true, password: false, isAdmin: true },
       })
-      const user = await this.userRepository.save(createdUser)
-      user.password = undefined
       return user
     } catch (e) {
-      if (e.code === 11000) {
-        this.logger.warn(`Registration failed, user with username '${userRegisterDto.username}' already exists.`)
-        throw new HttpException(`User '${userRegisterDto.username}' already exists`, HttpStatus.CONFLICT)
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          this.logger.warn(`Registration failed, user with username '${userRegisterDto.username}' already exists.`)
+          throw new HttpException(`User '${userRegisterDto.username}' already exists`, HttpStatus.CONFLICT)
+        }
       }
       this.logger.error(e)
       throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR)
@@ -59,16 +57,20 @@ export class AuthenticationService implements OnModuleInit {
   }
 
   private async createRootUser() {
-    const rootUsername = process.env.ADMIN_USER
-    const rootPassword = process.env.ADMIN_PASSWORD
-    if (!(await this.userRepository.findOne({ where: { username: rootUsername } }))) {
-      this.logger.log(`Admin user does not exist, creating account '${rootUsername}'`)
-      const rootUser = await this.userRepository.create({
-        username: rootUsername,
-        password: await hash(rootPassword, 10),
-        isAdmin: true,
+    const username = process.env.ADMIN_USER
+    const password = process.env.ADMIN_PASSWORD
+
+    if (!(await this.prismaService.user.findUnique({ where: { username } }))) {
+      this.logger.log(`Admin user does not exist, creating account '${username}'`)
+      await this.prismaService.user.create({
+        data: {
+          username,
+          password: await hash(password, 10),
+          isAdmin: true,
+        },
       })
-      await this.userRepository.save(rootUser)
+    } else {
+      this.logger.log('Admin user already exists, skipping creation.')
     }
   }
 }
