@@ -1,5 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn run nx format --base HEAD
-yarn run nx format --files workspace.json,nx.json,tsconfig.base.json,jest.config.js
+yarn ts-node ./tools/scripts/format-staged-files.ts
