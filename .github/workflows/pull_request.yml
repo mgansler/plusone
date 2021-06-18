@@ -88,6 +88,9 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Generate code
+        run: yarn nx run-many --target=generate --all
+
       - name: Test
         run: yarn nx run ${{ matrix.project }}:test
 
@@ -112,6 +115,9 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
+
+      - name: Generate code
+        run: yarn nx run-many --target=generate --all
 
       - name: Build
         run: yarn nx run ${{ matrix.project }}:build

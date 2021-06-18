@@ -42,5 +42,8 @@ jobs:
             node_modules/
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Generate code
+        run: yarn nx run-many --target=generate --all
+
       - name: ${{ matrix.target }}
         run: yarn nx run-many --target=${{ matrix.target }} --all
