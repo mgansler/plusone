@@ -24,79 +24,22 @@
     }
   },
   "projects": {
-    "github-pipeline-status": {
+    "components": {
       "tags": []
-    },
-    "github-pipeline-status-e2e": {
-      "tags": [],
-      "implicitDependencies": ["github-pipeline-status"]
-    },
-    "dom-utils": {
-      "tags": []
-    },
-    "github-schema": {
-      "tags": []
-    },
-    "hooks": {
-      "tags": []
-    },
-    "quick-zoom": {
-      "tags": []
-    },
-    "quick-zoom-e2e": {
-      "tags": [],
-      "implicitDependencies": ["quick-zoom"]
     },
     "conference-links": {
       "tags": []
     },
-    "github-hooks": {
-      "tags": []
-    },
-    "feeds-frontend": {
-      "tags": []
-    },
-    "feeds-e2e": {
-      "tags": [],
-      "implicitDependencies": ["feeds-frontend", "feeds-spring-backend"]
-    },
-    "feeds-schema": {
-      "tags": []
-    },
-    "components": {
-      "tags": []
-    },
-    "feeds-core": {
-      "tags": []
-    },
-    "feeds-fetch-ms": {
-      "tags": []
-    },
-    "feeds-discover-ms": {
-      "tags": []
-    },
-    "suite": {
-      "tags": [],
-      "implicitDependencies": ["dinner-plan"]
-    },
-    "suite-e2e": {
-      "tags": [],
-      "implicitDependencies": ["suite"]
-    },
-    "dinner-plan": {
+    "dark-mode-theme-provider": {
       "tags": []
     },
     "date-utils": {
       "tags": []
     },
-    "feeds-web": {
+    "dinner-plan": {
       "tags": []
     },
-    "feeds-web-e2e": {
-      "tags": [],
-      "implicitDependencies": ["feeds-web", "feeds-core", "feeds-discover-ms", "feeds-fetch-ms"]
-    },
-    "feeds-backend-fetch": {
+    "dom-utils": {
       "tags": []
     },
     "feeds-backend-article": {
@@ -111,26 +54,83 @@
     "feeds-backend-discover": {
       "tags": []
     },
+    "feeds-backend-feed": {
+      "tags": []
+    },
+    "feeds-backend-fetch": {
+      "tags": []
+    },
     "feeds-backend-user": {
       "tags": []
     },
-    "feeds-backend-feed": {
+    "feeds-core": {
+      "tags": []
+    },
+    "feeds-discover-ms": {
+      "tags": []
+    },
+    "feeds-e2e": {
+      "tags": [],
+      "implicitDependencies": ["feeds-frontend", "feeds-spring-backend"]
+    },
+    "feeds-fetch-ms": {
+      "tags": []
+    },
+    "feeds-frontend": {
+      "tags": []
+    },
+    "feeds-schema": {
       "tags": []
     },
     "feeds-spring-backend": {
       "tags": []
     },
-    "feeds-web-login": {
+    "feeds-web": {
       "tags": []
     },
     "feeds-web-admin-view": {
       "tags": []
     },
+    "feeds-web-e2e": {
+      "tags": [],
+      "implicitDependencies": ["feeds-web", "feeds-core", "feeds-discover-ms", "feeds-fetch-ms"]
+    },
+    "feeds-web-login": {
+      "tags": []
+    },
     "feeds-web-user-view": {
       "tags": []
     },
-    "dark-mode-theme-provider": {
+    "github-hooks": {
       "tags": []
+    },
+    "github-pipeline-status": {
+      "tags": []
+    },
+    "github-pipeline-status-e2e": {
+      "tags": [],
+      "implicitDependencies": ["github-pipeline-status"]
+    },
+    "github-schema": {
+      "tags": []
+    },
+    "hooks": {
+      "tags": []
+    },
+    "quick-zoom": {
+      "tags": []
+    },
+    "quick-zoom-e2e": {
+      "tags": [],
+      "implicitDependencies": ["quick-zoom"]
+    },
+    "suite": {
+      "tags": [],
+      "implicitDependencies": ["dinner-plan"]
+    },
+    "suite-e2e": {
+      "tags": [],
+      "implicitDependencies": ["suite"]
     }
   }
 }
