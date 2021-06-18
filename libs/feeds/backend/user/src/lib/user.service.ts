@@ -1,16 +1,20 @@
-import { Injectable, Logger } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Injectable } from '@nestjs/common'
 
-import { User } from '@plusone/feeds/backend/database'
+import { PrismaService } from '@plusone/feeds/backend/persistence'
 
 @Injectable()
 export class UserService {
-  private readonly logger = new Logger(UserService.name)
-
-  constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
+  constructor(private prismaService: PrismaService) {}
 
   async getAll() {
-    return await this.userRepository.find()
+    return this.prismaService.user.findMany({
+      select: {
+        id: true,
+        password: false,
+        username: true,
+        isAdmin: true,
+        email: true,
+      },
+    })
   }
 }

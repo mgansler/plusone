@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'feeds-backend-database',
+  displayName: 'feeds-backend-persistence',
   preset: '../../../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../../coverage/libs/feeds/backend/database',
+  coverageDirectory: '../../../../coverage/libs/feeds/backend/persistence',
 }

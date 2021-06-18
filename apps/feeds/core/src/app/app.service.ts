@@ -17,6 +17,7 @@ import {
 } from '@plusone/feeds/backend/discover'
 import { ArticleService } from '@plusone/feeds/backend/article'
 import { FeedService } from '@plusone/feeds/backend/feed'
+import { Feed } from '@plusone/feeds/backend/persistence'
 
 import { AddWebsiteDto } from '../dto/add-website.dto'
 
@@ -51,20 +52,20 @@ export class AppService {
         this.fetchClient
           .send<UpdateFeedResponse, UpdateFeedRequest>(FETCH_MESSAGE_PATTERN, feed.feedUrl)
           .toPromise()
-          .then((articles) => this.saveNewArticles(articles, feed.title))
+          .then((articles) => this.saveNewArticles(articles, feed))
           .catch(() => this.logger.error(`Failed to fetch articles for ${feed.title} (${feed.feedUrl})`))
       })
     })
   }
 
-  private async saveNewArticles(articles: Item[], title: string): Promise<number> {
+  private async saveNewArticles(articles: Item[], feed: Feed): Promise<number> {
     let newArticleCount = 0
     for (const article of articles) {
-      if (await this.articleService.create(article)) {
+      if (await this.articleService.create(article, feed)) {
         newArticleCount++
       }
     }
-    this.logger.log(`Got ${newArticleCount} new articles for ${title}`)
+    this.logger.log(`Got ${newArticleCount} new articles for ${feed.title}`)
     return newArticleCount
   }
 }

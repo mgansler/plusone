@@ -11,7 +11,7 @@ import { ArticleModule } from '@plusone/feeds/backend/article'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 
-describe('AppController', () => {
+describe.skip('AppController', () => {
   jest.setTimeout(60_000)
   let app: TestingModule
   let postgresContainer: StartedTestContainer
@@ -25,11 +25,9 @@ describe('AppController', () => {
       .withWaitStrategy(Wait.forLogMessage(/listening on IPv4 address/))
       .start()
 
-    process.env.DB_HOST = postgresContainer.getHost()
-    process.env.DB_PORT = postgresContainer.getMappedPort(5432).toString()
-    process.env.DB_USER = 'postgres'
-    process.env.DB_PASS = 'postgres'
-    process.env.DB_NAME = 'feeds'
+    process.env.DATABASE_URL = `postgres://postgres:postgres@${postgresContainer.getHost()}:${postgresContainer.getMappedPort(
+      5432,
+    )}/feeds`
 
     ampqContainer = await new GenericContainer('rabbitmq:3')
       .withExposedPorts(5672)

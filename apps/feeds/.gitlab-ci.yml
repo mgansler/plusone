@@ -45,6 +45,7 @@ feeds:build:
           - fetch-ms
           - web
   script:
+    - yarn prisma generate --schema libs/feeds/backend/persistence/src/lib/schema.prisma
     - yarn nx run feeds-${FEEDS_APP}:build:production
   artifacts:
     paths:
