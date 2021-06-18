@@ -1,0 +1,13 @@
+{
+  "cli": "nx",
+  "id": "typeorm",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "description": "Path to Prisma schema in src directory.",
+      "type": "string",
+      "default": "lib/schema.prisma"
+    }
+  },
+  "required": ["schema"]
+}

@@ -259,6 +259,9 @@
       "sourceRoot": "libs/feeds/backend/persistence/src",
       "projectType": "library",
       "targets": {
+        "generate": {
+          "executor": "./tools/executors:prisma-generate"
+        },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
@@ -345,7 +348,8 @@
         "serve": {
           "executor": "@nrwl/node:execute",
           "options": {
-            "buildTarget": "feeds-core:build"
+            "buildTarget": "feeds-core:build",
+            "waitUntilTargets": ["feeds-backend-persistence:generate"]
           }
         },
         "lint": {
