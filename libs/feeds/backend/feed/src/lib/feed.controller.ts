@@ -1,9 +1,12 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common'
+
+import { JwtAuthGuard } from '@plusone/feeds/backend/authentication'
 
 import { FeedService } from './feed.service'
 import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
 
 @Controller('feed')
+@UseGuards(JwtAuthGuard)
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
