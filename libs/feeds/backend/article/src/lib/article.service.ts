@@ -10,8 +10,8 @@ export class ArticleService {
   constructor(private prismaService: PrismaService) {}
 
   async create(article: Item, feed: Feed) {
-    if (!article.guid) {
-      this.logger.warn(`Could not store article for ${feed.title} as guid is undefined`)
+    if (!article.guid || typeof article.guid !== 'string') {
+      this.logger.warn(`Could not store article for ${feed.title} as guid is not a string`)
       return
     }
 
@@ -23,10 +23,12 @@ export class ArticleService {
 
     return this.prismaService.article.create({
       data: {
-        ...article,
-        guid: article.guid,
+        content: article.content,
         contentBody: article['content:encoded'],
-        feed: { connect: feed },
+        feed: { connect: { id: feed.id } },
+        guid: article.guid,
+        link: article.link,
+        title: article.title,
       },
     })
   }
