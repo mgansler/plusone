@@ -21,6 +21,7 @@ module.exports = {
     '<rootDir>/libs/feeds/backend/feed',
     '<rootDir>/libs/feeds/backend/fetch',
     '<rootDir>/libs/feeds/backend/persistence',
+    '<rootDir>/libs/feeds/backend/scheduling',
     '<rootDir>/libs/feeds/backend/user',
     '<rootDir>/libs/feeds/web/admin-view',
     '<rootDir>/libs/feeds/web/login',
@@ -28,6 +29,5 @@ module.exports = {
     '<rootDir>/libs/github-hooks',
     '<rootDir>/libs/github-schema',
     '<rootDir>/libs/hooks',
-    '<rootDir>/libs/feeds/backend/scheduling',
   ],
 }
