@@ -9,7 +9,6 @@ import { AuthenticationModule } from '@plusone/feeds/backend/authentication'
 import { FeedModule } from '@plusone/feeds/backend/feed'
 import { UserModule } from '@plusone/feeds/backend/user'
 
-import { AppController } from './app.controller'
 import { AppService } from './app.service'
 
 @Module({
@@ -21,7 +20,6 @@ import { AppService } from './app.service'
     FeedModule,
     UserModule,
   ],
-  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

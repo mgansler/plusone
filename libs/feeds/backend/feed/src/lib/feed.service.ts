@@ -1,14 +1,36 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
+import { ClientProxy } from '@nestjs/microservices'
 
 import { Feed, PrismaService } from '@plusone/feeds/backend/persistence'
+import {
+  DISCOVER_MESSAGE_PATTERN,
+  DISCOVER_SERVICE,
+  DiscoverFeedRequest,
+  DiscoverFeedResponse,
+} from '@plusone/feeds/backend/discover'
 
-import { FeedDto } from './feed.dto'
+import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
 
 @Injectable()
 export class FeedService {
-  constructor(private prismaService: PrismaService) {}
+  private logger = new Logger(FeedService.name)
 
-  async create(feedDto: FeedDto): Promise<Feed> {
+  constructor(private prismaService: PrismaService, @Inject(DISCOVER_SERVICE) private discoverClient: ClientProxy) {}
+
+  async discover(feedDiscoverDto: FeedDiscoverDto) {
+    const discoveredFeed = await this.discoverClient
+      .send<DiscoverFeedResponse, DiscoverFeedRequest>(DISCOVER_MESSAGE_PATTERN, feedDiscoverDto.feedUrl)
+      .toPromise()
+
+    if (!discoveredFeed) {
+      this.logger.log(`Could not discover feed for given URL: ${feedDiscoverDto.feedUrl}`)
+      throw new HttpException('Could not find a feed', HttpStatus.NOT_FOUND)
+    }
+
+    return { title: discoveredFeed.title, feedUrl: discoveredFeed.feedUrl }
+  }
+
+  async create(feedDto: FeedInputDto): Promise<Feed> {
     return this.prismaService.feed.create({ data: feedDto })
   }
 
