@@ -278,6 +278,27 @@
         }
       }
     },
+    "feeds-backend-scheduling": {
+      "root": "libs/feeds/backend/scheduling",
+      "sourceRoot": "libs/feeds/backend/scheduling/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/feeds/backend/scheduling/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/feeds/backend/scheduling"],
+          "options": {
+            "jestConfig": "libs/feeds/backend/scheduling/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "feeds-backend-user": {
       "root": "libs/feeds/backend/user",
       "sourceRoot": "libs/feeds/backend/user/src",
