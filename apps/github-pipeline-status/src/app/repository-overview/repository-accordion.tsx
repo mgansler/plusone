@@ -11,10 +11,11 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core'
-import { Check, Error, ExpandMore, OpenInNew } from '@material-ui/icons'
+import { Check, Error, ExpandMore, FindReplace, MergeType, OpenInNew } from '@material-ui/icons'
 import { Skeleton } from '@material-ui/lab'
 
 import {
+  AutoMergeRequest,
   CheckConclusionState,
   Commit,
   MergeableState,
@@ -95,7 +96,7 @@ const useStyles = makeStyles((theme) =>
   }),
 )
 
-const CheckConclusionIconMap: Record<CheckConclusionState, JSX.Element> = {
+const CheckConclusionIconMap: Record<CheckConclusionState | 'RUNNING', JSX.Element> = {
   ACTION_REQUIRED: undefined,
   CANCELLED: undefined,
   FAILURE: (
@@ -113,6 +114,11 @@ const CheckConclusionIconMap: Record<CheckConclusionState, JSX.Element> = {
     </Tooltip>
   ),
   TIMED_OUT: undefined,
+  RUNNING: (
+    <Tooltip title={'Pipeline running'}>
+      <FindReplace />
+    </Tooltip>
+  ),
 }
 
 const ReviewStateIconMap: Record<PullRequestReviewState, JSX.Element> = {
@@ -150,9 +156,10 @@ interface CanBeMergedProps {
   className: HTMLDivElement['className']
   commits: PullRequestCommit[]
   mergeable: MergeableState
+  autoMergeRequest: AutoMergeRequest
 }
 
-function CanBeMerged({ className, commits, mergeable }: CanBeMergedProps) {
+function CanBeMerged({ className, commits, mergeable, autoMergeRequest }: CanBeMergedProps) {
   const prCheckState = commits
     .flatMap((node) => node.commit.checkSuites.nodes)
     .flatMap((node) => node.conclusion)
@@ -168,7 +175,8 @@ function CanBeMerged({ className, commits, mergeable }: CanBeMergedProps) {
   ) : (
     <div className={className}>
       <Typography variant={'caption'}>Workflows</Typography>
-      {CheckConclusionIconMap[prCheckState]}
+      {CheckConclusionIconMap[prCheckState ?? 'RUNNING']}
+      {autoMergeRequest !== null ? <Tooltip title={'Auto merge enabled'} children={<MergeType />} /> : null}
     </div>
   )
 }
@@ -190,7 +198,7 @@ function DefaultBranchState({ className, defaultBranchRef }: DefaultBranchStateP
   return (
     <div className={className}>
       <Typography>{defaultBranchRef.name}</Typography>
-      {CheckConclusionIconMap[defaultBranchCheckConclusion]}
+      {CheckConclusionIconMap[defaultBranchCheckConclusion ?? 'RUNNING']}
     </div>
   )
 }
@@ -309,7 +317,12 @@ export function RepositoryAccordion({
                 </Typography>
               </Tooltip>
 
-              <CanBeMerged className={classNames.workflowColumn} commits={pr.commits.nodes} mergeable={pr.mergeable} />
+              <CanBeMerged
+                className={classNames.workflowColumn}
+                commits={pr.commits.nodes}
+                mergeable={pr.mergeable}
+                autoMergeRequest={pr.autoMergeRequest}
+              />
 
               <div className={classNames.pullRequestsOrReviewsColumn}>
                 {Object.entries(lastReviewStatePerAuthor).map(([login, state]) => (

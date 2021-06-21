@@ -103,6 +103,9 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
                 nodes {
                   isDraft
                   mergeable
+                  autoMergeRequest {
+                    mergeMethod
+                  }
                   number
                   title
                   author {
