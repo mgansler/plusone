@@ -4,6 +4,10 @@
       "implementation": "./graphql-schema/graphql-schema.impl",
       "schema": "./graphql-schema/schema.json"
     },
+    "prisma-format": {
+      "implementation": "./prisma/format.impl",
+      "schema": "./prisma/format.json"
+    },
     "prisma-generate": {
       "implementation": "./prisma/generate.impl",
       "schema": "./prisma/generate.json"

@@ -259,6 +259,9 @@
       "sourceRoot": "libs/feeds/backend/persistence/src",
       "projectType": "library",
       "targets": {
+        "format": {
+          "executor": "./tools/executors:prisma-format"
+        },
         "generate": {
           "executor": "./tools/executors:prisma-generate"
         },
