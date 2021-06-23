@@ -23,9 +23,9 @@ export class SchedulingService {
     private readonly articleService: ArticleService,
   ) {}
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  @Cron(CronExpression.EVERY_30_MINUTES)
   handleCron() {
-    this.feedService.findAll().then((feeds) => {
+    this.feedService.findAll({ username: 'SYSTEM', isAdmin: true, roles: ['admin'] }).then((feeds) => {
       feeds.forEach((feed) => {
         this.logger.log(`Requesting update of ${feed.title}`)
         this.fetchClient

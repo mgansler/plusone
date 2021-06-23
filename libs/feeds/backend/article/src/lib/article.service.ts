@@ -21,14 +21,17 @@ export class ArticleService {
       return
     }
 
+    const feedSubscribers = await this.prismaService.user.findMany({ where: { feeds: { some: { id: feed.id } } } })
+
     return this.prismaService.article.create({
       data: {
         content: article.content,
         contentBody: article['content:encoded'],
-        feed: { connect: { id: feed.id } },
+        feedId: feed.id,
         guid: article.guid,
         link: article.link,
         title: article.title,
+        UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })) } },
       },
     })
   }

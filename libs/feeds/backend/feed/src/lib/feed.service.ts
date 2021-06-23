@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 
+import { JwtPayload } from '@plusone/feeds/backend/authentication'
 import { Feed, PrismaService } from '@plusone/feeds/backend/persistence'
 import {
   DISCOVER_MESSAGE_PATTERN,
@@ -30,11 +31,22 @@ export class FeedService {
     return { title: discoveredFeed.title, feedUrl: discoveredFeed.feedUrl }
   }
 
-  async create(feedDto: FeedInputDto): Promise<Feed> {
-    return this.prismaService.feed.create({ data: feedDto })
+  async create(feedDto: FeedInputDto, username: string): Promise<Feed> {
+    if (await this.prismaService.feed.findUnique({ where: { feedUrl: feedDto.feedUrl } })) {
+      return this.prismaService.feed.update({
+        data: { user: { connect: { username } } },
+        where: { feedUrl: feedDto.feedUrl },
+      })
+    } else {
+      return this.prismaService.feed.create({ data: { ...feedDto, user: { connect: { username } } } })
+    }
   }
 
-  async findAll() {
-    return this.prismaService.feed.findMany()
+  async findAll(user: JwtPayload) {
+    if (user.isAdmin) {
+      return this.prismaService.feed.findMany()
+    } else {
+      return this.prismaService.feed.findMany({ where: { user: { every: { username: user.username } } } })
+    }
   }
 }
