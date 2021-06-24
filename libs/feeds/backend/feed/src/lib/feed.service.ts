@@ -31,23 +31,30 @@ export class FeedService {
     return { title: discoveredFeed.title, feedUrl: discoveredFeed.feedUrl }
   }
 
-  async create(feedDto: FeedInputDto, username: string): Promise<Feed> {
-    const { title: originalTitle } = await this.discover({ url: feedDto.url })
+  async create(feedInputDto: FeedInputDto, username: string): Promise<Feed> {
+    const { title: originalTitle } = await this.discover({ url: feedInputDto.url })
 
     try {
       return await this.prismaService.feed.upsert({
-        where: { feedUrl: feedDto.feedUrl },
-        update: { UserFeed: { create: { user: { connect: { username } }, title: feedDto.title } } },
+        where: { feedUrl: feedInputDto.feedUrl },
+        update: {
+          UserFeed: {
+            create: {
+              user: { connect: { username } },
+              title: feedInputDto.title ?? originalTitle,
+            },
+          },
+        },
         create: {
-          feedUrl: feedDto.feedUrl,
+          feedUrl: feedInputDto.feedUrl,
           originalTitle,
-          UserFeed: { create: { user: { connect: { username } }, title: feedDto.title } },
+          UserFeed: { create: { user: { connect: { username } }, title: feedInputDto.title ?? originalTitle } },
         },
       })
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
-          this.logger.warn(`User is already subscribed to feed: ${feedDto.title}`)
+          this.logger.warn(`User is already subscribed to feed: ${feedInputDto.title}`)
           throw new HttpException('You are already subscribed to this feed', HttpStatus.CONFLICT)
         }
         this.logger.error(e)

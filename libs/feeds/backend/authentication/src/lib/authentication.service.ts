@@ -5,7 +5,7 @@ import { compare, hash } from 'bcrypt'
 import { Prisma, PrismaService, User } from '@plusone/feeds/backend/persistence'
 
 import { JwtPayload } from './jwt.payload'
-import { UserRegisterDto } from './user-register-dto'
+import { UserRegistrationDto } from './user.dto'
 
 @Injectable()
 export class AuthenticationService implements OnModuleInit {
@@ -34,20 +34,20 @@ export class AuthenticationService implements OnModuleInit {
     }
   }
 
-  async register(userRegisterDto: UserRegisterDto): Promise<Omit<User, 'password'>> {
+  async register(userRegistrationDto: UserRegistrationDto): Promise<Omit<User, 'password'>> {
     try {
       return await this.prismaService.user.create({
         data: {
-          ...userRegisterDto,
-          password: await hash(userRegisterDto.password, 10),
+          ...userRegistrationDto,
+          password: await hash(userRegistrationDto.password, 10),
         },
         select: { username: true, email: true, id: true, password: false, isAdmin: true },
       })
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
-          this.logger.warn(`Registration failed, user with username '${userRegisterDto.username}' already exists.`)
-          throw new HttpException(`User '${userRegisterDto.username}' already exists`, HttpStatus.CONFLICT)
+          this.logger.warn(`Registration failed, user with username '${userRegistrationDto.username}' already exists.`)
+          throw new HttpException(`User '${userRegistrationDto.username}' already exists`, HttpStatus.CONFLICT)
         }
       }
       this.logger.error(e)
