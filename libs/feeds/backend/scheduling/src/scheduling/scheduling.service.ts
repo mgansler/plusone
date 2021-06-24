@@ -24,7 +24,7 @@ export class SchedulingService {
     private readonly articleService: ArticleService,
   ) {}
 
-  @Cron(CronExpression.EVERY_30_MINUTES)
+  @Cron(CronExpression.EVERY_10_MINUTES)
   handleCron() {
     this.feedService.findAllFor(SystemUser).then((feeds) => {
       feeds.forEach((feed) => {
@@ -44,6 +44,7 @@ export class SchedulingService {
     let newArticleCount = 0
     for (const article of articles) {
       try {
+        // TODO: create many?
         if (await this.articleService.create(article, feed)) {
           newArticleCount++
         }

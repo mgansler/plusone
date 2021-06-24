@@ -15,6 +15,7 @@ export class ArticleService {
       return
     }
 
+    // TODO: upsert?
     if (
       await this.prismaService.article.findUnique({ where: { guid_feedId: { guid: article.guid, feedId: feed.id } } })
     ) {
@@ -35,6 +36,13 @@ export class ArticleService {
         title: article.title,
         UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })) } },
       },
+    })
+  }
+
+  async getForUserAndFeed(username: string, feedId: Feed['id'], includeRead: boolean) {
+    return this.prismaService.userArticle.findMany({
+      select: { article: true, unread: true },
+      where: { user: { username }, article: { feedId }, unread: includeRead ? undefined : true },
     })
   }
 }
