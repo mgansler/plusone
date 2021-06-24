@@ -191,27 +191,6 @@
         }
       }
     },
-    "feeds-backend-discover": {
-      "root": "libs/feeds/backend/discover",
-      "sourceRoot": "libs/feeds/backend/discover/src",
-      "projectType": "library",
-      "targets": {
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/feeds/backend/discover/**/*.ts"]
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/feeds/backend/discover"],
-          "options": {
-            "jestConfig": "libs/feeds/backend/discover/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "feeds-backend-feed": {
       "root": "libs/feeds/backend/feed",
       "sourceRoot": "libs/feeds/backend/feed/src",
@@ -228,27 +207,6 @@
           "outputs": ["coverage/libs/feeds/backend/feed"],
           "options": {
             "jestConfig": "libs/feeds/backend/feed/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "feeds-backend-fetch": {
-      "root": "libs/feeds/backend/fetch",
-      "sourceRoot": "libs/feeds/backend/fetch/src",
-      "projectType": "library",
-      "targets": {
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/feeds/backend/fetch/**/*.ts"]
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/feeds/backend/fetch"],
-          "options": {
-            "jestConfig": "libs/feeds/backend/fetch/jest.config.js",
             "passWithNoTests": true
           }
         }
@@ -593,6 +551,48 @@
         }
       }
     },
+    "feeds-microservice-discover": {
+      "root": "libs/feeds/microservice/discover",
+      "sourceRoot": "libs/feeds/microservice/discover/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/feeds/microservice/discover/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/feeds/microservice/discover"],
+          "options": {
+            "jestConfig": "libs/feeds/microservice/discover/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "feeds-microservice-fetch": {
+      "root": "libs/feeds/microservice/fetch",
+      "sourceRoot": "libs/feeds/microservice/fetch/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/feeds/microservice/fetch/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/feeds/microservice/fetch"],
+          "options": {
+            "jestConfig": "libs/feeds/microservice/fetch/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "feeds-schema": {
       "root": "libs/feeds-schema",
       "sourceRoot": "libs/feeds-schema/src",
@@ -601,6 +601,27 @@
         "graphql-schema": {
           "executor": "./tools/executors:graphql-schema",
           "options": {}
+        }
+      }
+    },
+    "feeds-shared-constants": {
+      "root": "libs/feeds/shared/constants",
+      "sourceRoot": "libs/feeds/shared/constants/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/feeds/shared/constants/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/feeds/shared/constants"],
+          "options": {
+            "jestConfig": "libs/feeds/shared/constants/jest.config.js",
+            "passWithNoTests": true
+          }
         }
       }
     },

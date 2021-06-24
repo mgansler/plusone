@@ -1,9 +1,10 @@
-import { Transport } from '@nestjs/microservices'
 import { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface'
+import { Transport } from '@nestjs/microservices'
 
-import { DISCOVER_SERVICE } from './discover.constants'
+export const DISCOVER_SERVICE = 'DISCOVER_SERVICE'
+export const DISCOVER_MESSAGE_PATTERN = 'discover'
 
-export const discoverOptions: RmqOptions & { name: string } = {
+export const DISCOVER_OPTIONS: RmqOptions & { name: string } = {
   name: DISCOVER_SERVICE,
   transport: Transport.RMQ,
   options: {

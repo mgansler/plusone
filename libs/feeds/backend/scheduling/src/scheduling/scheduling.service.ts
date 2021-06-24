@@ -3,16 +3,12 @@ import { ClientProxy } from '@nestjs/microservices'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { Item } from 'rss-parser'
 
-import {
-  FETCH_MESSAGE_PATTERN,
-  FETCH_SERVICE,
-  UpdateFeedRequest,
-  UpdateFeedResponse,
-} from '@plusone/feeds/backend/fetch'
 import { FeedService } from '@plusone/feeds/backend/feed'
 import { ArticleService } from '@plusone/feeds/backend/article'
 import { Feed, Prisma } from '@plusone/feeds/backend/persistence'
 import { SystemUser } from '@plusone/feeds/backend/authentication'
+import { FETCH_MESSAGE_PATTERN, FETCH_SERVICE } from '@plusone/feeds/shared/constants'
+import { UpdateFeedRequest, UpdateFeedResponse } from '@plusone/feeds/shared/types'
 
 @Injectable()
 export class SchedulingService {

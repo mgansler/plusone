@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import * as Parser from 'rss-parser'
 
-import { UpdateFeedRequest } from './fetch.types'
+import { UpdateFeedRequest } from '@plusone/feeds/shared/types'
 
 @Injectable()
 export class FetchService {

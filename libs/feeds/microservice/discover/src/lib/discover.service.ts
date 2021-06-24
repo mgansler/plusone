@@ -1,9 +1,8 @@
 import { HttpService, Injectable, Logger } from '@nestjs/common'
 import * as cheerio from 'cheerio'
 import * as Parser from 'rss-parser'
-import { Output } from 'rss-parser'
 
-import { DiscoverFeedRequest } from './discover.types'
+import { DiscoverFeedRequest } from '@plusone/feeds/shared/types'
 
 @Injectable()
 export class DiscoverService {
@@ -12,7 +11,7 @@ export class DiscoverService {
 
   constructor(private readonly httpService: HttpService) {}
 
-  async discoverFeedForWebsite(requestedUri: DiscoverFeedRequest): Promise<Output<unknown> | null> {
+  async discoverFeedForWebsite(requestedUri: DiscoverFeedRequest): Promise<Parser.Output<unknown> | null> {
     this.logger.log('Starting feed discovery for: ' + requestedUri)
 
     try {
@@ -20,7 +19,6 @@ export class DiscoverService {
       const $ = cheerio.load(website.data)
 
       const linkElements = $("link[type*='rss']").get()
-      console.log(linkElements)
       for (const el of linkElements) {
         const href = el.attribs['href']
         const feed = await this.parser.parseURL(href)

@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'feeds-backend-fetch',
+  displayName: 'feeds-microservice-discover',
   preset: '../../../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../../coverage/libs/feeds/backend/fetch',
+  coverageDirectory: '../../../../coverage/libs/feeds/microservice/discover',
 }

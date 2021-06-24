@@ -6,10 +6,11 @@
 import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 
-import { DiscoverModule, discoverOptions } from '@plusone/feeds/backend/discover'
+import { DiscoverModule } from '@plusone/feeds/microservice/discover'
+import { DISCOVER_OPTIONS } from '@plusone/feeds/shared/constants'
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice(DiscoverModule, discoverOptions)
+  const app = await NestFactory.createMicroservice(DiscoverModule, DISCOVER_OPTIONS)
 
   await app.listen(() => Logger.log('Discovery Microservice is listening'))
 }

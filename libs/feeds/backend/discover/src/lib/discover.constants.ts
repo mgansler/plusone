@@ -1,2 +1,0 @@
-export const DISCOVER_SERVICE = 'DISCOVER_SERVICE'
-export const DISCOVER_MESSAGE_PATTERN = 'discover'

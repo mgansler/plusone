@@ -31,5 +31,6 @@ module.exports = {
     '<rootDir>/libs/hooks',
     '<rootDir>/libs/feeds/web/shared',
     '<rootDir>/libs/feeds/shared/types',
+    '<rootDir>/libs/feeds/shared/constants',
   ],
 }

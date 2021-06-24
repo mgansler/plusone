@@ -1,8 +1,9 @@
 import { Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 
-import { DiscoverFeedRequest, DiscoverFeedResponse } from './discover.types'
-import { DISCOVER_MESSAGE_PATTERN } from './discover.constants'
+import { DiscoverFeedRequest, DiscoverFeedResponse } from '@plusone/feeds/shared/types'
+import { DISCOVER_MESSAGE_PATTERN } from '@plusone/feeds/shared/constants'
+
 import { DiscoverService } from './discover.service'
 
 @Controller()
