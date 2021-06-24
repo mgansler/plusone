@@ -24,11 +24,11 @@ model Article {
 }
 
 model Feed {
-  id       String    @id @default(uuid()) @db.Uuid
-  title    String
-  feedUrl  String    @unique
-  articles Article[]
-  user     User[]
+  id            String     @id @default(uuid()) @db.Uuid
+  originalTitle String
+  feedUrl       String     @unique
+  articles      Article[]
+  UserFeed      UserFeed[]
 }
 
 model User {
@@ -37,7 +37,7 @@ model User {
   password    String
   email       String?
   isAdmin     Boolean       @default(false)
-  feeds       Feed[]
+  UserFeed    UserFeed[]
   UserArticle UserArticle[]
 }
 
@@ -49,4 +49,14 @@ model UserArticle {
   unread    Boolean @default(true)
 
   @@unique([userId, articleId])
+}
+
+model UserFeed {
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.Uuid
+  feed   Feed   @relation(fields: [feedId], references: [id])
+  feedId String @db.Uuid
+  title  String
+
+  @@unique([userId, feedId])
 }

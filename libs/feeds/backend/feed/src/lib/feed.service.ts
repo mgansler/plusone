@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/c
 import { ClientProxy } from '@nestjs/microservices'
 
 import { JwtPayload } from '@plusone/feeds/backend/authentication'
-import { Feed, PrismaService } from '@plusone/feeds/backend/persistence'
+import { Feed, Prisma, PrismaService } from '@plusone/feeds/backend/persistence'
 import {
   DISCOVER_MESSAGE_PATTERN,
   DISCOVER_SERVICE,
@@ -20,11 +20,11 @@ export class FeedService {
 
   async discover(feedDiscoverDto: FeedDiscoverDto) {
     const discoveredFeed = await this.discoverClient
-      .send<DiscoverFeedResponse, DiscoverFeedRequest>(DISCOVER_MESSAGE_PATTERN, feedDiscoverDto.feedUrl)
+      .send<DiscoverFeedResponse, DiscoverFeedRequest>(DISCOVER_MESSAGE_PATTERN, feedDiscoverDto.url)
       .toPromise()
 
     if (!discoveredFeed) {
-      this.logger.log(`Could not discover feed for given URL: ${feedDiscoverDto.feedUrl}`)
+      this.logger.log(`Could not discover feed for given URL: ${feedDiscoverDto.url}`)
       throw new HttpException('Could not find a feed', HttpStatus.NOT_FOUND)
     }
 
@@ -32,13 +32,27 @@ export class FeedService {
   }
 
   async create(feedDto: FeedInputDto, username: string): Promise<Feed> {
-    if (await this.prismaService.feed.findUnique({ where: { feedUrl: feedDto.feedUrl } })) {
-      return this.prismaService.feed.update({
-        data: { user: { connect: { username } } },
+    const { title: originalTitle } = await this.discover({ url: feedDto.url })
+
+    try {
+      return await this.prismaService.feed.upsert({
         where: { feedUrl: feedDto.feedUrl },
+        update: { UserFeed: { create: { user: { connect: { username } }, title: feedDto.title } } },
+        create: {
+          feedUrl: feedDto.feedUrl,
+          originalTitle,
+          UserFeed: { create: { user: { connect: { username } }, title: feedDto.title } },
+        },
       })
-    } else {
-      return this.prismaService.feed.create({ data: { ...feedDto, user: { connect: { username } } } })
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          this.logger.warn(`User is already subscribed to feed: ${feedDto.title}`)
+          throw new HttpException('You are already subscribed to this feed', HttpStatus.CONFLICT)
+        }
+        this.logger.error(e)
+        throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR)
+      }
     }
   }
 
@@ -46,7 +60,12 @@ export class FeedService {
     if (user.isAdmin) {
       return this.prismaService.feed.findMany()
     } else {
-      return this.prismaService.feed.findMany({ where: { user: { every: { username: user.username } } } })
+      return (
+        await this.prismaService.userFeed.findMany({
+          select: { feed: true, title: true },
+          where: { user: { username: user.username } },
+        })
+      ).map(({ feed, title }) => ({ ...feed, title }))
     }
   }
 }

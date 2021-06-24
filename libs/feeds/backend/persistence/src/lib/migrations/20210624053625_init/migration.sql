@@ -14,8 +14,8 @@ CREATE TABLE "Article" (
 -- CreateTable
 CREATE TABLE "Feed" (
     "id" UUID NOT NULL,
-    "title" TEXT NOT NULL,
     "feedUrl" TEXT NOT NULL,
+    "originalTitle" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -39,9 +39,10 @@ CREATE TABLE "UserArticle" (
 );
 
 -- CreateTable
-CREATE TABLE "_FeedToUser" (
-    "A" UUID NOT NULL,
-    "B" UUID NOT NULL
+CREATE TABLE "UserFeed" (
+    "userId" UUID NOT NULL,
+    "feedId" UUID NOT NULL,
+    "title" TEXT NOT NULL
 );
 
 -- CreateIndex
@@ -57,10 +58,7 @@ CREATE UNIQUE INDEX "User.username_unique" ON "User"("username");
 CREATE UNIQUE INDEX "UserArticle.userId_articleId_unique" ON "UserArticle"("userId", "articleId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_FeedToUser_AB_unique" ON "_FeedToUser"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_FeedToUser_B_index" ON "_FeedToUser"("B");
+CREATE UNIQUE INDEX "UserFeed.userId_feedId_unique" ON "UserFeed"("userId", "feedId");
 
 -- AddForeignKey
 ALTER TABLE "Article" ADD FOREIGN KEY ("feedId") REFERENCES "Feed"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -72,7 +70,7 @@ ALTER TABLE "UserArticle" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON 
 ALTER TABLE "UserArticle" ADD FOREIGN KEY ("articleId") REFERENCES "Article"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_FeedToUser" ADD FOREIGN KEY ("A") REFERENCES "Feed"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "UserFeed" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_FeedToUser" ADD FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "UserFeed" ADD FOREIGN KEY ("feedId") REFERENCES "Feed"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -36,14 +36,13 @@ export class AuthenticationService implements OnModuleInit {
 
   async register(userRegisterDto: UserRegisterDto): Promise<Omit<User, 'password'>> {
     try {
-      const user = await this.prismaService.user.create({
+      return await this.prismaService.user.create({
         data: {
           ...userRegisterDto,
           password: await hash(userRegisterDto.password, 10),
         },
         select: { username: true, email: true, id: true, password: false, isAdmin: true },
       })
-      return user
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
