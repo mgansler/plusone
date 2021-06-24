@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query'
 
 import { useToken } from '@plusone/feeds/web/login'
+import { jsonOrThrow } from '@plusone/feeds/web/shared'
 
 interface User {
   id: string
@@ -16,10 +17,6 @@ export function useFetchUsers() {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then((res) => {
-      if (res.ok) return res.json()
-
-      throw new Error(`${res.status}: ${res.statusText}`)
-    }),
+    }).then(jsonOrThrow),
   )
 }

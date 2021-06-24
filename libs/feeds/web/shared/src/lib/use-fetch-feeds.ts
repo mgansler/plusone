@@ -2,7 +2,9 @@ import { useQuery } from 'react-query'
 
 import { useToken } from '@plusone/feeds/web/login'
 
-interface Feed {
+import { jsonOrThrow } from './json-or-throw'
+
+export interface Feed {
   id: string
   originalTitle: string
   title?: string
@@ -16,10 +18,6 @@ export function useFetchFeeds() {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then((res) => {
-      if (res.ok) return res.json()
-
-      throw new Error(`${res.status}: ${res.statusText}`)
-    }),
+    }).then(jsonOrThrow),
   )
 }
