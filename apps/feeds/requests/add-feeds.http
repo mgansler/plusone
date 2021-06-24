@@ -10,7 +10,7 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "feedUrl": "https://www.mtb-news.de"
+  "url": "https://www.mtb-news.de"
 }
 
 ###
@@ -22,6 +22,7 @@ Content-Type: application/json
 
 {
   "title": "MTB-News.de",
+  "url": "https://www.mtb-news.de",
   "feedUrl": "https://www.mtb-news.de/feed/"
 }
 
@@ -33,7 +34,7 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "feedUrl": "https://arstechnica.com"
+  "url": "https://arstechnica.com"
 }
 
 ###
@@ -45,6 +46,7 @@ Content-Type: application/json
 
 {
   "title": "Ars Technica",
+  "url": "https://arstechnica.com",
   "feedUrl": "http://feeds.arstechnica.com/arstechnica/index/"
 }
 
@@ -56,7 +58,7 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "feedUrl": "https://heise.de"
+  "url": "https://heise.de"
 }
 
 ###
@@ -68,6 +70,7 @@ Content-Type: application/json
 
 {
   "title": "heise online News",
+  "url": "https://heise.de",
   "feedUrl": "https://www.heise.de/rss/heise.rdf"
 }
 
@@ -79,7 +82,7 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "feedUrl": "https://gooooogle.com"
+  "url": "https://gooooogle.com"
 }
 
 ###

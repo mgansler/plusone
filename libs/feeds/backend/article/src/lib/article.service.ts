@@ -11,7 +11,7 @@ export class ArticleService {
 
   async create(article: Item, feed: Feed) {
     if (!article.guid || typeof article.guid !== 'string') {
-      this.logger.warn(`Could not store article for ${feed.title} as guid is not a string`)
+      this.logger.warn(`Could not store article for ${feed.originalTitle} as guid is not a string`)
       return
     }
 
@@ -21,14 +21,19 @@ export class ArticleService {
       return
     }
 
+    const feedSubscribers = await this.prismaService.user.findMany({
+      where: { UserFeed: { some: { feedId: feed.id } } },
+    })
+
     return this.prismaService.article.create({
       data: {
         content: article.content,
         contentBody: article['content:encoded'],
-        feed: { connect: { id: feed.id } },
+        feedId: feed.id,
         guid: article.guid,
         link: article.link,
         title: article.title,
+        UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })) } },
       },
     })
   }

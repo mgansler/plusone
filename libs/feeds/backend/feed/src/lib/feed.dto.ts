@@ -1,7 +1,13 @@
+import { IsUrl } from 'class-validator'
+
 export class FeedDiscoverDto {
-  feedUrl: string
+  @IsUrl()
+  url: string
 }
 
 export class FeedInputDto extends FeedDiscoverDto {
-  title: string
+  title?: string
+
+  @IsUrl()
+  feedUrl: string
 }

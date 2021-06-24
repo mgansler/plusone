@@ -12,6 +12,7 @@ import {
 import { FeedService } from '@plusone/feeds/backend/feed'
 import { ArticleService } from '@plusone/feeds/backend/article'
 import { Feed, Prisma } from '@plusone/feeds/backend/persistence'
+import { SystemUser } from '@plusone/feeds/backend/authentication'
 
 @Injectable()
 export class SchedulingService {
@@ -23,16 +24,18 @@ export class SchedulingService {
     private readonly articleService: ArticleService,
   ) {}
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  @Cron(CronExpression.EVERY_30_MINUTES)
   handleCron() {
-    this.feedService.findAll().then((feeds) => {
+    this.feedService.findAllFor(SystemUser).then((feeds) => {
       feeds.forEach((feed) => {
-        this.logger.log(`Requesting update of ${feed.title}`)
+        this.logger.log(`Requesting update of ${feed.originalTitle}`)
         this.fetchClient
           .send<UpdateFeedResponse, UpdateFeedRequest>(FETCH_MESSAGE_PATTERN, feed.feedUrl)
           .toPromise()
           .then((articles) => this.saveNewArticles(articles, feed))
-          .catch(() => this.logger.error(`Failed to fetch or store articles for ${feed.title} (${feed.feedUrl})`))
+          .catch(() =>
+            this.logger.error(`Failed to fetch or store articles for ${feed.originalTitle} (${feed.feedUrl})`),
+          )
       })
     })
   }
@@ -52,7 +55,7 @@ export class SchedulingService {
         }
       }
     }
-    this.logger.log(`Got ${newArticleCount} new articles for ${feed.title}`)
+    this.logger.log(`Got ${newArticleCount} new articles for ${feed.originalTitle}`)
     return newArticleCount
   }
 }

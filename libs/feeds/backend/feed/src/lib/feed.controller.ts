@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common'
 
 import { JwtAuthGuard } from '@plusone/feeds/backend/authentication'
 
@@ -17,12 +17,12 @@ export class FeedController {
   }
 
   @Post()
-  add(@Body() feedInputDto: FeedInputDto) {
-    return this.feedService.create(feedInputDto)
+  add(@Body() feedInputDto: FeedInputDto, @Req() { user }) {
+    return this.feedService.create(feedInputDto, user.username)
   }
 
   @Get()
-  getAll() {
-    return this.feedService.findAll()
+  getAll(@Req() { user }) {
+    return this.feedService.findAllFor(user)
   }
 }

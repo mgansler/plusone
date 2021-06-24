@@ -11,8 +11,8 @@ POST http://localhost:3333/api/authentication/register
 Content-Type: application/json
 
 {
-  "username": "root",
-  "password": "super_secret"
+  "username": "foo",
+  "password": "bar"
 }
 
 ###
@@ -33,8 +33,21 @@ POST http://localhost:3333/api/authentication/login
 Content-Type: application/json
 
 {
+  "username": "foo",
+  "password": "bar"
+}
+
+> {%
+  client.global.set("auth_token", response.body.access_token)
+%}
+
+###
+POST http://localhost:3333/api/authentication/login
+Content-Type: application/json
+
+{
   "username": "root",
-  "password": "super_secret"
+  "password": "keep_this_secret"
 }
 
 > {%
