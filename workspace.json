@@ -801,6 +801,27 @@
         }
       }
     },
+    "feeds-web-shared": {
+      "root": "libs/feeds/web/shared",
+      "sourceRoot": "libs/feeds/web/shared/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/feeds/web/shared/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/feeds/web/shared"],
+          "options": {
+            "jestConfig": "libs/feeds/web/shared/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "feeds-web-user-view": {
       "root": "libs/feeds/web/user-view",
       "sourceRoot": "libs/feeds/web/user-view/src",
