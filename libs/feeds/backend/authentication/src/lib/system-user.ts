@@ -1,4 +1,4 @@
-import { JwtPayload } from '@plusone/feeds/backend/authentication'
+import { JwtPayload } from './jwt.payload'
 
 export const SystemUser: JwtPayload = {
   username: 'SYSTEM',
