@@ -37,7 +37,7 @@ export function FeedsWebAdminView() {
           <CardHeader title={`Feeds: ${feeds.length}`} />
           <CardContent>
             {feeds.map((feed) => (
-              <Typography key={feed.feedUrl}>
+              <Typography key={feed.id}>
                 {feed.originalTitle}: {feed.feedUrl}
               </Typography>
             ))}

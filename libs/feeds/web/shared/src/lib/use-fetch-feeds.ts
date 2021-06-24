@@ -3,8 +3,9 @@ import { useQuery } from 'react-query'
 import { useToken } from '@plusone/feeds/web/login'
 
 interface Feed {
-  originalTitle?: string
-  title: string
+  id: string
+  originalTitle: string
+  title?: string
   feedUrl: string
 }
 
