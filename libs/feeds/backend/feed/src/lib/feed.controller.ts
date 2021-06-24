@@ -23,6 +23,6 @@ export class FeedController {
 
   @Get()
   getAll(@Req() { user }) {
-    return this.feedService.findAll(user)
+    return this.feedService.findAllFor(user)
   }
 }

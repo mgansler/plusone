@@ -12,6 +12,7 @@ import {
 import { FeedService } from '@plusone/feeds/backend/feed'
 import { ArticleService } from '@plusone/feeds/backend/article'
 import { Feed, Prisma } from '@plusone/feeds/backend/persistence'
+import { SystemUser } from '@plusone/feeds/backend/authentication'
 
 @Injectable()
 export class SchedulingService {
@@ -25,7 +26,7 @@ export class SchedulingService {
 
   @Cron(CronExpression.EVERY_30_MINUTES)
   handleCron() {
-    this.feedService.findAll({ username: 'SYSTEM', isAdmin: true, roles: ['admin'] }).then((feeds) => {
+    this.feedService.findAllFor(SystemUser).then((feeds) => {
       feeds.forEach((feed) => {
         this.logger.log(`Requesting update of ${feed.originalTitle}`)
         this.fetchClient

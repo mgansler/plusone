@@ -56,7 +56,7 @@ export class FeedService {
     }
   }
 
-  async findAll(user: JwtPayload) {
+  async findAllFor(user: JwtPayload) {
     if (user.isAdmin) {
       return this.prismaService.feed.findMany()
     } else {
