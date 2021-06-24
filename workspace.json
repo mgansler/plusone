@@ -604,6 +604,27 @@
         }
       }
     },
+    "feeds-shared-types": {
+      "root": "libs/feeds/shared/types",
+      "sourceRoot": "libs/feeds/shared/types/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/feeds/shared/types/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/feeds/shared/types"],
+          "options": {
+            "jestConfig": "libs/feeds/shared/types/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "feeds-spring-backend": {
       "projectType": "application",
       "root": "apps/feeds/spring-backend",

@@ -30,5 +30,6 @@ module.exports = {
     '<rootDir>/libs/github-schema',
     '<rootDir>/libs/hooks',
     '<rootDir>/libs/feeds/web/shared',
+    '<rootDir>/libs/feeds/shared/types',
   ],
 }

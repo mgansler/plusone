@@ -19,7 +19,8 @@ export class DiscoverService {
       const website = await this.httpService.get(requestedUri, { timeout: 5_000 }).toPromise()
       const $ = cheerio.load(website.data)
 
-      const linkElements = $("link[type*='rss']", 'head').get()
+      const linkElements = $("link[type*='rss']").get()
+      console.log(linkElements)
       for (const el of linkElements) {
         const href = el.attribs['href']
         const feed = await this.parser.parseURL(href)

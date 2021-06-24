@@ -6,6 +6,7 @@ CREATE TABLE "Article" (
     "contentBody" TEXT,
     "guid" TEXT NOT NULL,
     "link" TEXT,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "feedId" UUID NOT NULL,
 
     PRIMARY KEY ("id")
@@ -14,8 +15,8 @@ CREATE TABLE "Article" (
 -- CreateTable
 CREATE TABLE "Feed" (
     "id" UUID NOT NULL,
-    "feedUrl" TEXT NOT NULL,
     "originalTitle" TEXT NOT NULL,
+    "feedUrl" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );

@@ -1,24 +1,25 @@
 import { useQuery } from 'react-query'
 
 import { useToken } from '@plusone/feeds/web/login'
-import { Feed, jsonOrThrow } from '@plusone/feeds/web/shared'
+import { jsonOrThrow } from '@plusone/feeds/web/shared'
+import { ArticleResponse, FeedResponse, Paginated } from '@plusone/feeds/shared/types'
 
-interface Article {
-  id: string
-  title: string
-  content: string
-  contentBody: string
-  guid: string
-  link: string
-}
-
-export function useFetchArticlesByFeed(feedId: Feed['id']) {
+export function useFetchArticlesByFeed(feedId: FeedResponse['id'], skip: number) {
   const token = useToken()
-  return useQuery<{ article: Article; unread: boolean }[]>('articles', () =>
-    fetch(`/api/feed/${feedId}?includeRead=true`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then(jsonOrThrow),
+
+  const pagination = new URLSearchParams({
+    take: '10',
+    skip: String(skip),
+  })
+
+  return useQuery<Paginated<ArticleResponse>>(
+    ['articles', feedId, skip],
+    () =>
+      fetch(`/api/feed/${feedId}?${pagination}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then(jsonOrThrow),
+    { keepPreviousData: true },
   )
 }
