@@ -6,7 +6,8 @@ import { FeedModule } from '@plusone/feeds/backend/feed'
 import { ArticleModule } from '@plusone/feeds/backend/article'
 import { DISCOVER_OPTIONS, FETCH_OPTIONS } from '@plusone/feeds/shared/constants'
 
-import { SchedulingService } from '../scheduling/scheduling.service'
+import { SchedulingService } from './scheduling.service'
+import { SchedulingController } from './scheduling.controller'
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { SchedulingService } from '../scheduling/scheduling.service'
     FeedModule,
     ArticleModule,
   ],
-  controllers: [],
+  controllers: [SchedulingController],
   providers: [SchedulingService],
   exports: [],
 })
