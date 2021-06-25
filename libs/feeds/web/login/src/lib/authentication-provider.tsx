@@ -1,4 +1,5 @@
 import React, { createContext, ReactNode, useContext, useEffect, useMemo } from 'react'
+import { useQueryClient } from 'react-query'
 
 import { useLocalStorage } from '@plusone/hooks'
 
@@ -23,12 +24,14 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
   const { data: user, isLoading, remove } = useFetchProfile({ token, setToken })
   // TODO: this is not really necessary
   const value = useMemo(() => ({ user, token, logout: () => setToken('') }), [setToken, token, user])
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     if (token === '') {
       remove()
+      queryClient.clear()
     }
-  }, [remove, token])
+  }, [queryClient, remove, token])
 
   if (isLoading) {
     return null

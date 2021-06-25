@@ -3,16 +3,12 @@ import { ClientProxy } from '@nestjs/microservices'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { Item } from 'rss-parser'
 
-import {
-  FETCH_MESSAGE_PATTERN,
-  FETCH_SERVICE,
-  UpdateFeedRequest,
-  UpdateFeedResponse,
-} from '@plusone/feeds/backend/fetch'
 import { FeedService } from '@plusone/feeds/backend/feed'
 import { ArticleService } from '@plusone/feeds/backend/article'
 import { Feed, Prisma } from '@plusone/feeds/backend/persistence'
 import { SystemUser } from '@plusone/feeds/backend/authentication'
+import { FETCH_MESSAGE_PATTERN, FETCH_SERVICE } from '@plusone/feeds/shared/constants'
+import { UpdateFeedRequest, UpdateFeedResponse } from '@plusone/feeds/shared/types'
 
 @Injectable()
 export class SchedulingService {
@@ -24,7 +20,7 @@ export class SchedulingService {
     private readonly articleService: ArticleService,
   ) {}
 
-  @Cron(CronExpression.EVERY_30_MINUTES)
+  @Cron(CronExpression.EVERY_10_MINUTES)
   handleCron() {
     this.feedService.findAllFor(SystemUser).then((feeds) => {
       feeds.forEach((feed) => {
@@ -44,6 +40,7 @@ export class SchedulingService {
     let newArticleCount = 0
     for (const article of articles) {
       try {
+        // TODO: create many?
         if (await this.articleService.create(article, feed)) {
           newArticleCount++
         }

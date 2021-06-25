@@ -1,25 +1,17 @@
 import { useQuery } from 'react-query'
 
 import { useToken } from '@plusone/feeds/web/login'
+import { FeedResponse } from '@plusone/feeds/shared/types'
 
-interface Feed {
-  id: string
-  originalTitle: string
-  title?: string
-  feedUrl: string
-}
+import { jsonOrThrow } from './json-or-throw'
 
 export function useFetchFeeds() {
   const token = useToken()
-  return useQuery<Feed[]>('feeds', () =>
+  return useQuery<FeedResponse[]>('feeds', () =>
     fetch('/api/feed', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then((res) => {
-      if (res.ok) return res.json()
-
-      throw new Error(`${res.status}: ${res.statusText}`)
-    }),
+    }).then(jsonOrThrow),
   )
 }

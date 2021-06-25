@@ -1,25 +1,16 @@
 import { useQuery } from 'react-query'
 
 import { useToken } from '@plusone/feeds/web/login'
-
-interface User {
-  id: string
-  username: string
-  email: string | null
-  isAdmin: boolean
-}
+import { jsonOrThrow } from '@plusone/feeds/web/shared'
+import { UserResponse } from '@plusone/feeds/shared/types'
 
 export function useFetchUsers() {
   const token = useToken()
-  return useQuery<User[]>('users', () =>
+  return useQuery<UserResponse[]>('users', () =>
     fetch('/api/user', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then((res) => {
-      if (res.ok) return res.json()
-
-      throw new Error(`${res.status}: ${res.statusText}`)
-    }),
+    }).then(jsonOrThrow),
   )
 }

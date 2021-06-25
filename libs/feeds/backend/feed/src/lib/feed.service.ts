@@ -3,12 +3,8 @@ import { ClientProxy } from '@nestjs/microservices'
 
 import { JwtPayload } from '@plusone/feeds/backend/authentication'
 import { Feed, Prisma, PrismaService } from '@plusone/feeds/backend/persistence'
-import {
-  DISCOVER_MESSAGE_PATTERN,
-  DISCOVER_SERVICE,
-  DiscoverFeedRequest,
-  DiscoverFeedResponse,
-} from '@plusone/feeds/backend/discover'
+import { DiscoverFeedRequest, DiscoverFeedResponse } from '@plusone/feeds/shared/types'
+import { DISCOVER_MESSAGE_PATTERN, DISCOVER_SERVICE } from '@plusone/feeds/shared/constants'
 
 import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
 
