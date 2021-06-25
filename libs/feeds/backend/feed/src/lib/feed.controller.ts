@@ -21,7 +21,7 @@ export class FeedController {
 
   @Post()
   add(@Body() feedInputDto: FeedInputDto, @Req() { user }): Promise<FeedResponse> {
-    return this.feedService.create(feedInputDto, user.username)
+    return this.feedService.create(feedInputDto, user.id)
   }
 
   @Get()
@@ -35,6 +35,6 @@ export class FeedController {
     @Query() pagination: Pagination,
     @Req() { user },
   ): Promise<Paginated<ArticleResponse>> {
-    return this.articleService.getForUserAndFeed(user.username, feedId, pagination)
+    return this.articleService.getForUserAndFeed(user.id, feedId, pagination)
   }
 }

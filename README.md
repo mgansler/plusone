@@ -6,7 +6,7 @@
 
 A collection of utilities, all apps are lazy loaded.
 
-* Dinner Plan
+- Dinner Plan
 
 ## Feeds
 
