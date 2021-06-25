@@ -9,3 +9,7 @@ export interface ArticleResponse {
     link: string
   }
 }
+
+export interface ToggleUnreadRequest {
+  unread: boolean
+}

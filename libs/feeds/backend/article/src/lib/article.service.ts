@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Item } from 'rss-parser'
 
-import { Feed, PrismaService } from '@plusone/feeds/backend/persistence'
+import { Article, Feed, PrismaService } from '@plusone/feeds/backend/persistence'
 import { Pagination } from '@plusone/feeds/shared/types'
 
 @Injectable()
@@ -60,5 +60,15 @@ export class ArticleService {
       }),
     ])
     return { totalCount, content }
+  }
+
+  async toggleUnreadForUser(articleId: Article['id'], username: string, unread: boolean) {
+    // TODO: put user id in JwtPayload
+    const user = await this.prismaService.user.findUnique({ where: { username } })
+    return this.prismaService.userArticle.update({
+      select: { article: true, unread: true },
+      data: { unread },
+      where: { userId_articleId: { articleId, userId: user.id } },
+    })
   }
 }
