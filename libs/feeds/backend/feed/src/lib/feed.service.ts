@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/c
 import { ClientProxy } from '@nestjs/microservices'
 
 import { JwtPayload } from '@plusone/feeds/backend/authentication'
-import { Feed, Prisma, PrismaService } from '@plusone/feeds/backend/persistence'
+import { Feed, Prisma, PrismaService, User } from '@plusone/feeds/backend/persistence'
 import { DiscoverFeedRequest, DiscoverFeedResponse } from '@plusone/feeds/shared/types'
 import { DISCOVER_MESSAGE_PATTERN, DISCOVER_SERVICE } from '@plusone/feeds/shared/constants'
 
@@ -27,7 +27,7 @@ export class FeedService {
     return { title: discoveredFeed.title, feedUrl: discoveredFeed.feedUrl }
   }
 
-  async create(feedInputDto: FeedInputDto, username: string): Promise<Feed> {
+  async create(feedInputDto: FeedInputDto, userId: User['id']): Promise<Feed> {
     const { title: originalTitle } = await this.discover({ url: feedInputDto.url })
 
     try {
@@ -36,7 +36,7 @@ export class FeedService {
         update: {
           UserFeed: {
             create: {
-              user: { connect: { username } },
+              user: { connect: { id: userId } },
               title: feedInputDto.title ?? originalTitle,
             },
           },
@@ -44,7 +44,7 @@ export class FeedService {
         create: {
           feedUrl: feedInputDto.feedUrl,
           originalTitle,
-          UserFeed: { create: { user: { connect: { username } }, title: feedInputDto.title ?? originalTitle } },
+          UserFeed: { create: { user: { connect: { id: userId } }, title: feedInputDto.title ?? originalTitle } },
         },
       })
     } catch (e) {
@@ -66,7 +66,7 @@ export class FeedService {
       return (
         await this.prismaService.userFeed.findMany({
           select: { feed: true, title: true },
-          where: { user: { username: user.username } },
+          where: { userId: user.id },
         })
       ).map(({ feed, title }) => ({ ...feed, title }))
     }

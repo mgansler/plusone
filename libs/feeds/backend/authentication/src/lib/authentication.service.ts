@@ -28,9 +28,13 @@ export class AuthenticationService implements OnModuleInit {
   }
 
   async login(user: User) {
-    const payload: JwtPayload = { username: user.username, isAdmin: user.isAdmin, roles: user.isAdmin ? ['admin'] : [] }
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign({
+        username: user.username,
+        isAdmin: user.isAdmin,
+        roles: user.isAdmin ? ['admin'] : [],
+        id: user.id,
+      } as JwtPayload),
     }
   }
 

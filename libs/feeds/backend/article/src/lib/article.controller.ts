@@ -16,8 +16,8 @@ export class ArticleController {
   async toggleUnread(
     @Param('id') id: string,
     @Body() toggleUnreadDto: ArticleToggleUnreadDto,
-    @Req() req,
+    @Req() { user },
   ): Promise<ArticleResponse> {
-    return this.articleService.toggleUnreadForUser(id, req.user.username, toggleUnreadDto.unread)
+    return this.articleService.toggleUnreadForUser(id, user.id, toggleUnreadDto.unread)
   }
 }
