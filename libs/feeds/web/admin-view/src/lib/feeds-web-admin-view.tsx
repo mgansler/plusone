@@ -3,6 +3,7 @@ import { Box, Card, CardContent, CardHeader, createStyles, makeStyles, Paper, Ty
 import { useFetchFeeds } from '@plusone/feeds/web/shared'
 
 import { useFetchUsers } from './use-fetch-users'
+import { useTriggerFetch } from './use-trigger-fetch'
 
 const useClassNames = makeStyles((theme) =>
   createStyles({
@@ -15,12 +16,14 @@ const useClassNames = makeStyles((theme) =>
 export function FeedsWebAdminView() {
   const { data: users = [] } = useFetchUsers()
   const { data: feeds = [] } = useFetchFeeds()
+  const triggerFetch = useTriggerFetch()
 
   const classNames = useClassNames()
 
   return (
     <Paper>
       <Typography>Welcome to feeds-web-admin-view!</Typography>
+      <button onClick={triggerFetch}>Fetch Now!</button>
       <Box display={'flex'} flexWrap={'wrap'}>
         <Card elevation={3} className={classNames.card}>
           <CardHeader title={`Users: ${users.length}`} />

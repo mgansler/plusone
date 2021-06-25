@@ -10,10 +10,15 @@ export class ArticleService {
 
   constructor(private prismaService: PrismaService) {}
 
-  async create(article: Item, feed: Feed) {
+  async create(article: Item & { id?: string }, feed: Feed) {
     if (!article.guid || typeof article.guid !== 'string') {
-      this.logger.warn(`Could not store article for ${feed.originalTitle} as guid is not a string`)
-      return
+      if (typeof article.id === 'string') {
+        article.guid = article.id
+      } else {
+        this.logger.warn(`Could not store article for ${feed.originalTitle} as guid is not a string`)
+        this.logger.debug(`${article.title}: ${article.guid}`)
+        return
+      }
     }
 
     // TODO: upsert?
