@@ -51,12 +51,17 @@ export class ArticleService {
     // TODO: configuration? client arg?
     const PAGE_SIZE = 10
 
-    const [totalCount, unreadCount, content] = await this.prismaService.$transaction([
+    const [totalCount, unreadCount, { cursor: lastCursor }, content] = await this.prismaService.$transaction([
       this.prismaService.userArticle.count({
         where: { userId, article: { feedId } },
       }),
       this.prismaService.userArticle.count({
         where: { userId, article: { feedId }, unread: true },
+      }),
+      this.prismaService.userArticle.findFirst({
+        select: { cursor: true },
+        where: { userId, article: { feedId } },
+        orderBy: { cursor: 'asc' },
       }),
       this.prismaService.userArticle.findMany({
         take: PAGE_SIZE,
@@ -67,7 +72,7 @@ export class ArticleService {
         orderBy: [{ cursor: 'desc' }],
       }),
     ])
-    return { totalCount, content, unreadCount, pageSize: PAGE_SIZE }
+    return { totalCount, content, unreadCount, lastCursor, pageSize: PAGE_SIZE }
   }
 
   async toggleUnreadForUser(articleId: Article['id'], userId: User['id'], unread: boolean) {

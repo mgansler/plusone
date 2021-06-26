@@ -21,9 +21,8 @@ export function useFetchArticlesByFeed(feedId: FeedResponse['id']) {
     },
     {
       getNextPageParam: (lastPage, allPages) => {
-        return lastPage.pageSize > lastPage.content.length
-          ? undefined
-          : lastPage.content[lastPage.content.length - 1].cursor
+        const nextCursor = lastPage.content[lastPage.content.length - 1].cursor
+        return nextCursor > lastPage.lastCursor ? nextCursor : undefined
       },
     },
   )
