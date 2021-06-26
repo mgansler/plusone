@@ -3,7 +3,7 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, Req, U
 import { JwtAuthGuard } from '@plusone/feeds/backend/authentication'
 import { ArticleService } from '@plusone/feeds/backend/article'
 import { Feed } from '@plusone/feeds/backend/persistence'
-import { ArticleResponse, DiscoverResponse, FeedResponse, Paginated, Pagination } from '@plusone/feeds/shared/types'
+import { DiscoverResponse, FeedResponse, PaginatedArticles, Pagination } from '@plusone/feeds/shared/types'
 
 import { FeedService } from './feed.service'
 import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
@@ -34,7 +34,7 @@ export class FeedController {
     @Param('feedId') feedId: Feed['id'],
     @Query() pagination: Pagination,
     @Req() { user },
-  ): Promise<Paginated<ArticleResponse>> {
+  ): Promise<PaginatedArticles> {
     return this.articleService.getForUserAndFeed(user.id, feedId, pagination)
   }
 }
