@@ -1,5 +1,6 @@
 export interface ArticleResponse {
   unread: boolean
+  cursor: number
   article: {
     id: string
     title: string

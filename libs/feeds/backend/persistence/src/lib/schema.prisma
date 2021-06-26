@@ -48,6 +48,7 @@ model UserArticle {
   userId    String  @db.Uuid
   article   Article @relation(fields: [articleId], references: [id])
   articleId String  @db.Uuid
+  cursor    Int     @unique @default(autoincrement())
   unread    Boolean @default(true)
 
   @@unique([userId, articleId])

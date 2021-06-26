@@ -38,7 +38,7 @@ export class SchedulingService {
 
   private async saveNewArticles(articles: Item[], feed: Feed): Promise<number> {
     let newArticleCount = 0
-    for (const article of articles) {
+    for (const article of articles.reverse()) {
       try {
         // TODO: create many?
         if (await this.articleService.create(article, feed)) {
