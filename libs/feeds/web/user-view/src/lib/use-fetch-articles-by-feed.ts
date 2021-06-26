@@ -11,8 +11,7 @@ export function useFetchArticlesByFeed(feedId: FeedResponse['id']) {
     ['articles', feedId],
     ({ pageParam }) => {
       const pagination = new URLSearchParams({
-        take: '10',
-        skip: String(pageParam ?? 0),
+        cursor: pageParam ? String(pageParam) : '',
       })
       return fetch(`/api/feed/${feedId}?${pagination}`, {
         headers: {
@@ -22,9 +21,9 @@ export function useFetchArticlesByFeed(feedId: FeedResponse['id']) {
     },
     {
       getNextPageParam: (lastPage, allPages) => {
-        const lastPageNumber = Math.floor(lastPage.totalCount / 10) * 10
-        const nextPageNumber = allPages.length * 10
-        return nextPageNumber > lastPageNumber ? undefined : nextPageNumber
+        return lastPage.pageSize > lastPage.content.length
+          ? undefined
+          : lastPage.content[lastPage.content.length - 1].cursor
       },
     },
   )

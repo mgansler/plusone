@@ -47,6 +47,10 @@ export class ArticleService {
   }
 
   async getForUserAndFeed(userId: User['id'], feedId: Feed['id'], pagination: Pagination) {
+    const isFirstRequest = Number(pagination.cursor) === 0
+    // TODO: configuration? client arg?
+    const PAGE_SIZE = 10
+
     const [totalCount, unreadCount, content] = await this.prismaService.$transaction([
       this.prismaService.userArticle.count({
         where: { userId, article: { feedId } },
@@ -55,19 +59,20 @@ export class ArticleService {
         where: { userId, article: { feedId }, unread: true },
       }),
       this.prismaService.userArticle.findMany({
-        take: Number(pagination.take) ?? 10,
-        skip: Number(pagination.skip) ?? 0,
-        select: { article: true, unread: true },
+        take: PAGE_SIZE,
+        cursor: isFirstRequest ? undefined : { cursor: Number(pagination.cursor) },
+        skip: isFirstRequest ? 0 : 1,
+        select: { article: true, unread: true, cursor: true },
         where: { userId, article: { feedId } },
-        orderBy: [{ article: { cursor: 'desc' } }],
+        orderBy: [{ cursor: 'desc' }],
       }),
     ])
-    return { totalCount, content, unreadCount }
+    return { totalCount, content, unreadCount, pageSize: PAGE_SIZE }
   }
 
   async toggleUnreadForUser(articleId: Article['id'], userId: User['id'], unread: boolean) {
     return this.prismaService.userArticle.update({
-      select: { article: true, unread: true },
+      select: { article: true, unread: true, cursor: true },
       data: { unread },
       where: { userId_articleId: { articleId, userId } },
     })

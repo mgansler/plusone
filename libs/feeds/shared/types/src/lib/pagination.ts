@@ -1,12 +1,12 @@
 import { ArticleResponse } from './article'
 
 export interface Pagination {
-  take: string
-  skip: string
+  cursor: string
 }
 
 export interface Paginated<ContentType> {
   totalCount: number
+  pageSize: number
   content: ContentType[]
 }
 
