@@ -12,6 +12,7 @@ generator client {
 
 model Article {
   id          String        @id @default(uuid()) @db.Uuid
+  cursor      Int           @default(autoincrement())
   title       String?
   content     String?
   contentBody String?

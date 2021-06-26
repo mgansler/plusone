@@ -59,7 +59,7 @@ export class ArticleService {
         skip: Number(pagination.skip) ?? 0,
         select: { article: true, unread: true },
         where: { userId, article: { feedId } },
-        orderBy: [{ article: { date: 'desc' } }],
+        orderBy: [{ article: { cursor: 'desc' } }],
       }),
     ])
     return { totalCount, content, unreadCount }
