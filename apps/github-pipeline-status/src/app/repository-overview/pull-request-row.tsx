@@ -15,6 +15,7 @@ import {
 import { useClassNames } from './repository-overview.styles'
 import { CheckConclusionIconMap } from './check-conclusion-icon-map'
 import { ApproveButton } from './approve-button'
+import { EnableAutoMerge } from './enable-auto-merge'
 
 const getLastReviewStatePerAuthor = (reviews: PullRequestReview[]): Record<string, PullRequestReviewState> =>
   reviews
@@ -52,9 +53,10 @@ interface CanBeMergedProps {
   commits: PullRequestCommit[]
   mergeable: MergeableState
   autoMergeRequest: AutoMergeRequest
+  pullRequestId: PullRequest['id']
 }
 
-function CanBeMerged({ className, commits, mergeable, autoMergeRequest }: CanBeMergedProps) {
+function CanBeMerged({ className, commits, mergeable, autoMergeRequest, pullRequestId }: CanBeMergedProps) {
   const prCheckState = commits
     .flatMap((node) => node.commit.checkSuites.nodes)
     .flatMap((node) => node.conclusion)
@@ -71,7 +73,11 @@ function CanBeMerged({ className, commits, mergeable, autoMergeRequest }: CanBeM
     <div className={className}>
       <Typography variant={'caption'}>Workflows</Typography>
       {CheckConclusionIconMap[prCheckState ?? 'RUNNING']}
-      {autoMergeRequest !== null ? <Tooltip title={'Auto merge enabled'} children={<MergeType />} /> : null}
+      {autoMergeRequest !== null ? (
+        <Tooltip title={'Auto merge enabled'} children={<MergeType />} />
+      ) : (
+        <EnableAutoMerge pullRequestId={pullRequestId} />
+      )}
     </div>
   )
 }
@@ -118,16 +124,14 @@ export function PullRequestRow({ pr }: PullRequestProps) {
         commits={pr.commits.nodes}
         mergeable={pr.mergeable}
         autoMergeRequest={pr.autoMergeRequest}
+        pullRequestId={pr.id}
       />
 
       <div className={classNames.pullRequestsOrReviewsColumn}>
+        <ApproveButton pullRequestId={pr.id} />
         {Object.entries(lastReviewStatePerAuthor).map(([login, state]) => (
           <Chip key={login} label={login} icon={ReviewStateIconMap[state]} />
         ))}
-      </div>
-
-      <div>
-        <ApproveButton pullRequestId={pr.id} />
       </div>
     </div>
   )

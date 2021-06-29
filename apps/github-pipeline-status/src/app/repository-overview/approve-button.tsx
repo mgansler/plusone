@@ -13,11 +13,11 @@ export function ApproveButton({ pullRequestId }: ApproveButtonProps) {
   const octokit = useOctokit()
   const { mutate } = useMutation(['pr-approval'], () =>
     octokit.graphql(`
-  mutation {
-    addPullRequestReview(input: {pullRequestId: "${pullRequestId}", event: ${PullRequestReviewEvent.Approve}}) {
-      clientMutationId
-    }
-  }`),
+      mutation {
+        addPullRequestReview(input: {pullRequestId: "${pullRequestId}", event: ${PullRequestReviewEvent.Approve}}) {
+          clientMutationId
+        }
+      }`),
   )
 
   const approve = () => {
