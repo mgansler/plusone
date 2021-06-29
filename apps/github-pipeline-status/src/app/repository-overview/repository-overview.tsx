@@ -106,6 +106,7 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
                   autoMergeRequest {
                     mergeMethod
                   }
+                  id
                   number
                   title
                   author {
@@ -151,7 +152,7 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
     },
     {
       keepPreviousData: true,
-      refetchInterval: 30000,
+      refetchInterval: 5_000,
       refetchIntervalInBackground: true,
       onSuccess: (response) => {
         const urlSearchParams = new URLSearchParams(history.location.search)
