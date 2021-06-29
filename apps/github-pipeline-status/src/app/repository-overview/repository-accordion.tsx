@@ -1,185 +1,14 @@
 import React, { useMemo } from 'react'
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Button,
-  Chip,
-  createStyles,
-  IconButton,
-  makeStyles,
-  Tooltip,
-  Typography,
-} from '@material-ui/core'
-import { Check, Error, ExpandMore, FindReplace, MergeType, OpenInNew } from '@material-ui/icons'
+import { Accordion, AccordionDetails, AccordionSummary, Button, IconButton, Typography } from '@material-ui/core'
+import { ExpandMore, OpenInNew } from '@material-ui/icons'
 import { Skeleton } from '@material-ui/lab'
 
-import {
-  AutoMergeRequest,
-  CheckConclusionState,
-  Commit,
-  MergeableState,
-  PullRequestCommit,
-  PullRequestReview,
-  PullRequestReviewState,
-  Ref,
-  Repository,
-  User,
-} from '@plusone/github-schema'
+import { Commit, Ref, Repository } from '@plusone/github-schema'
 
 import { UserFilter } from './repository-overview'
-
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    expanded: {},
-    accordionRoot: {
-      '&:before': {
-        display: 'none',
-      },
-      '&$expanded': {
-        margin: 'auto',
-      },
-    },
-    accordionSummaryRoot: {
-      minHeight: theme.spacing(6),
-      '&$expanded': {
-        minHeight: theme.spacing(6),
-      },
-    },
-    accordionSummarySkeleton: {
-      gap: theme.spacing(3),
-    },
-    accordionSummaryContent: {
-      alignItems: 'center',
-      margin: 0,
-      '&$expanded': {
-        margin: 0,
-      },
-    },
-    accordionDetails: {
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    row: {
-      display: 'flex',
-      alignItems: 'center',
-      maxHeight: theme.spacing(4.5),
-    },
-    linkColumn: {
-      flexBasis: '5%',
-    },
-    pullRequestLink: {
-      marginLeft: theme.spacing(1),
-    },
-    titleColumn: {
-      flexBasis: '50%',
-    },
-    workflowColumn: {
-      flexBasis: '20%',
-      display: 'flex',
-      alignItems: 'center',
-      gap: theme.spacing(1),
-    },
-    pullRequestsOrReviewsColumn: {
-      flexBasis: '25%',
-      display: 'flex',
-      alignItems: 'center',
-      gap: theme.spacing(1),
-    },
-    draftTooltip: {
-      color: theme.palette.warning.contrastText,
-      backgroundColor: theme.palette.warning.light,
-    },
-    draftTooltipArrow: {
-      color: theme.palette.warning.light,
-    },
-  }),
-)
-
-const CheckConclusionIconMap: Record<CheckConclusionState | 'RUNNING', JSX.Element> = {
-  ACTION_REQUIRED: undefined,
-  CANCELLED: undefined,
-  FAILURE: (
-    <Tooltip title={'Pipeline failed'}>
-      <Error />
-    </Tooltip>
-  ),
-  NEUTRAL: undefined,
-  SKIPPED: undefined,
-  STALE: undefined,
-  STARTUP_FAILURE: undefined,
-  SUCCESS: (
-    <Tooltip title={'Pipeline succeeded'}>
-      <Check />
-    </Tooltip>
-  ),
-  TIMED_OUT: undefined,
-  RUNNING: (
-    <Tooltip title={'Pipeline running'}>
-      <FindReplace />
-    </Tooltip>
-  ),
-}
-
-const ReviewStateIconMap: Record<PullRequestReviewState, JSX.Element> = {
-  APPROVED: (
-    <Tooltip title={'Pull request approved'}>
-      <Check />
-    </Tooltip>
-  ),
-  CHANGES_REQUESTED: (
-    <Tooltip title={'Changes requested'}>
-      <Error />
-    </Tooltip>
-  ),
-  COMMENTED: undefined,
-  DISMISSED: undefined,
-  PENDING: undefined,
-}
-
-const getLastReviewStatePerAuthor = (reviews: PullRequestReview[]): Record<string, PullRequestReviewState> =>
-  reviews
-    .filter(({ state }) => state !== PullRequestReviewState.Commented)
-    .map((review) => ({
-      author: (review.author as User).name ?? review.author.login,
-      state: review.state,
-    }))
-    .reduce(
-      (previousValue, current) => ({
-        ...previousValue,
-        [current.author]: current.state,
-      }),
-      {},
-    )
-
-interface CanBeMergedProps {
-  className: HTMLDivElement['className']
-  commits: PullRequestCommit[]
-  mergeable: MergeableState
-  autoMergeRequest: AutoMergeRequest
-}
-
-function CanBeMerged({ className, commits, mergeable, autoMergeRequest }: CanBeMergedProps) {
-  const prCheckState = commits
-    .flatMap((node) => node.commit.checkSuites.nodes)
-    .flatMap((node) => node.conclusion)
-    .pop()
-
-  return mergeable === MergeableState.Conflicting ? (
-    <div className={className}>
-      <Typography variant={'caption'}>Merge Conflicts</Typography>
-      <Tooltip title={'Merge conflicts'}>
-        <Error />
-      </Tooltip>
-    </div>
-  ) : (
-    <div className={className}>
-      <Typography variant={'caption'}>Workflows</Typography>
-      {CheckConclusionIconMap[prCheckState ?? 'RUNNING']}
-      {autoMergeRequest !== null ? <Tooltip title={'Auto merge enabled'} children={<MergeType />} /> : null}
-    </div>
-  )
-}
+import { useClassNames } from './repository-overview.styles'
+import { CheckConclusionIconMap } from './check-conclusion-icon-map'
+import { PullRequestRow } from './pull-request-row'
 
 interface DefaultBranchStateProps {
   className: HTMLDivElement['className']
@@ -217,7 +46,7 @@ export function RepositoryAccordion({
     pullRequests: { totalCount: pullRequestCount, nodes: pullRequests },
   },
 }: RepositoryAccordionProps) {
-  const classNames = useStyles()
+  const classNames = useClassNames()
 
   const filteredPullRequests = useMemo(
     () =>
@@ -285,60 +114,16 @@ export function RepositoryAccordion({
         </div>
       </AccordionSummary>
       <AccordionDetails className={classNames.accordionDetails}>
-        {filteredPullRequests.map((pr) => {
-          const lastReviewStatePerAuthor = getLastReviewStatePerAuthor(pr.reviews.nodes)
-
-          return (
-            <div className={classNames.row} key={pr.number}>
-              <IconButton
-                className={[classNames.linkColumn, classNames.pullRequestLink].join(' ')}
-                href={pr.url}
-                target={'_blank'}
-                rel={'noreferrer'}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <OpenInNew />
-              </IconButton>
-
-              <Tooltip
-                classes={{
-                  tooltip: classNames.draftTooltip,
-                  arrow: classNames.draftTooltipArrow,
-                }}
-                title={pr.isDraft ? 'Draft' : ''}
-                arrow={true}
-              >
-                <Typography
-                  className={classNames.titleColumn}
-                  variant={'caption'}
-                  color={pr.isDraft ? 'textSecondary' : 'initial'}
-                >
-                  {pr.title} by {(pr.author as User).name ?? pr.author.login}
-                </Typography>
-              </Tooltip>
-
-              <CanBeMerged
-                className={classNames.workflowColumn}
-                commits={pr.commits.nodes}
-                mergeable={pr.mergeable}
-                autoMergeRequest={pr.autoMergeRequest}
-              />
-
-              <div className={classNames.pullRequestsOrReviewsColumn}>
-                {Object.entries(lastReviewStatePerAuthor).map(([login, state]) => (
-                  <Chip key={login} label={login} icon={ReviewStateIconMap[state]} />
-                ))}
-              </div>
-            </div>
-          )
-        })}
+        {filteredPullRequests.map((pr) => (
+          <PullRequestRow key={pr.id} pr={pr} />
+        ))}
       </AccordionDetails>
     </Accordion>
   )
 }
 
 export function AccordionSkeleton() {
-  const classNames = useStyles()
+  const classNames = useClassNames()
 
   return (
     <Accordion>

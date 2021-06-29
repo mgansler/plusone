@@ -106,6 +106,7 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
                   autoMergeRequest {
                     mergeMethod
                   }
+                  id
                   number
                   title
                   author {
