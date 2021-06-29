@@ -28,5 +28,7 @@ updates:
       - dependency-name: '@nrwl/storybook'
       - dependency-name: '@nrwl/tao'
       - dependency-name: '@nrwl/web'
+      # @prisma/client will be updated via the prisma package.
+      - dependency-name: '@prisma/client'
     schedule:
       interval: 'daily'
