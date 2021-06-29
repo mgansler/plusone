@@ -1,7 +1,7 @@
 image: node:14-alpine
 
 variables:
-  APP_SUITE_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/suite/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}
+  APP_SUITE_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/suite/${CI_COMMIT_REF_SLUG}:latest
 
 default:
   before_script:
@@ -72,4 +72,5 @@ suite:deploy:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
   script:
+    - docker-compose -f apps/suite/docker-compose.deploy.yml pull
     - docker-compose -f apps/suite/docker-compose.deploy.yml up -d --remove-orphans
