@@ -34,9 +34,13 @@ interface CheckConclusionProps {
 }
 
 export function CheckConclusion({ checkSuite }: CheckConclusionProps) {
+  if (!checkSuite) {
+    return null
+  }
+
   return (
     <IconButton
-      href={checkSuite?.resourcePath ? 'https://github.com' + checkSuite.resourcePath : undefined}
+      href={checkSuite.resourcePath ? 'https://github.com' + checkSuite.resourcePath : undefined}
       target={'_blank'}
       rel={'noreferrer'}
       onClick={(e) => e.stopPropagation()}
