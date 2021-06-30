@@ -92,6 +92,7 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
                       checkSuites (last: 1) {
                         nodes {
                           conclusion
+                          resourcePath
                         }
                       }
                     }
@@ -123,6 +124,7 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
                         checkSuites (last: 1) {
                           nodes {
                             conclusion
+                            resourcePath
                           }
                         }
                       }
