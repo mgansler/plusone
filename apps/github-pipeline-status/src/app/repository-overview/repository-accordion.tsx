@@ -7,8 +7,8 @@ import { Commit, Ref, Repository } from '@plusone/github-schema'
 
 import { UserFilter } from './repository-overview'
 import { useClassNames } from './repository-overview.styles'
-import { CheckConclusionIconMap } from './check-conclusion-icon-map'
 import { PullRequestRow } from './pull-request-row'
+import { CheckConclusion } from './check-conclusion'
 
 interface DefaultBranchStateProps {
   className: HTMLDivElement['className']
@@ -20,14 +20,14 @@ function DefaultBranchState({ className, defaultBranchRef }: DefaultBranchStateP
     return null
   }
 
-  const defaultBranchCheckConclusion = (defaultBranchRef.target as Commit).checkSuites.nodes
-    .flatMap((node) => node.conclusion)
-    .pop()
+  const checkSuite = (defaultBranchRef.target as Commit).checkSuites.nodes[
+    (defaultBranchRef.target as Commit).checkSuites.nodes.length - 1
+  ]
 
   return (
     <div className={className}>
       <Typography>{defaultBranchRef.name}</Typography>
-      {CheckConclusionIconMap[defaultBranchCheckConclusion ?? 'RUNNING']}
+      <CheckConclusion checkSuite={checkSuite} />
     </div>
   )
 }
