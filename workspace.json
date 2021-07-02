@@ -41,6 +41,22 @@
             "jestConfig": "libs/components/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "ct": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "testingType": "component",
+            "cypressConfig": "libs/components/cypress.json",
+            "tsConfig": "libs/components/tsconfig.ct.json",
+            "devServerTarget": ""
+          }
+        },
+        "open-ct": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "cypress open-ct",
+            "cwd": "libs/components"
+          }
         }
       }
     },
@@ -124,6 +140,22 @@
           "options": {
             "jestConfig": "libs/dinner-plan/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "ct": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "testingType": "component",
+            "cypressConfig": "libs/dinner-plan/cypress.json",
+            "tsConfig": "libs/dinner-plan/tsconfig.ct.json",
+            "devServerTarget": ""
+          }
+        },
+        "open-ct": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "cypress open-ct",
+            "cwd": "libs/dinner-plan"
           }
         }
       }

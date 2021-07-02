@@ -30,7 +30,7 @@ jobs:
     needs: install_dependencies
     strategy:
       matrix:
-        target: [lint, test, build]
+        target: [lint, ct, test, build]
 
     steps:
       - uses: actions/checkout@v2
