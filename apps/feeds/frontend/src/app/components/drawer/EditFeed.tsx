@@ -10,9 +10,8 @@ import {
 } from '@material-ui/core'
 import { Edit } from '@material-ui/icons'
 import gql from 'graphql-tag'
-import { ChangeEvent } from 'react'
+import React, { ChangeEvent } from 'react'
 import { useApolloClient, useMutation } from 'react-apollo'
-import React from 'react'
 
 import {
   AddFeedToGroup,

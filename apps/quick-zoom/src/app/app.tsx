@@ -1,7 +1,6 @@
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { AppBar, Container, createStyles, Paper, Toolbar, Typography } from '@material-ui/core'
-import React from 'react'
 
 import { ConferenceLink } from '@plusone/conference-links'
 import { useLocalStorage } from '@plusone/hooks'
