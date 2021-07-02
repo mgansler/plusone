@@ -6,7 +6,7 @@ const { getWebpackConfig, preprocessTypescript } = require('@nrwl/cypress/plugin
 module.exports = (on, config) => {
   on('file:preprocessor', preprocessTypescript(config))
 
-  // For when we run `npx cypress open-ct -C cypress.json` from the components directory
+  // When we run `cypress open-ct` we do not get an absolute path
   if (config.env.tsConfig.startsWith('.')) {
     config.env.tsConfig = join(__dirname, '../..', config.env.tsConfig)
   }
