@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import {
   Button,
   Card,
@@ -12,7 +12,6 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Add, VideoCall } from '@material-ui/icons'
-import React from 'react'
 
 import { ConferenceLink, fromLink } from '@plusone/conference-links'
 

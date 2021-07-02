@@ -1,7 +1,6 @@
 import { Badge, Collapse, IconButton, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import { ExpandLess, ExpandMore, Inbox } from '@material-ui/icons'
-import { useState } from 'react'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { FeedFieldsFragment, GroupFieldsFragment } from '@plusone/feeds-schema'
 
