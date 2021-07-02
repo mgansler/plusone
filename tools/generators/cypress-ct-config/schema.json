@@ -1,0 +1,15 @@
+{
+  "cli": "nx",
+  "id": "cypress-ct-config",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      }
+    }
+  },
+  "required": ["project"]
+}

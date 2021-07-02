@@ -914,6 +914,22 @@
             "jestConfig": "libs/feeds/web/user-view/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "open-ct": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "cypress open-ct",
+            "cwd": "libs/feeds/web/user-view"
+          }
+        },
+        "ct": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "testingType": "component",
+            "cypressConfig": "libs/feeds/web/user-view/cypress.json",
+            "tsConfig": "libs/feeds/web/user-view/tsconfig.ct.json",
+            "devServerTarget": ""
+          }
         }
       }
     },
