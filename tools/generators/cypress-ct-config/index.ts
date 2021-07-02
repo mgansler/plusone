@@ -11,7 +11,7 @@ import {
 
 import { Schema } from './schema'
 
-export default async function (tree: Tree, { project }: Schema) {
+export default async function (tree: Tree, { project, video }: Schema) {
   const projectConfiguration = readProjectConfiguration(tree, project)
   const { root } = projectConfiguration
 
@@ -31,9 +31,10 @@ export default async function (tree: Tree, { project }: Schema) {
 
   // Create cypress.json, tsconfig.ct.json and the cypress directory
   generateFiles(tree, join(__dirname, 'templates'), root, {
-    tmpl: '',
-    root,
     relativeToRoot: Array(root.split('/').length).fill('..').join('/'),
+    root,
+    tmpl: '',
+    video,
   })
 
   // Update tsconfig files
