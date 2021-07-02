@@ -1,11 +1,14 @@
 import { join } from 'path'
 
 import {
-  generateFiles,
-  updateJson,
+  addDependenciesToPackageJson,
   formatFiles,
+  generateFiles,
+  installPackagesTask,
+  readJsonFile,
   readProjectConfiguration,
   Tree,
+  updateJson,
   updateProjectConfiguration,
 } from '@nrwl/devkit'
 
@@ -14,6 +17,21 @@ import { Schema } from './schema'
 export default async function (tree: Tree, { project, video }: Schema) {
   const projectConfiguration = readProjectConfiguration(tree, project)
   const { root } = projectConfiguration
+
+  // Add required dependencies
+  const { devDependencies } = readJsonFile(join(tree.root, 'package.json'))
+  addDependenciesToPackageJson(
+    tree,
+    {},
+    {
+      '@cypress/react': '^5.7.0',
+      '@cypress/webpack-dev-server': '^1.3.0',
+      '@nrwl/cypress': devDependencies['@nrwl/workspace'],
+      '@testing-library/cypress': '^7.0.6',
+      'html-webpack-plugin': '^4.5.2',
+    },
+  )
+  installPackagesTask(tree)
 
   // Disable testing-library/* rules for component tests (they are made for jest tests)
   updateJson(tree, join(root, '.eslintrc.json'), (value) => {
