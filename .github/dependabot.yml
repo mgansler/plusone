@@ -34,5 +34,8 @@ updates:
       - dependency-name: '@nrwl/web'
       # @prisma/client will be updated via the prisma package.
       - dependency-name: '@prisma/client'
+      # pin versions
+      - dependency-name: 'html-webpack-plugin'
+        versions: ['5.x']
     schedule:
       interval: 'daily'
