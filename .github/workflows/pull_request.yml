@@ -11,14 +11,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          path: |
-            ~/.cache/Cypress
-            node_modules/
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version: '14'
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install
@@ -56,12 +52,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          path: |
-            ~/.cache/Cypress
-            node_modules/
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          node-version: '14'
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install
@@ -109,12 +103,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          path: |
-            ~/.cache/Cypress
-            node_modules/
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          node-version: '14'
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install
@@ -137,12 +129,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          path: |
-            ~/.cache/Cypress
-            node_modules/
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          node-version: '14'
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install
@@ -165,12 +155,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          path: |
-            ~/.cache/Cypress
-            node_modules/
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          node-version: '14'
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install
