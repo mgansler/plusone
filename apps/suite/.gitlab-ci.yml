@@ -5,7 +5,6 @@ variables:
 
 default:
   before_script:
-    - mkdir -p .git/hooks
     - yarn install
 
 suite:lint:
