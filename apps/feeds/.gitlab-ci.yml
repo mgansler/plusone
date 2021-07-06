@@ -2,6 +2,7 @@ image: node:14-alpine
 
 default:
   before_script:
+    - mkdir -p .git/hooks
     - yarn install
 
 feeds:prepare:
