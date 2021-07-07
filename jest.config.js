@@ -32,5 +32,6 @@ module.exports = {
     '<rootDir>/libs/feeds/web/shared',
     '<rootDir>/libs/feeds/shared/types',
     '<rootDir>/libs/feeds/shared/constants',
+    '<rootDir>/libs/feeds/web/new-feed',
   ],
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
 
 import { JwtAuthGuard } from '@plusone/feeds/backend/authentication'
 import { ArticleService } from '@plusone/feeds/backend/article'
@@ -13,9 +13,8 @@ import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
 export class FeedController {
   constructor(private readonly feedService: FeedService, private readonly articleService: ArticleService) {}
 
-  @Post('discover')
-  @HttpCode(HttpStatus.OK)
-  discover(@Body() feedDiscoverDto: FeedDiscoverDto): Promise<DiscoverResponse> {
+  @Get('discover')
+  discover(@Query() feedDiscoverDto: FeedDiscoverDto): Promise<DiscoverResponse> {
     return this.feedService.discover(feedDiscoverDto)
   }
 

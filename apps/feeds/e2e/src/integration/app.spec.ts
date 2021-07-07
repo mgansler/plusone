@@ -3,7 +3,6 @@ import { authorizationUri } from '../fixtures'
 describe('feeds-frontend', () => {
   beforeEach(() => {
     cy.intercept('POST', 'http://localhost:3000/graphql', (req) => {
-      console.log(req)
       req.reply(authorizationUri)
     })
 

@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "sourceMap": false,
-    "outDir": "/<%= relativeToRoot %>/dist/out-tsc",
+    "outDir": "/../../../../dist/out-tsc",
     "types": ["cypress", "node", "@testing-library/cypress"],
     "resolveJsonModule": true
   },
