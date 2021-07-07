@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 import { useDebounce } from '@plusone/hooks'
 
 import { useFetchDiscover } from './use-fetch-discover'
+import { useCreateFeed } from './use-create-feed'
 
 const useClassNames = makeStyles((theme) =>
   createStyles({
@@ -26,7 +27,7 @@ const useClassNames = makeStyles((theme) =>
 )
 
 type NewFeedFormField = {
-  website: string
+  url: string
   title: string
   feedUrl: string
 }
@@ -37,7 +38,7 @@ export function FeedsWebNewFeed() {
   const { control, handleSubmit, register, setValue, watch } = useForm<NewFeedFormField>()
 
   const [websiteUrl, setWebsiteUrl] = useState<string>('')
-  useDebounce(() => setWebsiteUrl(watch('website')))
+  useDebounce(() => setWebsiteUrl(watch('url')))
 
   const { data } = useFetchDiscover(websiteUrl)
   useEffect(() => {
@@ -47,7 +48,11 @@ export function FeedsWebNewFeed() {
     }
   }, [data, setValue])
 
-  const onSubmit: SubmitHandler<NewFeedFormField> = (data) => console.log('submit', data)
+  const { mutate: createFeed } = useCreateFeed()
+
+  const onSubmit: SubmitHandler<NewFeedFormField> = (data) => {
+    createFeed(data)
+  }
 
   return (
     <Container maxWidth={'sm'}>
@@ -55,7 +60,7 @@ export function FeedsWebNewFeed() {
         <CardContent className={classNames.cardContent}>
           <Typography variant={'h4'}>Add a new Feed</Typography>
 
-          <TextField id={'website'} label={'Website'} InputProps={register('website')} />
+          <TextField id={'url'} label={'Website'} InputProps={register('url')} />
 
           <Controller
             name={'title'}
