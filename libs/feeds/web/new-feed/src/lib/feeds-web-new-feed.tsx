@@ -10,7 +10,9 @@ import {
   Typography,
 } from '@material-ui/core'
 import { SubmitHandler, useForm, Controller } from 'react-hook-form'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+
+import { useDebounce } from '@plusone/hooks'
 
 import { useFetchDiscover } from './use-fetch-discover'
 
@@ -32,21 +34,10 @@ type NewFeedFormField = {
 export function FeedsWebNewFeed() {
   const classNames = useClassNames()
 
-  const { handleSubmit, register, watch, setValue, control } = useForm<NewFeedFormField>()
+  const { control, handleSubmit, register, setValue, watch } = useForm<NewFeedFormField>()
 
-  const website = watch('website')
   const [websiteUrl, setWebsiteUrl] = useState<string>('')
-
-  const debounce = useRef<number>()
-  useEffect(() => {
-    if (debounce.current) {
-      window.clearTimeout(debounce.current)
-    }
-    debounce.current = window.setTimeout(() => setWebsiteUrl(website), 250)
-    return () => {
-      window.clearTimeout(debounce.current)
-    }
-  }, [website])
+  useDebounce(() => setWebsiteUrl(watch('website')))
 
   const { data } = useFetchDiscover(websiteUrl)
   useEffect(() => {
@@ -69,12 +60,14 @@ export function FeedsWebNewFeed() {
           <Controller
             name={'title'}
             control={control}
+            defaultValue={''}
             render={({ field }) => <TextField id={field.name} label={'Title'} {...field} />}
           />
 
           <Controller
             name={'feedUrl'}
             control={control}
+            defaultValue={''}
             render={({ field }) => <TextField id={field.name} label={'Feed Url'} {...field} />}
           />
         </CardContent>
