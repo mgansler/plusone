@@ -14,17 +14,17 @@ export class FeedService {
 
   constructor(private prismaService: PrismaService, @Inject(DISCOVER_SERVICE) private discoverClient: ClientProxy) {}
 
-  async discover(feedDiscoverDto: FeedDiscoverDto) {
+  async discover({ url }: FeedDiscoverDto) {
     const discoveredFeed = await this.discoverClient
-      .send<DiscoverFeedResponse, DiscoverFeedRequest>(DISCOVER_MESSAGE_PATTERN, feedDiscoverDto.url)
+      .send<DiscoverFeedResponse, DiscoverFeedRequest>(DISCOVER_MESSAGE_PATTERN, url)
       .toPromise()
 
     if (!discoveredFeed) {
-      this.logger.log(`Could not discover feed for given URL: ${feedDiscoverDto.url}`)
+      this.logger.log(`Could not discover feed for given URL: ${url}`)
       throw new HttpException('Could not find a feed', HttpStatus.NOT_FOUND)
     }
 
-    return { title: discoveredFeed.title, feedUrl: discoveredFeed.feedUrl }
+    return { title: discoveredFeed.title, feedUrl: discoveredFeed.feedUrl, url }
   }
 
   async create(feedInputDto: FeedInputDto, userId: User['id']): Promise<Feed> {
