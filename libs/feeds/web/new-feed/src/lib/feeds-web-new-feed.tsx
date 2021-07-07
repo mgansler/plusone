@@ -35,10 +35,10 @@ type NewFeedFormField = {
 export function FeedsWebNewFeed() {
   const classNames = useClassNames()
 
-  const { control, handleSubmit, register, setValue, watch } = useForm<NewFeedFormField>()
+  const { control, handleSubmit, register, setValue, watch, reset } = useForm<NewFeedFormField>()
 
   const [websiteUrl, setWebsiteUrl] = useState<string>('')
-  useDebounce(() => setWebsiteUrl(watch('url')))
+  useDebounce(() => setWebsiteUrl(watch('url') || ''))
 
   const { data } = useFetchDiscover(websiteUrl)
   useEffect(() => {
@@ -52,6 +52,7 @@ export function FeedsWebNewFeed() {
 
   const onSubmit: SubmitHandler<NewFeedFormField> = (data) => {
     createFeed(data)
+    reset()
   }
 
   return (
