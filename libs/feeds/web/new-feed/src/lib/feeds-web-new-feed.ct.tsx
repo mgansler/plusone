@@ -1,8 +1,9 @@
 import { mount } from '@cypress/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
+import { MockAuthenticationProvider } from '@plusone/feeds/web/login'
+
 import { discoverFeed } from '../../cypress/fixtures'
-import { MockAuthenticationProvider } from '../../../login/src'
 
 import { FeedsWebNewFeed } from './feeds-web-new-feed'
 
