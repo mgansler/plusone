@@ -39,6 +39,7 @@ export default async function (tree: Tree, { project, video }: Schema) {
       value.overrides.push({
         files: ['*.ct.jsx', '*.ct.tsx'],
         rules: {
+          'testing-library/await-async-utils': 'off',
           'testing-library/await-async-query': 'off',
           'testing-library/prefer-screen-queries': 'off',
         },
