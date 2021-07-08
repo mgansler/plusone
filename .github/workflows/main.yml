@@ -35,7 +35,7 @@ jobs:
     needs: install_dependencies
     strategy:
       matrix:
-        target: [lint, ct, test, build]
+        target: [lint, ct, test, build, e2e]
 
     steps:
       - uses: actions/checkout@v2
@@ -50,6 +50,9 @@ jobs:
             ~/.cache/Cypress
             node_modules/
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Increase numbers of file watchers
+        run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 
       - name: Generate code
         run: yarn nx run-many --target=generate --all
