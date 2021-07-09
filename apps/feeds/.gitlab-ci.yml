@@ -2,7 +2,7 @@ image: node:14-alpine
 
 default:
   before_script:
-    - yarn install
+    - yarn install --network-timeout 150000
 
 feeds:prepare:
   stage: prepare
