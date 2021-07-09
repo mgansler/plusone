@@ -44,6 +44,17 @@ feeds:test:
       junit:
         - reports/test/junit-feeds.xml
 
+feeds:ct:
+  stage: test
+  needs:
+    - feeds:prepare
+  tags:
+    - docker
+  image: cypress/browsers:node14.16.0-chrome90-ff88
+  script:
+    - yarn cypress install
+    - yarn nx run-many --target=ct --projects=feeds-web-e2e --with-deps
+
 feeds:build:
   stage: build
   needs:
