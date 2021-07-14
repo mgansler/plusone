@@ -45,6 +45,7 @@ describe('RepositoryOverview', () => {
                   totalCount: 1,
                   nodes: [
                     {
+                      id: 1,
                       isDraft: false,
                       mergeable: MergeableState.Mergeable,
                       number: 1,
