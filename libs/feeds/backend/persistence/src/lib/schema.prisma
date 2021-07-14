@@ -7,7 +7,7 @@ generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["orderByRelation"]
   output          = "client"
-  binaryTargets   = ["linux-musl", "darwin"]
+  binaryTargets   = ["linux-musl", "native"]
 }
 
 model Article {
