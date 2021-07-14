@@ -695,7 +695,7 @@
             "root": "apps/feeds/spring-backend"
           }
         },
-        "test": {
+        "skip-test": {
           "executor": "@nxrocks/nx-spring-boot:test",
           "options": {
             "root": "apps/feeds/spring-backend"
