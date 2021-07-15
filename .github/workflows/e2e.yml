@@ -1,5 +1,6 @@
-name: Main
+name: E2E
 on:
+  pull_request:
   push:
     branches:
       - main
@@ -29,13 +30,13 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-  all:
-    name: All
+  e2e:
+    name: E2E
     runs-on: ubuntu-latest
     needs: setup
     strategy:
       matrix:
-        target: [lint, ct, test, build]
+        project: [github-pipeline-status-e2e, quick-zoom-e2e, feeds-web-e2e, suite-e2e]
 
     steps:
       - uses: actions/checkout@v2
@@ -58,4 +59,4 @@ jobs:
         run: yarn nx run-many --target=generate --all
 
       - name: ${{ matrix.target }}
-        run: yarn nx run-many --target=${{ matrix.target }} --all
+        run: yarn nx run ${{ matrix.target }}:e2e
