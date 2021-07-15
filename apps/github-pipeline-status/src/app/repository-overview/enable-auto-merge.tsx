@@ -1,7 +1,7 @@
 import { useMutation } from 'react-query'
 import { Button } from '@material-ui/core'
 
-import { PullRequest } from '@plusone/github-schema'
+import { EnablePullRequestAutoMergeDocument, PullRequest } from '@plusone/github-schema'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
@@ -12,12 +12,7 @@ interface EnableAutoMergeProps {
 export function EnableAutoMerge({ pullRequestId }: EnableAutoMergeProps) {
   const octokit = useOctokit()
   const { mutate } = useMutation(['pr-approval'], () =>
-    octokit.graphql(`
-      mutation {
-        enablePullRequestAutoMerge(input:{pullRequestId:"${pullRequestId}"}) {
-          clientMutationId
-        }
-      }`),
+    octokit.graphql(EnablePullRequestAutoMergeDocument, { pullRequestId }),
   )
 
   const approve = () => {

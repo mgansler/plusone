@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 
 import { useGitHubPagination } from '@plusone/github-hooks'
-import { User } from '@plusone/github-schema'
+import { OrganizationsDocument, OrganizationsQuery } from '@plusone/github-schema'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryOverview } from '../repository-overview/repository-overview'
@@ -34,30 +34,8 @@ const useFetchOrganizations = () => {
   const octokit = useOctokit()
   const { data, isLoading } = useQuery(
     ['organizations', pages.currentPage],
-    async () => {
-      return await octokit.graphql<{
-        viewer: Partial<User>
-      }>(`
-      query {
-        viewer {
-          organizations(first: ${PAGE_SIZE}${getPageRequest()}) {
-            totalCount
-            pageInfo {
-              endCursor
-              hasNextPage
-              hasPreviousPage
-              startCursor
-            }
-            nodes {
-              id
-              name
-              login
-            }
-          }
-        }
-      }
-    `)
-    },
+    async () =>
+      octokit.graphql<OrganizationsQuery>(OrganizationsDocument, { first: PAGE_SIZE, after: getPageRequest() }),
     {
       keepPreviousData: true,
       onSuccess: (response) =>

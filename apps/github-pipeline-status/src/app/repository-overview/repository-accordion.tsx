@@ -3,7 +3,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Button, IconButton, Typo
 import { ExpandMore, OpenInNew } from '@material-ui/icons'
 import { Skeleton } from '@material-ui/lab'
 
-import { Commit, Ref, Repository } from '@plusone/github-schema'
+import { Commit, DefaultBranchRefFieldsFragment, PullRequest, RepositoryFieldsFragment } from '@plusone/github-schema'
 
 import { UserFilter } from './repository-overview'
 import { useClassNames } from './repository-overview.styles'
@@ -12,7 +12,7 @@ import { CheckConclusion } from './check-conclusion'
 
 interface DefaultBranchStateProps {
   className: HTMLDivElement['className']
-  defaultBranchRef?: Ref
+  defaultBranchRef?: DefaultBranchRefFieldsFragment
 }
 
 function DefaultBranchState({ className, defaultBranchRef }: DefaultBranchStateProps) {
@@ -34,7 +34,7 @@ function DefaultBranchState({ className, defaultBranchRef }: DefaultBranchStateP
 
 interface RepositoryAccordionProps {
   userFilter: UserFilter
-  repository: Repository
+  repository: RepositoryFieldsFragment
 }
 
 export function RepositoryAccordion({
@@ -114,7 +114,7 @@ export function RepositoryAccordion({
         </div>
       </AccordionSummary>
       <AccordionDetails className={classNames.accordionDetails}>
-        {filteredPullRequests.map((pr) => (
+        {filteredPullRequests.map((pr: PullRequest) => (
           <PullRequestRow key={pr.id} pr={pr} />
         ))}
       </AccordionDetails>

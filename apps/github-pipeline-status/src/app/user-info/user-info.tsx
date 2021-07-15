@@ -2,26 +2,13 @@ import React from 'react'
 import { useQuery } from 'react-query'
 import { Avatar, Button, Typography } from '@material-ui/core'
 
-import { User } from '@plusone/github-schema'
+import { UserDocument, UserQuery } from '@plusone/github-schema'
 
 import { useLogout, useOctokit } from '../octokit-provider/octokit-provider'
 
 const useFetchUserInfo = () => {
   const octokit = useOctokit()
-
-  const { data, isLoading } = useQuery('currentUser', async () => {
-    return await octokit.graphql<{ viewer: Partial<User> }>(`
-      query {
-        viewer {
-          login
-          name
-          avatarUrl
-        }
-      }
-    `)
-  })
-
-  return { data, isLoading }
+  return useQuery('currentUser', () => octokit.graphql<UserQuery>(UserDocument))
 }
 
 export function UserInfo() {
