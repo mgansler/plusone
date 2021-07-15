@@ -59,4 +59,4 @@ jobs:
         run: yarn nx run-many --target=generate --all
 
       - name: ${{ matrix.target }}
-        run: yarn nx run ${{ matrix.target }}:e2e
+        run: yarn nx run ${{ matrix.project }}:e2e
