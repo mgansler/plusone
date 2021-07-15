@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from 'react-query'
+import { useQuery, UseQueryOptions, useMutation, UseMutationOptions } from 'react-query'
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
@@ -22182,6 +22182,26 @@ export type RepositoryOverviewQuery = { __typename?: 'Query' } & {
     }
 }
 
+export type EnablePullRequestAutoMergeMutationVariables = Exact<{
+  pullRequestId: Scalars['ID']
+}>
+
+export type EnablePullRequestAutoMergeMutation = { __typename?: 'Mutation' } & {
+  enablePullRequestAutoMerge?: Maybe<
+    { __typename?: 'EnablePullRequestAutoMergePayload' } & Pick<EnablePullRequestAutoMergePayload, 'clientMutationId'>
+  >
+}
+
+export type ApprovePullRequestMutationVariables = Exact<{
+  pullRequestId: Scalars['ID']
+}>
+
+export type ApprovePullRequestMutation = { __typename?: 'Mutation' } & {
+  addPullRequestReview?: Maybe<
+    { __typename?: 'AddPullRequestReviewPayload' } & Pick<AddPullRequestReviewPayload, 'clientMutationId'>
+  >
+}
+
 export const PageInfoFieldsFragmentDoc = `
     fragment PageInfoFields on PageInfo {
   startCursor
@@ -22354,5 +22374,52 @@ export const useRepositoryOverviewQuery = <TData = RepositoryOverviewQuery, TErr
       RepositoryOverviewDocument,
       variables,
     ),
+    options,
+  )
+export const EnablePullRequestAutoMergeDocument = `
+    mutation EnablePullRequestAutoMerge($pullRequestId: ID!) {
+  enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId}) {
+    clientMutationId
+  }
+}
+    `
+export const useEnablePullRequestAutoMergeMutation = <TError = unknown, TContext = unknown>(
+  dataSource: { endpoint: string; fetchParams?: RequestInit },
+  options?: UseMutationOptions<
+    EnablePullRequestAutoMergeMutation,
+    TError,
+    EnablePullRequestAutoMergeMutationVariables,
+    TContext
+  >,
+) =>
+  useMutation<EnablePullRequestAutoMergeMutation, TError, EnablePullRequestAutoMergeMutationVariables, TContext>(
+    (variables?: EnablePullRequestAutoMergeMutationVariables) =>
+      fetcher<EnablePullRequestAutoMergeMutation, EnablePullRequestAutoMergeMutationVariables>(
+        dataSource.endpoint,
+        dataSource.fetchParams || {},
+        EnablePullRequestAutoMergeDocument,
+        variables,
+      )(),
+    options,
+  )
+export const ApprovePullRequestDocument = `
+    mutation ApprovePullRequest($pullRequestId: ID!) {
+  addPullRequestReview(input: {pullRequestId: $pullRequestId, event: APPROVE}) {
+    clientMutationId
+  }
+}
+    `
+export const useApprovePullRequestMutation = <TError = unknown, TContext = unknown>(
+  dataSource: { endpoint: string; fetchParams?: RequestInit },
+  options?: UseMutationOptions<ApprovePullRequestMutation, TError, ApprovePullRequestMutationVariables, TContext>,
+) =>
+  useMutation<ApprovePullRequestMutation, TError, ApprovePullRequestMutationVariables, TContext>(
+    (variables?: ApprovePullRequestMutationVariables) =>
+      fetcher<ApprovePullRequestMutation, ApprovePullRequestMutationVariables>(
+        dataSource.endpoint,
+        dataSource.fetchParams || {},
+        ApprovePullRequestDocument,
+        variables,
+      )(),
     options,
   )

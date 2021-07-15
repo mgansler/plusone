@@ -121,3 +121,15 @@ query RepositoryOverview($first: Int!, $after: String, $queryString: String!) {
     }
   }
 }
+
+mutation EnablePullRequestAutoMerge($pullRequestId: ID!) {
+  enablePullRequestAutoMerge(input: { pullRequestId: $pullRequestId }) {
+    clientMutationId
+  }
+}
+
+mutation ApprovePullRequest($pullRequestId: ID!) {
+  addPullRequestReview(input: { pullRequestId: $pullRequestId, event: APPROVE }) {
+    clientMutationId
+  }
+}
