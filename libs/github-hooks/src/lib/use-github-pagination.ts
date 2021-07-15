@@ -15,7 +15,7 @@ type GitHubPagination = {
   nextPage: () => void
   prevPage: () => void
   goToPage: (page: number) => void
-  getPageRequest: () => string
+  getPageRequest: () => string | null
 }
 
 export const useGitHubPagination = (pageSize: number): GitHubPagination => {
@@ -43,13 +43,7 @@ export const useGitHubPagination = (pageSize: number): GitHubPagination => {
     }))
   }
 
-  const getPageRequest = () => {
-    if (pages[pages.currentPage - 1]) {
-      return `, after: "${pages[pages.currentPage - 1].endCursor}"`
-    }
-
-    return ''
-  }
+  const getPageRequest = () => (pages[pages.currentPage - 1] ? pages[pages.currentPage - 1].endCursor : null)
 
   const goToPage = useCallback((page: number) => {
     setPages((prevState) => ({ ...prevState, currentPage: page }))

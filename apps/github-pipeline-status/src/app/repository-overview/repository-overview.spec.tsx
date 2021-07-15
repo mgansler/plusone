@@ -4,7 +4,12 @@ import nock from 'nock'
 import { BrowserRouter } from 'react-router-dom'
 import { createRef } from 'react'
 
-import { CheckConclusionState, MergeableState, PullRequestReviewState } from '@plusone/github-schema'
+import {
+  CheckConclusionState,
+  MergeableState,
+  PullRequestReviewState,
+  RepositoryOverviewQuery,
+} from '@plusone/github-schema'
 
 import { RepositoryOverview } from './repository-overview'
 
@@ -105,7 +110,7 @@ describe('RepositoryOverview', () => {
             ],
           },
         },
-      })
+      } as { data: RepositoryOverviewQuery })
 
     const toolbarRef = createRef<HTMLDivElement>()
 

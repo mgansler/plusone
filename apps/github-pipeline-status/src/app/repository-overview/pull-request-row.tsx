@@ -3,12 +3,13 @@ import { Check, Error, MergeType, OpenInNew } from '@material-ui/icons'
 import React from 'react'
 
 import {
-  AutoMergeRequest,
+  AutoMergeRequestFieldsFragment,
   MergeableState,
   PullRequest,
   PullRequestCommit,
   PullRequestReview,
   PullRequestReviewState,
+  PullRequestsFieldsFragment,
   User,
 } from '@plusone/github-schema'
 
@@ -52,7 +53,7 @@ interface CanBeMergedProps {
   className: HTMLDivElement['className']
   commits: PullRequestCommit[]
   mergeable: MergeableState
-  autoMergeRequest: AutoMergeRequest
+  autoMergeRequest: AutoMergeRequestFieldsFragment
   pullRequestId: PullRequest['id']
   pullRequestUrl: PullRequest['url']
 }
@@ -91,12 +92,12 @@ function CanBeMerged({
 }
 
 interface PullRequestProps {
-  pr: PullRequest
+  pr: PullRequestsFieldsFragment
 }
 
 export function PullRequestRow({ pr }: PullRequestProps) {
   const classNames = useClassNames()
-  const lastReviewStatePerAuthor = getLastReviewStatePerAuthor(pr.reviews.nodes)
+  const lastReviewStatePerAuthor = getLastReviewStatePerAuthor(pr.reviews.nodes as PullRequestReview[])
 
   return (
     <div className={classNames.row}>
@@ -129,7 +130,7 @@ export function PullRequestRow({ pr }: PullRequestProps) {
 
       <CanBeMerged
         className={classNames.workflowColumn}
-        commits={pr.commits.nodes}
+        commits={pr.commits.nodes as PullRequestCommit[]}
         mergeable={pr.mergeable}
         autoMergeRequest={pr.autoMergeRequest}
         pullRequestId={pr.id}

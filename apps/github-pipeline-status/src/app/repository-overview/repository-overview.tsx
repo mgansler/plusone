@@ -16,7 +16,7 @@ import {
 
 import { useGitHubPagination } from '@plusone/github-hooks'
 import { useLocalStorage } from '@plusone/hooks'
-import { PageInfo, PullRequestState, Repository, SearchType } from '@plusone/github-schema'
+import { RepositoryFieldsFragment, RepositoryOverviewDocument, RepositoryOverviewQuery } from '@plusone/github-schema'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
@@ -59,99 +59,12 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
   const octokit = useOctokit()
   const { data, isLoading } = useQuery(
     ['repositories', organizationName, queryString, pages.currentPage],
-    async () => {
-      return await octokit.graphql<{
-        search: {
-          repositoryCount: number
-          pageInfo: PageInfo
-          nodes: Repository[]
-        }
-      }>(`
-      query {
-        search(first: ${PAGE_SIZE}, type: ${
-        SearchType.Repository
-      }, query: "org:${organizationName} ${queryString}"${getPageRequest()}) {
-          repositoryCount
-          pageInfo {
-            endCursor
-            hasNextPage
-            hasPreviousPage
-            startCursor
-          }
-          nodes {
-            ... on Repository {
-              name
-              id
-              url
-              isArchived
-              defaultBranchRef {
-                name
-                ... on Ref {
-                  target {
-                    ... on Commit {
-                      checkSuites (last: 1) {
-                        nodes {
-                          conclusion
-                          resourcePath
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-              pullRequests (first: 20, states: ${PullRequestState.Open}) {
-                totalCount
-                nodes {
-                  isDraft
-                  mergeable
-                  autoMergeRequest {
-                    mergeMethod
-                  }
-                  id
-                  number
-                  title
-                  author {
-                    login
-                    ... on User {
-                      name
-                    }
-                  }
-                  url
-                  commits (last: 1) {
-                    totalCount
-                    nodes {
-                      commit {
-                        checkSuites (last: 1) {
-                          nodes {
-                            conclusion
-                            resourcePath
-                          }
-                        }
-                      }
-                    }
-                  }
-                  headRef {
-                    name
-                  }
-                  reviews (last: 20) {
-                    nodes {
-                      author {
-                        login
-                        ... on User {
-                          name
-                        }
-                      }
-                      state
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    `)
-    },
+    async () =>
+      octokit.graphql<RepositoryOverviewQuery>(RepositoryOverviewDocument, {
+        first: PAGE_SIZE,
+        after: getPageRequest(),
+        queryString: `org:${organizationName} ${queryString}`,
+      }),
     {
       keepPreviousData: true,
       refetchInterval: 5_000,
@@ -220,8 +133,8 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
   }
 
   const filteredRepositories = data.search.nodes
-    .filter((repo) => showArchivedRepositories || !repo.isArchived)
-    .filter((repo) => !showOnlyOpenPRs || repo.pullRequests.totalCount > 0)
+    .filter((repo) => showArchivedRepositories || !(repo as RepositoryFieldsFragment).isArchived)
+    .filter((repo) => !showOnlyOpenPRs || (repo as RepositoryFieldsFragment).pullRequests.totalCount > 0)
 
   return (
     <React.Fragment>
@@ -272,7 +185,7 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
         />
       </Portal>
 
-      {filteredRepositories.map((repo) => (
+      {filteredRepositories.map((repo: RepositoryFieldsFragment) => (
         <RepositoryAccordion key={repo.id} userFilter={userFilter} repository={repo} />
       ))}
 

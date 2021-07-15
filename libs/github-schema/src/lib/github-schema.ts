@@ -1,7 +1,28 @@
+import { useQuery, UseQueryOptions } from 'react-query'
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
+
+function fetcher<TData, TVariables>(endpoint: string, requestInit: RequestInit, query: string, variables?: TVariables) {
+  return async (): Promise<TData> => {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      ...requestInit,
+      body: JSON.stringify({ query, variables }),
+    })
+
+    const json = await res.json()
+
+    if (json.errors) {
+      const { message } = json.errors[0]
+
+      throw new Error(message)
+    }
+
+    return json.data
+  }
+}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -22027,3 +22048,311 @@ export type WorkflowRunPendingDeploymentRequestsArgs = {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
 }
+
+export type PageInfoFieldsFragment = { __typename?: 'PageInfo' } & Pick<
+  PageInfo,
+  'startCursor' | 'hasPreviousPage' | 'hasNextPage' | 'endCursor'
+>
+
+export type AutoMergeRequestFieldsFragment = { __typename?: 'AutoMergeRequest' } & Pick<AutoMergeRequest, 'mergeMethod'>
+
+export type PullRequestsFieldsFragment = { __typename?: 'PullRequest' } & Pick<
+  PullRequest,
+  'isDraft' | 'mergeable' | 'id' | 'number' | 'title' | 'url'
+> & {
+    autoMergeRequest?: Maybe<{ __typename?: 'AutoMergeRequest' } & AutoMergeRequestFieldsFragment>
+    author?: Maybe<
+      | ({ __typename?: 'Bot' } & Pick<Bot, 'login'>)
+      | ({ __typename?: 'EnterpriseUserAccount' } & Pick<EnterpriseUserAccount, 'login'>)
+      | ({ __typename?: 'Mannequin' } & Pick<Mannequin, 'login'>)
+      | ({ __typename?: 'Organization' } & Pick<Organization, 'login'>)
+      | ({ __typename?: 'User' } & Pick<User, 'name' | 'login'>)
+    >
+    commits: { __typename?: 'PullRequestCommitConnection' } & Pick<PullRequestCommitConnection, 'totalCount'> & {
+        nodes?: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'PullRequestCommit' } & {
+                commit: { __typename?: 'Commit' } & {
+                  checkSuites?: Maybe<
+                    { __typename?: 'CheckSuiteConnection' } & {
+                      nodes?: Maybe<
+                        Array<Maybe<{ __typename?: 'CheckSuite' } & Pick<CheckSuite, 'conclusion' | 'resourcePath'>>>
+                      >
+                    }
+                  >
+                }
+              }
+            >
+          >
+        >
+      }
+    headRef?: Maybe<{ __typename?: 'Ref' } & Pick<Ref, 'name'>>
+    reviews?: Maybe<
+      { __typename?: 'PullRequestReviewConnection' } & {
+        nodes?: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'PullRequestReview' } & Pick<PullRequestReview, 'state'> & {
+                  author?: Maybe<
+                    | ({ __typename?: 'Bot' } & Pick<Bot, 'login'>)
+                    | ({ __typename?: 'EnterpriseUserAccount' } & Pick<EnterpriseUserAccount, 'login'>)
+                    | ({ __typename?: 'Mannequin' } & Pick<Mannequin, 'login'>)
+                    | ({ __typename?: 'Organization' } & Pick<Organization, 'login'>)
+                    | ({ __typename?: 'User' } & Pick<User, 'name' | 'login'>)
+                  >
+                }
+            >
+          >
+        >
+      }
+    >
+  }
+
+export type DefaultBranchRefFieldsFragment = { __typename?: 'Ref' } & Pick<Ref, 'name'> & {
+    target?: Maybe<
+      | { __typename?: 'Blob' }
+      | ({ __typename?: 'Commit' } & {
+          checkSuites?: Maybe<
+            { __typename?: 'CheckSuiteConnection' } & {
+              nodes?: Maybe<
+                Array<Maybe<{ __typename?: 'CheckSuite' } & Pick<CheckSuite, 'conclusion' | 'resourcePath'>>>
+              >
+            }
+          >
+        })
+      | { __typename?: 'Tag' }
+      | { __typename?: 'Tree' }
+    >
+  }
+
+export type RepositoryFieldsFragment = { __typename?: 'Repository' } & Pick<
+  Repository,
+  'id' | 'name' | 'url' | 'isArchived'
+> & {
+    defaultBranchRef?: Maybe<{ __typename?: 'Ref' } & DefaultBranchRefFieldsFragment>
+    pullRequests: { __typename?: 'PullRequestConnection' } & Pick<PullRequestConnection, 'totalCount'> & {
+        nodes?: Maybe<Array<Maybe<{ __typename?: 'PullRequest' } & PullRequestsFieldsFragment>>>
+      }
+  }
+
+export type UserQueryVariables = Exact<{ [key: string]: never }>
+
+export type UserQuery = { __typename?: 'Query' } & {
+  viewer: { __typename?: 'User' } & Pick<User, 'login' | 'name' | 'avatarUrl'>
+}
+
+export type OrganizationsQueryVariables = Exact<{
+  first: Scalars['Int']
+  after?: Maybe<Scalars['String']>
+}>
+
+export type OrganizationsQuery = { __typename?: 'Query' } & {
+  viewer: { __typename?: 'User' } & {
+    organizations: { __typename?: 'OrganizationConnection' } & Pick<OrganizationConnection, 'totalCount'> & {
+        pageInfo: { __typename?: 'PageInfo' } & PageInfoFieldsFragment
+        nodes?: Maybe<Array<Maybe<{ __typename?: 'Organization' } & Pick<Organization, 'id' | 'name' | 'login'>>>>
+      }
+  }
+}
+
+export type RepositoryOverviewQueryVariables = Exact<{
+  first: Scalars['Int']
+  after?: Maybe<Scalars['String']>
+  queryString: Scalars['String']
+}>
+
+export type RepositoryOverviewQuery = { __typename?: 'Query' } & {
+  search: { __typename?: 'SearchResultItemConnection' } & Pick<SearchResultItemConnection, 'repositoryCount'> & {
+      pageInfo: { __typename?: 'PageInfo' } & PageInfoFieldsFragment
+      nodes?: Maybe<
+        Array<
+          Maybe<
+            | { __typename?: 'App' }
+            | { __typename?: 'Discussion' }
+            | { __typename?: 'Issue' }
+            | { __typename?: 'MarketplaceListing' }
+            | { __typename?: 'Organization' }
+            | { __typename?: 'PullRequest' }
+            | ({ __typename?: 'Repository' } & RepositoryFieldsFragment)
+            | { __typename?: 'User' }
+          >
+        >
+      >
+    }
+}
+
+export const PageInfoFieldsFragmentDoc = `
+    fragment PageInfoFields on PageInfo {
+  startCursor
+  hasPreviousPage
+  hasNextPage
+  endCursor
+}
+    `
+export const DefaultBranchRefFieldsFragmentDoc = `
+    fragment DefaultBranchRefFields on Ref {
+  name
+  ... on Ref {
+    target {
+      ... on Commit {
+        checkSuites(last: 1) {
+          nodes {
+            conclusion
+            resourcePath
+          }
+        }
+      }
+    }
+  }
+}
+    `
+export const AutoMergeRequestFieldsFragmentDoc = `
+    fragment AutoMergeRequestFields on AutoMergeRequest {
+  mergeMethod
+}
+    `
+export const PullRequestsFieldsFragmentDoc = `
+    fragment PullRequestsFields on PullRequest {
+  isDraft
+  mergeable
+  autoMergeRequest {
+    ...AutoMergeRequestFields
+  }
+  id
+  number
+  title
+  author {
+    login
+    ... on User {
+      name
+    }
+  }
+  url
+  commits(last: 1) {
+    totalCount
+    nodes {
+      commit {
+        checkSuites(last: 1) {
+          nodes {
+            conclusion
+            resourcePath
+          }
+        }
+      }
+    }
+  }
+  headRef {
+    name
+  }
+  reviews(last: 20) {
+    nodes {
+      author {
+        login
+        ... on User {
+          name
+        }
+      }
+      state
+    }
+  }
+}
+    ${AutoMergeRequestFieldsFragmentDoc}`
+export const RepositoryFieldsFragmentDoc = `
+    fragment RepositoryFields on Repository {
+  id
+  name
+  url
+  isArchived
+  defaultBranchRef {
+    ...DefaultBranchRefFields
+  }
+  pullRequests(first: 20, states: [OPEN]) {
+    totalCount
+    nodes {
+      ...PullRequestsFields
+    }
+  }
+}
+    ${DefaultBranchRefFieldsFragmentDoc}
+${PullRequestsFieldsFragmentDoc}`
+export const UserDocument = `
+    query User {
+  viewer {
+    login
+    name
+    avatarUrl
+  }
+}
+    `
+export const useUserQuery = <TData = UserQuery, TError = unknown>(
+  dataSource: { endpoint: string; fetchParams?: RequestInit },
+  variables?: UserQueryVariables,
+  options?: UseQueryOptions<UserQuery, TError, TData>,
+) =>
+  useQuery<UserQuery, TError, TData>(
+    ['User', variables],
+    fetcher<UserQuery, UserQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, UserDocument, variables),
+    options,
+  )
+export const OrganizationsDocument = `
+    query Organizations($first: Int!, $after: String) {
+  viewer {
+    organizations(first: $first, after: $after) {
+      totalCount
+      pageInfo {
+        ...PageInfoFields
+      }
+      nodes {
+        id
+        name
+        login
+      }
+    }
+  }
+}
+    ${PageInfoFieldsFragmentDoc}`
+export const useOrganizationsQuery = <TData = OrganizationsQuery, TError = unknown>(
+  dataSource: { endpoint: string; fetchParams?: RequestInit },
+  variables: OrganizationsQueryVariables,
+  options?: UseQueryOptions<OrganizationsQuery, TError, TData>,
+) =>
+  useQuery<OrganizationsQuery, TError, TData>(
+    ['Organizations', variables],
+    fetcher<OrganizationsQuery, OrganizationsQueryVariables>(
+      dataSource.endpoint,
+      dataSource.fetchParams || {},
+      OrganizationsDocument,
+      variables,
+    ),
+    options,
+  )
+export const RepositoryOverviewDocument = `
+    query RepositoryOverview($first: Int!, $after: String, $queryString: String!) {
+  search(first: $first, after: $after, type: REPOSITORY, query: $queryString) {
+    repositoryCount
+    pageInfo {
+      ...PageInfoFields
+    }
+    nodes {
+      ...RepositoryFields
+    }
+  }
+}
+    ${PageInfoFieldsFragmentDoc}
+${RepositoryFieldsFragmentDoc}`
+export const useRepositoryOverviewQuery = <TData = RepositoryOverviewQuery, TError = unknown>(
+  dataSource: { endpoint: string; fetchParams?: RequestInit },
+  variables: RepositoryOverviewQueryVariables,
+  options?: UseQueryOptions<RepositoryOverviewQuery, TError, TData>,
+) =>
+  useQuery<RepositoryOverviewQuery, TError, TData>(
+    ['RepositoryOverview', variables],
+    fetcher<RepositoryOverviewQuery, RepositoryOverviewQueryVariables>(
+      dataSource.endpoint,
+      dataSource.fetchParams || {},
+      RepositoryOverviewDocument,
+      variables,
+    ),
+    options,
+  )

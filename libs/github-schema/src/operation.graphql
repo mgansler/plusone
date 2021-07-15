@@ -1,0 +1,123 @@
+fragment PageInfoFields on PageInfo {
+  startCursor
+  hasPreviousPage
+  hasNextPage
+  endCursor
+}
+
+fragment AutoMergeRequestFields on AutoMergeRequest {
+  mergeMethod
+}
+
+fragment PullRequestsFields on PullRequest {
+  isDraft
+  mergeable
+  autoMergeRequest {
+    ...AutoMergeRequestFields
+  }
+  id
+  number
+  title
+  author {
+    login
+    ... on User {
+      name
+    }
+  }
+  url
+  commits(last: 1) {
+    totalCount
+    nodes {
+      commit {
+        checkSuites(last: 1) {
+          nodes {
+            conclusion
+            resourcePath
+          }
+        }
+      }
+    }
+  }
+  headRef {
+    name
+  }
+  reviews(last: 20) {
+    nodes {
+      author {
+        login
+        ... on User {
+          name
+        }
+      }
+      state
+    }
+  }
+}
+
+fragment DefaultBranchRefFields on Ref {
+  name
+  ... on Ref {
+    target {
+      ... on Commit {
+        checkSuites(last: 1) {
+          nodes {
+            conclusion
+            resourcePath
+          }
+        }
+      }
+    }
+  }
+}
+
+fragment RepositoryFields on Repository {
+  id
+  name
+  url
+  isArchived
+  defaultBranchRef {
+    ...DefaultBranchRefFields
+  }
+  pullRequests(first: 20, states: [OPEN]) {
+    totalCount
+    nodes {
+      ...PullRequestsFields
+    }
+  }
+}
+
+query User {
+  viewer {
+    login
+    name
+    avatarUrl
+  }
+}
+
+query Organizations($first: Int!, $after: String) {
+  viewer {
+    organizations(first: $first, after: $after) {
+      totalCount
+      pageInfo {
+        ...PageInfoFields
+      }
+      nodes {
+        id
+        name
+        login
+      }
+    }
+  }
+}
+
+query RepositoryOverview($first: Int!, $after: String, $queryString: String!) {
+  search(first: $first, after: $after, type: REPOSITORY, query: $queryString) {
+    repositoryCount
+    pageInfo {
+      ...PageInfoFields
+    }
+    nodes {
+      ...RepositoryFields
+    }
+  }
+}
