@@ -1,4 +1,5 @@
-import { HttpService, Injectable, Logger } from '@nestjs/common'
+import { HttpService } from '@nestjs/axios'
+import { Injectable, Logger } from '@nestjs/common'
 import * as cheerio from 'cheerio'
 import * as Parser from 'rss-parser'
 

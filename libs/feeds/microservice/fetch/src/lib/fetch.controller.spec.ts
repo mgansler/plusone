@@ -1,5 +1,5 @@
+import { HttpModule } from '@nestjs/axios'
 import { Test, TestingModule } from '@nestjs/testing'
-import { HttpModule } from '@nestjs/common'
 
 import { FetchController } from './fetch.controller'
 import { FetchService } from './fetch.service'
