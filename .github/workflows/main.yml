@@ -35,7 +35,7 @@ jobs:
     needs: setup
     strategy:
       matrix:
-        target: ['lint', 'ct', 'test', 'build:production']
+        target: ['lint', 'ct', 'test', 'build --prod']
 
     steps:
       - uses: actions/checkout@v2
@@ -58,4 +58,4 @@ jobs:
         run: yarn nx run-many --target=generate --all
 
       - name: ${{ matrix.target }}
-        run: yarn nx run-many --target=${{ matrix.target }} --all
+        run: yarn nx run-many --all --target=${{ matrix.target }}
