@@ -32,7 +32,7 @@ jobs:
     needs: setup
     strategy:
       matrix:
-        target: [lint, ct, test, build]
+        target: ['lint', 'ct', 'test', 'build:production']
 
     steps:
       - uses: actions/checkout@v2
