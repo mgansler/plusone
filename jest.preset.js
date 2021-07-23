@@ -8,7 +8,7 @@ module.exports = {
       'jest-junit',
       {
         outputDirectory: 'reports/test',
-        outputName: `test-${process.env.NX_TASK_HASH}.xml`,
+        outputName: `test-${process.env.NX_TASK_TARGET_PROJECT}.xml`,
       },
     ],
   ],
