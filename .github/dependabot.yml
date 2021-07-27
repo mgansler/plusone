@@ -36,8 +36,5 @@ updates:
       - dependency-name: '@prisma/client'
       # @typescript-eslint/eslint-plugin will be updated via the @typescript-eslint/parser package.
       - dependency-name: '@typescript-eslint/eslint-plugin'
-      # pin versions
-      - dependency-name: 'html-webpack-plugin'
-        versions: ['5.x']
     schedule:
       interval: 'daily'
