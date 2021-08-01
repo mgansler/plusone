@@ -771,8 +771,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "600kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 }
               ]
             }
@@ -783,7 +783,7 @@
           "options": {
             "buildTarget": "feeds-web:build",
             "proxyConfig": "apps/feeds/web/proxy.conf.json",
-            "hmr": true
+            "hmr": false
           },
           "configurations": {
             "production": {
@@ -1023,11 +1023,13 @@
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
-            "buildTarget": "github-pipeline-status:build"
+            "buildTarget": "github-pipeline-status:build",
+            "hmr": false
           },
           "configurations": {
             "production": {
-              "buildTarget": "github-pipeline-status:build:production"
+              "buildTarget": "github-pipeline-status:build:production",
+              "hmr": false
             }
           }
         },
@@ -1158,12 +1160,13 @@
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
-            "port": 4201,
-            "buildTarget": "quick-zoom:build"
+            "buildTarget": "quick-zoom:build",
+            "hmr": false
           },
           "configurations": {
             "production": {
-              "buildTarget": "quick-zoom:build:production"
+              "buildTarget": "quick-zoom:build:production",
+              "hmr": false
             }
           }
         },
@@ -1246,8 +1249,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 }
               ]
             }
@@ -1264,7 +1267,7 @@
           "executor": "@nrwl/web:dev-server",
           "options": {
             "buildTarget": "suite:build",
-            "hmr": true
+            "hmr": false
           },
           "configurations": {
             "production": {
