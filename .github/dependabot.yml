@@ -10,6 +10,9 @@ updates:
     directory: '/'
     open-pull-requests-limit: 20
     ignore:
+      # @babel/* dependencies will be updated via the @babel/core package.
+      - dependency-name: '@babel/preset-env'
+      - dependency-name: '@babel/preset-typescript'
       # @graphql-codegen/* dependencies will be updated via the @graphql-codegen/cli package.
       - dependency-name: '@graphql-codegen/typescript'
       - dependency-name: '@graphql-codegen/typescript-document-nodes'
