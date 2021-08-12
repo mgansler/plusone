@@ -15,3 +15,10 @@ cache:
 include:
   - /apps/feeds/.gitlab-ci.yml
   - /apps/suite/.gitlab-ci.yml
+
+lint:
+  stage: test
+  tags:
+    - docker
+  script:
+    - yarn nx run-many --target=lint --all

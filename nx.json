@@ -24,6 +24,18 @@
     }
   },
   "targetDependencies": {
+    "test": [
+      {
+        "target": "test",
+        "projects": "dependencies"
+      }
+    ],
+    "ct": [
+      {
+        "target": "ct",
+        "projects": "dependencies"
+      }
+    ],
     "build": [
       {
         "target": "build",
