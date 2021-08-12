@@ -805,6 +805,12 @@
             "jestConfig": "apps/feeds/web/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "ct": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "echo Dummy task to run component test of dependencies"
+          }
         }
       }
     },
