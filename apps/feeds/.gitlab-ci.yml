@@ -28,7 +28,7 @@ feeds:test:
   tags:
     - docker
   script:
-    - yarn nx run feeds-web-e2e:test
+    - yarn nx run feeds-web:test
   after_script:
     - yarn jrm reports/test/junit-feeds.xml reports/test/test-*.xml
   artifacts:
@@ -46,7 +46,7 @@ feeds:ct:
   image: cypress/browsers:node14.16.0-chrome90-ff88
   script:
     - yarn cypress install
-    - yarn nx run feeds-web-e2e:ct
+    - yarn nx run feeds-web:ct
 
 feeds:build:
   stage: build
