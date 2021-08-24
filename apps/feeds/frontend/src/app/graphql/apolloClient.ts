@@ -1,5 +1,5 @@
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import ApolloClient from 'apollo-client'
+import { ApolloClient } from 'apollo-client'
 import { ApolloLink, split } from 'apollo-link'
 import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
