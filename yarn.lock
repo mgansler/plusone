@@ -4123,12 +4123,14 @@ amdefine@>=0.0.4:
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
-amqp-connection-manager@^3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/amqp-connection-manager/-/amqp-connection-manager-3.2.2.tgz#73c820b6ed440b451de24c1eb9cf3541a10635d9"
-  integrity sha512-o+6Kb4p+xFYwU8MuFxnrPQzhefCE2dcCd8dnevWLTRgQCtOTVC9AQ434hQyjB+Bpq6Vl9cDMWTOZT11ajB6ZSg==
+amqp-connection-manager@^3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/amqp-connection-manager/-/amqp-connection-manager-3.4.2.tgz#e919a99302ca99f1e57bbb6961b501f6aeaa10dd"
+  integrity sha512-gYFmYzumWNYbW3rvzscypD/uJ345MWRp4AuAQZeRvyV0mJmUafHz8KIVO+VYgD6qLLuCtcohqi11cGLVOfwjdg==
   dependencies:
     promise-breaker "^5.0.0"
+    ts-node "^10.2.1"
+    typescript "^4.3.5"
 
 amqplib@^0.8.0:
   version "0.8.0"
@@ -15756,19 +15758,7 @@ ts-log@^2.2.3:
   resolved "https://registry.yarnpkg.com/ts-log/-/ts-log-2.2.3.tgz#4da5640fe25a9fb52642cd32391c886721318efb"
   integrity sha512-XvB+OdKSJ708Dmf9ore4Uf/q62AYDTzFcAdxc8KNML1mmAWywRFVt/dn1KYJH8Agt5UJNujfM3znU5PxgAzA2w==
 
-ts-node@^9:
-  version "9.1.1"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-9.1.1.tgz#51a9a450a3e959401bda5f004a72d54b936d376d"
-  integrity sha512-hPlt7ZACERQGf03M253ytLY3dHbGNGrAq9qIHWUY9XHYl1z7wYngSr3OQ5xmui8o2AaxsONxIzjafLUiWBo1Fg==
-  dependencies:
-    arg "^4.1.0"
-    create-require "^1.1.0"
-    diff "^4.0.1"
-    make-error "^1.1.1"
-    source-map-support "^0.5.17"
-    yn "3.1.1"
-
-ts-node@~10.2.1:
+ts-node@^10.2.1, ts-node@~10.2.1:
   version "10.2.1"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.2.1.tgz#4cc93bea0a7aba2179497e65bb08ddfc198b3ab5"
   integrity sha512-hCnyOyuGmD5wHleOQX6NIjJtYVIO8bPP8F2acWkB4W06wdlkgyvJtubO/I9NkI88hCFECbsEgoLc0VNkYmcSfw==
@@ -15784,6 +15774,18 @@ ts-node@~10.2.1:
     create-require "^1.1.0"
     diff "^4.0.1"
     make-error "^1.1.1"
+    yn "3.1.1"
+
+ts-node@^9:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-9.1.1.tgz#51a9a450a3e959401bda5f004a72d54b936d376d"
+  integrity sha512-hPlt7ZACERQGf03M253ytLY3dHbGNGrAq9qIHWUY9XHYl1z7wYngSr3OQ5xmui8o2AaxsONxIzjafLUiWBo1Fg==
+  dependencies:
+    arg "^4.1.0"
+    create-require "^1.1.0"
+    diff "^4.0.1"
+    make-error "^1.1.1"
+    source-map-support "^0.5.17"
     yn "3.1.1"
 
 tsconfig-paths-webpack-plugin@3.4.1:
@@ -15907,7 +15909,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@4.3.5:
+typescript@4.3.5, typescript@^4.3.5:
   version "4.3.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.5.tgz#4d1c37cc16e893973c45a06886b7113234f119f4"
   integrity sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==
