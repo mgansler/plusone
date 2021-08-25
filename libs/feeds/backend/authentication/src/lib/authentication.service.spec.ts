@@ -8,7 +8,7 @@ import { PrismaService } from '@plusone/feeds/backend/persistence'
 import { AuthenticationService } from './authentication.service'
 import { jwtConstants } from './authentication.constants'
 
-describe.skip('AuthenticationService', () => {
+describe('AuthenticationService', () => {
   jest.setTimeout(60_000)
   let postgresContainer: StartedTestContainer
   beforeAll(async () => {
