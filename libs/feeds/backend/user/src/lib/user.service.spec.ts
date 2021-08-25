@@ -5,7 +5,7 @@ import { PrismaService } from '@plusone/feeds/backend/persistence'
 
 import { UserService } from './user.service'
 
-describe.skip('UserService', () => {
+describe('UserService', () => {
   jest.setTimeout(60_000)
   let postgresContainer: StartedTestContainer
   beforeAll(async () => {

@@ -8,7 +8,7 @@ import { AuthenticationController } from './authentication.controller'
 import { AuthenticationService } from './authentication.service'
 import { jwtConstants } from './authentication.constants'
 
-describe.skip('AuthenticationController', () => {
+describe('AuthenticationController', () => {
   jest.setTimeout(60_000)
   let postgresContainer: StartedTestContainer
   beforeAll(async () => {
