@@ -40,9 +40,10 @@ describe('AuthenticationProvider', () => {
     userEvent.type(screen.getByLabelText(/password/i), 'do-not-tell')
     userEvent.click(screen.getByRole('button', { name: /login/i }))
 
+    // eslint-disable-next-line testing-library/prefer-find-by
     await waitFor(() => expect(nock.isDone()).toBeTruthy())
 
-    await waitFor(() => expect(screen.getByText(/child component/i)).toBeInTheDocument())
+    await screen.findByText(/child component/i)
   })
 
   it('should allow to register', async () => {
@@ -56,15 +57,16 @@ describe('AuthenticationProvider', () => {
       </QueryClientProvider>,
     )
 
-    await waitFor(() => expect(screen.getByText('Welcome to feeds-web-login!')).toBeInTheDocument())
+    await screen.findByText('Welcome to feeds-web-login!')
 
     userEvent.click(screen.getByRole('tab', { name: /register/i }))
     userEvent.type(screen.getByLabelText(/username/i), 'myuser')
     userEvent.type(screen.getByLabelText(/password/i), 'do-not-tell')
     userEvent.click(screen.getByRole('button', { name: /register/i }))
 
+    // eslint-disable-next-line testing-library/prefer-find-by
     await waitFor(() => expect(nock.isDone()).toBeTruthy())
 
-    await waitFor(() => expect(screen.getByText(/successfully registered 'myuser'/i)).toBeInTheDocument())
+    await screen.findByText(/successfully registered 'myuser'/i)
   })
 })
