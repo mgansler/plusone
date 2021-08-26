@@ -15,6 +15,7 @@ describe('App', () => {
 
     const { baseElement } = render(<AppWithProviders />)
 
+    // eslint-disable-next-line testing-library/prefer-find-by
     await waitFor(() => expect(nock.isDone()).toBeTruthy())
 
     expect(baseElement).toBeTruthy()
