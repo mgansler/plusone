@@ -20,6 +20,12 @@ export class SchedulingService {
     private readonly articleService: ArticleService,
   ) {}
 
+  async onApplicationBootstrap() {
+    // https://github.com/nestjs/nest/issues/7972
+    // https://github.com/jwalton/node-amqp-connection-manager/issues/172
+    await this.fetchClient.connect()
+  }
+
   @Cron(CronExpression.EVERY_10_MINUTES)
   handleCron() {
     this.feedService.findAllFor(SystemUser).then((feeds) => {
