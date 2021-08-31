@@ -59,4 +59,5 @@ jobs:
         run: yarn nx run-many --target=generate --all
 
       - name: Run ${{ matrix.project }}:e2e
+        timeout-minutes: 15
         run: yarn nx run ${{ matrix.project }}:e2e
