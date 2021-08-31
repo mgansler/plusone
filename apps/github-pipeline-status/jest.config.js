@@ -7,5 +7,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/github-pipeline-status',
-  setupFilesAfterEnv: ['./setupTests.ts'],
+  setupFilesAfterEnv: ['@testing-library/jest-dom'],
 }

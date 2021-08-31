@@ -3,7 +3,7 @@ import nock from 'nock'
 
 import { AppWithProviders } from './app'
 
-describe('App', () => {
+describe.skip('App', () => {
   it('should render successfully', async () => {
     nock(/localhost/)
       .post('/graphql')
