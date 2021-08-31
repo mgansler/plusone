@@ -7,5 +7,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/quick-zoom',
-  setupFilesAfterEnv: ['./setupTests.ts'],
+  setupFilesAfterEnv: ['@testing-library/jest-dom'],
 }
