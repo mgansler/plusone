@@ -12,7 +12,16 @@ import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
 export class FeedService {
   private logger = new Logger(FeedService.name)
 
-  constructor(private prismaService: PrismaService, @Inject(DISCOVER_SERVICE) private discoverClient: ClientProxy) {}
+  constructor(
+    @Inject(DISCOVER_SERVICE) private discoverClient: ClientProxy,
+    private readonly prismaService: PrismaService,
+  ) {}
+
+  async onApplicationBootstrap() {
+    // https://github.com/nestjs/nest/issues/7972
+    // https://github.com/jwalton/node-amqp-connection-manager/issues/172
+    await this.discoverClient.connect()
+  }
 
   async discover({ url }: FeedDiscoverDto) {
     const discoveredFeed = await this.discoverClient
