@@ -5,6 +5,7 @@ const stagedFiles: string[] = execSync('git diff --name-only --cached').toString
 
 // Format files
 execSync(`yarn nx format --files ${[...stagedFiles, 'tsconfig.base.json', 'workspace.json', 'nx.json'].join(',')}`)
+execSync(`yarn affected --target format`)
 
 // Get unstaged files after commit
 const unstagedFiles: string[] = execSync('git diff --name-only').toString().split(/\n/).filter(Boolean)
