@@ -58,4 +58,5 @@ jobs:
         run: yarn nx run-many --target=generate --all
 
       - name: ${{ matrix.target }}
+        timeout-minutes: 15
         run: yarn nx run-many --all --target=${{ matrix.target }}
