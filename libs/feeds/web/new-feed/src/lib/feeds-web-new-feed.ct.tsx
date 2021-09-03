@@ -8,6 +8,8 @@ import { createFeedPayload, createFeedResponse, discoverFeed } from '../../cypre
 import { FeedsWebNewFeed } from './feeds-web-new-feed'
 
 describe('FeedsWebNewFeed', () => {
+  const timeout = 300
+
   beforeEach(() => {
     cy.intercept('GET', `/api/feed/discover?url=${encodeURIComponent(discoverFeed.url)}`, (req) => {
       req.reply(discoverFeed)
@@ -35,7 +37,7 @@ describe('FeedsWebNewFeed', () => {
 
     cy.findByRole('button', { name: /add feed/i }).click()
 
-    cy.wait('@createFeed', { timeout: 150 })
+    cy.wait('@createFeed', { timeout })
   })
 
   it('should fill inputs with response from discovery when pasting', () => {
@@ -57,7 +59,7 @@ describe('FeedsWebNewFeed', () => {
 
     cy.findByRole('button', { name: /add feed/i }).click()
 
-    cy.wait('@createFeed', { timeout: 150 })
+    cy.wait('@createFeed', { timeout })
   })
 
   it('should be possible to overwrite the title', () => {
@@ -90,6 +92,6 @@ describe('FeedsWebNewFeed', () => {
 
     cy.findByRole('button', { name: /add feed/i }).click()
 
-    cy.wait('@createFeedCustomTitle', { timeout: 150 })
+    cy.wait('@createFeedCustomTitle', { timeout })
   })
 })
