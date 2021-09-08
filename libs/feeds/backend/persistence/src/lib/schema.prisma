@@ -4,10 +4,9 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["orderByRelation"]
-  output          = "client"
-  binaryTargets   = ["linux-musl", "native"]
+  provider      = "prisma-client-js"
+  output        = "client"
+  binaryTargets = ["linux-musl", "native"]
 }
 
 model Article {
