@@ -138,7 +138,7 @@
     "graphql": "^15.5.3",
     "html-webpack-plugin": "^5.3.2",
     "husky": "^7.0.2",
-    "jest": "27.0.6",
+    "jest": "27.1.1",
     "jest-junit": "^12.2.0",
     "junit-report-merger": "^3.0.2",
     "mini-css-extract-plugin": "2.2.2",
@@ -157,5 +157,8 @@
     "webpack-node-externals": "^3.0.0",
     "webpack-sources": "3.2.0",
     "whatwg-fetch": "^3.6.2"
+  },
+  "resolutions": {
+    "@jest/fake-timers": "27.1.1"
   }
 }
