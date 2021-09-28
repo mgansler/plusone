@@ -40,5 +40,7 @@ updates:
       - dependency-name: '@prisma/client'
       # @typescript-eslint/eslint-plugin will be updated via the @typescript-eslint/parser package.
       - dependency-name: '@typescript-eslint/eslint-plugin'
+      # babel-jest will be updated via the jest package.
+      - dependency-name: 'babel-jest'
     schedule:
       interval: 'daily'
