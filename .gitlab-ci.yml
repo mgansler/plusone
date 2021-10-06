@@ -12,6 +12,10 @@ cache:
   paths:
     - node_modules/
 
+default:
+  before_script:
+    - yarn install --network-timeout 150000
+
 include:
   - /apps/feeds/.gitlab-ci.yml
   - /apps/suite/.gitlab-ci.yml
