@@ -5,7 +5,6 @@ feeds:prepare:
   tags:
     - docker
   script:
-    - apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main libssl3
     - yarn prisma generate --schema libs/feeds/backend/persistence/src/lib/schema.prisma
   artifacts:
     paths:
@@ -25,7 +24,6 @@ feeds:test:
   tags:
     - docker
   script:
-    - apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main libssl3
     - yarn nx run-many --target test --projects feeds-web,feeds-core,feeds-discover-ms,feeds-fetch-ms
   after_script:
     - yarn jrm reports/test/junit-feeds.xml reports/test/test-*.xml
