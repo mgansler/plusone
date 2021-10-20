@@ -4550,20 +4550,10 @@ ajv@6.12.6, ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.2, ajv@^6.12.3, ajv@
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@8.6.2:
+ajv@8.6.2, ajv@^8.0.0, ajv@^8.0.1:
   version "8.6.2"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.6.2.tgz#2fb45e0e5fcbc0813326c1c3da535d1881bb0571"
   integrity sha512-9807RlWAgT564wT+DjeyU5OFMPjmzxVobvDFmNAhY+5zD6A2ly3jDp6sgnfyDtlIQ+7H97oc/DGCzzfu9rjw9w==
-  dependencies:
-    fast-deep-equal "^3.1.1"
-    json-schema-traverse "^1.0.0"
-    require-from-string "^2.0.2"
-    uri-js "^4.2.2"
-
-ajv@^8.0.0, ajv@^8.0.1:
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.3.0.tgz#25ee7348e32cdc4a1dbb38256bf6bdc451dd577c"
-  integrity sha512-RYE7B5An83d7eWnDR8kbdaIFqmKCNsP16ay1hDbJEU+sa0e3H9SebskCt0Uufem6cfAVu7Col6ubcn/W+Sm8/Q==
   dependencies:
     fast-deep-equal "^3.1.1"
     json-schema-traverse "^1.0.0"
@@ -17398,10 +17388,10 @@ webpack@4.46.0:
     watchpack "^1.7.4"
     webpack-sources "^1.4.1"
 
-webpack@^5.58.2:
-  version "5.58.2"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.58.2.tgz#6b4af12fc9bd5cbedc00dc0a2fc2b9592db16b44"
-  integrity sha512-3S6e9Vo1W2ijk4F4PPWRIu6D/uGgqaPmqw+av3W3jLDujuNkdxX5h5c+RQ6GkjVR+WwIPOfgY8av+j5j4tMqJw==
+webpack@^5.59.0:
+  version "5.59.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.59.0.tgz#a5038fc0d4d9350ee528e7e1e0282080c63efcf5"
+  integrity sha512-2HiFHKnWIb/cBfOfgssQn8XIRvntISXiz//F1q1+hKMs+uzC1zlVCJZEP7XqI1wzrDyc/ZdB4G+MYtz5biJxCA==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.50"
