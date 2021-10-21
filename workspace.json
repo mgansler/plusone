@@ -1,27 +1,5 @@
 {
   "version": 2,
-  "cli": {
-    "defaultCollection": "@nrwl/react"
-  },
-  "defaultProject": "github-pipeline-status",
-  "generators": {
-    "@nrwl/react": {
-      "application": {
-        "style": "none",
-        "linter": "eslint",
-        "strict": true,
-        "babel": true
-      },
-      "component": {
-        "style": "none"
-      },
-      "library": {
-        "style": "none",
-        "linter": "eslint",
-        "strict": true
-      }
-    }
-  },
   "projects": {
     "components": {
       "root": "libs/components",
@@ -59,7 +37,8 @@
             "cwd": "libs/components"
           }
         }
-      }
+      },
+      "tags": []
     },
     "conference-links": {
       "root": "libs/conference-links",
@@ -81,7 +60,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "dark-mode-theme-provider": {
       "root": "libs/dark-mode-theme-provider",
@@ -103,7 +83,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "date-utils": {
       "root": "libs/date-utils",
@@ -125,7 +106,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "dinner-plan": {
       "root": "libs/dinner-plan",
@@ -163,7 +145,8 @@
             "cwd": "libs/dinner-plan"
           }
         }
-      }
+      },
+      "tags": []
     },
     "dom-utils": {
       "root": "libs/dom-utils",
@@ -185,7 +168,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-backend-article": {
       "root": "libs/feeds/backend/article",
@@ -207,7 +191,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-backend-authentication": {
       "root": "libs/feeds/backend/authentication",
@@ -229,7 +214,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-backend-feed": {
       "root": "libs/feeds/backend/feed",
@@ -251,7 +237,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-backend-persistence": {
       "root": "libs/feeds/backend/persistence",
@@ -279,7 +266,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-backend-scheduling": {
       "root": "libs/feeds/backend/scheduling",
@@ -301,7 +289,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-backend-user": {
       "root": "libs/feeds/backend/user",
@@ -323,7 +312,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-core": {
       "root": "apps/feeds/core",
@@ -394,7 +384,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-discover-ms": {
       "root": "apps/feeds/discover-ms",
@@ -446,7 +437,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-e2e": {
       "root": "apps/feeds/e2e",
@@ -473,7 +465,9 @@
           },
           "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": [],
+      "implicitDependencies": ["feeds-frontend", "feeds-spring-backend"]
     },
     "feeds-fetch-ms": {
       "root": "apps/feeds/fetch-ms",
@@ -525,7 +519,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-frontend": {
       "root": "apps/feeds/frontend",
@@ -599,7 +594,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-microservice-discover": {
       "root": "libs/feeds/microservice/discover",
@@ -621,7 +617,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-microservice-fetch": {
       "root": "libs/feeds/microservice/fetch",
@@ -643,7 +640,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-schema": {
       "root": "libs/feeds-schema",
@@ -654,7 +652,8 @@
           "executor": "./tools/executors:graphql-schema",
           "options": {}
         }
-      }
+      },
+      "tags": []
     },
     "feeds-shared-constants": {
       "root": "libs/feeds/shared/constants",
@@ -676,7 +675,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-shared-types": {
       "root": "libs/feeds/shared/types",
@@ -698,7 +698,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-spring-backend": {
       "projectType": "application",
@@ -753,7 +754,8 @@
             "root": "apps/feeds/spring-backend"
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-web": {
       "root": "apps/feeds/web",
@@ -834,7 +836,8 @@
             "command": "echo Dummy task to run component test of dependencies"
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-web-admin-view": {
       "root": "libs/feeds/web/admin-view",
@@ -856,7 +859,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-web-e2e": {
       "root": "apps/feeds/web-e2e",
@@ -883,7 +887,9 @@
           },
           "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": [],
+      "implicitDependencies": ["feeds-web", "feeds-core", "feeds-discover-ms", "feeds-fetch-ms"]
     },
     "feeds-web-login": {
       "root": "libs/feeds/web/login",
@@ -905,7 +911,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-web-new-feed": {
       "root": "libs/feeds/web/new-feed",
@@ -943,7 +950,8 @@
             "devServerTarget": ""
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-web-shared": {
       "root": "libs/feeds/web/shared",
@@ -965,7 +973,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "feeds-web-user-view": {
       "root": "libs/feeds/web/user-view",
@@ -987,7 +996,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "github-hooks": {
       "root": "libs/github-hooks",
@@ -1009,7 +1019,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "github-pipeline-status": {
       "root": "apps/github-pipeline-status",
@@ -1083,7 +1094,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "github-pipeline-status-e2e": {
       "root": "apps/github-pipeline-status-e2e",
@@ -1110,7 +1122,9 @@
           },
           "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": [],
+      "implicitDependencies": ["github-pipeline-status"]
     },
     "github-schema": {
       "root": "libs/github-schema",
@@ -1127,7 +1141,8 @@
           "executor": "./tools/executors:graphql-schema",
           "options": {}
         }
-      }
+      },
+      "tags": []
     },
     "hooks": {
       "root": "libs/hooks",
@@ -1149,7 +1164,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "quick-zoom": {
       "root": "apps/quick-zoom",
@@ -1223,7 +1239,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     },
     "quick-zoom-e2e": {
       "root": "apps/quick-zoom-e2e",
@@ -1250,7 +1267,9 @@
           },
           "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": [],
+      "implicitDependencies": ["quick-zoom"]
     },
     "suite": {
       "root": "apps/suite",
@@ -1331,7 +1350,9 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": [],
+      "implicitDependencies": ["dinner-plan"]
     },
     "suite-e2e": {
       "root": "apps/suite-e2e",
@@ -1358,7 +1379,9 @@
           },
           "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": [],
+      "implicitDependencies": ["suite"]
     }
   }
 }
