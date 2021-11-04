@@ -1,5 +1,5 @@
 import { mount } from '@cypress/react'
-import { MemoryRouter, Route } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 
 import { DinnerPlanStore } from '../store/dinner-plan.store'
 
@@ -7,13 +7,13 @@ import { Day } from './day'
 
 describe('Day', () => {
   const testCases = [
-    { day: 'Monday', dayOfWeek: 1 },
-    { day: 'Tuesday', dayOfWeek: 2 },
-    { day: 'Wednesday', dayOfWeek: 3 },
-    { day: 'Thursday', dayOfWeek: 4 },
-    { day: 'Friday', dayOfWeek: 5 },
-    { day: 'Saturday', dayOfWeek: 6 },
-    { day: 'Sunday', dayOfWeek: 7 },
+    { dayOfWeek: 1, day: 'Monday' },
+    { dayOfWeek: 2, day: 'Tuesday' },
+    { dayOfWeek: 3, day: 'Wednesday' },
+    { dayOfWeek: 4, day: 'Thursday' },
+    { dayOfWeek: 5, day: 'Friday' },
+    { dayOfWeek: 6, day: 'Saturday' },
+    { dayOfWeek: 7, day: 'Sunday' },
   ]
 
   testCases.forEach(({ day, dayOfWeek }) =>
@@ -21,9 +21,9 @@ describe('Day', () => {
       mount(
         <DinnerPlanStore>
           <MemoryRouter initialEntries={['/2021/01']}>
-            <Route exact={true} path={'/:year/:week'}>
-              <Day dayOfWeek={dayOfWeek} />
-            </Route>
+            <Routes>
+              <Route path={'/:year/:week'} element={<Day dayOfWeek={dayOfWeek} />} />
+            </Routes>
           </MemoryRouter>
         </DinnerPlanStore>,
       )

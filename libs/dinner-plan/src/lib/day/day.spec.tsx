@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter, Route } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 
 import { DinnerPlanStore } from '../store/dinner-plan.store'
 
@@ -12,20 +12,6 @@ describe('Day', () => {
 
   afterAll(() => {
     jest.useRealTimers()
-  })
-
-  it('should render successfully', () => {
-    const { baseElement } = render(
-      <DinnerPlanStore>
-        <MemoryRouter initialEntries={['/2021/01']}>
-          <Route exact={true} path={'/:year/:week'}>
-            <Day dayOfWeek={1} />
-          </Route>
-        </MemoryRouter>
-        ,
-      </DinnerPlanStore>,
-    )
-    expect(baseElement).toBeTruthy()
   })
 
   test.each`
@@ -44,9 +30,9 @@ describe('Day', () => {
     render(
       <DinnerPlanStore>
         <MemoryRouter initialEntries={['/2021/19']}>
-          <Route exact={true} path={'/:year/:week'}>
-            <Day dayOfWeek={weekday} isCurrentWeek={true} />
-          </Route>
+          <Routes>
+            <Route path={'/:year/:week'} element={<Day dayOfWeek={weekday} isCurrentWeek={true} />} />
+          </Routes>
         </MemoryRouter>
         ,
       </DinnerPlanStore>,
