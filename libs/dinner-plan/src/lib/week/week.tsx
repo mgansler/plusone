@@ -20,7 +20,7 @@ const useClassNames = makeStyles((theme) =>
 export function Week() {
   const classNames = useClassNames()
   const currentWeekNumber = getWeekOfYearFor(new Date())
-  const { week } = useParams<{ week: string }>()
+  const { week } = useParams<'week'>()
 
   const isCurrentWeek = Number(week) === currentWeekNumber
 

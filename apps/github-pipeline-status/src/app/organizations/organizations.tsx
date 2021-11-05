@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useQuery } from 'react-query'
-import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
+import { Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 import {
   createStyles,
   FormControl,
@@ -19,12 +19,9 @@ import { OrganizationsDocument, OrganizationsQuery } from '@plusone/github-schem
 import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryOverview } from '../repository-overview/repository-overview'
 
-const useOrganizationName = () => {
-  const match = useRouteMatch<{ organizationName: string }>({
-    strict: true,
-    path: '/organization/:organizationName',
-  })
-  return match ? match.params.organizationName : ''
+const useOrganizationName = (): string => {
+  const match = useMatch<'organizationName'>('/organization/:organizationName')
+  return match?.params.organizationName || ''
 }
 
 const PAGE_SIZE = 100
@@ -60,7 +57,7 @@ const useStyles = makeStyles((theme) =>
 export function Organizations() {
   const classNames = useStyles()
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const organizationName = useOrganizationName()
 
   const { data, isLoading } = useFetchOrganizations()
@@ -79,7 +76,7 @@ export function Organizations() {
           <Select
             labelId={'select-org-label'}
             value={organizationName}
-            onChange={(event) => history.push(`/organization/${event.target.value}`)}
+            onChange={(event) => navigate(`/organization/${event.target.value}`)}
           >
             {organizationName === '' && <MenuItem value="" />}
             {data.viewer.organizations.nodes.map((organization) => (
@@ -91,11 +88,10 @@ export function Organizations() {
         </FormControl>
       </Toolbar>
 
-      <Switch>
-        <Route exact={true} path={'/organization/:organizationName'}>
-          <RepositoryOverview toolbarRef={toolbar} />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path={'/'} element={null} />
+        <Route path={'/organization/:organizationName'} element={<RepositoryOverview toolbarRef={toolbar} />} />
+      </Routes>
     </Paper>
   )
 }

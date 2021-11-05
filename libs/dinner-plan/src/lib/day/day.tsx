@@ -22,7 +22,7 @@ export interface DayProps {
 
 export function Day({ dayOfWeek, isCurrentWeek }: DayProps) {
   const classNames = useClassNames()
-  const { year, week } = useParams<{ week: string; year: string }>()
+  const { year = '2020', week = '01' } = useParams<'week' | 'year'>()
 
   const isToday = isCurrentWeek && (new Date().getDay() || 7) === dayOfWeek
   const weekday = DAYS[dayOfWeek - 1]

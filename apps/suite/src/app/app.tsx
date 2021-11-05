@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Link as RouterLink, Route } from 'react-router-dom'
+import { Link as RouterLink, Route, Routes } from 'react-router-dom'
 import { AppBar, Breadcrumbs, CssBaseline, Link, Toolbar } from '@material-ui/core'
 
 import { DarkModeThemeProvider } from '@plusone/dark-mode-theme-provider'
@@ -23,14 +23,17 @@ function AppWithProviders() {
       </AppBar>
 
       <main>
-        <Route path={'/'} exact={true}>
-          <div>Homepage</div>
-        </Route>
-        <Route path={'/dinner-plan'}>
-          <Suspense fallback={<div>Loading...</div>}>
-            <DinnerPlan />
-          </Suspense>
-        </Route>
+        <Routes>
+          <Route path={'/'} element={<div>Homepage</div>} />
+          <Route
+            path={'/dinner-plan/*'}
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <DinnerPlan />
+              </Suspense>
+            }
+          />
+        </Routes>
       </main>
     </>
   )

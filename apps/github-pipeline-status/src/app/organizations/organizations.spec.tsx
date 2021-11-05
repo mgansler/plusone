@@ -7,10 +7,15 @@ import userEvent from '@testing-library/user-event'
 import { Organizations } from './organizations'
 
 jest.mock('../octokit-provider/octokit-provider')
+jest.mock('../repository-overview/repository-overview')
 
 describe('Organizations', () => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: 0, refetchOnWindowFocus: false } },
+  })
+
+  afterEach(() => {
+    queryClient.clear()
   })
 
   it('should render successfully with empty result', async () => {
@@ -35,7 +40,7 @@ describe('Organizations', () => {
 
     render(
       <QueryClientProvider client={queryClient}>
-        <MemoryRouter initialEntries={['/organizations/myorg']}>
+        <MemoryRouter>
           <Organizations />
         </MemoryRouter>
       </QueryClientProvider>,
@@ -54,7 +59,7 @@ describe('Organizations', () => {
           viewer: {
             organizations: {
               totalCount: 1,
-              nodes: [{ id: 'organization-id', name: 'organization-name' }],
+              nodes: [{ id: 'organization-id', login: 'organization-name', name: 'Organization Name' }],
               pageInfo: {
                 endCursor: 'cursor',
                 hasNextPage: false,
@@ -68,7 +73,7 @@ describe('Organizations', () => {
 
     render(
       <QueryClientProvider client={queryClient}>
-        <MemoryRouter initialEntries={['/organizations/myorg']}>
+        <MemoryRouter initialEntries={['/organization/organization-name']}>
           <Organizations />
         </MemoryRouter>
       </QueryClientProvider>,
@@ -80,6 +85,6 @@ describe('Organizations', () => {
 
     userEvent.click(screen.getByLabelText(/select organization/i))
 
-    expect(screen.getByText('organization-name')).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'Organization Name' })).toBeInTheDocument()
   })
 })

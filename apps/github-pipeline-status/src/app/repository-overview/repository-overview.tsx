@@ -1,5 +1,5 @@
 import React, { MutableRefObject, useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import {
   createStyles,
@@ -52,7 +52,7 @@ interface UseFetchRepositoryDataProps {
 }
 
 const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepositoryDataProps) => {
-  const history = useHistory()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const { pages, onSuccess, nextPage, prevPage, goToPage, getPageRequest } = useGitHubPagination(PAGE_SIZE)
 
@@ -70,11 +70,7 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
       refetchInterval: 5_000,
       refetchIntervalInBackground: true,
       onSuccess: (response) => {
-        const urlSearchParams = new URLSearchParams(history.location.search)
-        urlSearchParams.set('filter', queryString)
-        history.push({
-          search: urlSearchParams.toString(),
-        })
+        setSearchParams({ ...searchParams, filter: queryString })
         onSuccess(response.search.pageInfo, response.search.repositoryCount)
       },
     },
@@ -96,11 +92,9 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
   }
 
   // Get the request params
-  const { organizationName } = useParams<{ organizationName: string }>()
-  const history = useHistory()
-  const [queryString, setQueryString] = useState<string>(
-    () => new URLSearchParams(history.location.search).get('filter') || '',
-  )
+  const { organizationName } = useParams<'organizationName'>()
+  const [searchParams] = useSearchParams()
+  const [queryString, setQueryString] = useState<string>(() => searchParams.get('filter') || '')
   const [userFilter, setUserFilter] = useLocalStorage<UserFilter>({
     key: 'userDetailsFilter',
     defaultValue: 'all',
