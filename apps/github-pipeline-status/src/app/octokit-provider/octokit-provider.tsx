@@ -1,4 +1,4 @@
-import { createContext, FC, useContext, useMemo, useRef } from 'react'
+import { createContext, ReactNode, useContext, useMemo, useRef } from 'react'
 import { Octokit } from '@octokit/core'
 import { Button, TextField, Typography } from '@material-ui/core'
 
@@ -16,7 +16,7 @@ interface TokenInputProps {
   setToken: (value: string) => void
 }
 
-const TokenInput: FC<TokenInputProps> = ({ setToken }) => {
+function TokenInput({ setToken }: TokenInputProps) {
   const inputRef = useRef<HTMLInputElement>()
 
   const handleSubmit = () => {
@@ -64,7 +64,7 @@ const TokenInput: FC<TokenInputProps> = ({ setToken }) => {
   )
 }
 
-export const OctokitProvider: React.FC = ({ children }) => {
+export function OctokitProvider({ children }: { children: ReactNode }) {
   const [token, setToken, removeToken] = useLocalStorage<string>({
     key: 'github-personal-access-token',
   })
@@ -82,5 +82,22 @@ export const OctokitProvider: React.FC = ({ children }) => {
   return <OctokitContext.Provider value={{ octokit, logout: removeToken }}>{children}</OctokitContext.Provider>
 }
 
-export const useOctokit = () => useContext<Context>(OctokitContext).octokit
-export const useLogout = () => useContext<Context>(OctokitContext).logout
+export function useOctokit() {
+  const context = useContext<Context>(OctokitContext)
+
+  if (!context) {
+    throw new Error('useOctokit must be used within an OctokitProvider')
+  }
+
+  return context.octokit
+}
+
+export function useLogout() {
+  const context = useContext<Context>(OctokitContext)
+
+  if (!context) {
+    throw new Error('useOctokit must be used within an OctokitProvider')
+  }
+
+  return context.logout
+}

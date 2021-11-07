@@ -63,15 +63,19 @@ export default async function (tree: Tree, { project, video }: Schema) {
     }
     return value
   })
-  updateJson(tree, join(root, 'tsconfig.lib.json'), (value) => {
-    if (!value.exclude.includes('cypress/**')) {
-      value.exclude.unshift('cypress/**')
-    }
-    if (!value.exclude.includes('**/*.ct.tsx')) {
-      value.exclude.unshift('**/*.ct.tsx')
-    }
-    return value
-  })
+  updateJson(
+    tree,
+    join(root, projectConfiguration.projectType === 'library' ? 'tsconfig.lib.json' : 'tsconfig.app.json'),
+    (value) => {
+      if (!value.exclude.includes('cypress/**')) {
+        value.exclude.unshift('cypress/**')
+      }
+      if (!value.exclude.includes('**/*.ct.tsx')) {
+        value.exclude.unshift('**/*.ct.tsx')
+      }
+      return value
+    },
+  )
 
   // Add 'ct' and 'open-ct' targets in workspace.json
   projectConfiguration.targets = {

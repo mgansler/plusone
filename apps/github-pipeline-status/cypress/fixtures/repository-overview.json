@@ -1,0 +1,100 @@
+{
+  "data": {
+    "search": {
+      "repositoryCount": 2,
+      "pageInfo": {
+        "endCursor": "endCursor",
+        "hasNextPage": false,
+        "hasPreviousPage": false,
+        "startCursor": "startCursor"
+      },
+      "nodes": [
+        {
+          "name": "repo 1",
+          "id": "1",
+          "url": "http://localhost/repo-1",
+          "defaultBranchRef": {
+            "name": "main",
+            "target": {
+              "checkSuites": {
+                "nodes": [
+                  {
+                    "conclusion": "SUCCESS"
+                  }
+                ]
+              }
+            }
+          },
+          "pullRequests": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "id": 1,
+                "isDraft": false,
+                "mergeable": "MERGEABLE",
+                "number": 1,
+                "title": "my first pr",
+                "author": {
+                  "login": "testuser",
+                  "name": "Test User"
+                },
+                "url": "http://localhost/repo-1/pr/1",
+                "commits": {
+                  "totalCount": 1,
+                  "nodes": [
+                    {
+                      "commit": {
+                        "checkSuites": {
+                          "nodes": [
+                            {
+                              "conclusion": "SUCCESS"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                },
+                "headRef": {
+                  "name": "feature/1-my-first-branch"
+                },
+                "reviews": {
+                  "nodes": [
+                    {
+                      "author": {
+                        "login": "anotherUser",
+                        "name": "Another User"
+                      },
+                      "state": "CHANGES_REQUESTED"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "repo 2",
+          "id": "2",
+          "url": "http://localhost/repo-2",
+          "defaultBranchRef": {
+            "name": "develop",
+            "target": {
+              "checkSuites": {
+                "nodes": [
+                  {
+                    "conclusion": "NEUTRAL"
+                  }
+                ]
+              }
+            }
+          },
+          "pullRequests": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  }
+}
