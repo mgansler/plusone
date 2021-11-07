@@ -37,18 +37,9 @@ describe('Organizations', () => {
     cy.wait('@fetch')
   })
 
-  it.only('should render successfully with an entry', () => {
-    cy.intercept('POST', 'https://api.github.com/graphql', (req) => {
-      if (req.body.hasOwnProperty('query') && req.body.query.includes('Organizations')) {
-        req.alias = 'organizations'
-        req.reply({ fixture: 'organizations.entry.json' })
-      }
-
-      if (req.body.hasOwnProperty('query') && req.body.query.includes('RepositoryOverview')) {
-        req.alias = 'repository-overview'
-        req.reply({ fixture: 'repository-overview.json' })
-      }
-    })
+  it('should render successfully with an entry', () => {
+    cy.graphql({ queryIncludes: 'Organizations', fixture: 'organizations.entry.json' }).as('organizations')
+    cy.graphql({ queryIncludes: 'RepositoryOverview', fixture: 'repository-overview.json' }).as('repository-overview')
 
     mount(
       <BrowserRouter>
