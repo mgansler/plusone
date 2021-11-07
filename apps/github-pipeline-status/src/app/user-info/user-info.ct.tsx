@@ -19,7 +19,7 @@ describe('UserInfo', () => {
   })
 
   it('should show the user name', () => {
-    cy.intercept('POST', '/graphql', { fixture: 'user-info.name.json' })
+    cy.intercept('POST', 'https://api.github.com/graphql', { fixture: 'user-info.name.json' }).as('fetch')
 
     mount(
       <QueryClientProvider client={queryClient}>
@@ -29,11 +29,12 @@ describe('UserInfo', () => {
       </QueryClientProvider>,
     )
 
+    cy.wait('@fetch')
     cy.findByText('Test User').should('be.visible')
   })
 
   it('should fall back to user login', () => {
-    cy.intercept('POST', '/graphql', { fixture: 'user-info.login.json' })
+    cy.intercept('POST', '/graphql', { fixture: 'user-info.login.json' }).as('fetch')
 
     mount(
       <QueryClientProvider client={queryClient}>
@@ -43,6 +44,7 @@ describe('UserInfo', () => {
       </QueryClientProvider>,
     )
 
+    cy.wait('@fetch')
     cy.findByText('testuser').should('be.visible')
   })
 })
