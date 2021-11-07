@@ -1,5 +1,9 @@
-declare namespace Cypress {
-  interface Chainable<Subject = any> {
-    graphql({ queryIncludes: string, fixture: string }): Chainable<null>
+import { Options } from './commands'
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      graphql(fixture: string, options?: Options): Chainable<null>
+    }
   }
 }

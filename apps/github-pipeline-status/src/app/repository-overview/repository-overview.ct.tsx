@@ -21,9 +21,7 @@ describe('RepositoryOverview', () => {
   })
 
   it('should fetch data and render successfully', () => {
-    cy.intercept('POST', 'https://api.github.com/graphql', {
-      fixture: 'repository-overview.json',
-    }).as('fetch')
+    cy.graphql('repository-overview.json').as('fetch')
 
     const toolbarRef = createRef<HTMLDivElement>()
 

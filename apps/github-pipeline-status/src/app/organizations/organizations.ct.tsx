@@ -20,9 +20,7 @@ describe('Organizations', () => {
   })
 
   it('should render successfully with an empty result', () => {
-    cy.intercept('POST', 'https://api.github.com/graphql', {
-      fixture: 'organizations.empty.json',
-    }).as('fetch')
+    cy.graphql('organizations.empty.json').as('fetch')
 
     mount(
       <BrowserRouter>
@@ -38,8 +36,8 @@ describe('Organizations', () => {
   })
 
   it('should render successfully with an entry', () => {
-    cy.graphql({ queryIncludes: 'Organizations', fixture: 'organizations.entry.json' }).as('organizations')
-    cy.graphql({ queryIncludes: 'RepositoryOverview', fixture: 'repository-overview.json' }).as('repository-overview')
+    cy.graphql('organizations.entry.json', { filter: 'Organizations' }).as('organizations')
+    cy.graphql('repository-overview.json', { filter: 'RepositoryOverview' }).as('repository-overview')
 
     mount(
       <BrowserRouter>
