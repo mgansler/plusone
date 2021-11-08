@@ -3,7 +3,7 @@ import { useQueryClient } from 'react-query'
 
 import { useLocalStorage } from '@plusone/hooks'
 
-import { FeedsWebLogin } from './feeds-web-login'
+import { LoginForm } from './login-form'
 import { useFetchProfile } from './use-fetch-profile'
 import { Token, User } from './types'
 
@@ -38,7 +38,7 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
   }
 
   if (!user || !token) {
-    return <FeedsWebLogin setToken={setToken} />
+    return <LoginForm setToken={setToken} />
   }
 
   return <Context.Provider value={value} children={children} />

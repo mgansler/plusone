@@ -13,6 +13,14 @@
     {
       "files": ["*.js", "*.jsx"],
       "rules": {}
+    },
+    {
+      "files": ["*.ct.jsx", "*.ct.tsx"],
+      "rules": {
+        "testing-library/await-async-utils": "off",
+        "testing-library/await-async-query": "off",
+        "testing-library/prefer-screen-queries": "off"
+      }
     }
   ]
 }

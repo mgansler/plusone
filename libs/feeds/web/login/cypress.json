@@ -1,0 +1,14 @@
+{
+  "pluginsFile": "./cypress/plugins/index",
+  "supportFile": "./cypress/support/index.ts",
+  "video": false,
+  "videosFolder": "../../../../dist/cypress/libs/feeds/web/login/videos",
+  "screenshotsFolder": "../../../../dist/cypress/libs/feeds/web/login/screenshots",
+  "component": {
+    "componentFolder": "./src/",
+    "testFiles": "**/*.ct.{js,jsx,ts,tsx}"
+  },
+  "env": {
+    "tsConfig": "./tsconfig.ct.json"
+  }
+}
