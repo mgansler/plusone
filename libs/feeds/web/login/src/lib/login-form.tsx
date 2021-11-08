@@ -93,7 +93,7 @@ export interface FeedsWebLoginProps {
   setToken: (newToken: string) => void
 }
 
-export function FeedsWebLogin({ setToken }: FeedsWebLoginProps) {
+export function LoginForm({ setToken }: FeedsWebLoginProps) {
   const classNames = useClassNames()
 
   const [activeTab, setActiveTab] = useState<ActiveTab>(ActiveTab.Login)
