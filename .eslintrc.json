@@ -29,7 +29,7 @@
         "import/no-unresolved": [
           "error",
           {
-            "ignore": ["^@plusone/.*$"]
+            "ignore": ["^@plusone/.*$", "@mgansler/cypress-graphql"]
           }
         ],
         "import/order": [
@@ -39,6 +39,11 @@
             "pathGroups": [
               {
                 "pattern": "@plusone/**",
+                "group": "external",
+                "position": "after"
+              },
+              {
+                "pattern": "@mgansler/**",
                 "group": "external",
                 "position": "after"
               }

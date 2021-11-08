@@ -1,4 +1,4 @@
-import { Options } from './commands'
+import { Options } from './lib/cypress-graphql'
 
 declare global {
   namespace Cypress {
@@ -7,3 +7,5 @@ declare global {
     }
   }
 }
+
+export * from './lib/cypress-graphql'
