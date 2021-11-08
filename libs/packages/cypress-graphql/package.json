@@ -1,4 +1,23 @@
 {
   "name": "@mgansler/cypress-graphql",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "description": "Simplify intercepting GraphQL calls with cypress.",
+  "devDependencies": {
+    "cypress": "^8.7.0"
+  },
+  "peerDependencies": {
+    "cypress": "^8.0.0"
+  },
+  "keywords": [
+    "testing",
+    "cypress",
+    "graphql"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mgansler/plusone"
+  },
+  "bugs": {
+    "url": "https://github.com/mgansler/plusone/issues"
+  }
 }
