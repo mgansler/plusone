@@ -58,4 +58,4 @@ jobs:
 
       - name: ${{ matrix.target }}
         timeout-minutes: 15
-        run: yarn nx affected --base=origin/main --target=${{ matrix.target }}
+        run: yarn nx affected --base=origin/main --target=${{ matrix.target }} --parallel=1
