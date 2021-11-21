@@ -1,0 +1,39 @@
+{
+  "root": "libs/dinner-plan",
+  "sourceRoot": "libs/dinner-plan/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/dinner-plan/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/dinner-plan"],
+      "options": {
+        "jestConfig": "libs/dinner-plan/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "ct": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "testingType": "component",
+        "cypressConfig": "libs/dinner-plan/cypress.json",
+        "tsConfig": "libs/dinner-plan/tsconfig.ct.json",
+        "devServerTarget": ""
+      }
+    },
+    "open-ct": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "cypress open-ct",
+        "cwd": "libs/dinner-plan"
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,29 @@
+{
+  "root": "libs/feeds/backend/feed",
+  "sourceRoot": "libs/feeds/backend/feed/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/feeds/backend/feed/**/*.ts"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/feeds/backend/feed"],
+      "options": {
+        "jestConfig": "libs/feeds/backend/feed/jest.config.js",
+        "passWithNoTests": true
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "dependencies"
+        }
+      ]
+    }
+  },
+  "tags": []
+}

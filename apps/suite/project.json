@@ -1,0 +1,83 @@
+{
+  "root": "apps/suite",
+  "sourceRoot": "apps/suite/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/suite",
+        "index": "apps/suite/src/index.html",
+        "main": "apps/suite/src/main.tsx",
+        "polyfills": "apps/suite/src/polyfills.ts",
+        "tsConfig": "apps/suite/tsconfig.app.json",
+        "assets": ["apps/suite/src/favicon.ico", "apps/suite/src/assets"],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/suite/src/environments/environment.ts",
+              "with": "apps/suite/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "extractCss": true,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            }
+          ]
+        }
+      }
+    },
+    "docker": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "commands": ["docker build -f apps/suite/Dockerfile -t suite ."]
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "suite:build",
+        "hmr": false
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "suite:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/suite/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/suite"],
+      "options": {
+        "jestConfig": "apps/suite/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["dinner-plan"]
+}

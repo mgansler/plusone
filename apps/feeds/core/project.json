@@ -1,0 +1,90 @@
+{
+  "root": "apps/feeds/core",
+  "sourceRoot": "apps/feeds/core/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/feeds/core",
+        "main": "apps/feeds/core/src/main.ts",
+        "generatePackageJson": true,
+        "tsConfig": "apps/feeds/core/tsconfig.app.json",
+        "webpackConfig": "apps/feeds/core/webpack.config.js",
+        "assets": [
+          "apps/feeds/core/src/assets",
+          {
+            "input": "libs/feeds/backend/persistence/src/lib/client",
+            "glob": "schema.prisma",
+            "output": ""
+          },
+          {
+            "input": "libs/feeds/backend/persistence/src/lib/",
+            "glob": "migrations",
+            "output": "migrations"
+          },
+          {
+            "input": "libs/feeds/backend/persistence/src/lib/client",
+            "glob": "libquery_engine-linux-musl*",
+            "output": ""
+          }
+        ]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/feeds/core/src/environments/environment.ts",
+              "with": "apps/feeds/core/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "dependencies"
+        }
+      ]
+    },
+    "serve": {
+      "executor": "@nrwl/node:execute",
+      "options": {
+        "buildTarget": "feeds-core:build",
+        "waitUntilTargets": ["feeds-backend-persistence:generate"]
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "dependencies"
+        }
+      ]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/feeds/core/**/*.ts"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/feeds/core"],
+      "options": {
+        "jestConfig": "apps/feeds/core/jest.config.js",
+        "passWithNoTests": true
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "dependencies"
+        }
+      ]
+    }
+  },
+  "tags": []
+}

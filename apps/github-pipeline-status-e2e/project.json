@@ -1,0 +1,29 @@
+{
+  "root": "apps/github-pipeline-status-e2e",
+  "sourceRoot": "apps/github-pipeline-status-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/github-pipeline-status-e2e/cypress.json",
+        "tsConfig": "apps/github-pipeline-status-e2e/tsconfig.e2e.json",
+        "devServerTarget": "github-pipeline-status:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "github-pipeline-status:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/github-pipeline-status-e2e/**/*.{js,ts}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["github-pipeline-status"]
+}
