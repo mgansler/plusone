@@ -1,0 +1,56 @@
+{
+  "projectType": "application",
+  "root": "apps/feeds/spring-backend",
+  "sourceRoot": "apps/feeds/spring-backend/src",
+  "targets": {
+    "run": {
+      "executor": "@nxrocks/nx-spring-boot:run",
+      "options": {
+        "root": "apps/feeds/spring-backend"
+      }
+    },
+    "serve": {
+      "executor": "@nxrocks/nx-spring-boot:serve",
+      "options": {
+        "root": "apps/feeds/spring-backend"
+      }
+    },
+    "skip-test": {
+      "executor": "@nxrocks/nx-spring-boot:test",
+      "options": {
+        "root": "apps/feeds/spring-backend"
+      }
+    },
+    "clean": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "options": {
+        "root": "apps/feeds/spring-backend"
+      }
+    },
+    "buildJar": {
+      "executor": "@nxrocks/nx-spring-boot:buildJar",
+      "options": {
+        "root": "apps/feeds/spring-backend"
+      }
+    },
+    "buildWar": {
+      "executor": "@nxrocks/nx-spring-boot:buildWar",
+      "options": {
+        "root": "apps/feeds/spring-backend"
+      }
+    },
+    "buildImage": {
+      "executor": "@nxrocks/nx-spring-boot:buildImage",
+      "options": {
+        "root": "apps/feeds/spring-backend"
+      }
+    },
+    "buildInfo": {
+      "executor": "@nxrocks/nx-spring-boot:buildInfo",
+      "options": {
+        "root": "apps/feeds/spring-backend"
+      }
+    }
+  },
+  "tags": []
+}

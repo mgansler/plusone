@@ -1,0 +1,18 @@
+{
+  "root": "libs/github-schema",
+  "sourceRoot": "libs/github-schema/src",
+  "projectType": "library",
+  "targets": {
+    "download": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "curl https://docs.github.com/public/schema.docs.graphql -o libs/github-schema/src/schema.graphql"
+      }
+    },
+    "graphql-schema": {
+      "executor": "./tools/executors:graphql-schema",
+      "options": {}
+    }
+  },
+  "tags": []
+}

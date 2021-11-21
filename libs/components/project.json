@@ -1,0 +1,39 @@
+{
+  "root": "libs/components",
+  "sourceRoot": "libs/components/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/components/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/components"],
+      "options": {
+        "jestConfig": "libs/components/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "ct": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "testingType": "component",
+        "cypressConfig": "libs/components/cypress.json",
+        "tsConfig": "libs/components/tsconfig.ct.json",
+        "devServerTarget": ""
+      }
+    },
+    "open-ct": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "cypress open-ct",
+        "cwd": "libs/components"
+      }
+    }
+  },
+  "tags": []
+}

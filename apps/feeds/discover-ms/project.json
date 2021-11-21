@@ -1,0 +1,53 @@
+{
+  "root": "apps/feeds/discover-ms",
+  "sourceRoot": "apps/feeds/discover-ms/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/feeds/discover-ms",
+        "main": "apps/feeds/discover-ms/src/main.ts",
+        "generatePackageJson": true,
+        "tsConfig": "apps/feeds/discover-ms/tsconfig.app.json",
+        "assets": ["apps/feeds/discover-ms/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/feeds/discover-ms/src/environments/environment.ts",
+              "with": "apps/feeds/discover-ms/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:execute",
+      "options": {
+        "buildTarget": "feeds-discover-ms:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/feeds/discover-ms/**/*.ts"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/feeds/discover-ms"],
+      "options": {
+        "jestConfig": "apps/feeds/discover-ms/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

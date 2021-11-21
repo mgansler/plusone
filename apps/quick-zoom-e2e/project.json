@@ -1,0 +1,29 @@
+{
+  "root": "apps/quick-zoom-e2e",
+  "sourceRoot": "apps/quick-zoom-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/quick-zoom-e2e/cypress.json",
+        "tsConfig": "apps/quick-zoom-e2e/tsconfig.e2e.json",
+        "devServerTarget": "quick-zoom:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "quick-zoom:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/quick-zoom-e2e/**/*.{js,ts}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["quick-zoom"]
+}

@@ -1,0 +1,91 @@
+{
+  "root": "apps/github-pipeline-status",
+  "sourceRoot": "apps/github-pipeline-status/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/github-pipeline-status",
+        "index": "apps/github-pipeline-status/src/index.html",
+        "main": "apps/github-pipeline-status/src/main.tsx",
+        "polyfills": "apps/github-pipeline-status/src/polyfills.ts",
+        "tsConfig": "apps/github-pipeline-status/tsconfig.app.json",
+        "assets": ["apps/github-pipeline-status/src/favicon.ico", "apps/github-pipeline-status/src/assets"],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/github-pipeline-status/src/environments/environment.ts",
+              "with": "apps/github-pipeline-status/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "extractCss": true,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "github-pipeline-status:build",
+        "hmr": false
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "github-pipeline-status:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/github-pipeline-status/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/github-pipeline-status"],
+      "options": {
+        "jestConfig": "apps/github-pipeline-status/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "open-ct": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "cypress open-ct",
+        "cwd": "apps/github-pipeline-status"
+      }
+    },
+    "ct": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "testingType": "component",
+        "cypressConfig": "apps/github-pipeline-status/cypress.json",
+        "tsConfig": "apps/github-pipeline-status/tsconfig.ct.json",
+        "devServerTarget": ""
+      }
+    }
+  },
+  "tags": []
+}

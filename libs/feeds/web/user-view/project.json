@@ -1,0 +1,23 @@
+{
+  "root": "libs/feeds/web/user-view",
+  "sourceRoot": "libs/feeds/web/user-view/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/feeds/web/user-view/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/feeds/web/user-view"],
+      "options": {
+        "jestConfig": "libs/feeds/web/user-view/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

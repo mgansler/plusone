@@ -1,0 +1,33 @@
+{
+  "root": "libs/packages/cypress-graphql",
+  "sourceRoot": "libs/packages/cypress-graphql/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/workspace:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/packages/cypress-graphql",
+        "main": "libs/packages/cypress-graphql/src/index.ts",
+        "tsConfig": "libs/packages/cypress-graphql/tsconfig.lib.json",
+        "assets": ["libs/packages/cypress-graphql/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/packages/cypress-graphql/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/packages/cypress-graphql"],
+      "options": {
+        "jestConfig": "libs/packages/cypress-graphql/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
