@@ -1,16 +1,5 @@
 image: node:16-alpine
 
-feeds:prepare:
-  stage: prepare
-  tags:
-    - docker
-  script:
-    - yarn prisma generate --schema libs/feeds/backend/persistence/src/lib/schema.prisma
-  artifacts:
-    paths:
-      - libs/feeds/backend/persistence/src/lib/client
-    expire_in: 1 hour
-
 feeds:test:
   services:
     - docker:dind
@@ -19,8 +8,6 @@ feeds:test:
     DOCKER_TLS_CERTDIR: ''
     DOCKER_DRIVER: overlay2
   stage: test
-  needs:
-    - feeds:prepare
   tags:
     - docker
   script:
@@ -35,8 +22,6 @@ feeds:test:
 
 feeds:ct:
   stage: test
-  needs:
-    - feeds:prepare
   tags:
     - docker
   image: cypress/browsers:node14.17.0-chrome91-ff89
@@ -46,8 +31,6 @@ feeds:ct:
 
 feeds:build:
   stage: build
-  needs:
-    - feeds:prepare
   tags:
     - docker
   only:

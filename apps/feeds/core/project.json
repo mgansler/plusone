@@ -43,14 +43,26 @@
             }
           ]
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "dependencies"
+        }
+      ]
     },
     "serve": {
       "executor": "@nrwl/node:execute",
       "options": {
         "buildTarget": "feeds-core:build",
         "waitUntilTargets": ["feeds-backend-persistence:generate"]
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "dependencies"
+        }
+      ]
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
@@ -65,7 +77,13 @@
       "options": {
         "jestConfig": "apps/feeds/core/jest.config.js",
         "passWithNoTests": true
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "dependencies"
+        }
+      ]
     }
   },
   "tags": []
