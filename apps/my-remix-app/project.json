@@ -1,0 +1,37 @@
+{
+  "root": "apps/my-remix-app",
+  "sourceRoot": "apps/my-remix-app/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "remix build",
+        "cwd": "apps/my-remix-app"
+      }
+    },
+    "serve": {
+      "executor": "./tools/executors:remix-dev",
+      "options": {
+        "command": "remix dev",
+        "cwd": "apps/my-remix-app"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/my-remix-app/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/my-remix-app"],
+      "options": {
+        "jestConfig": "apps/my-remix-app/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
