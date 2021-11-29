@@ -1,0 +1,76 @@
+{
+  "root": "libs/plugins/nx-remix",
+  "sourceRoot": "libs/plugins/nx-remix/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/plugins/nx-remix/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/plugins/nx-remix"],
+      "options": {
+        "jestConfig": "libs/plugins/nx-remix/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/plugins/nx-remix",
+        "tsConfig": "libs/plugins/nx-remix/tsconfig.lib.json",
+        "packageJson": "libs/plugins/nx-remix/package.json",
+        "main": "libs/plugins/nx-remix/src/index.ts",
+        "assets": [
+          "libs/plugins/nx-remix/*.md",
+          {
+            "input": "./libs/plugins/nx-remix/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/plugins/nx-remix/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/plugins/nx-remix",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./libs/plugins/nx-remix",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "link": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["cd dist/libs/plugins/nx-remix && yarn link", "yarn link @mgansler/nx-remix"],
+        "parallel": false
+      },
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "self"
+        }
+      ]
+    },
+    "unlink": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["yarn unlink @mgansler/nx-remix", "yarn install --force"],
+        "parallel": false
+      }
+    }
+  },
+  "tags": []
+}

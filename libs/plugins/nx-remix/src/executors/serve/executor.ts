@@ -1,14 +1,14 @@
 import { spawn } from 'child_process'
-import path = require('path')
+import * as path from 'path'
 
 import { ExecutorContext } from '@nrwl/devkit'
 import { map, Observable } from 'rxjs'
 import { eachValueFrom } from 'rxjs-for-await'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-type Schema = {}
+type ServeSchema = {}
 
-export default async function* (schema: Schema, context: ExecutorContext) {
+export default async function* runExecutor(options: ServeSchema, context: ExecutorContext) {
   const projectRoot = context.root
   const targetRoot = context.workspace.projects[context.projectName].root
 

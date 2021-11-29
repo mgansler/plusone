@@ -11,11 +11,7 @@
       }
     },
     "serve": {
-      "executor": "./tools/executors:remix-dev",
-      "options": {
-        "command": "remix dev",
-        "cwd": "apps/my-remix-app"
-      }
+      "executor": "@mgansler/nx-remix:serve"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
