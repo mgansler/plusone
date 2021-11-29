@@ -2965,6 +2965,15 @@
     prop-types "^15.7.2"
     react-is "^16.8.0 || ^17.0.0"
 
+"@mgansler/nx-remix@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@mgansler/nx-remix/-/nx-remix-0.0.2.tgz#b58f8f7930e00e6a8e3bd48a6d5e06391b91f9cc"
+  integrity sha512-2Gk3rzzrsRqFmtkMye89TIdKcuv4/+3U/fA2kJaZz7havx3gYuP3/Co8OZa2RSdefbS5XDKVO+hV+Ek14ycB1Q==
+  dependencies:
+    "@nrwl/devkit" "13.2.3"
+    rxjs "~7.4.0"
+    rxjs-for-await "^1.0.0"
+
 "@n1ru4l/graphql-live-query@0.9.0":
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-live-query/-/graphql-live-query-0.9.0.tgz#defaebdd31f625bee49e6745934f36312532b2bc"
@@ -3233,6 +3242,20 @@
     webpack "^5.58.1"
     webpack-merge "^5.8.0"
     webpack-node-externals "^3.0.0"
+
+"@nrwl/nx-plugin@^13.2.3":
+  version "13.2.3"
+  resolved "https://registry.yarnpkg.com/@nrwl/nx-plugin/-/nx-plugin-13.2.3.tgz#da01bbea9a21235a7175b4237eb454c3a7af9d37"
+  integrity sha512-xYpkcR1ff5Z5L20Da3KyHl9V32Kts8CvVrnNmS/+w9cv4NQ73qzBsS4ko0BkpNoyNgG+l8B3IezoCXJB/nOh1A==
+  dependencies:
+    "@nrwl/devkit" "13.2.3"
+    "@nrwl/jest" "13.2.3"
+    "@nrwl/linter" "13.2.3"
+    "@nrwl/node" "13.2.3"
+    fs-extra "^9.1.0"
+    rxjs "^6.5.4"
+    tslib "^2.3.0"
+    yargs "15.4.1"
 
 "@nrwl/react@13.2.3":
   version "13.2.3"
