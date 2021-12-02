@@ -1,0 +1,17 @@
+version: '3'
+
+networks:
+  traefik:
+    external:
+      name: traefik
+
+services:
+  web:
+    image: ${AOC21_DOCKER_IMAGE}
+    networks:
+      - traefik
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik
+      traefik.default.port: 3000
+      traefik.default.frontend.rule: 'Host:aoc-21.martingansler.de'
