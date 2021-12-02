@@ -12,6 +12,10 @@
       "implementation": "./prisma/generate.impl",
       "schema": "./prisma/generate.json"
     },
+    "remix-dev": {
+      "implementation": "./remix-dev/remix-dev.impl",
+      "schema": "./remix-dev/schema.json"
+    },
     "typeorm-generate-migration": {
       "implementation": "./typeorm/generate.impl",
       "schema": "./typeorm/generate.json"
