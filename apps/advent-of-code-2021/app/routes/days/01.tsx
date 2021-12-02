@@ -3,18 +3,27 @@ import { Form, json, useActionData } from 'remix'
 
 type ActionResponse = {
   partOne: number
+  partTwo: number
 }
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
   const input = (formData.get('input') as string).split('\r\n')
+  const values = input.map((val) => parseInt(val))
 
   let partOne = 0
-  for (let i = 0; i < input.length - 1; i++) {
-    if (parseInt(input[i]) < parseInt(input[i + 1])) partOne++
+  for (let i = 0; i < values.length - 1; i++) {
+    if (values[i] < values[i + 1]) partOne++
   }
 
-  return json({ partOne })
+  let partTwo = 0
+  for (let i = 0; i < values.length - 3; i++) {
+    const firstWindow = values[i] + values[i + 1] + values[i + 2]
+    const secondWindow = values[i + 1] + values[i + 2] + values[i + 3]
+    if (firstWindow < secondWindow) partTwo++
+  }
+
+  return json({ partOne, partTwo })
 }
 
 export default function () {
@@ -32,6 +41,7 @@ export default function () {
         <button>Solution!</button>
       </Form>
       {result?.partOne ? <div>Solution (Part 1): {result.partOne}</div> : null}
+      {result?.partTwo ? <div>Solution (Part 2): {result.partTwo}</div> : null}
     </div>
   )
 }
