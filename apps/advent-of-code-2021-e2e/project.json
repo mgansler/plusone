@@ -1,0 +1,28 @@
+{
+  "root": "apps/advent-of-code-2021-e2e",
+  "sourceRoot": "apps/advent-of-code-2021-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/advent-of-code-2021-e2e/cypress.json",
+        "devServerTarget": "advent-of-code-2021:serve"
+      },
+      "configurations": {
+        "watch": {
+          "devServerTarget": ""
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/advent-of-code-2021-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["advent-of-code-2021"]
+}
