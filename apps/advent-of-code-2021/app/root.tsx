@@ -8,7 +8,7 @@ export const links: LinksFunction = () => {
 }
 
 export default function Root() {
-  const days = ['01']
+  const days = ['01', '02']
 
   return (
     <html lang={'en'}>
