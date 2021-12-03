@@ -1,12 +1,67 @@
 import { ActionFunction, Form, json, useActionData } from 'remix'
 
-type ActionResponse = number
+function foo(x: number[][], position: number) {
+  const ones: number[][] = []
+  const zeros: number[][] = []
+
+  for (let i = 0; i < x.length; i++) {
+    if (x[i][position] === 0) {
+      zeros.push(x[i])
+    } else {
+      ones.push(x[i])
+    }
+  }
+
+  return { ones, zeros }
+}
+
+function findMostCommon(x: number[][], position: number): number[] {
+  if (position >= x[0].length || x.length === 1) {
+    return x[0]
+  }
+
+  const { ones, zeros } = foo(x, position)
+
+  return findMostCommon(zeros.length > ones.length ? zeros : ones, position + 1)
+}
+
+function findLeastCommon(x: number[][], position: number): number[] {
+  if (position >= x[0].length || x.length === 1) {
+    return x[0]
+  }
+
+  const { ones, zeros } = foo(x, position)
+
+  return findLeastCommon(zeros.length <= ones.length ? zeros : ones, position + 1)
+}
+
+function binToInt(bin: number[]): number {
+  return bin.reduce(
+    (previousValue, currentValue, currentIndex) => previousValue + currentValue * 2 ** (bin.length - currentIndex - 1),
+    0,
+  )
+}
+
+type ActionResponse = {
+  partOne: number
+  partTwo: number
+}
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
   const input = (formData.get('input') as string).split('\r\n')
 
   const mappedInput = input.map((value) => [...value].map((x) => (x === '0' ? -1 : 1)))
   const numberDigits = mappedInput[0].length
+
+  const mostCommon = findMostCommon(
+    input.map((value) => [...value].map((x) => parseInt(x))),
+    0,
+  )
+  const leastCommon = findLeastCommon(
+    input.map((value) => [...value].map((x) => parseInt(x))),
+    0,
+  )
+  console.log({ mostCommon, leastCommon })
 
   const res = (
     mappedInput
@@ -18,7 +73,7 @@ export const action: ActionFunction = async ({ request }) => {
     return previousValue + currentValue * 2 ** (numberDigits - 1 - currentIndex)
   }, 0)
 
-  return json(res * (res ^ (2 ** numberDigits - 1)))
+  return json({ partOne: res * (res ^ (2 ** numberDigits - 1)), partTwo: binToInt(mostCommon) * binToInt(leastCommon) })
 }
 
 export default function () {
@@ -35,7 +90,8 @@ export default function () {
         <br />
         <button>Solution!</button>
       </Form>
-      {result !== undefined ? <div>Solution (Part 1): {result}</div> : null}
+      {result !== undefined ? <div>Solution (Part 1): {result.partOne}</div> : null}
+      {result !== undefined ? <div>Solution (Part 2): {result.partTwo}</div> : null}
     </div>
   )
 }
