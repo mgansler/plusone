@@ -5,15 +5,13 @@ import { ExecutorContext } from '@nrwl/devkit'
 import { map, Observable } from 'rxjs'
 import { eachValueFrom } from 'rxjs-for-await'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type ServeSchema = {}
+type ServeSchema = {
+  port: number
+}
 
 export default async function* runExecutor(options: ServeSchema, context: ExecutorContext) {
-  const projectRoot = context.root
-  const targetRoot = context.workspace.projects[context.projectName].root
-
   return yield* eachValueFrom(
-    runRemixDevServer(projectRoot, targetRoot).pipe(
+    runRemixDevServer(options, context).pipe(
       map(({ baseUrl }) => ({
         success: true,
         baseUrl,
@@ -22,10 +20,17 @@ export default async function* runExecutor(options: ServeSchema, context: Execut
   )
 }
 
-function runRemixDevServer(projectRoot, targetRoot) {
+function runRemixDevServer(options: ServeSchema, context: ExecutorContext) {
+  const projectRoot = context.root
+  const targetRoot = context.workspace.projects[context.projectName].root
+
   return new Observable((subscriber) => {
     const remixDev = spawn(path.join(projectRoot, 'node_modules/.bin/remix'), {
       cwd: path.join(projectRoot, targetRoot),
+      env: {
+        ...process.env,
+        PORT: options.port.toString(),
+      },
     })
 
     remixDev.stdout.on('data', (data) => {

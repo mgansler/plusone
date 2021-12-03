@@ -3,15 +3,33 @@
   "sourceRoot": "apps/advent-of-code-2021/src",
   "projectType": "application",
   "targets": {
+    "clean": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "rm -rf apps/advent-of-code-2021/build apps/advent-of-code-2021/public/build"
+      },
+      "configurations": {
+        "production": {}
+      }
+    },
     "build": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "command": "remix build",
         "cwd": "apps/advent-of-code-2021"
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "clean",
+          "projects": "self"
+        }
+      ]
     },
     "serve": {
-      "executor": "@mgansler/nx-remix:serve"
+      "executor": "@mgansler/nx-remix:serve",
+      "options": {
+        "port": 3000
+      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
