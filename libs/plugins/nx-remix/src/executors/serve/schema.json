@@ -4,6 +4,11 @@
   "title": "Remix serve executor",
   "description": "",
   "type": "object",
-  "properties": {},
+  "properties": {
+    "port": {
+      "type": "number",
+      "default": 3000
+    }
+  },
   "required": []
 }
