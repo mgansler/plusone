@@ -80,8 +80,7 @@ export default function () {
   const result = useActionData<ActionResponse>()
 
   return (
-    <div>
-      <h2>Day 3</h2>
+    <>
       <Form method={'post'}>
         <label>
           <div>Input:</div>
@@ -92,6 +91,6 @@ export default function () {
       </Form>
       {result !== undefined ? <div>Solution (Part 1): {result.partOne}</div> : null}
       {result !== undefined ? <div>Solution (Part 2): {result.partTwo}</div> : null}
-    </div>
+    </>
   )
 }

@@ -56,8 +56,7 @@ export default function () {
   const result = useActionData<ActionResponse>()
 
   return (
-    <div>
-      <h2>Day 2</h2>
+    <>
       <Form method={'post'}>
         <label>
           <div>Input:</div>
@@ -70,6 +69,6 @@ export default function () {
       {result?.partTwo ? (
         <div>Solution (Part 2): {result.partTwo.horizontalPosition * result.partTwo.depth}</div>
       ) : null}
-    </div>
+    </>
   )
 }
