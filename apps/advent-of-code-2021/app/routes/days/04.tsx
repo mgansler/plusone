@@ -81,6 +81,8 @@ function drawsToWin(board: Board, drawn: number[]): number {
 type ActionResponse = {
   winningNumber: number
   winningSum: number
+  loosingNumber: number
+  loosingSum: number
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -92,14 +94,20 @@ export const action: ActionFunction = async ({ request }) => {
 
   const numberOfDrawsToWin = boards.map((board) => drawsToWin(board, drawn))
   const earliestWin = Math.min(...numberOfDrawsToWin)
+  const latestWin = Math.max(...numberOfDrawsToWin)
   const winningBoard = boards[numberOfDrawsToWin.indexOf(earliestWin)]
+  const loosingBoard = boards[numberOfDrawsToWin.indexOf(latestWin)]
 
   const winningDrawSequence = drawn.slice(0, earliestWin + 1)
+  const loosingDrawSequence = drawn.slice(0, latestWin + 1)
 
   const winningNumber = drawn[earliestWin]
   const winningSum = winningBoardSum(winningBoard, winningDrawSequence)
 
-  return json({ winningNumber, winningSum })
+  const loosingNumber = drawn[latestWin]
+  const loosingSum = winningBoardSum(loosingBoard, loosingDrawSequence)
+
+  return json({ winningNumber, winningSum, loosingNumber, loosingSum })
 }
 
 export default function () {
@@ -114,6 +122,7 @@ export default function () {
       <br />
       <button>Solution!</button>
       {result ? <div>Solution (Part 1): {result.winningNumber * result.winningSum}</div> : null}
+      {result ? <div>Solution (Part 1): {result.loosingNumber * result.loosingSum}</div> : null}
     </Form>
   )
 }
