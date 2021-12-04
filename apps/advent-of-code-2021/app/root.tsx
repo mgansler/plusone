@@ -1,5 +1,5 @@
 import type { LinksFunction } from 'remix'
-import { Link, Links, LiveReload, Outlet } from 'remix'
+import { Link, Links, LiveReload, Outlet, useCatch } from 'remix'
 
 import globalStylesUrl from './styles/global.css'
 
@@ -7,8 +7,20 @@ export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: globalStylesUrl }]
 }
 
+export function CatchBoundary() {
+  const cought = useCatch()
+
+  console.log(cought)
+
+  return (
+    <main>
+      <p>The page you are looking for does not exist!</p>
+    </main>
+  )
+}
+
 export default function Root() {
-  const days = ['01', '02', '03']
+  const days = ['01', '02', '03', '04']
 
   return (
     <html lang={'en'}>
