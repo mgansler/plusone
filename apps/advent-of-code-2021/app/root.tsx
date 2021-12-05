@@ -20,7 +20,7 @@ export function CatchBoundary() {
 }
 
 export default function Root() {
-  const days = ['01', '02', '03', '04']
+  const days = ['01', '02', '03', '04', '05']
 
   return (
     <html lang={'en'}>
