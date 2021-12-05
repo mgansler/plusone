@@ -27,33 +27,57 @@ function parseLine(input: string): Line {
   return { x1, x2, y1, y2 }
 }
 
-function filterHorOrVert({ x1, x2, y1, y2 }: Line): boolean {
+function isVerticalOrHorizontal({ x1, x2, y1, y2 }: Line): boolean {
   return x1 === x2 || y1 === y2
 }
 
+function isDiagonal({ x1, x2, y1, y2 }: Line): boolean {
+  return Math.abs(x1 - x2) === Math.abs(y1 - y2)
+}
+
 type ActionResponse = {
-  overlaps: number
+  vertAndHor: number
+  all: number
 }
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
   const linesRaw = (formData.get('input') as string).split('\r\n')
 
-  const mappedVents = linesRaw
-    .map(parseLine)
-    .filter(filterHorOrVert)
+  const parsedLines = linesRaw.map(parseLine)
+
+  const mappedHorAndVertVents = parsedLines
+    .filter(isVerticalOrHorizontal)
     .reduce((previousValue, { x1, x2, y1, y2 }) => {
+      // One of these will not loop as x1 === x2 or y1 === y2
       for (let x = Math.min(x1, x2); x <= Math.max(x1, x2); x++) {
         for (let y = Math.min(y1, y2); y <= Math.max(y1, y2); y++) {
-          previousValue[x][y] = previousValue[x][y] + 1
+          previousValue[y][x] = previousValue[y][x] + 1
         }
       }
       return previousValue
     }, ventsMap)
 
-  const overlaps = mappedVents.flat().filter((val) => val >= THRESHOLD).length
+  const vertAndHor = mappedHorAndVertVents.flat().filter((val) => val >= THRESHOLD).length
 
-  return json({ overlaps })
+  const allVentsMapped = parsedLines.filter(isDiagonal).reduce((previousValue, { x1, x2, y1, y2 }) => {
+    const startY = Math.min(x1, x2) === x1 ? y1 : y2
+    const endY = y1 === startY ? y2 : y1
+    let y = Math.min(y1, y2)
+
+    // Always draw left to right
+    for (let x = Math.min(x1, x2); x <= Math.max(x1, x2); x++) {
+      const step = x - Math.min(x1, x2)
+      // Draw upwards or downwards
+      y = startY + (startY < endY ? step : -1 * step)
+      previousValue[y][x] = previousValue[y][x] + 1
+    }
+    return previousValue
+  }, mappedHorAndVertVents)
+
+  const all = allVentsMapped.flat().filter((val) => val >= THRESHOLD).length
+
+  return json({ vertAndHor, all })
 }
 
 export default function () {
@@ -67,7 +91,8 @@ export default function () {
       </label>
       <br />
       <button>Solution!</button>
-      {result ? <div>Solution (Part 1): {result.overlaps}</div> : null}
+      {result ? <div>Solution (Part 1): {result.vertAndHor}</div> : null}
+      {result ? <div>Solution (Part 2): {result.all}</div> : null}
     </Form>
   )
 }
