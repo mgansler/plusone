@@ -22,7 +22,7 @@ function parseDrawnNumbers(drawn: string): number[] {
 
 function parseBoard(board: string): Board {
   const rows = board.split(/\r\n[ ]*/)
-  return rows.map((row) => row.split(/[ ]+/).map(Number)) as Board
+  return rows.map((row) => row.trim().split(/[ ]+/).map(Number)) as Board
 }
 
 function findInBoard(drawn: number, board: Board, checked: CheckedBoard) {
@@ -122,7 +122,7 @@ export default function () {
       <br />
       <button>Solution!</button>
       {result ? <div>Solution (Part 1): {result.winningNumber * result.winningSum}</div> : null}
-      {result ? <div>Solution (Part 1): {result.loosingNumber * result.loosingSum}</div> : null}
+      {result ? <div>Solution (Part 2): {result.loosingNumber * result.loosingSum}</div> : null}
     </Form>
   )
 }
