@@ -61,7 +61,6 @@ export const action: ActionFunction = async ({ request }) => {
     input.map((value) => [...value].map((x) => parseInt(x))),
     0,
   )
-  console.log({ mostCommon, leastCommon })
 
   const res = (
     mappedInput
