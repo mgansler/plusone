@@ -8,9 +8,9 @@ export const links: LinksFunction = () => {
 }
 
 export function CatchBoundary() {
-  const cought = useCatch()
+  const caught = useCatch()
 
-  console.log(cought)
+  console.log(caught)
 
   return (
     <main>
@@ -20,7 +20,7 @@ export function CatchBoundary() {
 }
 
 export default function Root() {
-  const days = ['01', '02', '03', '04', '05', '06']
+  const days = ['01', '02', '03', '04', '05', '06', '07']
 
   return (
     <html lang={'en'}>
