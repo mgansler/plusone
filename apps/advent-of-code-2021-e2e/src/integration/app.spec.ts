@@ -90,5 +90,6 @@ describe('advent-of-code-2021', () => {
     cy.findByRole('button', { name: 'Solution!' }).click()
 
     cy.findByText('Solution (Part 1): 37')
+    cy.findByText('Solution (Part 2): 168')
   })
 })
