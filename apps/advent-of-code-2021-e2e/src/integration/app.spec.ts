@@ -83,7 +83,7 @@ describe('advent-of-code-2021', () => {
     cy.findByText('Solution (Part 2): 26984457539')
   })
 
-  it.only('should solve day 7', () => {
+  it('should solve day 7', () => {
     cy.findByRole('link', { name: '07' }).click()
     cy.findByRole('textbox').type('16,1,2,0,4,2,7,1,2,14')
 
