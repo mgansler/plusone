@@ -6,10 +6,19 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const input = (formData.get('input') as string).split('\r\n')
+  const input = (formData.get('input') as string).split('\r\n').map((line) => {
+    const [signalPatterns, outputValue] = line.split(' | ')
+    return { signalPatterns, outputValue }
+  })
+
+  const numberOfDigits = input.reduce((previousValue, { outputValue }) => {
+    const outputDigits = outputValue.split(' ')
+    const unique: number[] = outputDigits.map((value) => ([2, 3, 4, 7].includes(value.length) ? 1 : 0))
+    return previousValue + unique.reduce((sum, cur) => sum + cur, 0)
+  }, 0)
 
   return json({
-    numberOfDigits: 0,
+    numberOfDigits,
   })
 }
 
