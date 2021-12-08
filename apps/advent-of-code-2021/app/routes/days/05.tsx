@@ -42,7 +42,7 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const linesRaw = (formData.get('input') as string).split('\r\n')
+  const linesRaw = (formData.get('input') as string).split('\r\n').filter((line) => line.length)
 
   const parsedLines = linesRaw.map(parseLine)
 

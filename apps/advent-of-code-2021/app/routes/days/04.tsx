@@ -21,7 +21,7 @@ function parseDrawnNumbers(drawn: string): number[] {
 }
 
 function parseBoard(board: string): Board {
-  const rows = board.split(/\r\n[ ]*/)
+  const rows = board.split(/\r\n[ ]*/).filter((row) => row.length)
   return rows.map((row) => row.trim().split(/[ ]+/).map(Number)) as Board
 }
 
