@@ -7,7 +7,7 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const input = (formData.get('input') as string).split('\r\n')
+  const input = (formData.get('input') as string).split('\r\n').filter((value) => value.length)
 
   const commands = input.map((command) => {
     const [direction, amount] = command.split(' ')

@@ -8,8 +8,8 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const input = (formData.get('input') as string).split('\r\n')
-  const values = input.map((val) => parseInt(val))
+  const input = (formData.get('input') as string).split('\r\n').filter((value) => value.length)
+  const values = input.map(Number)
 
   let partOne = 0
   for (let i = 0; i < values.length - 1; i++) {
