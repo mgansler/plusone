@@ -94,10 +94,13 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const input = (formData.get('input') as string).split('\r\n').map((line) => {
-    const [patterns, output] = line.split(' | ')
-    return { signalPatterns: patterns.split(' '), outputValue: output.split(' ') }
-  })
+  const input = (formData.get('input') as string)
+    .split('\r\n')
+    .filter((line) => line.length)
+    .map((line) => {
+      const [patterns, output] = line.split(' | ')
+      return { signalPatterns: patterns.split(' '), outputValue: output.split(' ') }
+    })
 
   // Part 1
   const numberOfDigits = input.reduce((previousValue, { outputValue }) => {

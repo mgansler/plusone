@@ -48,7 +48,7 @@ type ActionResponse = {
 }
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const input = (formData.get('input') as string).split('\r\n')
+  const input = (formData.get('input') as string).split('\r\n').filter((line) => line.length)
 
   const mappedInput = input.map((value) => [...value].map((x) => (x === '0' ? -1 : 1)))
   const numberDigits = mappedInput[0].length
