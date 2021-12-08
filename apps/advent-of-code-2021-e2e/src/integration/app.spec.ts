@@ -92,4 +92,38 @@ describe('advent-of-code-2021', () => {
     cy.findByText('Solution (Part 1): 37')
     cy.findByText('Solution (Part 2): 168')
   })
+
+  it('should solve day 8', () => {
+    cy.findByRole('link', { name: '08' }).click()
+    cy.findByRole('textbox').type(
+      'be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe',
+    )
+    cy.findByRole('textbox').type('{enter}')
+    cy.findByRole('textbox').type('edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc')
+    cy.findByRole('textbox').type('{enter}')
+    cy.findByRole('textbox').type('fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg')
+    cy.findByRole('textbox').type('{enter}')
+    cy.findByRole('textbox').type('fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | efabcd cedba gadfec cb')
+    cy.findByRole('textbox').type('{enter}')
+    cy.findByRole('textbox').type('aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga | gecf egdcabf bgf bfgea')
+    cy.findByRole('textbox').type('{enter}')
+    cy.findByRole('textbox').type(
+      'fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf | gebdcfa ecba ca fadegcb',
+    )
+    cy.findByRole('textbox').type('{enter}')
+    cy.findByRole('textbox').type(
+      'dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbcadfe',
+    )
+    cy.findByRole('textbox').type('{enter}')
+    cy.findByRole('textbox').type('bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef')
+    cy.findByRole('textbox').type('{enter}')
+    cy.findByRole('textbox').type('egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb')
+    cy.findByRole('textbox').type('{enter}')
+    cy.findByRole('textbox').type('gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce')
+
+    cy.findByRole('button', { name: 'Solution!' }).click()
+
+    cy.findByText('Solution (Part 1): 26')
+    cy.findByText('Solution (Part 2): 61229')
+  })
 })
