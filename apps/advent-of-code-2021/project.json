@@ -18,6 +18,9 @@
         "command": "remix build",
         "cwd": "apps/advent-of-code-2021"
       },
+      "configurations": {
+        "production": {}
+      },
       "dependsOn": [
         {
           "target": "clean",
