@@ -14455,6 +14455,13 @@ prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
+properties-reader@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/properties-reader/-/properties-reader-2.2.0.tgz#41d837fe143d8d5f2386b6a869a1975c0b2c595c"
+  integrity sha512-CgVcr8MwGoBKK24r9TwHfZkLLaNFHQ6y4wgT9w/XzdpacOOi5ciH4hcuLechSDAwXsfrGQtI2JTutY2djOx2Ow==
+  dependencies:
+    mkdirp "^1.0.4"
+
 property-information@^6.0.0:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/property-information/-/property-information-6.1.1.tgz#5ca85510a3019726cb9afed4197b7b8ac5926a22"
@@ -16417,10 +16424,10 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
-testcontainers@^7.24.0:
-  version "7.24.0"
-  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-7.24.0.tgz#67a9ae756b7fa6a239fead80aaff78e46800808a"
-  integrity sha512-/Hm/iUc2F6cPYh84abVPiy/suW9D9SseKq/RAZpZqYFxJ0VuETnzzZ/KRtf3o9b35G0xOuxSKRISomTXiIUr8Q==
+testcontainers@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-8.0.0.tgz#2c0c616250ef0249333788a5acaa0bc89d8e59af"
+  integrity sha512-J8PDV03UAz1xtkQ6ivEFbDhNXSyWuMGp8gTf6YPwLAgRkAzueLXHo/H0TfHYGc5fRyQWim52P7iRPcjCgLVJ8w==
   dependencies:
     "@types/archiver" "^5.1.1"
     "@types/dockerode" "^3.2.5"
@@ -16431,6 +16438,7 @@ testcontainers@^7.24.0:
     dockerode "^3.3.1"
     get-port "^5.1.1"
     glob "^7.2.0"
+    properties-reader "^2.2.0"
     slash "^3.0.0"
     ssh-remote-port-forward "^1.0.4"
     tar-fs "^2.1.1"
