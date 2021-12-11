@@ -72,9 +72,9 @@ export const action: ActionFunction = async ({ request }) => {
 
   let flashes = 0
   let synchronizedAfter = 0
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    const flashed = resetFlashed()
+  let flashed = resetFlashed()
+  while (countFlashes(flashed) < 100) {
+    flashed = resetFlashed()
     increaseAll(energy)
     let x = 0
     do {
@@ -94,11 +94,6 @@ export const action: ActionFunction = async ({ request }) => {
 
     if (synchronizedAfter > 1000) {
       console.log('break after 1000 rounds')
-      break
-    }
-
-    if (countFlashes(flashed) === 100) {
-      console.log('synchronized flashes')
       break
     }
   }
