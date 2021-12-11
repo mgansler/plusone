@@ -60,6 +60,7 @@ function flash(energyLevel: Energy, flashed: Flashed, x: number, y: number) {
 
 type ActionResponse = {
   flashes: number
+  synchronizedAfter: number
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -70,7 +71,9 @@ export const action: ActionFunction = async ({ request }) => {
     .map((line) => line.split('').map(Number))
 
   let flashes = 0
-  for (let step = 0; step < STEPS; step++) {
+  let synchronizedAfter = 0
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
     const flashed = resetFlashed()
     increaseAll(energy)
     let x = 0
@@ -84,11 +87,25 @@ export const action: ActionFunction = async ({ request }) => {
     } while (x < countFlashes(flashed))
 
     resetEnergy(energy)
-    flashes = flashes + countFlashes(flashed)
+    if (synchronizedAfter < STEPS) {
+      flashes = flashes + countFlashes(flashed)
+    }
+    synchronizedAfter++
+
+    if (synchronizedAfter > 1000) {
+      console.log('break after 1000 rounds')
+      break
+    }
+
+    if (countFlashes(flashed) === 100) {
+      console.log('synchronized flashes')
+      break
+    }
   }
 
   return json({
     flashes,
+    synchronizedAfter,
   } as ActionResponse)
 }
 
@@ -104,7 +121,7 @@ export default function () {
       <br />
       <button>Solution!</button>
       {result ? <div>Solution (Part 1): {result.flashes}</div> : null}
-      {result ? <div>Solution (Part 2): TBD</div> : null}
+      {result ? <div>Solution (Part 2): {result.synchronizedAfter}</div> : null}
     </Form>
   )
 }
