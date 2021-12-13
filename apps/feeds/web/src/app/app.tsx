@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { lazy, Suspense } from 'react'
-import { CssBaseline } from '@material-ui/core'
+import { CssBaseline } from '@mui/material'
 
 import { AuthenticationProvider, useUser } from '@plusone/feeds/web/login'
 import { DarkModeThemeProvider } from '@plusone/dark-mode-theme-provider'

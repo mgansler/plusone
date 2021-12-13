@@ -1,4 +1,4 @@
-import { createTheme, ThemeProvider, useMediaQuery } from '@material-ui/core'
+import { createTheme, StyledEngineProvider, ThemeProvider, useMediaQuery } from '@mui/material'
 import React, { ReactNode, useMemo } from 'react'
 
 export interface DarkModeThemeProviderProps {
@@ -7,7 +7,11 @@ export interface DarkModeThemeProviderProps {
 
 export function DarkModeThemeProvider({ children }: DarkModeThemeProviderProps) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-  const theme = useMemo(() => createTheme({ palette: { type: prefersDarkMode ? 'dark' : 'light' } }), [prefersDarkMode])
+  const theme = useMemo(() => createTheme({ palette: { mode: prefersDarkMode ? 'dark' : 'light' } }), [prefersDarkMode])
 
-  return <ThemeProvider theme={theme} children={children} />
+  return (
+    <StyledEngineProvider injectFirst={true}>
+      <ThemeProvider theme={theme} children={children} />
+    </StyledEngineProvider>
+  )
 }

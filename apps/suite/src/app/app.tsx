@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Link as RouterLink, Route, Routes } from 'react-router-dom'
-import { AppBar, Breadcrumbs, CssBaseline, Link, Toolbar } from '@material-ui/core'
+import { AppBar, Breadcrumbs, CssBaseline, Link, Toolbar } from '@mui/material'
 
 import { DarkModeThemeProvider } from '@plusone/dark-mode-theme-provider'
 

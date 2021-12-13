@@ -1,6 +1,6 @@
-import { IconButton, Tooltip } from '@material-ui/core'
+import { IconButton, Tooltip } from '@mui/material'
 import React from 'react'
-import { Check, Error, FindReplace } from '@material-ui/icons'
+import { Check, Error, FindReplace } from '@mui/icons-material'
 
 import { CheckConclusionState, CheckSuite } from '@plusone/github-schema'
 
@@ -44,6 +44,7 @@ export function CheckConclusion({ checkSuite }: CheckConclusionProps) {
       target={'_blank'}
       rel={'noreferrer'}
       onClick={(e) => e.stopPropagation()}
+      size="large"
     >
       {CheckConclusionIconMap[checkSuite.conclusion ?? 'RUNNING']}
     </IconButton>

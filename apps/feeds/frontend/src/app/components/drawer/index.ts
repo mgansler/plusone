@@ -1,1 +1,0 @@
-export { FeedDrawerList } from './FeedDrawerList'

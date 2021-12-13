@@ -1,17 +1,8 @@
 import React, { useCallback, useRef, useState } from 'react'
-import {
-  Button,
-  Card,
-  createStyles,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-  Typography,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { Add, VideoCall } from '@material-ui/icons'
+import { Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
+import { Add, VideoCall } from '@mui/icons-material'
 
 import { ConferenceLink, fromLink } from '@plusone/conference-links'
 

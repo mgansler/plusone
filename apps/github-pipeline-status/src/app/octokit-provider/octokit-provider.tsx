@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useMemo, useRef } from 'react'
 import { Octokit } from '@octokit/core'
-import { Button, TextField, Typography } from '@material-ui/core'
+import { Button, TextField, Typography } from '@mui/material'
 
 import { useLocalStorage } from '@plusone/hooks'
 import { LoginCard } from '@plusone/components'

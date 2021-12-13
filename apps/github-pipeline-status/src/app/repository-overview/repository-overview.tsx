@@ -1,22 +1,23 @@
-import React, { MutableRefObject, useEffect, useState } from 'react'
-import { useParams, useSearchParams } from 'react-router-dom'
-import { useQuery } from 'react-query'
 import {
-  createStyles,
   FormControl,
   FormControlLabel,
   InputLabel,
-  makeStyles,
   MenuItem,
   Portal,
   Select,
   Switch,
   TextField,
-} from '@material-ui/core'
+  Theme,
+} from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { MutableRefObject, useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
+import { useParams, useSearchParams } from 'react-router-dom'
 
 import { useGitHubPagination } from '@plusone/github-hooks'
-import { useLocalStorage } from '@plusone/hooks'
 import { RepositoryFieldsFragment, RepositoryOverviewDocument, RepositoryOverviewQuery } from '@plusone/github-schema'
+import { useLocalStorage } from '@plusone/hooks'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
@@ -24,20 +25,15 @@ import { AccordionSkeleton, RepositoryAccordion } from './repository-accordion'
 
 export type UserFilter = 'all' | 'dependabot' | 'user'
 
-// TODO: remove me when pagination is styled
-const useRepositoryStyles = makeStyles((theme) =>
+const useStyles = makeStyles<Theme>((theme) =>
   createStyles({
+    // TODO: remove me when pagination is styled
     pagination: {
       display: 'flex',
       justifyContent: 'flex-end',
       alignItems: 'center',
       gap: theme.spacing(1),
     },
-  }),
-)
-
-const useStyles = makeStyles((theme) =>
-  createStyles({
     formControl: {
       minWidth: 200,
     },
@@ -86,10 +82,7 @@ interface RepositoryOverviewProps {
 }
 
 export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
-  const classNames = {
-    ...useRepositoryStyles(),
-    ...useStyles(),
-  }
+  const classNames = useStyles()
 
   // Get the request params
   const { organizationName } = useParams<'organizationName'>()

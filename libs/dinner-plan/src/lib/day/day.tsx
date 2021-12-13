@@ -1,5 +1,7 @@
 import { DragEventHandler } from 'react'
-import { Card, CardContent, CardHeader, createStyles, makeStyles, Typography } from '@material-ui/core'
+import { Card, CardContent, CardHeader, Typography } from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import { useParams } from 'react-router-dom'
 
 import { useDinnerPlanStoreDispatch, useDishForDay } from '../store/dinner-plan.store'

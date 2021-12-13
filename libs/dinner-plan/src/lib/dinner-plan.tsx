@@ -1,6 +1,9 @@
 import React from 'react'
 import { Navigate, Route, Routes, useMatch, useNavigate } from 'react-router-dom'
-import { Button, Container, createStyles, makeStyles, Paper, Toolbar, Typography } from '@material-ui/core'
+import { Button, Container, Paper, Toolbar, Typography } from '@mui/material'
+
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 
 import { getDateFor, getWeekOfYearFor, getYearFor } from '@plusone/date-utils'
 

@@ -1,5 +1,6 @@
-import { AppBar, Container, createStyles, CssBaseline, Paper, Toolbar, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { AppBar, Container, CssBaseline, Paper, Theme, Toolbar, Typography } from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { useCallback } from 'react'
 
 import { ConferenceLink } from '@plusone/conference-links'
@@ -10,7 +11,7 @@ import { ConferenceLinkButton, NewConferenceLink } from './conference-link-butto
 import { ImportExport } from './import-export/import-export'
 import { useMigrations } from './migrations/use-migrations'
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles<Theme>((theme) =>
   createStyles({
     grid: {
       display: 'grid',

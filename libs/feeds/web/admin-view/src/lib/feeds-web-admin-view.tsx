@@ -1,11 +1,13 @@
-import { Box, Card, CardContent, CardHeader, createStyles, makeStyles, Paper, Typography } from '@material-ui/core'
+import { Box, Card, CardContent, CardHeader, Paper, Theme, Typography } from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 
 import { useFetchFeeds } from '@plusone/feeds/web/shared'
 
 import { useFetchUsers } from './use-fetch-users'
 import { useTriggerFetch } from './use-trigger-fetch'
 
-const useClassNames = makeStyles((theme) =>
+const useClassNames = makeStyles<Theme>((theme) =>
   createStyles({
     card: {
       margin: theme.spacing(1),

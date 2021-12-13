@@ -1,12 +1,14 @@
+import { Theme } from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React from 'react'
-import { createStyles, makeStyles } from '@material-ui/core'
 import { useParams } from 'react-router-dom'
 
 import { getWeekOfYearFor } from '@plusone/date-utils'
 
 import { Day } from '../day/day'
 
-const useClassNames = makeStyles((theme) =>
+const useClassNames = makeStyles<Theme>((theme) =>
   createStyles({
     week: {
       padding: theme.spacing(3),
