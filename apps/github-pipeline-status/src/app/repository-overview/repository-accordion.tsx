@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
-import { Accordion, AccordionDetails, AccordionSummary, Button, IconButton, Typography } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Button, IconButton, Typography, Skeleton } from '@mui/material'
 import { ExpandMore, OpenInNew } from '@mui/icons-material'
-import { Skeleton } from '@mui/material'
 
 import { Commit, DefaultBranchRefFieldsFragment, PullRequest, RepositoryFieldsFragment } from '@plusone/github-schema'
 
