@@ -1,3 +1,4 @@
+import { createTheme } from '@mui/material'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 
@@ -13,6 +14,8 @@ describe('Day', () => {
   afterAll(() => {
     jest.useRealTimers()
   })
+
+  const theme = createTheme()
 
   test.each`
     day            | weekday | date
@@ -38,6 +41,6 @@ describe('Day', () => {
       </DinnerPlanStore>,
     )
 
-    expect(screen.getByText(day)).toHaveClass('MuiTypography-colorPrimary')
+    expect(screen.getByText(day)).toHaveStyle(`color: ${theme.palette.primary.main}`)
   })
 })
