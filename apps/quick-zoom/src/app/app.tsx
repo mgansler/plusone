@@ -1,11 +1,12 @@
-import React, { useCallback } from 'react'
+import { AppBar, Container, createStyles, CssBaseline, Paper, Toolbar, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { AppBar, Container, createStyles, Paper, Toolbar, Typography } from '@material-ui/core'
+import React, { useCallback } from 'react'
 
 import { ConferenceLink } from '@plusone/conference-links'
+import { DarkModeThemeProvider } from '@plusone/dark-mode-theme-provider'
 import { useLocalStorage } from '@plusone/hooks'
 
-import { NewConferenceLink, ConferenceLinkButton } from './conference-link-button/conference-link-button'
+import { ConferenceLinkButton, NewConferenceLink } from './conference-link-button/conference-link-button'
 import { ImportExport } from './import-export/import-export'
 import { useMigrations } from './migrations/use-migrations'
 
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) =>
   }),
 )
 
-export function App() {
+function AppWithProviders() {
   const classNames = useStyles()
 
   useMigrations()
@@ -74,5 +75,14 @@ export function App() {
         <ImportExport links={storedLinks} load={loadLinks} />
       </Container>
     </React.Fragment>
+  )
+}
+
+export function App() {
+  return (
+    <DarkModeThemeProvider>
+      <CssBaseline />
+      <AppWithProviders />
+    </DarkModeThemeProvider>
   )
 }
