@@ -63,6 +63,7 @@ function countDots(paper: Paper): number {
 
 type ActionResponse = {
   numberOfDotsAfterOneFold: number
+  folded: Paper
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -75,16 +76,26 @@ export const action: ActionFunction = async ({ request }) => {
   })
 
   const dimX = Math.max(...dotCoords.map(({ x }) => x)) + 1
-  const dimY = Math.max(...dotCoords.map(({ y }) => y)) + 1
+  let dimY = Math.max(...dotCoords.map(({ y }) => y)) + 1
+  if (dimY % 2 === 0) {
+    dimY++
+  }
 
   const paper = initDots(dimX, dimY, dotCoords)
   const parsedInstructions = parseInstructions(instructions)
 
   const firstInstruction = parsedInstructions.shift()!
   const foldedOnce = fold(paper, firstInstruction)
+  const numberOfDotsAfterOneFold = countDots(foldedOnce)
+
+  let folded = foldedOnce
+  parsedInstructions.forEach((instruction) => {
+    folded = fold(folded, instruction)
+  })
 
   return json({
-    numberOfDotsAfterOneFold: countDots(foldedOnce),
+    numberOfDotsAfterOneFold,
+    folded,
   } as ActionResponse)
 }
 
@@ -100,7 +111,18 @@ export default function () {
       <br />
       <button>Solution!</button>
       {result ? <div>Solution (Part 1): {result.numberOfDotsAfterOneFold}</div> : null}
-      {result ? <div>Solution (Part 2): TBD</div> : null}
+      {result ? (
+        <div>
+          Solution (Part 2)
+          <br />
+          {result.folded.map((row, index) => (
+            <span key={index}>
+              {row.map((dot) => (dot ? '\u26ab' : '\u26aa'))}
+              <br />
+            </span>
+          ))}
+        </div>
+      ) : null}
     </Form>
   )
 }
