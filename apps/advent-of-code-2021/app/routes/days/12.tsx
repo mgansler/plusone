@@ -1,6 +1,6 @@
 import { ActionFunction, Form, json, useActionData } from 'remix'
 
-function countPaths(edges: Record<string, string[]>, node: string, visited = new Set<string>()): number {
+function countPathsPartOne(edges: Record<string, string[]>, node: string, visited = new Set<string>()): number {
   // we have been there already and cannot visit again => invalid path
   if (node === node.toLowerCase() && visited.has(node)) {
     return 0
@@ -14,14 +14,49 @@ function countPaths(edges: Record<string, string[]>, node: string, visited = new
 
   let total = 0
   for (const next of edges[node]) {
-    total += countPaths(edges, next, new Set(visited))
+    total += countPathsPartOne(edges, next, new Set(visited))
+  }
+
+  return total
+}
+
+function countPathsPartTwo(
+  edges: Record<string, string[]>,
+  node: string,
+  visited = new Set<string>(),
+  usedJoker = false,
+): number {
+  if (node === node.toLowerCase()) {
+    visited.add(node)
+  }
+
+  // We reached the end, hurray!
+  if (node === 'end') {
+    return 1
+  }
+
+  let total = 0
+  for (const next of edges[node]) {
+    // We cannot go back to start and cannot use the joker twice
+    if (next === 'start' || (visited.has(next) && usedJoker)) {
+      continue
+    }
+
+    if (visited.has(next)) {
+      // use the joker
+      total += countPathsPartTwo(edges, next, new Set(visited), true)
+    } else {
+      // we have not been here before, pass through if we have used the joker yet
+      total += countPathsPartTwo(edges, next, new Set(visited), usedJoker)
+    }
   }
 
   return total
 }
 
 type ActionResponse = {
-  pathCount: number
+  partOne: number
+  partTwo: number
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -38,7 +73,8 @@ export const action: ActionFunction = async ({ request }) => {
   }, {} as Record<string, string[]>)
 
   return json({
-    pathCount: countPaths(edges, 'start'),
+    partOne: countPathsPartOne(edges, 'start'),
+    partTwo: countPathsPartTwo(edges, 'start'),
   } as ActionResponse)
 }
 
@@ -53,8 +89,8 @@ export default function () {
       </label>
       <br />
       <button>Solution!</button>
-      {result ? <div>Solution (Part 1): {result.pathCount}</div> : null}
-      {result ? <div>Solution (Part 2): TBD</div> : null}
+      {result ? <div>Solution (Part 1): {result.partOne}</div> : null}
+      {result ? <div>Solution (Part 2): {result.partTwo}</div> : null}
     </Form>
   )
 }
