@@ -1,36 +1,39 @@
-import { QueryClient, QueryClientProvider } from 'react-query'
 import { mount } from '@cypress/react'
+import { createTheme, ThemeProvider } from '@mui/material'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { BrowserRouter } from 'react-router-dom'
 
 import { OctokitProvider } from '../octokit-provider/octokit-provider'
 
 import { Organizations } from './organizations'
 
-describe('Organizations', () => {
+function mountOrganizations() {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: 0, refetchOnWindowFocus: false } },
   })
 
-  beforeEach(() => {
-    window.localStorage.setItem('github-personal-access-token', '"fake-token"')
-  })
-
-  afterEach(() => {
-    queryClient.clear()
-  })
-
-  it('should render successfully with an empty result', () => {
-    cy.graphql('organizations.empty.json').as('fetch')
-
-    mount(
+  mount(
+    <ThemeProvider theme={createTheme()}>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
           <OctokitProvider>
             <Organizations />
           </OctokitProvider>
         </QueryClientProvider>
-      </BrowserRouter>,
-    )
+      </BrowserRouter>
+    </ThemeProvider>,
+  )
+}
+
+describe('Organizations', () => {
+  beforeEach(() => {
+    window.localStorage.setItem('github-personal-access-token', '"fake-token"')
+  })
+
+  it('should render successfully with an empty result', () => {
+    cy.graphql('organizations.empty.json').as('fetch')
+
+    mountOrganizations()
 
     cy.wait('@fetch')
   })
@@ -39,15 +42,7 @@ describe('Organizations', () => {
     cy.graphql('organizations.entry.json', { filter: 'Organizations' }).as('organizations')
     cy.graphql('repository-overview.json', { filter: 'RepositoryOverview' }).as('repository-overview')
 
-    mount(
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <OctokitProvider>
-            <Organizations />
-          </OctokitProvider>
-        </QueryClientProvider>
-      </BrowserRouter>,
-    )
+    mountOrganizations()
 
     cy.wait('@organizations')
 

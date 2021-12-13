@@ -1,16 +1,19 @@
-import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { mount } from '@cypress/react'
+import { createTheme, ThemeProvider } from '@mui/material'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 
 import { DinnerPlan } from './dinner-plan'
 
 describe('DinnerPlan', () => {
   it('should render successfully', () => {
     mount(
-      <MemoryRouter initialEntries={['/dinner-plan']}>
-        <Routes>
-          <Route path={'/dinner-plan/*'} element={<DinnerPlan />} />
-        </Routes>
-      </MemoryRouter>,
+      <ThemeProvider theme={createTheme()}>
+        <MemoryRouter initialEntries={['/dinner-plan']}>
+          <Routes>
+            <Route path={'/dinner-plan/*'} element={<DinnerPlan />} />
+          </Routes>
+        </MemoryRouter>
+      </ThemeProvider>,
     )
 
     cy.findByText(/kw \d\d/i).should('be.visible')

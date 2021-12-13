@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core'
+import { Button } from '@mui/material'
 import { useMutation } from 'react-query'
 
 import { ApprovePullRequestDocument, PullRequest } from '@plusone/github-schema'

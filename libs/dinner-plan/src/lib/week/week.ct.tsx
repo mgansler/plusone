@@ -1,4 +1,5 @@
 import { mount } from '@cypress/react'
+import { createTheme, ThemeProvider } from '@mui/material'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 
 import { DinnerPlanStore } from '../store/dinner-plan.store'
@@ -10,13 +11,15 @@ describe('Week', () => {
 
   it('should render a complete week', () => {
     mount(
-      <DinnerPlanStore>
-        <MemoryRouter initialEntries={['/2021/13']}>
-          <Routes>
-            <Route path={':year/:week'} element={<Week />} />
-          </Routes>
-        </MemoryRouter>
-      </DinnerPlanStore>,
+      <ThemeProvider theme={createTheme()}>
+        <DinnerPlanStore>
+          <MemoryRouter initialEntries={['/2021/13']}>
+            <Routes>
+              <Route path={':year/:week'} element={<Week />} />
+            </Routes>
+          </MemoryRouter>
+        </DinnerPlanStore>
+      </ThemeProvider>,
     )
 
     weekDays.forEach((day) => cy.findByText(day).should('be.visible'))

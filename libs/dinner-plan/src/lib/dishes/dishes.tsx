@@ -1,10 +1,12 @@
+import { AddCircleOutline } from '@mui/icons-material'
+import { Chip, InputAdornment, TextField, Theme } from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import { DragEventHandler, FormEventHandler } from 'react'
-import { Chip, createStyles, InputAdornment, makeStyles, TextField } from '@material-ui/core'
-import { AddCircleOutline } from '@material-ui/icons'
 
 import { useDinnerPlanStoreDispatch, useDishes } from '../store/dinner-plan.store'
 
-const useClassNames = makeStyles((theme) =>
+const useClassNames = makeStyles<Theme>((theme) =>
   createStyles({
     root: {
       display: 'flex',
@@ -73,7 +75,6 @@ export function Dishes() {
             draggable={true}
             onDragStart={onDragStart}
             color={'primary'}
-            variant={'default'}
             label={dish}
             onDelete={() => dispatch({ type: 'remove-dish', payload: dish })}
           />

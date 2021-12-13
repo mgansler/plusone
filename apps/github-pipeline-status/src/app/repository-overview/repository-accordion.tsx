@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
-import { Accordion, AccordionDetails, AccordionSummary, Button, IconButton, Typography } from '@material-ui/core'
-import { ExpandMore, OpenInNew } from '@material-ui/icons'
-import { Skeleton } from '@material-ui/lab'
+import { Accordion, AccordionDetails, AccordionSummary, Button, IconButton, Typography, Skeleton } from '@mui/material'
+import { ExpandMore, OpenInNew } from '@mui/icons-material'
 
 import { Commit, DefaultBranchRefFieldsFragment, PullRequest, RepositoryFieldsFragment } from '@plusone/github-schema'
 
@@ -86,6 +85,7 @@ export function RepositoryAccordion({
           target={'_blank'}
           rel={'noreferrer'}
           onClick={(e) => e.stopPropagation()}
+          size="large"
         >
           <OpenInNew />
         </IconButton>
@@ -128,7 +128,7 @@ export function AccordionSkeleton() {
   return (
     <Accordion>
       <AccordionSummary classes={{ content: classNames.accordionSummarySkeleton }} expandIcon={<ExpandMore />}>
-        <Skeleton variant={'circle'} width={28} height={28} />
+        <Skeleton variant="circular" width={28} height={28} />
         <Skeleton className={classNames.titleColumn} variant={'text'} />
         <Skeleton className={classNames.workflowColumn} variant={'text'} />
         <Skeleton className={classNames.pullRequestsOrReviewsColumn} variant={'text'} />

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useQuery } from 'react-query'
-import { Avatar, Button, Typography } from '@material-ui/core'
+import { Avatar, Button, Typography } from '@mui/material'
 
 import { UserDocument, UserQuery } from '@plusone/github-schema'
 

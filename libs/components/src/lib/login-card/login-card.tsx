@@ -1,8 +1,9 @@
-import { Card, CardContent, Container, createStyles } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Card, CardContent, Container, Theme } from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { ReactNode } from 'react'
 
-const useClassNames = makeStyles((theme) =>
+const useClassNames = makeStyles<Theme>((theme) =>
   createStyles({
     container: {
       marginTop: theme.spacing(8),

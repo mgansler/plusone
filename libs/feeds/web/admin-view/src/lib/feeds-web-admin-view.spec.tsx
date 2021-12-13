@@ -1,3 +1,4 @@
+import { createTheme, ThemeProvider } from '@mui/material'
 import { render } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
@@ -10,11 +11,13 @@ describe('FeedsWebAdminView', () => {
 
   it('should render successfully', () => {
     const { baseElement } = render(
-      <MockAuthenticationProvider>
-        <QueryClientProvider client={testQueryClient}>
-          <FeedsWebAdminView />
-        </QueryClientProvider>
-      </MockAuthenticationProvider>,
+      <ThemeProvider theme={createTheme()}>
+        <MockAuthenticationProvider>
+          <QueryClientProvider client={testQueryClient}>
+            <FeedsWebAdminView />
+          </QueryClientProvider>
+        </MockAuthenticationProvider>
+      </ThemeProvider>,
     )
     expect(baseElement).toBeTruthy()
   })

@@ -1,5 +1,5 @@
 import { useMutation } from 'react-query'
-import { Button } from '@material-ui/core'
+import { Button } from '@mui/material'
 
 import { EnablePullRequestAutoMergeDocument, PullRequest } from '@plusone/github-schema'
 

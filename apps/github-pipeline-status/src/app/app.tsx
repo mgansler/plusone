@@ -1,14 +1,16 @@
-import { AppBar, createStyles, CssBaseline, makeStyles, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, CssBaseline, Theme, Toolbar, Typography } from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import React from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { DarkModeThemeProvider } from '@plusone/dark-mode-theme-provider'
 
-import { UserInfo } from './user-info/user-info'
-import { Organizations } from './organizations/organizations'
 import { OctokitProvider } from './octokit-provider/octokit-provider'
+import { Organizations } from './organizations/organizations'
+import { UserInfo } from './user-info/user-info'
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles<Theme>((theme) =>
   createStyles({
     toolbar: {
       gap: theme.spacing(1),

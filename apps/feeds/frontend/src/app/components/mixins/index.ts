@@ -1,1 +1,0 @@
-export { ToolbarMixin } from './ToolbarMixin'

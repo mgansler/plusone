@@ -1,5 +1,5 @@
-import React, { ChangeEvent, FormEventHandler, ReactNode, useState } from 'react'
 import {
+  Alert,
   Backdrop,
   Button,
   Card,
@@ -7,19 +7,20 @@ import {
   CardContent,
   CircularProgress,
   Container,
-  createStyles,
-  makeStyles,
   Tab,
   Tabs,
   TextField,
+  Theme,
   Typography,
-} from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+} from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
+import React, { ChangeEvent, FormEventHandler, ReactNode, useState } from 'react'
 
-import { useRegister } from './use-register'
 import { useLogin } from './use-login'
+import { useRegister } from './use-register'
 
-const useClassNames = makeStyles((theme) =>
+const useClassNames = makeStyles<Theme>((theme) =>
   createStyles({
     tabs: {
       marginBottom: theme.spacing(2),

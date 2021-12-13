@@ -1,5 +1,5 @@
-import { Chip, IconButton, Tooltip, Typography } from '@material-ui/core'
-import { Check, Error, MergeType, OpenInNew } from '@material-ui/icons'
+import { Chip, IconButton, Tooltip, Typography } from '@mui/material'
+import { Check, Error, MergeType, OpenInNew } from '@mui/icons-material'
 import React from 'react'
 
 import {
@@ -72,7 +72,13 @@ function CanBeMerged({
   return mergeable === MergeableState.Conflicting ? (
     <div className={className}>
       <Typography variant={'caption'}>Merge Conflicts</Typography>
-      <IconButton href={pullRequestUrl} target={'_blank'} rel={'noreferrer'} onClick={(e) => e.stopPropagation()}>
+      <IconButton
+        href={pullRequestUrl}
+        target={'_blank'}
+        rel={'noreferrer'}
+        onClick={(e) => e.stopPropagation()}
+        size="large"
+      >
         <Tooltip title={'Merge conflicts'}>
           <Error />
         </Tooltip>
@@ -107,6 +113,7 @@ export function PullRequestRow({ pr }: PullRequestProps) {
         target={'_blank'}
         rel={'noreferrer'}
         onClick={(e) => e.stopPropagation()}
+        size="large"
       >
         <OpenInNew />
       </IconButton>

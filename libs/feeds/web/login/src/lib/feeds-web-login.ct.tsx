@@ -1,5 +1,7 @@
-import { QueryClient, QueryClientProvider } from 'react-query'
 import { mount } from '@cypress/react'
+import { createTheme, ThemeProvider } from '@mui/material'
+import { ComponentProps } from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { AuthenticationProvider } from './authentication-provider'
 
@@ -23,21 +25,23 @@ function login() {
   cy.wait('@login')
 }
 
-describe('feeds-web-login', () => {
+function mountAuthenticationProvider(children: ComponentProps<typeof AuthenticationProvider>['children']) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: 0, refetchOnWindowFocus: false } },
   })
 
-  afterEach(() => {
-    queryClient.clear()
-  })
-
-  it('should show the login', () => {
-    mount(
+  mount(
+    <ThemeProvider theme={createTheme()}>
       <QueryClientProvider client={queryClient}>
-        <AuthenticationProvider children={<h1>This should not show</h1>} />
-      </QueryClientProvider>,
-    )
+        <AuthenticationProvider children={children} />
+      </QueryClientProvider>
+    </ThemeProvider>,
+  )
+}
+
+describe('feeds-web-login', () => {
+  it('should show the login', () => {
+    mountAuthenticationProvider(<h1>This should not show</h1>)
 
     cy.findByRole('heading', { name: 'This should not show' }).should('not.exist')
     cy.findByRole('heading', { name: 'Welcome to feeds-web-login!' }).should('be.visible')
@@ -46,11 +50,7 @@ describe('feeds-web-login', () => {
   it('should allow to register', () => {
     cy.intercept('POST', '/api/authentication/register', { fixture: 'register.json' }).as('register')
 
-    mount(
-      <QueryClientProvider client={queryClient}>
-        <AuthenticationProvider children={<h1>This should not show</h1>} />
-      </QueryClientProvider>,
-    )
+    mountAuthenticationProvider(<h1>This should not show</h1>)
 
     register()
 
@@ -60,11 +60,7 @@ describe('feeds-web-login', () => {
   it('should fail to register when user exists', () => {
     cy.intercept('POST', '/api/authentication/register', { statusCode: 409 }).as('register')
 
-    mount(
-      <QueryClientProvider client={queryClient}>
-        <AuthenticationProvider children={<h1>This should not show</h1>} />
-      </QueryClientProvider>,
-    )
+    mountAuthenticationProvider(<h1>This should not show</h1>)
 
     register()
 
@@ -75,11 +71,7 @@ describe('feeds-web-login', () => {
     cy.intercept('POST', '/api/authentication/login', { fixture: 'login.json' }).as('login')
     cy.intercept('GET', '/api/authentication/profile', { fixture: 'profile.json' }).as('profile')
 
-    mount(
-      <QueryClientProvider client={queryClient}>
-        <AuthenticationProvider children={<h1>This should show after login</h1>} />
-      </QueryClientProvider>,
-    )
+    mountAuthenticationProvider(<h1>This should show after login</h1>)
 
     login()
     cy.wait('@profile')
@@ -90,11 +82,7 @@ describe('feeds-web-login', () => {
   it("should fail to login when password doesn't match", () => {
     cy.intercept('POST', '/api/authentication/login', { statusCode: 401 }).as('login')
 
-    mount(
-      <QueryClientProvider client={queryClient}>
-        <AuthenticationProvider children={<h1>This should show after login</h1>} />
-      </QueryClientProvider>,
-    )
+    mountAuthenticationProvider(<h1>This should show after login</h1>)
 
     login()
 

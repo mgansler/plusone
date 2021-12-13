@@ -1,20 +1,12 @@
+import { FormControl, InputLabel, LinearProgress, MenuItem, Paper, Select, Theme, Toolbar } from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import { useRef } from 'react'
 import { useQuery } from 'react-query'
 import { Route, Routes, useMatch, useNavigate } from 'react-router-dom'
-import {
-  createStyles,
-  FormControl,
-  InputLabel,
-  LinearProgress,
-  makeStyles,
-  MenuItem,
-  Paper,
-  Select,
-  Toolbar,
-} from '@material-ui/core'
 
-import { useGitHubPagination } from '@plusone/github-hooks'
 import { OrganizationsDocument, OrganizationsQuery } from '@plusone/github-schema'
+import { useGitHubPagination } from '@plusone/github-hooks'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryOverview } from '../repository-overview/repository-overview'
@@ -43,7 +35,7 @@ const useFetchOrganizations = () => {
   return { data, isLoading }
 }
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles<Theme>((theme) =>
   createStyles({
     toolbar: {
       gap: theme.spacing(1),

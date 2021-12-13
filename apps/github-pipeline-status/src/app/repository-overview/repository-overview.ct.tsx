@@ -1,6 +1,7 @@
 import { mount } from '@cypress/react'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { createTheme, ThemeProvider } from '@mui/material'
 import { createRef } from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { BrowserRouter } from 'react-router-dom'
 
 import { OctokitProvider } from '../octokit-provider/octokit-provider'
@@ -26,14 +27,16 @@ describe('RepositoryOverview', () => {
     const toolbarRef = createRef<HTMLDivElement>()
 
     mount(
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <OctokitProvider>
-            <div ref={toolbarRef} />
-            <RepositoryOverview toolbarRef={toolbarRef} />
-          </OctokitProvider>
-        </QueryClientProvider>
-      </BrowserRouter>,
+      <ThemeProvider theme={createTheme()}>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <OctokitProvider>
+              <div ref={toolbarRef} />
+              <RepositoryOverview toolbarRef={toolbarRef} />
+            </OctokitProvider>
+          </QueryClientProvider>
+        </BrowserRouter>
+      </ThemeProvider>,
     )
 
     cy.wait('@fetch')
