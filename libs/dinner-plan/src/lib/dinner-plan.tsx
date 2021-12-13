@@ -6,9 +6,9 @@ import makeStyles from '@mui/styles/makeStyles'
 
 import { getDateFor, getWeekOfYearFor, getYearFor } from '@plusone/date-utils'
 
-import { Week } from './week/week'
-import { DinnerPlanStore } from './store/dinner-plan.store'
 import { Dishes } from './dishes/dishes'
+import { DinnerPlanStore } from './store/dinner-plan.store'
+import { Week } from './week/week'
 
 const useClassNames = makeStyles((theme) =>
   createStyles({
@@ -24,7 +24,7 @@ const useClassNames = makeStyles((theme) =>
 )
 
 export function DinnerPlan() {
-  const match = useMatch<'week'>(':app/:year/:week')
+  const match = useMatch(':app/:year/:week')
   const navigate = useNavigate()
 
   const classNames = useClassNames()

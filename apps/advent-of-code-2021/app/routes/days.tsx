@@ -2,7 +2,7 @@ import { useMatch } from 'react-router-dom'
 import { Outlet } from 'remix'
 
 export default function () {
-  const match = useMatch<'day'>('days/:day')
+  const match = useMatch('days/:day')
 
   return (
     <main>

@@ -12,7 +12,7 @@ import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryOverview } from '../repository-overview/repository-overview'
 
 const useOrganizationName = (): string => {
-  const match = useMatch<'organizationName'>('/organization/:organizationName')
+  const match = useMatch('/organization/:organizationName')
   return match?.params.organizationName || ''
 }
 
@@ -70,7 +70,7 @@ export function Organizations() {
             value={organizationName}
             onChange={(event) => navigate(`/organization/${event.target.value}`)}
           >
-            {organizationName === '' && <MenuItem value="" />}
+            {organizationName === '' && <MenuItem value='' />}
             {data.viewer.organizations.nodes.map((organization) => (
               <MenuItem key={organization.id} value={organization.login}>
                 {organization.name}
