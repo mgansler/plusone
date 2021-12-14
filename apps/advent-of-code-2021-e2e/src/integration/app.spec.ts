@@ -135,13 +135,13 @@ describe('advent-of-code-2021', () => {
     // No test for Part 2 because the output is visual
   })
 
-  it.only('should solve day 14', () => {
+  it('should solve day 14', () => {
     cy.findByRole('link', { name: '14' }).click()
     cy.fixture('14.txt').then((input) => cy.findByRole('textbox').type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
     cy.findByText('Solution (Part 1): 1588')
-    cy.findByText('Solution (Part 2): TBD')
+    cy.findByText('Solution (Part 2): 2188189693529')
   })
 })
