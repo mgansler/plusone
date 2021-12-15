@@ -55,6 +55,8 @@ jobs:
       - name: Increase numbers of file watchers
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 
+      - run: yarn install
+
       - name: Run ${{ matrix.project }}:e2e
         timeout-minutes: 15
         run: yarn nx run ${{ matrix.project }}:e2e
