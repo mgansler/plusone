@@ -84,6 +84,7 @@ export const action: ActionFunction = async ({ request }) => {
   const paper = initDots(dimX, dimY, dotCoords)
   const parsedInstructions = parseInstructions(instructions)
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const firstInstruction = parsedInstructions.shift()!
   const foldedOnce = fold(paper, firstInstruction)
   const numberOfDotsAfterOneFold = countDots(foldedOnce)
