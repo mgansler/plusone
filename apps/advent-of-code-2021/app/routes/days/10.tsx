@@ -16,7 +16,7 @@ function findFirstIllegalCharacter(line: Token[]): Closing | void {
       openingCharacters.push(line[i] as Opening)
     } else {
       const lastOpeningChar = openingCharacters[openingCharacters.length - 1]
-      if (closing[opening.indexOf(lastOpeningChar)] == line[i]) {
+      if (closing[opening.indexOf(lastOpeningChar)] === line[i]) {
         openingCharacters.pop()
       } else {
         return line[i] as Closing
@@ -32,7 +32,7 @@ function getClosingCharacters(line: Token[]): Closing[] {
       openingCharacters.push(line[i] as Opening)
     } else {
       const lastOpeningChar = openingCharacters[openingCharacters.length - 1]
-      if (closing[opening.indexOf(lastOpeningChar)] == line[i]) {
+      if (closing[opening.indexOf(lastOpeningChar)] === line[i]) {
         openingCharacters.pop()
       } else {
         return []
