@@ -58,8 +58,31 @@ function visit(start: Point, map: Map, distanceMap: Map, visited: Visited) {
   }
 }
 
+function expand(map: Map): Map {
+  const rows: Map = []
+  const expanded: Map = []
+  // expand right
+  map.forEach((row) => {
+    const newRow = [...row]
+    for (let round = 1; round < 5; round++) {
+      newRow.push(...row.map((el) => (el + round > 9 ? el + round - 9 : el + round)))
+    }
+    rows.push(newRow)
+  })
+
+  // expand down
+  for (let round = 0; round < 5; round++) {
+    rows.forEach((row) => {
+      expanded.push(row.map((el) => (el + round > 9 ? el + round - 9 : el + round)))
+    })
+  }
+
+  return expanded
+}
+
 type ActionResponse = {
   part1: number
+  part2: number
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -74,7 +97,24 @@ export const action: ActionFunction = async ({ request }) => {
     visit(findNext(distanceMap, visited)!, map, distanceMap, visited)
   }
 
-  return json({ part1: distanceMap[map.length - 1][map.length - 1] } as ActionResponse)
+  const expanded = expand(map)
+  const expandedVisited = initVisited(expanded)
+  const expandedDistanceMap = initDistanceMap(expanded)
+
+  console.log('---------------')
+
+  let visitedNodes = 0
+  while (findNext(expandedDistanceMap, expandedVisited)) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    visit(findNext(expandedDistanceMap, expandedVisited)!, expanded, expandedDistanceMap, expandedVisited)
+    visitedNodes++
+    console.log(visitedNodes / (expanded.length * expanded.length))
+  }
+
+  return json({
+    part1: distanceMap[map.length - 1][map.length - 1],
+    part2: expandedDistanceMap[expandedDistanceMap.length - 1][expandedDistanceMap.length - 1],
+  } as ActionResponse)
 }
 
 export default function () {
@@ -89,7 +129,7 @@ export default function () {
       <br />
       <button>Solution!</button>
       {result ? <div>Solution (Part 1): {result.part1}</div> : null}
-      {result ? <div>Solution (Part 2): TBD</div> : null}
+      {result ? <div>Solution (Part 2): {result.part2}</div> : null}
     </Form>
   )
 }
