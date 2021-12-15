@@ -49,9 +49,7 @@ function findNext(distanceMap: Map, visited: Visited): Point | undefined {
 
 function visit(start: Point, map: Map, distanceMap: Map, visited: Visited) {
   visited[start.y][start.x] = true
-  if (visited.flat().filter((el) => !el).length === 0) {
-    return
-  }
+
   const neighbours = getNeighbours(start, visited)
   for (const { x, y } of neighbours) {
     distanceMap[y][x] = Math.min(distanceMap[start.y][start.x] + map[y][x], distanceMap[y][x])
@@ -101,12 +99,12 @@ export const action: ActionFunction = async ({ request }) => {
   const expandedVisited = initVisited(expanded)
   const expandedDistanceMap = initDistanceMap(expanded)
 
-  console.log('---------------')
-
+  let next = { x: 0, y: 0 }
   let visitedNodes = 0
-  while (findNext(expandedDistanceMap, expandedVisited)) {
+  while (next) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    visit(findNext(expandedDistanceMap, expandedVisited)!, expanded, expandedDistanceMap, expandedVisited)
+    visit(next, expanded, expandedDistanceMap, expandedVisited)
+    next = findNext(expandedDistanceMap, expandedVisited)!
     visitedNodes++
     console.log(visitedNodes / (expanded.length * expanded.length))
   }
