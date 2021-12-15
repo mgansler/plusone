@@ -100,13 +100,10 @@ export const action: ActionFunction = async ({ request }) => {
   const expandedDistanceMap = initDistanceMap(expanded)
 
   let next = { x: 0, y: 0 }
-  let visitedNodes = 0
   while (next) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     visit(next, expanded, expandedDistanceMap, expandedVisited)
     next = findNext(expandedDistanceMap, expandedVisited)!
-    visitedNodes++
-    console.log(visitedNodes / (expanded.length * expanded.length))
   }
 
   return json({
