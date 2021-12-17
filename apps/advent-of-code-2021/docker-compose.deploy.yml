@@ -8,6 +8,7 @@ networks:
 services:
   web:
     image: ${AOC21_DOCKER_IMAGE}
+    restart: always
     networks:
       - traefik
     labels:
