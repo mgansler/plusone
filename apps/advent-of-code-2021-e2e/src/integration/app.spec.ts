@@ -154,4 +154,20 @@ describe('advent-of-code-2021', () => {
     cy.findByText('Solution (Part 1): 40')
     cy.findByText('Solution (Part 2): 315')
   })
+  ;[
+    { transmission: '8A004A801A8002F478', versionSum: 16 },
+    // { transmission: '620080001611562C8802118E34', versionSum: 12 },
+    // { transmission: 'C0015000016115A2E0802F182340', versionSum: 23 },
+    // { transmission: 'A0016C880162017C3686B18A3D4780', versionSum: 31 },
+  ].forEach(({ transmission, versionSum }) => {
+    it.only(`should solve day 16 (${transmission} should produce ${versionSum})`, () => {
+      cy.findByRole('link', { name: '16' }).click()
+      cy.findByRole('textbox').type(transmission)
+
+      cy.findByRole('button', { name: 'Solution!' }).click()
+
+      cy.findByText(`Solution (Part 1): ${versionSum}`)
+      cy.findByText('Solution (Part 2): TBD')
+    })
+  })
 })

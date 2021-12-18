@@ -9,27 +9,29 @@ import { FeedsWebNewFeed } from './feeds-web-new-feed'
 
 describe('FeedsWebNewFeed', () => {
   const timeout = 300
+  const queryClient = new QueryClient()
 
   beforeEach(() => {
     cy.intercept('GET', `/api/feed/discover?url=${encodeURIComponent(discoverFeed.url)}`, (req) => {
       req.reply(discoverFeed)
     })
 
-    cy.intercept('POST', '/api/feed', (req) => {
-      expect(req.body).to.deep.equals(createFeedPayload, "payload doesn't equal expectation")
-      req.reply(createFeedResponse)
-    }).as('createFeed')
-  })
+    cy.intercept('POST', '/api/feed', { body: createFeedPayload }).as('createFeed')
 
-  it('should fill inputs with response from discovery when typing', () => {
     mount(
       <MockAuthenticationProvider>
-        <QueryClientProvider client={new QueryClient()}>
+        <QueryClientProvider client={queryClient}>
           <FeedsWebNewFeed />
         </QueryClientProvider>
       </MockAuthenticationProvider>,
     )
+  })
 
+  afterEach(() => {
+    queryClient.clear()
+  })
+
+  it('should fill inputs with response from discovery when typing', () => {
     cy.findByRole('textbox', { name: /website/i }).type(discoverFeed.url)
 
     cy.findByRole('textbox', { name: /title/i }).should('have.value', discoverFeed.title)
@@ -37,18 +39,10 @@ describe('FeedsWebNewFeed', () => {
 
     cy.findByRole('button', { name: /add feed/i }).click()
 
-    cy.wait('@createFeed', { timeout })
+    cy.wait('@createFeed', { timeout }).its('request.body').should('deep.equal', createFeedPayload)
   })
 
   it('should fill inputs with response from discovery when pasting', () => {
-    mount(
-      <MockAuthenticationProvider>
-        <QueryClientProvider client={new QueryClient()}>
-          <FeedsWebNewFeed />
-        </QueryClientProvider>
-      </MockAuthenticationProvider>,
-    )
-
     cy.findByRole('textbox', { name: /website/i })
       .focus()
       .invoke('val', discoverFeed.url)
@@ -63,14 +57,6 @@ describe('FeedsWebNewFeed', () => {
   })
 
   it('should be possible to overwrite the title', () => {
-    mount(
-      <MockAuthenticationProvider>
-        <QueryClientProvider client={new QueryClient()}>
-          <FeedsWebNewFeed />
-        </QueryClientProvider>
-      </MockAuthenticationProvider>,
-    )
-
     cy.findByRole('textbox', { name: /website/i })
       .focus()
       .invoke('val', discoverFeed.url)
@@ -79,19 +65,20 @@ describe('FeedsWebNewFeed', () => {
     cy.findByRole('textbox', { name: /title/i }).should('have.value', discoverFeed.title)
     cy.findByRole('textbox', { name: /title/i }).clear().type('My Custom Title')
 
-    cy.intercept('POST', '/api/feed', (req) => {
-      expect(req.body).to.deep.equals(
-        {
-          ...createFeedPayload,
-          title: 'My Custom Title',
-        },
-        "payload doesn't equal expectation",
-      )
-      req.reply({ ...createFeedResponse, title: 'My Custom Title' })
+    cy.intercept('POST', '/api/feed', {
+      body: {
+        ...createFeedResponse,
+        title: 'My Custom Title',
+      },
     }).as('createFeedCustomTitle')
 
     cy.findByRole('button', { name: /add feed/i }).click()
 
     cy.wait('@createFeedCustomTitle', { timeout })
+      .its('request.body')
+      .should('deep.equal', {
+        ...createFeedPayload,
+        title: 'My Custom Title',
+      })
   })
 })
