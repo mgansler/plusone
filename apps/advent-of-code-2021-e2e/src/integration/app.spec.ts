@@ -154,4 +154,38 @@ describe('advent-of-code-2021', () => {
     cy.findByText('Solution (Part 1): 40')
     cy.findByText('Solution (Part 2): 315')
   })
+  ;[
+    { transmission: '8A004A801A8002F478', versionSum: 16 },
+    { transmission: '620080001611562C8802118E34', versionSum: 12 },
+    { transmission: 'C0015000016115A2E0802F182340', versionSum: 23 },
+    { transmission: 'A0016C880162017C3686B18A3D4780', versionSum: 31 },
+  ].forEach(({ transmission, versionSum }) => {
+    it(`should solve day 16 - part 1 (${transmission} should produce ${versionSum})`, () => {
+      cy.findByRole('link', { name: '16' }).click()
+      cy.findByRole('textbox').type(transmission)
+
+      cy.findByRole('button', { name: 'Solution!' }).click()
+
+      cy.findByText(`Solution (Part 1): ${versionSum}`)
+    })
+  })
+  ;[
+    { transmission: 'C200B40A82', result: 3 },
+    { transmission: '04005AC33890', result: 54 },
+    { transmission: '880086C3E88112', result: 7 },
+    { transmission: 'CE00C43D881120', result: 9 },
+    { transmission: 'D8005AC2A8F0', result: 1 },
+    { transmission: 'F600BC2D8F', result: 0 },
+    { transmission: '9C005AC2F8F0', result: 0 },
+    { transmission: '9C0141080250320F1802104A08', result: 1 },
+  ].forEach(({ transmission, result }) => {
+    it(`should solve day 16 - part 2 (${transmission} should produce ${result})`, () => {
+      cy.findByRole('link', { name: '16' }).click()
+      cy.findByRole('textbox').type(transmission)
+
+      cy.findByRole('button', { name: 'Solution!' }).click()
+
+      cy.findByText(`Solution (Part 2): ${result}`)
+    })
+  })
 })
