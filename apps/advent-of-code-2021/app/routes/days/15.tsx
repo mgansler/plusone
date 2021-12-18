@@ -101,8 +101,8 @@ export const action: ActionFunction = async ({ request }) => {
 
   let next = { x: 0, y: 0 }
   while (next) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     visit(next, expanded, expandedDistanceMap, expandedVisited)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     next = findNext(expandedDistanceMap, expandedVisited)!
   }
 

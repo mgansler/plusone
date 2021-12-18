@@ -1,5 +1,26 @@
 import { ActionFunction, Form, json, useActionData } from 'remix'
 
+function applyOperator(typeId: number, values: number[]): number {
+  switch (typeId) {
+    case 0:
+      return values.reduce((sum, cur) => sum + cur, 0)
+    case 1:
+      return values.reduce((sum, cur) => sum * cur, 1)
+    case 2:
+      return Math.min(...values)
+    case 3:
+      return Math.max(...values)
+    case 5:
+      return values[0] > values[1] ? 1 : 0
+    case 6:
+      return values[0] < values[1] ? 1 : 0
+    case 7:
+      return values[0] === values[1] ? 1 : 0
+    default:
+      return -1
+  }
+}
+
 // I trust the input, this will return
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -15,18 +36,18 @@ function readBytes(byteInput: string): [string[], string] {
   }
 }
 
-function parsePacket(packet: string): [number, string] {
+function parsePacket(packet: string): [number, string, number] {
   const version = parseInt(packet.slice(0, 3), 2)
   const typeId = parseInt(packet.slice(3, 6), 2)
   const lengthTypeId = parseInt(packet.slice(6, 7), 2)
-  // console.log({ packet }, { version, typeId, lengthTypeId })
 
   if (typeId === 4) {
     const [bytes, rest] = readBytes(packet.slice(6))
     const value = parseInt(bytes.map((b) => b.slice(1)).join(''), 2)
-    // console.log({ value })
-    return [version, rest]
+    return [version, rest, value]
   }
+
+  const values: number[] = []
 
   if (lengthTypeId === 0) {
     // 15 bits representing the number of bits in the sub-packets.
@@ -37,8 +58,9 @@ function parsePacket(packet: string): [number, string] {
       const res = parsePacket(rest)
       vSum += res[0]
       rest = res[1]
+      values.push(res[2])
     }
-    return [vSum + version, packet.slice(8 + 15 - 1 + numberOfBitsInSubPackets)]
+    return [vSum + version, packet.slice(8 + 15 - 1 + numberOfBitsInSubPackets), applyOperator(typeId, values)]
   } else {
     // 11 bits representing the number of sub-packets immediately contained by this packet.
     const numberOfSubPackets = parseInt(packet.slice(8, 8 + 11 - 1), 2)
@@ -48,13 +70,15 @@ function parsePacket(packet: string): [number, string] {
       const res = parsePacket(rest)
       vSum += res[0]
       rest = res[1]
+      values.push(res[2])
     }
-    return [vSum + version, rest]
+    return [vSum + version, rest, applyOperator(typeId, values)]
   }
 }
 
 type ActionResponse = {
   part1: number
+  part2: number
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -76,9 +100,9 @@ export const action: ActionFunction = async ({ request }) => {
     })
     .join('')
 
-  const [part1] = parsePacket(input)
+  const [part1, _, part2] = parsePacket(input)
 
-  return json({ part1 } as ActionResponse)
+  return json({ part1, part2 } as ActionResponse)
 }
 
 export default function () {
@@ -93,7 +117,7 @@ export default function () {
       <br />
       <button>Solution!</button>
       {result ? <div>Solution (Part 1): {result.part1}</div> : null}
-      {result ? <div>Solution (Part 2): TBD</div> : null}
+      {result ? <div>Solution (Part 2): {result.part2}</div> : null}
     </Form>
   )
 }
