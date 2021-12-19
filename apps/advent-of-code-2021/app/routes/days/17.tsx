@@ -53,6 +53,7 @@ function highestPoint(y: number): number {
 
 type ActionResponse = {
   part1: number
+  part2: number
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -71,15 +72,16 @@ export const action: ActionFunction = async ({ request }) => {
   const y2 = Number(y1s)
 
   const hits: Velocity[] = []
-  for (let x = 1; x < x2; x++) {
-    for (let y = -y2; y > y2; y--) {
+  for (let x = 1; x <= x2; x++) {
+    for (let y = -y2; y >= y2; y--) {
       const hit = hitsTarget({ x, y }, { x: 0, y: 0 }, { min: { x: x1, y: y1 }, max: { x: x2, y: y2 } })
       if (hit) {
         hits.push({ x, y })
       }
     }
   }
-  return json({ part1: highestPoint(hits.sort((a, b) => b.y - a.y)[0].y) } as ActionResponse)
+
+  return json({ part1: highestPoint(hits.sort((a, b) => b.y - a.y)[0].y), part2: hits.length } as ActionResponse)
 }
 
 export default function () {
@@ -94,7 +96,7 @@ export default function () {
       <br />
       <button>Solution!</button>
       {result ? <div>Solution (Part 1): {result.part1}</div> : null}
-      {result ? <div>Solution (Part 2): TBD</div> : null}
+      {result ? <div>Solution (Part 2): {result.part2}</div> : null}
     </Form>
   )
 }
