@@ -4,7 +4,7 @@ export type Options = {
   url?: string
 }
 
-Cypress.Commands.add('graphql', (fixture: string, options: Options) => {
+Cypress.Commands.add('graphql', (fixture: string, options?: Options) => {
   const { url, operationType, filter }: Options = { operationType: 'query', url: '/graphql', ...options }
 
   return cy.intercept('POST', url, (req) => {
