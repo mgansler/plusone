@@ -23,7 +23,7 @@ jobs:
           path: |
             ~/.cache/Cypress
             node_modules/
-          key: ${{ runner.os }}-yarn-v1-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-e2e-yarn-v1-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-v1-
 
@@ -50,7 +50,7 @@ jobs:
           path: |
             ~/.cache/Cypress
             node_modules/
-          key: ${{ runner.os }}-yarn-v1-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-e2e-yarn-v1-${{ hashFiles('**/yarn.lock') }}
 
       - name: Increase numbers of file watchers
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
