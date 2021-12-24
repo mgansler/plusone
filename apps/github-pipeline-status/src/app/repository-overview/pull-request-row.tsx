@@ -1,5 +1,5 @@
-import { Chip, IconButton, Tooltip, Typography } from '@mui/material'
 import { Check, Error, MergeType, OpenInNew } from '@mui/icons-material'
+import { Chip, IconButton, Tooltip, Typography } from '@mui/material'
 import React from 'react'
 
 import {
@@ -13,10 +13,10 @@ import {
   User,
 } from '@plusone/github-schema'
 
-import { useClassNames } from './repository-overview.styles'
 import { ApproveButton } from './approve-button'
-import { EnableAutoMerge } from './enable-auto-merge'
 import { CheckConclusion } from './check-conclusion'
+import { EnableAutoMerge } from './enable-auto-merge'
+import { useClassNames } from './repository-overview.styles'
 
 const getLastReviewStatePerAuthor = (reviews: PullRequestReview[]): Record<string, PullRequestReviewState> =>
   reviews
@@ -77,7 +77,7 @@ function CanBeMerged({
         target={'_blank'}
         rel={'noreferrer'}
         onClick={(e) => e.stopPropagation()}
-        size="large"
+        size={'large'}
       >
         <Tooltip title={'Merge conflicts'}>
           <Error />
@@ -113,7 +113,7 @@ export function PullRequestRow({ pr }: PullRequestProps) {
         target={'_blank'}
         rel={'noreferrer'}
         onClick={(e) => e.stopPropagation()}
-        size="large"
+        size={'large'}
       >
         <OpenInNew />
       </IconButton>
@@ -126,11 +126,7 @@ export function PullRequestRow({ pr }: PullRequestProps) {
         title={pr.isDraft ? 'Draft' : ''}
         arrow={true}
       >
-        <Typography
-          className={classNames.titleColumn}
-          variant={'caption'}
-          color={pr.isDraft ? 'textSecondary' : 'initial'}
-        >
+        <Typography className={classNames.titleColumn} variant={'caption'} color={pr.isDraft ? 'textSecondary' : ''}>
           {pr.title} by {(pr.author as User).name ?? pr.author.login}
         </Typography>
       </Tooltip>
