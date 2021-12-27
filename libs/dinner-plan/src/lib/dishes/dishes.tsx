@@ -1,8 +1,9 @@
 import { AddCircleOutline } from '@mui/icons-material'
-import { Chip, InputAdornment, TextField, Theme } from '@mui/material'
+import type { Theme } from '@mui/material'
+import { Chip, InputAdornment, TextField } from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
-import { DragEventHandler, FormEventHandler } from 'react'
+import type { DragEventHandler, FormEventHandler } from 'react'
 
 import { useDinnerPlanStoreDispatch, useDishes } from '../store/dinner-plan.store'
 

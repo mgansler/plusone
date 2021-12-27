@@ -2,7 +2,7 @@ import { IconButton, Tooltip } from '@mui/material'
 import React from 'react'
 import { Check, Error, FindReplace } from '@mui/icons-material'
 
-import { CheckConclusionState, CheckSuite } from '@plusone/github-schema'
+import type { CheckConclusionState, CheckSuite } from '@plusone/github-schema'
 
 const CheckConclusionIconMap: Record<CheckConclusionState | 'RUNNING', JSX.Element> = {
   ACTION_REQUIRED: undefined,

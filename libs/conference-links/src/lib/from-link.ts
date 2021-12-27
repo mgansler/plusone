@@ -1,4 +1,4 @@
-import { ConferenceLink } from './types'
+import type { ConferenceLink } from './types'
 
 function zoomLinkFromUrl(url: URL, title: string): ConferenceLink {
   const [confNo] = new RegExp(/\d+/).exec(url.pathname) ?? []

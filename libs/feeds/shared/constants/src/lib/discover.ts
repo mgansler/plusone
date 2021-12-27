@@ -1,4 +1,4 @@
-import { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface'
+import type { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface'
 import { Transport } from '@nestjs/microservices'
 
 export const DISCOVER_SERVICE = 'DISCOVER_SERVICE'

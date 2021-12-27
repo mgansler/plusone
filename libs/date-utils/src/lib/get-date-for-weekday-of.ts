@@ -1,4 +1,4 @@
-import { Weekday, WeekModifier } from './types'
+import type { Weekday, WeekModifier } from './types'
 import { WeekdayMap, WeekModifierMap } from './constants'
 
 export function getDateForWeekdayOf(weekday: Weekday, weekModifier: WeekModifier = 'this-week'): Date {

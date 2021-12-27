@@ -1,4 +1,5 @@
-import { Box, Card, CardContent, CardHeader, Paper, Theme, Typography } from '@mui/material'
+import type { Theme } from '@mui/material'
+import { Box, Card, CardContent, CardHeader, Paper, Typography } from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
 

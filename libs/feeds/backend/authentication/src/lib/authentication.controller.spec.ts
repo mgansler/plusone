@@ -1,6 +1,6 @@
-import { Test, TestingModule } from '@nestjs/testing'
+import { TestingModule, Test } from '@nestjs/testing'
 import { JwtModule } from '@nestjs/jwt'
-import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers'
+import { StartedTestContainer, GenericContainer, Wait } from 'testcontainers'
 
 import { PrismaService } from '@plusone/feeds/backend/persistence'
 

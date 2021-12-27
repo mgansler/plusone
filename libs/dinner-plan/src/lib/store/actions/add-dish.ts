@@ -1,4 +1,4 @@
-import { DinnerPlanState, Dish } from '../types'
+import type { DinnerPlanState, Dish } from '../types'
 
 export type AddDish = {
   type: 'add-dish'

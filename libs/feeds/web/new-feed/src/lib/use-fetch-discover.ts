@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query'
 
 import { useToken } from '@plusone/feeds/web/login'
-import { DiscoverResponse } from '@plusone/feeds/shared/types'
+import type { DiscoverResponse } from '@plusone/feeds/shared/types'
 import { jsonOrThrow } from '@plusone/feeds/web/shared'
 
 export function useFetchDiscover(url: string) {

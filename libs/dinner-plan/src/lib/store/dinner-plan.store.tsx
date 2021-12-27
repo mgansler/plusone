@@ -1,8 +1,9 @@
-import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react'
+import type { ReactNode } from 'react'
+import { createContext, useContext, useEffect, useReducer } from 'react'
 
 import { useLocalStorage } from '@plusone/hooks'
 
-import { DinnerPlanActions, DinnerPlanReducer, DinnerPlanState, Dish } from './types'
+import type { DinnerPlanActions, DinnerPlanReducer, DinnerPlanState, Dish } from './types'
 import { dinnerPlanReducer } from './reducer'
 
 const defaultState: DinnerPlanState = {

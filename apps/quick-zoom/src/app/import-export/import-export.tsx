@@ -2,7 +2,7 @@ import React, { useCallback, useRef } from 'react'
 import { Button } from '@mui/material'
 
 import { useFileDownload } from '@plusone/hooks'
-import { ConferenceLink } from '@plusone/conference-links'
+import type { ConferenceLink } from '@plusone/conference-links'
 
 interface ImportExportProps {
   links: ConferenceLink[]

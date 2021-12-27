@@ -1,4 +1,5 @@
-import { ActionFunction, Form, json, useActionData } from 'remix'
+import type { ActionFunction } from 'remix'
+import { Form, json, useActionData } from 'remix'
 
 type Position = {
   x: number
@@ -8,12 +9,6 @@ type Position = {
 type Target = {
   min: Position
   max: Position
-}
-
-enum Probe {
-  Travelling,
-  Missed,
-  Hit,
 }
 
 type Velocity = {
@@ -62,7 +57,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   const match = input.match(/target area: x=(\d+)\.\.(\d+), y=(-\d+)\.\.(-\d+)/)
   if (!match) {
-    throw 'check your input'
+    throw new Error('check your input')
   }
 
   const [_, x1s, x2s, y1s, y2s] = match

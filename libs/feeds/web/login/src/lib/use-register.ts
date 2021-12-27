@@ -1,6 +1,6 @@
 import { useMutation } from 'react-query'
 
-import { RegisterProps } from './types'
+import type { RegisterProps } from './types'
 
 export function useRegister() {
   return useMutation<{ username: string }, unknown, RegisterProps>((variables) =>

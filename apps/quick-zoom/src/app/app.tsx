@@ -1,9 +1,10 @@
-import { AppBar, Container, CssBaseline, Paper, Theme, Toolbar, Typography } from '@mui/material'
+import type { Theme } from '@mui/material'
+import { AppBar, Container, CssBaseline, Paper, Toolbar, Typography } from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
 import React, { useCallback } from 'react'
 
-import { ConferenceLink } from '@plusone/conference-links'
+import type { ConferenceLink } from '@plusone/conference-links'
 import { DarkModeThemeProvider } from '@plusone/dark-mode-theme-provider'
 import { useLocalStorage } from '@plusone/hooks'
 

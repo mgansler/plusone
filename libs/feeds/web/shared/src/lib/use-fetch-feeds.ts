@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query'
 
 import { useToken } from '@plusone/feeds/web/login'
-import { FeedResponse } from '@plusone/feeds/shared/types'
+import type { FeedResponse } from '@plusone/feeds/shared/types'
 
 import { jsonOrThrow } from './json-or-throw'
 

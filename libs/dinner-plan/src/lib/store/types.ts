@@ -1,6 +1,6 @@
-import { Reducer } from 'react'
+import type { Reducer } from 'react'
 
-import { AddDish, PlanDish, RemoveDish } from './actions'
+import type { AddDish, PlanDish, RemoveDish } from './actions'
 
 export type Dish = string
 

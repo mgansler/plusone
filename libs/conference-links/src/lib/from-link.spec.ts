@@ -1,4 +1,4 @@
-import { ConferenceLink } from './types'
+import type { ConferenceLink } from './types'
 import { fromLink } from './from-link'
 
 describe('fromLink', () => {

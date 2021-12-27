@@ -4,7 +4,8 @@ import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
 import { Add, VideoCall } from '@mui/icons-material'
 
-import { ConferenceLink, fromLink } from '@plusone/conference-links'
+import type { ConferenceLink } from '@plusone/conference-links'
+import { fromLink } from '@plusone/conference-links'
 
 const useStyles = makeStyles((theme) =>
   createStyles({

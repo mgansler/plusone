@@ -1,6 +1,6 @@
 import { mount } from '@cypress/react'
 import { createTheme, ThemeProvider } from '@mui/material'
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { AuthenticationProvider } from './authentication-provider'

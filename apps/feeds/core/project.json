@@ -54,8 +54,7 @@
     "serve": {
       "executor": "@nrwl/node:execute",
       "options": {
-        "buildTarget": "feeds-core:build",
-        "waitUntilTargets": ["feeds-backend-persistence:generate"]
+        "buildTarget": "feeds-core:build"
       },
       "dependsOn": [
         {

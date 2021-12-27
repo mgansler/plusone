@@ -1,4 +1,5 @@
-import { ActionFunction, Form, json, useActionData } from 'remix'
+import type { ActionFunction } from 'remix'
+import { Form, json, useActionData } from 'remix'
 
 function foo(x: number[][], position: number) {
   const ones: number[][] = []

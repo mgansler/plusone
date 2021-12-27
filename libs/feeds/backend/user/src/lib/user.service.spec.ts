@@ -1,5 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers'
+import { TestingModule, Test } from '@nestjs/testing'
+import { StartedTestContainer, GenericContainer, Wait } from 'testcontainers'
 
 import { PrismaService } from '@plusone/feeds/backend/persistence'
 

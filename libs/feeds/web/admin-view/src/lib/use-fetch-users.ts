@@ -2,7 +2,7 @@ import { useQuery } from 'react-query'
 
 import { useToken } from '@plusone/feeds/web/login'
 import { jsonOrThrow } from '@plusone/feeds/web/shared'
-import { UserResponse } from '@plusone/feeds/shared/types'
+import type { UserResponse } from '@plusone/feeds/shared/types'
 
 export function useFetchUsers() {
   const token = useToken()

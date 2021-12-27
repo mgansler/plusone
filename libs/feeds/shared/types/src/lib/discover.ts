@@ -1,4 +1,4 @@
-import { Output } from 'rss-parser'
+import type { Output } from 'rss-parser'
 
 export interface DiscoverResponse {
   url: string

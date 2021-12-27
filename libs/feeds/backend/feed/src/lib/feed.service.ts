@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/c
 import { ClientProxy } from '@nestjs/microservices'
 
 import { JwtPayload } from '@plusone/feeds/backend/authentication'
-import { Feed, Prisma, PrismaService, User } from '@plusone/feeds/backend/persistence'
+import { Feed, PrismaService, User, Prisma } from '@plusone/feeds/backend/persistence'
 import { DiscoverFeedRequest, DiscoverFeedResponse } from '@plusone/feeds/shared/types'
 import { DISCOVER_MESSAGE_PATTERN, DISCOVER_SERVICE } from '@plusone/feeds/shared/constants'
 
