@@ -1,12 +1,12 @@
 import { Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
 
 import { JwtAuthGuard } from '@plusone/feeds/backend/authentication'
-import type { ArticleService } from '@plusone/feeds/backend/article'
-import type { Feed } from '@plusone/feeds/backend/persistence'
-import type { DiscoverResponse, FeedResponse, PaginatedArticles, Pagination } from '@plusone/feeds/shared/types'
+import { ArticleService } from '@plusone/feeds/backend/article'
+import { Feed } from '@plusone/feeds/backend/persistence'
+import { DiscoverResponse, FeedResponse, PaginatedArticles, Pagination } from '@plusone/feeds/shared/types'
 
-import type { FeedService } from './feed.service'
-import type { FeedDiscoverDto, FeedInputDto } from './feed.dto'
+import { FeedService } from './feed.service'
+import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
 
 @Controller('feed')
 @UseGuards(JwtAuthGuard)

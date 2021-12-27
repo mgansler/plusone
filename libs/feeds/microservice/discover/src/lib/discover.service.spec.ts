@@ -1,6 +1,5 @@
 import { HttpModule } from '@nestjs/axios'
-import type { TestingModule } from '@nestjs/testing'
-import { Test } from '@nestjs/testing'
+import { TestingModule, Test } from '@nestjs/testing'
 
 import { DiscoverService } from './discover.service'
 

@@ -1,15 +1,14 @@
 import { Inject, Injectable, Logger } from '@nestjs/common'
-import type { ClientProxy } from '@nestjs/microservices'
+import { ClientProxy } from '@nestjs/microservices'
 import { Cron, CronExpression } from '@nestjs/schedule'
-import type { Item } from 'rss-parser'
+import { Item } from 'rss-parser'
 
-import type { FeedService } from '@plusone/feeds/backend/feed'
-import type { ArticleService } from '@plusone/feeds/backend/article'
-import type { Feed } from '@plusone/feeds/backend/persistence'
-import { Prisma } from '@plusone/feeds/backend/persistence'
+import { FeedService } from '@plusone/feeds/backend/feed'
+import { ArticleService } from '@plusone/feeds/backend/article'
+import { Feed, Prisma } from '@plusone/feeds/backend/persistence'
 import { SystemUser } from '@plusone/feeds/backend/authentication'
 import { FETCH_MESSAGE_PATTERN, FETCH_SERVICE } from '@plusone/feeds/shared/constants'
-import type { UpdateFeedRequest, UpdateFeedResponse } from '@plusone/feeds/shared/types'
+import { UpdateFeedRequest, UpdateFeedResponse } from '@plusone/feeds/shared/types'
 
 @Injectable()
 export class SchedulingService {

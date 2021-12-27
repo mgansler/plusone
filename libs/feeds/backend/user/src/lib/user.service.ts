@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 
-import type { PrismaService } from '@plusone/feeds/backend/persistence'
+import { PrismaService } from '@plusone/feeds/backend/persistence'
 
 @Injectable()
 export class UserService {

@@ -1,13 +1,11 @@
-import type { OnModuleInit } from '@nestjs/common'
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
-import type { JwtService } from '@nestjs/jwt'
+import { OnModuleInit, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 import { compare, hash } from 'bcrypt'
 
-import type { PrismaService, User } from '@plusone/feeds/backend/persistence'
-import { Prisma } from '@plusone/feeds/backend/persistence'
+import { PrismaService, User, Prisma } from '@plusone/feeds/backend/persistence'
 
-import type { JwtPayload } from './jwt.payload'
-import type { UserRegistrationDto } from './user.dto'
+import { JwtPayload } from './jwt.payload'
+import { UserRegistrationDto } from './user.dto'
 
 @Injectable()
 export class AuthenticationService implements OnModuleInit {
