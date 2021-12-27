@@ -1,7 +1,13 @@
-import { spawn } from 'child_process'
+import type { Server } from 'http'
 import * as path from 'path'
 
 import type { ExecutorContext } from '@nrwl/devkit'
+import { BuildMode } from '@remix-run/dev/build'
+import { watch } from '@remix-run/dev/cli/commands'
+import type { RemixConfig } from '@remix-run/dev/config'
+import { readConfig } from '@remix-run/dev/config'
+import { createApp } from '@remix-run/serve'
+import * as express from 'express'
 import { map, Observable } from 'rxjs'
 import { eachValueFrom } from 'rxjs-for-await'
 
@@ -9,9 +15,14 @@ type ServeSchema = {
   port: number
 }
 
-export default async function* runExecutor(options: ServeSchema, context: ExecutorContext) {
+export default async function* (options: ServeSchema, context: ExecutorContext) {
+  const targetRoot = context.workspace.projects[context.projectName].root
+  const config = await readConfig(targetRoot)
+
+  // console.log(config)
+
   return yield* eachValueFrom(
-    runRemixDevServer(options, context).pipe(
+    runRemixDevServer(options, config).pipe(
       map(({ baseUrl }) => ({
         success: true,
         baseUrl,
@@ -20,29 +31,34 @@ export default async function* runExecutor(options: ServeSchema, context: Execut
   )
 }
 
-function runRemixDevServer(options: ServeSchema, context: ExecutorContext) {
-  const projectRoot = context.root
-  const targetRoot = context.workspace.projects[context.projectName].root
-
+function runRemixDevServer(options: ServeSchema, config: RemixConfig) {
   return new Observable((subscriber) => {
-    const remixDev = spawn(path.join(projectRoot, 'node_modules/.bin/remix'), {
-      cwd: path.join(projectRoot, targetRoot),
-      env: {
-        ...process.env,
-        PORT: options.port.toString(),
+    const app = express()
+    app.use(express.static(path.join(config.assetsBuildDirectory, '..')))
+    app.use((_, __, next) => {
+      purgeAppRequireCache(config.serverBuildDirectory)
+      next()
+    })
+    app.use(createApp(config.serverBuildDirectory, BuildMode.Development))
+    let server: Server | null = null
+
+    watch(config, BuildMode.Development, {
+      onInitialBuild: () => {
+        server = app.listen(options.port, () => {
+          console.log(`Remix App Server started at http://localhost:${options.port}`)
+        })
+        subscriber.next({ baseUrl: `http://localhost:${options.port}` })
       },
     })
 
-    remixDev.stdout.on('data', (data) => {
-      console.log(data.toString())
-      const matches = data.toString().match(/Remix App Server started at (https?:\/\/.+)/)
-      if (matches) {
-        subscriber.next({ baseUrl: matches[1] })
-      }
-    })
-
-    remixDev.stderr.on('data', (data) => console.error(data.toString()))
-
-    return () => remixDev.kill()
+    return () => server.close()
   })
+}
+
+function purgeAppRequireCache(buildPath: string) {
+  for (const key in require.cache) {
+    if (key.startsWith(buildPath)) {
+      delete require.cache[key]
+    }
+  }
 }
