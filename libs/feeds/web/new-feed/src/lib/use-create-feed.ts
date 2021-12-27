@@ -2,7 +2,7 @@ import { useMutation } from 'react-query'
 
 import { useToken } from '@plusone/feeds/web/login'
 import { jsonOrThrow } from '@plusone/feeds/web/shared'
-import { FeedInput } from '@plusone/feeds/shared/types'
+import type { FeedInput } from '@plusone/feeds/shared/types'
 
 export function useCreateFeed() {
   const token = useToken()

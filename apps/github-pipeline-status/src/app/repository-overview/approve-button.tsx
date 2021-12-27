@@ -1,7 +1,8 @@
 import { Button } from '@mui/material'
 import { useMutation } from 'react-query'
 
-import { ApprovePullRequestDocument, PullRequest } from '@plusone/github-schema'
+import type { PullRequest } from '@plusone/github-schema'
+import { ApprovePullRequestDocument } from '@plusone/github-schema'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 

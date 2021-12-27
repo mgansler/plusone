@@ -1,4 +1,4 @@
-import { ArticleResponse } from './article'
+import type { ArticleResponse } from './article'
 
 export interface Pagination {
   cursor: string

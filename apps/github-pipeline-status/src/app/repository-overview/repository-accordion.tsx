@@ -2,9 +2,14 @@ import React, { useMemo } from 'react'
 import { Accordion, AccordionDetails, AccordionSummary, Button, IconButton, Typography, Skeleton } from '@mui/material'
 import { ExpandMore, OpenInNew } from '@mui/icons-material'
 
-import { Commit, DefaultBranchRefFieldsFragment, PullRequest, RepositoryFieldsFragment } from '@plusone/github-schema'
+import type {
+  Commit,
+  DefaultBranchRefFieldsFragment,
+  PullRequest,
+  RepositoryFieldsFragment,
+} from '@plusone/github-schema'
 
-import { UserFilter } from './repository-overview'
+import type { UserFilter } from './repository-overview'
 import { useClassNames } from './repository-overview.styles'
 import { PullRequestRow } from './pull-request-row'
 import { CheckConclusion } from './check-conclusion'

@@ -1,10 +1,10 @@
 import { Body, Controller, HttpCode, HttpStatus, Param, Post, Req, UseGuards } from '@nestjs/common'
 
 import { JwtAuthGuard } from '@plusone/feeds/backend/authentication'
-import { ArticleResponse } from '@plusone/feeds/shared/types'
+import type { ArticleResponse } from '@plusone/feeds/shared/types'
 
-import { ArticleService } from './article.service'
-import { ArticleToggleUnreadDto } from './article.dto'
+import type { ArticleService } from './article.service'
+import type { ArticleToggleUnreadDto } from './article.dto'
 
 @Controller('article')
 @UseGuards(JwtAuthGuard)

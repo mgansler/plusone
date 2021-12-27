@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { Item } from 'rss-parser'
+import type { Item } from 'rss-parser'
 
-import { Article, Feed, PrismaService, User } from '@plusone/feeds/backend/persistence'
-import { Pagination } from '@plusone/feeds/shared/types'
+import type { Article, Feed, PrismaService, User } from '@plusone/feeds/backend/persistence'
+import type { Pagination } from '@plusone/feeds/shared/types'
 
 @Injectable()
 export class ArticleService {

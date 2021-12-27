@@ -1,5 +1,6 @@
 import { HttpModule } from '@nestjs/axios'
-import { Test, TestingModule } from '@nestjs/testing'
+import type { TestingModule } from '@nestjs/testing'
+import { Test } from '@nestjs/testing'
 
 import { FetchController } from './fetch.controller'
 import { FetchService } from './fetch.service'

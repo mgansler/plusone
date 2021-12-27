@@ -1,4 +1,5 @@
-import { ActionFunction, Form, json, useActionData } from 'remix'
+import type { ActionFunction } from 'remix'
+import { Form, json, useActionData } from 'remix'
 
 function countPathsPartOne(edges: Record<string, string[]>, node: string, visited = new Set<string>()): number {
   // we have been there already and cannot visit again => invalid path

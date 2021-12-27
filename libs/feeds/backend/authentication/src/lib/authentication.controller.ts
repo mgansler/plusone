@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common'
 
-import { LoginResponse, UserResponse } from '@plusone/feeds/shared/types'
+import type { LoginResponse, UserResponse } from '@plusone/feeds/shared/types'
 
-import { AuthenticationService } from './authentication.service'
+import type { AuthenticationService } from './authentication.service'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { LocalAuthGuard } from './local-auth.guard'
-import { UserRegistrationDto } from './user.dto'
+import type { UserRegistrationDto } from './user.dto'
 
 @Controller('authentication')
 export class AuthenticationController {

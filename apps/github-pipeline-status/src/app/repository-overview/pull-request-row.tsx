@@ -2,16 +2,15 @@ import { Check, Error, MergeType, OpenInNew } from '@mui/icons-material'
 import { Chip, IconButton, Tooltip, Typography } from '@mui/material'
 import React from 'react'
 
-import {
+import type {
   AutoMergeRequestFieldsFragment,
-  MergeableState,
   PullRequest,
   PullRequestCommit,
   PullRequestReview,
-  PullRequestReviewState,
   PullRequestsFieldsFragment,
   User,
 } from '@plusone/github-schema'
+import { MergeableState, PullRequestReviewState } from '@plusone/github-schema'
 
 import { ApproveButton } from './approve-button'
 import { CheckConclusion } from './check-conclusion'

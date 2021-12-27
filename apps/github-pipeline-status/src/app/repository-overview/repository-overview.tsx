@@ -1,22 +1,15 @@
-import {
-  FormControl,
-  FormControlLabel,
-  InputLabel,
-  MenuItem,
-  Portal,
-  Select,
-  Switch,
-  TextField,
-  Theme,
-} from '@mui/material'
+import type { Theme } from '@mui/material'
+import { FormControl, FormControlLabel, InputLabel, MenuItem, Portal, Select, Switch, TextField } from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
-import React, { MutableRefObject, useEffect, useState } from 'react'
+import type { MutableRefObject } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useParams, useSearchParams } from 'react-router-dom'
 
 import { useGitHubPagination } from '@plusone/github-hooks'
-import { RepositoryFieldsFragment, RepositoryOverviewDocument, RepositoryOverviewQuery } from '@plusone/github-schema'
+import type { RepositoryFieldsFragment, RepositoryOverviewQuery } from '@plusone/github-schema'
+import { RepositoryOverviewDocument } from '@plusone/github-schema'
 import { useLocalStorage } from '@plusone/hooks'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'

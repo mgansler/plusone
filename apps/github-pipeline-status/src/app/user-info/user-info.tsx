@@ -2,7 +2,8 @@ import React from 'react'
 import { useQuery } from 'react-query'
 import { Avatar, Button, Typography } from '@mui/material'
 
-import { UserDocument, UserQuery } from '@plusone/github-schema'
+import type { UserQuery } from '@plusone/github-schema'
+import { UserDocument } from '@plusone/github-schema'
 
 import { useLogout, useOctokit } from '../octokit-provider/octokit-provider'
 

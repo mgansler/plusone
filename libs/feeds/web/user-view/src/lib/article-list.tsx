@@ -1,4 +1,4 @@
-import { FeedResponse } from '@plusone/feeds/shared/types'
+import type { FeedResponse } from '@plusone/feeds/shared/types'
 
 import { useFetchArticlesByFeed } from './use-fetch-articles-by-feed'
 import { Article } from './article'

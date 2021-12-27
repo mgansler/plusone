@@ -2,7 +2,7 @@ import { Controller, Post, UseGuards } from '@nestjs/common'
 
 import { JwtAuthGuard, Roles, RolesGuard } from '@plusone/feeds/backend/authentication'
 
-import { SchedulingService } from './scheduling.service'
+import type { SchedulingService } from './scheduling.service'
 
 @Controller('schedule')
 @UseGuards(JwtAuthGuard, RolesGuard)

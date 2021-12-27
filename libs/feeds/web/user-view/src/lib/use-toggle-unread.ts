@@ -1,8 +1,9 @@
-import { InfiniteData, useMutation, useQueryClient } from 'react-query'
+import type { InfiniteData } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 
 import { useToken } from '@plusone/feeds/web/login'
 import { jsonOrThrow } from '@plusone/feeds/web/shared'
-import { ArticleResponse, FeedResponse, PaginatedArticles, ToggleUnreadRequest } from '@plusone/feeds/shared/types'
+import type { ArticleResponse, FeedResponse, PaginatedArticles, ToggleUnreadRequest } from '@plusone/feeds/shared/types'
 
 export function useToggleUnread(feedId: FeedResponse['id'], articleId: ArticleResponse['article']['id']) {
   const token = useToken()

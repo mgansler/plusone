@@ -1,4 +1,4 @@
-import { Weekday, WeekModifier } from './types'
+import type { Weekday, WeekModifier } from './types'
 
 // 1000 * 24 * 3600
 export const A_DAY_IN_MS = 86_400_000

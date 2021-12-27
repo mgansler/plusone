@@ -1,6 +1,6 @@
 import { useMutation } from 'react-query'
 
-import { LoginProps } from './types'
+import type { LoginProps } from './types'
 
 export function useLogin(setToken: (newValue: string) => void) {
   return useMutation<{ access_token: string }, unknown, LoginProps>(

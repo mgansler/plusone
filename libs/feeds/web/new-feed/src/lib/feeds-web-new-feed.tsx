@@ -1,7 +1,8 @@
 import { Button, Card, CardActions, CardContent, Container, TextField, Typography } from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
-import { SubmitHandler, useForm, Controller } from 'react-hook-form'
+import type { SubmitHandler } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 
 import { useDebounce } from '@plusone/hooks'

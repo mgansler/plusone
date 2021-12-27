@@ -1,3 +1,4 @@
+import type { Theme } from '@mui/material'
 import {
   Alert,
   Backdrop,
@@ -10,12 +11,12 @@ import {
   Tab,
   Tabs,
   TextField,
-  Theme,
   Typography,
 } from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
-import React, { ChangeEvent, FormEventHandler, ReactNode, useState } from 'react'
+import type { ChangeEvent, FormEventHandler, ReactNode } from 'react'
+import React, { useState } from 'react'
 
 import { useLogin } from './use-login'
 import { useRegister } from './use-register'

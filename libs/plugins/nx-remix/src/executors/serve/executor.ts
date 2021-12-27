@@ -1,7 +1,7 @@
 import { spawn } from 'child_process'
 import * as path from 'path'
 
-import { ExecutorContext } from '@nrwl/devkit'
+import type { ExecutorContext } from '@nrwl/devkit'
 import { map, Observable } from 'rxjs'
 import { eachValueFrom } from 'rxjs-for-await'
 

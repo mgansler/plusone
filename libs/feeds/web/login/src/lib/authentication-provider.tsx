@@ -1,11 +1,12 @@
-import React, { createContext, ReactNode, useContext, useEffect, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import React, { createContext, useContext, useEffect, useMemo } from 'react'
 import { useQueryClient } from 'react-query'
 
 import { useLocalStorage } from '@plusone/hooks'
 
 import { LoginForm } from './login-form'
 import { useFetchProfile } from './use-fetch-profile'
-import { Token, User } from './types'
+import type { Token, User } from './types'
 
 interface AuthenticationContext {
   user?: User

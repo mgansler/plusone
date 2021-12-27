@@ -1,5 +1,6 @@
 import { createTheme, StyledEngineProvider, ThemeProvider, useMediaQuery } from '@mui/material'
-import React, { ReactNode, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import React, { useMemo } from 'react'
 
 export interface DarkModeThemeProviderProps {
   children: ReactNode

@@ -1,12 +1,13 @@
 import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
-import { ClientProxy } from '@nestjs/microservices'
+import type { ClientProxy } from '@nestjs/microservices'
 
-import { JwtPayload } from '@plusone/feeds/backend/authentication'
-import { Feed, Prisma, PrismaService, User } from '@plusone/feeds/backend/persistence'
-import { DiscoverFeedRequest, DiscoverFeedResponse } from '@plusone/feeds/shared/types'
+import type { JwtPayload } from '@plusone/feeds/backend/authentication'
+import type { Feed, PrismaService, User } from '@plusone/feeds/backend/persistence'
+import { Prisma } from '@plusone/feeds/backend/persistence'
+import type { DiscoverFeedRequest, DiscoverFeedResponse } from '@plusone/feeds/shared/types'
 import { DISCOVER_MESSAGE_PATTERN, DISCOVER_SERVICE } from '@plusone/feeds/shared/constants'
 
-import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
+import type { FeedDiscoverDto, FeedInputDto } from './feed.dto'
 
 @Injectable()
 export class FeedService {

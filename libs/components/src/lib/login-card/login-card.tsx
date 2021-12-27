@@ -1,7 +1,9 @@
-import { Card, CardContent, Container, Theme } from '@mui/material'
+import type { Theme } from '@mui/material'
+import { Card, CardContent, Container } from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 const useClassNames = makeStyles<Theme>((theme) =>
   createStyles({

@@ -1,4 +1,4 @@
-import { ConferenceLink } from './types'
+import type { ConferenceLink } from './types'
 
 function isZoomAppLink(link: string): boolean {
   const url = new URL(link)

@@ -1,9 +1,9 @@
-import { HttpService } from '@nestjs/axios'
+import type { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
 import * as cheerio from 'cheerio'
 import * as Parser from 'rss-parser'
 
-import { DiscoverFeedRequest } from '@plusone/feeds/shared/types'
+import type { DiscoverFeedRequest } from '@plusone/feeds/shared/types'
 
 @Injectable()
 export class DiscoverService {

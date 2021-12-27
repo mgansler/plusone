@@ -1,11 +1,13 @@
-import { FormControl, InputLabel, LinearProgress, MenuItem, Paper, Select, Theme, Toolbar } from '@mui/material'
+import type { Theme } from '@mui/material'
+import { FormControl, InputLabel, LinearProgress, MenuItem, Paper, Select, Toolbar } from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
 import { useRef } from 'react'
 import { useQuery } from 'react-query'
 import { Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 
-import { OrganizationsDocument, OrganizationsQuery } from '@plusone/github-schema'
+import type { OrganizationsQuery } from '@plusone/github-schema'
+import { OrganizationsDocument } from '@plusone/github-schema'
 import { useGitHubPagination } from '@plusone/github-hooks'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
@@ -70,7 +72,7 @@ export function Organizations() {
             value={organizationName}
             onChange={(event) => navigate(`/organization/${event.target.value}`)}
           >
-            {organizationName === '' && <MenuItem value='' />}
+            {organizationName === '' && <MenuItem value="" />}
             {data.viewer.organizations.nodes.map((organization) => (
               <MenuItem key={organization.id} value={organization.login}>
                 {organization.name}

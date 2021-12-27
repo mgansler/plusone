@@ -1,4 +1,4 @@
-import { ArticleResponse, FeedResponse } from '@plusone/feeds/shared/types'
+import type { ArticleResponse, FeedResponse } from '@plusone/feeds/shared/types'
 
 import { useToggleUnread } from './use-toggle-unread'
 

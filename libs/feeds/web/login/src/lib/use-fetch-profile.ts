@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
 
-import { User } from './types'
+import type { User } from './types'
 
 interface UseFetchProfileProps {
   token: string

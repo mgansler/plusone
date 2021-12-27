@@ -1,7 +1,8 @@
 import { useMutation } from 'react-query'
 import { Button } from '@mui/material'
 
-import { EnablePullRequestAutoMergeDocument, PullRequest } from '@plusone/github-schema'
+import type { PullRequest } from '@plusone/github-schema'
+import { EnablePullRequestAutoMergeDocument } from '@plusone/github-schema'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 

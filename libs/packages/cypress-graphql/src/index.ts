@@ -1,4 +1,4 @@
-import { Options } from './lib/cypress-graphql'
+import type { Options } from './lib/cypress-graphql'
 
 declare global {
   namespace Cypress {

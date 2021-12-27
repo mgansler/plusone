@@ -1,4 +1,4 @@
-import { JwtPayload } from './jwt.payload'
+import type { JwtPayload } from './jwt.payload'
 
 export const SystemUser: JwtPayload = {
   id: 'system',
