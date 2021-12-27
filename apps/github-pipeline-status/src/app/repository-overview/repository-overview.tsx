@@ -136,9 +136,9 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
             onChange={(event) => setUserFilter(event.target.value as UserFilter)}
             value={userFilter}
           >
-            <MenuItem value="all">Show all</MenuItem>
-            <MenuItem value="dependabot">Show dependabot only</MenuItem>
-            <MenuItem value="user">Show user only</MenuItem>
+            <MenuItem value={'all'}>Show all</MenuItem>
+            <MenuItem value={'dependabot'}>Show dependabot only</MenuItem>
+            <MenuItem value={'user'}>Show user only</MenuItem>
           </Select>
         </FormControl>
 

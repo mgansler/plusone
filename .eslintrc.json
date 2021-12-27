@@ -1,7 +1,7 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nrwl/nx", "import", "unused-imports", "jest-dom", "testing-library"],
+  "plugins": ["@nrwl/nx", "import", "jest-dom", "react", "testing-library", "unused-imports"],
   "extends": [
     "plugin:jest-dom/recommended",
     "plugin:testing-library/react",
@@ -57,7 +57,15 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript"],
-      "rules": {}
+      "rules": {
+        "react/jsx-curly-brace-presence": [
+          "error",
+          {
+            "props": "always",
+            "children": "never"
+          }
+        ]
+      }
     },
     {
       "files": ["*.js", "*.jsx"],

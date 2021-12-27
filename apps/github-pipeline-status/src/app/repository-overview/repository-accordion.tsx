@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
-import { Accordion, AccordionDetails, AccordionSummary, Button, IconButton, Typography, Skeleton } from '@mui/material'
 import { ExpandMore, OpenInNew } from '@mui/icons-material'
+import { Accordion, AccordionDetails, AccordionSummary, Button, IconButton, Skeleton, Typography } from '@mui/material'
+import React, { useMemo } from 'react'
 
 import type {
   Commit,
@@ -9,10 +9,10 @@ import type {
   RepositoryFieldsFragment,
 } from '@plusone/github-schema'
 
+import { CheckConclusion } from './check-conclusion'
+import { PullRequestRow } from './pull-request-row'
 import type { UserFilter } from './repository-overview'
 import { useClassNames } from './repository-overview.styles'
-import { PullRequestRow } from './pull-request-row'
-import { CheckConclusion } from './check-conclusion'
 
 interface DefaultBranchStateProps {
   className: HTMLDivElement['className']
@@ -90,7 +90,7 @@ export function RepositoryAccordion({
           target={'_blank'}
           rel={'noreferrer'}
           onClick={(e) => e.stopPropagation()}
-          size="large"
+          size={'large'}
         >
           <OpenInNew />
         </IconButton>
@@ -133,7 +133,7 @@ export function AccordionSkeleton() {
   return (
     <Accordion>
       <AccordionSummary classes={{ content: classNames.accordionSummarySkeleton }} expandIcon={<ExpandMore />}>
-        <Skeleton variant="circular" width={28} height={28} />
+        <Skeleton variant={'circular'} width={28} height={28} />
         <Skeleton className={classNames.titleColumn} variant={'text'} />
         <Skeleton className={classNames.workflowColumn} variant={'text'} />
         <Skeleton className={classNames.pullRequestsOrReviewsColumn} variant={'text'} />
