@@ -6,9 +6,9 @@ import { useRef } from 'react'
 import { useQuery } from 'react-query'
 import { Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 
+import { useGitHubPagination } from '@plusone/github-hooks'
 import type { OrganizationsQuery } from '@plusone/github-schema'
 import { OrganizationsDocument } from '@plusone/github-schema'
-import { useGitHubPagination } from '@plusone/github-hooks'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryOverview } from '../repository-overview/repository-overview'
@@ -72,7 +72,7 @@ export function Organizations() {
             value={organizationName}
             onChange={(event) => navigate(`/organization/${event.target.value}`)}
           >
-            {organizationName === '' && <MenuItem value="" />}
+            {organizationName === '' && <MenuItem value={''} />}
             {data.viewer.organizations.nodes.map((organization) => (
               <MenuItem key={organization.id} value={organization.login}>
                 {organization.name}
