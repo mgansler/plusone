@@ -1,23 +1,15 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "allowJs": true,
+    "lib": ["DOM", "DOM.Iterable", "ES2019"],
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "target": "ES2019",
     "strict": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
-  },
-  "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+
+    // Remix takes care of building everything in `remix build`.
+    "noEmit": true
+  }
 }
