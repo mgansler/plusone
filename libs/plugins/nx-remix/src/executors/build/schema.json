@@ -4,6 +4,13 @@
   "title": "Remix build executor",
   "description": "",
   "type": "object",
-  "properties": {},
-  "required": []
+  "properties": {
+    "outputPath": {
+      "type": "string",
+      "description": "The output path of the generated files."
+    }
+  },
+  "required": [
+    "outputPath"
+  ]
 }

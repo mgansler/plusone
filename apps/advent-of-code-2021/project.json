@@ -5,6 +5,10 @@
   "targets": {
     "build": {
       "executor": "@mgansler/nx-remix:build",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "outputPath": "dist/apps/advent-of-code-2021"
+      },
       "configurations": {
         "production": {}
       }

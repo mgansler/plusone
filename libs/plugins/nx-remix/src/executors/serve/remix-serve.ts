@@ -22,14 +22,15 @@ export default async function* (options: ServeSchema, context: ExecutorContext) 
   const config = await readConfig(targetRoot)
 
   config.cacheDirectory = path.resolve(context.root, 'tmp', targetRoot, '.cache')
-  config.assetsBuildDirectory = path.resolve(context.root, 'dist', targetRoot, 'public/build')
-  config.serverBuildDirectory = path.resolve(context.root, 'dist', targetRoot, 'build')
+  config.assetsBuildDirectory = path.resolve(context.root, 'tmp', targetRoot, 'public/build')
+  config.serverBuildDirectory = path.resolve(context.root, 'tmp', targetRoot, 'build')
 
-  deleteOutputDir(context.root, path.resolve('dist', targetRoot))
+  deleteOutputDir(context.root, path.resolve(context.root, 'tmp', targetRoot, 'public/build'))
+  deleteOutputDir(context.root, path.resolve(context.root, 'tmp', targetRoot, 'build'))
   await copyAssets(
     [`${targetRoot}/public/favicon.ico`],
     context.root,
-    path.resolve(context.root, 'dist', targetRoot, 'public'),
+    path.resolve(context.root, 'tmp', targetRoot, 'public'),
   )
 
   return yield* eachValueFrom(
