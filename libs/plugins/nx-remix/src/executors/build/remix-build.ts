@@ -18,6 +18,7 @@ export default async function (options: ServeSchema, context: ExecutorContext) {
   const targetRoot = context.workspace.projects[context.projectName].root
   const config = await readConfig(targetRoot)
 
+  config.rootDirectory = context.root
   config.cacheDirectory = path.resolve(context.root, 'tmp', targetRoot, '.cache')
   config.assetsBuildDirectory = path.resolve(outputPath, 'public/build')
   config.serverBuildDirectory = path.resolve(outputPath, 'build')

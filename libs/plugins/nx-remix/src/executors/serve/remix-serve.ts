@@ -2,7 +2,6 @@ import type { Server } from 'http'
 import * as path from 'path'
 
 import type { ExecutorContext } from '@nrwl/devkit'
-import { deleteOutputDir } from '@nrwl/web/src/utils/fs'
 import { copyAssets } from '@nrwl/workspace/src/utilities/assets'
 import { BuildMode } from '@remix-run/dev/build'
 import { watch } from '@remix-run/dev/cli/commands'
@@ -21,12 +20,11 @@ export default async function* (options: ServeSchema, context: ExecutorContext) 
   const targetRoot = context.workspace.projects[context.projectName].root
   const config = await readConfig(targetRoot)
 
+  config.rootDirectory = context.root
   config.cacheDirectory = path.resolve(context.root, 'tmp', targetRoot, '.cache')
   config.assetsBuildDirectory = path.resolve(context.root, 'tmp', targetRoot, 'public/build')
   config.serverBuildDirectory = path.resolve(context.root, 'tmp', targetRoot, 'build')
 
-  deleteOutputDir(context.root, path.resolve(context.root, 'tmp', targetRoot, 'public/build'))
-  deleteOutputDir(context.root, path.resolve(context.root, 'tmp', targetRoot, 'build'))
   await copyAssets(
     [`${targetRoot}/public/favicon.ico`],
     context.root,
