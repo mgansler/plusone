@@ -1,5 +1,5 @@
 import type { LinksFunction } from 'remix'
-import { Link, Links, LiveReload, Outlet, useCatch } from 'remix'
+import { Link, Links, LiveReload, Outlet, Scripts, useCatch } from 'remix'
 
 import globalStylesUrl from './styles/global.css'
 
@@ -31,6 +31,7 @@ export default function Root() {
       </head>
       <body>
         Welcome to my Advent of Code App
+        <Scripts />
         {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
         <nav>
           {days.map((day) => (
