@@ -13,6 +13,7 @@ import { map, Observable } from 'rxjs'
 import { eachValueFrom } from 'rxjs-for-await'
 
 type ServeSchema = {
+  devServerPort: number
   port: number
 }
 
@@ -21,6 +22,7 @@ export default async function* (options: ServeSchema, context: ExecutorContext) 
   const config = await readConfig(targetRoot)
 
   config.rootDirectory = context.root
+  config.devServerPort = options.devServerPort
   config.cacheDirectory = path.resolve(context.root, 'tmp', targetRoot, '.cache')
   config.assetsBuildDirectory = path.resolve(context.root, 'tmp', targetRoot, 'public/build')
   config.serverBuildDirectory = path.resolve(context.root, 'tmp', targetRoot, 'build')

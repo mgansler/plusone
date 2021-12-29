@@ -5,6 +5,10 @@
   "description": "",
   "type": "object",
   "properties": {
+    "devServerPort": {
+      "type": "number",
+      "default": 8002
+    },
     "port": {
       "type": "number",
       "default": 3000
