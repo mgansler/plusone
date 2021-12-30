@@ -3,7 +3,8 @@
   "compilerOptions": {
     "sourceMap": false,
     "outDir": "/../../dist/out-tsc",
-    "types": ["cypress", "node", "@testing-library/cypress"]
+    "types": ["cypress", "node", "@testing-library/cypress"],
+    "resolveJsonModule": true
   },
-  "include": ["**/*.ct.jsx", "**/*.ct.tsx"]
+  "include": ["**/*.ct.jsx", "**/*.ct.tsx", "cypress/**/*.ts"]
 }

@@ -70,13 +70,6 @@
         "passWithNoTests": true
       }
     },
-    "open-ct": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "cypress open-ct",
-        "cwd": "apps/github-pipeline-status"
-      }
-    },
     "ct": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
@@ -84,6 +77,11 @@
         "cypressConfig": "apps/github-pipeline-status/cypress.json",
         "tsConfig": "apps/github-pipeline-status/tsconfig.ct.json",
         "devServerTarget": ""
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
       }
     }
   },
