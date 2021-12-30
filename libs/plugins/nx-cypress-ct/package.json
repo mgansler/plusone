@@ -1,0 +1,26 @@
+{
+  "author": {
+    "name": "Martin Gansler",
+    "email": "packages@martingansler.de"
+  },
+  "dependencies": {
+    "@nrwl/devkit": "^13.4.1"
+  },
+  "description": "Nx Plugin for Cypress component tests",
+  "executors": "./executors.json",
+  "generators": "./generators.json",
+  "keywords": [
+    "cypress",
+    "nx",
+    "plugin",
+    "testing"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "name": "@mgansler/nx-cypress-ct",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mgansler/plusone"
+  },
+  "version": "0.0.1"
+}
