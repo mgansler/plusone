@@ -1,0 +1,76 @@
+{
+  "root": "libs/plugins/nx-cypress-ct",
+  "sourceRoot": "libs/plugins/nx-cypress-ct/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/plugins/nx-cypress-ct/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/plugins/nx-cypress-ct"],
+      "options": {
+        "jestConfig": "libs/plugins/nx-cypress-ct/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/plugins/nx-cypress-ct",
+        "tsConfig": "libs/plugins/nx-cypress-ct/tsconfig.lib.json",
+        "packageJson": "libs/plugins/nx-cypress-ct/package.json",
+        "main": "libs/plugins/nx-cypress-ct/src/index.ts",
+        "assets": [
+          "libs/plugins/nx-cypress-ct/*.md",
+          {
+            "input": "./libs/plugins/nx-cypress-ct/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/plugins/nx-cypress-ct/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/plugins/nx-cypress-ct",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./libs/plugins/nx-cypress-ct",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "link": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["cd dist/libs/plugins/nx-cypress-ct && yarn link", "yarn link @mgansler/nx-cypress-ct"],
+        "parallel": false
+      },
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "self"
+        }
+      ]
+    },
+    "unlink": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["yarn unlink @mgansler/nx-cypress-ct", "yarn install --force"],
+        "parallel": false
+      }
+    }
+  },
+  "tags": []
+}
