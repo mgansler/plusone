@@ -25,13 +25,11 @@
         "cypressConfig": "libs/dinner-plan/cypress.json",
         "tsConfig": "libs/dinner-plan/tsconfig.ct.json",
         "devServerTarget": ""
-      }
-    },
-    "open-ct": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "cypress open-ct",
-        "cwd": "libs/dinner-plan"
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
       }
     }
   },

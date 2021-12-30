@@ -18,13 +18,6 @@
         "passWithNoTests": true
       }
     },
-    "open-ct": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "cypress open-ct",
-        "cwd": "libs/feeds/web/login"
-      }
-    },
     "ct": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
@@ -32,6 +25,11 @@
         "cypressConfig": "libs/feeds/web/login/cypress.json",
         "tsConfig": "libs/feeds/web/login/tsconfig.ct.json",
         "devServerTarget": ""
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
       }
     }
   },

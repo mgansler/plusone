@@ -25,13 +25,11 @@
         "cypressConfig": "libs/components/cypress.json",
         "tsConfig": "libs/components/tsconfig.ct.json",
         "devServerTarget": ""
-      }
-    },
-    "open-ct": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "cypress open-ct",
-        "cwd": "libs/components"
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
       }
     }
   },
