@@ -6,9 +6,12 @@
     "build": {
       "executor": "@nrwl/web:webpack",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
+        "compiler": "swc",
         "outputPath": "dist/apps/suite",
         "index": "apps/suite/src/index.html",
+        "baseHref": "/",
         "main": "apps/suite/src/main.tsx",
         "polyfills": "apps/suite/src/polyfills.ts",
         "tsConfig": "apps/suite/tsconfig.app.json",
@@ -28,17 +31,9 @@
           "optimization": true,
           "outputHashing": "all",
           "sourceMap": false,
-          "extractCss": true,
           "namedChunks": false,
           "extractLicenses": true,
-          "vendorChunk": false,
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "2mb",
-              "maximumError": "5mb"
-            }
-          ]
+          "vendorChunk": false
         }
       }
     },
@@ -53,7 +48,7 @@
       "executor": "@nrwl/web:dev-server",
       "options": {
         "buildTarget": "suite:build",
-        "hmr": false
+        "hmr": true
       },
       "configurations": {
         "production": {

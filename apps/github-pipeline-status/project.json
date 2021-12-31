@@ -6,9 +6,12 @@
     "build": {
       "executor": "@nrwl/web:webpack",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
+        "compiler": "swc",
         "outputPath": "dist/apps/github-pipeline-status",
         "index": "apps/github-pipeline-status/src/index.html",
+        "baseHref": "/",
         "main": "apps/github-pipeline-status/src/main.tsx",
         "polyfills": "apps/github-pipeline-status/src/polyfills.ts",
         "tsConfig": "apps/github-pipeline-status/tsconfig.app.json",
@@ -28,17 +31,9 @@
           "optimization": true,
           "outputHashing": "all",
           "sourceMap": false,
-          "extractCss": true,
           "namedChunks": false,
           "extractLicenses": true,
-          "vendorChunk": false,
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "2mb",
-              "maximumError": "5mb"
-            }
-          ]
+          "vendorChunk": false
         }
       }
     },
@@ -46,7 +41,7 @@
       "executor": "@nrwl/web:dev-server",
       "options": {
         "buildTarget": "github-pipeline-status:build",
-        "hmr": false
+        "hmr": true
       },
       "configurations": {
         "production": {

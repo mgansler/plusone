@@ -1,5 +1,6 @@
 import { checkFilesExist, ensureNxProject, readJson, runNxCommandAsync, uniq } from '@nrwl/nx-plugin/testing'
-describe('plugins-nx-remix e2e', () => {
+
+describe.skip('plugins-nx-remix e2e', () => {
   it('should create plugins-nx-remix', async () => {
     const plugin = uniq('plugins-nx-remix')
     ensureNxProject('@plusone/nx-remix', 'dist/libs/plugins/nx-remix')

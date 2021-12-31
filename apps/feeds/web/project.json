@@ -6,9 +6,12 @@
     "build": {
       "executor": "@nrwl/web:webpack",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
+        "compiler": "swc",
         "outputPath": "dist/apps/feeds/web",
         "index": "apps/feeds/web/src/index.html",
+        "baseHref": "/",
         "main": "apps/feeds/web/src/main.tsx",
         "polyfills": "apps/feeds/web/src/polyfills.ts",
         "tsConfig": "apps/feeds/web/tsconfig.app.json",
@@ -28,17 +31,9 @@
           "optimization": true,
           "outputHashing": "all",
           "sourceMap": false,
-          "extractCss": true,
           "namedChunks": false,
           "extractLicenses": true,
-          "vendorChunk": false,
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "2mb",
-              "maximumError": "5mb"
-            }
-          ]
+          "vendorChunk": false
         }
       }
     },
@@ -47,7 +42,7 @@
       "options": {
         "buildTarget": "feeds-web:build",
         "proxyConfig": "apps/feeds/web/proxy.conf.json",
-        "hmr": false
+        "hmr": true
       },
       "configurations": {
         "production": {
