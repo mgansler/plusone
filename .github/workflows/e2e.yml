@@ -36,7 +36,7 @@ jobs:
     needs: setup
     strategy:
       matrix:
-        project: [advent-of-code-2021-e2e, github-pipeline-status-e2e, quick-zoom-e2e, feeds-web-e2e, suite-e2e]
+        project: [advent-of-code-2021-e2e, github-pipeline-status-e2e, feeds-web-e2e, suite-e2e]
 
     steps:
       - uses: actions/checkout@v2
