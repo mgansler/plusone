@@ -16,7 +16,7 @@ describe('DinnerPlan', () => {
       </ThemeProvider>,
     )
 
-    cy.findByText(/kw \d\d/i).should('be.visible')
+    cy.findByText(/kw \d{1,2}/i).should('be.visible')
     cy.findByText(/last week/i).should('be.visible')
     cy.findByText(/this week/i).should('be.visible')
     cy.findByText(/next week/i).should('be.visible')
