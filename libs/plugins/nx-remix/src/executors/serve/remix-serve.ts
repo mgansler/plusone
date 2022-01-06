@@ -1,5 +1,5 @@
 import type { Server } from 'http'
-import * as path from 'path'
+import { join, resolve } from 'path'
 
 import type { ExecutorContext } from '@nrwl/devkit'
 import { copyAssets } from '@nrwl/workspace/src/utilities/assets'
@@ -23,14 +23,14 @@ export default async function* (options: ServeSchema, context: ExecutorContext) 
 
   config.rootDirectory = context.root
   config.devServerPort = options.devServerPort
-  config.cacheDirectory = path.resolve(context.root, 'tmp', targetRoot, '.cache')
-  config.assetsBuildDirectory = path.resolve(context.root, 'tmp', targetRoot, 'public/build')
-  config.serverBuildDirectory = path.resolve(context.root, 'tmp', targetRoot, 'build')
+  config.cacheDirectory = resolve(context.root, 'tmp', targetRoot, '.cache')
+  config.assetsBuildDirectory = resolve(context.root, 'tmp', targetRoot, 'public/build')
+  config.serverBuildDirectory = resolve(context.root, 'tmp', targetRoot, 'build')
 
   await copyAssets(
     [`${targetRoot}/public/favicon.ico`],
     context.root,
-    path.resolve(context.root, 'tmp', targetRoot, 'public'),
+    resolve(context.root, 'tmp', targetRoot, 'public'),
   )
 
   return yield* eachValueFrom(
@@ -46,7 +46,7 @@ export default async function* (options: ServeSchema, context: ExecutorContext) 
 function runRemixDevServer(options: ServeSchema, config: RemixConfig) {
   return new Observable((subscriber) => {
     const app = express()
-    app.use(express.static(path.join(config.assetsBuildDirectory, '..')))
+    app.use(express.static(join(config.assetsBuildDirectory, '..')))
     app.use((_, __, next) => {
       purgeAppRequireCache(config.serverBuildDirectory)
       next()
