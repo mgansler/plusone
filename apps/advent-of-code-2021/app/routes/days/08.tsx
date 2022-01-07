@@ -95,8 +95,10 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const input = (formData.get('input') as string)
-    .split('\r\n')
+  const rawInput = formData.get('input') as string
+  const separator = rawInput.indexOf('\r') > 0 ? '\r\n' : '\n'
+  const input = rawInput
+    .split(separator)
     .filter((line) => line.length)
     .map((line) => {
       const [patterns, output] = line.split(' | ')

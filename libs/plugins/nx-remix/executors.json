@@ -1,8 +1,13 @@
 {
-  "$schema": "http://json-schema.org/schema",
+  "$schema": "https://json-schema.org/schema",
   "executors": {
+    "build": {
+      "implementation": "./src/executors/build/remix-build",
+      "schema": "./src/executors/build/schema.json",
+      "description": "Remix build executor"
+    },
     "serve": {
-      "implementation": "./src/executors/serve/executor",
+      "implementation": "./src/executors/serve/remix-serve",
       "schema": "./src/executors/serve/schema.json",
       "description": "Remix serve executor"
     }

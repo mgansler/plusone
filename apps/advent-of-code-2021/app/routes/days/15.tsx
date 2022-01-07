@@ -86,7 +86,9 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const input = (formData.get('input') as string).split('\r\n').filter((l) => l.length)
+  const rawInput = formData.get('input') as string
+  const separator = rawInput.indexOf('\r') > 0 ? '\r\n' : '\n'
+  const input = rawInput.split(separator).filter((l) => l.length)
   const map = input.map((line) => line.split('').map(Number))
   const visited = initVisited(map)
   const distanceMap = initDistanceMap(map)

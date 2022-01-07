@@ -3,7 +3,7 @@ import { Form, json, useActionData } from 'remix'
 
 function parseInstructions(raw: string): Record<string, string> {
   return raw
-    .split('\r\n')
+    .split(raw.indexOf('\r') > 0 ? '\r\n' : '\n')
     .filter((line) => line.length)
     .reduce((instructions, line) => {
       const [pair, insertion] = line.split(' -> ')
@@ -51,7 +51,9 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const [template, insertions] = (formData.get('input') as string).split('\r\n\r\n')
+  const rawInput = formData.get('input') as string
+  const separator = rawInput.indexOf('\r') > 0 ? '\r\n\r\n' : '\n\n'
+  const [template, insertions] = rawInput.split(separator)
   let copy = template
 
   const instructions = parseInstructions(insertions)

@@ -66,8 +66,10 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const energy = (formData.get('input') as string)
-    .split('\r\n')
+  const rawInput = formData.get('input') as string
+  const separator = rawInput.indexOf('\r') > 0 ? '\r\n' : '\n'
+  const energy = rawInput
+    .split(separator)
     .filter((line) => line.length)
     .map((line) => line.split('').map(Number))
 

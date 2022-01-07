@@ -1,19 +1,17 @@
-# Remix plugin for Nx
+# Nx plugin for Remix
 
-## serve
+## Generators
 
-Works standalone and for End-2-End tests.
+### Application
 
-Just replace the `serve` target with this:
+`nx generate @mgansler/nx-remix:application <app-name>`
 
-```json
-{
-  "...": "...",
-  "targets": {
-    "...": "...",
-    "serve": {
-      "executor": "@mgansler/nx-remix:serve"
-    }
-  }
-}
-```
+## Executors
+
+### build
+
+`nx build <app-name>`
+
+### serve
+
+`nx serve <app-name>`

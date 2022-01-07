@@ -11,8 +11,8 @@ aoc-21:build:
     - yarn nx run advent-of-code-2021:build
   artifacts:
     paths:
-      - apps/advent-of-code-2021/build
-      - apps/advent-of-code-2021/public
+      - dist/apps/advent-of-code-2021/build
+      - dist/apps/advent-of-code-2021/public
     expire_in: 1 hour
 
 aoc-21:package:

@@ -1,10 +1,14 @@
 {
-  "$schema": "http://json-schema.org/schema",
+  "$schema": "https://json-schema.org/schema",
   "cli": "nx",
   "title": "Remix serve executor",
   "description": "",
   "type": "object",
   "properties": {
+    "devServerPort": {
+      "type": "number",
+      "default": 8002
+    },
     "port": {
       "type": "number",
       "default": 3000
