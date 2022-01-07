@@ -28,7 +28,7 @@ function initDots(dimX: number, dimY: number, dotCoors: Point[]): Paper {
 
 function parseInstructions(instructions: string) {
   return instructions
-    .split('\r\n')
+    .split(instructions.indexOf('\r') > 0 ? '\r\n' : '\n')
     .filter((line) => line.length)
     .map((line) => {
       const [axis, index] = line.replace('fold along ', '').split('=')
@@ -69,9 +69,11 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const [dots, instructions] = (formData.get('input') as string).split('\r\n\r\n')
+  const rawInput = formData.get('input') as string
+  const separator = rawInput.indexOf('\r') > 0 ? '\r\n' : '\n'
+  const [dots, instructions] = rawInput.split(`${separator}${separator}`)
 
-  const dotCoords = dots.split('\r\n').map((coords) => {
+  const dotCoords = dots.split(separator).map((coords) => {
     const [x, y] = coords.split(',').map(Number)
     return { x, y }
   })

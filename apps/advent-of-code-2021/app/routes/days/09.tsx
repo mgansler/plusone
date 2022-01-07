@@ -51,10 +51,14 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const heightmap = (formData.get('input') as string)
-    .split('\r\n')
+  const rawInput = formData.get('input') as string
+  const separator = rawInput.indexOf('\r') > 0 ? '\r\n' : '\n'
+  const heightmap = rawInput
+    .split(separator)
     .filter((line) => line.length)
     .map((row) => row.split('').map(Number))
+
+  console.log(formData, heightmap)
   const columnCount = heightmap[0].length
   const rowCount = heightmap.length
 
@@ -91,7 +95,7 @@ export const action: ActionFunction = async ({ request }) => {
   })
 
   const normalizedHeightmap = (formData.get('input') as string)
-    .split('\r\n')
+    .split(separator)
     .filter((line) => line.length)
     .map((row) => row.split('').map((x) => (x === '9' ? 1 : 0)))
 

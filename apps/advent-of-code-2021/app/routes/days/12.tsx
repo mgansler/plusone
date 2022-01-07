@@ -62,7 +62,9 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const lines = (formData.get('input') as string).split('\r\n').filter((line) => line.length)
+  const rawInput = formData.get('input') as string
+  const separator = rawInput.indexOf('\r') > 0 ? '\r\n' : '\n'
+  const lines = rawInput.split(separator).filter((line) => line.length)
 
   const edges = lines.reduce((acc, currentValue) => {
     const [start, end] = currentValue.split('-')

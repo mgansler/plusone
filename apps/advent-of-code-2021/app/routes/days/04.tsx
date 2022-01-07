@@ -22,7 +22,7 @@ function parseDrawnNumbers(drawn: string): number[] {
 }
 
 function parseBoard(board: string): Board {
-  const rows = board.split(/\r\n[ ]*/).filter((row) => row.length)
+  const rows = board.split(/\r?\n[ ]*/).filter((row) => row.length)
   return rows.map((row) => row.trim().split(/[ ]+/).map(Number)) as Board
 }
 
@@ -88,7 +88,9 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const [drawnRaw, ...boardsRaw] = (formData.get('input') as string).split('\r\n\r\n')
+  const rawInput = formData.get('input') as string
+  const separator = rawInput.indexOf('\r') > 0 ? '\r\n\r\n' : '\n\n'
+  const [drawnRaw, ...boardsRaw] = rawInput.split(separator)
 
   const drawn = parseDrawnNumbers(drawnRaw)
   const boards = boardsRaw.map(parseBoard)
