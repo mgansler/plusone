@@ -2,8 +2,10 @@ import type { Tree } from '@nrwl/devkit'
 import { readProjectConfiguration } from '@nrwl/devkit'
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing'
 
-import type { ApplicationGeneratorSchema } from './generator'
 import generator from './generator'
+import type { ApplicationGeneratorSchema } from './schema'
+
+jest.mock('./add-dependencies')
 
 describe('application generator', () => {
   let appTree: Tree
