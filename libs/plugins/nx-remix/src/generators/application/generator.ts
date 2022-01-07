@@ -79,7 +79,7 @@ export default async function (tree: Tree, options: ApplicationGeneratorSchema) 
   const lintTask = await lintProjectGenerator(tree, {
     eslintFilePatterns: [`${normalizedOptions.projectRoot}/**/*.{ts,tsx,js,jsx}`],
     linter: Linter.EsLint,
-    project: options.name,
+    project: normalizedOptions.projectName,
     setParserOptionsProject: false,
     skipFormat: true,
     tsConfigPaths: [],
