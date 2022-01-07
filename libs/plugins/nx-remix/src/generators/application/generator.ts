@@ -60,7 +60,8 @@ export default async function (tree: Tree, options: ApplicationGeneratorSchema) 
     targets: {
       build: {
         executor: '@mgansler/nx-remix:build',
-        outputs: ['{options.outputFile}'],
+        outputs: ['{options.outputPath}'],
+        defaultConfiguration: 'production',
         options: {
           outputPath: `dist/${normalizedOptions.projectRoot}`,
         },

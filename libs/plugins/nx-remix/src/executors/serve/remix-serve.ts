@@ -18,6 +18,10 @@ type ServeSchema = {
 }
 
 export default async function* (options: ServeSchema, context: ExecutorContext) {
+  if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'development'
+  }
+
   const targetRoot = context.workspace.projects[context.projectName].root
   const config = await readConfig(targetRoot)
 

@@ -1,5 +1,17 @@
 # Nx plugin for Remix
 
-## Generate an application
+## Generators
 
-`nx generate @mgansler/nx-remix:application <name>`
+### Application
+
+`nx generate @mgansler/nx-remix:application <app-name>`
+
+## Executors
+
+### build
+
+`nx build <app-name>`
+
+### serve
+
+`nx serve <app-name>`

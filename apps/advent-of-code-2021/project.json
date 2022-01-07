@@ -5,7 +5,8 @@
   "targets": {
     "build": {
       "executor": "@mgansler/nx-remix:build",
-      "outputs": ["{options.outputFile}"],
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/advent-of-code-2021"
       },
@@ -24,14 +25,6 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/advent-of-code-2021/**/*.{ts,tsx,js,jsx}"]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/advent-of-code-2021"],
-      "options": {
-        "jestConfig": "apps/advent-of-code-2021/jest.config.js",
-        "passWithNoTests": true
       }
     }
   },

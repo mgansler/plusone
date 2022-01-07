@@ -12,6 +12,10 @@ type ServeSchema = {
 }
 
 export default async function (options: ServeSchema, context: ExecutorContext) {
+  if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'production'
+  }
+
   const mode = context.configurationName === 'production' ? BuildMode.Production : BuildMode.Development
   const outputPath = path.resolve(context.root, options.outputPath)
 
@@ -29,5 +33,6 @@ export default async function (options: ServeSchema, context: ExecutorContext) {
 
   await build(config, { mode, sourcemap: mode === BuildMode.Development })
 
+  console.log(`Successfully built '${context.projectName}'`)
   return { success: true }
 }
