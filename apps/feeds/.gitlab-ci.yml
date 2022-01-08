@@ -11,7 +11,7 @@ feeds:test:
   tags:
     - docker
   script:
-    - yarn nx run-many --target test --projects feeds-web,feeds-core,feeds-discover-ms,feeds-fetch-ms
+    - yarn nx run-many --target test --projects feeds-backend
   after_script:
     - yarn jrm reports/test/junit-feeds.xml reports/test/test-*.xml
   artifacts:
@@ -19,15 +19,6 @@ feeds:test:
     reports:
       junit:
         - reports/test/junit-feeds.xml
-
-feeds:ct:
-  stage: test
-  tags:
-    - docker
-  image: cypress/browsers:node14.17.0-chrome91-ff89
-  script:
-    - yarn cypress install
-    - yarn nx run feeds-web:ct
 
 feeds:build:
   stage: build
@@ -38,12 +29,9 @@ feeds:build:
   parallel:
     matrix:
       - FEEDS_APP:
-          - core
-          - discover-ms
-          - fetch-ms
-          - web
+          - backend
   script:
-    - yarn nx run feeds-${FEEDS_APP}:build:production
+    - yarn nx run feeds-backend:build:production
   artifacts:
     paths:
       - dist/apps/feeds/${FEEDS_APP}
@@ -65,9 +53,7 @@ feeds:package:
   parallel:
     matrix:
       - FEEDS_APP:
-          - core
-          - discover-ms
-          - fetch-ms
+          - backend
   when: manual
   only:
     - main
@@ -88,9 +74,7 @@ feeds:deploy:
   only:
     - main
   variables:
-    FEEDS_CORE_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-core/${CI_COMMIT_REF_SLUG}:latest
-    FEEDS_FETCH_MS_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-fetch-ms/${CI_COMMIT_REF_SLUG}:latest
-    FEEDS_DISCOVER_MS_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-discover-ms/${CI_COMMIT_REF_SLUG}:latest
+    FEEDS_BACKEND_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-backend/${CI_COMMIT_REF_SLUG}:latest
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}

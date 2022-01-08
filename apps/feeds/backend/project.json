@@ -1,0 +1,83 @@
+{
+  "root": "apps/feeds/backend",
+  "sourceRoot": "apps/feeds/backend/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/feeds/backend",
+        "main": "apps/feeds/backend/src/main.ts",
+        "generatePackageJson": true,
+        "tsConfig": "apps/feeds/backend/tsconfig.app.json",
+        "webpackConfig": "apps/feeds/backend/webpack.config.js",
+        "assets": [
+          "apps/feeds/backend/src/assets",
+          {
+            "input": "libs/feeds/persistence/src/lib/client",
+            "glob": "schema.prisma",
+            "output": ""
+          },
+          {
+            "input": "libs/feeds/persistence/src/lib/",
+            "glob": "migrations",
+            "output": "migrations"
+          },
+          {
+            "input": "libs/feeds/persistence/src/lib/client",
+            "glob": "libquery_engine-linux-musl*",
+            "output": ""
+          }
+        ]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/feeds/backend/src/environments/environment.ts",
+              "with": "apps/feeds/backend/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "dependencies"
+        }
+      ]
+    },
+    "serve": {
+      "executor": "@nrwl/node:execute",
+      "options": {
+        "buildTarget": "feeds-backend:build"
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "dependencies"
+        }
+      ]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/feeds/backend/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/feeds/backend"],
+      "options": {
+        "jestConfig": "apps/feeds/backend/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

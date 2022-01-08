@@ -1,0 +1,19 @@
+POST http://localhost:3333/api/authentication/login
+Content-Type: application/json
+
+{
+  "username": "root",
+  "password": "keep_this_secret"
+}
+
+> {%
+  client.global.set("auth_token", response.body.access_token)
+%}
+
+###
+POST http://localhost:3333/api/scheduling/now
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+###
+
