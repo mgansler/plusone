@@ -9,7 +9,7 @@ jest.mock('./add-dependencies')
 
 describe('application generator', () => {
   let appTree: Tree
-  const options: ApplicationGeneratorSchema = { name: 'test' }
+  const options: ApplicationGeneratorSchema = { name: 'test', express: false }
 
   beforeEach(() => {
     appTree = createTreeWithEmptyWorkspace()
