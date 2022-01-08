@@ -1,0 +1,29 @@
+{
+  "root": "apps/feeds/web",
+  "projectType": "application",
+  "sourceRoot": "apps/feeds/web/app",
+  "targets": {
+    "build": {
+      "executor": "@mgansler/nx-remix:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/feeds/web"
+      },
+      "configurations": {
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@mgansler/nx-remix:serve"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/feeds/web/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  },
+  "tags": []
+}
