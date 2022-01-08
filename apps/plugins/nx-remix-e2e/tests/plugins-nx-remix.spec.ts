@@ -10,11 +10,24 @@ describe('plugins-nx-remix e2e', () => {
     expect(result.stdout).toContain(`Successfully built '${uniqAppName}'`)
   }, 120000)
 
+  describe('--express', () => {
+    it('should build and prepare for express', async () => {
+      const uniqAppName = uniq('plugins-nx-remix')
+      ensureNxProject('@mgansler/nx-remix', 'dist/libs/plugins/nx-remix')
+      await runNxCommandAsync(`generate @mgansler/nx-remix:application ${uniqAppName} --express`)
+
+      const result = await runNxCommandAsync(`build ${uniqAppName}`)
+      expect(result.stdout).toContain(`Successfully built '${uniqAppName}'`)
+      expect(() => checkFilesExist(`dist/apps/${uniqAppName}/server.js`)).not.toThrow()
+    }, 120000)
+  })
+
   describe('--directory', () => {
     it('should create src in the specified directory', async () => {
       const uniqAppName = uniq('plugins-nx-remix')
       ensureNxProject('@mgansler/nx-remix', 'dist/libs/plugins/nx-remix')
       await runNxCommandAsync(`generate @mgansler/nx-remix:application ${uniqAppName} --directory subdir`)
+
       expect(() => checkFilesExist(`apps/subdir/${uniqAppName}/remix.config.js`)).not.toThrow()
     }, 120000)
   })
@@ -25,6 +38,7 @@ describe('plugins-nx-remix e2e', () => {
       ensureNxProject('@mgansler/nx-remix', 'dist/libs/plugins/nx-remix')
       await runNxCommandAsync(`generate @mgansler/nx-remix:application ${uniqAppName} --tags e2etag,e2ePackage`)
       const project = readJson(`apps/${uniqAppName}/project.json`)
+
       expect(project.tags).toEqual(['e2etag', 'e2ePackage'])
     }, 120000)
   })
