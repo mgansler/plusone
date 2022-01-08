@@ -5,6 +5,17 @@
   "description": "",
   "type": "object",
   "properties": {
+    "express": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "boolean"
+        }
+      ],
+      "default": "false"
+    },
     "outputPath": {
       "type": "string",
       "description": "The output path of the generated files."

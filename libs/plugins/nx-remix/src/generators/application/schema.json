@@ -5,6 +5,16 @@
   "title": "",
   "type": "object",
   "properties": {
+    "directory": {
+      "type": "string",
+      "description": "A directory where the project is placed",
+      "alias": "d"
+    },
+    "express": {
+      "type": "boolean",
+      "description": "Use express to serve the built application",
+      "default": false
+    },
     "name": {
       "type": "string",
       "description": "",
@@ -18,11 +28,6 @@
       "type": "string",
       "description": "Add tags to the project (used for linting)",
       "alias": "t"
-    },
-    "directory": {
-      "type": "string",
-      "description": "A directory where the project is placed",
-      "alias": "d"
     }
   },
   "required": ["name"]

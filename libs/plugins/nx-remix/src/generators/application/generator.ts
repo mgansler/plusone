@@ -21,6 +21,7 @@ export default async function (tree: Tree, options: ApplicationGeneratorSchema) 
         defaultConfiguration: 'production',
         options: {
           outputPath: `dist/${normalizedOptions.projectRoot}`,
+          express: normalizedOptions.express ? true : undefined,
         },
         configurations: {
           production: {},
