@@ -36,7 +36,7 @@ jobs:
     needs: setup
     strategy:
       matrix:
-        project: [advent-of-code-2021, github-pipeline-status, feeds-web, suite]
+        project: [advent-of-code-2021, github-pipeline-status, feeds-backend, suite]
 
     steps:
       - uses: actions/checkout@v2

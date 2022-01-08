@@ -76,7 +76,13 @@
       "options": {
         "jestConfig": "apps/feeds/backend/jest.config.js",
         "passWithNoTests": true
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "dependencies"
+        }
+      ]
     }
   },
   "tags": []
