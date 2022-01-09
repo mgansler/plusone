@@ -40,6 +40,7 @@ feeds:build:
     expire_in: 1 hour
 
 feeds:package:
+  cache: []
   image: docker
   services:
     - docker:dind
@@ -69,6 +70,7 @@ feeds:package:
     - docker push ${DOCKER_IMAGE_NAME}
 
 feeds:deploy:
+  cache: []
   stage: deploy
   needs:
     - feeds:package
