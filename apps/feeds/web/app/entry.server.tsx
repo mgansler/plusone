@@ -19,4 +19,5 @@ export default function handleRequest(
   })
 }
 
+// TODO: can this be moved to an config.server.ts?
 export const baseUrl = process.env.API_BASE_URL || 'http://localhost:3333/api'

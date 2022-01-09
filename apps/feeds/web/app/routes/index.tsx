@@ -1,9 +1,7 @@
 import type { LoaderFunction } from 'remix'
 import { useLoaderData } from 'remix'
 
-// eslint-disable-next-line import/no-unresolved
 import { baseUrl } from '~/entry.server'
-// eslint-disable-next-line import/no-unresolved
 import Health from '~/shared/health'
 
 export const loader: LoaderFunction = async () => {
