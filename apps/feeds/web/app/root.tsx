@@ -1,9 +1,15 @@
 import type { ReactNode } from 'react'
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from 'remix'
 
+import styles from './tailwind.css'
+
+export function links() {
+  return [{ rel: 'stylesheet', href: styles }]
+}
+
 export default function App() {
   return (
-    <Document title={'feeds-web'}>
+    <Document title={'Feeds'}>
       <Outlet />
     </Document>
   )
@@ -18,7 +24,7 @@ function Document({ children, title }: { children: ReactNode; title?: string }) 
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className={'bg-gray-100'}>
         {children}
         <ScrollRestoration />
         <Scripts />
