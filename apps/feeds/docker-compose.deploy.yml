@@ -3,6 +3,7 @@ version: '3'
 services:
   backend:
     image: ${FEEDS_BACKEND_DOCKER_IMAGE}
+    restart: always
     networks:
       - default
     depends_on:
@@ -15,6 +16,7 @@ services:
 
   web:
     image: ${FEEDS_WEB_DOCKER_IMAGE}
+    restart: always
     networks:
       - default
       - traefik
@@ -27,6 +29,7 @@ services:
       traefik.default.frontend.rule: 'Host:rss.martingansler.de'
 
   database:
+    restart: always
     image: postgres:12-alpine
     networks:
       - default
