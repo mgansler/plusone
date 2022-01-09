@@ -58,7 +58,6 @@ feeds:package:
       - FEEDS_APP:
           - backend
           - web
-  when: manual
   only:
     - main
     - feeds-mk3
@@ -76,7 +75,6 @@ feeds:deploy:
     - feeds:package
   tags:
     - deploy
-  when: manual
   only:
     - main
     - feeds-mk3
