@@ -1,8 +1,10 @@
 version: '3'
 
 services:
-  core:
+  backend:
     image: ${FEEDS_BACKEND_DOCKER_IMAGE}
+    networks:
+      - default
     depends_on:
       - database
     environment:
@@ -10,11 +12,24 @@ services:
       DATABASE_URL: postgres://postgres:super_secret@database/feeds
       ADMIN_USER: root
       ADMIN_PASSWORD: keep_this_secret
-    ports:
-      - '3333:3333'
+
+  web:
+    image: ${FEEDS_WEB_DOCKER_IMAGE}
+    networks:
+      - default
+      - traefik
+    environment:
+      API_BASE_URL: http://backend:3333/api
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik
+      traefik.default.port: 3000
+      traefik.default.frontend.rule: 'Host:rss.martingansler.de'
 
   database:
     image: postgres:12-alpine
+    networks:
+      - default
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: super_secret

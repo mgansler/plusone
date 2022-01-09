@@ -11,7 +11,7 @@ feeds:test:
   tags:
     - docker
   script:
-    - yarn nx run-many --target test --projects feeds-backend
+    - yarn nx run-many --target test --projects feeds-backend,feeds-web
   after_script:
     - yarn jrm reports/test/junit-feeds.xml reports/test/test-*.xml
   artifacts:
@@ -26,12 +26,14 @@ feeds:build:
     - docker
   only:
     - main
+    - feeds-mk3
   parallel:
     matrix:
       - FEEDS_APP:
           - backend
+          - web
   script:
-    - yarn nx run feeds-backend:build:production
+    - yarn nx run feeds-${FEEDS_APP}:build:production
   artifacts:
     paths:
       - dist/apps/feeds/${FEEDS_APP}
@@ -54,9 +56,11 @@ feeds:package:
     matrix:
       - FEEDS_APP:
           - backend
+          - web
   when: manual
   only:
     - main
+    - feeds-mk3
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - export DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds-${FEEDS_APP}/${CI_COMMIT_REF_SLUG}:latest
@@ -73,11 +77,13 @@ feeds:deploy:
   when: manual
   only:
     - main
+    - feeds-mk3
   variables:
     FEEDS_BACKEND_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-backend/${CI_COMMIT_REF_SLUG}:latest
+    FEEDS_WEB_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-web/${CI_COMMIT_REF_SLUG}:latest
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
   script:
     - docker-compose -f apps/feeds/docker-compose.deploy.yml pull
-    - docker-compose -f apps/suite/docker-compose.deploy.yml up -d --remove-orphans
+    - docker-compose -f apps/feeds/docker-compose.deploy.yml up -d --remove-orphans
