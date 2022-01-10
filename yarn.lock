@@ -8446,10 +8446,10 @@ fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
 
-fast-glob@3.2.7:
-  version "3.2.7"
-  resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.7.tgz#fd6cb7a2d7e9aa7a7846111e85a196d6b2f766a1"
-  integrity sha512-rYGMRwip6lUMvYD3BTScMwT1HtAs2d71SMv66Vrxs0IekGZEjhM0pcMfjQPnknBt2zeCwQMEupiN02ZP4DiT1Q==
+fast-glob@3.2.10, fast-glob@^3.0.3, fast-glob@^3.1.1, fast-glob@^3.2.7:
+  version "3.2.10"
+  resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.10.tgz#2734f83baa7f43b7fd41e13bc34438f4ffe284ee"
+  integrity sha512-s9nFhFnvR63wls6/kM88kQqDhMu0AfdjqouE2l5GVQPbqLgyFjjU5ry/r2yKsJxpb9Py1EYNqieFrmMaX4v++A==
   dependencies:
     "@nodelib/fs.stat" "^2.0.2"
     "@nodelib/fs.walk" "^1.2.3"
@@ -8457,10 +8457,10 @@ fast-glob@3.2.7:
     merge2 "^1.3.0"
     micromatch "^4.0.4"
 
-fast-glob@3.2.8, fast-glob@^3.0.3, fast-glob@^3.1.1, fast-glob@^3.2.7:
-  version "3.2.8"
-  resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.8.tgz#b4c563b4750cee1cbe8d8d41d3abf5cd6e211923"
-  integrity sha512-UsiHHXoDbC3iS7vBOFvld7Q9XqBu318xztdHiL10Fjov3AK5GI5bek2ZJkxZcjPguOYH39UL1W4A6w+l7tpNtw==
+fast-glob@3.2.7:
+  version "3.2.7"
+  resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.7.tgz#fd6cb7a2d7e9aa7a7846111e85a196d6b2f766a1"
+  integrity sha512-rYGMRwip6lUMvYD3BTScMwT1HtAs2d71SMv66Vrxs0IekGZEjhM0pcMfjQPnknBt2zeCwQMEupiN02ZP4DiT1Q==
   dependencies:
     "@nodelib/fs.stat" "^2.0.2"
     "@nodelib/fs.walk" "^1.2.3"
@@ -11408,12 +11408,12 @@ jss@10.9.0, jss@^10.8.2:
     array-includes "^3.1.3"
     object.assign "^4.1.2"
 
-junit-report-merger@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/junit-report-merger/-/junit-report-merger-3.0.3.tgz#f0325895aa628f0b400cfd38530db893a95ab048"
-  integrity sha512-XDL/xDXXxT9Vz5WJhZL2Q5kcUYwrZlhM2CuPPJkAobh5EqYOlwTpqafnYxlkfwhOCiQi3+28ssxf3I7Vc9jn1Q==
+junit-report-merger@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/junit-report-merger/-/junit-report-merger-3.0.4.tgz#929e823b6b14b3ee3a15ffa3ebafd5e61e768772"
+  integrity sha512-mGiiUfQkouW8lVYlnLqAtJVevvDq5d5poiAaZRIYRUTSEdOpep9ZX4n9stvDR3TgefUBTe7a5in16o3WpKQFGw==
   dependencies:
-    fast-glob "3.2.8"
+    fast-glob "3.2.10"
     xmlbuilder2 "3.0.2"
 
 jwa@^1.4.1:
