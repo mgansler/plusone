@@ -26,7 +26,6 @@ feeds:build:
     - docker
   only:
     - main
-    - feeds-mk3
   parallel:
     matrix:
       - FEEDS_APP:
@@ -60,7 +59,6 @@ feeds:package:
           - web
   only:
     - main
-    - feeds-mk3
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - export DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds-${FEEDS_APP}/${CI_COMMIT_REF_SLUG}:latest
@@ -77,7 +75,6 @@ feeds:deploy:
     - deploy
   only:
     - main
-    - feeds-mk3
   variables:
     FEEDS_BACKEND_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-backend/${CI_COMMIT_REF_SLUG}:latest
     FEEDS_WEB_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-web/${CI_COMMIT_REF_SLUG}:latest
