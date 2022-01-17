@@ -1,0 +1,76 @@
+{
+  "root": "libs/plugins/nx-compose",
+  "sourceRoot": "libs/plugins/nx-compose/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/plugins/nx-compose/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/plugins/nx-compose"],
+      "options": {
+        "jestConfig": "libs/plugins/nx-compose/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/plugins/nx-compose",
+        "tsConfig": "libs/plugins/nx-compose/tsconfig.lib.json",
+        "packageJson": "libs/plugins/nx-compose/package.json",
+        "main": "libs/plugins/nx-compose/src/index.ts",
+        "assets": [
+          "libs/plugins/nx-compose/*.md",
+          {
+            "input": "./libs/plugins/nx-compose/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/plugins/nx-compose/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/plugins/nx-compose",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./libs/plugins/nx-compose",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "link": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["cd dist/libs/plugins/nx-compose && yarn link", "yarn link @mgansler/nx-compose"],
+        "parallel": false
+      },
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "self"
+        }
+      ]
+    },
+    "unlink": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["yarn unlink @mgansler/nx-compose", "yarn install --force"],
+        "parallel": false
+      }
+    }
+  },
+  "tags": []
+}
