@@ -11,7 +11,7 @@ feeds:test:
   tags:
     - docker
   script:
-    - yarn nx run-many --target test --projects feeds-web,feeds-core,feeds-discover-ms,feeds-fetch-ms
+    - yarn nx run-many --target test --projects feeds-backend,feeds-web
   after_script:
     - yarn jrm reports/test/junit-feeds.xml reports/test/test-*.xml
   artifacts:
@@ -19,15 +19,6 @@ feeds:test:
     reports:
       junit:
         - reports/test/junit-feeds.xml
-
-feeds:ct:
-  stage: test
-  tags:
-    - docker
-  image: cypress/browsers:node14.17.0-chrome91-ff89
-  script:
-    - yarn cypress install
-    - yarn nx run feeds-web:ct
 
 feeds:build:
   stage: build
@@ -38,9 +29,7 @@ feeds:build:
   parallel:
     matrix:
       - FEEDS_APP:
-          - core
-          - discover-ms
-          - fetch-ms
+          - backend
           - web
   script:
     - yarn nx run feeds-${FEEDS_APP}:build:production
@@ -50,6 +39,7 @@ feeds:build:
     expire_in: 1 hour
 
 feeds:package:
+  cache: []
   image: docker
   services:
     - docker:dind
@@ -65,10 +55,8 @@ feeds:package:
   parallel:
     matrix:
       - FEEDS_APP:
-          - core
-          - discover-ms
-          - fetch-ms
-  when: manual
+          - backend
+          - web
   only:
     - main
   before_script:
@@ -79,21 +67,20 @@ feeds:package:
     - docker push ${DOCKER_IMAGE_NAME}
 
 feeds:deploy:
+  cache: []
   stage: deploy
   needs:
     - feeds:package
   tags:
     - deploy
-  when: manual
   only:
     - main
   variables:
-    FEEDS_CORE_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-core/${CI_COMMIT_REF_SLUG}:latest
-    FEEDS_FETCH_MS_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-fetch-ms/${CI_COMMIT_REF_SLUG}:latest
-    FEEDS_DISCOVER_MS_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-discover-ms/${CI_COMMIT_REF_SLUG}:latest
+    FEEDS_BACKEND_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-backend/${CI_COMMIT_REF_SLUG}:latest
+    FEEDS_WEB_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-web/${CI_COMMIT_REF_SLUG}:latest
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
   script:
     - docker-compose -f apps/feeds/docker-compose.deploy.yml pull
-    - docker-compose -f apps/suite/docker-compose.deploy.yml up -d --remove-orphans
+    - docker-compose -f apps/feeds/docker-compose.deploy.yml up -d --remove-orphans

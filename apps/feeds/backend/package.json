@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "prestart": "npx prisma migrate deploy",
+    "start": "node main.js"
+  }
+}

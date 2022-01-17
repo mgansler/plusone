@@ -1,46 +1,42 @@
 version: '3'
 
 services:
-  core:
-    image: ${FEEDS_CORE_DOCKER_IMAGE}
+  backend:
+    image: ${FEEDS_BACKEND_DOCKER_IMAGE}
+    restart: always
+    networks:
+      - default
     depends_on:
-      - amqp
-      - feeds-ms-postgres
+      - database
     environment:
       JWT_SECRET: not_so_secret
-      AMQP_HOST: amqp
-      DATABASE_URL: postgres://postgres:super_secret@feeds-ms-postgres/feeds
+      DATABASE_URL: postgres://postgres:super_secret@database/feeds
       ADMIN_USER: root
       ADMIN_PASSWORD: keep_this_secret
-    ports:
-      - 3333:3333
 
-  fetch:
-    image: ${FEEDS_FETCH_MS_DOCKER_IMAGE}
-    depends_on:
-      - amqp
+  web:
+    image: ${FEEDS_WEB_DOCKER_IMAGE}
+    restart: always
+    networks:
+      - default
+      - traefik
     environment:
-      AMQP_HOST: amqp
-    scale: 2
+      API_BASE_URL: http://backend:3333/api
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik
+      traefik.default.port: 3000
+      traefik.default.frontend.rule: 'Host:rss.martingansler.de'
 
-  discover:
-    image: ${FEEDS_DISCOVER_MS_DOCKER_IMAGE}
-    depends_on:
-      - amqp
-    environment:
-      AMQP_HOST: amqp
-
-  feeds-ms-postgres:
+  database:
+    restart: always
     image: postgres:12-alpine
+    networks:
+      - default
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: super_secret
       POSTGRES_DB: feeds
-
-  amqp:
-    image: rabbitmq:3-management
-    hostname: feeds-rabbit
-    container_name: feeds-rabbit
 
 networks:
   traefik:

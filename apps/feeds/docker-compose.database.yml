@@ -8,4 +8,4 @@ services:
       POSTGRES_PASSWORD: super_secret
       POSTGRES_DB: feeds
     ports:
-      - 5433:5432
+      - '5434:5432'

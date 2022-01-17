@@ -1,0 +1,29 @@
+{
+  "root": "libs/feeds/persistence",
+  "sourceRoot": "libs/feeds/persistence/src",
+  "projectType": "library",
+  "targets": {
+    "format": {
+      "executor": "./tools/executors:prisma-format"
+    },
+    "generate": {
+      "executor": "./tools/executors:prisma-generate"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/feeds/persistence/**/*.ts"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/feeds/persistence"],
+      "options": {
+        "jestConfig": "libs/feeds/persistence/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
