@@ -4,7 +4,17 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {}
+      "rules": {
+        "testing-library/await-async-query": "off",
+        "testing-library/prefer-screen-queries": "off"
+      }
+    },
+    {
+      "files": ["src/plugins/index.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off",
+        "no-undef": "off"
+      }
     }
   ]
 }

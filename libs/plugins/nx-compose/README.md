@@ -1,7 +1,20 @@
-# plugins-nx-compose
+# Nx plugin to compose targets
 
-This library was generated with [Nx](https://nx.dev).
+Often times you need to run multiple targets at the same time. This plugin helps with that. The difference
+to `dependsOn` is that `compose` can handle long-running tasks.
 
-## Running unit tests
+## Example
 
-Run `nx test plugins-nx-compose` to execute the unit tests via [Jest](https://jestjs.io).
+```json
+{
+  "compose": {
+    "executor": "@mgansler/nx-compose:compose",
+    "options": {
+      "targets": ["app-backend:serve", "app-web:serve"]
+    },
+    "configurations": {
+      "production": {}
+    }
+  }
+}
+```

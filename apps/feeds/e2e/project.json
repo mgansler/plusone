@@ -7,7 +7,7 @@
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "apps/feeds/e2e/cypress.json",
-        "devServerTarget": "feeds-e2e:compose"
+        "baseUrl": "http://localhost:3000"
       },
       "configurations": {
         "production": {
@@ -17,6 +17,9 @@
     },
     "compose": {
       "executor": "@mgansler/nx-compose:compose",
+      "options": {
+        "targets": ["feeds-backend:serve", "feeds-web:serve", "feeds-web:tailwind"]
+      },
       "configurations": {
         "production": {}
       }

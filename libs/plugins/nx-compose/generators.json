@@ -2,11 +2,5 @@
   "$schema": "http://json-schema.org/schema",
   "name": "plugins-nx-compose",
   "version": "0.0.1",
-  "generators": {
-    "plugins-nx-compose": {
-      "factory": "./src/generators/plugins-nx-compose/generator",
-      "schema": "./src/generators/plugins-nx-compose/schema.json",
-      "description": "plugins-nx-compose generator"
-    }
-  }
+  "generators": {}
 }

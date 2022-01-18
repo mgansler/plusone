@@ -4,6 +4,15 @@
   "title": "Compose executor",
   "description": "",
   "type": "object",
-  "properties": {},
-  "required": []
+  "properties": {
+    "targets": {
+      "type": "array",
+      "default": [],
+      "description": "List of targets to execute",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["targets"]
 }

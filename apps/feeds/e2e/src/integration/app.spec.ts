@@ -1,13 +1,7 @@
-import { getGreeting } from '../support/app.po'
-
 describe('github-pipeline-status', () => {
   beforeEach(() => cy.visit('/'))
 
   it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    cy.login('my-email@something.com', 'myPassword')
-
-    // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome github-pipeline-status')
+    cy.findByRole('heading', { name: 'Welcome to feeds-web' })
   })
 })
