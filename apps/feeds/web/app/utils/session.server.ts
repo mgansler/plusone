@@ -29,7 +29,7 @@ export async function login({ username, password }: LoginForm) {
 
 export async function logout(request: Request) {
   const session = await getUserSession(request)
-  return redirect('/', {
+  return redirect('/login', {
     headers: {
       'Set-Cookie': await storage.destroySession(session),
     },
