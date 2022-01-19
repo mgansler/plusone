@@ -18,6 +18,7 @@ type ServeSchema = {
 }
 
 export default async function* (options: ServeSchema, context: ExecutorContext) {
+  console.log('serve', options)
   if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = 'development'
   }

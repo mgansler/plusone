@@ -16,6 +16,9 @@
     "baseUrl": ".",
     "paths": {
       "@mgansler/cypress-graphql": ["libs/packages/cypress-graphql/src/index.ts"],
+      "@mgansler/nx-compose": ["libs/plugins/nx-compose/src/index.ts"],
+      "@mgansler/nx-cypress-ct": ["libs/plugins/nx-cypress-ct/src/index.ts"],
+      "@mgansler/nx-remix": ["libs/plugins/nx-remix/src/index.ts"],
       "@plusone/components": ["libs/components/src/index.ts"],
       "@plusone/conference-links": ["libs/conference-links/src/index.ts"],
       "@plusone/dark-mode-theme-provider": ["libs/dark-mode-theme-provider/src/index.ts"],
@@ -31,8 +34,7 @@
       "@plusone/feeds/web/user-view": ["libs/feeds/web/user-view/src/index.ts"],
       "@plusone/github-hooks": ["libs/github-hooks/src/index.ts"],
       "@plusone/github-schema": ["libs/github-schema/src/index.ts"],
-      "@plusone/hooks": ["libs/hooks/src/index.ts"],
-      "@plusone/nx-remix": ["libs/plugins/nx-remix/src/index.ts"]
+      "@plusone/hooks": ["libs/hooks/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
