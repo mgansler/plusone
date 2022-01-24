@@ -13,6 +13,7 @@ cache:
 
 default:
   before_script:
+    - apk add --no-cache git
     - yarn install --network-timeout 150000
 
 include:
