@@ -16,3 +16,4 @@ services:
       traefik.docker.network: traefik
       traefik.default.port: 3000
       traefik.default.frontend.rule: 'Host:aoc-21.martingansler.de'
+      com.centurylinklabs.watchtower.enable: false

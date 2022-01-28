@@ -15,3 +15,4 @@ services:
       traefik.docker.network: traefik
       traefik.default.port: 80
       traefik.default.frontend.rule: 'Host:apps.martingansler.de'
+      com.centurylinklabs.watchtower.enable: false
