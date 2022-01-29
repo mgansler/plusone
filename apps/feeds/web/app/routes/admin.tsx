@@ -1,21 +1,21 @@
 import type { LoaderFunction } from 'remix'
-import { useLoaderData } from 'remix'
+import { Link, Outlet, redirect, useLoaderData } from 'remix'
 
-import { baseUrl } from '~/entry.server'
 import type { User } from '~/utils/session.server'
 import { requireUser } from '~/utils/session.server'
 
 type LoaderData = {
   user: User
-  health: {
-    status: 'error' | 'ok' | 'shutting_down'
-  }
 }
 
-export const loader: LoaderFunction = async ({ request }): Promise<LoaderData> => {
+export const loader: LoaderFunction = async ({ request }): Promise<LoaderData | Response> => {
   const user = await requireUser(request)
-  const health = await (await fetch(`${baseUrl}/health`)).json()
-  return { user, health }
+  if (!user.isAdmin) throw new Response('Unauthorized', { status: 403 })
+
+  const url = new URL(request.url)
+  if (url.pathname === '/admin') return redirect('admin/dashboard')
+
+  return { user }
 }
 
 export default function Admin() {
@@ -25,15 +25,14 @@ export default function Admin() {
     <div>
       <h1>Admin View</h1>
 
-      <p>Status: {data.health.status}</p>
-
-      <form method={'post'} action={'/admin/fetch-now'}>
-        <button type={'submit'}>Fetch now!</button>
-      </form>
-
       <form method={'post'} action={'/logout'}>
         <button type={'submit'}>Logout {data.user.username}</button>
       </form>
+
+      <Link to={'dashboard'}>Dashboard</Link>
+      <Link to={'settings'}>Settings</Link>
+
+      <Outlet />
     </div>
   )
 }

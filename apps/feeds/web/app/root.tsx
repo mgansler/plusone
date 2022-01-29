@@ -1,10 +1,15 @@
 import type { ReactNode } from 'react'
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from 'remix'
+import type { LoaderFunction } from 'remix'
+import { Links, LiveReload, Meta, Outlet, redirect, Scripts, ScrollRestoration } from 'remix'
 
 import styles from './tailwind.css'
 
 export function links() {
   return [{ rel: 'stylesheet', href: styles }]
+}
+
+export const loader: LoaderFunction = ({ request }) => {
+  return new URL(request.url).pathname === '/' ? redirect('/welcome') : null
 }
 
 export default function App() {

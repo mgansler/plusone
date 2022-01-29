@@ -2,7 +2,7 @@ import { Button } from '@mui/material'
 import type { ActionFunction } from 'remix'
 
 import { badRequest } from '~/utils/bad-request'
-import { createUserSession, login } from '~/utils/session.server'
+import { createUserSession, login, register } from '~/utils/session.server'
 
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData()
@@ -12,14 +12,22 @@ export const action: ActionFunction = async ({ request }) => {
 
   switch (loginType) {
     case 'login': {
-      const resp = await login({ username, password })
-      if (!resp) {
+      const session = await login({ username, password })
+      if (!session) {
         return badRequest({}, 401)
       }
-      return createUserSession(resp.access_token)
+      return createUserSession(session.access_token, 'feeds')
     }
     case 'register': {
-      return badRequest({})
+      const reg = await register({ username, password })
+      if (!reg) {
+        return badRequest({})
+      }
+      const session = await login({ username, password })
+      if (!session) {
+        return badRequest({}, 401)
+      }
+      return createUserSession(session.access_token, 'feeds')
     }
   }
 }

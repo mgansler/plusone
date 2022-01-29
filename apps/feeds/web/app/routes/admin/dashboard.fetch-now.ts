@@ -14,5 +14,5 @@ export const action: ActionFunction = async ({ request }) => {
     },
   })
 
-  return redirect('/admin')
+  return redirect('/admin/dashboard')
 }
