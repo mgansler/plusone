@@ -14,7 +14,5 @@ export const action: ActionFunction = async ({ request }) => {
     },
   })
 
-  console.log(new URL(request.url).pathname)
-
   return redirect('/admin/dashboard')
 }

@@ -47,7 +47,7 @@ export class ArticleService {
   }
 
   async getForUserAndFeed(userId: User['id'], feedId: Feed['id'], pagination: Pagination) {
-    const isFirstRequest = Number(pagination.cursor) === 0
+    const isFirstRequest = !pagination.cursor || Number(pagination.cursor) === 0
     // TODO: configuration? client arg?
     const PAGE_SIZE = 10
 

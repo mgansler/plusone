@@ -27,6 +27,25 @@ export async function login({ username, password }: LoginForm) {
   return await resp.json()
 }
 
+export async function register({ username, password }: LoginForm) {
+  const resp = await fetch(`${baseUrl}/authentication/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username,
+      password,
+    }),
+  })
+
+  if (resp.status !== 201) {
+    return null
+  }
+
+  return await resp.json()
+}
+
 export async function logout(request: Request) {
   const session = await getUserSession(request)
   return redirect('/login', {
