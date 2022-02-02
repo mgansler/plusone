@@ -21,15 +21,8 @@
         }
       ]
     },
-    "foo": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "echo Hello World!"
-      }
-    },
     "tailwind": {
       "executor": "@nrwl/workspace:run-commands",
-      "defaultConfiguration": "watch",
       "options": {
         "command": "tailwindcss -o ./app/tailwind.css",
         "cwd": "./apps/feeds/web"
