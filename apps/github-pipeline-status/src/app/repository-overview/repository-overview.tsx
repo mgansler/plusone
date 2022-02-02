@@ -59,7 +59,8 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
       refetchInterval: 5_000,
       refetchIntervalInBackground: true,
       onSuccess: (response) => {
-        setSearchParams({ ...searchParams, filter: queryString })
+        searchParams.set('filter', queryString)
+        setSearchParams(searchParams)
         onSuccess(response.search.pageInfo, response.search.repositoryCount)
       },
     },
