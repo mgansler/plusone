@@ -10,10 +10,6 @@ updates:
     directory: '/'
     open-pull-requests-limit: 20
     ignore:
-      # @babel/* dependencies will be updated via the @babel/core package.
-      - dependency-name: '@babel/preset-env'
-      - dependency-name: '@babel/preset-react'
-      - dependency-name: '@babel/preset-typescript'
       # @nestjs/* dependencies will be updated via the @nestjs/core package.
       - dependency-name: '@nestjs/common'
       - dependency-name: '@nestjs/microservices'
