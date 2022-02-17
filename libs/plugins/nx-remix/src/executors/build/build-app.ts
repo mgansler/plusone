@@ -15,7 +15,7 @@ export async function buildApp(options: NormalizedOptions, context: ExecutorCont
   config.cacheDirectory = resolve(context.root, 'tmp', options.targetRoot, '.cache')
   config.assetsBuildDirectory = resolve(context.root, options.outputPath, 'public/build')
 
-  config.serverBuildDirectory = resolve(context.root, options.outputPath, 'build')
+  config.serverBuildPath = resolve(context.root, options.outputPath, 'build/index.js')
 
   await build(config, { mode, sourcemap: mode === BuildMode.Development })
 }
