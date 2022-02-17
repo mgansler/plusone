@@ -18,7 +18,6 @@ type ServeSchema = {
 }
 
 export default async function* (options: ServeSchema, context: ExecutorContext) {
-  console.log('serve', options)
   if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = 'development'
   }
@@ -30,7 +29,7 @@ export default async function* (options: ServeSchema, context: ExecutorContext) 
   config.devServerPort = options.devServerPort
   config.cacheDirectory = resolve(context.root, 'tmp', targetRoot, '.cache')
   config.assetsBuildDirectory = resolve(context.root, 'tmp', targetRoot, 'public/build')
-  config.serverBuildDirectory = resolve(context.root, 'tmp', targetRoot, 'build')
+  config.serverBuildPath = resolve(context.root, 'tmp', targetRoot, 'build/index.js')
 
   await copyAssets(
     [`${targetRoot}/public/favicon.ico`],
@@ -53,10 +52,10 @@ function runRemixDevServer(options: ServeSchema, config: RemixConfig) {
     const app = express()
     app.use(express.static(join(config.assetsBuildDirectory, '..')))
     app.use((_, __, next) => {
-      purgeAppRequireCache(config.serverBuildDirectory)
+      purgeAppRequireCache(config.serverBuildPath)
       next()
     })
-    app.use(createApp(config.serverBuildDirectory, BuildMode.Development))
+    app.use(createApp(config.serverBuildPath, BuildMode.Development))
     let server: Server | null = null
 
     watch(config, BuildMode.Development, {
