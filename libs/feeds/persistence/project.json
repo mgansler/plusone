@@ -4,10 +4,10 @@
   "projectType": "library",
   "targets": {
     "format": {
-      "executor": "./tools/executors:prisma-format"
+      "executor": "@mgansler/nx-prisma:format"
     },
     "generate": {
-      "executor": "./tools/executors:prisma-generate"
+      "executor": "@mgansler/nx-prisma:generate"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

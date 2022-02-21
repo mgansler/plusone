@@ -1,11 +1,18 @@
 import { spawn } from 'child_process'
 import { join } from 'path'
 
-import { ExecutorContext } from '@nrwl/devkit'
+import type { ExecutorContext } from '@nrwl/devkit'
 
-import { FormatOptions } from './format'
+import type { FormatExecutorSchema } from './schema'
 
-export default async function (options: FormatOptions, context: ExecutorContext): Promise<{ success: boolean }> {
+export default async function runExecutor(
+  options: FormatExecutorSchema,
+  context: ExecutorContext,
+): Promise<{ success: boolean }> {
+  if (!context.projectName) {
+    return { success: false }
+  }
+
   const schemaPath = join(context.workspace.projects[context.projectName].sourceRoot, options.schema)
   const args: string[] = ['prisma', 'format', '--schema', schemaPath]
   const prismaFormat = spawn('yarn', args)

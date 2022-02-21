@@ -1,0 +1,27 @@
+{
+  "author": {
+    "name": "Martin Gansler",
+    "email": "packages@martingansler.de"
+  },
+  "peerDependencies": {
+    "prisma": "latest"
+  },
+  "description": "Nx Plugin for Prisma",
+  "executors": "./executors.json",
+  "generators": "./generators.json",
+  "keywords": [
+    "database",
+    "nx",
+    "orm",
+    "plugin",
+    "prisma"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "name": "@mgansler/nx-prisma",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mgansler/plusone"
+  },
+  "version": "0.0.2"
+}

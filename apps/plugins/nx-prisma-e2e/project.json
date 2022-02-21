@@ -1,0 +1,16 @@
+{
+  "root": "apps/plugins/nx-prisma-e2e",
+  "projectType": "application",
+  "sourceRoot": "apps/plugins/nx-prisma-e2e/src",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/nx-plugin:e2e",
+      "options": {
+        "target": "plugins-nx-prisma:build",
+        "jestConfig": "apps/plugins/nx-prisma-e2e/jest.config.js"
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["plugins-nx-prisma"]
+}
