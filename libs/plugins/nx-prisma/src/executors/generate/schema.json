@@ -1,6 +1,8 @@
 {
+  "$schema": "http://json-schema.org/schema",
   "cli": "nx",
-  "id": "typeorm",
+  "title": "Prisma generate executor",
+  "description": "",
   "type": "object",
   "properties": {
     "schema": {
@@ -9,5 +11,5 @@
       "default": "lib/schema.prisma"
     }
   },
-  "required": ["schema"]
+  "required": []
 }
