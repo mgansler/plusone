@@ -29,5 +29,5 @@ describe('plugins-nx-cypress-ct e2e', () => {
 
     const result = await runNxCommandAsync(`ct ${plugin}`)
     expect(result.stdout).toContain('All specs passed!')
-  }, 120000)
+  }, 180_000)
 })
