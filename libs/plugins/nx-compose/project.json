@@ -3,29 +3,14 @@
   "sourceRoot": "libs/plugins/nx-compose/src",
   "projectType": "library",
   "targets": {
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/plugins/nx-compose/**/*.ts"]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/plugins/nx-compose"],
-      "options": {
-        "jestConfig": "libs/plugins/nx-compose/jest.config.js",
-        "passWithNoTests": true
-      }
-    },
     "build": {
-      "executor": "@nrwl/node:package",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/plugins/nx-compose",
-        "tsConfig": "libs/plugins/nx-compose/tsconfig.lib.json",
-        "packageJson": "libs/plugins/nx-compose/package.json",
         "main": "libs/plugins/nx-compose/src/index.ts",
+        "outputPath": "dist/libs/plugins/nx-compose",
+        "packageJson": "libs/plugins/nx-compose/package.json",
+        "tsConfig": "libs/plugins/nx-compose/tsconfig.lib.json",
         "assets": [
           "libs/plugins/nx-compose/*.md",
           {
@@ -49,6 +34,21 @@
             "output": "."
           }
         ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/plugins/nx-compose/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/plugins/nx-compose"],
+      "options": {
+        "jestConfig": "libs/plugins/nx-compose/jest.config.js",
+        "passWithNoTests": true
       }
     },
     "link": {

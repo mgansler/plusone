@@ -3,29 +3,14 @@
   "sourceRoot": "libs/plugins/nx-remix/src",
   "projectType": "library",
   "targets": {
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/plugins/nx-remix/**/*.ts"]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/plugins/nx-remix"],
-      "options": {
-        "jestConfig": "libs/plugins/nx-remix/jest.config.js",
-        "passWithNoTests": true
-      }
-    },
     "build": {
-      "executor": "@nrwl/node:package",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/plugins/nx-remix",
-        "tsConfig": "libs/plugins/nx-remix/tsconfig.lib.json",
-        "packageJson": "libs/plugins/nx-remix/package.json",
         "main": "libs/plugins/nx-remix/src/index.ts",
+        "outputPath": "dist/libs/plugins/nx-remix",
+        "packageJson": "libs/plugins/nx-remix/package.json",
+        "tsConfig": "libs/plugins/nx-remix/tsconfig.lib.json",
         "assets": [
           "libs/plugins/nx-remix/*.md",
           {
@@ -49,6 +34,21 @@
             "output": "."
           }
         ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/plugins/nx-remix/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/plugins/nx-remix"],
+      "options": {
+        "jestConfig": "libs/plugins/nx-remix/jest.config.js",
+        "passWithNoTests": true
       }
     },
     "link": {
