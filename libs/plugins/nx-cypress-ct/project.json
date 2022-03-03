@@ -3,29 +3,14 @@
   "sourceRoot": "libs/plugins/nx-cypress-ct/src",
   "projectType": "library",
   "targets": {
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/plugins/nx-cypress-ct/**/*.ts"]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/plugins/nx-cypress-ct"],
-      "options": {
-        "jestConfig": "libs/plugins/nx-cypress-ct/jest.config.js",
-        "passWithNoTests": true
-      }
-    },
     "build": {
-      "executor": "@nrwl/node:package",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/plugins/nx-cypress-ct",
-        "tsConfig": "libs/plugins/nx-cypress-ct/tsconfig.lib.json",
-        "packageJson": "libs/plugins/nx-cypress-ct/package.json",
         "main": "libs/plugins/nx-cypress-ct/src/index.ts",
+        "outputPath": "dist/libs/plugins/nx-cypress-ct",
+        "packageJson": "libs/plugins/nx-cypress-ct/package.json",
+        "tsConfig": "libs/plugins/nx-cypress-ct/tsconfig.lib.json",
         "assets": [
           "libs/plugins/nx-cypress-ct/*.md",
           {
@@ -49,6 +34,21 @@
             "output": "."
           }
         ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/plugins/nx-cypress-ct/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/plugins/nx-cypress-ct"],
+      "options": {
+        "jestConfig": "libs/plugins/nx-cypress-ct/jest.config.js",
+        "passWithNoTests": true
       }
     },
     "link": {
