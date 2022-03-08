@@ -52,7 +52,7 @@
       ]
     },
     "serve": {
-      "executor": "@nrwl/node:execute",
+      "executor": "@nrwl/node:node",
       "options": {
         "buildTarget": "feeds-backend:build"
       },
