@@ -58,7 +58,6 @@ export const action: ActionFunction = async ({ request }) => {
     .filter((line) => line.length)
     .map((row) => row.split('').map(Number))
 
-  console.log(formData, heightmap)
   const columnCount = heightmap[0].length
   const rowCount = heightmap.length
 
