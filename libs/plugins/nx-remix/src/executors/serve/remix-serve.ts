@@ -1,4 +1,4 @@
-import { copyFileSync } from 'fs'
+import { copyFileSync, existsSync, mkdirSync } from 'fs'
 import type { Server } from 'http'
 import { join, resolve } from 'path'
 
@@ -31,16 +31,11 @@ export default async function* (options: ServeSchema, context: ExecutorContext) 
   config.assetsBuildDirectory = resolve(context.root, 'tmp', targetRoot, 'public/build')
   config.serverBuildPath = resolve(context.root, 'tmp', targetRoot, 'build/index.js')
 
-  // await copyAssets(
-  //   [`${targetRoot}/public/favicon.ico`],
-  //   context.root,
-  //   resolve(context.root, 'tmp', targetRoot, 'public'),
-  // )
-
-  copyFileSync(
-    resolve(context.root, targetRoot, 'public/favicon.ico'),
-    resolve(context.root, 'tmp', targetRoot, 'public/favicon.ico'),
-  )
+  const publicDest = join(context.root, 'tmp', targetRoot, 'public')
+  if (!existsSync(publicDest)) {
+    mkdirSync(publicDest, { recursive: true })
+  }
+  copyFileSync(resolve(context.root, targetRoot, 'public/favicon.ico'), resolve(publicDest, 'favicon.ico'))
 
   return yield* eachValueFrom(
     runRemixDevServer(options, config).pipe(
