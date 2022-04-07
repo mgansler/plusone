@@ -1,8 +1,8 @@
+import { copyFileSync } from 'fs'
 import type { Server } from 'http'
 import { join, resolve } from 'path'
 
 import type { ExecutorContext } from '@nrwl/devkit'
-import { copyAssets } from '@nrwl/workspace/src/utilities/assets'
 import { BuildMode } from '@remix-run/dev/build'
 import { watch } from '@remix-run/dev/cli/commands'
 import type { RemixConfig } from '@remix-run/dev/config'
@@ -31,10 +31,15 @@ export default async function* (options: ServeSchema, context: ExecutorContext) 
   config.assetsBuildDirectory = resolve(context.root, 'tmp', targetRoot, 'public/build')
   config.serverBuildPath = resolve(context.root, 'tmp', targetRoot, 'build/index.js')
 
-  await copyAssets(
-    [`${targetRoot}/public/favicon.ico`],
-    context.root,
-    resolve(context.root, 'tmp', targetRoot, 'public'),
+  // await copyAssets(
+  //   [`${targetRoot}/public/favicon.ico`],
+  //   context.root,
+  //   resolve(context.root, 'tmp', targetRoot, 'public'),
+  // )
+
+  copyFileSync(
+    resolve(context.root, targetRoot, 'public/favicon.ico'),
+    resolve(context.root, 'tmp', targetRoot, 'public/favicon.ico'),
   )
 
   return yield* eachValueFrom(

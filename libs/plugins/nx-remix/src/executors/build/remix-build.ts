@@ -1,8 +1,8 @@
+import { copyFileSync } from 'fs'
 import { resolve } from 'path'
 
 import type { ExecutorContext } from '@nrwl/devkit'
 import { deleteOutputDir } from '@nrwl/web/src/utils/fs'
-import { copyAssets } from '@nrwl/workspace/src/utilities/assets'
 
 import { buildApp } from './build-app'
 import { normalizeOptions } from './normalize-options'
@@ -22,7 +22,7 @@ export default async function (options: BuildOptions, context: ExecutorContext) 
   if (normalizedOptions.express) {
     prepareForExpress(normalizedOptions, context)
   }
-  await copyAssets([`${normalizedOptions.targetRoot}/public/favicon.ico`], context.root, resolve(context.root, 'dist', normalizedOptions.targetRoot, 'public'))
+  copyFileSync(resolve(context.root, normalizedOptions.targetRoot, 'public/favicon.ico'), resolve(context.root, 'dist', normalizedOptions.targetRoot, 'public/favicon.ico'))
 
   console.log(`Successfully built '${context.projectName}'`)
   return { success: true }

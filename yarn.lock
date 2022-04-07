@@ -2154,13 +2154,12 @@
   resolved "https://registry.yarnpkg.com/@mgansler/nx-prisma/-/nx-prisma-0.0.2.tgz#e1f6ec1aaa53f1777f5c19794d400f87554fed15"
   integrity sha512-HK1yVIoS53IpOnMzlrCBv2shmnX7vWwuvOIBpxhQrLpw4K98YbFspRyQDAEiJ8/ZeGAO3XAN7LEvQeqsHPLfSA==
 
-"@mgansler/nx-remix@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@mgansler/nx-remix/-/nx-remix-0.3.0.tgz#cc9fc161211a1ea46698adcdc1d56728fa2744ba"
-  integrity sha512-jS3a+X8jHO945HgMd1j2GYMoJUQvxoN9+XzD/eoo3dC/fve4KolTniZA3IswQrDwu6ZTbyH57h2vs4Dvr5h4Eg==
+"@mgansler/nx-remix@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@mgansler/nx-remix/-/nx-remix-0.4.0.tgz#851488695d41542ed2b89ded4a9329527d8550ed"
+  integrity sha512-Wm4LonNkYrYv7mlMaSMrXdA9Mfqq5Czcd0yLxCx8UnKm/721RjNmNQsDRMHRiyG4kFJ5HJfPIyPByofojAKNMQ==
   dependencies:
-    "@nrwl/devkit" "^13.3.6"
-    rxjs "~7.5.4"
+    "@nrwl/devkit" "^13.10.0"
     rxjs-for-await "^1.0.0"
 
 "@mui/base@5.0.0-alpha.75":
@@ -2476,7 +2475,7 @@
     tslib "^2.3.0"
     webpack-node-externals "^3.0.0"
 
-"@nrwl/devkit@13.10.0":
+"@nrwl/devkit@13.10.0", "@nrwl/devkit@^13.10.0":
   version "13.10.0"
   resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-13.10.0.tgz#7dfe33f9230f722ffb69238b22827b5a512f1962"
   integrity sha512-xQk3fNTaGFrzm+/CPan8ZBRYYYB0Bb6GXRidc1i97qLse0ZAJ30RsDFJeFB/5dSu5H9c7wiS9DdAEGmN6Jlkmg==
@@ -2488,7 +2487,7 @@
     semver "7.3.4"
     tslib "^2.3.0"
 
-"@nrwl/devkit@^13.3.6", "@nrwl/devkit@^13.4.1":
+"@nrwl/devkit@^13.4.1":
   version "13.9.1"
   resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-13.9.1.tgz#929c29ee149b71d39304e06371b56778dd1f36b8"
   integrity sha512-+ae6WpDWz/cUB5tnjWiQksttLP+nD8YAG2ssfP8zgHXrxgfEhIujcQQyuvUkXjlTnL4TUzID1B/FZjqp+6lYSg==
@@ -14650,7 +14649,7 @@ rxjs@6.6.7, rxjs@^6.3.3, rxjs@^6.5.4:
   dependencies:
     tslib "^1.9.0"
 
-rxjs@^7.2.0, rxjs@^7.5.1, rxjs@^7.5.2, rxjs@^7.5.5, rxjs@~7.5.4, rxjs@~7.5.5:
+rxjs@^7.2.0, rxjs@^7.5.1, rxjs@^7.5.2, rxjs@^7.5.5, rxjs@~7.5.5:
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.5.5.tgz#2ebad89af0f560f460ad5cc4213219e1f7dd4e9f"
   integrity sha512-sy+H0pQofO95VDmFLzyaw9xNJU4KTRSwQIGM6+iG3SypAtCiLDzpeG8sJrNCWn2Up9km+KhkvTdbkrdy+yzZdw==
