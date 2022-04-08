@@ -5,8 +5,8 @@ import { useQueryClient } from 'react-query'
 import { useLocalStorage } from '@plusone/hooks'
 
 import { LoginForm } from './login-form'
-import { useFetchProfile } from './use-fetch-profile'
 import type { Token, User } from './types'
+import { useFetchProfile } from './use-fetch-profile'
 
 interface AuthenticationContext {
   user?: User
@@ -34,7 +34,7 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
     }
   }, [queryClient, remove, token])
 
-  if (isLoading) {
+  if (isLoading && token) {
     return null
   }
 
