@@ -9,7 +9,7 @@ interface UseFetchProfileProps {
 
 export function useFetchProfile({ token, setToken }: UseFetchProfileProps) {
   return useQuery<User>(
-    'user',
+    ['user'],
     () =>
       fetch('/api/authentication/profile', {
         headers: {

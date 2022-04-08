@@ -58,7 +58,7 @@ enum ActiveTab {
 interface TabPanelProps {
   index: ActiveTab
   value: ActiveTab
-  children: ReactNode
+  children: ReactNode | ReactNode[]
 }
 
 function TabPanel({ index, value, children }: TabPanelProps) {
@@ -142,7 +142,7 @@ export function LoginForm({ setToken }: FeedsWebLoginProps) {
               <TabPanel value={ActiveTab.Login} index={activeTab}>
                 <UsernameTextField />
                 <PasswordTextField activeTab={activeTab} />
-                {loginError && <Alert severity={'error'}>{(loginError as Error).message}</Alert>}
+                {loginError ? <Alert severity={'error'}>{(loginError as Error).message}</Alert> : null}
               </TabPanel>
 
               <TabPanel value={ActiveTab.Register} index={activeTab}>
@@ -151,7 +151,7 @@ export function LoginForm({ setToken }: FeedsWebLoginProps) {
                 {newUserData && (
                   <Alert severity={'success'}>{`Successfully registered '${newUserData.username}'`}</Alert>
                 )}
-                {registerError && <Alert severity={'error'}>{(registerError as Error).message}</Alert>}
+                {registerError ? <Alert severity={'error'}>{(registerError as Error).message}</Alert> : null}
               </TabPanel>
             </div>
           </CardContent>
