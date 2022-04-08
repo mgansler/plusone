@@ -9,11 +9,20 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "rules": {}
+      "rules": {
+        "no-irregular-whitespace": "off"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
       "rules": {}
+    },
+    {
+      "files": ["src/lib/github-schema.ts"],
+      "rules": {
+        "no-irregular-whitespace": "off",
+        "@typescript-eslint/no-explicit-any": "off"
+      }
     }
   ]
 }
