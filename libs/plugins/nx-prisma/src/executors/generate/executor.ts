@@ -1,7 +1,7 @@
 import { spawn } from 'child_process'
 import { resolve } from 'path'
 
-import type { ExecutorContext } from '@nrwl/tao/src/shared/workspace'
+import type { ExecutorContext } from '@nrwl/devkit'
 
 import type { BuildExecutorSchema } from './schema'
 
