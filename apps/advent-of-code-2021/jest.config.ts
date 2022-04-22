@@ -1,6 +1,6 @@
 module.exports = {
   displayName: 'advent-of-code-2021',
-  preset: '../../jest.preset.js',
+  preset: '../../jest.preset.ts',
   transform: {
     '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest',
     '^.+\\.[tj]sx?$': 'babel-jest',

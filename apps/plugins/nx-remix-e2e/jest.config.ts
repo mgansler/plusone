@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'plugins-nx-prisma-e2e',
-  preset: '../../../jest.preset.js',
+  displayName: 'plugins-nx-remix-e2e',
+  preset: '../../../jest.preset.ts',
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -10,5 +10,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../coverage/apps/plugins/nx-prisma-e2e',
+  coverageDirectory: '../../../coverage/apps/plugins/nx-remix-e2e',
 }

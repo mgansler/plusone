@@ -34,6 +34,12 @@
           "namedChunks": false,
           "extractLicenses": true,
           "vendorChunk": false
+        },
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
         }
       }
     },
@@ -54,8 +60,12 @@
         "production": {
           "buildTarget": "suite:build:production",
           "hmr": false
+        },
+        "development": {
+          "buildTarget": "suite:build:development"
         }
-      }
+      },
+      "defaultConfiguration": "development"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
@@ -68,7 +78,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/suite"],
       "options": {
-        "jestConfig": "apps/suite/jest.config.js",
+        "jestConfig": "apps/suite/jest.config.ts",
         "passWithNoTests": true
       }
     }

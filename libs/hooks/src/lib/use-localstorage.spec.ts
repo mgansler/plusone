@@ -1,9 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react'
 
 import { useLocalStorage } from './use-localstorage'
 
-// Skipped until '@testing-library/react-hooks' supports react v18
-describe.skip('useLocalStorage', () => {
+describe('useLocalStorage', () => {
   const key = 'test-key'
 
   it('should return the default value', () => {

@@ -1,15 +1,15 @@
 module.exports = {
-  displayName: 'plugins-nx-prisma',
-  preset: '../../../jest.preset.js',
+  displayName: 'packages-cypress-graphql',
+
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
     },
   },
-  testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/plugins/nx-prisma',
+  coverageDirectory: '../../../coverage/libs/packages/cypress-graphql',
+  preset: '../../../jest.preset.ts',
 }

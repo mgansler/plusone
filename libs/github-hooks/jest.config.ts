@@ -1,9 +1,10 @@
 module.exports = {
-  displayName: 'components',
-  preset: '../../jest.preset.js',
+  displayName: 'github-hooks',
+
   transform: {
     '^.+\\.[tj]sx?$': 'babel-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/components',
+  coverageDirectory: '../../coverage/libs/github-hooks',
+  preset: '../../jest.preset.ts',
 }

@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'plugins-nx-cypress-ct',
-  preset: '../../../jest.preset.js',
+  displayName: 'feeds-persistence',
+
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -11,5 +11,6 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/plugins/nx-cypress-ct',
+  coverageDirectory: '../../../coverage/libs/feeds/persistence',
+  preset: '../../../jest.preset.ts',
 }

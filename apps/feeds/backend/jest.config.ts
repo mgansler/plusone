@@ -1,14 +1,16 @@
 module.exports = {
-  displayName: 'plugins-nx-cypress-ct-e2e',
-  preset: '../../../jest.preset.js',
+  displayName: 'feeds-backend',
+
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
     },
   },
+  testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../coverage/apps/plugins/nx-cypress-ct-e2e',
+  coverageDirectory: '../../../coverage/apps/feeds/backend',
+  preset: '../../../jest.preset.ts',
 }

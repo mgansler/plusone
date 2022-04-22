@@ -1,15 +1,14 @@
 module.exports = {
-  displayName: 'feeds-backend',
-  preset: '../../../jest.preset.js',
+  displayName: 'plugins-nx-compose-e2e',
+  preset: '../../../jest.preset.ts',
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
     },
   },
-  testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../coverage/apps/feeds/backend',
+  coverageDirectory: '../../../coverage/apps/plugins/nx-compose-e2e',
 }

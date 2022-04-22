@@ -47,7 +47,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/plugins/nx-prisma"],
       "options": {
-        "jestConfig": "libs/plugins/nx-prisma/jest.config.js",
+        "jestConfig": "libs/plugins/nx-prisma/jest.config.ts",
         "passWithNoTests": true
       }
     },
