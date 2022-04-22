@@ -37,14 +37,16 @@ export default async function* (options: ServeSchema, context: ExecutorContext) 
   }
   copyFileSync(resolve(context.root, targetRoot, 'public/favicon.ico'), resolve(publicDest, 'favicon.ico'))
 
-  return yield* eachValueFrom(
+  for await (const value of eachValueFrom(
     runRemixDevServer(options, config).pipe(
       map(({ baseUrl }) => ({
         success: true,
         baseUrl,
       })),
     ),
-  )
+  )) {
+    yield value
+  }
 }
 
 function runRemixDevServer(options: ServeSchema, config: RemixConfig) {
