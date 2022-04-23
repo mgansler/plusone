@@ -19,6 +19,11 @@
       "executor": "@mgansler/nx-remix:serve",
       "options": {
         "port": 3000
+      },
+      "configurations": {
+        "e2e": {
+          "watch": false
+        }
       }
     },
     "lint": {
