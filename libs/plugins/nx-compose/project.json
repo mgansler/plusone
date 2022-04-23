@@ -47,7 +47,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/plugins/nx-compose"],
       "options": {
-        "jestConfig": "libs/plugins/nx-compose/jest.config.js",
+        "jestConfig": "libs/plugins/nx-compose/jest.config.ts",
         "passWithNoTests": true
       }
     },

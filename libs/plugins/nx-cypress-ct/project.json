@@ -47,7 +47,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/plugins/nx-cypress-ct"],
       "options": {
-        "jestConfig": "libs/plugins/nx-cypress-ct/jest.config.js",
+        "jestConfig": "libs/plugins/nx-cypress-ct/jest.config.ts",
         "passWithNoTests": true
       }
     },

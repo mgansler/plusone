@@ -14,7 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/feeds/web/new-feed"],
       "options": {
-        "jestConfig": "libs/feeds/web/new-feed/jest.config.js",
+        "jestConfig": "libs/feeds/web/new-feed/jest.config.ts",
         "passWithNoTests": true
       }
     },

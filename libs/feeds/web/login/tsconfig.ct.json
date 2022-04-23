@@ -6,5 +6,6 @@
     "types": ["cypress", "node", "@testing-library/cypress"],
     "resolveJsonModule": true
   },
-  "include": ["**/*.ct.jsx", "**/*.ct.tsx", "cypress/**/*.ts"]
+  "include": ["**/*.ct.jsx", "**/*.ct.tsx", "cypress/**/*.ts"],
+  "exclude": ["jest.config.ts"]
 }

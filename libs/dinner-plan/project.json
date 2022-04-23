@@ -14,7 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/dinner-plan"],
       "options": {
-        "jestConfig": "libs/dinner-plan/jest.config.js",
+        "jestConfig": "libs/dinner-plan/jest.config.ts",
         "passWithNoTests": true
       }
     },

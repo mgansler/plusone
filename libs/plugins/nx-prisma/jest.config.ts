@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'feeds-persistence',
-  preset: '../../../jest.preset.js',
+  displayName: 'plugins-nx-prisma',
+
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -11,5 +11,6 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/feeds/persistence',
+  coverageDirectory: '../../../coverage/libs/plugins/nx-prisma',
+  preset: '../../../jest.preset.ts',
 }

@@ -34,6 +34,12 @@
           "namedChunks": false,
           "extractLicenses": true,
           "vendorChunk": false
+        },
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
         }
       }
     },
@@ -47,8 +53,12 @@
         "production": {
           "buildTarget": "github-pipeline-status:build:production",
           "hmr": false
+        },
+        "development": {
+          "buildTarget": "github-pipeline-status:build:development"
         }
-      }
+      },
+      "defaultConfiguration": "development"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
@@ -61,7 +71,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/github-pipeline-status"],
       "options": {
-        "jestConfig": "apps/github-pipeline-status/jest.config.js",
+        "jestConfig": "apps/github-pipeline-status/jest.config.ts",
         "passWithNoTests": true
       }
     },

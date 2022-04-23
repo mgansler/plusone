@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'plugins-nx-compose-e2e',
-  preset: '../../../jest.preset.js',
+  displayName: 'plugins-nx-cypress-ct-e2e',
+  preset: '../../../jest.preset.ts',
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -10,5 +10,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../coverage/apps/plugins/nx-compose-e2e',
+  coverageDirectory: '../../../coverage/apps/plugins/nx-cypress-ct-e2e',
 }
