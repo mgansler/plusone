@@ -1,6 +1,6 @@
 module.exports = {
   displayName: 'plugins-nx-remix-e2e',
-  preset: '../../../jest.preset.ts',
+  preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',

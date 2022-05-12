@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'feeds-shared-types',
 
   globals: {
@@ -12,5 +12,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../../coverage/libs/feeds/shared/types',
-  preset: '../../../../jest.preset.ts',
+  preset: '../../../../jest.preset.js',
 }

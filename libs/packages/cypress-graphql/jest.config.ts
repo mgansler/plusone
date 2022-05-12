@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'packages-cypress-graphql',
 
   globals: {
@@ -11,5 +11,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/packages/cypress-graphql',
-  preset: '../../../jest.preset.ts',
+  preset: '../../../jest.preset.js',
 }

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'feeds-web-new-feed',
 
   transform: {
@@ -6,5 +6,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../../coverage/libs/feeds/web/new-feed',
-  preset: '../../../../jest.preset.ts',
+  preset: '../../../../jest.preset.js',
 }

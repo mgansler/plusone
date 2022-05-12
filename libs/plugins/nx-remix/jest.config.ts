@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'plugins-nx-remix',
 
   globals: {
@@ -12,5 +12,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/plugins/nx-remix',
-  preset: '../../../jest.preset.ts',
+  preset: '../../../jest.preset.js',
 }
