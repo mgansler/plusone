@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'components',
 
   transform: {
@@ -6,5 +6,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/libs/components',
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
 }

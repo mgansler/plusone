@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'dinner-plan',
 
   transform: {
@@ -8,5 +8,5 @@ module.exports = {
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/libs/dinner-plan',
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
 }

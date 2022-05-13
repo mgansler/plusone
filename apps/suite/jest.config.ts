@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'suite',
 
   transform: {
@@ -8,5 +8,5 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/suite',
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
 }

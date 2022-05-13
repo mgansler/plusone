@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'feeds-web-admin-view',
 
   transform: {
@@ -7,5 +7,5 @@ module.exports = {
   setupFilesAfterEnv: ['@testing-library/jest-dom', 'whatwg-fetch'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../../coverage/libs/feeds/web/admin-view',
-  preset: '../../../../jest.preset.ts',
+  preset: '../../../../jest.preset.js',
 }
