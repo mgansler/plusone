@@ -44,9 +44,6 @@
       }
     ]
   },
-  "cli": {
-    "defaultCollection": "@nrwl/react"
-  },
   "generators": {
     "@nrwl/react": {
       "application": {
@@ -65,5 +62,6 @@
       }
     }
   },
-  "defaultProject": "github-pipeline-status"
+  "defaultProject": "github-pipeline-status",
+  "$schema": "./node_modules/nx/schemas/nx-schema.json"
 }
