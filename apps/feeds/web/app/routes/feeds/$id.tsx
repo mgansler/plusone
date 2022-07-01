@@ -1,4 +1,4 @@
-import invariant from '@remix-run/react/invariant'
+import invariant from '@remix-run/react/dist/invariant'
 import type { LoaderFunction } from 'remix'
 import { useLoaderData } from 'remix'
 
