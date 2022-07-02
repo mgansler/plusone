@@ -1,5 +1,5 @@
-import type { LoaderFunction } from 'remix'
-import { useLoaderData } from 'remix'
+import type { LoaderFunction } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
 
 import { baseUrl } from '~/entry.server'
 

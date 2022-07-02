@@ -1,5 +1,6 @@
-import type { ActionFunction } from 'remix'
-import { Form, json, useActionData } from 'remix'
+import type { ActionFunction } from '@remix-run/node'
+import { json } from '@remix-run/node'
+import { Form, useActionData } from '@remix-run/react'
 
 type Segment = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g'
 type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9

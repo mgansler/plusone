@@ -1,5 +1,5 @@
-import type { LoaderFunction } from 'remix'
-import { Link, Outlet, useLoaderData } from 'remix'
+import type { LoaderFunction } from '@remix-run/node'
+import { Link, Outlet, useLoaderData } from '@remix-run/react'
 
 import { FeedListItem } from '~/components/feed-list-item'
 import { fetchFeeds } from '~/utils/api/feed'

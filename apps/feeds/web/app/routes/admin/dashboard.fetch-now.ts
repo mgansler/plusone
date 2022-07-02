@@ -1,5 +1,5 @@
-import type { ActionFunction } from 'remix'
-import { redirect } from 'remix'
+import type { ActionFunction } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
 
 import { baseUrl } from '~/entry.server'
 import { getUserSession } from '~/utils/session.server'

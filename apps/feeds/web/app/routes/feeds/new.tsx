@@ -1,5 +1,6 @@
-import type { ActionFunction } from 'remix'
-import { redirect, useActionData } from 'remix'
+import type { ActionFunction } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
+import { useActionData } from '@remix-run/react'
 
 import { baseUrl } from '~/entry.server'
 import { getUserSession } from '~/utils/session.server'

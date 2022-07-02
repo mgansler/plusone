@@ -1,5 +1,6 @@
-import type { ActionFunction } from 'remix'
-import { Form, json, useActionData } from 'remix'
+import type { ActionFunction } from '@remix-run/node'
+import { json } from '@remix-run/node'
+import { Form, useActionData } from '@remix-run/react'
 
 const DAYS_PART_1 = 80
 const DAYS_PART_2 = 256

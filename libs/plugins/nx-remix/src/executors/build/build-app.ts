@@ -1,9 +1,9 @@
 import { resolve } from 'path'
 
 import type { ExecutorContext } from '@nrwl/devkit'
-import { BuildMode } from '@remix-run/dev/build'
-import { build } from '@remix-run/dev/compiler'
-import { readConfig } from '@remix-run/dev/config'
+import { BuildMode } from '@remix-run/dev/dist/build'
+import { build } from '@remix-run/dev/dist/compiler'
+import { readConfig } from '@remix-run/dev/dist/config'
 
 import type { NormalizedOptions } from './normalize-options'
 

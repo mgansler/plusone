@@ -11,17 +11,17 @@ export function addDependencies(tree: Tree) {
   addDependenciesToPackageJson(
     tree,
     {
-      '@remix-run/react': '1.1.1',
-      react: '^17.0.2',
-      'react-dom': '^17.0.2',
-      remix: '1.1.1',
+      '@remix-run/react': '1.6.3',
+      react: '^18.2.0',
+      'react-dom': '^18.2.0',
+      remix: '1.6.3',
     },
     {
-      '@remix-run/dev': '1.1.1',
-      '@remix-run/serve': '1.1.1',
-      '@types/react': '^17.0.24',
-      '@types/react-dom': '^17.0.9',
-      typescript: '^4.1.2',
+      '@remix-run/dev': '1.6.3',
+      '@remix-run/serve': '1.6.3',
+      '@types/react': '^18.0.14',
+      '@types/react-dom': '^18.0.5',
+      typescript: '^4.7.4',
     },
   )
 

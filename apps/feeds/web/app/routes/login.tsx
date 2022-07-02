@@ -1,5 +1,5 @@
 import { Button } from '@mui/material'
-import type { ActionFunction } from 'remix'
+import type { ActionFunction } from '@remix-run/node'
 
 import { badRequest } from '~/utils/bad-request'
 import { createUserSession, login, register } from '~/utils/session.server'

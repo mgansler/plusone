@@ -1,5 +1,5 @@
+import { Link, Links, LiveReload, Outlet, Scripts, useCatch } from '@remix-run/react'
 import type { LinksFunction } from 'remix'
-import { Link, Links, LiveReload, Outlet, Scripts, useCatch } from 'remix'
 
 import globalStylesUrl from './styles/global.css'
 
