@@ -1,5 +1,5 @@
+import { Link } from '@remix-run/react'
 import { useParams } from 'react-router-dom'
-import { Link } from 'remix'
 
 import type { FeedResponse } from '~/utils/types/feed'
 

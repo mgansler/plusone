@@ -1,6 +1,6 @@
+import type { LoaderFunction } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
 import invariant from '@remix-run/react/dist/invariant'
-import type { LoaderFunction } from 'remix'
-import { useLoaderData } from 'remix'
 
 import { fetchFeed } from '~/utils/api/feed'
 import type { PaginatedArticles } from '~/utils/types/pagination'

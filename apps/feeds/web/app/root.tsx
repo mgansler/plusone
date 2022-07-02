@@ -1,6 +1,7 @@
+import type { LoaderFunction } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
 import type { ReactNode } from 'react'
-import type { LoaderFunction } from 'remix'
-import { Links, LiveReload, Meta, Outlet, redirect, Scripts, ScrollRestoration } from 'remix'
 
 import styles from './tailwind.css'
 

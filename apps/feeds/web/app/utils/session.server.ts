@@ -1,5 +1,5 @@
+import { createCookieSessionStorage, redirect } from '@remix-run/node'
 import decode from 'jwt-decode'
-import { createCookieSessionStorage, redirect } from 'remix'
 
 import { baseUrl } from '~/entry.server'
 
