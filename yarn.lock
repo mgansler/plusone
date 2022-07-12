@@ -3746,20 +3746,19 @@
   dependencies:
     axios "0.27.2"
 
-"@nestjs/common@8.4.7":
-  version "8.4.7"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-8.4.7.tgz#fc4a575b797e230bb5a0bcab6da8b796aa88d605"
-  integrity sha512-m/YsbcBal+gA5CFrDpqXqsSfylo+DIQrkFY3qhVIltsYRfu8ct8J9pqsTO6OPf3mvqdOpFGrV5sBjoyAzOBvsw==
+"@nestjs/common@9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-9.0.2.tgz#6d0e90f7591ab90e745c7433bc406a71a81e1582"
+  integrity sha512-hk0LiyFvyoQSTIU9cWSMTv9YXIqWWzyhyxvqsytKuVeesGGEhrDdNMfYvKMCmxN3Rj+Gi0Kye0ehsXlCHIK7zA==
   dependencies:
-    axios "0.27.2"
     iterare "1.2.1"
     tslib "2.4.0"
     uuid "8.3.2"
 
-"@nestjs/core@8.4.7":
-  version "8.4.7"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-8.4.7.tgz#fbec7fa744ac8749a4b966f759a6656c1cf43883"
-  integrity sha512-XB9uexHqzr2xkPo6QSiQWJJttyYYLmvQ5My64cFvWFi7Wk2NIus0/xUNInwX3kmFWB6pF1ab5Y2ZBvWdPwGBhw==
+"@nestjs/core@9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-9.0.2.tgz#d71399c2fbcc0bc98c58fec3ad014b49559914b3"
+  integrity sha512-Gbj+xpRJOpSHCtv+z6hQIuj8B787A57cbDNguzAx9O0+Z5S+r71kotTYCHIkLqzGxc8Z1qDuimJwBpMPO2OGTw==
   dependencies:
     "@nuxtjs/opencollective" "0.3.2"
     fast-safe-stringify "2.1.1"
@@ -3777,10 +3776,10 @@
     "@types/jsonwebtoken" "8.5.8"
     jsonwebtoken "8.5.1"
 
-"@nestjs/microservices@8.4.7":
-  version "8.4.7"
-  resolved "https://registry.yarnpkg.com/@nestjs/microservices/-/microservices-8.4.7.tgz#001805b454ecf42351161f8f8e40e010620fdaf2"
-  integrity sha512-JZX29tBWbbPa+Q06QcCbwKTyEsOFHAPrxgfEkRNwoaiEqqCsITT9w2n5bcz3vlUurdpy5dIgX3/almbitghbKg==
+"@nestjs/microservices@9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/microservices/-/microservices-9.0.2.tgz#700e2703f388036a8422a208f3b4eb158c1607c4"
+  integrity sha512-EdlBIteNb9MNHy/bAjInAFi2AUKxvp6Ns1XQCbRn+qyo33C/umYSxAMqXVf78WJiI01HABWrIv1zpfs6UbC/sg==
   dependencies:
     iterare "1.2.1"
     tslib "2.4.0"
@@ -3790,10 +3789,10 @@
   resolved "https://registry.yarnpkg.com/@nestjs/passport/-/passport-9.0.0.tgz#0571bb08f8043456bc6df44cd4f59ca5f10c9b9f"
   integrity sha512-Gnh8n1wzFPOLSS/94X1sUP4IRAoXTgG4odl7/AO5h+uwscEGXxJFercrZfqdAwkWhqkKWbsntM3j5mRy/6ZQDA==
 
-"@nestjs/platform-express@8.4.7":
-  version "8.4.7"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-8.4.7.tgz#402a3d3c47327a164bb3867615f423c29d1a6cd9"
-  integrity sha512-lPE5Ltg2NbQGRQIwXWY+4cNrXhJdycbxFDQ8mNxSIuv+LbrJBIdEB/NONk+LLn9N/8d2+I2LsIETGQrPvsejBg==
+"@nestjs/platform-express@9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-9.0.2.tgz#43e147c2231c1251196769a8c41289924ba6710a"
+  integrity sha512-UAjHIMCM1B5oikZNcsm8e2gdX+hMsAgnmoVUkyo5qk1ZH2QKYHlzSuB0ODtB8IzDeBm7B54cYHCaA+lrGXtNPg==
   dependencies:
     body-parser "1.20.0"
     cors "2.8.5"
@@ -3831,17 +3830,17 @@
     jsonc-parser "3.0.0"
     pluralize "8.0.0"
 
-"@nestjs/terminus@8.1.1":
-  version "8.1.1"
-  resolved "https://registry.yarnpkg.com/@nestjs/terminus/-/terminus-8.1.1.tgz#21a7c1a543224ebfef00d161efdf22e390376301"
-  integrity sha512-C+Pm1LZse8ZSfXeZXMTmUIGAmDpov1WRury/cyWj50ceCCCWz7csACNouGBEvjDmBklzfbkxgDH9mOSbm1r54A==
+"@nestjs/terminus@9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/terminus/-/terminus-9.0.0.tgz#cf1a74f3294590f88947a5da3dd2602ca76d51f5"
+  integrity sha512-Yqx310ld2JwWgFFQyw0Cri+Y4yfG9gq66BLZ37vdOgZeKFS4wHdJZG6PlYeO3ztvE+vVZCKxvORLtaNa4u2bSQ==
   dependencies:
     check-disk-space "3.3.0"
 
-"@nestjs/testing@8.4.7":
-  version "8.4.7"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-8.4.7.tgz#fe4f356c0e081e25fe8c899a65e91dd88947fd13"
-  integrity sha512-aedpeJFicTBeiTCvJWUG45WMMS53f5eu8t2fXsfjsU1t+WdDJqYcZyrlCzA4dL1B7MfbqaTURdvuVVHTmJO8ag==
+"@nestjs/testing@9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-9.0.2.tgz#2960db94c6c3de0a7106aa88757b30bd56ab5ec5"
+  integrity sha512-PccUbrAeItajWtGuqYa7IQJBbDz5AW5i4YYuSTAqDKjl8KkZ8PG19xZ3QCsdMyxczTTI82Z+9QZaFZb+mC98Ug==
   dependencies:
     tslib "2.4.0"
 
