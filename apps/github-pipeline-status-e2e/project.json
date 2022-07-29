@@ -6,9 +6,10 @@
     "e2e": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
-        "cypressConfig": "apps/github-pipeline-status-e2e/cypress.json",
+        "cypressConfig": "apps/github-pipeline-status-e2e/cypress.config.ts",
         "tsConfig": "apps/github-pipeline-status-e2e/tsconfig.e2e.json",
-        "devServerTarget": "github-pipeline-status:serve"
+        "devServerTarget": "github-pipeline-status:serve",
+        "testingType": "e2e"
       },
       "configurations": {
         "production": {

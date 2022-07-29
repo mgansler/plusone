@@ -75,13 +75,11 @@
         "passWithNoTests": true
       }
     },
-    "ct": {
+    "component-test": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
-        "testingType": "component",
-        "cypressConfig": "apps/github-pipeline-status/cypress.json",
-        "tsConfig": "apps/github-pipeline-status/tsconfig.ct.json",
-        "devServerTarget": ""
+        "cypressConfig": "apps/github-pipeline-status/cypress.config.ts",
+        "testingType": "component"
       },
       "configurations": {
         "watch": {

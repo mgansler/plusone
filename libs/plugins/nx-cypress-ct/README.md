@@ -1,3 +1,8 @@
+# Deprecated
+
+Nx now comes with native support for Cypress component tests.
+Currently, the generators are a bit broken, let's hope this will be fixed soon.
+
 # Cypress Component Testing configuration
 
 [Cypress Component Testing](https://docs.cypress.io/guides/component-testing/introduction) is awesome!
