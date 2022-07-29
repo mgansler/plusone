@@ -19,8 +19,8 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "ct", "e2e"],
-        "parallel": 4
+        "cacheableOperations": ["build", "lint", "test", "component-test", "e2e"],
+        "parallel": 1
       }
     }
   },
@@ -28,12 +28,6 @@
     "test": [
       {
         "target": "test",
-        "projects": "dependencies"
-      }
-    ],
-    "ct": [
-      {
-        "target": "ct",
         "projects": "dependencies"
       }
     ],

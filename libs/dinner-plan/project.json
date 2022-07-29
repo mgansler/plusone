@@ -18,13 +18,11 @@
         "passWithNoTests": true
       }
     },
-    "ct": {
+    "component-test": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
-        "testingType": "component",
-        "cypressConfig": "libs/dinner-plan/cypress.json",
-        "tsConfig": "libs/dinner-plan/tsconfig.ct.json",
-        "devServerTarget": ""
+        "cypressConfig": "libs/dinner-plan/cypress.config.ts",
+        "testingType": "component"
       },
       "configurations": {
         "watch": {

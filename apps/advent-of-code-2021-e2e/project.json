@@ -6,8 +6,9 @@
     "e2e": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
-        "cypressConfig": "apps/advent-of-code-2021-e2e/cypress.json",
-        "devServerTarget": "advent-of-code-2021:serve:e2e"
+        "cypressConfig": "apps/advent-of-code-2021-e2e/cypress.config.ts",
+        "devServerTarget": "advent-of-code-2021:serve:e2e",
+        "testingType": "e2e"
       },
       "configurations": {
         "watch": {

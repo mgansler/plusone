@@ -6,8 +6,9 @@
     "e2e": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
-        "cypressConfig": "apps/feeds/e2e/cypress.json",
-        "baseUrl": "http://localhost:3000"
+        "cypressConfig": "apps/feeds/e2e/cypress.config.ts",
+        "baseUrl": "http://localhost:3000",
+        "testingType": "e2e"
       },
       "configurations": {
         "production": {
