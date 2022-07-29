@@ -1,5 +1,5 @@
-import { mount } from '@cypress/react'
 import { createTheme, ThemeProvider } from '@mui/material'
+import { mount } from 'cypress/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 
 import { DinnerPlanStore } from '../store/dinner-plan.store'
