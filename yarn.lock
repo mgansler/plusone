@@ -8101,6 +8101,11 @@ commander@^8.3.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-8.3.0.tgz#4837ea1b2da67b9c616a67afbb0fafee567bca66"
   integrity sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==
 
+commander@~9.4.0:
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-9.4.0.tgz#bc4a40918fefe52e22450c111ecd6b7acce6f11c"
+  integrity sha512-sRPT+umqkz90UA8M1yqYfnHlZA7fF6nSphDtxeywPZ49ysjxDQybzk13CL+mXekDRG92skbcqCLVovuCusNmFw==
+
 common-path-prefix@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/common-path-prefix/-/common-path-prefix-3.0.0.tgz#7d007a7e07c58c4b4d5f433131a19141b29f11e0"
@@ -10133,7 +10138,7 @@ fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
 
-fast-glob@3.2.11, fast-glob@^3.0.3, fast-glob@^3.2.11, fast-glob@^3.2.7, fast-glob@^3.2.9:
+fast-glob@3.2.11, fast-glob@^3.0.3, fast-glob@^3.2.11, fast-glob@^3.2.7, fast-glob@^3.2.9, fast-glob@~3.2.11:
   version "3.2.11"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.11.tgz#a1172ad95ceb8a16e20caa5c5e56480e5129c1d9"
   integrity sha512-xrO3+1bxSo3ZVHAnqzyuewYT6aMFHRAd4Kcs92MAonjwQZLsK9d0SF1IyQ3k5PoirxTW0Oe/RqFgMQ6TcNE5Ew==
@@ -12802,13 +12807,14 @@ jsx-ast-utils@^3.3.2:
     array-includes "^3.1.5"
     object.assign "^4.1.2"
 
-junit-report-merger@3.0.6:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/junit-report-merger/-/junit-report-merger-3.0.6.tgz#3d0ff79f70ad8fabb2bb52bc6c04b6053e8dedc6"
-  integrity sha512-6oziSTxC7MjO3yhkkokbO6EXTDwAtmgjozZgk8EaLu54re3xoeLyc2/DUyEamcF4Pl+nPXnnaVpqo4s+W64h0Q==
+junit-report-merger@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/junit-report-merger/-/junit-report-merger-4.0.0.tgz#0a1c91149fcb08737078ef219d26d20bc9825b6f"
+  integrity sha512-bn7VCzTF0k4sIvP9WK0TLSfixzvr6I5Y0yVoYj45sXCh8uvy5ZQBGGUAzi/zb8sQpZitp6hDMOcN6mbpsVNyKw==
   dependencies:
-    fast-glob "3.2.11"
-    xmlbuilder2 "3.0.2"
+    commander "~9.4.0"
+    fast-glob "~3.2.11"
+    xmlbuilder2 "~3.0.2"
 
 jwa@^1.4.1:
   version "1.4.1"
@@ -18438,7 +18444,7 @@ xml@^1.0.1:
   resolved "https://registry.yarnpkg.com/xml/-/xml-1.0.1.tgz#78ba72020029c5bc87b8a81a3cfcd74b4a2fc1e5"
   integrity sha1-eLpyAgApxbyHuKgaPPzXS0ovweU=
 
-xmlbuilder2@3.0.2:
+xmlbuilder2@~3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/xmlbuilder2/-/xmlbuilder2-3.0.2.tgz#fc499688b35a916f269e7b459c2fa02bb5c0822a"
   integrity sha512-h4MUawGY21CTdhV4xm3DG9dgsqyhDkZvVJBx88beqX8wJs3VgyGQgAn5VreHuae6unTQxh115aMK5InCVmOIKw==
