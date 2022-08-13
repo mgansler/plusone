@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   displayName: 'feeds-web-user-view',
 
