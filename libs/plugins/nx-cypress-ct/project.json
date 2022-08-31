@@ -50,26 +50,6 @@
         "jestConfig": "libs/plugins/nx-cypress-ct/jest.config.ts",
         "passWithNoTests": true
       }
-    },
-    "link": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": ["cd dist/libs/plugins/nx-cypress-ct && yarn link", "yarn link @mgansler/nx-cypress-ct"],
-        "parallel": false
-      },
-      "dependsOn": [
-        {
-          "target": "build",
-          "projects": "self"
-        }
-      ]
-    },
-    "unlink": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": ["yarn unlink @mgansler/nx-cypress-ct", "yarn install --force"],
-        "parallel": false
-      }
     }
   },
   "tags": []

@@ -50,26 +50,6 @@
         "jestConfig": "libs/plugins/nx-remix/jest.config.ts",
         "passWithNoTests": true
       }
-    },
-    "link": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": ["cd dist/libs/plugins/nx-remix && yarn link", "yarn link @mgansler/nx-remix"],
-        "parallel": false
-      },
-      "dependsOn": [
-        {
-          "target": "build",
-          "projects": "self"
-        }
-      ]
-    },
-    "unlink": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": ["yarn unlink @mgansler/nx-remix", "yarn install --force"],
-        "parallel": false
-      }
     }
   },
   "tags": []
