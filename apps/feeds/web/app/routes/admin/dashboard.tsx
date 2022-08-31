@@ -1,7 +1,7 @@
 import type { LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 
-import { baseUrl } from '~/entry.server'
+import { baseUrl } from '../../entry.server'
 
 type LoaderData = {
   health: {

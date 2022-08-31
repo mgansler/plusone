@@ -1,7 +1,7 @@
 import { Link } from '@remix-run/react'
 import { useParams } from 'react-router-dom'
 
-import type { FeedResponse } from '~/utils/types/feed'
+import type { FeedResponse } from '../utils/types/feed'
 
 export function FeedListItem(feed: FeedResponse) {
   const { id } = useParams<'id'>()

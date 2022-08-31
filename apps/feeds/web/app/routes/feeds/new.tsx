@@ -2,8 +2,8 @@ import type { ActionFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import { useActionData } from '@remix-run/react'
 
-import { baseUrl } from '~/entry.server'
-import { getUserSession } from '~/utils/session.server'
+import { baseUrl } from '../../entry.server'
+import { getUserSession } from '../../utils/session.server'
 
 type ActionResponse = {
   title: string

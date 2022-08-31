@@ -1,8 +1,8 @@
 import type { ActionFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 
-import { baseUrl } from '~/entry.server'
-import { getUserSession } from '~/utils/session.server'
+import { baseUrl } from '../../entry.server'
+import { getUserSession } from '../../utils/session.server'
 
 export const action: ActionFunction = async ({ request }) => {
   const session = await getUserSession(request)

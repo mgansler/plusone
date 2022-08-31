@@ -1,8 +1,8 @@
 import { Button } from '@mui/material'
 import type { ActionFunction } from '@remix-run/node'
 
-import { badRequest } from '~/utils/bad-request'
-import { createUserSession, login, register } from '~/utils/session.server'
+import { badRequest } from '../utils/bad-request'
+import { createUserSession, login, register } from '../utils/session.server'
 
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData()

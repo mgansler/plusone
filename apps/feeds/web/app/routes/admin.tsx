@@ -2,8 +2,8 @@ import type { LoaderFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import { Link, Outlet, useLoaderData } from '@remix-run/react'
 
-import type { User } from '~/utils/session.server'
-import { requireUser } from '~/utils/session.server'
+import type { User } from '../utils/session.server'
+import { requireUser } from '../utils/session.server'
 
 type LoaderData = {
   user: User

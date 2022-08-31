@@ -1,7 +1,7 @@
-import { baseUrl } from '~/entry.server'
-import { getUserSession } from '~/utils/session.server'
-import type { FeedResponse } from '~/utils/types/feed'
-import type { PaginatedArticles } from '~/utils/types/pagination'
+import { baseUrl } from '../../entry.server'
+import { getUserSession } from '../session.server'
+import type { FeedResponse } from '../types/feed'
+import type { PaginatedArticles } from '../types/pagination'
 
 export async function fetchFeed(request: Request, id: string): Promise<PaginatedArticles> {
   const session = await getUserSession(request)

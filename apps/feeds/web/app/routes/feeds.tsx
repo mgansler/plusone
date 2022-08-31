@@ -1,11 +1,11 @@
 import type { LoaderFunction } from '@remix-run/node'
 import { Link, Outlet, useLoaderData } from '@remix-run/react'
 
-import { FeedListItem } from '~/components/feed-list-item'
-import { fetchFeeds } from '~/utils/api/feed'
-import type { User } from '~/utils/session.server'
-import { requireUser } from '~/utils/session.server'
-import type { FeedResponse } from '~/utils/types/feed'
+import { FeedListItem } from '../components/feed-list-item'
+import { fetchFeeds } from '../utils/api/feed'
+import type { User } from '../utils/session.server'
+import { requireUser } from '../utils/session.server'
+import type { FeedResponse } from '../utils/types/feed'
 
 type LoaderData = {
   user: User

@@ -1,7 +1,7 @@
 import { createCookieSessionStorage, redirect } from '@remix-run/node'
 import decode from 'jwt-decode'
 
-import { baseUrl } from '~/entry.server'
+import { baseUrl } from '../entry.server'
 
 type LoginForm = {
   username: string
