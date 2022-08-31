@@ -9,6 +9,15 @@
     "generate": {
       "executor": "@mgansler/nx-prisma:generate"
     },
+    "push": {
+      "executor": "@mgansler/nx-prisma:push",
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "self"
+        }
+      ]
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {

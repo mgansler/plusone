@@ -60,10 +60,20 @@
       },
       "dependsOn": [
         {
-          "target": "generate",
+          "target": "push",
           "projects": "dependencies"
+        },
+        {
+          "target": "docker",
+          "projects": "self"
         }
       ]
+    },
+    "docker": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker-compose -f apps/feeds/docker-compose.database.yml up -d"
+      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

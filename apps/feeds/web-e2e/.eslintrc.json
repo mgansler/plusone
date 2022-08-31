@@ -1,0 +1,13 @@
+{
+  "extends": ["plugin:cypress/recommended", "../../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "testing-library/await-async-query": "off",
+        "testing-library/prefer-screen-queries": "off"
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "name": "feeds-web-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/feeds/web-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/feeds/web-e2e/cypress.config.ts",
+        "devServerTarget": "feeds-web-e2e:serve-all",
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "feeds-web-e2e:serve-all:production"
+        },
+        "watch": {
+          "devServerTarget": "",
+          "watch": true
+        }
+      }
+    },
+    "serve-all": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx run feeds-web:serve --watch", "nx run feeds-backend:serve --watch"],
+        "parallel": true,
+        "readyWhen": "Application is running on"
+      },
+      "configurations": {
+        "production": {
+          "commands": ["nx run feeds-web:serve:production --watch", "nx run feeds-backend:serve:production --watch"]
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/feeds/web-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["feeds-web"]
+}
