@@ -2,7 +2,7 @@ import { getDateForWeekdayOf } from './get-date-for-weekday-of'
 
 describe('getDateForWeekdayOf', () => {
   beforeAll(() => {
-    jest.useFakeTimers('modern')
+    jest.useFakeTimers()
     jest.setSystemTime(new Date(Date.UTC(2021, 0, 1)))
   })
   afterAll(() => {

@@ -3,7 +3,7 @@ export default {
   displayName: 'feeds-web-admin-view',
 
   transform: {
-    '^.+\\.[tj]sx?$': 'babel-jest',
+    '^.+\\.[tj]sx?$': ['babel-jest', { presets: ['@nrwl/react/babel'] }],
   },
   setupFilesAfterEnv: ['@testing-library/jest-dom', 'whatwg-fetch'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],

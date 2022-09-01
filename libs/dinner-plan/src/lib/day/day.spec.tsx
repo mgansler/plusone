@@ -8,7 +8,7 @@ import { Day } from './day'
 
 describe('Day', () => {
   beforeAll(() => {
-    jest.useFakeTimers('modern')
+    jest.useFakeTimers()
   })
 
   afterAll(() => {
