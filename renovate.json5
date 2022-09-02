@@ -2,4 +2,10 @@
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: ['config:base', ':pinAllExceptPeerDependencies', 'group:allNonMajor'],
   automerge: false,
+  packageRules: [
+    {
+      matchPackageNames: ['eslint'],
+      allowedVersions: '!/8\\.23\\.0/',
+    },
+  ],
 }
