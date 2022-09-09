@@ -1,7 +1,7 @@
 import { createTheme, ThemeProvider } from '@mui/material'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { mount } from 'cypress/react'
 import type { ComponentProps } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { AuthenticationProvider } from './authentication-provider'
 

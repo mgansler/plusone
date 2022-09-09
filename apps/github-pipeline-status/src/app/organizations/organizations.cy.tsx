@@ -1,6 +1,6 @@
 import { createTheme, ThemeProvider } from '@mui/material'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { mount } from 'cypress/react'
-import { QueryClient, QueryClientProvider } from 'react-query'
 import { BrowserRouter } from 'react-router-dom'
 
 import { OctokitProvider } from '../octokit-provider/octokit-provider'

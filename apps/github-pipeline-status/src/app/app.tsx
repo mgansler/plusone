@@ -2,8 +2,8 @@ import type { Theme } from '@mui/material'
 import { AppBar, CssBaseline, Toolbar, Typography } from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { DarkModeThemeProvider } from '@plusone/dark-mode-theme-provider'
 

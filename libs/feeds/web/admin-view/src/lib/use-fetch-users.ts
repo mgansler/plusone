@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import type { UserResponse } from '@plusone/feeds/shared/types'
 import { useToken } from '@plusone/feeds/web/login'

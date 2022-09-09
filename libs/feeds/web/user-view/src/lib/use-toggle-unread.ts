@@ -1,5 +1,5 @@
-import type { InfiniteData } from 'react-query'
-import { useMutation, useQueryClient } from 'react-query'
+import type { InfiniteData } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { useToken } from '@plusone/feeds/web/login'
 import { jsonOrThrow } from '@plusone/feeds/web/shared'

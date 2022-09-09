@@ -2,6 +2,11 @@
 
 This library was generated with [Nx](https://nx.dev).
 
-## Running unit tests
+## Downloading current schema from GitHub
 
-Run `nx test github-schema` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx github-schema:download` to download the current schema from GitHub.
+
+## Generate new graphQl documents
+
+1. Add mutation to `operations.graphql`.
+2. Run `nx github-schema:graphql-schema` to generate new output.

@@ -1,8 +1,8 @@
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 
+import type { FeedInput } from '@plusone/feeds/shared/types'
 import { useToken } from '@plusone/feeds/web/login'
 import { jsonOrThrow } from '@plusone/feeds/web/shared'
-import type { FeedInput } from '@plusone/feeds/shared/types'
 
 export function useCreateFeed() {
   const token = useToken()

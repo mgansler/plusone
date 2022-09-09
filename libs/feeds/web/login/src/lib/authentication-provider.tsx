@@ -1,6 +1,6 @@
+import { useQueryClient } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import React, { createContext, useContext, useEffect, useMemo } from 'react'
-import { useQueryClient } from 'react-query'
 
 import { useLocalStorage } from '@plusone/hooks'
 
