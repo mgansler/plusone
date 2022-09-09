@@ -1,6 +1,6 @@
 import { Avatar, Button, Typography } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import React from 'react'
-import { useQuery } from 'react-query'
 
 import type { UserQuery } from '@plusone/github-schema'
 import { UserDocument } from '@plusone/github-schema'

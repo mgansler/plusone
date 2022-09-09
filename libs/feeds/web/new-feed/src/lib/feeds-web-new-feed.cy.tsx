@@ -1,5 +1,5 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { mount } from 'cypress/react'
-import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { MockAuthenticationProvider } from '@plusone/feeds/web/login'
 
