@@ -1,9 +1,7 @@
 import { nxE2EPreset } from '@nrwl/cypress/plugins/cypress-preset'
 import { defineConfig } from 'cypress'
 
-import setupNodeEvents from './src/plugins/index'
-
-const cypressJsonConfig = {
+const cypressJsonConfig: Cypress.ConfigOptions['e2e'] = {
   fileServerFolder: '.',
   fixturesFolder: './src/fixtures',
   video: false,
@@ -12,11 +10,12 @@ const cypressJsonConfig = {
   chromeWebSecurity: false,
   specPattern: 'src/e2e/**/*.cy.{js,jsx,ts,tsx}',
   supportFile: 'src/support/e2e.ts',
+  retries: 3,
 }
+
 export default defineConfig({
   e2e: {
     ...nxE2EPreset(__dirname),
     ...cypressJsonConfig,
-    setupNodeEvents,
   },
 })
