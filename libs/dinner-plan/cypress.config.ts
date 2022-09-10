@@ -11,7 +11,7 @@ export default defineConfig({
       bundler: 'webpack',
       webpackConfig: getWebpackConfig({
         env: {
-          tsConfig: join(__dirname, 'tsconfig.cy.json'),
+          tsConfig: join(__dirname, 'cypress/tsconfig.cy.json'),
         },
       }),
     },
