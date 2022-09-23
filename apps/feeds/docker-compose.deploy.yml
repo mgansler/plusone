@@ -16,21 +16,6 @@ services:
     labels:
       com.centurylinklabs.watchtower.enable: false
 
-  web:
-    image: ${FEEDS_WEB_DOCKER_IMAGE}
-    restart: always
-    networks:
-      - default
-      - traefik
-    environment:
-      API_BASE_URL: http://backend:3333/api
-    labels:
-      traefik.enable: true
-      traefik.docker.network: traefik
-      traefik.default.port: 3000
-      traefik.default.frontend.rule: 'Host:rss.martingansler.de'
-      com.centurylinklabs.watchtower.enable: false
-
   database:
     restart: always
     image: postgres:12-alpine
@@ -40,6 +25,21 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: super_secret
       POSTGRES_DB: feeds
+
+#  web:
+#    image: ${FEEDS_WEB_DOCKER_IMAGE}
+#    restart: always
+#    networks:
+#      - default
+#      - traefik
+#    environment:
+#      API_BASE_URL: http://backend:3333/api
+#    labels:
+#      traefik.enable: true
+#      traefik.docker.network: traefik
+#      traefik.default.port: 3000
+#      traefik.default.frontend.rule: 'Host:rss.martingansler.de'
+#      com.centurylinklabs.watchtower.enable: false
 
 networks:
   traefik:
