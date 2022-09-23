@@ -1,8 +1,8 @@
-import { OnModuleInit, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { compare, hash } from 'bcrypt'
 
-import { PrismaService, User, Prisma } from '@plusone/feeds-persistence'
+import { Prisma, PrismaService, User } from '@plusone/feeds-persistence'
 
 import { JwtPayload } from './jwt.payload'
 import { UserRegistrationDto } from './user.dto'
@@ -60,8 +60,8 @@ export class AuthenticationService implements OnModuleInit {
   }
 
   private async createRootUser() {
-    const username = process.env.ADMIN_USER
-    const password = process.env.ADMIN_PASSWORD
+    const username = process.env.NX_ADMIN_USER
+    const password = process.env.NX_ADMIN_PASSWORD
 
     if (!(await this.prismaService.user.findUnique({ where: { username } }))) {
       this.logger.log(`Admin user does not exist, creating account '${username}'`)

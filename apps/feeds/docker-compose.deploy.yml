@@ -9,10 +9,10 @@ services:
     depends_on:
       - database
     environment:
-      JWT_SECRET: not_so_secret
-      DATABASE_URL: postgres://postgres:super_secret@database/feeds
-      ADMIN_USER: root
-      ADMIN_PASSWORD: keep_this_secret
+      NX_JWT_SECRET: not_so_secret
+      NX_DATABASE_URL: postgres://postgres:super_secret@database/feeds
+      NX_ADMIN_USER: root
+      NX_ADMIN_PASSWORD: keep_this_secret
     labels:
       com.centurylinklabs.watchtower.enable: false
 
