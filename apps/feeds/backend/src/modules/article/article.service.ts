@@ -75,6 +75,30 @@ export class ArticleService {
     return { totalCount, content, unreadCount, lastCursor, pageSize: PAGE_SIZE }
   }
 
+  async search(userId: User['id'], s: string, pagination: Pagination) {
+    this.logger.debug(`User is searching for '${s}'.`)
+
+    const isFirstRequest = !pagination.cursor || Number(pagination.cursor) === 0
+    const PAGE_SIZE = 10
+    const search = s.split(' ').join(' & ')
+
+    const [totalCount, content] = await this.prismaService.$transaction([
+      this.prismaService.userArticle.count({
+        where: { userId, article: { title: { search } } },
+      }),
+      this.prismaService.userArticle.findMany({
+        cursor: isFirstRequest ? undefined : { cursor: Number(pagination.cursor) },
+        skip: isFirstRequest ? 0 : 1,
+        take: PAGE_SIZE,
+        select: { article: true, unread: true, cursor: true },
+        where: { userId, article: { title: { search } } },
+        orderBy: [{ cursor: 'desc' }],
+      }),
+    ])
+
+    return { content, totalCount, lastCursor: content[content.length - 1]?.cursor }
+  }
+
   async toggleUnreadForUser(articleId: Article['id'], userId: User['id'], unread: boolean) {
     return this.prismaService.userArticle.update({
       select: { article: true, unread: true, cursor: true },

@@ -1,6 +1,6 @@
-import { Body, Controller, HttpCode, HttpStatus, Param, Post, Req, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
 
-import { ArticleResponse } from '@plusone/feeds/shared/types'
+import { ArticleResponse, Pagination } from '@plusone/feeds/shared/types'
 
 import { JwtAuthGuard } from '../authentication/jwt-auth.guard'
 
@@ -20,5 +20,10 @@ export class ArticleController {
     @Req() { user },
   ): Promise<ArticleResponse> {
     return this.articleService.toggleUnreadForUser(id, user.id, toggleUnreadDto.unread)
+  }
+
+  @Get('/search')
+  search(@Query('cursor') cursor: Pagination['cursor'], @Query('s') s: string, @Req() { user }) {
+    return this.articleService.search(user.id, s, { cursor })
   }
 }
