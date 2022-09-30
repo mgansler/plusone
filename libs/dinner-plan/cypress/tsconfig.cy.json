@@ -1,11 +1,10 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
+    "outDir": "../../../dist/out-tsc",
     "module": "commonjs",
     "resolveJsonModule": true,
     "types": ["cypress", "node", "@testing-library/cypress"]
   },
-  "include": ["../cypress.config.ts", "**/*.cy.ts", "**/*.cy.tsx", "**/*.cy.js", "**/*.cy.jsx", "**/*.d.ts"],
-  "exclude": ["../jest.config.ts"]
+  "include": ["../cypress.config.ts", "../**/*.cy.ts", "../**/*.cy.tsx", "../**/*.cy.js", "../**/*.cy.jsx", "**/*.d.ts"]
 }
