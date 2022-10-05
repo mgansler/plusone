@@ -3528,10 +3528,10 @@
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.2.tgz#30aa825f11d438671d585bd44e7fd564535fc210"
   integrity sha512-82cpyJyKRoQoRi+14ibCeGPu0CwypgtBAdBhq1WfvagpCZNKqwXbKwXllYSMG91DhmG4jt9gN8eP6lGOtozuaw==
 
-"@graphql-codegen/cli@2.13.3":
-  version "2.13.3"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-2.13.3.tgz#6b8e5f5c0ef9f3c700351297997f3db15e902b8d"
-  integrity sha512-nhSPc79Ieov7qz4XDgGzkxmAv2EQY+KxeBzcOL2HhnfbVZZLXa/B0TGE4B9lAbz/HAYwWzwv0YX7zg8UFkhzig==
+"@graphql-codegen/cli@2.13.4":
+  version "2.13.4"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-2.13.4.tgz#77b251971364b99be11d37d618de5d4e91216a81"
+  integrity sha512-HhaLumR9/rov2WzDchZmIarD/MteNQOCiwgrOdS+A3WcUYBomeL8t5CoRsarFTc6McKoQIAdAqSl+eiNJ5oxJw==
   dependencies:
     "@babel/generator" "^7.18.13"
     "@babel/template" "^7.18.10"
@@ -3553,7 +3553,7 @@
     chalk "^4.1.0"
     chokidar "^3.5.2"
     cosmiconfig "^7.0.0"
-    cosmiconfig-typescript-swc-loader "0.0.2"
+    cosmiconfig-typescript-loader "4.1.1"
     debounce "^1.2.0"
     detect-indent "^6.0.0"
     graphql-config "^4.3.5"
@@ -4681,19 +4681,19 @@
   dependencies:
     axios "0.27.2"
 
-"@nestjs/common@9.1.3":
-  version "9.1.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-9.1.3.tgz#aa51f8191e5dc10ac499db3e59d1e4fcf4e5c7cf"
-  integrity sha512-8Wjs6PUAMUrxNQ5oXaf6kDuQZCU43ZT5M2W0ITCR+Um6dBPcaCqePlGkVJr9YQzaKhjNagidYCVVNZkqjzMHtw==
+"@nestjs/common@9.1.4":
+  version "9.1.4"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-9.1.4.tgz#83ed4f5627db12c0e0aaf1438becba8927fb97e2"
+  integrity sha512-hmGTZ8ShKFDqqlU02uU8e/8PNE4bnES4pcFa6s/T1pLDYWjyf/75Klunro1W4aQPHcxnnohBmB27WxMqFTPEfw==
   dependencies:
     iterare "1.2.1"
     tslib "2.4.0"
     uuid "9.0.0"
 
-"@nestjs/core@9.1.3":
-  version "9.1.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-9.1.3.tgz#c1daa86176b6026424dfb6f33f7f63437bebb593"
-  integrity sha512-NMSGb2m0vCnTpfYFQU8Akrf6i/PsAFBsZZWz6HJiiOi5bbDuNR/Gbxf4ygKp4ZXh5QK/Q4Lve+jYsetrZgzXsA==
+"@nestjs/core@9.1.4":
+  version "9.1.4"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-9.1.4.tgz#7d1ed6df9c4de6d955cacf60c18882c1ded01a83"
+  integrity sha512-S6KpGeKotPYh126hhRqYLhvg9lxSbAmGfEbK8m09crIK7CYP05t32KtT6n12xl5/iva1G4Ch87Z/3rYP76etUg==
   dependencies:
     "@nuxtjs/opencollective" "0.3.2"
     fast-safe-stringify "2.1.1"
@@ -4711,10 +4711,10 @@
     "@types/jsonwebtoken" "8.5.8"
     jsonwebtoken "8.5.1"
 
-"@nestjs/microservices@9.1.3":
-  version "9.1.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/microservices/-/microservices-9.1.3.tgz#da7287beca2dc48f0c11da9f862c20fb5d741254"
-  integrity sha512-q9k1Rh9rbYYW6TJPnyJWgnDVClMDCHohbejnp8icDcs2sZ0v+uEh59dPiepkTm/YutapMypDsSe0eZYZxiUcJw==
+"@nestjs/microservices@9.1.4":
+  version "9.1.4"
+  resolved "https://registry.yarnpkg.com/@nestjs/microservices/-/microservices-9.1.4.tgz#e5a370f9cb3be9c755dcb71ae7a9185350d656e5"
+  integrity sha512-aNDaDlb5P8pC3++Zkp+sSaweKovPR2hg55iZsXZSwYQKGb+GC/gsKMp9kGyE1a5aPhoHD8UAM98Ff7s4Qp8tvg==
   dependencies:
     iterare "1.2.1"
     tslib "2.4.0"
@@ -4724,10 +4724,10 @@
   resolved "https://registry.yarnpkg.com/@nestjs/passport/-/passport-9.0.0.tgz#0571bb08f8043456bc6df44cd4f59ca5f10c9b9f"
   integrity sha512-Gnh8n1wzFPOLSS/94X1sUP4IRAoXTgG4odl7/AO5h+uwscEGXxJFercrZfqdAwkWhqkKWbsntM3j5mRy/6ZQDA==
 
-"@nestjs/platform-express@9.1.3":
-  version "9.1.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-9.1.3.tgz#557811484f73214c4e50763703dd46ead0e040fd"
-  integrity sha512-qQ0ktt58uEFlX/g/abuLpXJB4rVXCx4ZNeiptj9Z5snmDFfp9L4HTmsorFcJ7rbvZhxW34fLt674NaYecc06sQ==
+"@nestjs/platform-express@9.1.4":
+  version "9.1.4"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-9.1.4.tgz#4829d56c9ce16c5ec11dc107f7df98b20c77b92d"
+  integrity sha512-SLJWDa6V54QrUvzKI4Eyt7gyrjV7F9FY1uHFihshjmQfpf0ebCGacR9jzNwf01aHl0BJX3DUn/KYteBjz6DJXw==
   dependencies:
     body-parser "1.20.0"
     cors "2.8.5"
@@ -4773,10 +4773,10 @@
     boxen "5.1.2"
     check-disk-space "3.3.1"
 
-"@nestjs/testing@9.1.3":
-  version "9.1.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-9.1.3.tgz#d346e6d0a4f843755666f62f41372b45a62ec0ec"
-  integrity sha512-NeYRksAEJCTXL65aUAgJvra2swCJepbzzy1TIuytDYjrkrRmBZkIOy1fJXOmen3GWkMLoqWxMj0M0cBSto0C0A==
+"@nestjs/testing@9.1.4":
+  version "9.1.4"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-9.1.4.tgz#8bb190f07356c796b828fba35018498d5ce8ab09"
+  integrity sha512-gO6b9QJyUajh38DNdss9gSE0UO7x60Jh10W4SwHEjQT1W+yxaEWr3aLyuQItTvUVY6C28XKFLTykMpr8GO28Ug==
   dependencies:
     tslib "2.4.0"
 
@@ -5806,7 +5806,7 @@
   resolved "https://registry.yarnpkg.com/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.3.4.tgz#7bf6cd6f5c3197d7d807b273d12dd666e23b238e"
   integrity sha512-9/bSvgjV31u1G2slRFPgK85ohJdo8KtWJ0f4CPp2LdVtIJHbFGd0pWjnMfiPJeodSxSGGWrgUNQtajqIIsrbqA==
 
-"@swc/core@1.3.4", "@swc/core@^1.3.3":
+"@swc/core@1.3.4":
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/@swc/core/-/core-1.3.4.tgz#961183ede3a836b3aea7d755f07c4ae673c5a763"
   integrity sha512-W1AvQImfF2T+7dzWdg/GqFpcMJ24lyXGQ/kPKHL/FGPZbf0Q1ExD7wp3eQ2PQMgHTLe28qWonxicm2DPfprx3g==
@@ -8943,18 +8943,15 @@ cosmiconfig-toml-loader@1.0.0:
   dependencies:
     "@iarna/toml" "^2.2.5"
 
+cosmiconfig-typescript-loader@4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-4.1.1.tgz#38dd3578344038dae40fdf09792bc2e9df529f78"
+  integrity sha512-9DHpa379Gp0o0Zefii35fcmuuin6q92FnLDffzdZ0l9tVd3nEobG3O+MZ06+kuBvFTSVScvNb/oHA13Nd4iipg==
+
 cosmiconfig-typescript-loader@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-4.0.0.tgz#4a6d856c1281135197346a6f64dfa73a9cd9fefa"
   integrity sha512-cVpucSc2Tf+VPwCCR7SZzmQTQkPbkk4O01yXsYqXBIbjE1bhwqSyAgYQkRK1un4i0OPziTleqFhdkmOc4RQ/9g==
-
-cosmiconfig-typescript-swc-loader@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/cosmiconfig-typescript-swc-loader/-/cosmiconfig-typescript-swc-loader-0.0.2.tgz#d8244975757e5bcce8cfb248f10b99f2e3551a6c"
-  integrity sha512-kWewZRRtQR40bjp63Is8Ys2/2uRK6c2lGfSb6TMgx9ouuz1FT6aOua1+cESHED2kSY9btT5tr54MA2VjWaWUkg==
-  dependencies:
-    "@swc/core" "^1.3.3"
-    cosmiconfig "^7.0.1"
 
 cosmiconfig@7.0.1, cosmiconfig@^7.0.0, cosmiconfig@^7.0.1:
   version "7.0.1"
