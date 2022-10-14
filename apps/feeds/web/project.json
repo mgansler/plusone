@@ -1,0 +1,82 @@
+{
+  "name": "feeds-web",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/feeds/web/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/feeds/web",
+        "index": "apps/feeds/web/src/index.html",
+        "baseHref": "/",
+        "main": "apps/feeds/web/src/main.tsx",
+        "polyfills": "apps/feeds/web/src/polyfills.ts",
+        "tsConfig": "apps/feeds/web/tsconfig.app.json",
+        "assets": ["apps/feeds/web/src/favicon.ico", "apps/feeds/web/src/assets"],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/feeds/web/src/environments/environment.ts",
+              "with": "apps/feeds/web/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "feeds-web:build",
+        "hmr": true,
+        "proxyConfig": "apps/feeds/web/proxy.conf.json"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "feeds-web:build:development"
+        },
+        "production": {
+          "buildTarget": "feeds-web:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/feeds/web/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/feeds/web"],
+      "options": {
+        "jestConfig": "apps/feeds/web/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

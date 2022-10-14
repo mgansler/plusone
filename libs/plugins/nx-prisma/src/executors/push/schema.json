@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "title": "Prisma format executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "description": "Path to Prisma schema in src directory.",
+      "type": "string",
+      "default": "lib/schema.prisma"
+    }
+  },
+  "required": []
+}
