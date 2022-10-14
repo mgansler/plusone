@@ -1,14 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
 
-type HealthResponse = {
-  status: string
-  info: object
-  error: object
-  details: object
-}
+import type { HealthResponse } from '@plusone/feeds/shared/types'
 
 export function Health() {
-  const { data, isLoading } = useQuery<HealthResponse>(['health'], () => fetch('/api/health').then((res) => res.json()))
+  const { data, isLoading } = useQuery<HealthResponse>(
+    ['health'],
+    () => fetch('/api/health').then((res) => res.json()),
+    { refetchInterval: 30_000 },
+  )
 
   const status = isLoading ? 'loading...' : data?.status
 
