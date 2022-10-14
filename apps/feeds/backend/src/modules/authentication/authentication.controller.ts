@@ -24,7 +24,7 @@ export class AuthenticationController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Req() { user }) {
+  getProfile(@Req() { user }): Promise<UserResponse> {
     return user
   }
 }

@@ -22,8 +22,7 @@ export function Register() {
   )
 
   const onSubmit = async (data: RegisterForm) => {
-    const resp = await mutateAsync(data)
-    console.log(resp)
+    await mutateAsync(data)
     navigate('/login')
   }
 

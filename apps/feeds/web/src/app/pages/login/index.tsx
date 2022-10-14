@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import type { LoginResponse } from '@plusone/feeds/shared/types'
 
+import { useUserContext } from '../../context/user'
+
 type LoginForm = {
   username: string
   password: string
@@ -12,8 +14,9 @@ type LoginForm = {
 export function Login() {
   const navigate = useNavigate()
   const { register, handleSubmit } = useForm<LoginForm>()
+  const { setAuth } = useUserContext()
 
-  const { mutateAsync } = useMutation<LoginResponse, any, LoginForm>(['login'], (body: LoginForm) =>
+  const { mutateAsync } = useMutation<LoginResponse, unknown, LoginForm>(['login'], (body: LoginForm) =>
     fetch('/api/authentication/login', {
       method: 'POST',
       headers: {
@@ -25,6 +28,7 @@ export function Login() {
 
   const onSubmit = async (data: LoginForm) => {
     const resp = await mutateAsync(data)
+    setAuth(resp)
     navigate('/')
   }
 
