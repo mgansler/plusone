@@ -1,8 +1,8 @@
-import { OnModuleInit, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { compare, hash } from 'bcrypt'
 
-import { PrismaService, User, Prisma } from '@plusone/feeds-persistence'
+import { Prisma, PrismaService, User } from '@plusone/feeds-persistence'
 
 import { JwtPayload } from './jwt.payload'
 import { UserRegistrationDto } from './user.dto'
