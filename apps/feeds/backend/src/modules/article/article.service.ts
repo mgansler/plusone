@@ -51,7 +51,7 @@ export class ArticleService {
     // TODO: configuration? client arg?
     const PAGE_SIZE = 10
 
-    const [totalCount, unreadCount, { cursor: lastCursor }, content] = await this.prismaService.$transaction([
+    const [totalCount, unreadCount, first, content] = await this.prismaService.$transaction([
       this.prismaService.userArticle.count({
         where: { userId, article: { feedId } },
       }),
@@ -72,7 +72,7 @@ export class ArticleService {
         orderBy: [{ cursor: 'desc' }],
       }),
     ])
-    return { totalCount, content, unreadCount, lastCursor, pageSize: PAGE_SIZE }
+    return { totalCount, content, unreadCount, lastCursor: first?.cursor, pageSize: PAGE_SIZE }
   }
 
   async search(userId: User['id'], s: string, pagination: Pagination) {

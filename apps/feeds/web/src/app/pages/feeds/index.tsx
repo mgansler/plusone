@@ -6,6 +6,8 @@ import type { DiscoverResponse, FeedResponse } from '@plusone/feeds/shared/types
 
 import { useMutationFn, useQueryFn } from '../../util/api-client'
 
+import { Articles } from './articles'
+
 type NewFeedForm = {
   title: string
   url: string
@@ -21,11 +23,12 @@ export function Feeds() {
     enabled: false,
   })
   const fetchFeedListQueryFn = useQueryFn('/api/feed/')
-  const { data } = useQuery<FeedResponse[]>(['feeds'], fetchFeedListQueryFn)
+  const { data, refetch: reloadFeeds } = useQuery<FeedResponse[]>(['feeds'], fetchFeedListQueryFn)
 
   const onSubmit = async (data: NewFeedForm, event?: BaseSyntheticEvent) => {
     if (((event?.nativeEvent as SubmitEvent).submitter as HTMLButtonElement).innerText === 'save') {
       await mutateAsync(data)
+      await reloadFeeds()
     } else {
       const discoverResp = await discover()
       reset(discoverResp.data)
@@ -56,6 +59,7 @@ export function Feeds() {
         {data?.map((feedResponse) => (
           <div key={feedResponse.id}>
             {feedResponse.title} - {feedResponse.originalTitle}
+            <Articles feedId={feedResponse.id} />
           </div>
         ))}
       </div>

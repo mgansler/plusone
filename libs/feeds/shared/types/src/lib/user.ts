@@ -4,7 +4,3 @@ export interface UserResponse {
   email: string | null
   isAdmin: boolean
 }
-
-export interface LoginResponse {
-  access_token: string
-}
