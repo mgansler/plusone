@@ -9,11 +9,13 @@ type UserContextValue = {
   userInfo?: UserResponse
   auth?: LoginResponse
   isLoggedIn: boolean
-  setAuth: (auth: LoginResponse) => void
+  login: (auth: LoginResponse) => void
   logout: () => void
 }
 
 const userContext = createContext<UserContextValue | undefined>(undefined)
+
+const LOCAL_STORAGE_KEY = 'feeds_access_token'
 
 type UserContextProviderProps = {
   children: ReactNode
@@ -22,7 +24,13 @@ type UserContextProviderProps = {
 export function UserContextProvider({ children }: UserContextProviderProps) {
   const navigate = useNavigate()
   const [userInfo, setUserInfo] = useState<UserResponse | undefined>()
-  const [auth, setAuth] = useState<LoginResponse | undefined>()
+  const [auth, setAuth] = useState<LoginResponse | undefined>(() => {
+    const localStorageAuth = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '{}')
+    if (localStorageAuth.access_token) {
+      return localStorageAuth
+    }
+    return undefined
+  })
 
   useQuery<UserResponse>(
     ['user-info'],
@@ -43,13 +51,19 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
 
   const isLoggedIn = userInfo != undefined
 
+  const login = (auth: LoginResponse) => {
+    setAuth(auth)
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(auth))
+  }
+
   const logout = () => {
     setAuth(undefined)
     setUserInfo(undefined)
+    localStorage.removeItem(LOCAL_STORAGE_KEY)
     navigate('/login')
   }
 
-  return <userContext.Provider value={{ userInfo, auth, isLoggedIn, setAuth, logout }}>{children}</userContext.Provider>
+  return <userContext.Provider value={{ userInfo, auth, isLoggedIn, login, logout }}>{children}</userContext.Provider>
 }
 
 export function useUserContext() {
