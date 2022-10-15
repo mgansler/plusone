@@ -7,7 +7,7 @@ describe('feeds-web', () => {
     cy.loginAdmin()
 
     cy.location('pathname').should('eq', '/admin')
-    cy.findByText('status: ok').should('be.visible')
     cy.findByText('Admin Area').should('be.visible')
+    cy.findByText('status: ok').should('be.visible')
   })
 })
