@@ -14,7 +14,7 @@ type NewFeedForm = {
   feedUrl: string
 }
 
-export function Feeds() {
+export function Member() {
   const { register, handleSubmit, watch, reset } = useForm<NewFeedForm>()
   const addFeedMutationFn = useMutationFn('POST', 'api/feed')
   const { mutateAsync } = useMutation(['add-feed'], addFeedMutationFn)
