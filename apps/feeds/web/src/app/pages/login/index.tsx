@@ -13,7 +13,7 @@ type LoginForm = {
 
 export function Login() {
   const { register, handleSubmit } = useForm<LoginForm>()
-  const { setAuth } = useUserContext()
+  const { login } = useUserContext()
 
   const { mutateAsync } = useMutation<LoginResponse, unknown, LoginForm>(['login'], (body: LoginForm) =>
     fetch('/api/authentication/login', {
@@ -27,7 +27,7 @@ export function Login() {
 
   const onSubmit = async (data: LoginForm) => {
     const resp = await mutateAsync(data)
-    setAuth(resp)
+    login(resp)
   }
 
   return (

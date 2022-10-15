@@ -9,7 +9,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 
   constructor() {
     const log = []
-    if (process.env['NX_PRINT_PRISMA_QUERIES'] === 'y') {
+    if (process.env['PRINT_PRISMA_QUERIES'] === 'y') {
       log.push('query')
     }
     super({ log })

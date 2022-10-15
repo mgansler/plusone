@@ -47,3 +47,22 @@ export function useQueryFn(url: string) {
     })
   }
 }
+
+export function useInfiniteQueryFn(url: string) {
+  const { auth } = useUserContext()
+
+  return ({ pageParam }: QueryFunctionContext) => {
+    const fetchUrl = url + (pageParam !== undefined ? `?cursor=${pageParam}` : '')
+    return fetch(fetchUrl, {
+      headers: {
+        Authorization: `Bearer ${auth?.access_token}`,
+      },
+    }).then((res) => {
+      if (res.status >= 200 && res.status < 400) {
+        return res.json()
+      } else {
+        throw new Error(res.statusText)
+      }
+    })
+  }
+}

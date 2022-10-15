@@ -6,7 +6,7 @@ describe('feeds', () => {
   it('should discover and add a feed', () => {
     cy.loginFreshUser()
 
-    cy.findByText('iskall85 - iskall85').should('not.exist')
+    cy.findByText('iskall85').should('not.exist')
 
     cy.findByRole('textbox', { name: 'url' }).type('https://www.youtube.com/c/iskall85/videos')
     cy.findByRole('button', { name: 'search' }).click()
@@ -17,8 +17,7 @@ describe('feeds', () => {
     )
     cy.findByRole('button', { name: 'save' }).click()
 
-    cy.findByText('iskall85 - iskall85').should('be.visible')
-    cy.findByText(/total: \d+ - unread: \d+/).should('be.visible')
+    cy.findByText('iskall85').should('be.visible')
   })
 
   it('should handle failing to add an existing feed', () => {
@@ -36,7 +35,8 @@ describe('feeds', () => {
       }
     })
     cy.findByText('Could not add feed: You are already subscribed to this feed').should('be.visible')
-    cy.findByRole('button', { name: 'reset' }).click()
+    // Force click because in development mode there will be an overlay even though there is an error boundary
+    cy.findByRole('button', { name: 'reset' }).click({ force: true })
     cy.findByRole('textbox', { name: 'title' }).should('have.value', '')
     cy.findByRole('textbox', { name: 'url' }).should('have.value', '')
     cy.findByRole('textbox', { name: 'feed-url' }).should('have.value', '')

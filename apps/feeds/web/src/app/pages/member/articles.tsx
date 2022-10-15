@@ -1,24 +1,44 @@
-import { useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { Fragment } from 'react'
 
 import type { FeedResponse, PaginatedArticles } from '@plusone/feeds/shared/types'
 
-import { useQueryFn } from '../../util/api-client'
+import { useInfiniteQueryFn } from '../../util/api-client'
 
 type ArticlesProps = {
-  feedId: FeedResponse['id']
+  feed: FeedResponse
 }
 
-export function Articles({ feedId }: ArticlesProps) {
-  const fetchArticlesQueryFn = useQueryFn(`/api/feed/`)
-  const { data, isLoading } = useQuery<PaginatedArticles>(['feed', feedId], fetchArticlesQueryFn)
+export function Articles({ feed }: ArticlesProps) {
+  const fetchArticlesQueryFn = useInfiniteQueryFn(`/api/feed/${feed.id}`)
+  const { data, hasNextPage, fetchNextPage } = useInfiniteQuery<PaginatedArticles>(
+    ['feed', feed.id],
+    fetchArticlesQueryFn,
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.content.length < lastPage.pageSize ? false : lastPage.lastCursor
+      },
+    },
+  )
 
-  if (isLoading) {
+  if (!data) {
     return null
   }
 
   return (
-    <div>
-      total: {data!.totalCount} - unread: {data!.unreadCount}
-    </div>
+    <>
+      {data.pages.map((page, index) => {
+        return (
+          <Fragment key={index}>
+            {page.content.map((article) => (
+              <article key={article.article.id}>{article.article.title}</article>
+            ))}
+          </Fragment>
+        )
+      })}
+      <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
+        next
+      </button>
+    </>
   )
 }

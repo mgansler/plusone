@@ -20,10 +20,10 @@ export function Member() {
       </ErrorBoundary>
       <div>
         {data?.map((feedResponse) => (
-          <div key={feedResponse.id}>
-            {feedResponse.title} - {feedResponse.originalTitle}
-            <Articles feedId={feedResponse.id} />
-          </div>
+          <section key={feedResponse.id} aria-label={feedResponse.title}>
+            <h4>{feedResponse.title}</h4>
+            <Articles feed={feedResponse} />
+          </section>
         ))}
       </div>
     </div>
