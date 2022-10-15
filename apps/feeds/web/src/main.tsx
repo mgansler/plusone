@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { App } from './app/app'
 import { UserContextProvider } from './app/context/user'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false } } })
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(

@@ -3,6 +3,7 @@ import { Link, Route, Routes } from 'react-router-dom'
 import { UserInfo } from './components/user-info'
 import { useUserContext } from './context/user'
 import { Health } from './health'
+import { Feeds } from './pages/feeds'
 import { Login } from './pages/login'
 import { Register } from './pages/login/register'
 
@@ -18,6 +19,7 @@ export function App() {
       <Routes>
         <Route path={'/login'} element={<Login />} />
         <Route path={'/login/register'} element={<Register />} />
+        {isLoggedIn && <Route path={'/feeds'} element={<Feeds />} />}
       </Routes>
     </>
   )

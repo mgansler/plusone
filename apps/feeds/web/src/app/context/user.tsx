@@ -34,7 +34,10 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
       }).then((res) => res.json()),
     {
       enabled: auth !== undefined,
-      onSuccess: setUserInfo,
+      onSuccess: (data) => {
+        setUserInfo(data)
+        navigate('/feeds')
+      },
     },
   )
 

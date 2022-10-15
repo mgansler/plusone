@@ -12,7 +12,7 @@ describe('authentication', () => {
     cy.findByLabelText('password').type('just_secret')
     cy.findByRole('button', { name: 'login' }).click()
 
-    cy.location('pathname').should('eq', '/')
+    cy.location('pathname').should('eq', '/feeds')
 
     cy.findByRole('button', { name: 'logout' }).click()
 
@@ -37,7 +37,7 @@ describe('authentication', () => {
     cy.findByLabelText('password').type('just_secret')
     cy.findByRole('button', { name: 'login' }).click()
 
-    cy.location('pathname').should('eq', '/')
+    cy.location('pathname').should('eq', '/feeds')
     cy.findByText(username)
   })
 })

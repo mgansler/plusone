@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import type { LoginResponse } from '@plusone/feeds/shared/types'
 
@@ -12,7 +12,6 @@ type LoginForm = {
 }
 
 export function Login() {
-  const navigate = useNavigate()
   const { register, handleSubmit } = useForm<LoginForm>()
   const { setAuth } = useUserContext()
 
@@ -29,7 +28,6 @@ export function Login() {
   const onSubmit = async (data: LoginForm) => {
     const resp = await mutateAsync(data)
     setAuth(resp)
-    navigate('/')
   }
 
   return (

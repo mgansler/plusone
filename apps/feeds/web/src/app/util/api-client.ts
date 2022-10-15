@@ -1,12 +1,16 @@
+import type { QueryFunctionContext } from '@tanstack/react-query'
+
 import { useUserContext } from '../context/user'
 
-export function useMutationFn(url: string, init: RequestInit = {}) {
+export function useMutationFn(method: 'POST', url: string) {
   const { auth } = useUserContext()
 
-  return () =>
+  return (body: string | object) =>
     fetch(url, {
-      ...init,
+      method,
+      body: typeof body === 'string' ? body : JSON.stringify(body),
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${auth?.access_token}`,
       },
     }).then((res) => {
@@ -21,8 +25,9 @@ export function useMutationFn(url: string, init: RequestInit = {}) {
 export function useQueryFn(url: string) {
   const { auth } = useUserContext()
 
-  return () =>
-    fetch(url, {
+  return (ctx: QueryFunctionContext) => {
+    const fetchUrl = ctx.queryKey.length > 1 ? url + ctx.queryKey[1] : url
+    return fetch(fetchUrl, {
       headers: {
         Authorization: `Bearer ${auth?.access_token}`,
       },
@@ -33,4 +38,5 @@ export function useQueryFn(url: string) {
         throw new Error(res.statusText)
       }
     })
+  }
 }
