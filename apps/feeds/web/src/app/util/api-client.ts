@@ -13,11 +13,18 @@ export function useMutationFn(method: 'POST', url: string) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${auth?.access_token}`,
       },
-    }).then((res) => {
+    }).then(async (res) => {
       if (res.status >= 200 && res.status < 400) {
         return res.json()
       } else {
-        throw new Error(res.statusText)
+        let err: string
+        try {
+          const { message } = await res.json()
+          err = message
+        } catch (e) {
+          err = `${res.status}: ${res.statusText}`
+        }
+        throw new Error(err)
       }
     })
 }

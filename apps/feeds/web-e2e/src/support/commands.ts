@@ -9,6 +9,8 @@ declare namespace Cypress {
     loginFreshUser(): void
 
     loginAdmin(): void
+
+    addHeiseFeedToDefaultUser(): void
   }
 }
 
@@ -42,4 +44,20 @@ Cypress.Commands.add('loginAdmin', () => {
   cy.findByRole('textbox', { name: 'username' }).type('root')
   cy.findByLabelText('password').type('keep_this_secret')
   cy.findByRole('button', { name: 'login' }).click()
+})
+
+Cypress.Commands.add('addHeiseFeedToDefaultUser', () => {
+  cy.request('POST', '/api/authentication/login', { username: 'user', password: 'just_secret' }).then((resp) => {
+    cy.request({
+      method: 'POST',
+      url: '/api/feed',
+      auth: { bearer: resp.body.access_token },
+      body: {
+        title: 'heise online News',
+        url: 'https://heise.de',
+        feedUrl: 'https://www.heise.de/rss/heise.rdf',
+      },
+      failOnStatusCode: false,
+    })
+  })
 })

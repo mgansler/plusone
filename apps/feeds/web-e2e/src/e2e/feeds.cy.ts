@@ -10,7 +10,7 @@ describe('feeds', () => {
 
     cy.findByRole('textbox', { name: 'url' }).type('https://www.youtube.com/c/iskall85/videos')
     cy.findByRole('button', { name: 'search' }).click()
-    cy.findByRole('textbox', { name: 'titel' }).should('have.value', 'iskall85')
+    cy.findByRole('textbox', { name: 'title' }).should('have.value', 'iskall85')
     cy.findByRole('textbox', { name: 'feed-url' }).should(
       'have.value',
       'http://www.youtube.com/feeds/videos.xml?channel_id=UCZ9x-z3iOnIbJxVpm1rsu2A',
@@ -19,5 +19,26 @@ describe('feeds', () => {
 
     cy.findByText('iskall85 - iskall85').should('be.visible')
     cy.findByText(/total: \d+ - unread: \d+/).should('be.visible')
+  })
+
+  it('should handle failing to add an existing feed', () => {
+    cy.addHeiseFeedToDefaultUser()
+    cy.login()
+
+    cy.findByRole('textbox', { name: 'title' }).type('heise online News')
+    cy.findByRole('textbox', { name: 'url' }).type('https://heise.de')
+    cy.findByRole('textbox', { name: 'feed-url' }).type('https://www.heise.de/rss/heise.rdf')
+    cy.findByRole('button', { name: 'save' }).click()
+
+    cy.on('uncaught:exception', (err, runnable) => {
+      if (err.message.includes('You are already subscribed to this feed')) {
+        return false
+      }
+    })
+    cy.findByText('Could not add feed: You are already subscribed to this feed').should('be.visible')
+    cy.findByRole('button', { name: 'reset' }).click()
+    cy.findByRole('textbox', { name: 'title' }).should('have.value', '')
+    cy.findByRole('textbox', { name: 'url' }).should('have.value', '')
+    cy.findByRole('textbox', { name: 'feed-url' }).should('have.value', '')
   })
 })
