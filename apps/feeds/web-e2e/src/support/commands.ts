@@ -7,6 +7,8 @@ declare namespace Cypress {
     login(): void
 
     loginFreshUser(): void
+
+    loginAdmin(): void
   }
 }
 
@@ -32,5 +34,12 @@ Cypress.Commands.add('loginFreshUser', () => {
   cy.location('pathname').should('eq', '/login')
   cy.findByRole('textbox', { name: 'username' }).type(username)
   cy.findByLabelText('password').type('random_password')
+  cy.findByRole('button', { name: 'login' }).click()
+})
+
+Cypress.Commands.add('loginAdmin', () => {
+  cy.visit('/login')
+  cy.findByRole('textbox', { name: 'username' }).type('root')
+  cy.findByLabelText('password').type('keep_this_secret')
   cy.findByRole('button', { name: 'login' }).click()
 })

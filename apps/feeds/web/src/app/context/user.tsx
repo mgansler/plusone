@@ -36,7 +36,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
       enabled: auth !== undefined,
       onSuccess: (data) => {
         setUserInfo(data)
-        navigate('/member')
+        data.isAdmin ? navigate('/admin') : navigate('/member')
       },
     },
   )
