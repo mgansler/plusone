@@ -30,10 +30,12 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
   const auth = () => JSON.parse(localStorage.getItem(AUTHENTICATION_LOCAL_STORAGE_KEY) || '{}')
 
   const { refetch: refreshToken } = useQuery<LoginResponse>({
+    queryKey: ['refresh'],
     queryFn: () =>
       fetch('/api/authentication/refresh', { headers: getAuthorizationHeader('refresh_token') }).then((res) =>
         res.json(),
       ),
+    cacheTime: 0,
     enabled: false,
   })
 
@@ -53,7 +55,6 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
       enabled: Boolean(getAuthorizationHeader('access_token')),
       onSuccess: (data) => {
         setUserInfo(data)
-        console.log(location)
         if (location.pathname !== '/home') {
           data.isAdmin ? navigate('/admin') : navigate('/member')
         }
