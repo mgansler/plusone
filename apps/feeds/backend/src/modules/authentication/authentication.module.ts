@@ -4,22 +4,21 @@ import { PassportModule } from '@nestjs/passport'
 
 import { PrismaService } from '@plusone/feeds-persistence'
 
-import { jwtConstants } from './authentication.constants'
 import { AuthenticationController } from './authentication.controller'
 import { AuthenticationService } from './authentication.service'
-import { JwtStrategy } from './jwt.strategy'
+import { JwtRefreshStrategy, JwtStrategy } from './jwt.strategy'
 import { LocalStrategy } from './local.strategy'
 
 @Module({
-  imports: [
-    PassportModule,
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '3600s' },
-    }),
-  ],
+  imports: [PassportModule, JwtModule.register({})],
   controllers: [AuthenticationController],
-  providers: [AuthenticationService, LocalStrategy, JwtStrategy, PrismaService],
+  providers: [
+    AuthenticationService,
+    LocalStrategy, // For login via username/password
+    JwtStrategy, // For normale requests
+    JwtRefreshStrategy, // For refreshing an expired access token
+    PrismaService,
+  ],
   exports: [AuthenticationService],
 })
 export class AuthenticationModule {}

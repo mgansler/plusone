@@ -1,13 +1,14 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import type { LoginResponse, UserResponse } from '@plusone/feeds/shared/types'
 
+import { getAuthorizationHeader } from '../util/api-client'
+
 type UserContextValue = {
   userInfo?: UserResponse
-  auth?: LoginResponse
   isLoggedIn: boolean
   login: (auth: LoginResponse) => void
   logout: () => void
@@ -15,7 +16,7 @@ type UserContextValue = {
 
 const userContext = createContext<UserContextValue | undefined>(undefined)
 
-const LOCAL_STORAGE_KEY = 'feeds_access_token'
+export const AUTHENTICATION_LOCAL_STORAGE_KEY = 'feeds_auth'
 
 type UserContextProviderProps = {
   children: ReactNode
@@ -24,46 +25,76 @@ type UserContextProviderProps = {
 export function UserContextProvider({ children }: UserContextProviderProps) {
   const navigate = useNavigate()
   const [userInfo, setUserInfo] = useState<UserResponse | undefined>()
-  const [auth, setAuth] = useState<LoginResponse | undefined>(() => {
-    const localStorageAuth = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '{}')
-    if (localStorageAuth.access_token) {
-      return localStorageAuth
-    }
-    return undefined
+  const queryClient = useQueryClient()
+  const auth = () => JSON.parse(localStorage.getItem(AUTHENTICATION_LOCAL_STORAGE_KEY) || '{}')
+
+  const { refetch: refreshToken } = useQuery<LoginResponse>({
+    queryFn: () =>
+      fetch('/api/authentication/refresh', { headers: getAuthorizationHeader('refresh_token') }).then((res) =>
+        res.json(),
+      ),
+    enabled: false,
   })
 
-  useQuery<UserResponse>(
+  const { refetch: fetchProfile } = useQuery<UserResponse>(
     ['user-info'],
     () =>
       fetch('/api/authentication/profile', {
-        headers: {
-          Authorization: `Bearer ${auth!.access_token}`,
-        },
-      }).then((res) => res.json()),
+        headers: getAuthorizationHeader('access_token'),
+      }).then(async (res) => {
+        if (res.status === 200) {
+          return res.json()
+        }
+        throw new Error((await res.json()).message)
+      }),
     {
-      enabled: auth !== undefined,
+      refetchInterval: 30_000,
+      enabled: Boolean(getAuthorizationHeader('access_token')),
       onSuccess: (data) => {
         setUserInfo(data)
         data.isAdmin ? navigate('/admin') : navigate('/member')
       },
+      onError: async (err) => {
+        if ((err as Error).message === 'Unauthorized') {
+          const refreshResponse = await refreshToken()
+          if (refreshResponse) {
+            localStorage.setItem(AUTHENTICATION_LOCAL_STORAGE_KEY, JSON.stringify(refreshResponse.data))
+            await fetchProfile()
+          }
+        }
+      },
     },
   )
 
-  const isLoggedIn = userInfo != undefined
+  const { refetch: logoutAddServer } = useQuery({
+    queryFn: () =>
+      fetch('/api/authentication/logout', {
+        headers: {
+          Authorization: `Bearer ${auth().access_token}`,
+        },
+      }),
+    enabled: false,
+  })
 
-  const login = (auth: LoginResponse) => {
-    setAuth(auth)
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(auth))
+  const isLoggedIn = userInfo !== undefined
+
+  const login = async (auth: LoginResponse) => {
+    localStorage.setItem(AUTHENTICATION_LOCAL_STORAGE_KEY, JSON.stringify(auth))
+    await fetchProfile()
   }
 
-  const logout = () => {
-    setAuth(undefined)
+  const logout = async () => {
+    // Remove access and refresh tokens
+    await logoutAddServer()
+    localStorage.removeItem(AUTHENTICATION_LOCAL_STORAGE_KEY)
+    // Clear local state
+    queryClient.clear()
     setUserInfo(undefined)
-    localStorage.removeItem(LOCAL_STORAGE_KEY)
+    // Finally redirect to the login page
     navigate('/login')
   }
 
-  return <userContext.Provider value={{ userInfo, auth, isLoggedIn, login, logout }}>{children}</userContext.Provider>
+  return <userContext.Provider value={{ userInfo, isLoggedIn, login, logout }}>{children}</userContext.Provider>
 }
 
 export function useUserContext() {

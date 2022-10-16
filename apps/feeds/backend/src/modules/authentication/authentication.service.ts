@@ -1,8 +1,10 @@
 import { HttpException, HttpStatus, Injectable, Logger, OnModuleInit } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { compare, hash } from 'bcrypt'
 
 import { Prisma, PrismaService, User } from '@plusone/feeds-persistence'
+import { LoginResponse } from '@plusone/feeds/shared/types'
 
 import { JwtPayload } from './jwt.payload'
 import { UserRegistrationDto } from './user.dto'
@@ -11,7 +13,11 @@ import { UserRegistrationDto } from './user.dto'
 export class AuthenticationService implements OnModuleInit {
   private logger = new Logger(AuthenticationService.name)
 
-  constructor(private prismaService: PrismaService, private jwtService: JwtService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+  ) {}
 
   async onModuleInit(): Promise<void> {
     await this.createRootUser()
@@ -27,25 +33,37 @@ export class AuthenticationService implements OnModuleInit {
     return null
   }
 
-  async login(user: User) {
+  async login(user: User): Promise<LoginResponse> {
+    const payload: JwtPayload = {
+      username: user.username,
+      isAdmin: user.isAdmin,
+      roles: user.isAdmin ? ['admin'] : [],
+      id: user.id,
+    }
     return {
-      access_token: this.jwtService.sign({
-        username: user.username,
-        isAdmin: user.isAdmin,
-        roles: user.isAdmin ? ['admin'] : [],
-        id: user.id,
-      } as JwtPayload),
+      access_token: this.jwtService.sign(payload, {
+        secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
+        expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'),
+      }),
+      refresh_token: await this.createRefreshToken(user),
     }
   }
 
-  async register(userRegistrationDto: UserRegistrationDto): Promise<Omit<User, 'password'>> {
+  async logout(user: User) {
+    await this.prismaService.user.update({
+      data: { refreshToken: null },
+      where: { id: user.id },
+    })
+  }
+
+  async register(userRegistrationDto: UserRegistrationDto): Promise<Omit<User, 'password' | 'refreshToken'>> {
     try {
       return await this.prismaService.user.create({
         data: {
           ...userRegistrationDto,
           password: await hash(userRegistrationDto.password, 10),
         },
-        select: { username: true, email: true, id: true, password: false, isAdmin: true },
+        select: { username: true, email: true, id: true, password: false, refreshToken: false, isAdmin: true },
       })
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -57,6 +75,32 @@ export class AuthenticationService implements OnModuleInit {
       this.logger.error(e)
       throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR)
     }
+  }
+
+  async validateRefreshToken(refreshToken: string, userId: string): Promise<User> {
+    const user = await this.prismaService.user.findUnique({ where: { id: userId } })
+    const refreshTokenIsValid = await compare(refreshToken, user.refreshToken)
+
+    if (refreshTokenIsValid) {
+      return user
+    }
+  }
+
+  private async createRefreshToken(user: User): Promise<string> {
+    const refresh_token = this.jwtService.sign(
+      { id: user.id },
+      {
+        secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
+        expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'),
+      },
+    )
+
+    await this.prismaService.user.update({
+      data: { refreshToken: await hash(refresh_token, 10) },
+      where: { id: user.id },
+    })
+
+    return refresh_token
   }
 
   private async createRootUser() {

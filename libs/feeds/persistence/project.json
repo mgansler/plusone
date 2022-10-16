@@ -4,10 +4,18 @@
   "projectType": "library",
   "targets": {
     "format": {
-      "executor": "@mgansler/nx-prisma:format"
+      "executor": "@mgansler/nx-prisma:format",
+      "envFile": "apps/feeds/backend/.local.env"
     },
     "generate": {
       "executor": "@mgansler/nx-prisma:generate"
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn prisma migrate dev --schema libs/feeds/persistence/src/lib/schema.prisma",
+        "envFile": "libs/feeds/persistence/.local.env"
+      }
     },
     "push": {
       "executor": "@mgansler/nx-prisma:push",

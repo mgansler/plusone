@@ -2,6 +2,8 @@
 
 This library was generated with [Nx](https://nx.dev).
 
-## Running unit tests
+## Create a new migration
 
-Run `nx test feeds-persistence` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx run feeds-persistence:migrate`.
+When the CLI seems to have crashed it actually wants to know the name of migration.
+Enter a name (e.g `add_column_x`) and press enter.

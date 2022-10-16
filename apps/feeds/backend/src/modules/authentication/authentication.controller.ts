@@ -3,7 +3,7 @@ import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common'
 import { LoginResponse, UserResponse } from '@plusone/feeds/shared/types'
 
 import { AuthenticationService } from './authentication.service'
-import { JwtAuthGuard } from './jwt-auth.guard'
+import { JwtAuthGuard, JwtRefreshGuard } from './jwt-auth.guard'
 import { LocalAuthGuard } from './local-auth.guard'
 import { UserRegistrationDto } from './user.dto'
 
@@ -17,6 +17,12 @@ export class AuthenticationController {
     return this.authenticationService.login(user)
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('logout')
+  logout(@Req() { user }) {
+    return this.authenticationService.logout(user)
+  }
+
   @Post('register')
   register(@Body() userRegistrationDto: UserRegistrationDto): Promise<UserResponse> {
     return this.authenticationService.register(userRegistrationDto)
@@ -26,5 +32,11 @@ export class AuthenticationController {
   @Get('profile')
   getProfile(@Req() { user }): Promise<UserResponse> {
     return user
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Get('refresh')
+  refresh(@Req() { user }) {
+    return this.authenticationService.login(user)
   }
 }
