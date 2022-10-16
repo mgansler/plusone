@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import { createContext, useContext, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import type { LoginResponse, UserResponse } from '@plusone/feeds/shared/types'
 
@@ -24,6 +24,7 @@ type UserContextProviderProps = {
 
 export function UserContextProvider({ children }: UserContextProviderProps) {
   const navigate = useNavigate()
+  const location = useLocation()
   const [userInfo, setUserInfo] = useState<UserResponse | undefined>()
   const queryClient = useQueryClient()
   const auth = () => JSON.parse(localStorage.getItem(AUTHENTICATION_LOCAL_STORAGE_KEY) || '{}')
@@ -52,7 +53,10 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
       enabled: Boolean(getAuthorizationHeader('access_token')),
       onSuccess: (data) => {
         setUserInfo(data)
-        data.isAdmin ? navigate('/admin') : navigate('/member')
+        console.log(location)
+        if (location.pathname !== '/home') {
+          data.isAdmin ? navigate('/admin') : navigate('/member')
+        }
       },
       onError: async (err) => {
         if ((err as Error).message === 'Unauthorized') {
