@@ -3,9 +3,9 @@ import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common'
 import { LoginResponse, UserResponse } from '@plusone/feeds/shared/types'
 
 import { AuthenticationService } from './authentication.service'
-import { JwtAuthGuard, JwtRefreshGuard } from './jwt-auth.guard'
-import { LocalAuthGuard } from './local-auth.guard'
+import { JwtAccessTokenGuard, JwtRefreshTokenGuard } from './jwt.strategy'
 import { UserRegistrationDto } from './user.dto'
+import { LocalAuthGuard } from './username-password-strategy.service'
 
 @Controller('authentication')
 export class AuthenticationController {
@@ -17,7 +17,7 @@ export class AuthenticationController {
     return this.authenticationService.login(user)
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAccessTokenGuard)
   @Get('logout')
   logout(@Req() { user }) {
     return this.authenticationService.logout(user)
@@ -28,13 +28,13 @@ export class AuthenticationController {
     return this.authenticationService.register(userRegistrationDto)
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAccessTokenGuard)
   @Get('profile')
   getProfile(@Req() { user }): Promise<UserResponse> {
     return user
   }
 
-  @UseGuards(JwtRefreshGuard)
+  @UseGuards(JwtRefreshTokenGuard)
   @Get('refresh')
   refresh(@Req() { user }) {
     return this.authenticationService.login(user)

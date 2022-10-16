@@ -6,17 +6,17 @@ import { PrismaService } from '@plusone/feeds-persistence'
 
 import { AuthenticationController } from './authentication.controller'
 import { AuthenticationService } from './authentication.service'
-import { JwtRefreshStrategy, JwtStrategy } from './jwt.strategy'
-import { LocalStrategy } from './local.strategy'
+import { JwtAccessTokenStrategy, JwtRefreshTokenStrategy } from './jwt.strategy'
+import { UsernamePasswordStrategy } from './username-password-strategy.service'
 
 @Module({
   imports: [PassportModule, JwtModule.register({})],
   controllers: [AuthenticationController],
   providers: [
     AuthenticationService,
-    LocalStrategy, // For login via username/password
-    JwtStrategy, // For normale requests
-    JwtRefreshStrategy, // For refreshing an expired access token
+    UsernamePasswordStrategy,
+    JwtAccessTokenStrategy,
+    JwtRefreshTokenStrategy,
     PrismaService,
   ],
   exports: [AuthenticationService],

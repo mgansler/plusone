@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
 
 import { Feed, Prisma, PrismaService, User } from '@plusone/feeds-persistence'
 
-import { JwtPayload } from '../authentication/jwt.payload'
+import { TokenPayload } from '../authentication/jwt.strategy'
 import { DiscoverService } from '../discover/discover.service'
 
 import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
@@ -56,7 +56,7 @@ export class FeedService {
     }
   }
 
-  async findAllFor(user: JwtPayload) {
+  async findAllFor(user: TokenPayload) {
     if (user.isAdmin) {
       return this.prismaService.feed.findMany()
     } else {

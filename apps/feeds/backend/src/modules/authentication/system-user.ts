@@ -1,6 +1,6 @@
-import { JwtPayload } from './jwt.payload'
+import { TokenPayload } from './jwt.strategy'
 
-export const SystemUser: JwtPayload = {
+export const SystemUser: TokenPayload = {
   id: 'system',
   username: 'SYSTEM',
   isAdmin: true,

@@ -6,7 +6,7 @@ import { compare, hash } from 'bcrypt'
 import { Prisma, PrismaService, User } from '@plusone/feeds-persistence'
 import { LoginResponse } from '@plusone/feeds/shared/types'
 
-import { JwtPayload } from './jwt.payload'
+import { TokenPayload } from './jwt.strategy'
 import { UserRegistrationDto } from './user.dto'
 
 @Injectable()
@@ -23,18 +23,8 @@ export class AuthenticationService implements OnModuleInit {
     await this.createRootUser()
   }
 
-  async validateUser(username: string, password: string): Promise<Omit<User, 'password'> | null> {
-    const user = await this.prismaService.user.findUnique({ where: { username } })
-    if (user && (await compare(password, user.password))) {
-      user.password = undefined
-      return user
-    }
-
-    return null
-  }
-
   async login(user: User): Promise<LoginResponse> {
-    const payload: JwtPayload = {
+    const payload: TokenPayload = {
       username: user.username,
       isAdmin: user.isAdmin,
       roles: user.isAdmin ? ['admin'] : [],
@@ -75,6 +65,16 @@ export class AuthenticationService implements OnModuleInit {
       this.logger.error(e)
       throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR)
     }
+  }
+
+  async validateUsernamePassword(username: string, password: string): Promise<Omit<User, 'password'> | null> {
+    const user = await this.prismaService.user.findUnique({ where: { username } })
+    if (user && (await compare(password, user.password))) {
+      user.password = undefined
+      return user
+    }
+
+    return null
   }
 
   async validateRefreshToken(refreshToken: string, userId: string): Promise<User> {

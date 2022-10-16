@@ -2,13 +2,13 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, Req, U
 
 import { ArticleResponse, Pagination } from '@plusone/feeds/shared/types'
 
-import { JwtAuthGuard } from '../authentication/jwt-auth.guard'
+import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 
 import { ArticleToggleUnreadDto } from './article.dto'
 import { ArticleService } from './article.service'
 
 @Controller('article')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAccessTokenGuard)
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 

@@ -4,13 +4,13 @@ import { Feed } from '@plusone/feeds-persistence'
 import { DiscoverResponse, FeedResponse, PaginatedArticles, Pagination } from '@plusone/feeds/shared/types'
 
 import { ArticleService } from '../article/article.service'
-import { JwtAuthGuard } from '../authentication/jwt-auth.guard'
+import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 
 import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
 import { FeedService } from './feed.service'
 
 @Controller('feed')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAccessTokenGuard)
 export class FeedController {
   constructor(private readonly feedService: FeedService, private readonly articleService: ArticleService) {}
 
