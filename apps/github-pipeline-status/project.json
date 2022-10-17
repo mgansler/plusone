@@ -69,7 +69,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/github-pipeline-status"],
+      "outputs": ["{workspaceRoot}/coverage/apps/github-pipeline-status"],
       "options": {
         "jestConfig": "apps/github-pipeline-status/jest.config.ts",
         "passWithNoTests": true

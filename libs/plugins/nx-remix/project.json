@@ -45,7 +45,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/plugins/nx-remix"],
+      "outputs": ["{workspaceRoot}/coverage/libs/plugins/nx-remix"],
       "options": {
         "jestConfig": "libs/plugins/nx-remix/jest.config.ts",
         "passWithNoTests": true

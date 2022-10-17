@@ -1,6 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { mount } from 'cypress/react'
 import { createRef } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -26,7 +25,7 @@ describe('RepositoryOverview', () => {
 
     const toolbarRef = createRef<HTMLDivElement>()
 
-    mount(
+    cy.mount(
       <ThemeProvider theme={createTheme()}>
         <BrowserRouter>
           <QueryClientProvider client={queryClient}>

@@ -6,5 +6,13 @@
     "resolveJsonModule": true,
     "types": ["cypress", "node", "@mgansler/cypress-graphql", "@testing-library/cypress"]
   },
-  "include": ["../cypress.config.ts", "../**/*.cy.ts", "../**/*.cy.tsx", "../**/*.cy.js", "../**/*.cy.jsx", "**/*.d.ts"]
+  "include": [
+    "support/**/*.ts",
+    "../cypress.config.ts",
+    "../**/*.cy.ts",
+    "../**/*.cy.tsx",
+    "../**/*.cy.js",
+    "../**/*.cy.jsx",
+    "**/*.d.ts"
+  ]
 }

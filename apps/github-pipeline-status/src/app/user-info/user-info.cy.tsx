@@ -1,4 +1,3 @@
-import { mount } from 'cypress/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { OctokitProvider } from '../octokit-provider/octokit-provider'
@@ -21,7 +20,7 @@ describe('UserInfo', () => {
   it('should show the user name', () => {
     cy.graphql('user-info.name.json').as('fetch')
 
-    mount(
+    cy.mount(
       <QueryClientProvider client={queryClient}>
         <OctokitProvider>
           <UserInfo />
@@ -36,7 +35,7 @@ describe('UserInfo', () => {
   it('should fall back to user login', () => {
     cy.graphql('user-info.login.json').as('fetch')
 
-    mount(
+    cy.mount(
       <QueryClientProvider client={queryClient}>
         <OctokitProvider>
           <UserInfo />
