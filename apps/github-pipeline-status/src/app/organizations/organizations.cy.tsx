@@ -1,6 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { mount } from 'cypress/react'
 import { BrowserRouter } from 'react-router-dom'
 
 import { OctokitProvider } from '../octokit-provider/octokit-provider'
@@ -12,7 +11,7 @@ function mountOrganizations() {
     defaultOptions: { queries: { retry: 0, refetchOnWindowFocus: false } },
   })
 
-  mount(
+  cy.mount(
     <ThemeProvider theme={createTheme()}>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>

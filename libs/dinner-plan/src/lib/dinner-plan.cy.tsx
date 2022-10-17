@@ -1,12 +1,11 @@
 import { createTheme, ThemeProvider } from '@mui/material'
-import { mount } from 'cypress/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 
 import { DinnerPlan } from './dinner-plan'
 
 describe('DinnerPlan', () => {
   it('should render successfully', () => {
-    mount(
+    cy.mount(
       <ThemeProvider theme={createTheme()}>
         <MemoryRouter initialEntries={['/dinner-plan']}>
           <Routes>

@@ -84,7 +84,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/feeds/backend"],
+      "outputs": ["{workspaceRoot}/coverage/apps/feeds/backend"],
       "options": {
         "jestConfig": "apps/feeds/backend/jest.config.ts",
         "passWithNoTests": true

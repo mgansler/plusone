@@ -27,7 +27,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/feeds/persistence"],
+      "outputs": ["{workspaceRoot}/coverage/libs/feeds/persistence"],
       "options": {
         "jestConfig": "libs/feeds/persistence/jest.config.ts",
         "passWithNoTests": true

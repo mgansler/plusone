@@ -1,5 +1,4 @@
 import { createTheme, ThemeProvider } from '@mui/material'
-import { mount } from 'cypress/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 
 import { DinnerPlanStore } from '../store/dinner-plan.store'
@@ -10,7 +9,7 @@ describe('Week', () => {
   const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
   it('should render a complete week', () => {
-    mount(
+    cy.mount(
       <ThemeProvider theme={createTheme()}>
         <DinnerPlanStore>
           <MemoryRouter initialEntries={['/2021/13']}>
