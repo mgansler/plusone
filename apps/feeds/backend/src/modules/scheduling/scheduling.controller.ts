@@ -1,4 +1,5 @@
 import { Controller, Post, UseGuards } from '@nestjs/common'
+import { ApiCreatedResponse } from '@nestjs/swagger'
 
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 import { Roles } from '../authentication/roles.decorator'
@@ -13,6 +14,7 @@ export class SchedulingController {
 
   @Post('now')
   @Roles('admin')
+  @ApiCreatedResponse({ description: 'Fetching all feeds has been triggered.' })
   async fetchNow() {
     this.schedulingService.handleCron()
   }

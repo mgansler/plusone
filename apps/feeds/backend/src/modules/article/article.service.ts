@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { Item } from 'rss-parser'
 
 import { Article, Feed, PrismaService, User } from '@plusone/feeds-persistence'
-import { Pagination } from '@plusone/feeds/shared/types'
+import { PaginatedArticles, Pagination } from '@plusone/feeds/shared/types'
 
 @Injectable()
 export class ArticleService {
@@ -46,7 +46,7 @@ export class ArticleService {
     })
   }
 
-  async getForUserAndFeed(userId: User['id'], feedId: Feed['id'], pagination: Pagination) {
+  async getForUserAndFeed(userId: User['id'], feedId: Feed['id'], pagination: Pagination): Promise<PaginatedArticles> {
     const isFirstRequest = !pagination.cursor || Number(pagination.cursor) === 0
     // TODO: configuration? client arg?
     const PAGE_SIZE = 10
@@ -71,7 +71,7 @@ export class ArticleService {
     return { totalCount, content, unreadCount, lastCursor: content[content.length - 1]?.cursor, pageSize: PAGE_SIZE }
   }
 
-  async search(userId: User['id'], s: string, pagination: Pagination) {
+  async search(userId: User['id'], s: string, pagination: Pagination): Promise<PaginatedArticles> {
     this.logger.debug(`User is searching for '${s}'.`)
 
     const isFirstRequest = !pagination.cursor || Number(pagination.cursor) === 0
@@ -92,7 +92,13 @@ export class ArticleService {
       }),
     ])
 
-    return { content, totalCount, lastCursor: content[content.length - 1]?.cursor }
+    return {
+      content,
+      totalCount,
+      lastCursor: content[content.length - 1]?.cursor,
+      pageSize: PAGE_SIZE,
+      unreadCount: -1,
+    }
   }
 
   async toggleUnreadForUser(articleId: Article['id'], userId: User['id'], unread: boolean) {

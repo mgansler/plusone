@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards } from '@nestjs/common'
+import { ApiOkResponse } from '@nestjs/swagger'
 
-import { UserResponse } from '@plusone/feeds/shared/types'
-
+import { UserResponseDto } from '../authentication/authentication.dto'
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 import { Roles } from '../authentication/roles.decorator'
 import { RolesGuard } from '../authentication/roles.guard'
@@ -15,7 +15,8 @@ export class UserController {
 
   @Get('')
   @Roles('admin')
-  getAll(): Promise<UserResponse[]> {
+  @ApiOkResponse({ description: 'List of all users.', type: [UserResponseDto] })
+  getAll(): Promise<UserResponseDto[]> {
     return this.userService.getAll()
   }
 }

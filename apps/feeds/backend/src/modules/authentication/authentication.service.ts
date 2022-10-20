@@ -6,8 +6,8 @@ import { compare, hash } from 'bcrypt'
 import { Prisma, PrismaService, User } from '@plusone/feeds-persistence'
 import { LoginResponse } from '@plusone/feeds/shared/types'
 
+import { UserRegistrationDto } from './authentication.dto'
 import { TokenPayload } from './jwt.strategy'
-import { UserRegistrationDto } from './user.dto'
 
 @Injectable()
 export class AuthenticationService implements OnModuleInit {
