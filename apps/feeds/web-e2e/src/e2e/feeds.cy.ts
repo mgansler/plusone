@@ -8,6 +8,8 @@ describe('feeds', () => {
 
     cy.findByText('iskall85').should('not.exist')
 
+    cy.findByRole('button', { name: 'add feed' }).click()
+
     cy.findByRole('textbox', { name: 'url' }).type('https://www.youtube.com/c/iskall85/videos')
     cy.findByRole('button', { name: 'search' }).click()
     cy.findByRole('textbox', { name: 'title' }).should('have.value', 'iskall85')
@@ -23,6 +25,8 @@ describe('feeds', () => {
   it('should handle failing to add an existing feed', () => {
     cy.addHeiseFeedToDefaultUser()
     cy.login()
+
+    cy.findByRole('button', { name: 'add feed' }).click()
 
     cy.findByRole('textbox', { name: 'title' }).type('heise online News')
     cy.findByRole('textbox', { name: 'url' }).type('https://heise.de')

@@ -1,27 +1,16 @@
-import { ErrorBoundary } from 'react-error-boundary'
+import { Outlet, useNavigate } from 'react-router-dom'
 
-import { useFeedControllerGetAll } from '@plusone/feeds/api-client'
-
-import { Articles } from './articles'
-import { NewFeed, NewFeedFallback } from './new-feed'
+import { SearchBar } from '../../components/search-bar'
 
 export function Member() {
-  const { data, refetch: reloadFeeds } = useFeedControllerGetAll()
+  const navigate = useNavigate()
 
   return (
     <div>
       Feeds
-      <ErrorBoundary FallbackComponent={NewFeedFallback}>
-        <NewFeed reloadFeeds={reloadFeeds} />
-      </ErrorBoundary>
-      <div>
-        {data?.data.map((feedResponse) => (
-          <section key={feedResponse.id} aria-label={feedResponse.title}>
-            <h4>{feedResponse.title}</h4>
-            <Articles feed={feedResponse} />
-          </section>
-        ))}
-      </div>
+      <button onClick={() => navigate('new')}>add feed</button>
+      <SearchBar />
+      <Outlet />
     </div>
   )
 }

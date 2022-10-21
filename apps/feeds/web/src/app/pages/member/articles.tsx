@@ -1,7 +1,7 @@
-import { Fragment } from 'react'
-
 import { useFeedControllerGetInfinite } from '@plusone/feeds/api-client'
 import type { FeedResponse } from '@plusone/feeds/shared/types'
+
+import { ArticleList } from '../../components/article-list'
 
 type ArticlesProps = {
   feed: FeedResponse
@@ -13,9 +13,8 @@ export function Articles({ feed }: ArticlesProps) {
     {},
     {
       query: {
-        getNextPageParam: (lastPage) => {
-          return lastPage.data.content.length < lastPage.data.pageSize ? false : lastPage.data.lastCursor
-        },
+        getNextPageParam: (lastPage) =>
+          lastPage.data.content.length < lastPage.data.pageSize ? false : lastPage.data.lastCursor,
       },
     },
   )
@@ -26,15 +25,9 @@ export function Articles({ feed }: ArticlesProps) {
 
   return (
     <>
-      {data.pages.map((page, index) => {
-        return (
-          <Fragment key={index}>
-            {page.data.content.map((article) => (
-              <article key={article.article.id}>{article.article.title}</article>
-            ))}
-          </Fragment>
-        )
-      })}
+      {data.pages.map((page, index) => (
+        <ArticleList key={index} articles={page.data.content} />
+      ))}
       <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
         next
       </button>

@@ -1,6 +1,7 @@
 import type { BaseSyntheticEvent } from 'react'
 import type { FallbackProps } from 'react-error-boundary'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 import { useFeedControllerAdd, useFeedControllerDiscover } from '@plusone/feeds/api-client'
 
@@ -10,11 +11,8 @@ type NewFeedForm = {
   feedUrl: string
 }
 
-type NewFeedProps = {
-  reloadFeeds: () => void
-}
-
-export function NewFeed({ reloadFeeds }: NewFeedProps) {
+export function NewFeed() {
+  const navigate = useNavigate()
   const { register, handleSubmit, reset } = useForm<NewFeedForm>()
 
   const { mutateAsync: addFeed } = useFeedControllerAdd({ mutation: { useErrorBoundary: true } })
@@ -23,7 +21,7 @@ export function NewFeed({ reloadFeeds }: NewFeedProps) {
   const onSubmit = async (data: NewFeedForm, event?: BaseSyntheticEvent) => {
     if (((event?.nativeEvent as SubmitEvent).submitter as HTMLButtonElement).innerText === 'save') {
       await addFeed({ data })
-      await reloadFeeds()
+      navigate('../feeds')
     } else {
       const discoverResp = await discover({ params: data })
       reset(discoverResp.data)

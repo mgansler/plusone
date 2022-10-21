@@ -37,7 +37,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
       onSuccess: ({ data }) => {
         setUserInfo(data)
         if (location.pathname !== '/home') {
-          data.isAdmin ? navigate('/admin') : navigate('/member')
+          // data.isAdmin ? navigate('/admin') : navigate('/member')
         }
       },
       onError: async (err) => {
@@ -57,7 +57,12 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
 
   const login = async (auth: LoginResponse) => {
     localStorage.setItem(AUTHENTICATION_LOCAL_STORAGE_KEY, JSON.stringify(auth))
-    await fetchProfile()
+    const { data } = await fetchProfile()
+    if (data.data.isAdmin) {
+      navigate('/admin')
+    } else {
+      navigate('/member/feeds')
+    }
   }
 
   const logout = async () => {

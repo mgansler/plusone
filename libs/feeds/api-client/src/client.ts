@@ -76,7 +76,7 @@ export type FeedControllerGetParams = { cursor?: number }
 
 export type FeedControllerDiscoverParams = { url: string }
 
-export type ArticleControllerSearchParams = { s: string; cursor: number }
+export type ArticleControllerSearchParams = { s: string; cursor?: number }
 
 export interface FeedResponseDto {
   feedUrl: string

@@ -26,7 +26,12 @@ export class ArticleController {
   }
 
   @Get('/search')
-  @ApiQuery({ name: 'cursor', description: 'Cursor of the last article for pagination.', type: Number })
+  @ApiQuery({
+    name: 'cursor',
+    description: 'Cursor of the last article for pagination.',
+    type: Number,
+    required: false,
+  })
   @ApiQuery({ name: 's', description: 'The string that the article should match.' })
   @ApiOkResponse({ description: 'A list of articles matching the provided search string.', type: PaginatedArticlesDto })
   search(
