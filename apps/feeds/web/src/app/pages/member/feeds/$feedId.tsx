@@ -1,15 +1,15 @@
+import { useParams } from 'react-router-dom'
+
 import { useFeedControllerGetInfinite } from '@plusone/feeds/api-client'
-import type { FeedResponse } from '@plusone/feeds/shared/types'
 
-import { ArticleList } from '../../components/article-list'
+import { ArticleList } from '../../../components/article-list'
 
-type ArticlesProps = {
-  feed: FeedResponse
-}
 
-export function Articles({ feed }: ArticlesProps) {
+export function Articles() {
+  const { feedId } = useParams()
+
   const { data, hasNextPage, fetchNextPage } = useFeedControllerGetInfinite(
-    feed.id,
+    feedId,
     {},
     {
       query: {
@@ -24,13 +24,13 @@ export function Articles({ feed }: ArticlesProps) {
   }
 
   return (
-    <>
+    <div>
       {data.pages.map((page, index) => (
         <ArticleList key={index} articles={page.data.content} />
       ))}
       <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
         next
       </button>
-    </>
+    </div>
   )
 }

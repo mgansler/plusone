@@ -35,7 +35,7 @@ export function Login() {
         </label>
         <button>login</button>
       </form>
-      <Link to={'/login/register'}>I don't have an account</Link>
+      <Link to={'../register'}>I don't have an account</Link>
     </div>
   )
 }

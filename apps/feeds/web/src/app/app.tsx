@@ -1,4 +1,3 @@
-import { ErrorBoundary } from 'react-error-boundary'
 import { Link, Route, Routes } from 'react-router-dom'
 
 import { UserInfo } from './components/user-info'
@@ -9,7 +8,8 @@ import { Login } from './pages/login'
 import { Register } from './pages/login/register'
 import { Member } from './pages/member'
 import { Feeds } from './pages/member/feeds'
-import { NewFeed, NewFeedFallback } from './pages/member/new-feed'
+import { Articles } from './pages/member/feeds/$feedId'
+import { NewFeed } from './pages/member/new-feed'
 import { Search } from './pages/member/search'
 
 export function App() {
@@ -25,20 +25,15 @@ export function App() {
       <Routes>
         <Route path={'home'} element={<Home />} />
         <Route path={'login'} element={<Login />} />
-        <Route path={'login/register'} element={<Register />} />
+        <Route path={'register'} element={<Register />} />
 
         {isLoggedIn && (
           <Route path={'member'} element={<Member />}>
-            <Route
-              path={'new'}
-              element={
-                <ErrorBoundary FallbackComponent={NewFeedFallback}>
-                  <NewFeed />
-                </ErrorBoundary>
-              }
-            />
+            <Route path={'new'} element={<NewFeed />} />
             <Route path={'search'} element={<Search />} />
-            <Route path={'feeds'} element={<Feeds />}></Route>
+            <Route path={'feeds'} element={<Feeds />}>
+              <Route path={':feedId'} element={<Articles />} />
+            </Route>
           </Route>
         )}
 

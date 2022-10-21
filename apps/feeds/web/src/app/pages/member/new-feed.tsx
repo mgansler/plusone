@@ -1,5 +1,6 @@
 import type { BaseSyntheticEvent } from 'react'
 import type { FallbackProps } from 'react-error-boundary'
+import { ErrorBoundary } from 'react-error-boundary'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
@@ -11,7 +12,7 @@ type NewFeedForm = {
   feedUrl: string
 }
 
-export function NewFeed() {
+function NewFeedWrapped() {
   const navigate = useNavigate()
   const { register, handleSubmit, reset } = useForm<NewFeedForm>()
 
@@ -48,12 +49,20 @@ export function NewFeed() {
   )
 }
 
-export function NewFeedFallback({ error, resetErrorBoundary }: FallbackProps) {
+function NewFeedFallback({ error, resetErrorBoundary }: FallbackProps) {
   console.log(error)
   return (
     <div>
       Could not add feed: {error.message}
       <button onClick={resetErrorBoundary}>reset</button>
     </div>
+  )
+}
+
+export function NewFeed() {
+  return (
+    <ErrorBoundary FallbackComponent={NewFeedFallback}>
+      <NewFeedWrapped />
+    </ErrorBoundary>
   )
 }

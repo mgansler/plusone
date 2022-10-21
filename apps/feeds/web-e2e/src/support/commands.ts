@@ -29,7 +29,7 @@ Cypress.Commands.add('login', () => {
 
 Cypress.Commands.add('loginFreshUser', () => {
   const username = Math.random().toString(36).substring(2, 7)
-  cy.visit('/login/register')
+  cy.visit('/register')
   cy.findByRole('textbox', { name: 'username' }).type(username)
   cy.findByLabelText('password').type('random_password')
   cy.findByRole('button', { name: 'register' }).click()

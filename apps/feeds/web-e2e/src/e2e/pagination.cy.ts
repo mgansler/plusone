@@ -8,10 +8,9 @@ describe('feeds-web', () => {
     cy.forceFetchFeeds()
     cy.login()
 
-    cy.findByRole('region', { name: 'heise online News' }).within(() => {
-      cy.findAllByRole('article').should('have.length', 10)
-      cy.findByRole('button', { name: 'next' }).click()
-      cy.findAllByRole('article').should('have.length', 20)
-    })
+    cy.findByRole('region', { name: 'heise online News' }).click()
+    cy.findAllByRole('article').should('have.length', 10)
+    cy.findByRole('button', { name: 'next' }).click()
+    cy.findAllByRole('article').should('have.length', 20)
   })
 })

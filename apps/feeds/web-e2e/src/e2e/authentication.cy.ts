@@ -25,7 +25,7 @@ describe('authentication', () => {
     cy.findByRole('link', { name: 'Login' }).click()
     cy.findByRole('link', { name: "I don't have an account" }).click()
 
-    cy.location('pathname').should('eq', '/login/register')
+    cy.location('pathname').should('eq', '/register')
 
     cy.findByRole('textbox', { name: 'username' }).type(username)
     cy.findByLabelText('password').type('just_secret')
