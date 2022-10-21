@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common'
-import { ApiBody, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger'
+import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 
 import { LoginResponseDto, UserLoginDto, UserRegistrationDto, UserResponseDto } from './authentication.dto'
 import { AuthenticationService } from './authentication.service'
@@ -7,6 +7,7 @@ import { JwtAccessTokenGuard, JwtRefreshTokenGuard } from './jwt.strategy'
 import { LocalAuthGuard } from './username-password-strategy.service'
 
 @Controller('authentication')
+@ApiTags('authentication')
 export class AuthenticationController {
   constructor(private authenticationService: AuthenticationService) {}
 

@@ -1,8 +1,7 @@
-import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import type { LoginResponse } from '@plusone/feeds/shared/types'
+import { useAuthenticationControllerLogin } from '@plusone/feeds/api-client'
 
 import { useUserContext } from '../../context/user'
 
@@ -15,19 +14,11 @@ export function Login() {
   const { register, handleSubmit } = useForm<LoginForm>()
   const { login } = useUserContext()
 
-  const { mutateAsync } = useMutation<LoginResponse, unknown, LoginForm>(['login'], (body: LoginForm) =>
-    fetch('/api/authentication/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    }).then((res) => res.json()),
-  )
+  const { mutateAsync } = useAuthenticationControllerLogin()
 
   const onSubmit = async (data: LoginForm) => {
-    const resp = await mutateAsync(data)
-    login(resp)
+    const resp = await mutateAsync({ data })
+    login(resp.data)
   }
 
   return (

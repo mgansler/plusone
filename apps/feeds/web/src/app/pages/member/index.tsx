@@ -1,16 +1,12 @@
-import { useQuery } from '@tanstack/react-query'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import type { FeedResponse } from '@plusone/feeds/shared/types'
-
-import { useQueryFn } from '../../util/api-client'
+import { useFeedControllerGetAll } from '@plusone/feeds/api-client'
 
 import { Articles } from './articles'
 import { NewFeed, NewFeedFallback } from './new-feed'
 
 export function Member() {
-  const fetchFeedListQueryFn = useQueryFn('/api/feed/')
-  const { data, refetch: reloadFeeds } = useQuery<FeedResponse[]>(['feeds'], fetchFeedListQueryFn)
+  const { data, refetch: reloadFeeds } = useFeedControllerGetAll()
 
   return (
     <div>
@@ -19,7 +15,7 @@ export function Member() {
         <NewFeed reloadFeeds={reloadFeeds} />
       </ErrorBoundary>
       <div>
-        {data?.map((feedResponse) => (
+        {data?.data.map((feedResponse) => (
           <section key={feedResponse.id} aria-label={feedResponse.title}>
             <h4>{feedResponse.title}</h4>
             <Articles feed={feedResponse} />

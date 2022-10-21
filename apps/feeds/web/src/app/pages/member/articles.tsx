@@ -1,22 +1,21 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
 import { Fragment } from 'react'
 
-import type { FeedResponse, PaginatedArticles } from '@plusone/feeds/shared/types'
-
-import { useInfiniteQueryFn } from '../../util/api-client'
+import { useFeedControllerGetInfinite } from '@plusone/feeds/api-client'
+import type { FeedResponse } from '@plusone/feeds/shared/types'
 
 type ArticlesProps = {
   feed: FeedResponse
 }
 
 export function Articles({ feed }: ArticlesProps) {
-  const fetchArticlesQueryFn = useInfiniteQueryFn(`/api/feed/${feed.id}`)
-  const { data, hasNextPage, fetchNextPage } = useInfiniteQuery<PaginatedArticles>(
-    ['feed', feed.id],
-    fetchArticlesQueryFn,
+  const { data, hasNextPage, fetchNextPage } = useFeedControllerGetInfinite(
+    feed.id,
+    {},
     {
-      getNextPageParam: (lastPage) => {
-        return lastPage.content.length < lastPage.pageSize ? false : lastPage.lastCursor
+      query: {
+        getNextPageParam: (lastPage) => {
+          return lastPage.data.content.length < lastPage.data.pageSize ? false : lastPage.data.lastCursor
+        },
       },
     },
   )
@@ -30,7 +29,7 @@ export function Articles({ feed }: ArticlesProps) {
       {data.pages.map((page, index) => {
         return (
           <Fragment key={index}>
-            {page.content.map((article) => (
+            {page.data.content.map((article) => (
               <article key={article.article.id}>{article.article.title}</article>
             ))}
           </Fragment>

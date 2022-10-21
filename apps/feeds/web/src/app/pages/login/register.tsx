@@ -1,6 +1,7 @@
-import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+
+import { useAuthenticationControllerRegister } from '@plusone/feeds/api-client'
 
 type RegisterForm = {
   username: string
@@ -11,18 +12,11 @@ export function Register() {
   const navigate = useNavigate()
 
   const { register, handleSubmit } = useForm<RegisterForm>()
-  const { mutateAsync } = useMutation(['register'], (body: RegisterForm) =>
-    fetch('/api/authentication/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    }).then((res) => res.json()),
-  )
+
+  const { mutateAsync } = useAuthenticationControllerRegister()
 
   const onSubmit = async (data: RegisterForm) => {
-    await mutateAsync(data)
+    await mutateAsync({ data })
     navigate('/login')
   }
 

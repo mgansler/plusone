@@ -79,10 +79,13 @@ export class AuthenticationService implements OnModuleInit {
 
   async validateRefreshToken(refreshToken: string, userId: string): Promise<User> {
     const user = await this.prismaService.user.findUnique({ where: { id: userId } })
-    const refreshTokenIsValid = await compare(refreshToken, user.refreshToken)
 
-    if (refreshTokenIsValid) {
-      return user
+    if (user.refreshToken) {
+      const refreshTokenIsValid = await compare(refreshToken, user.refreshToken)
+
+      if (refreshTokenIsValid) {
+        return user
+      }
     }
   }
 

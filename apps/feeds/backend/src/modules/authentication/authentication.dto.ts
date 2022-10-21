@@ -33,7 +33,7 @@ export class UserRegistrationDto {
 
 export class UserResponseDto implements UserResponse {
   @ApiPropertyOptional()
-  email: string | null
+  email?: string
 
   @ApiProperty()
   id: string
