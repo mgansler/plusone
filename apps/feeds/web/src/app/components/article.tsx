@@ -23,7 +23,7 @@ function useToggleUnreadState(id: ArticleDto['id'], unread: boolean) {
     },
   })
 
-  return () => mutate({ id, data: { unread: !unread } })
+  return (read?: boolean) => mutate({ id, data: { unread: typeof read !== 'undefined' ? !read : !unread } })
 }
 
 type ArticleProps = {
@@ -35,8 +35,10 @@ export function Article({ article: { article, unread } }: ArticleProps) {
 
   return (
     <article>
-      <input type={'checkbox'} defaultChecked={!unread} onClick={toggleUnread} />
-      {article.title}
+      <input type={'checkbox'} checked={!unread} onChange={() => toggleUnread()} />
+      <a href={article.link} target={'_blank'} rel={'noreferrer'} onClick={() => toggleUnread(true)}>
+        {article.title}
+      </a>
     </article>
   )
 }
