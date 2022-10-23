@@ -6,7 +6,7 @@ export interface Pagination {
 
 export interface Paginated<ContentType> {
   totalCount: number
-  lastCursor: number
+  lastCursor?: number
   pageSize: number
   content: ContentType[]
 }

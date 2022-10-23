@@ -1,10 +1,9 @@
 describe('feeds-web', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:4200/')
+    cy.visit('/')
   })
 
   it('should display welcome message and status', () => {
     cy.findByRole('heading', { name: 'Welcome feeds-web' })
-    cy.findByText('status: ok')
   })
 })

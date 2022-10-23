@@ -1,14 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { Item } from 'rss-parser'
 
 import { Article, Feed, PrismaService, User } from '@plusone/feeds-persistence'
-import { Pagination } from '@plusone/feeds/shared/types'
+import { PaginatedArticles, Pagination } from '@plusone/feeds/shared/types'
 
 @Injectable()
 export class ArticleService {
   private logger = new Logger(ArticleService.name)
 
-  constructor(private prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService, private readonly configService: ConfigService) {}
 
   async create(article: Item & { id?: string }, feed: Feed) {
     if (!article.guid || typeof article.guid !== 'string') {
@@ -46,25 +47,18 @@ export class ArticleService {
     })
   }
 
-  async getForUserAndFeed(userId: User['id'], feedId: Feed['id'], pagination: Pagination) {
+  async getForUserAndFeed(userId: User['id'], feedId: Feed['id'], pagination: Pagination): Promise<PaginatedArticles> {
     const isFirstRequest = !pagination.cursor || Number(pagination.cursor) === 0
-    // TODO: configuration? client arg?
-    const PAGE_SIZE = 10
 
-    const [totalCount, unreadCount, { cursor: lastCursor }, content] = await this.prismaService.$transaction([
+    const [totalCount, unreadCount, content] = await this.prismaService.$transaction([
       this.prismaService.userArticle.count({
         where: { userId, article: { feedId } },
       }),
       this.prismaService.userArticle.count({
         where: { userId, article: { feedId }, unread: true },
       }),
-      this.prismaService.userArticle.findFirst({
-        select: { cursor: true },
-        where: { userId, article: { feedId } },
-        orderBy: { cursor: 'asc' },
-      }),
       this.prismaService.userArticle.findMany({
-        take: PAGE_SIZE,
+        take: this.configService.get('PAGE_SIZE'),
         cursor: isFirstRequest ? undefined : { cursor: Number(pagination.cursor) },
         skip: isFirstRequest ? 0 : 1,
         select: { article: true, unread: true, cursor: true },
@@ -72,31 +66,46 @@ export class ArticleService {
         orderBy: [{ cursor: 'desc' }],
       }),
     ])
-    return { totalCount, content, unreadCount, lastCursor, pageSize: PAGE_SIZE }
+
+    return {
+      totalCount,
+      content,
+      unreadCount,
+      lastCursor: content[content.length - 1]?.cursor,
+      pageSize: this.configService.get('PAGE_SIZE'),
+    }
   }
 
-  async search(userId: User['id'], s: string, pagination: Pagination) {
+  async search(userId: User['id'], s: string, pagination: Pagination): Promise<PaginatedArticles> {
     this.logger.debug(`User is searching for '${s}'.`)
 
     const isFirstRequest = !pagination.cursor || Number(pagination.cursor) === 0
-    const PAGE_SIZE = 10
     const search = s.split(' ').join(' & ')
 
-    const [totalCount, content] = await this.prismaService.$transaction([
+    const [totalCount, content, unreadCount] = await this.prismaService.$transaction([
       this.prismaService.userArticle.count({
         where: { userId, article: { title: { search } } },
       }),
       this.prismaService.userArticle.findMany({
         cursor: isFirstRequest ? undefined : { cursor: Number(pagination.cursor) },
         skip: isFirstRequest ? 0 : 1,
-        take: PAGE_SIZE,
+        take: this.configService.get('PAGE_SIZE'),
         select: { article: true, unread: true, cursor: true },
         where: { userId, article: { title: { search } } },
         orderBy: [{ cursor: 'desc' }],
       }),
+      this.prismaService.userArticle.count({
+        where: { userId, article: { title: { search } } },
+      }),
     ])
 
-    return { content, totalCount, lastCursor: content[content.length - 1]?.cursor }
+    return {
+      content,
+      totalCount,
+      lastCursor: content[content.length - 1]?.cursor,
+      pageSize: this.configService.get('PAGE_SIZE'),
+      unreadCount,
+    }
   }
 
   async toggleUnreadForUser(articleId: Article['id'], userId: User['id'], unread: boolean) {

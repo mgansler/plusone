@@ -9,7 +9,10 @@ services:
     depends_on:
       - database
     environment:
-      JWT_SECRET: not_so_secret
+      JWT_ACCESS_TOKEN_SECRET: not_so_secret
+      JWT_ACCESS_TOKEN_EXPIRATION_TIME: 3600s
+      JWT_REFRESH_TOKEN_SECRET: MY_REFRESH_SECRET
+      JWT_REFRESH_TOKEN_EXPIRATION_TIME: 604800s
       DATABASE_URL: postgres://postgres:super_secret@database/feeds
       ADMIN_USER: root
       ADMIN_PASSWORD: keep_this_secret

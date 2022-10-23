@@ -1,40 +1,56 @@
 import { Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
+import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { Feed } from '@plusone/feeds-persistence'
-import { DiscoverResponse, FeedResponse, PaginatedArticles, Pagination } from '@plusone/feeds/shared/types'
+import { Pagination } from '@plusone/feeds/shared/types'
 
+import { PaginatedArticlesDto } from '../article/article.dto'
 import { ArticleService } from '../article/article.service'
-import { JwtAuthGuard } from '../authentication/jwt-auth.guard'
+import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 
-import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
+import { DiscoverResponseDto, FeedDiscoverDto, FeedInputDto, FeedResponseDto } from './feed.dto'
 import { FeedService } from './feed.service'
 
 @Controller('feed')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAccessTokenGuard)
+@ApiTags('feed')
 export class FeedController {
   constructor(private readonly feedService: FeedService, private readonly articleService: ArticleService) {}
 
-  @Get('discover')
-  discover(@Query() feedDiscoverDto: FeedDiscoverDto): Promise<DiscoverResponse> {
+  @Post('discover')
+  @ApiQuery({ name: 'url', description: 'URL of the website where a feed should be discovered.', type: String })
+  @ApiOkResponse({ description: 'Metadata for feed that has been discovered.', type: DiscoverResponseDto })
+  discover(@Query() feedDiscoverDto: FeedDiscoverDto): Promise<DiscoverResponseDto> {
     return this.feedService.discover(feedDiscoverDto)
   }
 
   @Post()
-  add(@Body() feedInputDto: FeedInputDto, @Req() { user }): Promise<FeedResponse> {
+  @ApiBody({ description: 'Required information to create a feed.', type: FeedInputDto })
+  @ApiCreatedResponse({ description: 'Metadata of the feed that has been created.', type: FeedResponseDto })
+  add(@Body() feedInputDto: FeedInputDto, @Req() { user }): Promise<FeedResponseDto> {
     return this.feedService.create(feedInputDto, user.id)
   }
 
   @Get()
-  getAll(@Req() { user }): Promise<FeedResponse[]> {
+  @ApiOkResponse({ description: 'Metadata of all feeds.', type: [FeedResponseDto] })
+  getAll(@Req() { user }): Promise<FeedResponseDto[]> {
     return this.feedService.findAllFor(user)
   }
 
   @Get(':feedId')
+  @ApiParam({ name: 'feedId', description: 'The id of the feed.' })
+  @ApiQuery({
+    name: 'cursor',
+    description: 'Cursor of the last article for pagination.',
+    type: Number,
+    required: false,
+  })
+  @ApiOkResponse({ description: 'Paginated list of articles for given feed.', type: PaginatedArticlesDto })
   get(
     @Param('feedId') feedId: Feed['id'],
-    @Query() pagination: Pagination,
+    @Query('cursor') cursor: Pagination['cursor'],
     @Req() { user },
-  ): Promise<PaginatedArticles> {
-    return this.articleService.getForUserAndFeed(user.id, feedId, pagination)
+  ): Promise<PaginatedArticlesDto> {
+    return this.articleService.getForUserAndFeed(user.id, feedId, { cursor })
   }
 }

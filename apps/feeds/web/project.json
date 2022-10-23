@@ -42,7 +42,13 @@
           "extractLicenses": true,
           "vendorChunk": false
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "dependencies"
+        }
+      ]
     },
     "serve": {
       "executor": "@nrwl/webpack:dev-server",
@@ -60,7 +66,13 @@
           "buildTarget": "feeds-web:build:production",
           "hmr": false
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "projects": "dependencies"
+        }
+      ]
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
