@@ -34,14 +34,10 @@ export class SchedulingService {
     })
   }
 
-  private async saveNewArticles(articles: Item[], feed: Feed): Promise<number> {
-    let newArticleCount = 0
+  private async saveNewArticles(articles: Item[], feed: Feed) {
     for (const article of articles.reverse()) {
       try {
-        // TODO: create many?
-        if (await this.articleService.create(article, feed)) {
-          newArticleCount++
-        }
+        await this.articleService.create(article, feed)
       } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
           this.logger.error(`Failed to save article: ${e.code}\n ${e.message}`)
@@ -50,7 +46,6 @@ export class SchedulingService {
         }
       }
     }
-    this.logger.log(`Saved ${newArticleCount} new articles for ${feed.originalTitle}`)
-    return newArticleCount
+    this.logger.log(`Saved/updated ${articles.length} articles for ${feed.originalTitle}`)
   }
 }

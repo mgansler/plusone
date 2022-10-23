@@ -11,38 +11,43 @@ export class ArticleService {
 
   constructor(private readonly prismaService: PrismaService, private readonly configService: ConfigService) {}
 
-  async create(article: Item & { id?: string }, feed: Feed) {
-    if (!article.guid || typeof article.guid !== 'string') {
-      if (typeof article.id === 'string') {
-        article.guid = article.id
+  async create(newArticle: Item & { id?: string }, feed: Feed) {
+    if (!newArticle.guid || typeof newArticle.guid !== 'string') {
+      if (typeof newArticle.id === 'string') {
+        newArticle.guid = newArticle.id
       } else {
         this.logger.warn(`Could not store article for ${feed.originalTitle} as guid is not a string`)
-        this.logger.debug(`${article.title}: ${article.guid}`)
+        this.logger.debug(`${newArticle.title}: ${newArticle.guid}`)
         return
       }
-    }
-
-    // TODO: upsert?
-    if (
-      await this.prismaService.article.findUnique({ where: { guid_feedId: { guid: article.guid, feedId: feed.id } } })
-    ) {
-      return
     }
 
     const feedSubscribers = await this.prismaService.user.findMany({
       where: { UserFeed: { some: { feedId: feed.id } } },
     })
 
-    return this.prismaService.article.create({
-      data: {
-        content: article.content,
-        contentBody: article['content:encoded'],
+    await this.prismaService.article.upsert({
+      where: {
+        guid_feedId: {
+          guid: newArticle.guid,
+          feedId: feed.id,
+        },
+      },
+      update: {
+        content: newArticle.content,
+        contentBody: newArticle['content:encoded'],
+        title: newArticle.title,
+        UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })), skipDuplicates: true } },
+      },
+      create: {
+        content: newArticle.content,
+        contentBody: newArticle['content:encoded'],
         feedId: feed.id,
-        guid: article.guid,
-        link: article.link,
-        title: article.title,
-        date: new Date(article.isoDate),
-        UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })) } },
+        guid: newArticle.guid,
+        link: newArticle.link,
+        title: newArticle.title,
+        date: new Date(newArticle.isoDate),
+        UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })), skipDuplicates: true } },
       },
     })
   }
