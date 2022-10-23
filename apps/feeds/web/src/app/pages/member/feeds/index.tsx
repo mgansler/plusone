@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 
 import { useFeedControllerGetAll } from '@plusone/feeds/api-client'
 
-export function Feeds() {
+export function FeedList() {
   const navigate = useNavigate()
   const { data } = useFeedControllerGetAll()
 

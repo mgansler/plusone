@@ -7,7 +7,7 @@ import { Home } from './pages/home'
 import { Login } from './pages/login'
 import { Register } from './pages/login/register'
 import { Member } from './pages/member'
-import { Feeds } from './pages/member/feeds'
+import { FeedList } from './pages/member/feeds'
 import { Articles } from './pages/member/feeds/$feedId'
 import { NewFeed } from './pages/member/new-feed'
 import { Search } from './pages/member/search'
@@ -31,7 +31,7 @@ export function App() {
           <Route path={'member'} element={<Member />}>
             <Route path={'new'} element={<NewFeed />} />
             <Route path={'search'} element={<Search />} />
-            <Route path={'feeds'} element={<Feeds />}>
+            <Route path={'feeds'} element={<FeedList />}>
               <Route path={':feedId'} element={<Articles />} />
             </Route>
           </Route>
