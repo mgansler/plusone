@@ -6,14 +6,19 @@ import { Article, ArticleResponse, PaginatedArticles, ToggleUnreadRequest } from
 class ArticleDto implements Article {
   @ApiProperty()
   id: string
+
   @ApiProperty()
   title: string
+
   @ApiProperty()
   content: string
+
   @ApiProperty()
   contentBody: string
+
   @ApiProperty()
   guid: string
+
   @ApiProperty()
   link: string
 }
@@ -21,8 +26,10 @@ class ArticleDto implements Article {
 export class ArticleResponseDto implements ArticleResponse {
   @ApiProperty()
   article: ArticleDto
+
   @ApiProperty()
   cursor: number
+
   @ApiProperty()
   unread: boolean
 }
@@ -36,12 +43,16 @@ export class ArticleToggleUnreadDto implements ToggleUnreadRequest {
 export class PaginatedArticlesDto implements PaginatedArticles {
   @ApiProperty({ type: [ArticleResponseDto] })
   content: ArticleResponseDto[]
+
   @ApiProperty()
   pageSize: number
+
   @ApiProperty()
   totalCount: number
+
   @ApiProperty()
   unreadCount: number
+
   @ApiPropertyOptional()
   lastCursor?: number
 }
