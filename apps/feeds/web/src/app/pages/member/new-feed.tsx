@@ -4,7 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import { useFeedControllerAdd, useFeedControllerDiscover } from '@plusone/feeds/api-client'
+import { useAddFeed, useDiscoverFeed } from '@plusone/feeds/api-client'
 
 type NewFeedForm = {
   title: string
@@ -16,8 +16,8 @@ function NewFeedWrapped() {
   const navigate = useNavigate()
   const { register, handleSubmit, reset } = useForm<NewFeedForm>()
 
-  const { mutateAsync: addFeed } = useFeedControllerAdd({ mutation: { useErrorBoundary: true } })
-  const { mutateAsync: discover } = useFeedControllerDiscover()
+  const { mutateAsync: discover } = useDiscoverFeed()
+  const { mutateAsync: addFeed } = useAddFeed({ mutation: { useErrorBoundary: true } })
 
   const onSubmit = async (data: NewFeedForm, event?: BaseSyntheticEvent) => {
     if (((event?.nativeEvent as SubmitEvent).submitter as HTMLButtonElement).innerText === 'save') {

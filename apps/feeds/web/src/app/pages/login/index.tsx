@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { useAuthenticationControllerLogin } from '@plusone/feeds/api-client'
+import { useLogin } from '@plusone/feeds/api-client'
 
 import { useUserContext } from '../../context/user'
 
@@ -14,7 +14,7 @@ export function Login() {
   const { register, handleSubmit } = useForm<LoginForm>()
   const { login } = useUserContext()
 
-  const { mutateAsync } = useAuthenticationControllerLogin()
+  const { mutateAsync } = useLogin()
 
   const onSubmit = async (data: LoginForm) => {
     const resp = await mutateAsync({ data })

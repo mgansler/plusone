@@ -1,10 +1,10 @@
-import { useFeedControllerGetAll, useUserControllerGetAll } from '@plusone/feeds/api-client'
+import { useGetFeeds, useGetUsers } from '@plusone/feeds/api-client'
 
 import { Health } from '../../components/health'
 
 export function Admin() {
-  const { data: feeds } = useFeedControllerGetAll()
-  const { data: users } = useUserControllerGetAll()
+  const { data: feeds } = useGetFeeds()
+  const { data: users } = useGetUsers()
 
   return (
     <div>

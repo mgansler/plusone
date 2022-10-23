@@ -5,11 +5,7 @@ import { createContext, useContext, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import type { LoginResponse, UserResponse } from '@plusone/feeds/shared/types'
-import {
-  AUTHENTICATION_LOCAL_STORAGE_KEY,
-  useAuthenticationControllerGetProfile,
-  useAuthenticationControllerLogout,
-} from '@plusone/feeds/api-client'
+import { AUTHENTICATION_LOCAL_STORAGE_KEY, useLogout, useProfile } from '@plusone/feeds/api-client'
 
 type UserContextValue = {
   userInfo?: UserResponse
@@ -30,7 +26,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
   const [userInfo, setUserInfo] = useState<UserResponse | undefined>()
   const queryClient = useQueryClient()
 
-  const { refetch: fetchProfile } = useAuthenticationControllerGetProfile({
+  const { refetch: fetchProfile } = useProfile({
     query: {
       enabled: location.pathname !== '/login',
       refetchInterval: 30_000,
@@ -51,7 +47,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
     },
   })
 
-  const { refetch: logoutAddServer } = useAuthenticationControllerLogout({ query: { enabled: false } })
+  const { refetch: logoutAddServer } = useLogout({ query: { enabled: false } })
 
   const isLoggedIn = userInfo !== undefined
 

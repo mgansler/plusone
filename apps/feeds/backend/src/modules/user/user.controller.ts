@@ -1,5 +1,5 @@
 import { Controller, Get, UseGuards } from '@nestjs/common'
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { UserResponseDto } from '../authentication/authentication.dto'
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
@@ -8,15 +8,17 @@ import { RolesGuard } from '../authentication/roles.guard'
 
 import { UserService } from './user.service'
 
-@Controller('user')
 @UseGuards(JwtAccessTokenGuard, RolesGuard)
+@ApiBearerAuth()
 @ApiTags('user')
+@Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Get('')
   @Roles('admin')
+  @ApiOperation({ operationId: 'get-users' })
   @ApiOkResponse({ description: 'List of all users.', type: [UserResponseDto] })
+  @Get('')
   getAll(): Promise<UserResponseDto[]> {
     return this.userService.getAll()
   }

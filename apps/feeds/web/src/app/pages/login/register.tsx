@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import { useAuthenticationControllerRegister } from '@plusone/feeds/api-client'
+import { useRegister } from '@plusone/feeds/api-client'
 
 type RegisterForm = {
   username: string
@@ -13,7 +13,7 @@ export function Register() {
 
   const { register, handleSubmit } = useForm<RegisterForm>()
 
-  const { mutateAsync } = useAuthenticationControllerRegister()
+  const { mutateAsync } = useRegister()
 
   const onSubmit = async (data: RegisterForm) => {
     await mutateAsync({ data })

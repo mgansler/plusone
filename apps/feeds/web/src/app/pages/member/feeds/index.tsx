@@ -1,10 +1,10 @@
 import { Outlet, useNavigate } from 'react-router-dom'
 
-import { useFeedControllerGetAll } from '@plusone/feeds/api-client'
+import { useGetFeeds } from '@plusone/feeds/api-client'
 
 export function FeedList() {
   const navigate = useNavigate()
-  const { data } = useFeedControllerGetAll()
+  const { data } = useGetFeeds()
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr' }}>

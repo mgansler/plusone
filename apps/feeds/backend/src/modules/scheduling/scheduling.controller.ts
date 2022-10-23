@@ -1,5 +1,5 @@
 import { Controller, Post, UseGuards } from '@nestjs/common'
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 import { Roles } from '../authentication/roles.decorator'
@@ -7,15 +7,17 @@ import { RolesGuard } from '../authentication/roles.guard'
 
 import { SchedulingService } from './scheduling.service'
 
-@Controller('scheduling')
 @UseGuards(JwtAccessTokenGuard, RolesGuard)
+@ApiBearerAuth()
 @ApiTags('scheduling')
+@Controller('scheduling')
 export class SchedulingController {
   constructor(private readonly schedulingService: SchedulingService) {}
 
-  @Post('now')
   @Roles('admin')
+  @ApiOperation({ operationId: 'force-fetching' })
   @ApiCreatedResponse({ description: 'Fetching all feeds has been triggered.' })
+  @Post('now')
   async fetchNow() {
     this.schedulingService.handleCron()
   }

@@ -1,13 +1,13 @@
 import { useParams } from 'react-router-dom'
 
-import { useFeedControllerGetInfinite } from '@plusone/feeds/api-client'
+import { useGetArticlesInfinite } from '@plusone/feeds/api-client'
 
 import { ArticleList } from '../../../components/article-list'
 
 export function Articles() {
   const { feedId } = useParams()
 
-  const { data, hasNextPage, fetchNextPage } = useFeedControllerGetInfinite(
+  const { data, hasNextPage, fetchNextPage } = useGetArticlesInfinite(
     feedId,
     {},
     {
