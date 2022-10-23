@@ -82,7 +82,7 @@ export class ArticleService {
     const isFirstRequest = !pagination.cursor || Number(pagination.cursor) === 0
     const search = s.split(' ').join(' & ')
 
-    const [totalCount, content] = await this.prismaService.$transaction([
+    const [totalCount, content, unreadCount] = await this.prismaService.$transaction([
       this.prismaService.userArticle.count({
         where: { userId, article: { title: { search } } },
       }),
@@ -94,6 +94,9 @@ export class ArticleService {
         where: { userId, article: { title: { search } } },
         orderBy: [{ cursor: 'desc' }],
       }),
+      this.prismaService.userArticle.count({
+        where: { userId, article: { title: { search } } },
+      }),
     ])
 
     return {
@@ -101,7 +104,7 @@ export class ArticleService {
       totalCount,
       lastCursor: content[content.length - 1]?.cursor,
       pageSize: this.configService.get('PAGE_SIZE'),
-      unreadCount: -1,
+      unreadCount,
     }
   }
 
