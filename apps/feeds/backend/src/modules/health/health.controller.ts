@@ -1,10 +1,11 @@
 import { Controller, Get } from '@nestjs/common'
-import { ApiOkResponse } from '@nestjs/swagger'
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { HealthCheck, HealthCheckService } from '@nestjs/terminus'
 
 import { HealthCheckResultDto } from './health.dto'
 
 @Controller('health')
+@ApiTags('health')
 export class HealthController {
   constructor(private readonly health: HealthCheckService) {}
 

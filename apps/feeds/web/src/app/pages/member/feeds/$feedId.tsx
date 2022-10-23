@@ -4,7 +4,6 @@ import { useFeedControllerGetInfinite } from '@plusone/feeds/api-client'
 
 import { ArticleList } from '../../../components/article-list'
 
-
 export function Articles() {
   const { feedId } = useParams()
 

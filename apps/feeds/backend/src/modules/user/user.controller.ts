@@ -1,5 +1,5 @@
 import { Controller, Get, UseGuards } from '@nestjs/common'
-import { ApiOkResponse } from '@nestjs/swagger'
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
 
 import { UserResponseDto } from '../authentication/authentication.dto'
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
@@ -10,6 +10,7 @@ import { UserService } from './user.service'
 
 @Controller('user')
 @UseGuards(JwtAccessTokenGuard, RolesGuard)
+@ApiTags('user')
 export class UserController {
   constructor(private userService: UserService) {}
 

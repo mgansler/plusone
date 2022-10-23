@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
-import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery } from '@nestjs/swagger'
+import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { Feed } from '@plusone/feeds-persistence'
 import { Pagination } from '@plusone/feeds/shared/types'
@@ -13,6 +13,7 @@ import { FeedService } from './feed.service'
 
 @Controller('feed')
 @UseGuards(JwtAccessTokenGuard)
+@ApiTags('feed')
 export class FeedController {
   constructor(private readonly feedService: FeedService, private readonly articleService: ArticleService) {}
 
