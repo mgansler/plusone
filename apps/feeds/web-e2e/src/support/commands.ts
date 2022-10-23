@@ -21,6 +21,13 @@ Cypress.Commands.add('forceFetchFeeds', () => {
 })
 
 Cypress.Commands.add('login', () => {
+  cy.request({
+    method: 'POST',
+    url: '/api/authentication/register',
+    body: { username: 'user', password: 'just_secret' },
+    failOnStatusCode: false,
+  })
+
   cy.visit('/login')
   cy.findByRole('textbox', { name: 'username' }).type('user')
   cy.findByLabelText('password').type('just_secret')
@@ -47,6 +54,13 @@ Cypress.Commands.add('loginAdmin', () => {
 })
 
 Cypress.Commands.add('addHeiseFeedToDefaultUser', () => {
+  cy.request({
+    method: 'POST',
+    url: '/api/authentication/register',
+    body: { username: 'user', password: 'just_secret' },
+    failOnStatusCode: false,
+  })
+
   cy.request('POST', '/api/authentication/login', { username: 'user', password: 'just_secret' }).then((resp) => {
     cy.request({
       method: 'POST',

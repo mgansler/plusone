@@ -3,22 +3,6 @@ describe('authentication', () => {
     cy.visit('/')
   })
 
-  it('should login/logout into existing account', () => {
-    cy.findByRole('link', { name: 'Login' }).click()
-
-    cy.location('pathname').should('eq', '/login')
-
-    cy.findByRole('textbox', { name: 'username' }).type('user')
-    cy.findByLabelText('password').type('just_secret')
-    cy.findByRole('button', { name: 'login' }).click()
-
-    cy.location('pathname').should('eq', '/member/feeds')
-
-    cy.findByRole('button', { name: 'logout' }).click()
-
-    cy.location('pathname').should('eq', '/login')
-  })
-
   it('should register new account and login', () => {
     const username = Math.random().toString(36).substring(2, 7)
 

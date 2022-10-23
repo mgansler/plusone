@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
-import { ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { Pagination } from '@plusone/feeds/shared/types'
 
@@ -11,6 +11,7 @@ import { ArticleService } from './article.service'
 @Controller('article')
 @UseGuards(JwtAccessTokenGuard)
 @ApiTags('article')
+@ApiBearerAuth()
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
