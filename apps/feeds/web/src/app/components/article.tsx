@@ -39,6 +39,7 @@ export function Article({ article: { article, unread } }: ArticleProps) {
       <a href={article.link} target={'_blank'} rel={'noreferrer'} onClick={() => toggleUnread(true)}>
         {article.title}
       </a>
+      <div dangerouslySetInnerHTML={{ __html: article.contentBody }} />
     </article>
   )
 }
