@@ -95,7 +95,7 @@ export class ArticleService {
         orderBy: [{ cursor: 'desc' }],
       }),
       this.prismaService.userArticle.count({
-        where: { userId, article: { title: { search } } },
+        where: { userId, article: { title: { search } }, unread: true },
       }),
     ])
 
