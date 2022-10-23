@@ -23,7 +23,6 @@ export class SchedulingService {
   handleCron() {
     this.feedService.findAllFor(SystemUser).then((feeds) => {
       feeds.forEach((feed) => {
-        this.logger.log(`Requesting update of ${feed.originalTitle}`)
         this.fetchService
           .fetchFeedArticles(feed.feedUrl)
           .then((articles) => this.saveNewArticles(articles, feed))

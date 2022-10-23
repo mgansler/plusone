@@ -11,7 +11,6 @@ export class FetchService {
   async fetchFeedArticles(uri: UpdateFeedRequest) {
     try {
       const feed = await this.parser.parseURL(uri)
-      this.logger.log(`Fetched ${feed.items.length} articles for ${feed.title}`)
       return feed.items
     } catch (e) {
       this.logger.error(e)
