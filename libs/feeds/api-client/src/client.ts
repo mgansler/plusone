@@ -750,6 +750,31 @@ export const useGetUsers = <TData = Awaited<ReturnType<typeof getUsers>>, TError
   return query
 }
 
+export const deleteUser = (userId: unknown) => {
+  return customAxiosInstance<void>({ url: `/api/user/${userId}`, method: 'delete' })
+}
+
+export type DeleteUserMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUser>>>
+
+export type DeleteUserMutationError = unknown
+
+export const useDeleteUser = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError, { userId: unknown }, TContext>
+}) => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUser>>, { userId: unknown }> = (props) => {
+    const { userId } = props ?? {}
+
+    return deleteUser(userId)
+  }
+
+  return useMutation<Awaited<ReturnType<typeof deleteUser>>, TError, { userId: unknown }, TContext>(
+    mutationFn,
+    mutationOptions,
+  )
+}
+
 export const forceFetching = () => {
   return customAxiosInstance<void>({ url: `/api/scheduling/now`, method: 'post' })
 }

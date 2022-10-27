@@ -3,6 +3,7 @@ import { Link, Route, Routes } from 'react-router-dom'
 import { UserInfo } from './components/user-info'
 import { useUserContext } from './context/user'
 import { Admin } from './pages/admin'
+import { Users } from './pages/admin/users'
 import { Home } from './pages/home'
 import { Login } from './pages/login'
 import { Register } from './pages/login/register'
@@ -37,7 +38,11 @@ export function App() {
           </Route>
         )}
 
-        {userInfo?.isAdmin && <Route path={'admin'} element={<Admin />} />}
+        {userInfo?.isAdmin && (
+          <Route path={'admin'} element={<Admin />}>
+            <Route path={'users'} element={<Users />} />
+          </Route>
+        )}
       </Routes>
     </>
   )
