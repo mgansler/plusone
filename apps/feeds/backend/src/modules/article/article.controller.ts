@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
 
+import { Feed } from '@plusone/feeds-persistence'
 import { Pagination } from '@plusone/feeds/shared/types'
 
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
@@ -28,21 +29,33 @@ export class ArticleController {
     return this.articleService.toggleUnreadForUser(id, user.id, toggleUnreadDto.unread)
   }
 
-  @ApiOperation({ operationId: 'search-article' })
+  @ApiOperation({ operationId: 'find-articles' })
   @ApiQuery({
     name: 'cursor',
     description: 'Cursor of the last article for pagination.',
     type: Number,
     required: false,
   })
-  @ApiQuery({ name: 's', description: 'The string that the article should match.' })
+  @ApiQuery({
+    name: 'f',
+    description: 'The id of the feed this query should be limited to.',
+    type: String,
+    required: false,
+  })
+  @ApiQuery({
+    name: 's',
+    description: 'The string that the article should match.',
+    type: String,
+    required: false,
+  })
   @ApiOkResponse({ description: 'A list of articles matching the provided search string.', type: PaginatedArticlesDto })
-  @Get('/search')
-  search(
+  @Get('find')
+  find(
+    @Query('s') search: string,
+    @Query('f') feed: Feed['id'],
     @Query('cursor') cursor: Pagination['cursor'],
-    @Query('s') s: string,
     @Req() { user },
   ): Promise<PaginatedArticlesDto> {
-    return this.articleService.search(user.id, s, { cursor })
+    return this.articleService.find(user.id, search, feed, { cursor })
   }
 }

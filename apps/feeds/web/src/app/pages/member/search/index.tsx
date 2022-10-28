@@ -1,6 +1,6 @@
 import { Link, useSearchParams } from 'react-router-dom'
 
-import { useSearchArticleInfinite } from '@plusone/feeds/api-client'
+import { useFindArticlesInfinite } from '@plusone/feeds/api-client'
 
 import { ArticleList } from '../../../components/article-list'
 
@@ -8,7 +8,7 @@ export function Search() {
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search')
 
-  const { data, hasNextPage, fetchNextPage } = useSearchArticleInfinite(
+  const { data, hasNextPage, fetchNextPage } = useFindArticlesInfinite(
     { s: search },
     {
       query: {

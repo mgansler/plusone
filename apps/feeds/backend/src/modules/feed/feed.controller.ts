@@ -1,19 +1,14 @@
-import { Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common'
 import {
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiParam,
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger'
 
-import { Feed } from '@plusone/feeds-persistence'
-import { Pagination } from '@plusone/feeds/shared/types'
-
-import { PaginatedArticlesDto } from '../article/article.dto'
 import { ArticleService } from '../article/article.service'
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 
@@ -48,23 +43,5 @@ export class FeedController {
   @Get()
   getAll(@Req() { user }): Promise<FeedResponseDto[]> {
     return this.feedService.findAllFor(user)
-  }
-
-  @ApiOperation({ operationId: 'get-articles' })
-  @ApiParam({ name: 'feedId', description: 'The id of the feed.' })
-  @ApiQuery({
-    name: 'cursor',
-    description: 'Cursor of the last article for pagination.',
-    type: Number,
-    required: false,
-  })
-  @ApiOkResponse({ description: 'Paginated list of articles for given feed.', type: PaginatedArticlesDto })
-  @Get(':feedId')
-  get(
-    @Param('feedId') feedId: Feed['id'],
-    @Query('cursor') cursor: Pagination['cursor'],
-    @Req() { user },
-  ): Promise<PaginatedArticlesDto> {
-    return this.articleService.getForUserAndFeed(user.id, feedId, { cursor })
   }
 }

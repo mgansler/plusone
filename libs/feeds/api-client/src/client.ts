@@ -72,11 +72,9 @@ export type HealthControllerGetHealthStatus200 = {
   details?: HealthControllerGetHealthStatus200Details
 }
 
-export type GetArticlesParams = { cursor?: number }
-
 export type DiscoverFeedParams = { url: string }
 
-export type SearchArticleParams = { s: string; cursor?: number }
+export type FindArticlesParams = { s?: string; f?: string; cursor?: number }
 
 export interface FeedResponseDto {
   feedUrl: string
@@ -186,30 +184,30 @@ export const useToggleUnread = <TError = unknown, TContext = unknown>(options?: 
   >(mutationFn, mutationOptions)
 }
 
-export const searchArticle = (params: SearchArticleParams, signal?: AbortSignal) => {
-  return customAxiosInstance<PaginatedArticlesDto>({ url: `/api/article/search`, method: 'get', params, signal })
+export const findArticles = (params?: FindArticlesParams, signal?: AbortSignal) => {
+  return customAxiosInstance<PaginatedArticlesDto>({ url: `/api/article/find`, method: 'get', params, signal })
 }
 
-export const getSearchArticleQueryKey = (params: SearchArticleParams) => [
-  `/api/article/search`,
+export const getFindArticlesQueryKey = (params?: FindArticlesParams) => [
+  `/api/article/find`,
   ...(params ? [params] : []),
 ]
 
-export type SearchArticleInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof searchArticle>>>
-export type SearchArticleInfiniteQueryError = unknown
+export type FindArticlesInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof findArticles>>>
+export type FindArticlesInfiniteQueryError = unknown
 
-export const useSearchArticleInfinite = <TData = Awaited<ReturnType<typeof searchArticle>>, TError = unknown>(
-  params: SearchArticleParams,
-  options?: { query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof searchArticle>>, TError, TData> },
+export const useFindArticlesInfinite = <TData = Awaited<ReturnType<typeof findArticles>>, TError = unknown>(
+  params?: FindArticlesParams,
+  options?: { query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof findArticles>>, TError, TData> },
 ): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getSearchArticleQueryKey(params)
+  const queryKey = queryOptions?.queryKey ?? getFindArticlesQueryKey(params)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof searchArticle>>> = ({ signal, pageParam }) =>
-    searchArticle({ cursor: pageParam, ...params }, signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof findArticles>>> = ({ signal, pageParam }) =>
+    findArticles({ cursor: pageParam, ...params }, signal)
 
-  const query = useInfiniteQuery<Awaited<ReturnType<typeof searchArticle>>, TError, TData>(
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof findArticles>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
@@ -220,21 +218,20 @@ export const useSearchArticleInfinite = <TData = Awaited<ReturnType<typeof searc
   return query
 }
 
-export type SearchArticleQueryResult = NonNullable<Awaited<ReturnType<typeof searchArticle>>>
-export type SearchArticleQueryError = unknown
+export type FindArticlesQueryResult = NonNullable<Awaited<ReturnType<typeof findArticles>>>
+export type FindArticlesQueryError = unknown
 
-export const useSearchArticle = <TData = Awaited<ReturnType<typeof searchArticle>>, TError = unknown>(
-  params: SearchArticleParams,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof searchArticle>>, TError, TData> },
+export const useFindArticles = <TData = Awaited<ReturnType<typeof findArticles>>, TError = unknown>(
+  params?: FindArticlesParams,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof findArticles>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getSearchArticleQueryKey(params)
+  const queryKey = queryOptions?.queryKey ?? getFindArticlesQueryKey(params)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof searchArticle>>> = ({ signal }) =>
-    searchArticle(params, signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof findArticles>>> = ({ signal }) => findArticles(params, signal)
 
-  const query = useQuery<Awaited<ReturnType<typeof searchArticle>>, TError, TData>(
+  const query = useQuery<Awaited<ReturnType<typeof findArticles>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
@@ -569,65 +566,6 @@ export const useGetFeeds = <TData = Awaited<ReturnType<typeof getFeeds>>, TError
     queryFn,
     queryOptions,
   ) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
-
-  query.queryKey = queryKey
-
-  return query
-}
-
-export const getArticles = (feedId: unknown, params?: GetArticlesParams, signal?: AbortSignal) => {
-  return customAxiosInstance<PaginatedArticlesDto>({ url: `/api/feed/${feedId}`, method: 'get', params, signal })
-}
-
-export const getGetArticlesQueryKey = (feedId: unknown, params?: GetArticlesParams) => [
-  `/api/feed/${feedId}`,
-  ...(params ? [params] : []),
-]
-
-export type GetArticlesInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getArticles>>>
-export type GetArticlesInfiniteQueryError = unknown
-
-export const useGetArticlesInfinite = <TData = Awaited<ReturnType<typeof getArticles>>, TError = unknown>(
-  feedId: unknown,
-  params?: GetArticlesParams,
-  options?: { query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof getArticles>>, TError, TData> },
-): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getGetArticlesQueryKey(feedId, params)
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getArticles>>> = ({ signal, pageParam }) =>
-    getArticles(feedId, { cursor: pageParam, ...params }, signal)
-
-  const query = useInfiniteQuery<Awaited<ReturnType<typeof getArticles>>, TError, TData>(queryKey, queryFn, {
-    enabled: !!feedId,
-    ...queryOptions,
-  }) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
-
-  query.queryKey = queryKey
-
-  return query
-}
-
-export type GetArticlesQueryResult = NonNullable<Awaited<ReturnType<typeof getArticles>>>
-export type GetArticlesQueryError = unknown
-
-export const useGetArticles = <TData = Awaited<ReturnType<typeof getArticles>>, TError = unknown>(
-  feedId: unknown,
-  params?: GetArticlesParams,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getArticles>>, TError, TData> },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getGetArticlesQueryKey(feedId, params)
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getArticles>>> = ({ signal }) =>
-    getArticles(feedId, params, signal)
-
-  const query = useQuery<Awaited<ReturnType<typeof getArticles>>, TError, TData>(queryKey, queryFn, {
-    enabled: !!feedId,
-    ...queryOptions,
-  }) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
   query.queryKey = queryKey
 

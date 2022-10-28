@@ -1,25 +1,13 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { useParams, useSearchParams } from 'react-router-dom'
 
 import type { ArticleDto, ArticleResponseDto } from '@plusone/feeds/api-client'
-import { getGetArticlesQueryKey, getSearchArticleQueryKey, useToggleUnread } from '@plusone/feeds/api-client'
+import { getFindArticlesQueryKey, useToggleUnread } from '@plusone/feeds/api-client'
 
 function useToggleUnreadState(id: ArticleDto['id'], unread: boolean) {
-  const { feedId } = useParams()
-  const [searchParams] = useSearchParams()
-
   const queryClient = useQueryClient()
   const { mutate } = useToggleUnread({
     mutation: {
-      onSuccess: async () => {
-        const search = searchParams.get('search')
-        if (search) {
-          await queryClient.invalidateQueries(getSearchArticleQueryKey({ s: search }))
-        }
-        if (feedId) {
-          await queryClient.invalidateQueries(getGetArticlesQueryKey(feedId))
-        }
-      },
+      onSuccess: async () => await queryClient.invalidateQueries(getFindArticlesQueryKey()),
     },
   })
 
