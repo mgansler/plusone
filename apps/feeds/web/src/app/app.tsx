@@ -11,7 +11,6 @@ import { Member } from './pages/member'
 import { FeedList } from './pages/member/feeds'
 import { Articles } from './pages/member/feeds/$feedId'
 import { NewFeed } from './pages/member/new-feed'
-import { Search } from './pages/member/search'
 
 export function App() {
   const { isLoggedIn, userInfo } = useUserContext()
@@ -31,7 +30,6 @@ export function App() {
         {isLoggedIn && (
           <Route path={'member'} element={<Member />}>
             <Route path={'new'} element={<NewFeed />} />
-            <Route path={'search'} element={<Search />} />
             <Route path={'feeds'} element={<FeedList />}>
               <Route path={':feedId'} element={<Articles />} />
             </Route>
