@@ -82,7 +82,7 @@ export const FindArticlesSort = {
   asc: 'asc',
 } as const
 
-export type FindArticlesParams = { s?: string; sort?: FindArticlesSort; f?: string; cursor?: number }
+export type FindArticlesParams = { s?: string; r?: boolean; sort?: FindArticlesSort; f?: string; cursor?: number }
 
 export interface FeedResponseDto {
   feedUrl: string

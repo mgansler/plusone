@@ -14,7 +14,7 @@ type UserContextValue = {
   logout: () => void
 }
 
-const UserContext = createContext<UserContextValue | undefined>(undefined)
+const UserContext = createContext<UserContextValue>(undefined)
 
 type UserContextProviderProps = {
   children: ReactNode

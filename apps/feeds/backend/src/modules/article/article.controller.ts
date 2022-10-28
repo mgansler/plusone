@@ -54,15 +54,29 @@ export class ArticleController {
     enum: Sort,
     required: false,
   })
+  @ApiQuery({
+    name: 'r',
+    description: 'Should read articles be included.',
+    type: Boolean,
+    required: false,
+  })
   @ApiOkResponse({ description: 'A list of articles matching the provided search string.', type: PaginatedArticlesDto })
   @Get('find')
   find(
+    @Query('cursor') cursor: Pagination['cursor'],
     @Query('s') searchTerm: string,
     @Query('f') feedId: Feed['id'],
     @Query('sort') sort: Sort = Sort.NewestFirst,
-    @Query('cursor') cursor: Pagination['cursor'],
+    @Query('r') includeRead = true,
     @Req() { user },
   ): Promise<PaginatedArticlesDto> {
-    return this.articleService.find(user.id, { searchTerm, feedId, sort, cursor })
+    return this.articleService.find(user.id, {
+      cursor,
+      searchTerm,
+      feedId,
+      sort,
+      // includeUnread is parsed as string, we need to manually convert
+      includeRead: (includeRead as unknown as string) === 'true',
+    })
   }
 }

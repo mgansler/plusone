@@ -1,5 +1,6 @@
 import { Outlet, useNavigate } from 'react-router-dom'
 
+import { IncludeRead } from '../../components/include-read'
 import { SearchBar } from '../../components/search-bar'
 import { SortDirection } from '../../components/sort-direction'
 import { ArticleFindContextProvider } from '../../context/article-find'
@@ -14,6 +15,7 @@ export function Member() {
       <ArticleFindContextProvider>
         <SearchBar />
         <SortDirection />
+        <IncludeRead />
         <Outlet />
       </ArticleFindContextProvider>
     </div>

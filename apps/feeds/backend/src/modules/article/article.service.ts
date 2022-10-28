@@ -9,6 +9,7 @@ type ArticleFindParams = Pagination & {
   sort: Sort
   searchTerm?: string
   feedId?: Feed['id']
+  includeRead: boolean
 }
 
 @Injectable()
@@ -58,10 +59,13 @@ export class ArticleService {
     })
   }
 
-  async find(userId: User['id'], { sort, searchTerm, feedId, cursor }: ArticleFindParams): Promise<PaginatedArticles> {
+  async find(
+    userId: User['id'],
+    { cursor, sort, searchTerm, feedId, includeRead }: ArticleFindParams,
+  ): Promise<PaginatedArticles> {
     this.logger.debug(`User is searching for '${searchTerm}', limited by '${feedId}', sorted: '${sort}'.`)
 
-    const isFirstRequest = !cursor || Number(cursor) === 0
+    const pagination = this.normalizePagination(cursor)
     const search = typeof searchTerm !== 'undefined' ? searchTerm.split(' ').join(' & ') : '%'
 
     const where: Prisma.UserArticleFindManyArgs['where'] = {
@@ -72,49 +76,20 @@ export class ArticleService {
       },
     }
 
+    // When read articles are supposed to be included we don't sort for the unread property.
+    // Otherwise, read articles will show up after all unread articles.
+    const orderBy: Prisma.UserArticleFindManyArgs['orderBy'] = includeRead ? [] : [{ unread: 'desc' }]
+    orderBy.push({ cursor: sort })
+
     const [totalCount, content, unreadCount] = await this.prismaService.$transaction([
       this.prismaService.userArticle.count({ where }),
       this.prismaService.userArticle.findMany({
-        cursor: isFirstRequest ? undefined : { cursor: Number(cursor) },
-        skip: isFirstRequest ? 0 : 1,
-        take: this.configService.get('PAGE_SIZE'),
+        ...pagination,
         select: { article: true, unread: true, cursor: true },
         where,
-        orderBy: [{ cursor: sort }],
+        orderBy,
       }),
       this.prismaService.userArticle.count({ where: { ...where, unread: true } }),
-    ])
-
-    return {
-      content,
-      totalCount,
-      lastCursor: content[content.length - 1]?.cursor,
-      pageSize: this.configService.get('PAGE_SIZE'),
-      unreadCount,
-    }
-  }
-
-  async search(userId: User['id'], s: string, pagination: Pagination): Promise<PaginatedArticles> {
-    this.logger.debug(`User is searching for '${s}'.`)
-
-    const isFirstRequest = !pagination.cursor || Number(pagination.cursor) === 0
-    const search = s.split(' ').join(' & ')
-
-    const [totalCount, content, unreadCount] = await this.prismaService.$transaction([
-      this.prismaService.userArticle.count({
-        where: { userId, article: { title: { search } } },
-      }),
-      this.prismaService.userArticle.findMany({
-        cursor: isFirstRequest ? undefined : { cursor: Number(pagination.cursor) },
-        skip: isFirstRequest ? 0 : 1,
-        take: this.configService.get('PAGE_SIZE'),
-        select: { article: true, unread: true, cursor: true },
-        where: { userId, article: { title: { search } } },
-        orderBy: [{ cursor: 'desc' }],
-      }),
-      this.prismaService.userArticle.count({
-        where: { userId, article: { title: { search } }, unread: true },
-      }),
     ])
 
     return {
@@ -132,5 +107,18 @@ export class ArticleService {
       data: { unread },
       where: { userId_articleId: { articleId, userId } },
     })
+  }
+
+  private normalizePagination(cursor?: Pagination['cursor']): {
+    cursor: { cursor: number }
+    skip: number
+    take: number
+  } {
+    const isFirstRequest = !cursor || Number(cursor) === 0
+    return {
+      cursor: isFirstRequest ? undefined : { cursor: Number(cursor) },
+      skip: isFirstRequest ? 0 : 1,
+      take: this.configService.get('PAGE_SIZE'),
+    }
   }
 }

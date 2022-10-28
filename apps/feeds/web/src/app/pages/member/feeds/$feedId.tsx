@@ -9,10 +9,10 @@ export function Articles() {
   const { feedId } = useParams()
   const [searchParams] = useSearchParams()
   const search = searchParams.get('search')
-  const { sort } = useArticleFindContext()
+  const { sort, includeRead } = useArticleFindContext()
 
   const { data, hasNextPage, fetchNextPage } = useFindArticlesInfinite(
-    { f: feedId, s: search, sort },
+    { f: feedId, s: search, sort, r: includeRead },
     {
       query: {
         getNextPageParam: (lastPage) =>
