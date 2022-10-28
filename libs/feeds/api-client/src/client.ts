@@ -74,7 +74,15 @@ export type HealthControllerGetHealthStatus200 = {
 
 export type DiscoverFeedParams = { url: string }
 
-export type FindArticlesParams = { s?: string; f?: string; cursor?: number }
+export type FindArticlesSort = typeof FindArticlesSort[keyof typeof FindArticlesSort]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const FindArticlesSort = {
+  desc: 'desc',
+  asc: 'asc',
+} as const
+
+export type FindArticlesParams = { s?: string; sort?: FindArticlesSort; f?: string; cursor?: number }
 
 export interface FeedResponseDto {
   feedUrl: string

@@ -3,14 +3,16 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import { useFindArticlesInfinite } from '@plusone/feeds/api-client'
 
 import { ArticleList } from '../../../components/article-list'
+import { useArticleFindContext } from '../../../context/article-find'
 
 export function Articles() {
   const { feedId } = useParams()
   const [searchParams] = useSearchParams()
   const search = searchParams.get('search')
+  const { sort } = useArticleFindContext()
 
   const { data, hasNextPage, fetchNextPage } = useFindArticlesInfinite(
-    { f: feedId, s: search },
+    { f: feedId, s: search, sort },
     {
       query: {
         getNextPageParam: (lastPage) =>

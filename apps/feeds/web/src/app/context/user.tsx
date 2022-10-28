@@ -14,7 +14,7 @@ type UserContextValue = {
   logout: () => void
 }
 
-const userContext = createContext<UserContextValue | undefined>(undefined)
+const UserContext = createContext<UserContextValue | undefined>(undefined)
 
 type UserContextProviderProps = {
   children: ReactNode
@@ -72,13 +72,13 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
     navigate('/login')
   }
 
-  return <userContext.Provider value={{ userInfo, isLoggedIn, login, logout }}>{children}</userContext.Provider>
+  return <UserContext.Provider children={children} value={{ userInfo, isLoggedIn, login, logout }} />
 }
 
 export function useUserContext() {
-  const context = useContext(userContext)
+  const context = useContext(UserContext)
 
-  if (context === undefined) {
+  if (typeof context === 'undefined') {
     throw new Error('useUserContext must be used within a UserContextProvider')
   }
 

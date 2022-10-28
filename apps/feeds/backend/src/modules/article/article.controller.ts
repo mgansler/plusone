@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, Req, U
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { Feed } from '@plusone/feeds-persistence'
-import { Pagination } from '@plusone/feeds/shared/types'
+import { Pagination, Sort } from '@plusone/feeds/shared/types'
 
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 
@@ -48,14 +48,21 @@ export class ArticleController {
     type: String,
     required: false,
   })
+  @ApiQuery({
+    name: 'sort',
+    description: 'Should articles appear in chronically ascending or descending order.',
+    enum: Sort,
+    required: false,
+  })
   @ApiOkResponse({ description: 'A list of articles matching the provided search string.', type: PaginatedArticlesDto })
   @Get('find')
   find(
-    @Query('s') search: string,
-    @Query('f') feed: Feed['id'],
+    @Query('s') searchTerm: string,
+    @Query('f') feedId: Feed['id'],
+    @Query('sort') sort: Sort = Sort.NewestFirst,
     @Query('cursor') cursor: Pagination['cursor'],
     @Req() { user },
   ): Promise<PaginatedArticlesDto> {
-    return this.articleService.find(user.id, search, feed, { cursor })
+    return this.articleService.find(user.id, { searchTerm, feedId, sort, cursor })
   }
 }
