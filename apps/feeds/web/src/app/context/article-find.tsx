@@ -1,13 +1,13 @@
-import type { ReactNode } from 'react'
+import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import { createContext, useContext, useState } from 'react'
 
 import { Sort } from '@plusone/feeds/shared/types'
 
 type ArticleFindContextValue = {
   sort: Sort
-  setSort: (sort: Sort) => void
+  setSort: Dispatch<SetStateAction<Sort>>
   includeRead: boolean
-  setIncludeRead: (includeRead: boolean) => void
+  setIncludeRead: Dispatch<SetStateAction<boolean>>
 }
 
 const ArticleFindContext = createContext<ArticleFindContextValue>(undefined)

@@ -6,7 +6,7 @@ export function IncludeRead() {
   return (
     <label>
       Include read
-      <input type={'checkbox'} checked={includeRead} onChange={() => setIncludeRead(!includeRead)} />
+      <input type={'checkbox'} checked={includeRead} onChange={() => setIncludeRead((cur) => !cur)} />
     </label>
   )
 }

@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
 
 import type { ArticleDto, ArticleResponseDto } from '@plusone/feeds/api-client'
 import { getFindArticlesQueryKey, useToggleUnread } from '@plusone/feeds/api-client'
@@ -19,15 +20,20 @@ type ArticleProps = {
 }
 
 export function Article({ article: { article, unread } }: ArticleProps) {
+  const [showContent, setShowContent] = useState<boolean>(false)
+
   const toggleUnread = useToggleUnreadState(article.id, unread)
 
   return (
     <article>
       <input type={'checkbox'} checked={!unread} onChange={() => toggleUnread()} />
+      {article.contentBody !== null && (
+        <button onClick={() => setShowContent((cur) => !cur)}>{showContent ? 'collapse' : 'expand'}</button>
+      )}
       <a href={article.link} target={'_blank'} rel={'noreferrer'} onClick={() => toggleUnread(true)}>
         {article.title}
       </a>
-      <div dangerouslySetInnerHTML={{ __html: article.contentBody }} />
+      {showContent && <div dangerouslySetInnerHTML={{ __html: article.contentBody }} />}
     </article>
   )
 }
