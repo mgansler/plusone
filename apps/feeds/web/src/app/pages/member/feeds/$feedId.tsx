@@ -12,7 +12,7 @@ export function Articles() {
   const { sort, includeRead } = useArticleFindContext()
 
   const { data, hasNextPage, fetchNextPage } = useFindArticlesInfinite(
-    { f: feedId, s: search, sort, r: includeRead },
+    { f: feedId !== 'all' ? feedId : undefined, s: search, sort, r: includeRead },
     {
       query: {
         getNextPageParam: (lastPage) =>

@@ -9,6 +9,9 @@ export function FeedList() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr' }}>
       <div>
+        <section aria-label={'all feeds'}>
+          <h4 onClick={() => navigate('all')}>All</h4>
+        </section>
         {data?.data.map((feedResponse) => (
           <section key={feedResponse.id} aria-label={feedResponse.title}>
             <h4 onClick={() => navigate(feedResponse.id)}>{feedResponse.title}</h4>
