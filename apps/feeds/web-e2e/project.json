@@ -8,10 +8,13 @@
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "apps/feeds/web-e2e/cypress.config.ts",
-        "devServerTarget": "feeds-web-e2e:serve-all",
         "testingType": "e2e"
       },
+      "defaultConfiguration": "production",
       "configurations": {
+        "development": {
+          "devServerTarget": "feeds-web-e2e:serve-all"
+        },
         "production": {
           "devServerTarget": "feeds-web-e2e:serve-all:production"
         },
