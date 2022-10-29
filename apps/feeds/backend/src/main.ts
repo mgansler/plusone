@@ -12,7 +12,7 @@ async function bootstrap() {
   const globalPrefix = 'api'
   app.setGlobalPrefix(globalPrefix)
 
-  const swaggerConfig = new DocumentBuilder().setTitle('Feeds API').setVersion('0.1').build()
+  const swaggerConfig = new DocumentBuilder().addBearerAuth().setTitle('Feeds API').setVersion('0.1').build()
   const document = SwaggerModule.createDocument(app, swaggerConfig)
   SwaggerModule.setup(globalPrefix, app, document)
 

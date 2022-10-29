@@ -1,24 +1,26 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
 
-import { Pagination } from '@plusone/feeds/shared/types'
+import { Feed } from '@plusone/feeds-persistence'
+import { Pagination, Sort } from '@plusone/feeds/shared/types'
 
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 
 import { ArticleResponseDto, ArticleToggleUnreadDto, PaginatedArticlesDto } from './article.dto'
 import { ArticleService } from './article.service'
 
-@Controller('article')
 @UseGuards(JwtAccessTokenGuard)
-@ApiTags('article')
 @ApiBearerAuth()
+@ApiTags('article')
+@Controller('article')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
-  @Post(':id')
-  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ operationId: 'toggle-unread' })
   @ApiParam({ name: 'id', description: 'The id of the article.', type: String })
   @ApiOkResponse({ description: 'The read status of article has been toggled.', type: ArticleResponseDto })
+  @Post(':id')
+  @HttpCode(HttpStatus.OK)
   async toggleUnread(
     @Param('id') id: string,
     @Body() toggleUnreadDto: ArticleToggleUnreadDto,
@@ -27,20 +29,54 @@ export class ArticleController {
     return this.articleService.toggleUnreadForUser(id, user.id, toggleUnreadDto.unread)
   }
 
-  @Get('/search')
+  @ApiOperation({ operationId: 'find-articles' })
   @ApiQuery({
     name: 'cursor',
     description: 'Cursor of the last article for pagination.',
     type: Number,
     required: false,
   })
-  @ApiQuery({ name: 's', description: 'The string that the article should match.' })
+  @ApiQuery({
+    name: 'f',
+    description: 'The id of the feed this query should be limited to.',
+    type: String,
+    required: false,
+  })
+  @ApiQuery({
+    name: 's',
+    description: 'The string that the article should match.',
+    type: String,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'sort',
+    description: 'Should articles appear in chronically ascending or descending order.',
+    enum: Sort,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'r',
+    description: 'Should read articles be included.',
+    type: Boolean,
+    required: false,
+  })
   @ApiOkResponse({ description: 'A list of articles matching the provided search string.', type: PaginatedArticlesDto })
-  search(
+  @Get('find')
+  find(
     @Query('cursor') cursor: Pagination['cursor'],
-    @Query('s') s: string,
+    @Query('s') searchTerm: string,
+    @Query('f') feedId: Feed['id'],
+    @Query('sort') sort: Sort = Sort.NewestFirst,
+    @Query('r') includeRead = true,
     @Req() { user },
   ): Promise<PaginatedArticlesDto> {
-    return this.articleService.search(user.id, s, { cursor })
+    return this.articleService.find(user.id, {
+      cursor,
+      searchTerm,
+      feedId,
+      sort,
+      // includeUnread is parsed as string, we need to manually convert
+      includeRead: (includeRead as unknown as string) === 'true',
+    })
   }
 }

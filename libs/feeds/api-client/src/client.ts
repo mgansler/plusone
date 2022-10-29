@@ -72,11 +72,17 @@ export type HealthControllerGetHealthStatus200 = {
   details?: HealthControllerGetHealthStatus200Details
 }
 
-export type FeedControllerGetParams = { cursor?: number }
+export type DiscoverFeedParams = { url: string }
 
-export type FeedControllerDiscoverParams = { url: string }
+export type FindArticlesSort = typeof FindArticlesSort[keyof typeof FindArticlesSort]
 
-export type ArticleControllerSearchParams = { s: string; cursor?: number }
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const FindArticlesSort = {
+  desc: 'desc',
+  asc: 'asc',
+} as const
+
+export type FindArticlesParams = { s?: string; r?: boolean; sort?: FindArticlesSort; f?: string; cursor?: number }
 
 export interface FeedResponseDto {
   feedUrl: string
@@ -146,7 +152,7 @@ export interface ArticleToggleUnreadDto {
   unread: boolean
 }
 
-export const articleControllerToggleUnread = (id: string, articleToggleUnreadDto: ArticleToggleUnreadDto) => {
+export const toggleUnread = (id: string, articleToggleUnreadDto: ArticleToggleUnreadDto) => {
   return customAxiosInstance<ArticleResponseDto>({
     url: `/api/article/${id}`,
     method: 'post',
@@ -155,15 +161,13 @@ export const articleControllerToggleUnread = (id: string, articleToggleUnreadDto
   })
 }
 
-export type ArticleControllerToggleUnreadMutationResult = NonNullable<
-  Awaited<ReturnType<typeof articleControllerToggleUnread>>
->
-export type ArticleControllerToggleUnreadMutationBody = ArticleToggleUnreadDto
-export type ArticleControllerToggleUnreadMutationError = unknown
+export type ToggleUnreadMutationResult = NonNullable<Awaited<ReturnType<typeof toggleUnread>>>
+export type ToggleUnreadMutationBody = ArticleToggleUnreadDto
+export type ToggleUnreadMutationError = unknown
 
-export const useArticleControllerToggleUnread = <TError = unknown, TContext = unknown>(options?: {
+export const useToggleUnread = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof articleControllerToggleUnread>>,
+    Awaited<ReturnType<typeof toggleUnread>>,
     TError,
     { id: string; data: ArticleToggleUnreadDto },
     TContext
@@ -172,51 +176,46 @@ export const useArticleControllerToggleUnread = <TError = unknown, TContext = un
   const { mutation: mutationOptions } = options ?? {}
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof articleControllerToggleUnread>>,
+    Awaited<ReturnType<typeof toggleUnread>>,
     { id: string; data: ArticleToggleUnreadDto }
   > = (props) => {
     const { id, data } = props ?? {}
 
-    return articleControllerToggleUnread(id, data)
+    return toggleUnread(id, data)
   }
 
   return useMutation<
-    Awaited<ReturnType<typeof articleControllerToggleUnread>>,
+    Awaited<ReturnType<typeof toggleUnread>>,
     TError,
     { id: string; data: ArticleToggleUnreadDto },
     TContext
   >(mutationFn, mutationOptions)
 }
 
-export const articleControllerSearch = (params: ArticleControllerSearchParams, signal?: AbortSignal) => {
-  return customAxiosInstance<PaginatedArticlesDto>({ url: `/api/article/search`, method: 'get', params, signal })
+export const findArticles = (params?: FindArticlesParams, signal?: AbortSignal) => {
+  return customAxiosInstance<PaginatedArticlesDto>({ url: `/api/article/find`, method: 'get', params, signal })
 }
 
-export const getArticleControllerSearchQueryKey = (params: ArticleControllerSearchParams) => [
-  `/api/article/search`,
+export const getFindArticlesQueryKey = (params?: FindArticlesParams) => [
+  `/api/article/find`,
   ...(params ? [params] : []),
 ]
 
-export type ArticleControllerSearchInfiniteQueryResult = NonNullable<
-  Awaited<ReturnType<typeof articleControllerSearch>>
->
-export type ArticleControllerSearchInfiniteQueryError = unknown
+export type FindArticlesInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof findArticles>>>
+export type FindArticlesInfiniteQueryError = unknown
 
-export const useArticleControllerSearchInfinite = <
-  TData = Awaited<ReturnType<typeof articleControllerSearch>>,
-  TError = unknown,
->(
-  params: ArticleControllerSearchParams,
-  options?: { query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof articleControllerSearch>>, TError, TData> },
+export const useFindArticlesInfinite = <TData = Awaited<ReturnType<typeof findArticles>>, TError = unknown>(
+  params?: FindArticlesParams,
+  options?: { query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof findArticles>>, TError, TData> },
 ): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getArticleControllerSearchQueryKey(params)
+  const queryKey = queryOptions?.queryKey ?? getFindArticlesQueryKey(params)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof articleControllerSearch>>> = ({ signal, pageParam }) =>
-    articleControllerSearch({ cursor: pageParam, ...params }, signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof findArticles>>> = ({ signal, pageParam }) =>
+    findArticles({ cursor: pageParam, ...params }, signal)
 
-  const query = useInfiniteQuery<Awaited<ReturnType<typeof articleControllerSearch>>, TError, TData>(
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof findArticles>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
@@ -227,24 +226,20 @@ export const useArticleControllerSearchInfinite = <
   return query
 }
 
-export type ArticleControllerSearchQueryResult = NonNullable<Awaited<ReturnType<typeof articleControllerSearch>>>
-export type ArticleControllerSearchQueryError = unknown
+export type FindArticlesQueryResult = NonNullable<Awaited<ReturnType<typeof findArticles>>>
+export type FindArticlesQueryError = unknown
 
-export const useArticleControllerSearch = <
-  TData = Awaited<ReturnType<typeof articleControllerSearch>>,
-  TError = unknown,
->(
-  params: ArticleControllerSearchParams,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof articleControllerSearch>>, TError, TData> },
+export const useFindArticles = <TData = Awaited<ReturnType<typeof findArticles>>, TError = unknown>(
+  params?: FindArticlesParams,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof findArticles>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getArticleControllerSearchQueryKey(params)
+  const queryKey = queryOptions?.queryKey ?? getFindArticlesQueryKey(params)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof articleControllerSearch>>> = ({ signal }) =>
-    articleControllerSearch(params, signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof findArticles>>> = ({ signal }) => findArticles(params, signal)
 
-  const query = useQuery<Awaited<ReturnType<typeof articleControllerSearch>>, TError, TData>(
+  const query = useQuery<Awaited<ReturnType<typeof findArticles>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
@@ -255,7 +250,7 @@ export const useArticleControllerSearch = <
   return query
 }
 
-export const authenticationControllerLogin = (userLoginDto: UserLoginDto) => {
+export const login = (userLoginDto: UserLoginDto) => {
   return customAxiosInstance<LoginResponseDto>({
     url: `/api/authentication/login`,
     method: 'post',
@@ -264,64 +259,46 @@ export const authenticationControllerLogin = (userLoginDto: UserLoginDto) => {
   })
 }
 
-export type AuthenticationControllerLoginMutationResult = NonNullable<
-  Awaited<ReturnType<typeof authenticationControllerLogin>>
->
-export type AuthenticationControllerLoginMutationBody = UserLoginDto
-export type AuthenticationControllerLoginMutationError = unknown
+export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
+export type LoginMutationBody = UserLoginDto
+export type LoginMutationError = unknown
 
-export const useAuthenticationControllerLogin = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof authenticationControllerLogin>>,
-    TError,
-    { data: UserLoginDto },
-    TContext
-  >
+export const useLogin = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: UserLoginDto }, TContext>
 }) => {
   const { mutation: mutationOptions } = options ?? {}
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof authenticationControllerLogin>>,
-    { data: UserLoginDto }
-  > = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, { data: UserLoginDto }> = (props) => {
     const { data } = props ?? {}
 
-    return authenticationControllerLogin(data)
+    return login(data)
   }
 
-  return useMutation<
-    Awaited<ReturnType<typeof authenticationControllerLogin>>,
-    TError,
-    { data: UserLoginDto },
-    TContext
-  >(mutationFn, mutationOptions)
+  return useMutation<Awaited<ReturnType<typeof login>>, TError, { data: UserLoginDto }, TContext>(
+    mutationFn,
+    mutationOptions,
+  )
 }
 
-export const authenticationControllerLogout = (signal?: AbortSignal) => {
+export const logout = (signal?: AbortSignal) => {
   return customAxiosInstance<void>({ url: `/api/authentication/logout`, method: 'get', signal })
 }
 
-export const getAuthenticationControllerLogoutQueryKey = () => [`/api/authentication/logout`]
+export const getLogoutQueryKey = () => [`/api/authentication/logout`]
 
-export type AuthenticationControllerLogoutInfiniteQueryResult = NonNullable<
-  Awaited<ReturnType<typeof authenticationControllerLogout>>
->
-export type AuthenticationControllerLogoutInfiniteQueryError = unknown
+export type LogoutInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof logout>>>
+export type LogoutInfiniteQueryError = unknown
 
-export const useAuthenticationControllerLogoutInfinite = <
-  TData = Awaited<ReturnType<typeof authenticationControllerLogout>>,
-  TError = unknown,
->(options?: {
-  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof authenticationControllerLogout>>, TError, TData>
+export const useLogoutInfinite = <TData = Awaited<ReturnType<typeof logout>>, TError = unknown>(options?: {
+  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>
 }): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getAuthenticationControllerLogoutQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getLogoutQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof authenticationControllerLogout>>> = ({ signal }) =>
-    authenticationControllerLogout(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof logout>>> = ({ signal }) => logout(signal)
 
-  const query = useInfiniteQuery<Awaited<ReturnType<typeof authenticationControllerLogout>>, TError, TData>(
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof logout>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
@@ -332,25 +309,19 @@ export const useAuthenticationControllerLogoutInfinite = <
   return query
 }
 
-export type AuthenticationControllerLogoutQueryResult = NonNullable<
-  Awaited<ReturnType<typeof authenticationControllerLogout>>
->
-export type AuthenticationControllerLogoutQueryError = unknown
+export type LogoutQueryResult = NonNullable<Awaited<ReturnType<typeof logout>>>
+export type LogoutQueryError = unknown
 
-export const useAuthenticationControllerLogout = <
-  TData = Awaited<ReturnType<typeof authenticationControllerLogout>>,
-  TError = unknown,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof authenticationControllerLogout>>, TError, TData>
+export const useLogout = <TData = Awaited<ReturnType<typeof logout>>, TError = unknown>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getAuthenticationControllerLogoutQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getLogoutQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof authenticationControllerLogout>>> = ({ signal }) =>
-    authenticationControllerLogout(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof logout>>> = ({ signal }) => logout(signal)
 
-  const query = useQuery<Awaited<ReturnType<typeof authenticationControllerLogout>>, TError, TData>(
+  const query = useQuery<Awaited<ReturnType<typeof logout>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
@@ -361,7 +332,7 @@ export const useAuthenticationControllerLogout = <
   return query
 }
 
-export const authenticationControllerRegister = (userRegistrationDto: UserRegistrationDto) => {
+export const register = (userRegistrationDto: UserRegistrationDto) => {
   return customAxiosInstance<UserResponseDto>({
     url: `/api/authentication/register`,
     method: 'post',
@@ -370,64 +341,46 @@ export const authenticationControllerRegister = (userRegistrationDto: UserRegist
   })
 }
 
-export type AuthenticationControllerRegisterMutationResult = NonNullable<
-  Awaited<ReturnType<typeof authenticationControllerRegister>>
->
-export type AuthenticationControllerRegisterMutationBody = UserRegistrationDto
-export type AuthenticationControllerRegisterMutationError = unknown
+export type RegisterMutationResult = NonNullable<Awaited<ReturnType<typeof register>>>
+export type RegisterMutationBody = UserRegistrationDto
+export type RegisterMutationError = unknown
 
-export const useAuthenticationControllerRegister = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof authenticationControllerRegister>>,
-    TError,
-    { data: UserRegistrationDto },
-    TContext
-  >
+export const useRegister = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, { data: UserRegistrationDto }, TContext>
 }) => {
   const { mutation: mutationOptions } = options ?? {}
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof authenticationControllerRegister>>,
-    { data: UserRegistrationDto }
-  > = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof register>>, { data: UserRegistrationDto }> = (props) => {
     const { data } = props ?? {}
 
-    return authenticationControllerRegister(data)
+    return register(data)
   }
 
-  return useMutation<
-    Awaited<ReturnType<typeof authenticationControllerRegister>>,
-    TError,
-    { data: UserRegistrationDto },
-    TContext
-  >(mutationFn, mutationOptions)
+  return useMutation<Awaited<ReturnType<typeof register>>, TError, { data: UserRegistrationDto }, TContext>(
+    mutationFn,
+    mutationOptions,
+  )
 }
 
-export const authenticationControllerGetProfile = (signal?: AbortSignal) => {
+export const profile = (signal?: AbortSignal) => {
   return customAxiosInstance<UserResponseDto>({ url: `/api/authentication/profile`, method: 'get', signal })
 }
 
-export const getAuthenticationControllerGetProfileQueryKey = () => [`/api/authentication/profile`]
+export const getProfileQueryKey = () => [`/api/authentication/profile`]
 
-export type AuthenticationControllerGetProfileInfiniteQueryResult = NonNullable<
-  Awaited<ReturnType<typeof authenticationControllerGetProfile>>
->
-export type AuthenticationControllerGetProfileInfiniteQueryError = unknown
+export type ProfileInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof profile>>>
+export type ProfileInfiniteQueryError = unknown
 
-export const useAuthenticationControllerGetProfileInfinite = <
-  TData = Awaited<ReturnType<typeof authenticationControllerGetProfile>>,
-  TError = unknown,
->(options?: {
-  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof authenticationControllerGetProfile>>, TError, TData>
+export const useProfileInfinite = <TData = Awaited<ReturnType<typeof profile>>, TError = unknown>(options?: {
+  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>
 }): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getAuthenticationControllerGetProfileQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getProfileQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof authenticationControllerGetProfile>>> = ({ signal }) =>
-    authenticationControllerGetProfile(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof profile>>> = ({ signal }) => profile(signal)
 
-  const query = useInfiniteQuery<Awaited<ReturnType<typeof authenticationControllerGetProfile>>, TError, TData>(
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof profile>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
@@ -438,25 +391,19 @@ export const useAuthenticationControllerGetProfileInfinite = <
   return query
 }
 
-export type AuthenticationControllerGetProfileQueryResult = NonNullable<
-  Awaited<ReturnType<typeof authenticationControllerGetProfile>>
->
-export type AuthenticationControllerGetProfileQueryError = unknown
+export type ProfileQueryResult = NonNullable<Awaited<ReturnType<typeof profile>>>
+export type ProfileQueryError = unknown
 
-export const useAuthenticationControllerGetProfile = <
-  TData = Awaited<ReturnType<typeof authenticationControllerGetProfile>>,
-  TError = unknown,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof authenticationControllerGetProfile>>, TError, TData>
+export const useProfile = <TData = Awaited<ReturnType<typeof profile>>, TError = unknown>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getAuthenticationControllerGetProfileQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getProfileQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof authenticationControllerGetProfile>>> = ({ signal }) =>
-    authenticationControllerGetProfile(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof profile>>> = ({ signal }) => profile(signal)
 
-  const query = useQuery<Awaited<ReturnType<typeof authenticationControllerGetProfile>>, TError, TData>(
+  const query = useQuery<Awaited<ReturnType<typeof profile>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
@@ -467,31 +414,25 @@ export const useAuthenticationControllerGetProfile = <
   return query
 }
 
-export const authenticationControllerRefresh = (signal?: AbortSignal) => {
+export const refresh = (signal?: AbortSignal) => {
   return customAxiosInstance<LoginResponseDto>({ url: `/api/authentication/refresh`, method: 'get', signal })
 }
 
-export const getAuthenticationControllerRefreshQueryKey = () => [`/api/authentication/refresh`]
+export const getRefreshQueryKey = () => [`/api/authentication/refresh`]
 
-export type AuthenticationControllerRefreshInfiniteQueryResult = NonNullable<
-  Awaited<ReturnType<typeof authenticationControllerRefresh>>
->
-export type AuthenticationControllerRefreshInfiniteQueryError = unknown
+export type RefreshInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof refresh>>>
+export type RefreshInfiniteQueryError = unknown
 
-export const useAuthenticationControllerRefreshInfinite = <
-  TData = Awaited<ReturnType<typeof authenticationControllerRefresh>>,
-  TError = unknown,
->(options?: {
-  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof authenticationControllerRefresh>>, TError, TData>
+export const useRefreshInfinite = <TData = Awaited<ReturnType<typeof refresh>>, TError = unknown>(options?: {
+  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>
 }): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getAuthenticationControllerRefreshQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getRefreshQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof authenticationControllerRefresh>>> = ({ signal }) =>
-    authenticationControllerRefresh(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof refresh>>> = ({ signal }) => refresh(signal)
 
-  const query = useInfiniteQuery<Awaited<ReturnType<typeof authenticationControllerRefresh>>, TError, TData>(
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof refresh>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
@@ -502,25 +443,19 @@ export const useAuthenticationControllerRefreshInfinite = <
   return query
 }
 
-export type AuthenticationControllerRefreshQueryResult = NonNullable<
-  Awaited<ReturnType<typeof authenticationControllerRefresh>>
->
-export type AuthenticationControllerRefreshQueryError = unknown
+export type RefreshQueryResult = NonNullable<Awaited<ReturnType<typeof refresh>>>
+export type RefreshQueryError = unknown
 
-export const useAuthenticationControllerRefresh = <
-  TData = Awaited<ReturnType<typeof authenticationControllerRefresh>>,
-  TError = unknown,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof authenticationControllerRefresh>>, TError, TData>
+export const useRefresh = <TData = Awaited<ReturnType<typeof refresh>>, TError = unknown>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getAuthenticationControllerRefreshQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getRefreshQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof authenticationControllerRefresh>>> = ({ signal }) =>
-    authenticationControllerRefresh(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof refresh>>> = ({ signal }) => refresh(signal)
 
-  const query = useQuery<Awaited<ReturnType<typeof authenticationControllerRefresh>>, TError, TData>(
+  const query = useQuery<Awaited<ReturnType<typeof refresh>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
@@ -531,42 +466,39 @@ export const useAuthenticationControllerRefresh = <
   return query
 }
 
-export const feedControllerDiscover = (params: FeedControllerDiscoverParams) => {
+export const discoverFeed = (params: DiscoverFeedParams) => {
   return customAxiosInstance<DiscoverResponseDto>({ url: `/api/feed/discover`, method: 'post', params })
 }
 
-export type FeedControllerDiscoverMutationResult = NonNullable<Awaited<ReturnType<typeof feedControllerDiscover>>>
+export type DiscoverFeedMutationResult = NonNullable<Awaited<ReturnType<typeof discoverFeed>>>
 
-export type FeedControllerDiscoverMutationError = unknown
+export type DiscoverFeedMutationError = unknown
 
-export const useFeedControllerDiscover = <TError = unknown, TContext = unknown>(options?: {
+export const useDiscoverFeed = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof feedControllerDiscover>>,
+    Awaited<ReturnType<typeof discoverFeed>>,
     TError,
-    { params: FeedControllerDiscoverParams },
+    { params: DiscoverFeedParams },
     TContext
   >
 }) => {
   const { mutation: mutationOptions } = options ?? {}
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof feedControllerDiscover>>,
-    { params: FeedControllerDiscoverParams }
-  > = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof discoverFeed>>, { params: DiscoverFeedParams }> = (
+    props,
+  ) => {
     const { params } = props ?? {}
 
-    return feedControllerDiscover(params)
+    return discoverFeed(params)
   }
 
-  return useMutation<
-    Awaited<ReturnType<typeof feedControllerDiscover>>,
-    TError,
-    { params: FeedControllerDiscoverParams },
-    TContext
-  >(mutationFn, mutationOptions)
+  return useMutation<Awaited<ReturnType<typeof discoverFeed>>, TError, { params: DiscoverFeedParams }, TContext>(
+    mutationFn,
+    mutationOptions,
+  )
 }
 
-export const feedControllerAdd = (feedInputDto: FeedInputDto) => {
+export const addFeed = (feedInputDto: FeedInputDto) => {
   return customAxiosInstance<FeedResponseDto>({
     url: `/api/feed`,
     method: 'post',
@@ -575,52 +507,46 @@ export const feedControllerAdd = (feedInputDto: FeedInputDto) => {
   })
 }
 
-export type FeedControllerAddMutationResult = NonNullable<Awaited<ReturnType<typeof feedControllerAdd>>>
-export type FeedControllerAddMutationBody = FeedInputDto
-export type FeedControllerAddMutationError = unknown
+export type AddFeedMutationResult = NonNullable<Awaited<ReturnType<typeof addFeed>>>
+export type AddFeedMutationBody = FeedInputDto
+export type AddFeedMutationError = unknown
 
-export const useFeedControllerAdd = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof feedControllerAdd>>, TError, { data: FeedInputDto }, TContext>
+export const useAddFeed = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof addFeed>>, TError, { data: FeedInputDto }, TContext>
 }) => {
   const { mutation: mutationOptions } = options ?? {}
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof feedControllerAdd>>, { data: FeedInputDto }> = (
-    props,
-  ) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof addFeed>>, { data: FeedInputDto }> = (props) => {
     const { data } = props ?? {}
 
-    return feedControllerAdd(data)
+    return addFeed(data)
   }
 
-  return useMutation<Awaited<ReturnType<typeof feedControllerAdd>>, TError, { data: FeedInputDto }, TContext>(
+  return useMutation<Awaited<ReturnType<typeof addFeed>>, TError, { data: FeedInputDto }, TContext>(
     mutationFn,
     mutationOptions,
   )
 }
 
-export const feedControllerGetAll = (signal?: AbortSignal) => {
+export const getFeeds = (signal?: AbortSignal) => {
   return customAxiosInstance<FeedResponseDto[]>({ url: `/api/feed`, method: 'get', signal })
 }
 
-export const getFeedControllerGetAllQueryKey = () => [`/api/feed`]
+export const getGetFeedsQueryKey = () => [`/api/feed`]
 
-export type FeedControllerGetAllInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof feedControllerGetAll>>>
-export type FeedControllerGetAllInfiniteQueryError = unknown
+export type GetFeedsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getFeeds>>>
+export type GetFeedsInfiniteQueryError = unknown
 
-export const useFeedControllerGetAllInfinite = <
-  TData = Awaited<ReturnType<typeof feedControllerGetAll>>,
-  TError = unknown,
->(options?: {
-  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof feedControllerGetAll>>, TError, TData>
+export const useGetFeedsInfinite = <TData = Awaited<ReturnType<typeof getFeeds>>, TError = unknown>(options?: {
+  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>
 }): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getFeedControllerGetAllQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getGetFeedsQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof feedControllerGetAll>>> = ({ signal }) =>
-    feedControllerGetAll(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFeeds>>> = ({ signal }) => getFeeds(signal)
 
-  const query = useInfiniteQuery<Awaited<ReturnType<typeof feedControllerGetAll>>, TError, TData>(
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof getFeeds>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
@@ -631,86 +557,23 @@ export const useFeedControllerGetAllInfinite = <
   return query
 }
 
-export type FeedControllerGetAllQueryResult = NonNullable<Awaited<ReturnType<typeof feedControllerGetAll>>>
-export type FeedControllerGetAllQueryError = unknown
+export type GetFeedsQueryResult = NonNullable<Awaited<ReturnType<typeof getFeeds>>>
+export type GetFeedsQueryError = unknown
 
-export const useFeedControllerGetAll = <
-  TData = Awaited<ReturnType<typeof feedControllerGetAll>>,
-  TError = unknown,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof feedControllerGetAll>>, TError, TData>
+export const useGetFeeds = <TData = Awaited<ReturnType<typeof getFeeds>>, TError = unknown>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getFeedControllerGetAllQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getGetFeedsQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof feedControllerGetAll>>> = ({ signal }) =>
-    feedControllerGetAll(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFeeds>>> = ({ signal }) => getFeeds(signal)
 
-  const query = useQuery<Awaited<ReturnType<typeof feedControllerGetAll>>, TError, TData>(
+  const query = useQuery<Awaited<ReturnType<typeof getFeeds>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
   ) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
-
-  query.queryKey = queryKey
-
-  return query
-}
-
-export const feedControllerGet = (feedId: unknown, params?: FeedControllerGetParams, signal?: AbortSignal) => {
-  return customAxiosInstance<PaginatedArticlesDto>({ url: `/api/feed/${feedId}`, method: 'get', params, signal })
-}
-
-export const getFeedControllerGetQueryKey = (feedId: unknown, params?: FeedControllerGetParams) => [
-  `/api/feed/${feedId}`,
-  ...(params ? [params] : []),
-]
-
-export type FeedControllerGetInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof feedControllerGet>>>
-export type FeedControllerGetInfiniteQueryError = unknown
-
-export const useFeedControllerGetInfinite = <TData = Awaited<ReturnType<typeof feedControllerGet>>, TError = unknown>(
-  feedId: unknown,
-  params?: FeedControllerGetParams,
-  options?: { query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof feedControllerGet>>, TError, TData> },
-): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getFeedControllerGetQueryKey(feedId, params)
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof feedControllerGet>>> = ({ signal, pageParam }) =>
-    feedControllerGet(feedId, { cursor: pageParam, ...params }, signal)
-
-  const query = useInfiniteQuery<Awaited<ReturnType<typeof feedControllerGet>>, TError, TData>(queryKey, queryFn, {
-    enabled: !!feedId,
-    ...queryOptions,
-  }) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
-
-  query.queryKey = queryKey
-
-  return query
-}
-
-export type FeedControllerGetQueryResult = NonNullable<Awaited<ReturnType<typeof feedControllerGet>>>
-export type FeedControllerGetQueryError = unknown
-
-export const useFeedControllerGet = <TData = Awaited<ReturnType<typeof feedControllerGet>>, TError = unknown>(
-  feedId: unknown,
-  params?: FeedControllerGetParams,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof feedControllerGet>>, TError, TData> },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getFeedControllerGetQueryKey(feedId, params)
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof feedControllerGet>>> = ({ signal }) =>
-    feedControllerGet(feedId, params, signal)
-
-  const query = useQuery<Awaited<ReturnType<typeof feedControllerGet>>, TError, TData>(queryKey, queryFn, {
-    enabled: !!feedId,
-    ...queryOptions,
-  }) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
   query.queryKey = queryKey
 
@@ -781,29 +644,25 @@ export const useHealthControllerGetHealthStatus = <
   return query
 }
 
-export const userControllerGetAll = (signal?: AbortSignal) => {
+export const getUsers = (signal?: AbortSignal) => {
   return customAxiosInstance<UserResponseDto[]>({ url: `/api/user`, method: 'get', signal })
 }
 
-export const getUserControllerGetAllQueryKey = () => [`/api/user`]
+export const getGetUsersQueryKey = () => [`/api/user`]
 
-export type UserControllerGetAllInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof userControllerGetAll>>>
-export type UserControllerGetAllInfiniteQueryError = unknown
+export type GetUsersInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getUsers>>>
+export type GetUsersInfiniteQueryError = unknown
 
-export const useUserControllerGetAllInfinite = <
-  TData = Awaited<ReturnType<typeof userControllerGetAll>>,
-  TError = unknown,
->(options?: {
-  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof userControllerGetAll>>, TError, TData>
+export const useGetUsersInfinite = <TData = Awaited<ReturnType<typeof getUsers>>, TError = unknown>(options?: {
+  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof getUsers>>, TError, TData>
 }): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getUserControllerGetAllQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getGetUsersQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof userControllerGetAll>>> = ({ signal }) =>
-    userControllerGetAll(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsers>>> = ({ signal }) => getUsers(signal)
 
-  const query = useInfiniteQuery<Awaited<ReturnType<typeof userControllerGetAll>>, TError, TData>(
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof getUsers>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
@@ -814,23 +673,19 @@ export const useUserControllerGetAllInfinite = <
   return query
 }
 
-export type UserControllerGetAllQueryResult = NonNullable<Awaited<ReturnType<typeof userControllerGetAll>>>
-export type UserControllerGetAllQueryError = unknown
+export type GetUsersQueryResult = NonNullable<Awaited<ReturnType<typeof getUsers>>>
+export type GetUsersQueryError = unknown
 
-export const useUserControllerGetAll = <
-  TData = Awaited<ReturnType<typeof userControllerGetAll>>,
-  TError = unknown,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof userControllerGetAll>>, TError, TData>
+export const useGetUsers = <TData = Awaited<ReturnType<typeof getUsers>>, TError = unknown>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof getUsers>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getUserControllerGetAllQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getGetUsersQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof userControllerGetAll>>> = ({ signal }) =>
-    userControllerGetAll(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsers>>> = ({ signal }) => getUsers(signal)
 
-  const query = useQuery<Awaited<ReturnType<typeof userControllerGetAll>>, TError, TData>(
+  const query = useQuery<Awaited<ReturnType<typeof getUsers>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,
@@ -841,26 +696,49 @@ export const useUserControllerGetAll = <
   return query
 }
 
-export const schedulingControllerFetchNow = () => {
-  return customAxiosInstance<void>({ url: `/api/scheduling/now`, method: 'post' })
+export const deleteUser = (userId: unknown) => {
+  return customAxiosInstance<void>({ url: `/api/user/${userId}`, method: 'delete' })
 }
 
-export type SchedulingControllerFetchNowMutationResult = NonNullable<
-  Awaited<ReturnType<typeof schedulingControllerFetchNow>>
->
+export type DeleteUserMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUser>>>
 
-export type SchedulingControllerFetchNowMutationError = unknown
+export type DeleteUserMutationError = unknown
 
-export const useSchedulingControllerFetchNow = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof schedulingControllerFetchNow>>, TError, TVariables, TContext>
+export const useDeleteUser = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError, { userId: unknown }, TContext>
 }) => {
   const { mutation: mutationOptions } = options ?? {}
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof schedulingControllerFetchNow>>, TVariables> = () => {
-    return schedulingControllerFetchNow()
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUser>>, { userId: unknown }> = (props) => {
+    const { userId } = props ?? {}
+
+    return deleteUser(userId)
   }
 
-  return useMutation<Awaited<ReturnType<typeof schedulingControllerFetchNow>>, TError, TVariables, TContext>(
+  return useMutation<Awaited<ReturnType<typeof deleteUser>>, TError, { userId: unknown }, TContext>(
+    mutationFn,
+    mutationOptions,
+  )
+}
+
+export const forceFetching = () => {
+  return customAxiosInstance<void>({ url: `/api/scheduling/now`, method: 'post' })
+}
+
+export type ForceFetchingMutationResult = NonNullable<Awaited<ReturnType<typeof forceFetching>>>
+
+export type ForceFetchingMutationError = unknown
+
+export const useForceFetching = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof forceFetching>>, TError, TVariables, TContext>
+}) => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof forceFetching>>, TVariables> = () => {
+    return forceFetching()
+  }
+
+  return useMutation<Awaited<ReturnType<typeof forceFetching>>, TError, TVariables, TContext>(
     mutationFn,
     mutationOptions,
   )

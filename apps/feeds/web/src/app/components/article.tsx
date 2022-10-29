@@ -1,33 +1,18 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
 
 import type { ArticleDto, ArticleResponseDto } from '@plusone/feeds/api-client'
-import {
-  getArticleControllerSearchQueryKey,
-  getFeedControllerGetQueryKey,
-  useArticleControllerToggleUnread,
-} from '@plusone/feeds/api-client'
+import { getFindArticlesQueryKey, useToggleUnread } from '@plusone/feeds/api-client'
 
-function useToggleUnread(id: ArticleDto['id'], unread: boolean) {
-  const { feedId } = useParams()
-  const [searchParams] = useSearchParams()
-
+function useToggleUnreadState(id: ArticleDto['id'], unread: boolean) {
   const queryClient = useQueryClient()
-  const { mutate } = useArticleControllerToggleUnread({
+  const { mutate } = useToggleUnread({
     mutation: {
-      onSuccess: async () => {
-        const search = searchParams.get('search')
-        if (search) {
-          await queryClient.invalidateQueries(getArticleControllerSearchQueryKey({ s: search }))
-        }
-        if (feedId) {
-          await queryClient.invalidateQueries(getFeedControllerGetQueryKey(feedId))
-        }
-      },
+      onSuccess: async () => await queryClient.invalidateQueries(getFindArticlesQueryKey()),
     },
   })
 
-  return () => mutate({ id, data: { unread: !unread } })
+  return (read?: boolean) => mutate({ id, data: { unread: typeof read !== 'undefined' ? !read : !unread } })
 }
 
 type ArticleProps = {
@@ -35,12 +20,20 @@ type ArticleProps = {
 }
 
 export function Article({ article: { article, unread } }: ArticleProps) {
-  const toggleUnread = useToggleUnread(article.id, unread)
+  const [showContent, setShowContent] = useState<boolean>(false)
+
+  const toggleUnread = useToggleUnreadState(article.id, unread)
 
   return (
     <article>
-      <input type={'checkbox'} defaultChecked={!unread} onClick={toggleUnread} />
-      {article.title}
+      <input type={'checkbox'} checked={!unread} onChange={() => toggleUnread()} />
+      {article.contentBody !== null && (
+        <button onClick={() => setShowContent((cur) => !cur)}>{showContent ? 'collapse' : 'expand'}</button>
+      )}
+      <a href={article.link} target={'_blank'} rel={'noreferrer'} onClick={() => toggleUnread(true)}>
+        {article.title}
+      </a>
+      {showContent && <div dangerouslySetInnerHTML={{ __html: article.contentBody }} />}
     </article>
   )
 }

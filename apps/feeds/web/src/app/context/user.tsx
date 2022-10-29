@@ -5,11 +5,7 @@ import { createContext, useContext, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import type { LoginResponse, UserResponse } from '@plusone/feeds/shared/types'
-import {
-  AUTHENTICATION_LOCAL_STORAGE_KEY,
-  useAuthenticationControllerGetProfile,
-  useAuthenticationControllerLogout,
-} from '@plusone/feeds/api-client'
+import { AUTHENTICATION_LOCAL_STORAGE_KEY, useLogout, useProfile } from '@plusone/feeds/api-client'
 
 type UserContextValue = {
   userInfo?: UserResponse
@@ -18,7 +14,7 @@ type UserContextValue = {
   logout: () => void
 }
 
-const userContext = createContext<UserContextValue | undefined>(undefined)
+const UserContext = createContext<UserContextValue>(undefined)
 
 type UserContextProviderProps = {
   children: ReactNode
@@ -30,7 +26,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
   const [userInfo, setUserInfo] = useState<UserResponse | undefined>()
   const queryClient = useQueryClient()
 
-  const { refetch: fetchProfile } = useAuthenticationControllerGetProfile({
+  const { refetch: fetchProfile } = useProfile({
     query: {
       enabled: location.pathname !== '/login',
       refetchInterval: 30_000,
@@ -51,7 +47,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
     },
   })
 
-  const { refetch: logoutAddServer } = useAuthenticationControllerLogout({ query: { enabled: false } })
+  const { refetch: logoutAddServer } = useLogout({ query: { enabled: false } })
 
   const isLoggedIn = userInfo !== undefined
 
@@ -76,13 +72,13 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
     navigate('/login')
   }
 
-  return <userContext.Provider value={{ userInfo, isLoggedIn, login, logout }}>{children}</userContext.Provider>
+  return <UserContext.Provider children={children} value={{ userInfo, isLoggedIn, login, logout }} />
 }
 
 export function useUserContext() {
-  const context = useContext(userContext)
+  const context = useContext(UserContext)
 
-  if (context === undefined) {
+  if (typeof context === 'undefined') {
     throw new Error('useUserContext must be used within a UserContextProvider')
   }
 

@@ -2,8 +2,15 @@ import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Item } from 'rss-parser'
 
-import { Article, Feed, PrismaService, User } from '@plusone/feeds-persistence'
-import { PaginatedArticles, Pagination } from '@plusone/feeds/shared/types'
+import { Article, Feed, Prisma, PrismaService, User } from '@plusone/feeds-persistence'
+import { PaginatedArticles, Pagination, Sort } from '@plusone/feeds/shared/types'
+
+type ArticleFindParams = Pagination & {
+  sort: Sort
+  searchTerm?: string
+  feedId?: Feed['id']
+  includeRead: boolean
+}
 
 @Injectable()
 export class ArticleService {
@@ -11,92 +18,78 @@ export class ArticleService {
 
   constructor(private readonly prismaService: PrismaService, private readonly configService: ConfigService) {}
 
-  async create(article: Item & { id?: string }, feed: Feed) {
-    if (!article.guid || typeof article.guid !== 'string') {
-      if (typeof article.id === 'string') {
-        article.guid = article.id
+  async create(newArticle: Item & { id?: string }, feed: Feed) {
+    if (!newArticle.guid || typeof newArticle.guid !== 'string') {
+      if (typeof newArticle.id === 'string') {
+        newArticle.guid = newArticle.id
       } else {
         this.logger.warn(`Could not store article for ${feed.originalTitle} as guid is not a string`)
-        this.logger.debug(`${article.title}: ${article.guid}`)
+        this.logger.debug(`${newArticle.title}: ${newArticle.guid}`)
         return
       }
-    }
-
-    // TODO: upsert?
-    if (
-      await this.prismaService.article.findUnique({ where: { guid_feedId: { guid: article.guid, feedId: feed.id } } })
-    ) {
-      return
     }
 
     const feedSubscribers = await this.prismaService.user.findMany({
       where: { UserFeed: { some: { feedId: feed.id } } },
     })
 
-    return this.prismaService.article.create({
-      data: {
-        content: article.content,
-        contentBody: article['content:encoded'],
+    await this.prismaService.article.upsert({
+      where: {
+        guid_feedId: {
+          guid: newArticle.guid,
+          feedId: feed.id,
+        },
+      },
+      update: {
+        content: newArticle.content,
+        contentBody: newArticle['content:encoded'],
+        title: newArticle.title,
+        UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })), skipDuplicates: true } },
+      },
+      create: {
+        content: newArticle.content,
+        contentBody: newArticle['content:encoded'],
         feedId: feed.id,
-        guid: article.guid,
-        link: article.link,
-        title: article.title,
-        date: new Date(article.isoDate),
-        UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })) } },
+        guid: newArticle.guid,
+        link: newArticle.link,
+        title: newArticle.title,
+        date: new Date(newArticle.isoDate),
+        UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })), skipDuplicates: true } },
       },
     })
   }
 
-  async getForUserAndFeed(userId: User['id'], feedId: Feed['id'], pagination: Pagination): Promise<PaginatedArticles> {
-    const isFirstRequest = !pagination.cursor || Number(pagination.cursor) === 0
+  async find(
+    userId: User['id'],
+    { cursor, sort, searchTerm, feedId, includeRead }: ArticleFindParams,
+  ): Promise<PaginatedArticles> {
+    this.logger.debug(`User is searching for '${searchTerm}', limited by '${feedId}', sorted: '${sort}'.`)
 
-    const [totalCount, unreadCount, content] = await this.prismaService.$transaction([
-      this.prismaService.userArticle.count({
-        where: { userId, article: { feedId } },
-      }),
-      this.prismaService.userArticle.count({
-        where: { userId, article: { feedId }, unread: true },
-      }),
-      this.prismaService.userArticle.findMany({
-        take: this.configService.get('PAGE_SIZE'),
-        cursor: isFirstRequest ? undefined : { cursor: Number(pagination.cursor) },
-        skip: isFirstRequest ? 0 : 1,
-        select: { article: true, unread: true, cursor: true },
-        where: { userId, article: { feedId } },
-        orderBy: [{ cursor: 'desc' }],
-      }),
-    ])
+    const pagination = this.normalizePagination(cursor)
+    const search = typeof searchTerm !== 'undefined' ? searchTerm.split(' ').join(' & ') : '%'
 
-    return {
-      totalCount,
-      content,
-      unreadCount,
-      lastCursor: content[content.length - 1]?.cursor,
-      pageSize: this.configService.get('PAGE_SIZE'),
+    const where: Prisma.UserArticleFindManyArgs['where'] = {
+      userId,
+      article: {
+        feedId,
+        title: searchTerm ? { search } : undefined,
+      },
     }
-  }
 
-  async search(userId: User['id'], s: string, pagination: Pagination): Promise<PaginatedArticles> {
-    this.logger.debug(`User is searching for '${s}'.`)
-
-    const isFirstRequest = !pagination.cursor || Number(pagination.cursor) === 0
-    const search = s.split(' ').join(' & ')
+    // When read articles are supposed to be included we don't sort for the unread property.
+    // Otherwise, read articles will show up after all unread articles.
+    const orderBy: Prisma.UserArticleFindManyArgs['orderBy'] = includeRead ? [] : [{ unread: 'desc' }]
+    orderBy.push({ cursor: sort })
 
     const [totalCount, content, unreadCount] = await this.prismaService.$transaction([
-      this.prismaService.userArticle.count({
-        where: { userId, article: { title: { search } } },
-      }),
+      this.prismaService.userArticle.count({ where }),
       this.prismaService.userArticle.findMany({
-        cursor: isFirstRequest ? undefined : { cursor: Number(pagination.cursor) },
-        skip: isFirstRequest ? 0 : 1,
-        take: this.configService.get('PAGE_SIZE'),
+        ...pagination,
         select: { article: true, unread: true, cursor: true },
-        where: { userId, article: { title: { search } } },
-        orderBy: [{ cursor: 'desc' }],
+        where,
+        orderBy,
       }),
-      this.prismaService.userArticle.count({
-        where: { userId, article: { title: { search } } },
-      }),
+      this.prismaService.userArticle.count({ where: { ...where, unread: true } }),
     ])
 
     return {
@@ -114,5 +107,18 @@ export class ArticleService {
       data: { unread },
       where: { userId_articleId: { articleId, userId } },
     })
+  }
+
+  private normalizePagination(cursor?: Pagination['cursor']): {
+    cursor: { cursor: number }
+    skip: number
+    take: number
+  } {
+    const isFirstRequest = !cursor || Number(cursor) === 0
+    return {
+      cursor: isFirstRequest ? undefined : { cursor: Number(cursor) },
+      skip: isFirstRequest ? 0 : 1,
+      take: this.configService.get('PAGE_SIZE'),
+    }
   }
 }

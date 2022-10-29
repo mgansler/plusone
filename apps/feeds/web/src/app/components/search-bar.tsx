@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 
 type SearchForm = {
   search: string
@@ -8,17 +8,16 @@ type SearchForm = {
 
 export function SearchBar() {
   const location = useLocation()
-  const navigate = useNavigate()
   const { handleSubmit, register, reset } = useForm<SearchForm>()
 
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   useEffect(() => {
     reset({ search: searchParams.get('search') })
   }, [reset, searchParams])
 
   const onSubmit = (data: SearchForm) => {
-    navigate(`search?search=${data.search}`)
+    setSearchParams({ search: data.search })
   }
 
   if (location.pathname === '/member/new') {
@@ -31,7 +30,10 @@ export function SearchBar() {
         Search
         <input type={'text'} aria-label={'search'} {...register('search')} required={true} />
       </label>
-      <button>Search</button>
+      <button type={'submit'}>Search</button>
+      <button type={'button'} onClick={() => setSearchParams({})}>
+        Clear
+      </button>
     </form>
   )
 }
