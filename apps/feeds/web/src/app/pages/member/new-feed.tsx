@@ -1,10 +1,11 @@
+import { useQueryClient } from '@tanstack/react-query'
 import type { BaseSyntheticEvent } from 'react'
 import type { FallbackProps } from 'react-error-boundary'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import { useAddFeed, useDiscoverFeed } from '@plusone/feeds/api-client'
+import { getGetFeedsQueryKey, useAddFeed, useDiscoverFeed } from '@plusone/feeds/api-client'
 
 type NewFeedForm = {
   title: string
@@ -14,10 +15,16 @@ type NewFeedForm = {
 
 function NewFeedWrapped() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const { register, handleSubmit, reset } = useForm<NewFeedForm>()
 
   const { mutateAsync: discover } = useDiscoverFeed()
-  const { mutateAsync: addFeed } = useAddFeed({ mutation: { useErrorBoundary: true } })
+  const { mutateAsync: addFeed } = useAddFeed({
+    mutation: {
+      useErrorBoundary: true,
+      onMutate: () => queryClient.invalidateQueries(getGetFeedsQueryKey()),
+    },
+  })
 
   const onSubmit = async (data: NewFeedForm, event?: BaseSyntheticEvent) => {
     if (((event?.nativeEvent as SubmitEvent).submitter as HTMLButtonElement).innerText === 'save') {
