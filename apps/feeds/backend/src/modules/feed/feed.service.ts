@@ -5,6 +5,7 @@ import { Sort, UserFeedResponse } from '@plusone/feeds/shared/types'
 
 import { TokenPayload } from '../authentication/jwt.strategy'
 import { DiscoverService } from '../discover/discover.service'
+import { FetchService } from '../fetch/fetch.service'
 
 import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
 
@@ -12,7 +13,11 @@ import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
 export class FeedService {
   private logger = new Logger(FeedService.name)
 
-  constructor(private readonly prismaService: PrismaService, private readonly discoverService: DiscoverService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly discoverService: DiscoverService,
+    private readonly fetchService: FetchService,
+  ) {}
 
   async discover({ url }: FeedDiscoverDto) {
     const discoveredFeed = await this.discoverService.discoverFeedForWebsite(url)
@@ -26,7 +31,19 @@ export class FeedService {
   }
 
   async create(feedInputDto: FeedInputDto, userId: User['id']): Promise<UserFeedResponse> {
-    const { title: originalTitle } = await this.discover({ url: feedInputDto.url })
+    let originalTitle: string
+    try {
+      originalTitle = (await this.discover({ url: feedInputDto.url })).title
+    } catch (e) {
+      if (typeof feedInputDto.title === 'undefined' || feedInputDto.title.length < 1) {
+        throw new HttpException('Feed discovery failed, you MUST provide a title.', HttpStatus.BAD_REQUEST)
+      }
+      const articles = await this.fetchService.fetchFeedArticles(feedInputDto.feedUrl)
+      if (articles.length === 0) {
+        throw new HttpException('Could not find any articles for given URL, please check.', HttpStatus.BAD_REQUEST)
+      }
+      originalTitle = feedInputDto.title
+    }
 
     try {
       return await this.prismaService.$transaction(async (tx) => {
