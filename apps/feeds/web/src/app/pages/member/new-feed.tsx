@@ -5,7 +5,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import { getGetFeedsQueryKey, useAddFeed, useDiscoverFeed } from '@plusone/feeds/api-client'
+import { getGetUserFeedsQueryKey, useAddFeed, useDiscoverFeed } from '@plusone/feeds/api-client'
 
 type NewFeedForm = {
   title: string
@@ -22,7 +22,7 @@ function NewFeedWrapped() {
   const { mutateAsync: addFeed } = useAddFeed({
     mutation: {
       useErrorBoundary: true,
-      onMutate: () => queryClient.invalidateQueries(getGetFeedsQueryKey()),
+      onMutate: () => queryClient.invalidateQueries(getGetUserFeedsQueryKey()),
     },
   })
 

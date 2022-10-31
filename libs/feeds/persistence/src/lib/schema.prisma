@@ -5,9 +5,14 @@ datasource db {
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  previewFeatures = ["fullTextSearch", "interactiveTransactions"]
   output          = "client"
   binaryTargets   = ["linux-musl", "native"]
+}
+
+enum Order {
+  ASC
+  DESC
 }
 
 model Article {
@@ -56,11 +61,13 @@ model UserArticle {
 }
 
 model UserFeed {
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @db.Uuid
-  feed   Feed   @relation(fields: [feedId], references: [id])
-  feedId String @db.Uuid
-  title  String
+  user        User    @relation(fields: [userId], references: [id])
+  userId      String  @db.Uuid
+  feed        Feed    @relation(fields: [feedId], references: [id])
+  feedId      String  @db.Uuid
+  title       String
+  order       Order   @default(DESC)
+  includeRead Boolean @default(false)
 
   @@unique([userId, feedId])
 }

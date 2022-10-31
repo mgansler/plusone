@@ -52,6 +52,7 @@ export class ArticleController {
     name: 'sort',
     description: 'Should articles appear in chronically ascending or descending order.',
     enum: Sort,
+    enumName: 'Sort',
     required: false,
   })
   @ApiQuery({

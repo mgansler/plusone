@@ -22,6 +22,22 @@ describe('feeds', () => {
     cy.findByText('iskall85').should('be.visible')
   })
 
+  it('should allow adding a feed manually', () => {
+    cy.loginFreshUser()
+
+    cy.findByText('Dilbert Daily Strips').should('not.exist')
+
+    cy.findByRole('button', { name: 'add feed' }).click()
+
+    cy.findByRole('textbox', { name: 'title' }).type('Dilbert Daily Strips')
+    cy.findByRole('textbox', { name: 'url' }).type('https://dilbert.com')
+    cy.findByRole('textbox', { name: 'feed-url' }).type('https://dilbert.com/feed')
+
+    cy.findByRole('button', { name: 'save' }).click()
+
+    cy.findByText('Dilbert Daily Strips').should('be.visible')
+  })
+
   it('should handle failing to add an existing feed', () => {
     cy.addHeiseFeedToDefaultUser()
     cy.login()

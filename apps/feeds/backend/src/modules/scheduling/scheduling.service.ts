@@ -5,7 +5,6 @@ import { Item } from 'rss-parser'
 import { Feed, Prisma } from '@plusone/feeds-persistence'
 
 import { ArticleService } from '../article/article.service'
-import { SystemUser } from '../authentication/system-user'
 import { FeedService } from '../feed/feed.service'
 import { FetchService } from '../fetch/fetch.service'
 
@@ -21,7 +20,7 @@ export class SchedulingService {
 
   @Cron(CronExpression.EVERY_10_MINUTES)
   handleCron() {
-    this.feedService.findAllFor(SystemUser).then((feeds) => {
+    this.feedService.findAll().then((feeds) => {
       feeds.forEach((feed) => {
         this.fetchService
           .fetchFeedArticles(feed.feedUrl)

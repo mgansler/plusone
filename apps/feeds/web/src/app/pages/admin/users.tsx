@@ -33,8 +33,6 @@ function User({ user }: UserProps) {
 export function Users() {
   const { data: users } = useGetUsers()
 
-  console.log(users?.data)
-
   return (
     <div>
       <Link to={'..'}>up</Link>
