@@ -12,7 +12,7 @@ describe('feeds', () => {
 
     cy.findByRole('textbox', { name: 'url' }).type('https://www.youtube.com/c/iskall85/videos')
     cy.findByRole('button', { name: 'search' }).click()
-    cy.findByRole('textbox', { name: 'title' }).should('have.value', 'iskall85')
+    cy.findByRole('textbox', { name: 'title', timeout: 10_000 }).should('have.value', 'iskall85')
     cy.findByRole('textbox', { name: 'feed-url' }).should(
       'have.value',
       'http://www.youtube.com/feeds/videos.xml?channel_id=UCZ9x-z3iOnIbJxVpm1rsu2A',
@@ -38,7 +38,9 @@ describe('feeds', () => {
         return false
       }
     })
-    cy.findByText('Could not add feed: You are already subscribed to this feed').should('be.visible')
+    cy.findByText('Could not add feed: You are already subscribed to this feed', { timeout: 10_000 }).should(
+      'be.visible',
+    )
     // Force click because in development mode there will be an overlay even though there is an error boundary
     cy.findByRole('button', { name: 'reset' }).click({ force: true })
     cy.findByRole('textbox', { name: 'title' }).should('have.value', '')
