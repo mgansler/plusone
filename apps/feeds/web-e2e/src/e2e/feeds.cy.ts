@@ -3,7 +3,7 @@ describe('feeds', () => {
     cy.visit('/')
   })
 
-  it('should discover and add a feed', () => {
+  it.only('should discover and add a feed', () => {
     cy.loginFreshUser()
 
     cy.findByText('iskall85').should('not.exist')
@@ -12,7 +12,7 @@ describe('feeds', () => {
 
     cy.findByRole('textbox', { name: 'url' }).type('https://www.youtube.com/c/iskall85/videos')
     cy.findByRole('button', { name: 'search' }).click()
-    cy.findByRole('textbox', { name: 'title' }).should('have.value', 'iskall85')
+    cy.findByRole('textbox', { name: 'title', timeout: 10_000 }).should('have.value', 'iskall85')
     cy.findByRole('textbox', { name: 'feed-url' }).should(
       'have.value',
       'http://www.youtube.com/feeds/videos.xml?channel_id=UCZ9x-z3iOnIbJxVpm1rsu2A',

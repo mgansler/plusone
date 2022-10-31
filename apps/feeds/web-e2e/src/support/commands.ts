@@ -26,6 +26,7 @@ Cypress.Commands.add('login', () => {
     url: '/api/authentication/register',
     body: { username: 'user', password: 'just_secret' },
     failOnStatusCode: false,
+    timeout: 10_000,
   })
 
   cy.visit('/login')
