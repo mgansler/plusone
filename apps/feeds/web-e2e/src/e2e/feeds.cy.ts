@@ -38,7 +38,9 @@ describe('feeds', () => {
         return false
       }
     })
-    cy.findByText('Could not add feed: You are already subscribed to this feed').should('be.visible')
+    cy.findByText('Could not add feed: You are already subscribed to this feed', { timeout: 10_000 }).should(
+      'be.visible',
+    )
     // Force click because in development mode there will be an overlay even though there is an error boundary
     cy.findByRole('button', { name: 'reset' }).click({ force: true })
     cy.findByRole('textbox', { name: 'title' }).should('have.value', '')
