@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUrl } from 'class-validator'
 
-import { DiscoverResponse, FeedInput, FeedResponse } from '@plusone/feeds/shared/types'
+import { DiscoverResponse, FeedInput, FeedResponse, Sort, UserFeedResponse } from '@plusone/feeds/shared/types'
 
 export class DiscoverResponseDto implements DiscoverResponse {
   @ApiProperty()
@@ -41,4 +41,24 @@ export class FeedResponseDto implements FeedResponse {
 
   @ApiPropertyOptional()
   title?: string
+}
+
+export class UserFeedResponseDto implements UserFeedResponse {
+  @ApiProperty()
+  feedUrl: string
+
+  @ApiProperty()
+  id: string
+
+  @ApiProperty()
+  originalTitle: string
+
+  @ApiPropertyOptional()
+  title?: string
+
+  @ApiProperty()
+  includeRead: boolean
+
+  @ApiProperty({ enum: Sort, enumName: 'Sort' })
+  order: Sort
 }

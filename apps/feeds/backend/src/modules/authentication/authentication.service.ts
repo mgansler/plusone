@@ -8,6 +8,7 @@ import { LoginResponse } from '@plusone/feeds/shared/types'
 
 import { UserRegistrationDto } from './authentication.dto'
 import { TokenPayload } from './jwt.strategy'
+import { Role } from './roles.guard'
 
 @Injectable()
 export class AuthenticationService implements OnModuleInit {
@@ -27,7 +28,7 @@ export class AuthenticationService implements OnModuleInit {
     const payload: TokenPayload = {
       username: user.username,
       isAdmin: user.isAdmin,
-      roles: user.isAdmin ? ['admin'] : [],
+      roles: user.isAdmin ? [Role.Admin] : [Role.User],
       id: user.id,
     }
     return {

@@ -74,15 +74,16 @@ export type HealthControllerGetHealthStatus200 = {
 
 export type DiscoverFeedParams = { url: string }
 
-export type FindArticlesSort = typeof FindArticlesSort[keyof typeof FindArticlesSort]
+export type FindArticlesParams = { s?: string; r?: boolean; sort?: Sort; f?: string; cursor?: number }
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const FindArticlesSort = {
-  desc: 'desc',
-  asc: 'asc',
-} as const
-
-export type FindArticlesParams = { s?: string; r?: boolean; sort?: FindArticlesSort; f?: string; cursor?: number }
+export interface UserFeedResponseDto {
+  feedUrl: string
+  id: string
+  originalTitle: string
+  title?: string
+  includeRead: boolean
+  order: Sort
+}
 
 export interface FeedResponseDto {
   feedUrl: string
@@ -124,6 +125,14 @@ export interface UserLoginDto {
   username: string
   password: string
 }
+
+export type Sort = typeof Sort[keyof typeof Sort]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const Sort = {
+  desc: 'desc',
+  asc: 'asc',
+} as const
 
 export interface ArticleDto {
   id: string
@@ -528,11 +537,63 @@ export const useAddFeed = <TError = unknown, TContext = unknown>(options?: {
   )
 }
 
-export const getFeeds = (signal?: AbortSignal) => {
-  return customAxiosInstance<FeedResponseDto[]>({ url: `/api/feed`, method: 'get', signal })
+export const getUserFeeds = (signal?: AbortSignal) => {
+  return customAxiosInstance<UserFeedResponseDto[]>({ url: `/api/feed`, method: 'get', signal })
 }
 
-export const getGetFeedsQueryKey = () => [`/api/feed`]
+export const getGetUserFeedsQueryKey = () => [`/api/feed`]
+
+export type GetUserFeedsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getUserFeeds>>>
+export type GetUserFeedsInfiniteQueryError = unknown
+
+export const useGetUserFeedsInfinite = <TData = Awaited<ReturnType<typeof getUserFeeds>>, TError = unknown>(options?: {
+  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof getUserFeeds>>, TError, TData>
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetUserFeedsQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserFeeds>>> = ({ signal }) => getUserFeeds(signal)
+
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof getUserFeeds>>, TError, TData>(
+    queryKey,
+    queryFn,
+    queryOptions,
+  ) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export type GetUserFeedsQueryResult = NonNullable<Awaited<ReturnType<typeof getUserFeeds>>>
+export type GetUserFeedsQueryError = unknown
+
+export const useGetUserFeeds = <TData = Awaited<ReturnType<typeof getUserFeeds>>, TError = unknown>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof getUserFeeds>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetUserFeedsQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserFeeds>>> = ({ signal }) => getUserFeeds(signal)
+
+  const query = useQuery<Awaited<ReturnType<typeof getUserFeeds>>, TError, TData>(
+    queryKey,
+    queryFn,
+    queryOptions,
+  ) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export const getFeeds = (signal?: AbortSignal) => {
+  return customAxiosInstance<FeedResponseDto[]>({ url: `/api/feed/all`, method: 'get', signal })
+}
+
+export const getGetFeedsQueryKey = () => [`/api/feed/all`]
 
 export type GetFeedsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getFeeds>>>
 export type GetFeedsInfiniteQueryError = unknown
