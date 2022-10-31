@@ -3,7 +3,7 @@ describe('feeds', () => {
     cy.visit('/')
   })
 
-  it.only('should discover and add a feed', () => {
+  it('should discover and add a feed', () => {
     cy.loginFreshUser()
 
     cy.findByText('iskall85').should('not.exist')
