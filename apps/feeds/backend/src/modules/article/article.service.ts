@@ -5,6 +5,8 @@ import { Item } from 'rss-parser'
 import { Article, Feed, Prisma, PrismaService, User } from '@plusone/feeds-persistence'
 import { PaginatedArticles, Pagination, Sort } from '@plusone/feeds/shared/types'
 
+import { getArticleBuilderFunction } from './transformation/transformation'
+
 type ArticleFindParams = Pagination & {
   sort: Sort
   searchTerm?: string
@@ -18,7 +20,9 @@ export class ArticleService {
 
   constructor(private readonly prismaService: PrismaService, private readonly configService: ConfigService) {}
 
-  async create(newArticle: Item & { id?: string }, feed: Feed) {
+  async create(newItem: Item, feed: Feed) {
+    const newArticle = await getArticleBuilderFunction(feed.feedUrl)(newItem)
+
     if (!newArticle.guid || typeof newArticle.guid !== 'string') {
       if (typeof newArticle.id === 'string') {
         newArticle.guid = newArticle.id
@@ -42,18 +46,13 @@ export class ArticleService {
       },
       update: {
         content: newArticle.content,
-        contentBody: newArticle['content:encoded'],
+        contentBody: newArticle.contentBody,
         title: newArticle.title,
         UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })), skipDuplicates: true } },
       },
       create: {
-        content: newArticle.content,
-        contentBody: newArticle['content:encoded'],
+        ...newArticle,
         feedId: feed.id,
-        guid: newArticle.guid,
-        link: newArticle.link,
-        title: newArticle.title,
-        date: new Date(newArticle.isoDate),
         UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })), skipDuplicates: true } },
       },
     })
