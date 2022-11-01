@@ -83,6 +83,7 @@ export interface UserFeedResponseDto {
   title?: string
   includeRead: boolean
   order: Sort
+  expandContent: boolean
 }
 
 export interface FeedResponseDto {

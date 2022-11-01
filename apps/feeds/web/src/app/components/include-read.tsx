@@ -1,7 +1,7 @@
-import { useArticleFindContext } from '../context/article-find'
+import { useFeedSettingsContext } from '../context/feed-settings'
 
 export function IncludeRead() {
-  const { includeRead, setIncludeRead } = useArticleFindContext()
+  const { includeRead, setIncludeRead } = useFeedSettingsContext()
 
   return (
     <label>

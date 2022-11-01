@@ -1,9 +1,9 @@
 import { Sort } from '@plusone/feeds/shared/types'
 
-import { useArticleFindContext } from '../context/article-find'
+import { useFeedSettingsContext } from '../context/feed-settings'
 
 export function SortDirection() {
-  const { sort, setSort } = useArticleFindContext()
+  const { sort, setSort } = useFeedSettingsContext()
 
   return (
     <div>

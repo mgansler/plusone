@@ -61,4 +61,7 @@ export class UserFeedResponseDto implements UserFeedResponse {
 
   @ApiProperty({ enum: Sort, enumName: 'Sort' })
   order: Sort
+
+  @ApiProperty()
+  expandContent: boolean
 }
