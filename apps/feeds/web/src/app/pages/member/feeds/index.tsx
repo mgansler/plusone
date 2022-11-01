@@ -24,7 +24,9 @@ function FeedEntry({ feed }: FeedEntryProps) {
 
   return (
     <section aria-label={feed.title}>
-      <h4 onClick={handleGoToFeed}>{feed.title}</h4>
+      <h4 onClick={handleGoToFeed}>
+        {feed.title} ({feed.unreadCount})
+      </h4>
     </section>
   )
 }
@@ -41,11 +43,13 @@ export function FeedList() {
     navigate({ pathname: 'all', search: searchParams.toString() })
   }
 
+  const totalUnreadCount = data?.data.reduce((total, feed) => total + feed.unreadCount, 0)
+
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr' }}>
       <div>
         <section aria-label={'all feeds'}>
-          <h4 onClick={goToAll}>All</h4>
+          <h4 onClick={goToAll}>All ({totalUnreadCount})</h4>
         </section>
         {data?.data.map((feed) => (
           <FeedEntry key={feed.id} feed={feed} />

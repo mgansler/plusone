@@ -19,7 +19,7 @@ describe('feeds', () => {
     )
     cy.findByRole('button', { name: 'save' }).click()
 
-    cy.findByText('iskall85').should('be.visible')
+    cy.findByText(/iskall85/).should('be.visible')
   })
 
   it('should allow adding a feed manually', () => {
@@ -35,7 +35,7 @@ describe('feeds', () => {
 
     cy.findByRole('button', { name: 'save' }).click()
 
-    cy.findByText('Dilbert Daily Strips').should('be.visible')
+    cy.findByText(/Dilbert Daily Strips/).should('be.visible')
   })
 
   it('should handle failing to add an existing feed', () => {
