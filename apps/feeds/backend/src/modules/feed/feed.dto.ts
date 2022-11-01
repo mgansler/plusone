@@ -64,4 +64,7 @@ export class UserFeedResponseDto implements UserFeedResponse {
 
   @ApiProperty()
   expandContent: boolean
+
+  @ApiProperty()
+  unreadCount: number
 }

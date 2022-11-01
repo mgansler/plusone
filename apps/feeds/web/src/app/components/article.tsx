@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 
 import type { ArticleDto, ArticleResponseDto } from '@plusone/feeds/api-client'
-import { getFindArticlesQueryKey, useToggleUnread } from '@plusone/feeds/api-client'
+import { getFindArticlesQueryKey, getGetUserFeedsQueryKey, useToggleUnread } from '@plusone/feeds/api-client'
 
 import { useFeedSettingsContext } from '../context/feed-settings'
 
@@ -10,7 +10,10 @@ function useToggleUnreadState(id: ArticleDto['id'], unread: boolean) {
   const queryClient = useQueryClient()
   const { mutate } = useToggleUnread({
     mutation: {
-      onSuccess: async () => await queryClient.invalidateQueries(getFindArticlesQueryKey()),
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(getFindArticlesQueryKey())
+        await queryClient.invalidateQueries(getGetUserFeedsQueryKey())
+      },
     },
   })
 

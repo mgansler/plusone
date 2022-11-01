@@ -17,4 +17,5 @@ export type UserFeedResponse = FeedResponse & {
   includeRead: boolean
   order: Sort
   expandContent: boolean
+  unreadCount: number
 }

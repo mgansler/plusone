@@ -84,6 +84,7 @@ export interface UserFeedResponseDto {
   includeRead: boolean
   order: Sort
   expandContent: boolean
+  unreadCount: number
 }
 
 export interface FeedResponseDto {

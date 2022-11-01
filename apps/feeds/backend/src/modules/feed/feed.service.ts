@@ -69,12 +69,15 @@ export class FeedService {
           where: { userId_feedId: { userId, feedId: feed.id } },
         })
 
+        const unreadCount = await tx.userArticle.count({ where: { userId, article: { feedId: feed.id } } })
+
         return {
           id: feed.id,
           feedUrl: feed.feedUrl,
           originalTitle: feed.originalTitle,
           ...userFeed,
           order: userFeed.order === 'ASC' ? Sort.OldestFirst : Sort.NewestFirst,
+          unreadCount,
         }
       })
     } catch (e) {
@@ -94,19 +97,32 @@ export class FeedService {
   }
 
   async findAllFor(user: TokenPayload): Promise<UserFeedResponse[]> {
-    return (
-      (
-        await this.prismaService.userFeed.findMany({
-          select: { feed: true, title: true, includeRead: true, order: true, expandContent: true },
-          where: { userId: user.id },
+    return this.prismaService.$transaction(async (tx) => {
+      const userFeeds = await tx.userFeed.findMany({
+        select: { feed: true, title: true, includeRead: true, order: true, expandContent: true },
+        where: { userId: user.id },
+      })
+
+      const userFeedResponses: UserFeedResponse[] = []
+
+      for await (const { feed, order, ...rest } of userFeeds) {
+        const unreadCount = await tx.userArticle.count({
+          where: {
+            userId: user.id,
+            article: { feedId: feed.id },
+            unread: true,
+          },
         })
-      )
-        // Unpack feed, transform order, copy the rest
-        .map(({ feed, order, ...rest }) => ({
+
+        userFeedResponses.push({
           ...feed,
           order: order === 'DESC' ? Sort.NewestFirst : Sort.OldestFirst,
           ...rest,
-        }))
-    )
+          unreadCount,
+        })
+      }
+
+      return userFeedResponses
+    })
   }
 }

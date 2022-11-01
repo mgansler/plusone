@@ -24,7 +24,9 @@ function FeedEntry({ feed }: FeedEntryProps) {
 
   return (
     <section aria-label={feed.title}>
-      <h4 onClick={handleGoToFeed}>{feed.title}</h4>
+      <h4 onClick={handleGoToFeed}>
+        {feed.title} ({feed.unreadCount})
+      </h4>
     </section>
   )
 }
