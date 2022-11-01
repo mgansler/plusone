@@ -48,9 +48,12 @@ export function FeedList() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr' }}>
       <div>
+        <button onClick={() => navigate('../new')}>add feed</button>
+
         <section aria-label={'all feeds'}>
           <h4 onClick={goToAll}>All ({totalUnreadCount})</h4>
         </section>
+
         {data?.data.map((feed) => (
           <FeedEntry key={feed.id} feed={feed} />
         ))}
