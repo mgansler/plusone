@@ -7,7 +7,7 @@ import { TokenPayload } from '../authentication/jwt.strategy'
 import { DiscoverService } from '../discover/discover.service'
 import { FetchService } from '../fetch/fetch.service'
 
-import { FeedDiscoverDto, FeedInputDto } from './feed.dto'
+import { FeedDiscoverDto, FeedInputDto, UpdateFeedSettingsInputDto } from './feed.dto'
 
 @Injectable()
 export class FeedService {
@@ -123,6 +123,26 @@ export class FeedService {
       }
 
       return userFeedResponses
+    })
+  }
+
+  async updateFeedSettings(
+    user: TokenPayload,
+    feedId: Feed['id'],
+    { order, includeRead, expandContent }: UpdateFeedSettingsInputDto,
+  ) {
+    await this.prismaService.userFeed.update({
+      data: {
+        expandContent,
+        order: order === Sort.NewestFirst ? 'DESC' : 'ASC',
+        includeRead,
+      },
+      where: {
+        userId_feedId: {
+          userId: user.id,
+          feedId,
+        },
+      },
     })
   }
 }

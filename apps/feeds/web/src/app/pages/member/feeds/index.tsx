@@ -4,6 +4,7 @@ import type { UserFeedResponseDto } from '@plusone/feeds/api-client'
 import { useGetUserFeeds } from '@plusone/feeds/api-client'
 import { Sort } from '@plusone/feeds/shared/types'
 
+import { FeedSettingsBar } from '../../../components/feed-settings-bar'
 import { useFeedSettingsContext } from '../../../context/feed-settings'
 
 type FeedEntryProps = {
@@ -46,19 +47,23 @@ export function FeedList() {
   const totalUnreadCount = data?.data.reduce((total, feed) => total + feed.unreadCount, 0)
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr' }}>
-      <div>
-        <button onClick={() => navigate('../new')}>add feed</button>
+    <div>
+      <FeedSettingsBar />
 
-        <section aria-label={'all feeds'}>
-          <h4 onClick={goToAll}>All ({totalUnreadCount})</h4>
-        </section>
+      <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr' }}>
+        <div>
+          <button onClick={() => navigate('../new')}>add feed</button>
 
-        {data?.data.map((feed) => (
-          <FeedEntry key={feed.id} feed={feed} />
-        ))}
+          <section aria-label={'all feeds'}>
+            <h4 onClick={goToAll}>All ({totalUnreadCount})</h4>
+          </section>
+
+          {data?.data.map((feed) => (
+            <FeedEntry key={feed.id} feed={feed} />
+          ))}
+        </div>
+        <Outlet />
       </div>
-      <Outlet />
     </div>
   )
 }
