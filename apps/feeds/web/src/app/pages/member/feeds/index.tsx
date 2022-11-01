@@ -4,7 +4,7 @@ import type { UserFeedResponseDto } from '@plusone/feeds/api-client'
 import { useGetUserFeeds } from '@plusone/feeds/api-client'
 import { Sort } from '@plusone/feeds/shared/types'
 
-import { useArticleFindContext } from '../../../context/article-find'
+import { useFeedSettingsContext } from '../../../context/feed-settings'
 
 type FeedEntryProps = {
   feed: UserFeedResponseDto
@@ -13,11 +13,12 @@ type FeedEntryProps = {
 function FeedEntry({ feed }: FeedEntryProps) {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { setIncludeRead, setSort } = useArticleFindContext()
+  const { setIncludeRead, setSort, setExpandContent } = useFeedSettingsContext()
 
   const handleGoToFeed = () => {
     setSort(feed.order === 'desc' ? Sort.NewestFirst : Sort.OldestFirst)
     setIncludeRead(feed.includeRead)
+    setExpandContent(feed.expandContent)
     navigate({ pathname: feed.id, search: searchParams.toString() })
   }
 
@@ -32,7 +33,7 @@ export function FeedList() {
   const navigate = useNavigate()
   const { data } = useGetUserFeeds()
   const [searchParams] = useSearchParams()
-  const { setIncludeRead, setSort } = useArticleFindContext()
+  const { setIncludeRead, setSort } = useFeedSettingsContext()
 
   const goToAll = () => {
     setSort(Sort.NewestFirst)

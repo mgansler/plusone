@@ -3,13 +3,13 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import { useFindArticlesInfinite } from '@plusone/feeds/api-client'
 
 import { ArticleList } from '../../../components/article-list'
-import { useArticleFindContext } from '../../../context/article-find'
+import { useFeedSettingsContext } from '../../../context/feed-settings'
 
 export function Articles() {
   const { feedId } = useParams()
   const [searchParams] = useSearchParams()
   const search = searchParams.get('search')
-  const { sort, includeRead } = useArticleFindContext()
+  const { sort, includeRead } = useFeedSettingsContext()
 
   const { data, hasNextPage, fetchNextPage } = useFindArticlesInfinite(
     { f: feedId !== 'all' ? feedId : undefined, s: search, sort, r: includeRead },

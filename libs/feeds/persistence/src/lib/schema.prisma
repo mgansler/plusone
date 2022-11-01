@@ -61,13 +61,14 @@ model UserArticle {
 }
 
 model UserFeed {
-  user        User    @relation(fields: [userId], references: [id])
-  userId      String  @db.Uuid
-  feed        Feed    @relation(fields: [feedId], references: [id])
-  feedId      String  @db.Uuid
-  title       String
-  order       Order   @default(DESC)
-  includeRead Boolean @default(false)
+  user          User    @relation(fields: [userId], references: [id])
+  userId        String  @db.Uuid
+  feed          Feed    @relation(fields: [feedId], references: [id])
+  feedId        String  @db.Uuid
+  title         String
+  order         Order   @default(DESC)
+  includeRead   Boolean @default(false)
+  expandContent Boolean @default(false)
 
   @@unique([userId, feedId])
 }

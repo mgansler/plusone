@@ -65,15 +65,15 @@ export class FeedService {
         })
 
         const userFeed = await tx.userFeed.findUnique({
+          select: { title: true, includeRead: true, expandContent: true, order: true },
           where: { userId_feedId: { userId, feedId: feed.id } },
         })
 
         return {
           id: feed.id,
-          originalTitle: feed.originalTitle,
-          title: userFeed.title,
           feedUrl: feed.feedUrl,
-          includeRead: userFeed.includeRead,
+          originalTitle: feed.originalTitle,
+          ...userFeed,
           order: userFeed.order === 'ASC' ? Sort.OldestFirst : Sort.NewestFirst,
         }
       })
@@ -97,7 +97,7 @@ export class FeedService {
     return (
       (
         await this.prismaService.userFeed.findMany({
-          select: { feed: true, title: true, includeRead: true, order: true },
+          select: { feed: true, title: true, includeRead: true, order: true, expandContent: true },
           where: { userId: user.id },
         })
       )

@@ -4,6 +4,8 @@ import { useState } from 'react'
 import type { ArticleDto, ArticleResponseDto } from '@plusone/feeds/api-client'
 import { getFindArticlesQueryKey, useToggleUnread } from '@plusone/feeds/api-client'
 
+import { useFeedSettingsContext } from '../context/feed-settings'
+
 function useToggleUnreadState(id: ArticleDto['id'], unread: boolean) {
   const queryClient = useQueryClient()
   const { mutate } = useToggleUnread({
@@ -20,7 +22,8 @@ type ArticleProps = {
 }
 
 export function Article({ article: { article, unread } }: ArticleProps) {
-  const [showContent, setShowContent] = useState<boolean>(false)
+  const { expandContent } = useFeedSettingsContext()
+  const [showContent, setShowContent] = useState<boolean>(expandContent)
 
   const toggleUnread = useToggleUnreadState(article.id, unread)
 
