@@ -2,10 +2,8 @@ import { Sort } from '@plusone/feeds/shared/types'
 
 import { useFeedSettingsContext } from '../context/feed-settings'
 
-type FeedSettingsBarForm = {}
-
 export function FeedSettingsBar() {
-  const { sort, setSort, includeRead, setIncludeRead } = useFeedSettingsContext()
+  const { sort, setSort, includeRead, setIncludeRead, expandContent, setExpandContent } = useFeedSettingsContext()
 
   return (
     <div style={{ display: 'flex' }}>
@@ -22,6 +20,8 @@ export function FeedSettingsBar() {
         Include read
         <input type={'checkbox'} checked={includeRead} onChange={() => setIncludeRead((cur) => !cur)} />
       </label>
+
+      <button onClick={() => setExpandContent((cur) => !cur)}>{expandContent ? 'collapse all' : 'expand all'}</button>
     </div>
   )
 }

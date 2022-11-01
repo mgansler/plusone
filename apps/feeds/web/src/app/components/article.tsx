@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { ArticleDto, ArticleResponseDto } from '@plusone/feeds/api-client'
 import { getFindArticlesQueryKey, getGetUserFeedsQueryKey, useToggleUnread } from '@plusone/feeds/api-client'
@@ -27,6 +27,8 @@ type ArticleProps = {
 export function Article({ article: { article, unread } }: ArticleProps) {
   const { expandContent } = useFeedSettingsContext()
   const [showContent, setShowContent] = useState<boolean>(expandContent)
+
+  useEffect(() => setShowContent(expandContent), [expandContent])
 
   const toggleUnread = useToggleUnreadState(article.id, unread)
 
