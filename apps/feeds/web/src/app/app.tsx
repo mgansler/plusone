@@ -17,11 +17,15 @@ export function App() {
 
   return (
     <>
-      <Link to={'/home'}>
-        <h1>Welcome feeds-web</h1>
-      </Link>
-      <UserInfo />
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Link to={'/home'}>
+          <h1>Welcome feeds-web</h1>
+        </Link>
+        <UserInfo />
+      </div>
+
       <nav>{!isLoggedIn && <Link to={'/login'}>Login</Link>}</nav>
+
       <Routes>
         <Route path={'home'} element={<Home />} />
         <Route path={'login'} element={<Login />} />

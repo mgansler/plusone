@@ -1,9 +1,10 @@
-import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
+import { Outlet, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import type { UserFeedResponseDto } from '@plusone/feeds/api-client'
 import { useGetUserFeeds } from '@plusone/feeds/api-client'
 import { Sort } from '@plusone/feeds/shared/types'
 
+import { FeedSettingsBar } from '../../../components/feed-settings-bar'
 import { useFeedSettingsContext } from '../../../context/feed-settings'
 
 type FeedEntryProps = {
@@ -11,6 +12,7 @@ type FeedEntryProps = {
 }
 
 function FeedEntry({ feed }: FeedEntryProps) {
+  const { feedId } = useParams()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { setIncludeRead, setSort, setExpandContent } = useFeedSettingsContext()
@@ -24,7 +26,10 @@ function FeedEntry({ feed }: FeedEntryProps) {
 
   return (
     <section aria-label={feed.title}>
-      <h4 onClick={handleGoToFeed}>
+      <h4
+        onClick={handleGoToFeed}
+        style={{ cursor: 'default', textDecoration: feed.id === feedId ? 'underline' : 'unset' }}
+      >
         {feed.title} ({feed.unreadCount})
       </h4>
     </section>
@@ -32,6 +37,7 @@ function FeedEntry({ feed }: FeedEntryProps) {
 }
 
 export function FeedList() {
+  const { feedId } = useParams()
   const navigate = useNavigate()
   const { data } = useGetUserFeeds()
   const [searchParams] = useSearchParams()
@@ -46,16 +52,28 @@ export function FeedList() {
   const totalUnreadCount = data?.data.reduce((total, feed) => total + feed.unreadCount, 0)
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr' }}>
-      <div>
-        <section aria-label={'all feeds'}>
-          <h4 onClick={goToAll}>All ({totalUnreadCount})</h4>
-        </section>
-        {data?.data.map((feed) => (
-          <FeedEntry key={feed.id} feed={feed} />
-        ))}
+    <div>
+      <FeedSettingsBar />
+
+      <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr' }}>
+        <div>
+          <button onClick={() => navigate('../new')}>add feed</button>
+
+          <section aria-label={'all feeds'}>
+            <h4
+              onClick={goToAll}
+              style={{ cursor: 'default', textDecoration: feedId === 'all' ? 'underline' : 'unset' }}
+            >
+              All ({totalUnreadCount})
+            </h4>
+          </section>
+
+          {data?.data.map((feed) => (
+            <FeedEntry key={feed.id} feed={feed} />
+          ))}
+        </div>
+        <Outlet />
       </div>
-      <Outlet />
     </div>
   )
 }

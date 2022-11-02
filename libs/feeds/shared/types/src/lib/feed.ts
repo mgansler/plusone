@@ -6,6 +6,12 @@ export type FeedInput = {
   feedUrl: string
 }
 
+export type UpdateFeedSettingsInput = {
+  order: Sort
+  includeRead: boolean
+  expandContent: boolean
+}
+
 export type FeedResponse = {
   id: string
   originalTitle: string

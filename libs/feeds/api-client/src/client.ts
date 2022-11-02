@@ -76,6 +76,12 @@ export type DiscoverFeedParams = { url: string }
 
 export type FindArticlesParams = { s?: string; r?: boolean; sort?: Sort; f?: string; cursor?: number }
 
+export interface UpdateFeedSettingsInputDto {
+  expandContent: boolean
+  includeRead: boolean
+  order: Sort
+}
+
 export interface UserFeedResponseDto {
   feedUrl: string
   id: string
@@ -641,6 +647,46 @@ export const useGetFeeds = <TData = Awaited<ReturnType<typeof getFeeds>>, TError
   query.queryKey = queryKey
 
   return query
+}
+
+export const updateFeedSettings = (id: string, updateFeedSettingsInputDto: UpdateFeedSettingsInputDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/feed/${id}`,
+    method: 'put',
+    headers: { 'Content-Type': 'application/json' },
+    data: updateFeedSettingsInputDto,
+  })
+}
+
+export type UpdateFeedSettingsMutationResult = NonNullable<Awaited<ReturnType<typeof updateFeedSettings>>>
+export type UpdateFeedSettingsMutationBody = UpdateFeedSettingsInputDto
+export type UpdateFeedSettingsMutationError = unknown
+
+export const useUpdateFeedSettings = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateFeedSettings>>,
+    TError,
+    { id: string; data: UpdateFeedSettingsInputDto },
+    TContext
+  >
+}) => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateFeedSettings>>,
+    { id: string; data: UpdateFeedSettingsInputDto }
+  > = (props) => {
+    const { id, data } = props ?? {}
+
+    return updateFeedSettings(id, data)
+  }
+
+  return useMutation<
+    Awaited<ReturnType<typeof updateFeedSettings>>,
+    TError,
+    { id: string; data: UpdateFeedSettingsInputDto },
+    TContext
+  >(mutationFn, mutationOptions)
 }
 
 export const healthControllerGetHealthStatus = (signal?: AbortSignal) => {
