@@ -1,14 +1,13 @@
 import { resolve } from 'path'
 
 import type { ExecutorContext } from '@nrwl/devkit'
-import { BuildMode } from '@remix-run/dev/dist/build'
-import { build } from '@remix-run/dev/dist/compiler'
+import { build } from '@remix-run/dev/dist/compiler/build'
 import { readConfig } from '@remix-run/dev/dist/config'
 
 import type { NormalizedOptions } from './normalize-options'
 
 export async function buildApp(options: NormalizedOptions, context: ExecutorContext) {
-  const mode = context.configurationName === 'production' ? BuildMode.Production : BuildMode.Development
+  const mode = context.configurationName === 'production' ? 'production' : 'development'
 
   const config = await readConfig(options.targetRoot)
   config.rootDirectory = context.root
@@ -17,5 +16,5 @@ export async function buildApp(options: NormalizedOptions, context: ExecutorCont
 
   config.serverBuildPath = resolve(context.root, options.outputPath, 'build/index.js')
 
-  await build(config, { mode, sourcemap: mode === BuildMode.Development })
+  await build(config, { mode, sourcemap: mode === 'development' })
 }
