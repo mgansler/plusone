@@ -3,9 +3,8 @@ import type { Server } from 'http'
 import { join, resolve } from 'path'
 
 import type { ExecutorContext } from '@nrwl/devkit'
-import { BuildMode } from '@remix-run/dev/dist/build'
 import { watch } from '@remix-run/dev/dist/cli/commands'
-import { build } from '@remix-run/dev/dist/compiler'
+import { build } from '@remix-run/dev/dist/compiler/build'
 import type { RemixConfig } from '@remix-run/dev/dist/config'
 import { readConfig } from '@remix-run/dev/dist/config'
 import { createApp } from '@remix-run/serve'
@@ -23,7 +22,7 @@ export default async function* (options: ServeSchema, context: ExecutorContext) 
   if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = 'development'
   }
-  const mode = context.configurationName === 'production' ? BuildMode.Production : BuildMode.Development
+  const mode = context.configurationName === 'production' ? 'production' : 'development'
 
   const targetRoot = context.workspace.projects[context.projectName].root
   const config = await readConfig(targetRoot)
@@ -41,7 +40,7 @@ export default async function* (options: ServeSchema, context: ExecutorContext) 
   copyFileSync(resolve(context.root, targetRoot, 'public/favicon.ico'), resolve(publicDest, 'favicon.ico'))
 
   if (options.watch === false) {
-    await build(config, { mode, sourcemap: mode === BuildMode.Development })
+    await build(config, { mode, sourcemap: mode === 'development' })
     const app = createAppServer(config)
     const server: Server = app.listen(options.port, () => {
       console.log(`Remix App Server started at http://localhost:${options.port}`)
@@ -67,7 +66,7 @@ function runRemixDevServer(options: ServeSchema, config: RemixConfig) {
     const app = createAppServer(config)
     let server: Server | null = null
 
-    watch(config, BuildMode.Development, {
+    watch(config, 'development', {
       onInitialBuild: () => {
         server = app.listen(options.port, () => {
           console.log(`Remix App Server started at http://localhost:${options.port}`)
@@ -95,7 +94,7 @@ function createAppServer(config: RemixConfig) {
     purgeAppRequireCache(config.serverBuildPath)
     next()
   })
-  app.use(createApp(config.serverBuildPath, BuildMode.Development))
+  app.use(createApp(config.serverBuildPath, 'development'))
 
   return app
 }
