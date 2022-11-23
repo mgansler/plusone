@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 
 import { PrismaService } from '@plusone/feeds-persistence'
-import { User } from '@plusone/github-schema'
+import { UserResponse } from '@plusone/feeds/shared/types'
 
 @Injectable()
 export class UserService {
@@ -19,7 +19,7 @@ export class UserService {
     })
   }
 
-  async deleteUser(userId: User['id']): Promise<void> {
+  async deleteUser(userId: UserResponse['id']): Promise<void> {
     await this.prismaService.$transaction([
       this.prismaService.userArticle.deleteMany({ where: { userId } }),
       this.prismaService.userFeed.deleteMany({ where: { userId } }),
