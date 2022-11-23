@@ -34,28 +34,47 @@ jobs:
       - name: Nx affected --target ${{ matrix.target }}
         uses: ./.github/actions/nx-affected
         with:
-          baseRef: origin/main
           target: ${{ matrix.target }}
           configuration: ${{ matrix.configuration }}
           parallel: ${{ matrix.parallel }}
 
+  affected-e2e:
+    runs-on: ubuntu-latest
+    outputs:
+      affected_apps: ${{ steps.affected-apps.outputs.affected_apps }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Prepare NodeJS
+        uses: ./.github/actions/prepare-nodejs
+
+      - name: Determine affected e2e projects
+        id: affected-apps
+        run: |2-
+          if [ '${{ github.base_ref }}' == 'main' ]; then
+            baseRef=origin/main
+          else
+            baseRef=HEAD~1
+          fi
+          affectedApps=$(yarn -s nx print-affected --base ${baseRef} --target e2e | jq -c '.tasks | map(.target.project)')
+          echo "affected_apps=${affectedApps}" >> ${GITHUB_OUTPUT}
+
   # E2E tests use their own matrix so that each of them can be retried independently
   e2e:
     runs-on: ubuntu-latest
+    needs: affected-e2e
+    if: ${{ needs.affected-e2e.outputs.affected_apps != '[]' }}
     strategy:
       fail-fast: false
       matrix:
-        project:
-          [
-            'advent-of-code-2021-e2e',
-            'feeds-web-e2e',
-            'github-pipeline-status-e2e',
-            'suite-e2e',
-            'plugins-nx-remix-e2e',
-          ]
+        project: ${{ fromJson( needs.affected-e2e.outputs.affected_apps ) }}
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Prepare NodeJS
         uses: ./.github/actions/prepare-nodejs
