@@ -1,0 +1,26 @@
+name: Nx affected
+description: Run a Nx task for the affected applications/libraries
+
+inputs:
+  baseRef:
+    description: Ref to compare the current state to
+    required: true
+
+  target:
+    description: Nx target to run
+    required: true
+
+  parallel:
+    description: How many jobs to run in parallel
+    default: '1'
+
+  configuration:
+    description: Configuration to use for target, e.g. 'development' or 'production'
+    default: ''
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - run: yarn nx affected --base ${{ inputs.baseRef }} --target ${{ inputs.target }} --configuration ${{ inputs.configuration }} --parallel ${{ inputs.parallel }}
+      shell: bash
