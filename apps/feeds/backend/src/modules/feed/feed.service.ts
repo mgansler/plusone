@@ -33,7 +33,9 @@ export class FeedService {
   async create(feedInputDto: FeedInputDto, userId: User['id']): Promise<UserFeedResponse> {
     let originalTitle: string
     try {
-      originalTitle = (await this.discover({ url: feedInputDto.url })).title
+      if (typeof feedInputDto.url !== 'undefined') {
+        originalTitle = (await this.discover({ url: feedInputDto.url })).title
+      }
     } catch (e) {
       if (typeof feedInputDto.title === 'undefined' || feedInputDto.title.length < 1) {
         throw new HttpException('Feed discovery failed, you MUST provide a title.', HttpStatus.BAD_REQUEST)
@@ -89,6 +91,27 @@ export class FeedService {
         this.logger.error(e)
         throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR)
       }
+    }
+  }
+
+  async import(feedInputDtos: FeedInputDto[], userId: User['id']) {
+    const urisWithoutArticles: string[] = []
+
+    for (const feedInput of feedInputDtos) {
+      const articles = await this.fetchService.fetchFeedArticles(feedInput.feedUrl)
+      if (articles.length === 0) {
+        urisWithoutArticles.push(feedInput.feedUrl)
+        continue
+      }
+      try {
+        await this.create(feedInput, userId)
+      } catch (e) {
+        this.logger.error(e)
+      }
+    }
+
+    if (urisWithoutArticles.length > 0) {
+      this.logger.debug(`Could not find any articles for these uris:\n\t${urisWithoutArticles.join('\n\t')}`)
     }
   }
 
