@@ -1,0 +1,61 @@
+name: Verify
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ['build --prod', 'component-test', 'lint', 'test']
+        include:
+          - target: build
+            parallel: 4
+          - target: component-test
+            parallel: 1
+          - target: lint
+            parallel: 4
+          - target: test
+            parallel: 4
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/prepare-nodejs
+
+      - name: Nx affected --target ${{ matrix.target }}
+        uses: ./.github/actions/nx-affected
+        with:
+          baseRef: origin/main
+          target: ${{ matrix.target }}
+          parallel: ${{ matrix.parallel }}
+
+  # E2E tests use their own matrix so that each of them can be retried independently
+  e2e:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          [
+            'advent-of-code-2021-e2e',
+            'feeds-web-e2e',
+            'github-pipeline-status-e2e',
+            'suite-e2e',
+            'plugins-nx-remix-e2e',
+          ]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/prepare-nodejs
+
+      - name: Run ${{ matrix.project }}:e2e
+        timeout-minutes: 15
+        run: yarn nx run ${{ matrix.project }}:e2e
