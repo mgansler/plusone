@@ -11,9 +11,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: ['build --prod', 'component-test', 'lint', 'test']
+        target: ['build', 'component-test', 'lint', 'test']
         include:
           - target: build
+            configuration: production
             parallel: 4
           - target: component-test
             parallel: 1
@@ -34,6 +35,7 @@ jobs:
         with:
           baseRef: origin/main
           target: ${{ matrix.target }}
+          configuration: ${{ matrix.configuration }}
           parallel: ${{ matrix.parallel }}
 
   # E2E tests use their own matrix so that each of them can be retried independently
