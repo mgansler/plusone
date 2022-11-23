@@ -2,10 +2,6 @@ name: Nx affected
 description: Run a Nx task for the affected applications/libraries
 
 inputs:
-  baseRef:
-    description: Ref to compare the current state to
-    required: true
-
   target:
     description: Nx target to run
     required: true
@@ -22,5 +18,12 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - run: yarn nx affected --base ${{ inputs.baseRef }} --target ${{ inputs.target }} --configuration ${{ inputs.configuration }} --parallel ${{ inputs.parallel }}
+    # We are on a pull request, so compare to target
+    - run: yarn nx affected --base origin/main --target ${{ inputs.target }} --configuration ${{ inputs.configuration }} --parallel ${{ inputs.parallel }}
+      if: ${{ github.base_ref == 'main' }}
+      shell: bash
+
+    # We are on the main branch, so compare to the last commit
+    - run: yarn nx affected --base HEAD~1 --target ${{ inputs.target }} --configuration ${{ inputs.configuration }} --parallel ${{ inputs.parallel }}
+      if: ${{ github.base_ref != 'main' }}
       shell: bash

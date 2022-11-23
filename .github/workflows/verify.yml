@@ -34,7 +34,6 @@ jobs:
       - name: Nx affected --target ${{ matrix.target }}
         uses: ./.github/actions/nx-affected
         with:
-          baseRef: origin/main
           target: ${{ matrix.target }}
           configuration: ${{ matrix.configuration }}
           parallel: ${{ matrix.parallel }}
@@ -56,6 +55,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Prepare NodeJS
         uses: ./.github/actions/prepare-nodejs
