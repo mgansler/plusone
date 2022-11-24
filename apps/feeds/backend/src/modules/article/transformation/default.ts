@@ -7,6 +7,6 @@ export const defaultArticleBuilder: ArticleBuilderFn = async (item) => {
     guid: item.guid ?? item.id ?? item.link,
     link: item.link,
     title: item.title,
-    date: new Date(item.isoDate),
+    date: item.isoDate ? new Date(item.isoDate) : new Date(),
   }
 }
