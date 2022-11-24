@@ -1,7 +1,7 @@
 import type { Sort } from './enum/sort'
 
 export type FeedInput = {
-  url: string
+  url?: string
   title?: string
   feedUrl: string
 }

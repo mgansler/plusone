@@ -28,7 +28,7 @@ function NewFeedWrapped() {
 
   const onSubmit = async (data: NewFeedForm, event?: BaseSyntheticEvent) => {
     if (((event?.nativeEvent as SubmitEvent).submitter as HTMLButtonElement).innerText === 'save') {
-      await addFeed({ data })
+      await addFeed({ data: { ...data, url: data.url === '' ? undefined : data.url } })
       navigate('../feeds')
     } else {
       const discoverResp = await discover({ params: data })

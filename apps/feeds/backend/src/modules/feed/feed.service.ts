@@ -35,6 +35,8 @@ export class FeedService {
     try {
       if (typeof feedInputDto.url !== 'undefined') {
         originalTitle = (await this.discover({ url: feedInputDto.url })).title
+      } else {
+        originalTitle = feedInputDto.title
       }
     } catch (e) {
       if (typeof feedInputDto.title === 'undefined' || feedInputDto.title.length < 1) {
@@ -88,9 +90,9 @@ export class FeedService {
           this.logger.warn(`User is already subscribed to feed: ${feedInputDto.title}`)
           throw new HttpException('You are already subscribed to this feed', HttpStatus.CONFLICT)
         }
-        this.logger.error(e)
-        throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR)
       }
+      this.logger.error(e)
+      throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
