@@ -31,7 +31,7 @@ import { LoggerMiddleware } from './logger.middleware'
       envFilePath: ['.local.env'],
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'web'),
+      rootPath: join(__dirname, 'web'),
     }),
     FeedModule,
     HealthModule,
