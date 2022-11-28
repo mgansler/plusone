@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsUrl } from 'class-validator'
+import { IsUrl, ValidateIf } from 'class-validator'
 
 import {
   DiscoverResponse,
@@ -27,7 +27,12 @@ export class FeedDiscoverDto implements Pick<FeedInput, 'url'> {
   url: string
 }
 
-export class FeedInputDto extends FeedDiscoverDto implements FeedInput {
+export class FeedInputDto implements FeedInput {
+  @ApiProperty({ required: false })
+  @ValidateIf((o) => typeof o.url !== 'undefined')
+  @IsUrl()
+  url?: string
+
   @ApiProperty()
   title?: string
 

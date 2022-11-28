@@ -46,6 +46,13 @@ export class FeedController {
     return this.feedService.create(feedInputDto, user.id)
   }
 
+  @ApiOperation({ operationId: 'import-feeds' })
+  @ApiBody({ description: 'Required information to create a feed.', type: [FeedInputDto] })
+  @Post('import')
+  async import(@Body() feedInputs: FeedInputDto[], @Req() { user }) {
+    await this.feedService.import(feedInputs, user.id)
+  }
+
   @Roles(Role.Admin)
   @ApiOperation({ operationId: 'get-feeds' })
   @ApiOkResponse({ description: 'Metadata of all feeds.', type: [FeedResponseDto] })

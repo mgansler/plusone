@@ -63,4 +63,19 @@ describe('feeds', () => {
     cy.findByRole('textbox', { name: 'url' }).should('have.value', '')
     cy.findByRole('textbox', { name: 'feed-url' }).should('have.value', '')
   })
+
+  it('should import multiple feeds', () => {
+    cy.loginFreshUser()
+
+    cy.findByRole('button', { name: 'add feed' }).click()
+
+    cy.findByRole('textbox', { name: 'import' }).type(
+      '{{}"title": "AnandTech","feedUrl": "https://www.anandtech.com/rss/articlefeed.aspx"},{{}"title": "ComputerBase","feedUrl": "https://www.computerbase.de/rss/news.xml"}',
+    )
+
+    cy.findByRole('button', { name: 'import' }).click()
+
+    cy.findByText(/AnandTech/).should('be.visible')
+    cy.findByText(/ComputerBase/).should('be.visible')
+  })
 })

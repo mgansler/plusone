@@ -4,7 +4,7 @@ module.exports = defineConfig({
   'config-api': {
     input: { target: 'http://localhost:3333/api-json' },
     hooks: {
-      afterAllFilesWrite: 'nx format',
+      afterAllFilesWrite: 'nx format --files libs/feeds/api/client/src/client.ts',
     },
     output: {
       client: 'react-query',

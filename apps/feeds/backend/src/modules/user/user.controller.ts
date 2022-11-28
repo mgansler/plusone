@@ -1,7 +1,7 @@
 import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 
-import { UserResponse } from '@plusone/feeds/shared/types'
+import { User } from '@plusone/feeds-persistence'
 
 import { UserResponseDto } from '../authentication/authentication.dto'
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
@@ -29,7 +29,7 @@ export class UserController {
   @ApiParam({ name: 'userId', description: 'The id of the user to be deleted' })
   @ApiNoContentResponse({ description: 'User has been deleted' })
   @Delete(':userId')
-  remove(@Param('userId') userId: UserResponse['id']) {
+  remove(@Param('userId') userId: User['id']) {
     return this.userService.deleteUser(userId)
   }
 }

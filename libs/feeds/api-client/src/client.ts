@@ -102,7 +102,7 @@ export interface FeedResponseDto {
 }
 
 export interface FeedInputDto {
-  url: string
+  url?: string
   title: string
   feedUrl: string
 }
@@ -211,12 +211,7 @@ export const useToggleUnread = <TError = unknown, TContext = unknown>(options?: 
 }
 
 export const findArticles = (params?: FindArticlesParams, signal?: AbortSignal) => {
-  return customAxiosInstance<PaginatedArticlesDto>({
-    url: `/api/article/find`,
-    method: 'get',
-    params,
-    signal,
-  })
+  return customAxiosInstance<PaginatedArticlesDto>({ url: `/api/article/find`, method: 'get', params, signal })
 }
 
 export const getFindArticlesQueryKey = (params?: FindArticlesParams) => [
@@ -304,11 +299,7 @@ export const useLogin = <TError = unknown, TContext = unknown>(options?: {
 }
 
 export const logout = (signal?: AbortSignal) => {
-  return customAxiosInstance<void>({
-    url: `/api/authentication/logout`,
-    method: 'get',
-    signal,
-  })
+  return customAxiosInstance<void>({ url: `/api/authentication/logout`, method: 'get', signal })
 }
 
 export const getLogoutQueryKey = () => [`/api/authentication/logout`]
@@ -390,11 +381,7 @@ export const useRegister = <TError = unknown, TContext = unknown>(options?: {
 }
 
 export const profile = (signal?: AbortSignal) => {
-  return customAxiosInstance<UserResponseDto>({
-    url: `/api/authentication/profile`,
-    method: 'get',
-    signal,
-  })
+  return customAxiosInstance<UserResponseDto>({ url: `/api/authentication/profile`, method: 'get', signal })
 }
 
 export const getProfileQueryKey = () => [`/api/authentication/profile`]
@@ -446,11 +433,7 @@ export const useProfile = <TData = Awaited<ReturnType<typeof profile>>, TError =
 }
 
 export const refresh = (signal?: AbortSignal) => {
-  return customAxiosInstance<LoginResponseDto>({
-    url: `/api/authentication/refresh`,
-    method: 'get',
-    signal,
-  })
+  return customAxiosInstance<LoginResponseDto>({ url: `/api/authentication/refresh`, method: 'get', signal })
 }
 
 export const getRefreshQueryKey = () => [`/api/authentication/refresh`]
@@ -502,11 +485,7 @@ export const useRefresh = <TData = Awaited<ReturnType<typeof refresh>>, TError =
 }
 
 export const discoverFeed = (params: DiscoverFeedParams) => {
-  return customAxiosInstance<DiscoverResponseDto>({
-    url: `/api/feed/discover`,
-    method: 'post',
-    params,
-  })
+  return customAxiosInstance<DiscoverResponseDto>({ url: `/api/feed/discover`, method: 'post', params })
 }
 
 export type DiscoverFeedMutationResult = NonNullable<Awaited<ReturnType<typeof discoverFeed>>>
@@ -568,11 +547,7 @@ export const useAddFeed = <TError = unknown, TContext = unknown>(options?: {
 }
 
 export const getUserFeeds = (signal?: AbortSignal) => {
-  return customAxiosInstance<UserFeedResponseDto[]>({
-    url: `/api/feed`,
-    method: 'get',
-    signal,
-  })
+  return customAxiosInstance<UserFeedResponseDto[]>({ url: `/api/feed`, method: 'get', signal })
 }
 
 export const getGetUserFeedsQueryKey = () => [`/api/feed`]
@@ -623,12 +598,38 @@ export const useGetUserFeeds = <TData = Awaited<ReturnType<typeof getUserFeeds>>
   return query
 }
 
-export const getFeeds = (signal?: AbortSignal) => {
-  return customAxiosInstance<FeedResponseDto[]>({
-    url: `/api/feed/all`,
-    method: 'get',
-    signal,
+export const importFeeds = (feedInputDto: FeedInputDto[]) => {
+  return customAxiosInstance<void>({
+    url: `/api/feed/import`,
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: feedInputDto,
   })
+}
+
+export type ImportFeedsMutationResult = NonNullable<Awaited<ReturnType<typeof importFeeds>>>
+export type ImportFeedsMutationBody = FeedInputDto[]
+export type ImportFeedsMutationError = unknown
+
+export const useImportFeeds = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof importFeeds>>, TError, { data: FeedInputDto[] }, TContext>
+}) => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof importFeeds>>, { data: FeedInputDto[] }> = (props) => {
+    const { data } = props ?? {}
+
+    return importFeeds(data)
+  }
+
+  return useMutation<Awaited<ReturnType<typeof importFeeds>>, TError, { data: FeedInputDto[] }, TContext>(
+    mutationFn,
+    mutationOptions,
+  )
+}
+
+export const getFeeds = (signal?: AbortSignal) => {
+  return customAxiosInstance<FeedResponseDto[]>({ url: `/api/feed/all`, method: 'get', signal })
 }
 
 export const getGetFeedsQueryKey = () => [`/api/feed/all`]
@@ -720,11 +721,7 @@ export const useUpdateFeedSettings = <TError = unknown, TContext = unknown>(opti
 }
 
 export const healthControllerGetHealthStatus = (signal?: AbortSignal) => {
-  return customAxiosInstance<HealthControllerGetHealthStatus200>({
-    url: `/api/health`,
-    method: 'get',
-    signal,
-  })
+  return customAxiosInstance<HealthControllerGetHealthStatus200>({ url: `/api/health`, method: 'get', signal })
 }
 
 export const getHealthControllerGetHealthStatusQueryKey = () => [`/api/health`]
@@ -788,11 +785,7 @@ export const useHealthControllerGetHealthStatus = <
 }
 
 export const getUsers = (signal?: AbortSignal) => {
-  return customAxiosInstance<UserResponseDto[]>({
-    url: `/api/user`,
-    method: 'get',
-    signal,
-  })
+  return customAxiosInstance<UserResponseDto[]>({ url: `/api/user`, method: 'get', signal })
 }
 
 export const getGetUsersQueryKey = () => [`/api/user`]
@@ -844,10 +837,7 @@ export const useGetUsers = <TData = Awaited<ReturnType<typeof getUsers>>, TError
 }
 
 export const deleteUser = (userId: unknown) => {
-  return customAxiosInstance<void>({
-    url: `/api/user/${userId}`,
-    method: 'delete',
-  })
+  return customAxiosInstance<void>({ url: `/api/user/${userId}`, method: 'delete' })
 }
 
 export type DeleteUserMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUser>>>
@@ -872,10 +862,7 @@ export const useDeleteUser = <TError = unknown, TContext = unknown>(options?: {
 }
 
 export const forceFetching = () => {
-  return customAxiosInstance<void>({
-    url: `/api/scheduling/now`,
-    method: 'post',
-  })
+  return customAxiosInstance<void>({ url: `/api/scheduling/now`, method: 'post' })
 }
 
 export type ForceFetchingMutationResult = NonNullable<Awaited<ReturnType<typeof forceFetching>>>
