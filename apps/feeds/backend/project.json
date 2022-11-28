@@ -28,6 +28,11 @@
             "input": "libs/feeds/persistence/src/lib/client",
             "glob": "libquery_engine-linux-musl*",
             "output": ""
+          },
+          {
+            "input": "dist/apps/feeds/web",
+            "glob": "*",
+            "output": "web"
           }
         ],
         "target": "node",
@@ -50,6 +55,10 @@
         {
           "target": "generate",
           "projects": "dependencies"
+        },
+        {
+          "target": "build",
+          "projects": "dependencies"
         }
       ]
     },
@@ -66,6 +75,10 @@
         {
           "target": "docker",
           "projects": "self"
+        },
+        {
+          "target": "build",
+          "projects": "dependencies"
         }
       ]
     },
@@ -97,5 +110,6 @@
       ]
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": ["feeds-web"]
 }
