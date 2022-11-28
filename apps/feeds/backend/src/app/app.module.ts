@@ -1,5 +1,8 @@
+import { join } from 'path'
+
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { ServeStaticModule } from '@nestjs/serve-static'
 import * as Joi from 'joi'
 
 import { ArticleModule } from '../modules/article/article.module'
@@ -26,6 +29,9 @@ import { LoggerMiddleware } from './logger.middleware'
         PAGE_SIZE: Joi.number().default(20),
       }),
       envFilePath: ['.local.env'],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'web'),
     }),
     FeedModule,
     HealthModule,

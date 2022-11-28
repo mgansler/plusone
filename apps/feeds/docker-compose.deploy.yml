@@ -9,40 +9,29 @@ services:
     depends_on:
       - database
     environment:
-      JWT_ACCESS_TOKEN_SECRET: not_so_secret
+      JWT_ACCESS_TOKEN_SECRET: ${FEEDS_JWT_ACCESS_TOKEN_SECRET}
       JWT_ACCESS_TOKEN_EXPIRATION_TIME: 3600s
-      JWT_REFRESH_TOKEN_SECRET: MY_REFRESH_SECRET
+      JWT_REFRESH_TOKEN_SECRET: ${FEEDS_JWT_REFRESH_TOKEN_SECRET}
       JWT_REFRESH_TOKEN_EXPIRATION_TIME: 604800s
-      DATABASE_URL: postgres://postgres:super_secret@database/feeds
+      DATABASE_URL: postgres://postgres:${FEEDS_DATABASE_PASSWORD}@database/feeds
       ADMIN_USER: root
-      ADMIN_PASSWORD: keep_this_secret
+      ADMIN_PASSWORD: ${FEEDS_ADMIN_PASSWORD}
     labels:
+      traefik.enable: true
+      traefik.docker.network: traefik
+      traefik.default.port: 3333
+      traefik.default.frontend.rule: 'Host:rss.martingansler.de'
       com.centurylinklabs.watchtower.enable: false
 
   database:
     restart: always
-    image: postgres:12-alpine
+    image: postgres:14-alpine
     networks:
       - default
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: super_secret
+      POSTGRES_PASSWORD: ${FEEDS_DATABASE_PASSWORD}
       POSTGRES_DB: feeds
-
-#  web:
-#    image: ${FEEDS_WEB_DOCKER_IMAGE}
-#    restart: always
-#    networks:
-#      - default
-#      - traefik
-#    environment:
-#      API_BASE_URL: http://backend:3333/api
-#    labels:
-#      traefik.enable: true
-#      traefik.docker.network: traefik
-#      traefik.default.port: 3000
-#      traefik.default.frontend.rule: 'Host:rss.martingansler.de'
-#      com.centurylinklabs.watchtower.enable: false
 
 networks:
   traefik:

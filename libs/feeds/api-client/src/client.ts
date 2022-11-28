@@ -4,19 +4,18 @@
  * Feeds API
  * OpenAPI spec version: 0.1
  */
+import { useQuery, useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import type {
-  MutationFunction,
-  QueryFunction,
-  QueryKey,
-  UseInfiniteQueryOptions,
-  UseInfiniteQueryResult,
-  UseMutationOptions,
   UseQueryOptions,
+  UseInfiniteQueryOptions,
+  UseMutationOptions,
+  QueryFunction,
+  MutationFunction,
   UseQueryResult,
+  UseInfiniteQueryResult,
+  QueryKey,
 } from '@tanstack/react-query'
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
-
 export type HealthControllerGetHealthStatus503Details = {
   [key: string]: {
     status?: string
