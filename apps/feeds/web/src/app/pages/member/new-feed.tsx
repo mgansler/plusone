@@ -4,9 +4,9 @@ import { ErrorBoundary } from 'react-error-boundary'
 import type { UseFormReturn } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import type { UseFormReset } from 'react-hook-form/dist/types/form'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-import { getGetUserFeedsQueryKey, useAddFeed, useDiscoverFeed } from '@plusone/feeds/api-client'
+import { getGetUserFeedsQueryKey, useAddFeed, useDiscoverFeed, useImportFeeds } from '@plusone/feeds/api-client'
 
 type DiscoverFeedForm = {
   url: string
@@ -49,7 +49,7 @@ function AddFeedForm({ methods: { register, handleSubmit } }: AddFeedFormProps) 
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  const { mutateAsync: addFeed } = useAddFeed({
+  const { mutateAsync } = useAddFeed({
     mutation: {
       useErrorBoundary: true,
       onMutate: () => queryClient.invalidateQueries(getGetUserFeedsQueryKey()),
@@ -57,7 +57,7 @@ function AddFeedForm({ methods: { register, handleSubmit } }: AddFeedFormProps) 
   })
 
   const onAddFeedSubmit = async (data: NewFeedForm) => {
-    await addFeed({ data: data })
+    await mutateAsync({ data })
     navigate('../feeds')
   }
 
@@ -72,6 +72,48 @@ function AddFeedForm({ methods: { register, handleSubmit } }: AddFeedFormProps) 
         <input type={'text'} aria-label={'feed-url'} {...register('feedUrl')} />
       </label>
       <button>save</button>
+    </form>
+  )
+}
+
+type ImportFormForm = {
+  feeds: string
+}
+
+function ImportForm() {
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  const { register, handleSubmit } = useForm<ImportFormForm>()
+  const { mutateAsync } = useImportFeeds({
+    mutation: { onMutate: () => queryClient.invalidateQueries(getGetUserFeedsQueryKey()) },
+  })
+
+  const onSubmit = async (data: ImportFormForm) => {
+    const feeds = JSON.parse('[' + data.feeds + ']')
+    await mutateAsync({ data: feeds })
+    navigate('../feeds')
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <label>
+        Import
+        <textarea
+          aria-label={'import'}
+          {...register('feeds', {
+            validate: async (value) => {
+              try {
+                JSON.parse('[' + value + ']')
+                return true
+              } catch (e) {
+                return false
+              }
+            },
+          })}
+        />
+      </label>
+      <button>import</button>
     </form>
   )
 }
@@ -91,8 +133,10 @@ export function NewFeed() {
 
   return (
     <ErrorBoundary FallbackComponent={NewFeedFallback} onReset={() => addFeedMethods.reset()}>
+      <Link to={'../feeds'}>back</Link>
       <DiscoverFeedForm resetAddFeed={addFeedMethods.reset} />
       <AddFeedForm methods={addFeedMethods} />
+      <ImportForm />
     </ErrorBoundary>
   )
 }
