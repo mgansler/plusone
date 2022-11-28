@@ -25,7 +25,7 @@ root.render(
         <UserContextProvider>
           <App />
         </UserContextProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {typeof window['Cypress'] === 'undefined' && <ReactQueryDevtools initialIsOpen={false} />}
       </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>,
