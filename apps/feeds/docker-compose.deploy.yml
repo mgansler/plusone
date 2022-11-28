@@ -1,11 +1,12 @@
 version: '3'
 
 services:
-  backend:
+  app:
     image: ${FEEDS_BACKEND_DOCKER_IMAGE}
     restart: always
     networks:
       - default
+      - traefik
     depends_on:
       - database
     environment:
