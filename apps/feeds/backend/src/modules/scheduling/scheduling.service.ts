@@ -19,23 +19,24 @@ export class SchedulingService {
   ) {}
 
   @Cron(CronExpression.EVERY_10_MINUTES)
-  handleCron() {
-    this.feedService.findAll().then((feeds) => {
-      feeds.forEach((feed) => {
-        this.fetchService
-          .fetchFeedArticles(feed.feedUrl)
-          .then((articles) => this.saveNewArticles(articles, feed))
-          .catch(() =>
-            this.logger.error(`Failed to fetch or store articles for ${feed.originalTitle} (${feed.feedUrl})`),
-          )
-      })
-    })
+  async handleCron() {
+    this.logger.log('Fetching new articles...')
+    let totalSavedArticles = 0
+    const feeds = await this.feedService.findAll()
+    for (const feed of feeds) {
+      const articles = await this.fetchService.fetchFeedArticles(feed.feedUrl)
+      totalSavedArticles += await this.saveNewArticles(articles, feed)
+    }
+
+    this.logger.log(`Saved/updated ${totalSavedArticles} articles`)
   }
 
-  private async saveNewArticles(articles: Item[], feed: Feed) {
-    for (const article of articles.reverse()) {
+  private async saveNewArticles(items: Item[], feed: Feed): Promise<number> {
+    let savedArticles = 0
+    for (const item of items.reverse()) {
       try {
-        await this.articleService.create(article, feed)
+        await this.articleService.create(item, feed)
+        savedArticles++
       } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
           this.logger.error(`Failed to save article: ${e.code}\n ${e.message}`)
@@ -44,6 +45,6 @@ export class SchedulingService {
         }
       }
     }
-    this.logger.log(`Saved/updated ${articles.length} articles for ${feed.originalTitle}`)
+    return savedArticles
   }
 }
