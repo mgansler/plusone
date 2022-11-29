@@ -14,21 +14,26 @@ type ArticleFindParams = Pagination & {
   includeRead: boolean
 }
 
+type MarkArticlesReadParams = {
+  feedId?: Feed['id']
+  searchTerm?: string
+}
+
 @Injectable()
 export class ArticleService {
   private logger = new Logger(ArticleService.name)
 
   constructor(private readonly prismaService: PrismaService, private readonly configService: ConfigService) {}
 
-  async create(newItem: Item, feed: Feed) {
-    const newArticle = await getArticleBuilderFunction(feed.feedUrl)(newItem)
+  async create(item: Item, feed: Feed) {
+    const article = await this.itemToArticle(feed.feedUrl, item)
 
-    if (!newArticle.guid || typeof newArticle.guid !== 'string') {
-      if (typeof newArticle.id === 'string') {
-        newArticle.guid = newArticle.id
+    if (!article.guid || typeof article.guid !== 'string') {
+      if (typeof article.id === 'string') {
+        article.guid = article.id
       } else {
         this.logger.warn(`Could not store article for ${feed.originalTitle} as guid is not a string`)
-        this.logger.debug(`${newArticle.title}: ${newArticle.guid}`)
+        this.logger.debug(`${article.title}: ${article.guid}`)
         return
       }
     }
@@ -40,18 +45,18 @@ export class ArticleService {
     await this.prismaService.article.upsert({
       where: {
         guid_feedId: {
-          guid: newArticle.guid,
+          guid: article.guid,
           feedId: feed.id,
         },
       },
       update: {
-        content: newArticle.content,
-        contentBody: newArticle.contentBody,
-        title: newArticle.title,
+        content: article.content,
+        contentBody: article.contentBody,
+        title: article.title,
         UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })), skipDuplicates: true } },
       },
       create: {
-        ...newArticle,
+        ...article,
         feedId: feed.id,
         UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })), skipDuplicates: true } },
       },
@@ -106,6 +111,32 @@ export class ArticleService {
       data: { unread },
       where: { userId_articleId: { articleId, userId } },
     })
+  }
+
+  async markArticlesRead({ feedId, searchTerm }: MarkArticlesReadParams, userId: User['id']) {
+    const search = typeof searchTerm !== 'undefined' ? searchTerm.split(' ').join(' & ') : '%'
+
+    const where: Prisma.UserArticleUpdateManyArgs['where'] = {
+      userId,
+      article: {
+        feedId,
+        title: searchTerm ? { search } : undefined,
+      },
+    }
+
+    await this.prismaService.userArticle.updateMany({
+      where,
+      data: {
+        unread: false,
+      },
+    })
+  }
+
+  async itemToArticle(
+    feedUrl: Feed['feedUrl'],
+    item: Item,
+  ): Promise<Omit<Prisma.ArticleCreateInput, 'feed' | 'UserArticle'>> {
+    return getArticleBuilderFunction(feedUrl)(item)
   }
 
   private normalizePagination(cursor?: Pagination['cursor']): {

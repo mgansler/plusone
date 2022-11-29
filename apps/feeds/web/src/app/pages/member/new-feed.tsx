@@ -86,7 +86,7 @@ function ImportForm() {
 
   const { register, handleSubmit } = useForm<ImportFormForm>()
   const { mutateAsync } = useImportFeeds({
-    mutation: { onMutate: () => queryClient.invalidateQueries(getGetUserFeedsQueryKey()) },
+    mutation: { onSuccess: () => queryClient.invalidateQueries(getGetUserFeedsQueryKey()) },
   })
 
   const onSubmit = async (data: ImportFormForm) => {

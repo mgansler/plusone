@@ -34,7 +34,7 @@ export function Article({ article: { article, unread } }: ArticleProps) {
 
   return (
     <article>
-      <input type={'checkbox'} checked={!unread} onChange={() => toggleUnread()} />
+      <input type={'checkbox'} aria-label={'read'} checked={!unread} onChange={() => toggleUnread()} />
       {article.contentBody !== null && (
         <button onClick={() => setShowContent((cur) => !cur)}>{showContent ? 'collapse' : 'expand'}</button>
       )}
