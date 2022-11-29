@@ -76,6 +76,8 @@ export type DiscoverFeedParams = { url: string }
 
 export type FindArticlesParams = { s?: string; r?: boolean; sort?: Sort; f?: string; cursor?: number }
 
+export type MarkArticlesReadParams = { s?: string; f?: string }
+
 export interface UpdateFeedSettingsInputDto {
   expandContent: boolean
   includeRead: boolean
@@ -167,6 +169,41 @@ export interface PaginatedArticlesDto {
 
 export interface ArticleToggleUnreadDto {
   unread: boolean
+}
+
+export const markArticlesRead = (params?: MarkArticlesReadParams) => {
+  return customAxiosInstance<void>({ url: `/api/article/mark-articles-read`, method: 'post', params })
+}
+
+export type MarkArticlesReadMutationResult = NonNullable<Awaited<ReturnType<typeof markArticlesRead>>>
+
+export type MarkArticlesReadMutationError = unknown
+
+export const useMarkArticlesRead = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof markArticlesRead>>,
+    TError,
+    { params?: MarkArticlesReadParams },
+    TContext
+  >
+}) => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof markArticlesRead>>,
+    { params?: MarkArticlesReadParams }
+  > = (props) => {
+    const { params } = props ?? {}
+
+    return markArticlesRead(params)
+  }
+
+  return useMutation<
+    Awaited<ReturnType<typeof markArticlesRead>>,
+    TError,
+    { params?: MarkArticlesReadParams },
+    TContext
+  >(mutationFn, mutationOptions)
 }
 
 export const toggleUnread = (id: string, articleToggleUnreadDto: ArticleToggleUnreadDto) => {

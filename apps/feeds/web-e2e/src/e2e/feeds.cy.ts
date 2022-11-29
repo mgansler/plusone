@@ -22,7 +22,7 @@ describe('feeds', () => {
     cy.findByText(/iskall85/).should('be.visible')
   })
 
-  it('should allow adding a feed manually', () => {
+  it('should allow adding a feed manually and mark all articles as read', () => {
     cy.loginFreshUser()
 
     cy.findByText('Dilbert Daily Strips').should('not.exist')
@@ -35,7 +35,22 @@ describe('feeds', () => {
 
     cy.findByRole('button', { name: 'save' }).click()
 
-    cy.findByText(/Dilbert Daily Strips/).should('be.visible')
+    cy.findByText(/Dilbert Daily Strips/, { timeout: 20_000 }).click()
+
+    cy.findAllByRole('checkbox', { name: 'read', checked: true }).should('have.length', 0)
+    let articleCount: number
+    cy.findAllByRole('checkbox', {
+      name: 'read',
+      checked: false,
+    })
+      .should('have.length.at.least', 1)
+      .then(($checkboxes) => (articleCount = $checkboxes.length))
+    cy.findByRole('button', { name: 'Mark all read' }).click()
+    cy.findAllByRole('checkbox', {
+      name: 'read',
+      checked: true,
+    }).should(($checkboxes) => expect($checkboxes.length).to.equal(articleCount))
+    cy.findAllByRole('checkbox', { name: 'read', checked: false }).should('have.length', 0)
   })
 
   it('should handle failing to add an existing feed', () => {

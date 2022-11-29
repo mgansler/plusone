@@ -3,6 +3,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
 import { Feed, Prisma, PrismaService, User } from '@plusone/feeds-persistence'
 import { Sort, UserFeedResponse } from '@plusone/feeds/shared/types'
 
+import { ArticleService } from '../article/article.service'
 import { TokenPayload } from '../authentication/jwt.strategy'
 import { DiscoverService } from '../discover/discover.service'
 import { FetchService } from '../fetch/fetch.service'
@@ -17,6 +18,7 @@ export class FeedService {
     private readonly prismaService: PrismaService,
     private readonly discoverService: DiscoverService,
     private readonly fetchService: FetchService,
+    private readonly articleService: ArticleService,
   ) {}
 
   async discover({ url }: FeedDiscoverDto) {
@@ -42,7 +44,7 @@ export class FeedService {
       if (typeof feedInputDto.title === 'undefined' || feedInputDto.title.length < 1) {
         throw new HttpException('Feed discovery failed, you MUST provide a title.', HttpStatus.BAD_REQUEST)
       }
-      const articles = await this.fetchService.fetchFeedArticles(feedInputDto.feedUrl)
+      const articles = await this.fetchService.fetchFeedItems(feedInputDto.feedUrl)
       if (articles.length === 0) {
         throw new HttpException('Could not find any articles for given URL, please check.', HttpStatus.BAD_REQUEST)
       }
@@ -50,6 +52,12 @@ export class FeedService {
     }
 
     try {
+      // Convert items to articles first so this doesn't count towards the wait time of the transaction
+      const items = await this.fetchService.fetchFeedItems(feedInputDto.feedUrl)
+      const articles = await Promise.all(
+        items.reverse().map((item) => this.articleService.itemToArticle(feedInputDto.feedUrl, item)),
+      )
+
       return await this.prismaService.$transaction(async (tx) => {
         const feed = await tx.feed.upsert({
           where: { feedUrl: feedInputDto.feedUrl },
@@ -72,6 +80,44 @@ export class FeedService {
           select: { title: true, includeRead: true, expandContent: true, order: true },
           where: { userId_feedId: { userId, feedId: feed.id } },
         })
+
+        const feedSubscriberIds = (
+          await tx.user.findMany({
+            where: { UserFeed: { some: { feedId: feed.id } } },
+          })
+        ).map((user) => ({ userId: user.id }))
+
+        for (const article of articles) {
+          await tx.article.upsert({
+            where: {
+              guid_feedId: {
+                guid: article.guid,
+                feedId: feed.id,
+              },
+            },
+            update: {
+              content: article.content,
+              contentBody: article.contentBody,
+              title: article.title,
+              UserArticle: {
+                createMany: {
+                  data: feedSubscriberIds,
+                  skipDuplicates: true,
+                },
+              },
+            },
+            create: {
+              ...article,
+              feedId: feed.id,
+              UserArticle: {
+                createMany: {
+                  data: feedSubscriberIds,
+                  skipDuplicates: true,
+                },
+              },
+            },
+          })
+        }
 
         const unreadCount = await tx.userArticle.count({ where: { userId, article: { feedId: feed.id } } })
 
@@ -100,7 +146,7 @@ export class FeedService {
     const urisWithoutArticles: string[] = []
 
     for (const feedInput of feedInputDtos) {
-      const articles = await this.fetchService.fetchFeedArticles(feedInput.feedUrl)
+      const articles = await this.fetchService.fetchFeedItems(feedInput.feedUrl)
       if (articles.length === 0) {
         urisWithoutArticles.push(feedInput.feedUrl)
         continue

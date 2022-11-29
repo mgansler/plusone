@@ -16,6 +16,25 @@ import { ArticleService } from './article.service'
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
+  @ApiOperation({ operationId: 'mark-articles-read' })
+  @ApiQuery({
+    name: 'f',
+    description: 'The id of the feed where all articles should be marked as read.',
+    type: String,
+    required: false,
+  })
+  @ApiQuery({
+    name: 's',
+    description: 'The string that the article should match.',
+    type: String,
+    required: false,
+  })
+  @ApiOkResponse({ description: 'All articles have been marked as read.' })
+  @Post('mark-articles-read')
+  markArticlesRead(@Query('f') feedId: Feed['id'], @Query('s') searchTerm: string, @Req() { user }) {
+    return this.articleService.markArticlesRead({ feedId, searchTerm }, user.id)
+  }
+
   @ApiOperation({ operationId: 'toggle-unread' })
   @ApiParam({ name: 'id', description: 'The id of the article.', type: String })
   @ApiOkResponse({ description: 'The read status of article has been toggled.', type: ArticleResponseDto })

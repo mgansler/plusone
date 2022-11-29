@@ -14,6 +14,11 @@ type ArticleFindParams = Pagination & {
   includeRead: boolean
 }
 
+type MarkArticlesReadParams = {
+  feedId?: Feed['id']
+  searchTerm?: string
+}
+
 @Injectable()
 export class ArticleService {
   private logger = new Logger(ArticleService.name)
@@ -21,7 +26,7 @@ export class ArticleService {
   constructor(private readonly prismaService: PrismaService, private readonly configService: ConfigService) {}
 
   async create(item: Item, feed: Feed) {
-    const article = await this.itemToArticle(feed, item)
+    const article = await this.itemToArticle(feed.feedUrl, item)
 
     if (!article.guid || typeof article.guid !== 'string') {
       if (typeof article.id === 'string') {
@@ -108,6 +113,32 @@ export class ArticleService {
     })
   }
 
+  async markArticlesRead({ feedId, searchTerm }: MarkArticlesReadParams, userId: User['id']) {
+    const search = typeof searchTerm !== 'undefined' ? searchTerm.split(' ').join(' & ') : '%'
+
+    const where: Prisma.UserArticleUpdateManyArgs['where'] = {
+      userId,
+      article: {
+        feedId,
+        title: searchTerm ? { search } : undefined,
+      },
+    }
+
+    await this.prismaService.userArticle.updateMany({
+      where,
+      data: {
+        unread: false,
+      },
+    })
+  }
+
+  async itemToArticle(
+    feedUrl: Feed['feedUrl'],
+    item: Item,
+  ): Promise<Omit<Prisma.ArticleCreateInput, 'feed' | 'UserArticle'>> {
+    return getArticleBuilderFunction(feedUrl)(item)
+  }
+
   private normalizePagination(cursor?: Pagination['cursor']): {
     cursor: { cursor: number }
     skip: number
@@ -119,12 +150,5 @@ export class ArticleService {
       skip: isFirstRequest ? 0 : 1,
       take: this.configService.get('PAGE_SIZE'),
     }
-  }
-
-  private async itemToArticle(
-    feed: Feed,
-    item: Item,
-  ): Promise<Omit<Prisma.ArticleCreateInput, 'feed' | 'UserArticle'>> {
-    return getArticleBuilderFunction(feed.feedUrl)(item)
   }
 }

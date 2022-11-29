@@ -24,8 +24,8 @@ export class SchedulingService {
     let totalSavedArticles = 0
     const feeds = await this.feedService.findAll()
     for (const feed of feeds) {
-      const articles = await this.fetchService.fetchFeedArticles(feed.feedUrl)
-      totalSavedArticles += await this.saveNewArticles(articles, feed)
+      const items = await this.fetchService.fetchFeedItems(feed.feedUrl)
+      totalSavedArticles += await this.saveNewArticles(items, feed)
     }
 
     this.logger.log(`Saved/updated ${totalSavedArticles} articles`)
@@ -39,9 +39,9 @@ export class SchedulingService {
         savedArticles++
       } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
-          this.logger.error(`Failed to save article: ${e.code}\n ${e.message}`)
+          this.logger.error(`Failed to save article for '${feed.originalTitle}': ${e.code}\n ${e.message}`)
         } else {
-          this.logger.error('Failed to save article, unknown error', e)
+          this.logger.error(`Failed to save article for '${feed.originalTitle}', unknown error`, e)
         }
       }
     }
