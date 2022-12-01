@@ -1,16 +1,8 @@
-import { copyFileSync, existsSync, mkdirSync } from 'fs'
-import type { Server } from 'http'
-import { join, resolve } from 'path'
+import { resolve } from 'path'
 
 import type { ExecutorContext } from '@nrwl/devkit'
-import { watch } from '@remix-run/dev/dist/cli/commands'
-import { build } from '@remix-run/dev/dist/compiler/build'
-import type { RemixConfig } from '@remix-run/dev/dist/config'
 import { readConfig } from '@remix-run/dev/dist/config'
-import { createApp } from '@remix-run/serve'
-import * as express from 'express'
-import { map, Observable } from 'rxjs'
-import { eachValueFrom } from 'rxjs-for-await'
+import { serve } from '@remix-run/dev/dist/devServer/serve'
 
 type ServeSchema = {
   devServerPort: number
@@ -18,7 +10,7 @@ type ServeSchema = {
   watch?: boolean
 }
 
-export default async function* (options: ServeSchema, context: ExecutorContext) {
+export default async function (options: ServeSchema, context: ExecutorContext) {
   if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = 'development'
   }
@@ -33,68 +25,5 @@ export default async function* (options: ServeSchema, context: ExecutorContext) 
   config.assetsBuildDirectory = resolve(context.root, 'tmp', targetRoot, 'public/build')
   config.serverBuildPath = resolve(context.root, 'tmp', targetRoot, 'build/index.js')
 
-  const publicDest = join(context.root, 'tmp', targetRoot, 'public')
-  if (!existsSync(publicDest)) {
-    mkdirSync(publicDest, { recursive: true })
-  }
-  copyFileSync(resolve(context.root, targetRoot, 'public/favicon.ico'), resolve(publicDest, 'favicon.ico'))
-
-  if (options.watch === false) {
-    await build(config, { mode, sourcemap: mode === 'development' })
-    const app = createAppServer(config)
-    const server: Server = app.listen(options.port, () => {
-      console.log(`Remix App Server started at http://localhost:${options.port}`)
-    })
-    yield { baseUrl: `http://localhost:${options.port}`, success: true }
-    return () => server.close()
-  } else {
-    for await (const value of eachValueFrom(
-      runRemixDevServer(options, config).pipe(
-        map(({ baseUrl }) => ({
-          success: true,
-          baseUrl,
-        })),
-      ),
-    )) {
-      yield value
-    }
-  }
-}
-
-function runRemixDevServer(options: ServeSchema, config: RemixConfig) {
-  return new Observable((subscriber) => {
-    const app = createAppServer(config)
-    let server: Server | null = null
-
-    watch(config, 'development', {
-      onInitialBuild: () => {
-        server = app.listen(options.port, () => {
-          console.log(`Remix App Server started at http://localhost:${options.port}`)
-        })
-        subscriber.next({ baseUrl: `http://localhost:${options.port}` })
-      },
-    })
-
-    return () => server.close()
-  })
-}
-
-function purgeAppRequireCache(buildPath: string) {
-  for (const key in require.cache) {
-    if (key.startsWith(buildPath)) {
-      delete require.cache[key]
-    }
-  }
-}
-
-function createAppServer(config: RemixConfig) {
-  const app = express()
-  app.use(express.static(join(config.assetsBuildDirectory, '..')))
-  app.use((_, __, next) => {
-    purgeAppRequireCache(config.serverBuildPath)
-    next()
-  })
-  app.use(createApp(config.serverBuildPath, 'development'))
-
-  return app
+  return serve(config, mode, options.port)
 }
