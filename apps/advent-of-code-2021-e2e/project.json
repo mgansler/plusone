@@ -7,13 +7,20 @@
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "apps/advent-of-code-2021-e2e/cypress.config.ts",
-        "devServerTarget": "advent-of-code-2021:serve:e2e",
+        "devServerTarget": "advent-of-code-2021-e2e:serve-app",
         "testingType": "e2e"
       },
       "configurations": {
         "watch": {
           "watch": true
         }
+      }
+    },
+    "serve-app": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx run advent-of-code-2021:serve"],
+        "readyWhen": "Remix App Server started at"
       }
     },
     "lint": {
