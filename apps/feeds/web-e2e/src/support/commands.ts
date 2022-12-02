@@ -30,28 +30,28 @@ Cypress.Commands.add('login', () => {
   })
 
   cy.visit('/login')
-  cy.findByRole('textbox', { name: 'username' }).type('user')
-  cy.findByLabelText('password').type('just_secret')
-  cy.findByRole('button', { name: 'login' }).click()
+  cy.findByRole('textbox', { name: /username/i }).type('user')
+  cy.findByLabelText(/password/i).type('just_secret')
+  cy.findByRole('button', { name: /login/i }).click()
 })
 
 Cypress.Commands.add('loginFreshUser', () => {
   const username = Math.random().toString(36).substring(2, 7)
   cy.visit('/register')
-  cy.findByRole('textbox', { name: 'username' }).type(username)
-  cy.findByLabelText('password').type('random_password')
+  cy.findByRole('textbox', { name: /username/i }).type(username)
+  cy.findByLabelText(/password/i).type('random_password')
   cy.findByRole('button', { name: 'register' }).click()
   cy.location('pathname').should('eq', '/login')
-  cy.findByRole('textbox', { name: 'username' }).type(username)
-  cy.findByLabelText('password').type('random_password')
-  cy.findByRole('button', { name: 'login' }).click()
+  cy.findByRole('textbox', { name: /username/i }).type(username)
+  cy.findByLabelText(/password/i).type('random_password')
+  cy.findByRole('button', { name: /login/i }).click()
 })
 
 Cypress.Commands.add('loginAdmin', () => {
   cy.visit('/login')
-  cy.findByRole('textbox', { name: 'username' }).type('root')
-  cy.findByLabelText('password').type('keep_this_secret')
-  cy.findByRole('button', { name: 'login' }).click()
+  cy.findByRole('textbox', { name: /username/i }).type('root')
+  cy.findByLabelText(/password/i).type('keep_this_secret')
+  cy.findByRole('button', { name: /login/i }).click()
 })
 
 Cypress.Commands.add('addHeiseFeedToDefaultUser', () => {

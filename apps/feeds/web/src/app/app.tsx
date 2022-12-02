@@ -1,7 +1,6 @@
 import type { Theme } from '@mui/material'
 import { AppBar, Link as MuiLink, Toolbar, Typography } from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import { createStyles, makeStyles } from '@mui/styles'
 import React from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
 
@@ -17,18 +16,21 @@ import { FeedList } from './pages/member/feeds'
 import { Articles } from './pages/member/feeds/$feedId'
 import { NewFeed } from './pages/member/new-feed'
 
-const useClassNames = makeStyles<Theme, object, 'toolbar' | 'main'>((theme) =>
+const useClassNames = makeStyles<Theme, object, 'appBar' | 'root' | 'toolbar'>((theme) =>
   createStyles({
-    toolbar: {
-      gap: theme.spacing(1),
-      justifyContent: 'space-between',
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1,
     },
-    main: {
+    root: {
       padding: theme.spacing(1),
       display: 'flex',
       flexDirection: 'column',
       gap: theme.spacing(1),
       height: '100vh',
+    },
+    toolbar: {
+      gap: theme.spacing(1),
+      justifyContent: 'space-between',
     },
   }),
 )
@@ -40,7 +42,7 @@ export function App() {
 
   return (
     <>
-      <AppBar position={'static'}>
+      <AppBar position={'sticky'} className={classNames.appBar}>
         <Toolbar className={classNames.toolbar}>
           <Typography variant={'h6'}>Feeds</Typography>
 
@@ -54,7 +56,7 @@ export function App() {
         </Toolbar>
       </AppBar>
 
-      <main className={classNames.main}>
+      <div className={classNames.root}>
         <Routes>
           <Route path={'home'} element={<Home />} />
           <Route path={'login'} element={<Login />} />
@@ -75,7 +77,7 @@ export function App() {
             </Route>
           )}
         </Routes>
-      </main>
+      </div>
     </>
   )
 }

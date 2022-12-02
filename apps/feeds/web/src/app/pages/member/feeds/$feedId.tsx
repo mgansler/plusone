@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
+import React from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
 import {
@@ -9,6 +10,8 @@ import {
 } from '@plusone/feeds/api-client'
 
 import { ArticleList } from '../../../components/article-list'
+import { FeedSettingsBar } from '../../../components/feed-settings-bar'
+import { SearchBar } from '../../../components/search-bar'
 import { useFeedSettingsContext } from '../../../context/feed-settings'
 
 export function Articles() {
@@ -46,7 +49,9 @@ export function Articles() {
   }
 
   return (
-    <div>
+    <>
+      <SearchBar />
+      <FeedSettingsBar />
       <button onClick={markAllRead}>Mark all read</button>
       {data.pages.map((page, index) => (
         <ArticleList key={index} articles={page.data.content} />
@@ -54,6 +59,6 @@ export function Articles() {
       <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
         next
       </button>
-    </div>
+    </>
   )
 }
