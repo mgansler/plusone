@@ -4,6 +4,6 @@ describe('feeds-web', () => {
   })
 
   it('should display welcome message and status', () => {
-    cy.findByRole('heading', { name: 'Welcome feeds-web' })
+    cy.findByRole('heading', { name: 'Feeds' })
   })
 })

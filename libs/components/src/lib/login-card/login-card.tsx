@@ -27,9 +27,9 @@ export function LoginCard({ children }: LoginCardProps) {
   const classNames = useClassNames()
 
   return (
-    <Container maxWidth={'sm'} className={classNames['container']}>
+    <Container maxWidth={'sm'} className={classNames.container}>
       <Card>
-        <CardContent className={classNames['cardContent']}>{children}</CardContent>
+        <CardContent className={classNames.cardContent}>{children}</CardContent>
       </Card>
     </Container>
   )

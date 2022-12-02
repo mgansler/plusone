@@ -11,7 +11,7 @@ import { OctokitProvider } from './octokit-provider/octokit-provider'
 import { Organizations } from './organizations/organizations'
 import { UserInfo } from './user-info/user-info'
 
-const useStyles = makeStyles<Theme>((theme) =>
+const useClassNames = makeStyles<Theme>((theme) =>
   createStyles({
     toolbar: {
       gap: theme.spacing(1),
@@ -30,7 +30,7 @@ const useStyles = makeStyles<Theme>((theme) =>
 )
 
 export function AppWithProviders() {
-  const classNames = useStyles()
+  const classNames = useClassNames()
   return (
     <React.Fragment>
       <AppBar position={'static'}>

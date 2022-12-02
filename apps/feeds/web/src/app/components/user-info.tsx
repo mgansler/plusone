@@ -1,3 +1,5 @@
+import { Button, Typography } from '@mui/material'
+
 import { useUserContext } from '../context/user'
 
 export function UserInfo() {
@@ -8,9 +10,9 @@ export function UserInfo() {
   }
 
   return (
-    <div>
-      <span>{userInfo.username}</span>
-      <button onClick={logout}>logout</button>
+    <div style={{ display: 'flex', alignItems: 'baseline' }}>
+      <Typography>{userInfo.username}</Typography>
+      <Button onClick={logout}>Logout</Button>
     </div>
   )
 }
