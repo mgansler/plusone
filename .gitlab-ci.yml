@@ -17,7 +17,7 @@ default:
     - yarn install --network-timeout 150000
 
 include:
-  - /apps/advent-of-code-2021/.gitlab-ci.yml
+  #  - /apps/advent-of-code-2021/.gitlab-ci.yml
   - /apps/feeds/.gitlab-ci.yml
   - /apps/suite/.gitlab-ci.yml
 
