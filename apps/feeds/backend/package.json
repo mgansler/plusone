@@ -2,5 +2,8 @@
   "scripts": {
     "prestart": "npx prisma migrate deploy",
     "start": "node main.js"
+  },
+  "dependencies": {
+    "@nestjs/platform-express": "9.2.1"
   }
 }
