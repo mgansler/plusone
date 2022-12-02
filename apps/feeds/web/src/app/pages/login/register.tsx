@@ -1,6 +1,8 @@
+import { Button, TextField, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
+import { LoginCard } from '@plusone/components'
 import { useRegister } from '@plusone/feeds/api-client'
 
 type RegisterForm = {
@@ -21,19 +23,17 @@ export function Register() {
   }
 
   return (
-    <div>
-      <h3>Register</h3>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>
-          Username
-          <input type={'text'} aria-label={'username'} {...register('username')} />
-        </label>
-        <label>
-          Password
-          <input type={'password'} aria-label={'password'} {...register('password')} />
-        </label>
-        <button>register</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <LoginCard>
+        <Typography>Register</Typography>
+
+        <TextField fullWidth={true} label={'Username'} {...register('username')} />
+        <TextField fullWidth={true} label={'Password'} type={'password'} {...register('password')} />
+
+        <Button type={'submit'} color={'primary'}>
+          register
+        </Button>
+      </LoginCard>
+    </form>
   )
 }

@@ -5,7 +5,7 @@ import makeStyles from '@mui/styles/makeStyles'
 import type { ReactNode } from 'react'
 import React from 'react'
 
-const useClassNames = makeStyles<Theme>((theme) =>
+const useClassNames = makeStyles<Theme, object, 'container' | 'cardContent'>((theme) =>
   createStyles({
     container: {
       marginTop: theme.spacing(8),
@@ -14,7 +14,7 @@ const useClassNames = makeStyles<Theme>((theme) =>
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: theme.spacing(1),
+      gap: theme.spacing(2),
     },
   }),
 )
@@ -27,9 +27,9 @@ export function LoginCard({ children }: LoginCardProps) {
   const classNames = useClassNames()
 
   return (
-    <Container maxWidth={'sm'} className={classNames.container}>
+    <Container maxWidth={'sm'} className={classNames['container']}>
       <Card>
-        <CardContent className={classNames.cardContent}>{children}</CardContent>
+        <CardContent className={classNames['cardContent']}>{children}</CardContent>
       </Card>
     </Container>
   )

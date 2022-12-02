@@ -11,15 +11,15 @@ describe('authentication', () => {
 
     cy.location('pathname').should('eq', '/register')
 
-    cy.findByRole('textbox', { name: 'username' }).type(username)
-    cy.findByLabelText('password').type('just_secret')
-    cy.findByRole('button', { name: 'register' }).click()
+    cy.findByRole('textbox', { name: /username/i }).type(username)
+    cy.findByLabelText(/password/i).type('just_secret')
+    cy.findByRole('button', { name: /register/i }).click()
 
     cy.location('pathname').should('eq', '/login')
 
-    cy.findByRole('textbox', { name: 'username' }).type(username)
-    cy.findByLabelText('password').type('just_secret')
-    cy.findByRole('button', { name: 'login' }).click()
+    cy.findByRole('textbox', { name: /username/i }).type(username)
+    cy.findByLabelText(/password/i).type('just_secret')
+    cy.findByRole('button', { name: /login/i }).click()
 
     cy.location('pathname').should('eq', '/member/feeds')
     cy.findByText(username)

@@ -1,4 +1,8 @@
+import { CssBaseline } from '@mui/material'
+import React from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
+
+import { DarkModeThemeProvider } from '@plusone/dark-mode-theme-provider'
 
 import { UserInfo } from './components/user-info'
 import { useUserContext } from './context/user'
@@ -16,7 +20,8 @@ export function App() {
   const { isLoggedIn, userInfo } = useUserContext()
 
   return (
-    <>
+    <DarkModeThemeProvider>
+      <CssBaseline />
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Link to={'/home'}>
           <h1>Welcome feeds-web</h1>
@@ -46,6 +51,6 @@ export function App() {
           </Route>
         )}
       </Routes>
-    </>
+    </DarkModeThemeProvider>
   )
 }

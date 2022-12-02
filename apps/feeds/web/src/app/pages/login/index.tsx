@@ -1,6 +1,8 @@
+import { Button, Link as MuiLink, TextField, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
+import { LoginCard } from '@plusone/components'
 import { useLogin } from '@plusone/feeds/api-client'
 
 import { useUserContext } from '../../context/user'
@@ -22,20 +24,21 @@ export function Login() {
   }
 
   return (
-    <div>
-      <h3>login</h3>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>
-          Username
-          <input type={'text'} aria-label={'username'} {...register('username')} />
-        </label>
-        <label>
-          Password
-          <input type={'password'} aria-label={'password'} {...register('password')} />
-        </label>
-        <button>login</button>
-      </form>
-      <Link to={'../register'}>I don't have an account</Link>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <LoginCard>
+        <Typography>Login</Typography>
+
+        <TextField fullWidth={true} label={'Username'} {...register('username')} />
+        <TextField fullWidth={true} label={'Password'} type={'password'} {...register('password')} />
+
+        <Button type={'submit'} color={'primary'}>
+          Login
+        </Button>
+
+        <MuiLink component={Link} to={'../register'}>
+          I don't have an account
+        </MuiLink>
+      </LoginCard>
+    </form>
   )
 }
