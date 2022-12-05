@@ -82,6 +82,15 @@ export interface UpdateFeedSettingsInputDto {
   expandContent: boolean
   includeRead: boolean
   order: Sort
+  title?: string
+}
+
+export interface FeedSettingsResponseDto {
+  id: string
+  title: string
+  expandContent: boolean
+  includeRead: boolean
+  order: Sort
 }
 
 export interface UserFeedResponseDto {
@@ -710,6 +719,60 @@ export const useGetFeeds = <TData = Awaited<ReturnType<typeof getFeeds>>, TError
     queryFn,
     queryOptions,
   ) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export const getFeedSettings = (id: string, signal?: AbortSignal) => {
+  return customAxiosInstance<FeedSettingsResponseDto>({ url: `/api/feed/${id}`, method: 'get', signal })
+}
+
+export const getGetFeedSettingsQueryKey = (id: string) => [`/api/feed/${id}`]
+
+export type GetFeedSettingsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getFeedSettings>>>
+export type GetFeedSettingsInfiniteQueryError = unknown
+
+export const useGetFeedSettingsInfinite = <TData = Awaited<ReturnType<typeof getFeedSettings>>, TError = unknown>(
+  id: string,
+  options?: { query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof getFeedSettings>>, TError, TData> },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetFeedSettingsQueryKey(id)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFeedSettings>>> = ({ signal }) =>
+    getFeedSettings(id, signal)
+
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof getFeedSettings>>, TError, TData>(queryKey, queryFn, {
+    enabled: !!id,
+    ...queryOptions,
+  }) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export type GetFeedSettingsQueryResult = NonNullable<Awaited<ReturnType<typeof getFeedSettings>>>
+export type GetFeedSettingsQueryError = unknown
+
+export const useGetFeedSettings = <TData = Awaited<ReturnType<typeof getFeedSettings>>, TError = unknown>(
+  id: string,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getFeedSettings>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetFeedSettingsQueryKey(id)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFeedSettings>>> = ({ signal }) =>
+    getFeedSettings(id, signal)
+
+  const query = useQuery<Awaited<ReturnType<typeof getFeedSettings>>, TError, TData>(queryKey, queryFn, {
+    enabled: !!id,
+    ...queryOptions,
+  }) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
   query.queryKey = queryKey
 

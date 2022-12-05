@@ -18,6 +18,7 @@ import {
   FeedDiscoverDto,
   FeedInputDto,
   FeedResponseDto,
+  FeedSettingsResponseDto,
   UpdateFeedSettingsInputDto,
   UserFeedResponseDto,
 } from './feed.dto'
@@ -66,6 +67,14 @@ export class FeedController {
   @Get()
   async getAllForUser(@Req() { user }): Promise<UserFeedResponseDto[]> {
     return this.feedService.findAllFor(user)
+  }
+
+  @ApiOperation({ operationId: 'get-feed-settings' })
+  @ApiParam({ name: 'id', description: 'The id of the feed.', type: String })
+  @ApiOkResponse({ description: 'Settings for feed', type: FeedSettingsResponseDto })
+  @Get(':id')
+  async getFeedSettings(@Param('id') id: string, @Req() { user }): Promise<FeedSettingsResponseDto> {
+    return this.feedService.getFeedSettings(user, id)
   }
 
   @ApiOperation({ operationId: 'update-feed-settings' })

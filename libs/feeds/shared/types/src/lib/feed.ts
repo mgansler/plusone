@@ -10,6 +10,8 @@ export type UpdateFeedSettingsInput = {
   order: Sort
   includeRead: boolean
   expandContent: boolean
+
+  title?: string
 }
 
 export type FeedResponse = {
