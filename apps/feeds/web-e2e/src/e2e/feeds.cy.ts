@@ -17,9 +17,9 @@ describe('feeds', () => {
       'have.value',
       'http://www.youtube.com/feeds/videos.xml?channel_id=UCZ9x-z3iOnIbJxVpm1rsu2A',
     )
-    cy.findByRole('button', { name: 'save' }).click()
+    cy.findByRole('button', { name: /save/i }).click()
 
-    cy.findByText(/iskall85/).should('be.visible')
+    cy.findByRole('button', { name: /iskall85/ }).should('be.visible')
   })
 
   it('should allow adding a feed manually and mark all articles as read', () => {
@@ -35,22 +35,19 @@ describe('feeds', () => {
 
     cy.findByRole('button', { name: 'save' }).click()
 
-    cy.findByText(/Dilbert Daily Strips/, { timeout: 20_000 }).click()
+    cy.findByRole('button', { name: /Dilbert Daily Strips/, timeout: 20_000 }).click()
 
-    cy.findAllByRole('checkbox', { name: 'read', checked: true }).should('have.length', 0)
+    cy.get('article').findAllByTestId('CheckBoxOutlinedIcon').should('have.length', 0)
     let articleCount: number
-    cy.findAllByRole('checkbox', {
-      name: 'read',
-      checked: false,
-    })
+    cy.get('article')
+      .findAllByTestId('CheckBoxOutlineBlankIcon')
       .should('have.length.at.least', 1)
       .then(($checkboxes) => (articleCount = $checkboxes.length))
     cy.findByRole('button', { name: 'Mark all read' }).click()
-    cy.findAllByRole('checkbox', {
-      name: 'read',
-      checked: true,
-    }).should(($checkboxes) => expect($checkboxes.length).to.equal(articleCount))
-    cy.findAllByRole('checkbox', { name: 'read', checked: false }).should('have.length', 0)
+    cy.get('article')
+      .findAllByTestId('CheckBoxOutlinedIcon')
+      .should(($checkboxes) => expect($checkboxes.length).to.equal(articleCount))
+    cy.get('article').findAllByTestId('CheckBoxOutlineBlankIcon').should('have.length', 0)
   })
 
   it('should handle failing to add an existing feed', () => {
@@ -90,7 +87,7 @@ describe('feeds', () => {
 
     cy.findByRole('button', { name: 'import' }).click()
 
-    cy.findByText(/AnandTech/).should('be.visible')
-    cy.findByText(/ComputerBase/).should('be.visible')
+    cy.findByRole('button', { name: /AnandTech/, timeout: 20_000 }).should('be.visible')
+    cy.findByRole('button', { name: /ComputerBase/, timeout: 20_000 }).should('be.visible')
   })
 })

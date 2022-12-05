@@ -1,3 +1,7 @@
+import type { Theme } from '@mui/material'
+import { AppBar, Link as MuiLink, Toolbar, Typography } from '@mui/material'
+import { createStyles, makeStyles } from '@mui/styles'
+import React from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
 
 import { UserInfo } from './components/user-info'
@@ -12,40 +16,68 @@ import { FeedList } from './pages/member/feeds'
 import { Articles } from './pages/member/feeds/$feedId'
 import { NewFeed } from './pages/member/new-feed'
 
+const useClassNames = makeStyles<Theme, object, 'appBar' | 'root' | 'toolbar'>((theme) =>
+  createStyles({
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1,
+    },
+    root: {
+      padding: theme.spacing(1),
+      display: 'flex',
+      flexDirection: 'column',
+      gap: theme.spacing(1),
+      height: '100vh',
+    },
+    toolbar: {
+      gap: theme.spacing(1),
+      justifyContent: 'space-between',
+    },
+  }),
+)
+
 export function App() {
+  const classNames = useClassNames()
+
   const { isLoggedIn, userInfo } = useUserContext()
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Link to={'/home'}>
-          <h1>Welcome feeds-web</h1>
-        </Link>
-        <UserInfo />
-      </div>
+      <AppBar position={'sticky'} className={classNames.appBar}>
+        <Toolbar className={classNames.toolbar}>
+          <Typography variant={'h6'}>Feeds</Typography>
 
-      <nav>{!isLoggedIn && <Link to={'/login'}>Login</Link>}</nav>
+          {isLoggedIn ? (
+            <UserInfo />
+          ) : (
+            <MuiLink component={Link} to={'/login'}>
+              Login
+            </MuiLink>
+          )}
+        </Toolbar>
+      </AppBar>
 
-      <Routes>
-        <Route path={'home'} element={<Home />} />
-        <Route path={'login'} element={<Login />} />
-        <Route path={'register'} element={<Register />} />
+      <div className={classNames.root}>
+        <Routes>
+          <Route path={'home'} element={<Home />} />
+          <Route path={'login'} element={<Login />} />
+          <Route path={'register'} element={<Register />} />
 
-        {isLoggedIn && (
-          <Route path={'member'} element={<Member />}>
-            <Route path={'new'} element={<NewFeed />} />
-            <Route path={'feeds'} element={<FeedList />}>
-              <Route path={':feedId'} element={<Articles />} />
+          {isLoggedIn && (
+            <Route path={'member'} element={<Member />}>
+              <Route path={'new'} element={<NewFeed />} />
+              <Route path={'feeds'} element={<FeedList />}>
+                <Route path={':feedId'} element={<Articles />} />
+              </Route>
             </Route>
-          </Route>
-        )}
+          )}
 
-        {userInfo?.isAdmin && (
-          <Route path={'admin'} element={<Admin />}>
-            <Route path={'users'} element={<Users />} />
-          </Route>
-        )}
-      </Routes>
+          {userInfo?.isAdmin && (
+            <Route path={'admin'} element={<Admin />}>
+              <Route path={'users'} element={<Users />} />
+            </Route>
+          )}
+        </Routes>
+      </div>
     </>
   )
 }

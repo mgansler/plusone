@@ -1,3 +1,5 @@
+import { ArrowDownward, ArrowUpward, ExpandLess, ExpandMore } from '@mui/icons-material'
+import { Button, Checkbox, FormControlLabel } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 
@@ -25,23 +27,26 @@ export function FeedSettingsBar() {
 
   return (
     <div style={{ display: 'flex' }}>
-      <div>
-        <button disabled={sort === Sort.NewestFirst} onClick={() => setSort(Sort.NewestFirst)}>
-          Newest
-        </button>
-        <button disabled={sort === Sort.OldestFirst} onClick={() => setSort(Sort.OldestFirst)}>
-          Oldest
-        </button>
-      </div>
+      <Button
+        startIcon={sort === Sort.NewestFirst ? <ArrowUpward /> : <ArrowDownward />}
+        onClick={() => setSort((cur) => (cur === Sort.NewestFirst ? Sort.OldestFirst : Sort.NewestFirst))}
+      >
+        {sort === Sort.NewestFirst ? 'newest first' : 'oldest first'}
+      </Button>
 
-      <label>
-        Include read
-        <input type={'checkbox'} checked={includeRead} onChange={() => setIncludeRead((cur) => !cur)} />
-      </label>
+      <FormControlLabel
+        control={<Checkbox checked={includeRead} onChange={() => setIncludeRead((cur) => !cur)} />}
+        label={'Include Read'}
+      />
 
-      <button onClick={() => setExpandContent((cur) => !cur)}>{expandContent ? 'collapse all' : 'expand all'}</button>
+      <Button
+        startIcon={expandContent ? <ExpandMore /> : <ExpandLess />}
+        onClick={() => setExpandContent((cur) => !cur)}
+      >
+        {expandContent ? 'collapse all' : 'expand all'}
+      </Button>
 
-      <button onClick={storeSettings}>save</button>
+      <Button onClick={storeSettings}>save</Button>
     </div>
   )
 }
