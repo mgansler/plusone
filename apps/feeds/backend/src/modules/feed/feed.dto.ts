@@ -41,6 +41,23 @@ export class FeedInputDto implements FeedInput {
   feedUrl: string
 }
 
+export class FeedSettingsResponseDto {
+  @ApiProperty()
+  id: string
+
+  @ApiProperty()
+  title: string
+
+  @ApiProperty()
+  expandContent: boolean
+
+  @ApiProperty()
+  includeRead: boolean
+
+  @ApiProperty({ enum: Sort, enumName: 'Sort' })
+  order: Sort
+}
+
 export class UpdateFeedSettingsInputDto implements UpdateFeedSettingsInput {
   @ApiProperty()
   expandContent: boolean
@@ -50,6 +67,9 @@ export class UpdateFeedSettingsInputDto implements UpdateFeedSettingsInput {
 
   @ApiProperty({ enum: Sort, enumName: 'Sort' })
   order: Sort
+
+  @ApiProperty({ required: false })
+  title?: string
 }
 
 export class FeedResponseDto implements FeedResponse {

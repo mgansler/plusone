@@ -1,4 +1,16 @@
-import { Badge, Button, Divider, Drawer, List, ListItemButton, ListItemText, Toolbar } from '@mui/material'
+import { Settings } from '@mui/icons-material'
+import {
+  Badge,
+  Button,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Toolbar,
+} from '@mui/material'
 import { createStyles, makeStyles } from '@mui/styles'
 import React from 'react'
 import { Outlet, useNavigate, useParams, useSearchParams } from 'react-router-dom'
@@ -26,17 +38,24 @@ function FeedEntry({ feed }: FeedEntryProps) {
     navigate({ pathname: feed.id, search: searchParams.toString() })
   }
 
+  const handleGoToFeedSettings = () => navigate(`${feed.id}/settings`)
+
   return (
-    <ListItemButton aria-label={feed.title} selected={feedId === feed.id} onClick={handleGoToFeed}>
-      <Badge max={999} color={'primary'} badgeContent={feed.unreadCount}>
-        <ListItemText>{feed.title}</ListItemText>
-      </Badge>
-    </ListItemButton>
+    <ListItem>
+      <ListItemButton aria-label={feed.title} selected={feedId === feed.id} onClick={handleGoToFeed}>
+        <Badge max={999} color={'primary'} badgeContent={feed.unreadCount}>
+          <ListItemText>{feed.title}</ListItemText>
+        </Badge>
+      </ListItemButton>
+      <IconButton onClick={handleGoToFeedSettings}>
+        <Settings />
+      </IconButton>
+    </ListItem>
   )
 }
 
 const drawerWidth = 320
-const useClassNames = makeStyles((theme) =>
+const useClassNames = makeStyles(() =>
   createStyles({
     drawerPaper: {
       width: drawerWidth,
@@ -65,14 +84,16 @@ export function FeedList() {
       <Drawer variant={'permanent'} classes={{ paper: classNames.drawerPaper }}>
         <Toolbar />
 
-        <List>
+        <List dense={true}>
           <Button onClick={() => navigate('../new')}>add feed</Button>
           <Divider />
-          <ListItemButton aria-label={'all feeds'} selected={feedId === 'all'} onClick={goToAll}>
-            <Badge max={999} color={'primary'} badgeContent={totalUnreadCount}>
-              <ListItemText>All</ListItemText>
-            </Badge>
-          </ListItemButton>
+          <ListItem>
+            <ListItemButton aria-label={'all feeds'} selected={feedId === 'all'} onClick={goToAll}>
+              <Badge max={999} color={'primary'} badgeContent={totalUnreadCount}>
+                <ListItemText>All</ListItemText>
+              </Badge>
+            </ListItemButton>
+          </ListItem>
 
           {data?.data.map((feed) => (
             <FeedEntry key={feed.id} feed={feed} />
