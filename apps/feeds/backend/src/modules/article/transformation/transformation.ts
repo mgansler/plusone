@@ -5,6 +5,7 @@ import { Prisma } from '@plusone/feeds-persistence'
 import { defaultArticleBuilder } from './default'
 import { dilbertArticleBuilder } from './dilbert'
 import { fefeArticleBuilder } from './fefe'
+import { xkcdArticleBuilder } from './xkcd'
 import { youtubeArticleBuilder } from './youtube'
 
 export type ArticleBuilderFn = (
@@ -17,6 +18,8 @@ export function getArticleBuilderFunction(feedUrl: string): ArticleBuilderFn {
       return fefeArticleBuilder
     case 'dilbert.com':
       return dilbertArticleBuilder
+    case 'xkcd.com':
+      return xkcdArticleBuilder
     case 'www.youtube.com':
       return youtubeArticleBuilder
     default:
