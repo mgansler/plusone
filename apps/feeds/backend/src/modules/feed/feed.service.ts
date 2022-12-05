@@ -172,6 +172,7 @@ export class FeedService {
       const userFeeds = await tx.userFeed.findMany({
         select: { feed: true, title: true, includeRead: true, order: true, expandContent: true },
         where: { userId: user.id },
+        orderBy: { title: 'asc' },
       })
 
       const userFeedResponses: UserFeedResponse[] = []
