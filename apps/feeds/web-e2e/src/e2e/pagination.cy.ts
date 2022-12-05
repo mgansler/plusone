@@ -10,7 +10,7 @@ describe('feeds-web', () => {
 
     cy.findByRole('button', { name: 'heise online News' }).click()
     cy.findAllByRole('article').should('have.length', 20)
-    cy.findByRole('button', { name: 'next' }).click()
+    cy.findByRole('button', { name: /more/i }).click()
     cy.findAllByRole('article').should('have.length', 40)
   })
 })

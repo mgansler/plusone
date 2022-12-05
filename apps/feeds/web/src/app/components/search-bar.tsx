@@ -1,3 +1,5 @@
+import { Cancel, Search } from '@mui/icons-material'
+import { IconButton, InputAdornment, TextField } from '@mui/material'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation, useSearchParams } from 'react-router-dom'
@@ -26,14 +28,24 @@ export function SearchBar() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label>
-        Search
-        <input type={'text'} aria-label={'search'} {...register('search')} required={true} />
-      </label>
-      <button type={'submit'}>Search</button>
-      <button type={'button'} onClick={() => setSearchParams({})}>
-        Clear
-      </button>
+      <TextField
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position={'start'}>
+              <Search />
+            </InputAdornment>
+          ),
+          endAdornment: (
+            <InputAdornment position={'end'}>
+              <IconButton onClick={() => setSearchParams({})} onMouseDown={(e) => e.preventDefault()} edge={'end'}>
+                <Cancel />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        {...register('search')}
+        required={true}
+      />
     </form>
   )
 }

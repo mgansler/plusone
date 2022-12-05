@@ -37,16 +37,17 @@ describe('feeds', () => {
 
     cy.findByRole('button', { name: /Dilbert Daily Strips/, timeout: 20_000 }).click()
 
-    cy.findAllByTestId('CheckBoxOutlinedIcon').should('have.length', 0)
+    cy.get('article').findAllByTestId('CheckBoxOutlinedIcon').should('have.length', 0)
     let articleCount: number
-    cy.findAllByTestId('CheckBoxOutlineBlankIcon')
+    cy.get('article')
+      .findAllByTestId('CheckBoxOutlineBlankIcon')
       .should('have.length.at.least', 1)
       .then(($checkboxes) => (articleCount = $checkboxes.length))
     cy.findByRole('button', { name: 'Mark all read' }).click()
-    cy.findAllByTestId('CheckBoxOutlinedIcon').should(($checkboxes) =>
-      expect($checkboxes.length).to.equal(articleCount),
-    )
-    cy.findAllByTestId('CheckBoxOutlineBlankIcon').should('have.length', 0)
+    cy.get('article')
+      .findAllByTestId('CheckBoxOutlinedIcon')
+      .should(($checkboxes) => expect($checkboxes.length).to.equal(articleCount))
+    cy.get('article').findAllByTestId('CheckBoxOutlineBlankIcon').should('have.length', 0)
   })
 
   it('should handle failing to add an existing feed', () => {

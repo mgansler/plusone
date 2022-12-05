@@ -1,3 +1,4 @@
+import { Button } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import React from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
@@ -52,13 +53,13 @@ export function Articles() {
     <>
       <SearchBar />
       <FeedSettingsBar />
-      <button onClick={markAllRead}>Mark all read</button>
+      <Button onClick={markAllRead}>Mark all read</Button>
       {data.pages.map((page, index) => (
         <ArticleList key={index} articles={page.data.content} />
       ))}
-      <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
-        next
-      </button>
+      <Button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
+        more
+      </Button>
     </>
   )
 }
