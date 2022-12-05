@@ -1,3 +1,5 @@
+import { CheckBoxOutlineBlank, CheckBoxOutlined, OpenInNew } from '@mui/icons-material'
+import { Card, CardContent, CardHeader, IconButton } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
@@ -34,14 +36,26 @@ export function Article({ article: { article, unread } }: ArticleProps) {
 
   return (
     <article>
-      <input type={'checkbox'} aria-label={'read'} checked={!unread} onChange={() => toggleUnread()} />
-      {article.contentBody !== null && (
-        <button onClick={() => setShowContent((cur) => !cur)}>{showContent ? 'collapse' : 'expand'}</button>
-      )}
-      <a href={article.link} target={'_blank'} rel={'noreferrer'} onClick={() => toggleUnread(true)}>
-        {article.title}
-      </a>
-      {showContent && <div dangerouslySetInnerHTML={{ __html: article.contentBody }} />}
+      <Card>
+        <CardHeader
+          avatar={
+            <IconButton onClick={() => toggleUnread()}>
+              {unread ? <CheckBoxOutlineBlank /> : <CheckBoxOutlined />}
+            </IconButton>
+          }
+          title={article.title}
+          action={
+            <IconButton target={'_blank'} href={article.link} onClick={() => toggleUnread(true)}>
+              <OpenInNew />
+            </IconButton>
+          }
+        />
+        {showContent && (
+          <CardContent>
+            <div dangerouslySetInnerHTML={{ __html: article.contentBody }} />
+          </CardContent>
+        )}
+      </Card>
     </article>
   )
 }
