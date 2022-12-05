@@ -1,3 +1,4 @@
+import { Button, Container, Divider, Link as MuiLink, Stack, TextField, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import type { FallbackProps } from 'react-error-boundary'
 import { ErrorBoundary } from 'react-error-boundary'
@@ -32,11 +33,11 @@ function DiscoverFeedForm({ resetAddFeed }: DiscoverFeedFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onDiscoverFeedSubmit)}>
-      <label>
-        Url
-        <input type={'text'} aria-label={'url'} {...register('url')} />
-      </label>
-      <button>search</button>
+      <Stack spacing={2}>
+        <Typography>Discover</Typography>
+        <TextField fullWidth={true} label={'url'} {...register('url')} />
+        <Button type={'submit'}>search</Button>
+      </Stack>
     </form>
   )
 }
@@ -63,15 +64,12 @@ function AddFeedForm({ methods: { register, handleSubmit } }: AddFeedFormProps) 
 
   return (
     <form onSubmit={handleSubmit(onAddFeedSubmit)}>
-      <label>
-        Title
-        <input type={'text'} aria-label={'title'} {...register('title')} />
-      </label>
-      <label>
-        Feed Url
-        <input type={'text'} aria-label={'feed-url'} {...register('feedUrl')} />
-      </label>
-      <button>save</button>
+      <Stack spacing={2}>
+        <Typography>Add manually</Typography>
+        <TextField fullWidth={true} label={'title'} {...register('title')} />
+        <TextField fullWidth={true} label={'feed-url'} {...register('feedUrl')} />
+        <Button type={'submit'}>save</Button>
+      </Stack>
     </form>
   )
 }
@@ -97,10 +95,13 @@ function ImportForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label>
-        Import
-        <textarea
-          aria-label={'import'}
+      <Stack spacing={2}>
+        <Typography>Import list of feeds</Typography>
+        <TextField
+          fullWidth={true}
+          multiline={true}
+          minRows={5}
+          label={'import'}
           {...register('feeds', {
             validate: async (value) => {
               try {
@@ -112,18 +113,17 @@ function ImportForm() {
             },
           })}
         />
-      </label>
-      <button>import</button>
+        <Button type={'submit'}>import</Button>
+      </Stack>
     </form>
   )
 }
 
 function NewFeedFallback({ error, resetErrorBoundary }: FallbackProps) {
-  console.log(error)
   return (
     <div>
       Could not add feed: {error.message}
-      <button onClick={resetErrorBoundary}>reset</button>
+      <Button onClick={resetErrorBoundary}>reset</Button>
     </div>
   )
 }
@@ -133,10 +133,25 @@ export function NewFeed() {
 
   return (
     <ErrorBoundary FallbackComponent={NewFeedFallback} onReset={() => addFeedMethods.reset()}>
-      <Link to={'../feeds'}>back</Link>
-      <DiscoverFeedForm resetAddFeed={addFeedMethods.reset} />
-      <AddFeedForm methods={addFeedMethods} />
-      <ImportForm />
+      <MuiLink component={Link} to={'../feeds'}>
+        back
+      </MuiLink>
+
+      <Container maxWidth={'sm'}>
+        <DiscoverFeedForm resetAddFeed={addFeedMethods.reset} />
+      </Container>
+
+      <Divider />
+
+      <Container maxWidth={'sm'}>
+        <AddFeedForm methods={addFeedMethods} />
+      </Container>
+
+      <Divider />
+
+      <Container maxWidth={'sm'}>
+        <ImportForm />
+      </Container>
     </ErrorBoundary>
   )
 }
