@@ -17,6 +17,8 @@ services:
       DATABASE_URL: postgres://postgres:${FEEDS_DATABASE_PASSWORD}@database/feeds
       ADMIN_USER: root
       ADMIN_PASSWORD: ${FEEDS_ADMIN_PASSWORD}
+    volumes:
+      - data:/var/lib/postgresql/data
     labels:
       traefik.enable: true
       traefik.docker.network: traefik
@@ -38,3 +40,7 @@ networks:
   traefik:
     external:
       name: traefik
+
+volumes:
+  data:
+    driver: local
