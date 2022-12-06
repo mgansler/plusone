@@ -16,6 +16,7 @@ import { Member } from './pages/member'
 import { FeedList } from './pages/member/feeds'
 import { Articles } from './pages/member/feeds/$feedId'
 import { NewFeed } from './pages/member/new-feed'
+import { Tags } from './pages/member/tags'
 
 const useClassNames = makeStyles<Theme, object, 'appBar' | 'root' | 'toolbar'>((theme) =>
   createStyles({
@@ -70,6 +71,7 @@ export function App() {
                 <Route path={':feedId/settings'} element={<FeedSettings />} />
                 <Route path={':feedId'} element={<Articles />} />
               </Route>
+              <Route path={'tags'} element={<Tags />} />
             </Route>
           )}
 

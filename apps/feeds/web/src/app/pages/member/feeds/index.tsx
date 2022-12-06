@@ -1,10 +1,10 @@
 import { Settings } from '@mui/icons-material'
 import {
   Badge,
-  Button,
   Divider,
   Drawer,
   IconButton,
+  Link as MuiLink,
   List,
   ListItem,
   ListItemButton,
@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import { createStyles, makeStyles } from '@mui/styles'
 import React from 'react'
-import { Outlet, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { Link, Outlet, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import type { UserFeedResponseDto } from '@plusone/feeds/api-client'
 import { useGetUserFeeds } from '@plusone/feeds/api-client'
@@ -85,7 +85,12 @@ export function FeedList() {
         <Toolbar />
 
         <List dense={true}>
-          <Button onClick={() => navigate('../new')}>add feed</Button>
+          <MuiLink to={'../new'} component={Link}>
+            add feed
+          </MuiLink>
+          <MuiLink to={'../tags'} component={Link}>
+            tags
+          </MuiLink>
           <Divider />
           <ListItem>
             <ListItemButton aria-label={'all feeds'} selected={feedId === 'all'} onClick={goToAll}>
