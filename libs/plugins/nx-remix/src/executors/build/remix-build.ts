@@ -22,7 +22,10 @@ export default async function (options: BuildOptions, context: ExecutorContext) 
   if (normalizedOptions.express) {
     prepareForExpress(normalizedOptions, context)
   }
-  copyFileSync(resolve(context.root, normalizedOptions.targetRoot, 'public/favicon.ico'), resolve(context.root, 'dist', normalizedOptions.targetRoot, 'public/favicon.ico'))
+  copyFileSync(
+    resolve(context.root, normalizedOptions.targetRoot, 'public/favicon.ico'),
+    resolve(context.root, 'dist', normalizedOptions.targetRoot, 'public/favicon.ico'),
+  )
 
   console.log(`Successfully built '${context.projectName}'`)
   return { success: true }
