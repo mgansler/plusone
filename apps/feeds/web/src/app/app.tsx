@@ -4,7 +4,6 @@ import { createStyles, makeStyles } from '@mui/styles'
 import React from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
 
-import { FeedSettings } from './components/feed-settings'
 import { UserInfo } from './components/user-info'
 import { useUserContext } from './context/user'
 import { Admin } from './pages/admin'
@@ -15,6 +14,7 @@ import { Register } from './pages/login/register'
 import { Member } from './pages/member'
 import { FeedList } from './pages/member/feeds'
 import { Articles } from './pages/member/feeds/$feedId'
+import { FeedIdSettings } from './pages/member/feeds/$feedId.settings'
 import { NewFeed } from './pages/member/new-feed'
 import { Tags } from './pages/member/tags'
 
@@ -68,7 +68,7 @@ export function App() {
             <Route path={'member'} element={<Member />}>
               <Route path={'new'} element={<NewFeed />} />
               <Route path={'feeds'} element={<FeedList />}>
-                <Route path={':feedId/settings'} element={<FeedSettings />} />
+                <Route path={':feedId/settings'} element={<FeedIdSettings />} />
                 <Route path={':feedId'} element={<Articles />} />
               </Route>
               <Route path={'tags'} element={<Tags />} />

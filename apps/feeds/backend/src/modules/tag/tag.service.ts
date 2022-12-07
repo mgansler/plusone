@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
 
-import { PrismaService, User, UserTag } from '@plusone/feeds-persistence'
+import { Feed, PrismaService, User, UserTag } from '@plusone/feeds-persistence'
 
 import { TagInputDto } from './tag.dto'
 
@@ -41,6 +41,32 @@ export class TagService {
       return await tx.userTag.delete({
         where: { id },
       })
+    })
+  }
+
+  async getFeedTags(feedId: Feed['id'], userId: User['id']) {
+    const feed = await this.prismaService.userFeed.findUnique({
+      select: { tags: true },
+      where: { userId_feedId: { userId, feedId } },
+    })
+    return feed.tags
+  }
+
+  async attachToFeed(feedId: Feed['id'], tagId: UserTag['id'], userId: User['id']) {
+    await this.prismaService.userFeed.update({
+      where: { userId_feedId: { userId, feedId } },
+      data: {
+        tags: { connect: { id: tagId } },
+      },
+    })
+  }
+
+  async detachFromFeed(feedId: Feed['id'], tagId: UserTag['id'], userId: User['id']) {
+    await this.prismaService.userFeed.update({
+      where: { userId_feedId: { userId, feedId } },
+      data: {
+        tags: { disconnect: { id: tagId } },
+      },
     })
   }
 }

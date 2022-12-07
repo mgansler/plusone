@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common'
 import {
   ApiBearerAuth,
   ApiBody,
@@ -12,6 +12,8 @@ import {
 
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 import { Role, Roles, RolesGuard } from '../authentication/roles.guard'
+import { TagResponseDto } from '../tag/tag.dto'
+import { TagService } from '../tag/tag.service'
 
 import {
   DiscoverResponseDto,
@@ -19,6 +21,7 @@ import {
   FeedInputDto,
   FeedResponseDto,
   FeedSettingsResponseDto,
+  TagFeedInputDto,
   UpdateFeedSettingsInputDto,
   UserFeedResponseDto,
 } from './feed.dto'
@@ -29,7 +32,7 @@ import { FeedService } from './feed.service'
 @ApiTags('feed')
 @Controller('feed')
 export class FeedController {
-  constructor(private readonly feedService: FeedService) {}
+  constructor(private readonly feedService: FeedService, private readonly tagService: TagService) {}
 
   @ApiOperation({ operationId: 'discover-feed' })
   @ApiQuery({ name: 'url', description: 'URL of the website where a feed should be discovered.', type: String })
@@ -72,19 +75,43 @@ export class FeedController {
   @ApiOperation({ operationId: 'get-feed-settings' })
   @ApiParam({ name: 'id', description: 'The id of the feed.', type: String })
   @ApiOkResponse({ description: 'Settings for feed', type: FeedSettingsResponseDto })
-  @Get(':id')
+  @Get(':id/settings')
   async getFeedSettings(@Param('id') id: string, @Req() { user }): Promise<FeedSettingsResponseDto> {
     return this.feedService.getFeedSettings(user, id)
   }
 
   @ApiOperation({ operationId: 'update-feed-settings' })
   @ApiParam({ name: 'id', description: 'The id of the feed.', type: String })
-  @Put(':id')
+  @Put(':id/settings')
   async updateFeedSettings(
     @Param('id') id: string,
     @Body() updateFeedSettingsInput: UpdateFeedSettingsInputDto,
     @Req() { user },
   ) {
     await this.feedService.updateFeedSettings(user, id, updateFeedSettingsInput)
+  }
+
+  @ApiOperation({ operationId: 'get-feed-tags' })
+  @ApiParam({ name: 'id', description: 'The id of the feed.', type: String })
+  @ApiOkResponse({ description: 'Settings for feed', type: [TagResponseDto] })
+  @Get(':id/tags')
+  async getFeedTags(@Param('id') id: string, @Req() { user }) {
+    return await this.tagService.getFeedTags(id, user.id)
+  }
+
+  @ApiOperation({ operationId: 'tag-feed' })
+  @ApiParam({ name: 'id', description: 'The id of the feed.', type: String })
+  @ApiBody({ description: 'Description of the tag to add to a feed.', type: TagFeedInputDto })
+  @Post(':id/tags')
+  async tagFeed(@Param('id') id: string, @Body() tagFeedInput: TagFeedInputDto, @Req() { user }) {
+    return await this.tagService.attachToFeed(id, tagFeedInput.tagId, user.id)
+  }
+
+  @ApiOperation({ operationId: 'untag-feed' })
+  @ApiParam({ name: 'id', description: 'The id of the feed.', type: String })
+  @ApiBody({ description: 'Description of the tag to remove a feed.', type: TagFeedInputDto })
+  @Delete(':id/tags')
+  async untagFeed(@Param('id') id: string, @Body() tagFeedInput: TagFeedInputDto, @Req() { user }) {
+    return await this.tagService.detachFromFeed(id, tagFeedInput.tagId, user.id)
   }
 }

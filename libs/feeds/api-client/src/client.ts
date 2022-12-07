@@ -82,6 +82,10 @@ export interface TagInputDto {
   name: string
 }
 
+export interface TagFeedInputDto {
+  tagId: string
+}
+
 export interface TagResponseDto {
   id: string
   name: string
@@ -735,10 +739,10 @@ export const useGetFeeds = <TData = Awaited<ReturnType<typeof getFeeds>>, TError
 }
 
 export const getFeedSettings = (id: string, signal?: AbortSignal) => {
-  return customAxiosInstance<FeedSettingsResponseDto>({ url: `/api/feed/${id}`, method: 'get', signal })
+  return customAxiosInstance<FeedSettingsResponseDto>({ url: `/api/feed/${id}/settings`, method: 'get', signal })
 }
 
-export const getGetFeedSettingsQueryKey = (id: string) => [`/api/feed/${id}`]
+export const getGetFeedSettingsQueryKey = (id: string) => [`/api/feed/${id}/settings`]
 
 export type GetFeedSettingsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getFeedSettings>>>
 export type GetFeedSettingsInfiniteQueryError = unknown
@@ -790,7 +794,7 @@ export const useGetFeedSettings = <TData = Awaited<ReturnType<typeof getFeedSett
 
 export const updateFeedSettings = (id: string, updateFeedSettingsInputDto: UpdateFeedSettingsInputDto) => {
   return customAxiosInstance<void>({
-    url: `/api/feed/${id}`,
+    url: `/api/feed/${id}/settings`,
     method: 'put',
     headers: { 'Content-Type': 'application/json' },
     data: updateFeedSettingsInputDto,
@@ -828,88 +832,127 @@ export const useUpdateFeedSettings = <TError = unknown, TContext = unknown>(opti
   >(mutationFn, mutationOptions)
 }
 
-export const healthControllerGetHealthStatus = (signal?: AbortSignal) => {
-  return customAxiosInstance<HealthControllerGetHealthStatus200>({ url: `/api/health`, method: 'get', signal })
+export const getFeedTags = (id: string, signal?: AbortSignal) => {
+  return customAxiosInstance<TagResponseDto[]>({ url: `/api/feed/${id}/tags`, method: 'get', signal })
 }
 
-export const getHealthControllerGetHealthStatusQueryKey = () => [`/api/health`]
+export const getGetFeedTagsQueryKey = (id: string) => [`/api/feed/${id}/tags`]
 
-export type HealthControllerGetHealthStatusInfiniteQueryResult = NonNullable<
-  Awaited<ReturnType<typeof healthControllerGetHealthStatus>>
->
-export type HealthControllerGetHealthStatusInfiniteQueryError = HealthControllerGetHealthStatus503
+export type GetFeedTagsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getFeedTags>>>
+export type GetFeedTagsInfiniteQueryError = unknown
 
-export const useHealthControllerGetHealthStatusInfinite = <
-  TData = Awaited<ReturnType<typeof healthControllerGetHealthStatus>>,
-  TError = HealthControllerGetHealthStatus503,
->(options?: {
-  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>
-}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
+export const useGetFeedTagsInfinite = <TData = Awaited<ReturnType<typeof getFeedTags>>, TError = unknown>(
+  id: string,
+  options?: { query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof getFeedTags>>, TError, TData> },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getHealthControllerGetHealthStatusQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getGetFeedTagsQueryKey(id)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>> = ({ signal }) =>
-    healthControllerGetHealthStatus(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFeedTags>>> = ({ signal }) => getFeedTags(id, signal)
 
-  const query = useInfiniteQuery<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>(
-    queryKey,
-    queryFn,
-    queryOptions,
-  ) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof getFeedTags>>, TError, TData>(queryKey, queryFn, {
+    enabled: !!id,
+    ...queryOptions,
+  }) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
 
   query.queryKey = queryKey
 
   return query
 }
 
-export type HealthControllerGetHealthStatusQueryResult = NonNullable<
-  Awaited<ReturnType<typeof healthControllerGetHealthStatus>>
->
-export type HealthControllerGetHealthStatusQueryError = HealthControllerGetHealthStatus503
+export type GetFeedTagsQueryResult = NonNullable<Awaited<ReturnType<typeof getFeedTags>>>
+export type GetFeedTagsQueryError = unknown
 
-export const useHealthControllerGetHealthStatus = <
-  TData = Awaited<ReturnType<typeof healthControllerGetHealthStatus>>,
-  TError = HealthControllerGetHealthStatus503,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+export const useGetFeedTags = <TData = Awaited<ReturnType<typeof getFeedTags>>, TError = unknown>(
+  id: string,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getFeedTags>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getHealthControllerGetHealthStatusQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getGetFeedTagsQueryKey(id)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>> = ({ signal }) =>
-    healthControllerGetHealthStatus(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFeedTags>>> = ({ signal }) => getFeedTags(id, signal)
 
-  const query = useQuery<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>(
-    queryKey,
-    queryFn,
-    queryOptions,
-  ) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+  const query = useQuery<Awaited<ReturnType<typeof getFeedTags>>, TError, TData>(queryKey, queryFn, {
+    enabled: !!id,
+    ...queryOptions,
+  }) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
   query.queryKey = queryKey
 
   return query
 }
 
-export const forceFetching = () => {
-  return customAxiosInstance<void>({ url: `/api/scheduling/now`, method: 'post' })
+export const tagFeed = (id: string, tagFeedInputDto: TagFeedInputDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/feed/${id}/tags`,
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: tagFeedInputDto,
+  })
 }
 
-export type ForceFetchingMutationResult = NonNullable<Awaited<ReturnType<typeof forceFetching>>>
+export type TagFeedMutationResult = NonNullable<Awaited<ReturnType<typeof tagFeed>>>
+export type TagFeedMutationBody = TagFeedInputDto
+export type TagFeedMutationError = unknown
 
-export type ForceFetchingMutationError = unknown
-
-export const useForceFetching = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof forceFetching>>, TError, TVariables, TContext>
+export const useTagFeed = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof tagFeed>>,
+    TError,
+    { id: string; data: TagFeedInputDto },
+    TContext
+  >
 }) => {
   const { mutation: mutationOptions } = options ?? {}
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof forceFetching>>, TVariables> = () => {
-    return forceFetching()
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof tagFeed>>, { id: string; data: TagFeedInputDto }> = (
+    props,
+  ) => {
+    const { id, data } = props ?? {}
+
+    return tagFeed(id, data)
   }
 
-  return useMutation<Awaited<ReturnType<typeof forceFetching>>, TError, TVariables, TContext>(
+  return useMutation<Awaited<ReturnType<typeof tagFeed>>, TError, { id: string; data: TagFeedInputDto }, TContext>(
+    mutationFn,
+    mutationOptions,
+  )
+}
+
+export const untagFeed = (id: string, tagFeedInputDto: TagFeedInputDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/feed/${id}/tags`,
+    method: 'delete',
+    headers: { 'Content-Type': 'application/json' },
+    data: tagFeedInputDto,
+  })
+}
+
+export type UntagFeedMutationResult = NonNullable<Awaited<ReturnType<typeof untagFeed>>>
+export type UntagFeedMutationBody = TagFeedInputDto
+export type UntagFeedMutationError = unknown
+
+export const useUntagFeed = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof untagFeed>>,
+    TError,
+    { id: string; data: TagFeedInputDto },
+    TContext
+  >
+}) => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof untagFeed>>, { id: string; data: TagFeedInputDto }> = (
+    props,
+  ) => {
+    const { id, data } = props ?? {}
+
+    return untagFeed(id, data)
+  }
+
+  return useMutation<Awaited<ReturnType<typeof untagFeed>>, TError, { id: string; data: TagFeedInputDto }, TContext>(
     mutationFn,
     mutationOptions,
   )
@@ -1017,6 +1060,93 @@ export const useRemoveTag = <TError = unknown, TContext = unknown>(options?: {
   }
 
   return useMutation<Awaited<ReturnType<typeof removeTag>>, TError, { id: string }, TContext>(
+    mutationFn,
+    mutationOptions,
+  )
+}
+
+export const healthControllerGetHealthStatus = (signal?: AbortSignal) => {
+  return customAxiosInstance<HealthControllerGetHealthStatus200>({ url: `/api/health`, method: 'get', signal })
+}
+
+export const getHealthControllerGetHealthStatusQueryKey = () => [`/api/health`]
+
+export type HealthControllerGetHealthStatusInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof healthControllerGetHealthStatus>>
+>
+export type HealthControllerGetHealthStatusInfiniteQueryError = HealthControllerGetHealthStatus503
+
+export const useHealthControllerGetHealthStatusInfinite = <
+  TData = Awaited<ReturnType<typeof healthControllerGetHealthStatus>>,
+  TError = HealthControllerGetHealthStatus503,
+>(options?: {
+  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getHealthControllerGetHealthStatusQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>> = ({ signal }) =>
+    healthControllerGetHealthStatus(signal)
+
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>(
+    queryKey,
+    queryFn,
+    queryOptions,
+  ) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export type HealthControllerGetHealthStatusQueryResult = NonNullable<
+  Awaited<ReturnType<typeof healthControllerGetHealthStatus>>
+>
+export type HealthControllerGetHealthStatusQueryError = HealthControllerGetHealthStatus503
+
+export const useHealthControllerGetHealthStatus = <
+  TData = Awaited<ReturnType<typeof healthControllerGetHealthStatus>>,
+  TError = HealthControllerGetHealthStatus503,
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getHealthControllerGetHealthStatusQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>> = ({ signal }) =>
+    healthControllerGetHealthStatus(signal)
+
+  const query = useQuery<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>(
+    queryKey,
+    queryFn,
+    queryOptions,
+  ) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export const forceFetching = () => {
+  return customAxiosInstance<void>({ url: `/api/scheduling/now`, method: 'post' })
+}
+
+export type ForceFetchingMutationResult = NonNullable<Awaited<ReturnType<typeof forceFetching>>>
+
+export type ForceFetchingMutationError = unknown
+
+export const useForceFetching = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof forceFetching>>, TError, TVariables, TContext>
+}) => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof forceFetching>>, TVariables> = () => {
+    return forceFetching()
+  }
+
+  return useMutation<Awaited<ReturnType<typeof forceFetching>>, TError, TVariables, TContext>(
     mutationFn,
     mutationOptions,
   )
