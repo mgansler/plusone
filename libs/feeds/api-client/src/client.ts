@@ -4,18 +4,19 @@
  * Feeds API
  * OpenAPI spec version: 0.1
  */
-import { useQuery, useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import type {
-  UseQueryOptions,
-  UseInfiniteQueryOptions,
-  UseMutationOptions,
-  QueryFunction,
   MutationFunction,
-  UseQueryResult,
-  UseInfiniteQueryResult,
+  QueryFunction,
   QueryKey,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
+  UseMutationOptions,
+  UseQueryOptions,
+  UseQueryResult,
 } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
+
 export type HealthControllerGetHealthStatus503Details = {
   [key: string]: {
     status?: string
@@ -78,6 +79,14 @@ export type FindArticlesParams = { s?: string; r?: boolean; sort?: Sort; f?: str
 
 export type MarkArticlesReadParams = { s?: string; f?: string }
 
+export interface TagInputDto {
+  name: string
+}
+
+export interface TagFeedInputDto {
+  tagId: string
+}
+
 export interface UpdateFeedSettingsInputDto {
   expandContent: boolean
   includeRead: boolean
@@ -93,15 +102,23 @@ export interface FeedSettingsResponseDto {
   order: Sort
 }
 
+export interface TagResponseDto {
+  id: string
+  name: string
+}
+
 export interface UserFeedResponseDto {
   feedUrl: string
   id: string
+
+  feedId: string
   originalTitle: string
   title?: string
   includeRead: boolean
   order: Sort
   expandContent: boolean
   unreadCount: number
+  tags: TagResponseDto[]
 }
 
 export interface FeedResponseDto {
@@ -726,10 +743,10 @@ export const useGetFeeds = <TData = Awaited<ReturnType<typeof getFeeds>>, TError
 }
 
 export const getFeedSettings = (id: string, signal?: AbortSignal) => {
-  return customAxiosInstance<FeedSettingsResponseDto>({ url: `/api/feed/${id}`, method: 'get', signal })
+  return customAxiosInstance<FeedSettingsResponseDto>({ url: `/api/feed/${id}/settings`, method: 'get', signal })
 }
 
-export const getGetFeedSettingsQueryKey = (id: string) => [`/api/feed/${id}`]
+export const getGetFeedSettingsQueryKey = (id: string) => [`/api/feed/${id}/settings`]
 
 export type GetFeedSettingsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getFeedSettings>>>
 export type GetFeedSettingsInfiniteQueryError = unknown
@@ -781,7 +798,7 @@ export const useGetFeedSettings = <TData = Awaited<ReturnType<typeof getFeedSett
 
 export const updateFeedSettings = (id: string, updateFeedSettingsInputDto: UpdateFeedSettingsInputDto) => {
   return customAxiosInstance<void>({
-    url: `/api/feed/${id}`,
+    url: `/api/feed/${id}/settings`,
     method: 'put',
     headers: { 'Content-Type': 'application/json' },
     data: updateFeedSettingsInputDto,
@@ -817,6 +834,239 @@ export const useUpdateFeedSettings = <TError = unknown, TContext = unknown>(opti
     { id: string; data: UpdateFeedSettingsInputDto },
     TContext
   >(mutationFn, mutationOptions)
+}
+
+export const getFeedTags = (id: string, signal?: AbortSignal) => {
+  return customAxiosInstance<TagResponseDto[]>({ url: `/api/feed/${id}/tags`, method: 'get', signal })
+}
+
+export const getGetFeedTagsQueryKey = (id: string) => [`/api/feed/${id}/tags`]
+
+export type GetFeedTagsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getFeedTags>>>
+export type GetFeedTagsInfiniteQueryError = unknown
+
+export const useGetFeedTagsInfinite = <TData = Awaited<ReturnType<typeof getFeedTags>>, TError = unknown>(
+  id: string,
+  options?: { query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof getFeedTags>>, TError, TData> },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetFeedTagsQueryKey(id)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFeedTags>>> = ({ signal }) => getFeedTags(id, signal)
+
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof getFeedTags>>, TError, TData>(queryKey, queryFn, {
+    enabled: !!id,
+    ...queryOptions,
+  }) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export type GetFeedTagsQueryResult = NonNullable<Awaited<ReturnType<typeof getFeedTags>>>
+export type GetFeedTagsQueryError = unknown
+
+export const useGetFeedTags = <TData = Awaited<ReturnType<typeof getFeedTags>>, TError = unknown>(
+  id: string,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getFeedTags>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetFeedTagsQueryKey(id)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFeedTags>>> = ({ signal }) => getFeedTags(id, signal)
+
+  const query = useQuery<Awaited<ReturnType<typeof getFeedTags>>, TError, TData>(queryKey, queryFn, {
+    enabled: !!id,
+    ...queryOptions,
+  }) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export const tagFeed = (id: string, tagFeedInputDto: TagFeedInputDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/feed/${id}/tags`,
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: tagFeedInputDto,
+  })
+}
+
+export type TagFeedMutationResult = NonNullable<Awaited<ReturnType<typeof tagFeed>>>
+export type TagFeedMutationBody = TagFeedInputDto
+export type TagFeedMutationError = unknown
+
+export const useTagFeed = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof tagFeed>>,
+    TError,
+    { id: string; data: TagFeedInputDto },
+    TContext
+  >
+}) => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof tagFeed>>, { id: string; data: TagFeedInputDto }> = (
+    props,
+  ) => {
+    const { id, data } = props ?? {}
+
+    return tagFeed(id, data)
+  }
+
+  return useMutation<Awaited<ReturnType<typeof tagFeed>>, TError, { id: string; data: TagFeedInputDto }, TContext>(
+    mutationFn,
+    mutationOptions,
+  )
+}
+
+export const untagFeed = (id: string, tagFeedInputDto: TagFeedInputDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/feed/${id}/tags`,
+    method: 'delete',
+    headers: { 'Content-Type': 'application/json' },
+    data: tagFeedInputDto,
+  })
+}
+
+export type UntagFeedMutationResult = NonNullable<Awaited<ReturnType<typeof untagFeed>>>
+export type UntagFeedMutationBody = TagFeedInputDto
+export type UntagFeedMutationError = unknown
+
+export const useUntagFeed = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof untagFeed>>,
+    TError,
+    { id: string; data: TagFeedInputDto },
+    TContext
+  >
+}) => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof untagFeed>>, { id: string; data: TagFeedInputDto }> = (
+    props,
+  ) => {
+    const { id, data } = props ?? {}
+
+    return untagFeed(id, data)
+  }
+
+  return useMutation<Awaited<ReturnType<typeof untagFeed>>, TError, { id: string; data: TagFeedInputDto }, TContext>(
+    mutationFn,
+    mutationOptions,
+  )
+}
+
+export const getTags = (signal?: AbortSignal) => {
+  return customAxiosInstance<TagResponseDto[]>({ url: `/api/tag`, method: 'get', signal })
+}
+
+export const getGetTagsQueryKey = () => [`/api/tag`]
+
+export type GetTagsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getTags>>>
+export type GetTagsInfiniteQueryError = unknown
+
+export const useGetTagsInfinite = <TData = Awaited<ReturnType<typeof getTags>>, TError = unknown>(options?: {
+  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof getTags>>, TError, TData>
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetTagsQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTags>>> = ({ signal }) => getTags(signal)
+
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof getTags>>, TError, TData>(
+    queryKey,
+    queryFn,
+    queryOptions,
+  ) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export type GetTagsQueryResult = NonNullable<Awaited<ReturnType<typeof getTags>>>
+export type GetTagsQueryError = unknown
+
+export const useGetTags = <TData = Awaited<ReturnType<typeof getTags>>, TError = unknown>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof getTags>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetTagsQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTags>>> = ({ signal }) => getTags(signal)
+
+  const query = useQuery<Awaited<ReturnType<typeof getTags>>, TError, TData>(
+    queryKey,
+    queryFn,
+    queryOptions,
+  ) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export const addTag = (tagInputDto: TagInputDto) => {
+  return customAxiosInstance<TagResponseDto>({
+    url: `/api/tag`,
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: tagInputDto,
+  })
+}
+
+export type AddTagMutationResult = NonNullable<Awaited<ReturnType<typeof addTag>>>
+export type AddTagMutationBody = TagInputDto
+export type AddTagMutationError = unknown
+
+export const useAddTag = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof addTag>>, TError, { data: TagInputDto }, TContext>
+}) => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof addTag>>, { data: TagInputDto }> = (props) => {
+    const { data } = props ?? {}
+
+    return addTag(data)
+  }
+
+  return useMutation<Awaited<ReturnType<typeof addTag>>, TError, { data: TagInputDto }, TContext>(
+    mutationFn,
+    mutationOptions,
+  )
+}
+
+export const removeTag = (id: string) => {
+  return customAxiosInstance<void>({ url: `/api/tag/${id}`, method: 'delete' })
+}
+
+export type RemoveTagMutationResult = NonNullable<Awaited<ReturnType<typeof removeTag>>>
+
+export type RemoveTagMutationError = unknown
+
+export const useRemoveTag = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof removeTag>>, TError, { id: string }, TContext>
+}) => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof removeTag>>, { id: string }> = (props) => {
+    const { id } = props ?? {}
+
+    return removeTag(id)
+  }
+
+  return useMutation<Awaited<ReturnType<typeof removeTag>>, TError, { id: string }, TContext>(
+    mutationFn,
+    mutationOptions,
+  )
 }
 
 export const healthControllerGetHealthStatus = (signal?: AbortSignal) => {
@@ -881,6 +1131,29 @@ export const useHealthControllerGetHealthStatus = <
   query.queryKey = queryKey
 
   return query
+}
+
+export const forceFetching = () => {
+  return customAxiosInstance<void>({ url: `/api/scheduling/now`, method: 'post' })
+}
+
+export type ForceFetchingMutationResult = NonNullable<Awaited<ReturnType<typeof forceFetching>>>
+
+export type ForceFetchingMutationError = unknown
+
+export const useForceFetching = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof forceFetching>>, TError, TVariables, TContext>
+}) => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof forceFetching>>, TVariables> = () => {
+    return forceFetching()
+  }
+
+  return useMutation<Awaited<ReturnType<typeof forceFetching>>, TError, TVariables, TContext>(
+    mutationFn,
+    mutationOptions,
+  )
 }
 
 export const getUsers = (signal?: AbortSignal) => {
@@ -955,29 +1228,6 @@ export const useDeleteUser = <TError = unknown, TContext = unknown>(options?: {
   }
 
   return useMutation<Awaited<ReturnType<typeof deleteUser>>, TError, { userId: unknown }, TContext>(
-    mutationFn,
-    mutationOptions,
-  )
-}
-
-export const forceFetching = () => {
-  return customAxiosInstance<void>({ url: `/api/scheduling/now`, method: 'post' })
-}
-
-export type ForceFetchingMutationResult = NonNullable<Awaited<ReturnType<typeof forceFetching>>>
-
-export type ForceFetchingMutationError = unknown
-
-export const useForceFetching = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof forceFetching>>, TError, TVariables, TContext>
-}) => {
-  const { mutation: mutationOptions } = options ?? {}
-
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof forceFetching>>, TVariables> = () => {
-    return forceFetching()
-  }
-
-  return useMutation<Awaited<ReturnType<typeof forceFetching>>, TError, TVariables, TContext>(
     mutationFn,
     mutationOptions,
   )

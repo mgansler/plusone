@@ -10,6 +10,7 @@ import { AuthenticationModule } from '../modules/authentication/authentication.m
 import { FeedModule } from '../modules/feed/feed.module'
 import { HealthModule } from '../modules/health/health.module'
 import { SchedulingModule } from '../modules/scheduling/scheduling.module'
+import { TagModule } from '../modules/tag/tag.module'
 import { UserModule } from '../modules/user/user.module'
 
 import { LoggerMiddleware } from './logger.middleware'
@@ -30,13 +31,14 @@ import { LoggerMiddleware } from './logger.middleware'
       }),
       envFilePath: ['.local.env'],
     }),
+    FeedModule,
+    HealthModule,
+    SchedulingModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, 'web'),
     }),
-    FeedModule,
-    HealthModule,
+    TagModule,
     UserModule,
-    SchedulingModule,
   ],
 })
 export class AppModule implements NestModule {

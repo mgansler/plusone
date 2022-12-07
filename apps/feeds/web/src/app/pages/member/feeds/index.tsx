@@ -1,19 +1,21 @@
-import { Settings } from '@mui/icons-material'
+import { ExpandLess, ExpandMore, Settings } from '@mui/icons-material'
 import {
   Badge,
-  Button,
+  Collapse,
   Divider,
   Drawer,
   IconButton,
+  Link as MuiLink,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
   Toolbar,
+  Typography,
 } from '@mui/material'
 import { createStyles, makeStyles } from '@mui/styles'
-import React from 'react'
-import { Outlet, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useMemo, useState } from 'react'
+import { Link, Outlet, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import type { UserFeedResponseDto } from '@plusone/feeds/api-client'
 import { useGetUserFeeds } from '@plusone/feeds/api-client'
@@ -35,14 +37,14 @@ function FeedEntry({ feed }: FeedEntryProps) {
     setSort(feed.order === 'desc' ? Sort.NewestFirst : Sort.OldestFirst)
     setIncludeRead(feed.includeRead)
     setExpandContent(feed.expandContent)
-    navigate({ pathname: feed.id, search: searchParams.toString() })
+    navigate({ pathname: feed.feedId, search: searchParams.toString() })
   }
 
-  const handleGoToFeedSettings = () => navigate(`${feed.id}/settings`)
+  const handleGoToFeedSettings = () => navigate(`${feed.feedId}/settings`)
 
   return (
     <ListItem>
-      <ListItemButton aria-label={feed.title} selected={feedId === feed.id} onClick={handleGoToFeed}>
+      <ListItemButton aria-label={feed.title} selected={feedId === feed.feedId} onClick={handleGoToFeed}>
         <Badge max={999} color={'primary'} badgeContent={feed.unreadCount}>
           <ListItemText>{feed.title}</ListItemText>
         </Badge>
@@ -63,6 +65,41 @@ const useClassNames = makeStyles(() =>
   }),
 )
 
+type TagGroupProps = {
+  name: string
+  feeds: UserFeedResponseDto[]
+}
+
+function TagGroup({ name, feeds }: TagGroupProps) {
+  const [isOpen, setIsOpen] = useState<boolean>(true)
+  const badgeContent = feeds.reduce((total, feed) => total + feed.unreadCount, 0)
+
+  const toggleOpen = () => setIsOpen((cur) => !cur)
+
+  return (
+    <>
+      <ListItem>
+        {isOpen ? (
+          <Typography>{name}</Typography>
+        ) : (
+          <Badge max={999} color={'primary'} badgeContent={badgeContent}>
+            <Typography>{name}</Typography>
+          </Badge>
+        )}
+        <IconButton onClick={toggleOpen}>{isOpen ? <ExpandLess /> : <ExpandMore />}</IconButton>
+      </ListItem>
+
+      <Collapse in={isOpen}>
+        <List dense={true}>
+          {feeds.map((feed) => (
+            <FeedEntry key={feed.id} feed={feed} />
+          ))}
+        </List>
+      </Collapse>
+    </>
+  )
+}
+
 export function FeedList() {
   const classNames = useClassNames()
   const { feedId } = useParams()
@@ -70,6 +107,18 @@ export function FeedList() {
   const { data } = useGetUserFeeds()
   const [searchParams] = useSearchParams()
   const { setIncludeRead, setSort } = useFeedSettingsContext()
+
+  const taggedFeeds = useMemo(() => {
+    return data?.data.reduce((prev, cur) => {
+      for (const { name } of cur.tags) {
+        prev[name] = Array.isArray(prev[name]) ? [...prev[name], cur] : [cur]
+      }
+      if (cur.tags.length === 0) {
+        prev['other'] = Array.isArray(prev['other']) ? [...prev['other'], cur] : [cur]
+      }
+      return prev
+    }, {})
+  }, [data?.data])
 
   const goToAll = () => {
     setSort(Sort.NewestFirst)
@@ -85,7 +134,12 @@ export function FeedList() {
         <Toolbar />
 
         <List dense={true}>
-          <Button onClick={() => navigate('../new')}>add feed</Button>
+          <MuiLink to={'../new'} component={Link}>
+            add feed
+          </MuiLink>
+          <MuiLink to={'../tags'} component={Link}>
+            tags
+          </MuiLink>
           <Divider />
           <ListItem>
             <ListItemButton aria-label={'all feeds'} selected={feedId === 'all'} onClick={goToAll}>
@@ -95,8 +149,8 @@ export function FeedList() {
             </ListItemButton>
           </ListItem>
 
-          {data?.data.map((feed) => (
-            <FeedEntry key={feed.id} feed={feed} />
+          {Object.keys(taggedFeeds || {}).map((tag) => (
+            <TagGroup key={tag} name={tag} feeds={taggedFeeds[tag]} />
           ))}
         </List>
       </Drawer>

@@ -77,7 +77,7 @@ export class FeedService {
         })
 
         const userFeed = await tx.userFeed.findUnique({
-          select: { title: true, includeRead: true, expandContent: true, order: true },
+          include: { tags: true },
           where: { userId_feedId: { userId, feedId: feed.id } },
         })
 
@@ -170,7 +170,7 @@ export class FeedService {
   async findAllFor(user: TokenPayload): Promise<UserFeedResponse[]> {
     return this.prismaService.$transaction(async (tx) => {
       const userFeeds = await tx.userFeed.findMany({
-        select: { feed: true, title: true, includeRead: true, order: true, expandContent: true },
+        include: { tags: true, feed: true },
         where: { userId: user.id },
         orderBy: { title: 'asc' },
       })
@@ -201,7 +201,7 @@ export class FeedService {
   async getFeedSettings(user: TokenPayload, feedId: Feed['id']): Promise<FeedSettingsResponseDto> {
     const entry = await this.prismaService.userFeed.findUnique({
       select: { feedId: true, title: true, expandContent: true, order: true, includeRead: true },
-      where: { userId_feedId: { userId: user.id, feedId: feedId } },
+      where: { userId_feedId: { userId: user.id, feedId } },
     })
 
     return {
@@ -225,12 +225,7 @@ export class FeedService {
         includeRead,
         title,
       },
-      where: {
-        userId_feedId: {
-          userId: user.id,
-          feedId,
-        },
-      },
+      where: { userId_feedId: { userId: user.id, feedId } },
     })
   }
 }

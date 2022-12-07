@@ -10,6 +10,8 @@ import {
   UserFeedResponse,
 } from '@plusone/feeds/shared/types'
 
+import { TagResponseDto } from '../tag/tag.dto'
+
 export class DiscoverResponseDto implements DiscoverResponse {
   @ApiProperty()
   feedUrl: string
@@ -110,4 +112,12 @@ export class UserFeedResponseDto implements UserFeedResponse {
 
   @ApiProperty()
   unreadCount: number
+
+  @ApiProperty({ type: [TagResponseDto] })
+  tags: TagResponseDto[]
+}
+
+export class TagFeedInputDto {
+  @ApiProperty()
+  tagId: string
 }

@@ -1,17 +1,8 @@
-import {
-  Button,
-  Checkbox,
-  Container,
-  FormControlLabel,
-  Link as MuiLink,
-  MenuItem,
-  Stack,
-  TextField,
-} from '@mui/material'
+import { Button, Checkbox, FormControlLabel, MenuItem, Stack, TextField, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import { Sort } from '@plusone/feeds/shared/types'
 import { getGetUserFeedsQueryKey, useGetFeedSettings, useUpdateFeedSettings } from '@plusone/feeds/api-client'
@@ -48,41 +39,31 @@ export function FeedSettings() {
   }
 
   return (
-    <Container maxWidth={'sm'} key={feedId}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Stack gap={2}>
-        <MuiLink to={`../${feedId}`} component={Link}>
-          Close
-        </MuiLink>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack gap={2}>
-            <TextField
-              aria-readonly={true}
-              disabled={true}
-              label={'Feed Id'}
-              value={currentSettings?.data.id}
-            ></TextField>
+        <Typography>Feed Settings</Typography>
 
-            <TextField label={'Feed Title'} {...register('title')}></TextField>
+        <TextField aria-readonly={true} disabled={true} label={'Feed Id'} value={currentSettings?.data.id} />
 
-            <TextField label={'Order'} select={true} defaultValue={currentSettings?.data.order} {...register('order')}>
-              <MenuItem value={Sort.OldestFirst}>Oldest First</MenuItem>
-              <MenuItem value={Sort.NewestFirst}>Newest First</MenuItem>
-            </TextField>
+        <TextField label={'Feed Title'} {...register('title')} />
 
-            <FormControlLabel
-              control={<Checkbox defaultChecked={currentSettings?.data.includeRead} {...register('includeRead')} />}
-              label={'Include Read'}
-            />
+        <TextField label={'Order'} select={true} defaultValue={currentSettings?.data.order} {...register('order')}>
+          <MenuItem value={Sort.OldestFirst}>Oldest First</MenuItem>
+          <MenuItem value={Sort.NewestFirst}>Newest First</MenuItem>
+        </TextField>
 
-            <FormControlLabel
-              control={<Checkbox defaultChecked={currentSettings?.data.expandContent} {...register('expandContent')} />}
-              label={'Expand Content'}
-            />
+        <FormControlLabel
+          control={<Checkbox defaultChecked={currentSettings?.data.includeRead} {...register('includeRead')} />}
+          label={'Include Read'}
+        />
 
-            <Button type={'submit'}>Save</Button>
-          </Stack>
-        </form>
+        <FormControlLabel
+          control={<Checkbox defaultChecked={currentSettings?.data.expandContent} {...register('expandContent')} />}
+          label={'Expand Content'}
+        />
+
+        <Button type={'submit'}>Save</Button>
       </Stack>
-    </Container>
+    </form>
   )
 }

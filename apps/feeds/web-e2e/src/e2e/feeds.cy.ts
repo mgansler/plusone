@@ -8,7 +8,7 @@ describe('feeds', () => {
 
     cy.findByText('iskall85').should('not.exist')
 
-    cy.findByRole('button', { name: 'add feed' }).click()
+    cy.findByRole('link', { name: 'add feed' }).click()
 
     cy.findByRole('textbox', { name: 'url' }).type('https://www.youtube.com/c/iskall85/videos')
     cy.findByRole('button', { name: 'search' }).click()
@@ -27,7 +27,7 @@ describe('feeds', () => {
 
     cy.findByText('Dilbert Daily Strips').should('not.exist')
 
-    cy.findByRole('button', { name: 'add feed' }).click()
+    cy.findByRole('link', { name: 'add feed' }).click()
 
     cy.findByRole('textbox', { name: 'title' }).type('Dilbert Daily Strips')
     cy.findByRole('textbox', { name: 'url' }).type('https://dilbert.com')
@@ -54,7 +54,7 @@ describe('feeds', () => {
     cy.addHeiseFeedToDefaultUser()
     cy.login()
 
-    cy.findByRole('button', { name: 'add feed' }).click()
+    cy.findByRole('link', { name: 'add feed' }).click()
 
     cy.findByRole('textbox', { name: 'title' }).type('heise online News')
     cy.findByRole('textbox', { name: 'url' }).type('https://heise.de')
@@ -79,7 +79,7 @@ describe('feeds', () => {
   it('should import multiple feeds', () => {
     cy.loginFreshUser()
 
-    cy.findByRole('button', { name: 'add feed' }).click()
+    cy.findByRole('link', { name: 'add feed' }).click()
 
     cy.findByRole('textbox', { name: 'import' }).type(
       '{{}"title": "AnandTech","feedUrl": "https://www.anandtech.com/rss/articlefeed.aspx"},{{}"title": "ComputerBase","feedUrl": "https://www.computerbase.de/rss/news.xml"}',
