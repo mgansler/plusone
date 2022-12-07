@@ -1,6 +1,7 @@
-import { Settings } from '@mui/icons-material'
+import { ExpandLess, ExpandMore, Settings } from '@mui/icons-material'
 import {
   Badge,
+  Collapse,
   Divider,
   Drawer,
   IconButton,
@@ -13,7 +14,7 @@ import {
   Typography,
 } from '@mui/material'
 import { createStyles, makeStyles } from '@mui/styles'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, Outlet, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import type { UserFeedResponseDto } from '@plusone/feeds/api-client'
@@ -70,16 +71,31 @@ type TagGroupProps = {
 }
 
 function TagGroup({ name, feeds }: TagGroupProps) {
+  const [isOpen, setIsOpen] = useState<boolean>(true)
+  const badgeContent = feeds.reduce((total, feed) => total + feed.unreadCount, 0)
+
+  const toggleOpen = () => setIsOpen((cur) => !cur)
+
   return (
     <>
       <ListItem>
-        <Typography>{name}</Typography>
+        {isOpen ? (
+          <Typography>{name}</Typography>
+        ) : (
+          <Badge max={999} color={'primary'} badgeContent={badgeContent}>
+            <Typography>{name}</Typography>
+          </Badge>
+        )}
+        <IconButton onClick={toggleOpen}>{isOpen ? <ExpandLess /> : <ExpandMore />}</IconButton>
       </ListItem>
-      <List dense={true}>
-        {feeds.map((feed) => (
-          <FeedEntry key={feed.id} feed={feed} />
-        ))}
-      </List>
+
+      <Collapse in={isOpen}>
+        <List dense={true}>
+          {feeds.map((feed) => (
+            <FeedEntry key={feed.id} feed={feed} />
+          ))}
+        </List>
+      </Collapse>
     </>
   )
 }
