@@ -10,7 +10,7 @@ describe('plugins-nx-remix e2e', () => {
     expect(result.stdout).toContain(`Successfully built '${uniqAppName}'`)
   }, 120000)
 
-  describe('--express', () => {
+  describe.skip('--express', () => {
     it('should build and prepare for express', async () => {
       const uniqAppName = uniq('plugins-nx-remix')
       ensureNxProject('@mgansler/nx-remix', 'dist/libs/plugins/nx-remix')
