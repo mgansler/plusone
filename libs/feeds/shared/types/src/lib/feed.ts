@@ -1,4 +1,5 @@
 import type { Sort } from './enum/sort'
+import type { TagResponse } from './tag'
 
 export type FeedInput = {
   url?: string
@@ -26,4 +27,5 @@ export type UserFeedResponse = FeedResponse & {
   order: Sort
   expandContent: boolean
   unreadCount: number
+  tags: TagResponse[]
 }

@@ -4,18 +4,19 @@
  * Feeds API
  * OpenAPI spec version: 0.1
  */
-import { useQuery, useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import type {
-  UseQueryOptions,
-  UseInfiniteQueryOptions,
-  UseMutationOptions,
-  QueryFunction,
   MutationFunction,
-  UseQueryResult,
-  UseInfiniteQueryResult,
+  QueryFunction,
   QueryKey,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
+  UseMutationOptions,
+  UseQueryOptions,
+  UseQueryResult,
 } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
+
 export type HealthControllerGetHealthStatus503Details = {
   [key: string]: {
     status?: string
@@ -86,11 +87,6 @@ export interface TagFeedInputDto {
   tagId: string
 }
 
-export interface TagResponseDto {
-  id: string
-  name: string
-}
-
 export interface UpdateFeedSettingsInputDto {
   expandContent: boolean
   includeRead: boolean
@@ -106,15 +102,23 @@ export interface FeedSettingsResponseDto {
   order: Sort
 }
 
+export interface TagResponseDto {
+  id: string
+  name: string
+}
+
 export interface UserFeedResponseDto {
   feedUrl: string
   id: string
+
+  feedId: string
   originalTitle: string
   title?: string
   includeRead: boolean
   order: Sort
   expandContent: boolean
   unreadCount: number
+  tags: TagResponseDto[]
 }
 
 export interface FeedResponseDto {

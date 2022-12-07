@@ -4,7 +4,14 @@ import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
-import { getGetFeedTagsQueryKey, useGetFeedTags, useGetTags, useTagFeed, useUntagFeed } from '@plusone/feeds/api-client'
+import {
+  getGetFeedTagsQueryKey,
+  getGetUserFeedsQueryKey,
+  useGetFeedTags,
+  useGetTags,
+  useTagFeed,
+  useUntagFeed,
+} from '@plusone/feeds/api-client'
 import type { TagResponseDto } from '@plusone/feeds/api-client'
 
 type RemovableChipProps = {
@@ -19,6 +26,7 @@ function RemovableTag({ tag }: RemovableChipProps) {
     mutation: {
       onSuccess: async () => {
         await queryClient.invalidateQueries(getGetFeedTagsQueryKey(feedId))
+        await queryClient.invalidateQueries(getGetUserFeedsQueryKey())
       },
     },
   })
@@ -45,6 +53,7 @@ export function FeedTags() {
     mutation: {
       onSuccess: async () => {
         await queryClient.invalidateQueries(getGetFeedTagsQueryKey(feedId))
+        await queryClient.invalidateQueries(getGetUserFeedsQueryKey())
       },
     },
   })
