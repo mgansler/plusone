@@ -69,7 +69,7 @@ model UserFeed {
   feedId        String    @db.Uuid
   title         String
   order         Order     @default(DESC)
-  includeRead   Boolean   @default(false)
+  includeRead   Boolean   @default(true)
   expandContent Boolean   @default(false)
   tags          UserTag[]
 
