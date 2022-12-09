@@ -12,14 +12,14 @@ describe('feeds', () => {
 
     cy.findByRole('textbox', { name: 'url' }).type('https://www.youtube.com/c/iskall85/videos')
     cy.findByRole('button', { name: 'search' }).click()
-    cy.findByRole('textbox', { name: 'title', timeout: 10_000 }).should('have.value', 'iskall85')
+    cy.findByRole('textbox', { name: 'title', timeout: 20_000 }).should('have.value', 'iskall85')
     cy.findByRole('textbox', { name: 'feed-url' }).should(
       'have.value',
       'http://www.youtube.com/feeds/videos.xml?channel_id=UCZ9x-z3iOnIbJxVpm1rsu2A',
     )
     cy.findByRole('button', { name: /save/i }).click()
 
-    cy.findByRole('button', { name: /iskall85/ }).should('be.visible')
+    cy.findByRole('button', { name: /iskall85/, timeout: 20_000 }).should('be.visible')
   })
 
   it('should allow adding a feed manually and mark all articles as read', () => {
@@ -29,8 +29,8 @@ describe('feeds', () => {
 
     cy.findByRole('link', { name: 'add feed' }).click()
 
-    cy.findByRole('textbox', { name: 'title' }).type('Dilbert Daily Strips')
     cy.findByRole('textbox', { name: 'url' }).type('https://dilbert.com')
+    cy.findByRole('textbox', { name: 'title' }).type('Dilbert Daily Strips')
     cy.findByRole('textbox', { name: 'feed-url' }).type('https://dilbert.com/feed')
 
     cy.findByRole('button', { name: 'save' }).click()
@@ -56,8 +56,8 @@ describe('feeds', () => {
 
     cy.findByRole('link', { name: 'add feed' }).click()
 
-    cy.findByRole('textbox', { name: 'title' }).type('heise online News')
     cy.findByRole('textbox', { name: 'url' }).type('https://heise.de')
+    cy.findByRole('textbox', { name: 'title' }).type('heise online News')
     cy.findByRole('textbox', { name: 'feed-url' }).type('https://www.heise.de/rss/heise.rdf')
     cy.findByRole('button', { name: 'save' }).click()
 
@@ -71,8 +71,8 @@ describe('feeds', () => {
     )
     // Force click because in development mode there will be an overlay even though there is an error boundary
     cy.findByRole('button', { name: 'reset' }).click({ force: true })
-    cy.findByRole('textbox', { name: 'title' }).should('have.value', '')
     cy.findByRole('textbox', { name: 'url' }).should('have.value', '')
+    cy.findByRole('textbox', { name: 'title' }).should('have.value', '')
     cy.findByRole('textbox', { name: 'feed-url' }).should('have.value', '')
   })
 
