@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { Button, Stack } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import React from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
@@ -49,14 +49,18 @@ export function Articles() {
     return null
   }
 
+  const articles = data.pages.reduce((prev, cur) => [...prev, ...cur.data.content], [])
+
   return (
     <>
-      <SearchBar />
-      <FeedSettingsBar />
-      <Button onClick={markAllRead}>Mark all read</Button>
-      {data.pages.map((page, index) => (
-        <ArticleList key={index} articles={page.data.content} />
-      ))}
+      <Stack direction={'row'} gap={2}>
+        <SearchBar />
+        <FeedSettingsBar />
+        <Button onClick={markAllRead}>Mark all read</Button>
+      </Stack>
+
+      <ArticleList articles={articles} fetchNextPage={fetchNextPage} />
+
       <Button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
         more
       </Button>

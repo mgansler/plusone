@@ -28,7 +28,8 @@ const useClassNames = makeStyles<Theme, object, 'appBar' | 'root' | 'toolbar'>((
       display: 'flex',
       flexDirection: 'column',
       gap: theme.spacing(1),
-      height: '100vh',
+      flexShrink: 1,
+      overflowY: 'scroll',
     },
     toolbar: {
       gap: theme.spacing(1),

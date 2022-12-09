@@ -1,4 +1,4 @@
-import { CssBaseline } from '@mui/material'
+import { CssBaseline, GlobalStyles } from '@mui/material'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import React, { StrictMode } from 'react'
@@ -25,6 +25,7 @@ root.render(
   <StrictMode>
     <DarkModeThemeProvider>
       <CssBaseline />
+      <GlobalStyles styles={{ '#root': { height: '100vh', display: 'flex', flexDirection: 'column' } }} />
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
           <UserContextProvider>

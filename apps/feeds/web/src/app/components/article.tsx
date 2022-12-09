@@ -1,10 +1,11 @@
 import { CheckBoxOutlineBlank, CheckBoxOutlined, OpenInNew } from '@mui/icons-material'
 import { Card, CardContent, CardHeader, IconButton } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
+import type { RefObject } from 'react'
 import { useEffect, useState } from 'react'
 
-import type { ArticleDto, ArticleResponseDto } from '@plusone/feeds/api-client'
 import { getFindArticlesQueryKey, getGetUserFeedsQueryKey, useToggleUnread } from '@plusone/feeds/api-client'
+import type { ArticleDto, ArticleResponseDto } from '@plusone/feeds/api-client'
 
 import { useFeedSettingsContext } from '../context/feed-settings'
 
@@ -24,9 +25,11 @@ function useToggleUnreadState(id: ArticleDto['id'], unread: boolean) {
 
 type ArticleProps = {
   article: ArticleResponseDto
+  selectedArticle: string
+  scrollTargetRef?: RefObject<HTMLDivElement | undefined>
 }
 
-export function Article({ article: { article, unread } }: ArticleProps) {
+export function Article({ article: { article, unread }, selectedArticle, scrollTargetRef }: ArticleProps) {
   const { expandContent } = useFeedSettingsContext()
   const [showContent, setShowContent] = useState<boolean>(expandContent)
 
@@ -34,13 +37,15 @@ export function Article({ article: { article, unread } }: ArticleProps) {
 
   const toggleUnread = useToggleUnreadState(article.id, unread)
 
+  const color = selectedArticle === article.id ? 'primary' : 'inherit'
+
   return (
     <article>
-      <Card>
+      <Card ref={scrollTargetRef}>
         <CardHeader
           avatar={
             <IconButton onClick={() => toggleUnread()}>
-              {unread ? <CheckBoxOutlineBlank /> : <CheckBoxOutlined />}
+              {unread ? <CheckBoxOutlineBlank color={color} /> : <CheckBoxOutlined color={color} />}
             </IconButton>
           }
           title={article.title}
