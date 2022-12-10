@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import type { ArticleResponseDto, useFindArticlesInfinite } from '@plusone/feeds/api-client'
 
-import { Article } from './article'
+import { Article, useReadArticle } from './article'
 
 type ArticleListProps = {
   articles: ArticleResponseDto[]
@@ -12,9 +12,10 @@ type ArticleListProps = {
 
 export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
   const [selectedArticle, setSelectedArticle] = useState<string>(articles[0]?.article.id)
+  const readArticle = useReadArticle()
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = async (event: KeyboardEvent) => {
       const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
 
       if (event.code === 'ArrowUp' && currentIndex > 0) {
@@ -26,6 +27,21 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
         if (currentIndex > articles.length - 20) {
           fetchNextPage()
         }
+      }
+
+      if (event.code === 'KeyN') {
+        await readArticle(articles[currentIndex].article.id, true)
+        if (currentIndex < articles.length - 1) {
+          setSelectedArticle(articles[currentIndex + 1].article.id)
+          if (currentIndex > articles.length - 20) {
+            fetchNextPage()
+          }
+        }
+      }
+
+      if (event.code === 'KeyO') {
+        window.open(articles[currentIndex].article.link, '_blank')
+        await readArticle(articles[currentIndex].article.id, true)
       }
     }
 

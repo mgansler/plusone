@@ -9,9 +9,9 @@ import type { ArticleDto, ArticleResponseDto } from '@plusone/feeds/api-client'
 
 import { useFeedSettingsContext } from '../context/feed-settings'
 
-function useToggleUnreadState(id: ArticleDto['id'], unread: boolean) {
+export function useReadArticle() {
   const queryClient = useQueryClient()
-  const { mutate } = useToggleUnread({
+  const { mutateAsync } = useToggleUnread({
     mutation: {
       onSuccess: async () => {
         await queryClient.invalidateQueries(getFindArticlesQueryKey())
@@ -20,7 +20,11 @@ function useToggleUnreadState(id: ArticleDto['id'], unread: boolean) {
     },
   })
 
-  return (read?: boolean) => mutate({ id, data: { unread: typeof read !== 'undefined' ? !read : !unread } })
+  return async (id: ArticleDto['id'], read: boolean) =>
+    await mutateAsync({
+      id,
+      data: { unread: !read },
+    })
 }
 
 type ArticleProps = {
@@ -35,7 +39,7 @@ export function Article({ article: { article, unread }, selectedArticle, scrollT
 
   useEffect(() => setShowContent(expandContent), [expandContent])
 
-  const toggleUnread = useToggleUnreadState(article.id, unread)
+  const readArticle = useReadArticle()
 
   const color = selectedArticle === article.id ? 'primary' : 'inherit'
 
@@ -44,13 +48,13 @@ export function Article({ article: { article, unread }, selectedArticle, scrollT
       <Card ref={scrollTargetRef}>
         <CardHeader
           avatar={
-            <IconButton onClick={() => toggleUnread()}>
+            <IconButton onClick={() => readArticle(article.id, unread)}>
               {unread ? <CheckBoxOutlineBlank color={color} /> : <CheckBoxOutlined color={color} />}
             </IconButton>
           }
           title={article.title}
           action={
-            <IconButton target={'_blank'} href={article.link} onClick={() => toggleUnread(true)}>
+            <IconButton target={'_blank'} href={article.link} onClick={() => readArticle(article.id, true)}>
               <OpenInNew />
             </IconButton>
           }
