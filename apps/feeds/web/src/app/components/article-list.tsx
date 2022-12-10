@@ -5,6 +5,24 @@ import type { ArticleResponseDto, useFindArticlesInfinite } from '@plusone/feeds
 
 import { Article, useReadArticle } from './article'
 
+interface Modifiers {
+  shiftKey?: KeyboardEvent['shiftKey']
+  altKey?: KeyboardEvent['altKey']
+  metaKey?: KeyboardEvent['metaKey']
+}
+
+function isKeyCombo(event: KeyboardEvent, code: KeyboardEvent['code'], modifiers?: Modifiers): boolean {
+  const matches =
+    event.code === code &&
+    event.altKey === (modifiers?.altKey ?? false) &&
+    event.metaKey === (modifiers?.metaKey ?? false) &&
+    event.shiftKey === (modifiers?.shiftKey ?? false)
+  if (matches) {
+    event.preventDefault()
+  }
+  return matches
+}
+
 type ArticleListProps = {
   articles: ArticleResponseDto[]
   fetchNextPage: ReturnType<typeof useFindArticlesInfinite>['fetchNextPage']
@@ -18,34 +36,36 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
     const handleKeyDown = async (event: KeyboardEvent) => {
       const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
 
-      if (event.code === 'ArrowUp' && currentIndex > 0) {
-        setSelectedArticle(articles[currentIndex - 1].article.id)
-      }
+      switch (true) {
+        case isKeyCombo(event, 'ArrowUp') && currentIndex > 0:
+          setSelectedArticle(articles[currentIndex - 1].article.id)
+          break
 
-      if (event.code === 'ArrowDown' && currentIndex < articles.length - 1) {
-        setSelectedArticle(articles[currentIndex + 1].article.id)
-        if (currentIndex > articles.length - 20) {
-          fetchNextPage()
-        }
-      }
-
-      if (event.code === 'Space') {
-        await readArticle(articles[currentIndex].article.id, articles[currentIndex].unread)
-      }
-
-      if (event.code === 'KeyN') {
-        await readArticle(articles[currentIndex].article.id, true)
-        if (currentIndex < articles.length - 1) {
+        case isKeyCombo(event, 'ArrowDown') && currentIndex < articles.length - 1:
           setSelectedArticle(articles[currentIndex + 1].article.id)
           if (currentIndex > articles.length - 20) {
             fetchNextPage()
           }
-        }
-      }
+          break
 
-      if (event.code === 'KeyO') {
-        window.open(articles[currentIndex].article.link, '_blank')
-        await readArticle(articles[currentIndex].article.id, true)
+        case isKeyCombo(event, 'Space'):
+          await readArticle(articles[currentIndex].article.id, articles[currentIndex].unread)
+          break
+
+        case isKeyCombo(event, 'KeyN'):
+          await readArticle(articles[currentIndex].article.id, true)
+          if (currentIndex < articles.length - 1) {
+            setSelectedArticle(articles[currentIndex + 1].article.id)
+            if (currentIndex > articles.length - 20) {
+              fetchNextPage()
+            }
+          }
+          break
+
+        case isKeyCombo(event, 'KeyO'):
+          window.open(articles[currentIndex].article.link, '_blank')
+          await readArticle(articles[currentIndex].article.id, true)
+          break
       }
     }
 
