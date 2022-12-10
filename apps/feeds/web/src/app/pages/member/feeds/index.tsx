@@ -149,9 +149,11 @@ export function FeedList() {
             </ListItemButton>
           </ListItem>
 
-          {Object.keys(taggedFeeds || {}).map((tag) => (
-            <TagGroup key={tag} name={tag} feeds={taggedFeeds[tag]} />
-          ))}
+          {Object.keys(taggedFeeds || {})
+            .sort()
+            .map((tag) => (
+              <TagGroup key={tag} name={tag} feeds={taggedFeeds[tag]} />
+            ))}
         </List>
       </Drawer>
 
