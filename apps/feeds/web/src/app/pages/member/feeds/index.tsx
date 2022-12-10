@@ -155,7 +155,7 @@ export function FeedList() {
         </List>
       </Drawer>
 
-      <main style={{ paddingLeft: drawerWidth }}>
+      <main style={{ paddingLeft: drawerWidth, height: '100%' }}>
         <Outlet />
       </main>
     </>

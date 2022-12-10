@@ -144,7 +144,7 @@ export class ArticleService {
     skip: number
     take: number
   } {
-    const isFirstRequest = !cursor || Number(cursor) === 0
+    const isFirstRequest = !cursor || cursor === 'false' || Number(cursor) === 0
     return {
       cursor: isFirstRequest ? undefined : { cursor: Number(cursor) },
       skip: isFirstRequest ? 0 : 1,
