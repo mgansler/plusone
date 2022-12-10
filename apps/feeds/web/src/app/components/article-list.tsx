@@ -29,6 +29,10 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
         }
       }
 
+      if (event.code === 'Space') {
+        await readArticle(articles[currentIndex].article.id, articles[currentIndex].unread)
+      }
+
       if (event.code === 'KeyN') {
         await readArticle(articles[currentIndex].article.id, true)
         if (currentIndex < articles.length - 1) {
