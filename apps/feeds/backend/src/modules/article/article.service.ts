@@ -134,7 +134,11 @@ export class ArticleService {
         await tx.recentlyRead.deleteMany({ where: { userId, cursor: { notIn: currentCursors } } })
 
         // Add this article to RecentlyRead
-        await tx.recentlyRead.create({ data: { articleId, userId } })
+        await tx.recentlyRead.upsert({
+          where: { userId_articleId: { userId, articleId } },
+          create: { articleId, userId },
+          update: {},
+        })
       }
 
       return tx.userArticle.update({
