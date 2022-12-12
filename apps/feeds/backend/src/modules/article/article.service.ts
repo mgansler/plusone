@@ -116,7 +116,6 @@ export class ArticleService {
   }
 
   async toggleUnreadForUser(articleId: Article['id'], userId: User['id'], unread: boolean) {
-    console.log(unread)
     return this.prismaService.$transaction(async (tx) => {
       if (unread) {
         // Remove this article
