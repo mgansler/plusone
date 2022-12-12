@@ -116,6 +116,7 @@ export class ArticleService {
   }
 
   async toggleUnreadForUser(articleId: Article['id'], userId: User['id'], unread: boolean) {
+    console.log(unread)
     return this.prismaService.$transaction(async (tx) => {
       if (unread) {
         // Remove this article
@@ -134,7 +135,11 @@ export class ArticleService {
         await tx.recentlyRead.deleteMany({ where: { userId, cursor: { notIn: currentCursors } } })
 
         // Add this article to RecentlyRead
-        await tx.recentlyRead.create({ data: { articleId, userId } })
+        await tx.recentlyRead.upsert({
+          where: { userId_articleId: { userId, articleId } },
+          create: { articleId, userId },
+          update: {},
+        })
       }
 
       return tx.userArticle.update({
