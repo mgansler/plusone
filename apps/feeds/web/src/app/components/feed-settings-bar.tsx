@@ -23,7 +23,7 @@ export function FeedSettingsBar() {
       />
 
       <Button
-        startIcon={expandContent ? <ExpandMore /> : <ExpandLess />}
+        startIcon={expandContent ? <ExpandLess /> : <ExpandMore />}
         onClick={() => setExpandContent((cur) => !cur)}
       >
         {expandContent ? 'collapse all' : 'expand all'}
