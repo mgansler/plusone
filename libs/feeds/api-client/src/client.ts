@@ -4,19 +4,18 @@
  * Feeds API
  * OpenAPI spec version: 0.1
  */
+import { useQuery, useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import type {
-  MutationFunction,
-  QueryFunction,
-  QueryKey,
-  UseInfiniteQueryOptions,
-  UseInfiniteQueryResult,
-  UseMutationOptions,
   UseQueryOptions,
+  UseInfiniteQueryOptions,
+  UseMutationOptions,
+  QueryFunction,
+  MutationFunction,
   UseQueryResult,
+  UseInfiniteQueryResult,
+  QueryKey,
 } from '@tanstack/react-query'
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
-
 export type HealthControllerGetHealthStatus503Details = {
   [key: string]: {
     status?: string
@@ -110,7 +109,6 @@ export interface TagResponseDto {
 export interface UserFeedResponseDto {
   feedUrl: string
   id: string
-
   feedId: string
   originalTitle: string
   title?: string
@@ -320,6 +318,66 @@ export const useFindArticles = <TData = Awaited<ReturnType<typeof findArticles>>
   const queryFn: QueryFunction<Awaited<ReturnType<typeof findArticles>>> = ({ signal }) => findArticles(params, signal)
 
   const query = useQuery<Awaited<ReturnType<typeof findArticles>>, TError, TData>(
+    queryKey,
+    queryFn,
+    queryOptions,
+  ) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export const recentlyReadArticles = (signal?: AbortSignal) => {
+  return customAxiosInstance<ArticleDto[]>({ url: `/api/article/recentlyRead`, method: 'get', signal })
+}
+
+export const getRecentlyReadArticlesQueryKey = () => [`/api/article/recentlyRead`]
+
+export type RecentlyReadArticlesInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof recentlyReadArticles>>>
+export type RecentlyReadArticlesInfiniteQueryError = unknown
+
+export const useRecentlyReadArticlesInfinite = <
+  TData = Awaited<ReturnType<typeof recentlyReadArticles>>,
+  TError = unknown,
+>(options?: {
+  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof recentlyReadArticles>>, TError, TData>
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getRecentlyReadArticlesQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof recentlyReadArticles>>> = ({ signal }) =>
+    recentlyReadArticles(signal)
+
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof recentlyReadArticles>>, TError, TData>(
+    queryKey,
+    queryFn,
+    queryOptions,
+  ) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export type RecentlyReadArticlesQueryResult = NonNullable<Awaited<ReturnType<typeof recentlyReadArticles>>>
+export type RecentlyReadArticlesQueryError = unknown
+
+export const useRecentlyReadArticles = <
+  TData = Awaited<ReturnType<typeof recentlyReadArticles>>,
+  TError = unknown,
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof recentlyReadArticles>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getRecentlyReadArticlesQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof recentlyReadArticles>>> = ({ signal }) =>
+    recentlyReadArticles(signal)
+
+  const query = useQuery<Awaited<ReturnType<typeof recentlyReadArticles>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,

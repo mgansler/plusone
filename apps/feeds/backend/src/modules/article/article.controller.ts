@@ -6,7 +6,7 @@ import { Pagination, Sort } from '@plusone/feeds/shared/types'
 
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 
-import { ArticleResponseDto, ArticleToggleUnreadDto, PaginatedArticlesDto } from './article.dto'
+import { ArticleDto, ArticleResponseDto, ArticleToggleUnreadDto, PaginatedArticlesDto } from './article.dto'
 import { ArticleService } from './article.service'
 
 @UseGuards(JwtAccessTokenGuard)
@@ -98,5 +98,12 @@ export class ArticleController {
       // includeUnread is parsed as string, we need to manually convert
       includeRead: (includeRead as unknown as string) === 'true',
     })
+  }
+
+  @ApiOperation({ operationId: 'recently-read-articles' })
+  @ApiOkResponse({ description: 'List of recently read articles', type: [ArticleDto] })
+  @Get('recentlyRead')
+  recentlyReadArticles(@Req() { user }): Promise<ArticleDto[]> {
+    return this.articleService.findRecentlyReadArticles(user.id)
   }
 }

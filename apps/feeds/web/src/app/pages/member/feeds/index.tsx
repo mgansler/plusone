@@ -140,7 +140,18 @@ export function FeedList() {
           <MuiLink to={'../tags'} component={Link}>
             tags
           </MuiLink>
+
           <Divider />
+
+          <ListItem>
+            <ListItemButton
+              aria-label={'recently read articles'}
+              selected={feedId === 'recent'}
+              onClick={() => navigate({ pathname: 'recent' })}
+            >
+              <ListItemText>Recently Read</ListItemText>
+            </ListItemButton>
+          </ListItem>
           <ListItem>
             <ListItemButton aria-label={'all feeds'} selected={feedId === 'all'} onClick={goToAll}>
               <Badge max={999} color={'primary'} badgeContent={totalUnreadCount}>
@@ -148,6 +159,8 @@ export function FeedList() {
               </Badge>
             </ListItemButton>
           </ListItem>
+
+          <Divider />
 
           {Object.keys(taggedFeeds || {})
             .sort()

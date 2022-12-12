@@ -16,16 +16,17 @@ enum Order {
 }
 
 model Article {
-  id          String        @id @default(uuid()) @db.Uuid
-  title       String?
-  content     String?
-  contentBody String?
-  guid        String
-  link        String?
-  date        DateTime      @default(now())
-  feed        Feed          @relation(fields: [feedId], references: [id])
-  feedId      String        @db.Uuid
-  UserArticle UserArticle[]
+  id           String         @id @default(uuid()) @db.Uuid
+  title        String?
+  content      String?
+  contentBody  String?
+  guid         String
+  link         String?
+  date         DateTime       @default(now())
+  feed         Feed           @relation(fields: [feedId], references: [id])
+  feedId       String         @db.Uuid
+  UserArticle  UserArticle[]
+  RecentlyRead RecentlyRead[]
 
   @@unique([guid, feedId])
 }
@@ -39,15 +40,16 @@ model Feed {
 }
 
 model User {
-  id           String        @id @default(uuid()) @db.Uuid
-  username     String        @unique
+  id           String         @id @default(uuid()) @db.Uuid
+  username     String         @unique
   password     String
   email        String?
-  isAdmin      Boolean       @default(false)
+  isAdmin      Boolean        @default(false)
   refreshToken String?
   UserFeed     UserFeed[]
   UserArticle  UserArticle[]
   UserTags     UserTag[]
+  RecentlyRead RecentlyRead[]
 }
 
 model UserArticle {
@@ -84,4 +86,14 @@ model UserTag {
   UserFeed UserFeed[]
 
   @@unique([userId, name])
+}
+
+model RecentlyRead {
+  cursor    Int     @unique @default(autoincrement())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String  @db.Uuid
+  article   Article @relation(fields: [articleId], references: [id])
+  articleId String  @db.Uuid
+
+  @@unique([userId, articleId])
 }
