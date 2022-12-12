@@ -15,7 +15,7 @@ import {
 } from '@mui/material'
 import { createStyles, makeStyles } from '@mui/styles'
 import { useMemo, useState } from 'react'
-import { Link, Outlet, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { Link, Outlet, useMatch, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import type { UserFeedResponseDto } from '@plusone/feeds/api-client'
 import { useGetUserFeeds } from '@plusone/feeds/api-client'
@@ -103,6 +103,7 @@ function TagGroup({ name, feeds }: TagGroupProps) {
 export function FeedList() {
   const classNames = useClassNames()
   const { feedId } = useParams()
+  const isRecentPath = useMatch('/member/feeds/recent')
   const navigate = useNavigate()
   const { data } = useGetUserFeeds()
   const [searchParams] = useSearchParams()
@@ -146,7 +147,7 @@ export function FeedList() {
           <ListItem>
             <ListItemButton
               aria-label={'recently read articles'}
-              selected={feedId === 'recent'}
+              selected={isRecentPath !== null}
               onClick={() => navigate({ pathname: 'recent' })}
             >
               <ListItemText>Recently Read</ListItemText>
