@@ -43,11 +43,17 @@ describe('feeds', () => {
       .findAllByTestId('CheckBoxOutlineBlankIcon')
       .should('have.length.at.least', 1)
       .then(($checkboxes) => (articleCount = $checkboxes.length))
+
+    // Mark one as read manually to later check in recently read articles
+    cy.get('article').findAllByTestId('CheckBoxOutlineBlankIcon').first().click()
     cy.findByRole('button', { name: 'Mark all read' }).click()
     cy.get('article')
       .findAllByTestId('CheckBoxOutlinedIcon')
       .should(($checkboxes) => expect($checkboxes.length).to.equal(articleCount))
     cy.get('article').findAllByTestId('CheckBoxOutlineBlankIcon').should('have.length', 0)
+
+    cy.findByRole('button', { name: /Recently Read/i }).click()
+    cy.get('article').should('have.length', 1)
   })
 
   it('should handle failing to add an existing feed', () => {

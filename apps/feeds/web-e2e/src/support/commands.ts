@@ -41,7 +41,8 @@ Cypress.Commands.add('loginFreshUser', () => {
   cy.findByRole('textbox', { name: /username/i }).type(username)
   cy.findByLabelText(/password/i).type('random_password')
   cy.findByRole('button', { name: 'register' }).click()
-  cy.location('pathname').should('eq', '/login')
+  // eslint-disable-next-line cypress/no-unnecessary-waiting,testing-library/await-async-utils
+  cy.location('pathname').should('eq', '/login').wait(500)
   cy.findByRole('textbox', { name: /username/i }).type(username)
   cy.findByLabelText(/password/i).type('random_password')
   cy.findByRole('button', { name: /login/i }).click()

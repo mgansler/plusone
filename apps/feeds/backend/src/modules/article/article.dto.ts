@@ -3,7 +3,7 @@ import { IsBoolean } from 'class-validator'
 
 import { Article, ArticleResponse, PaginatedArticles, ToggleUnreadRequest } from '@plusone/feeds/shared/types'
 
-class ArticleDto implements Article {
+export class ArticleDto implements Article {
   @ApiProperty()
   id: string
 

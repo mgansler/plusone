@@ -4,7 +4,12 @@ import { useQueryClient } from '@tanstack/react-query'
 import type { RefObject } from 'react'
 import { useEffect, useState } from 'react'
 
-import { getFindArticlesQueryKey, getGetUserFeedsQueryKey, useToggleUnread } from '@plusone/feeds/api-client'
+import {
+  getFindArticlesQueryKey,
+  getGetUserFeedsQueryKey,
+  getRecentlyReadArticlesQueryKey,
+  useToggleUnread,
+} from '@plusone/feeds/api-client'
 import type { ArticleDto, ArticleResponseDto } from '@plusone/feeds/api-client'
 
 import { useFeedSettingsContext } from '../context/feed-settings'
@@ -16,6 +21,7 @@ export function useReadArticle() {
       onSuccess: async () => {
         await queryClient.invalidateQueries(getFindArticlesQueryKey())
         await queryClient.invalidateQueries(getGetUserFeedsQueryKey())
+        await queryClient.invalidateQueries(getRecentlyReadArticlesQueryKey())
       },
     },
   })
@@ -28,7 +34,7 @@ export function useReadArticle() {
 }
 
 type ArticleProps = {
-  article: ArticleResponseDto
+  article: Omit<ArticleResponseDto, 'cursor'>
   selectedArticle: string
   scrollTargetRef?: RefObject<HTMLDivElement | undefined>
 }

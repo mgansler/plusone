@@ -23,6 +23,7 @@ export type FeedResponse = {
 }
 
 export type UserFeedResponse = FeedResponse & {
+  feedId: string
   includeRead: boolean
   order: Sort
   expandContent: boolean

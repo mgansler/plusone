@@ -105,11 +105,43 @@ export class ArticleService {
     }
   }
 
+  async findRecentlyReadArticles(userId: User['id']): Promise<Article[]> {
+    const recentlyRead = await this.prismaService.recentlyRead.findMany({
+      include: { article: true },
+      where: { userId },
+      orderBy: { cursor: 'desc' },
+    })
+
+    return recentlyRead.map((r) => r.article)
+  }
+
   async toggleUnreadForUser(articleId: Article['id'], userId: User['id'], unread: boolean) {
-    return this.prismaService.userArticle.update({
-      select: { article: true, unread: true, cursor: true },
-      data: { unread },
-      where: { userId_articleId: { articleId, userId } },
+    return this.prismaService.$transaction(async (tx) => {
+      if (unread) {
+        // Remove this article
+        // Workaround until deleteIfExists is implemented: https://github.com/prisma/prisma/issues/9460
+        await tx.recentlyRead.deleteMany({ where: { userId, articleId: { equals: articleId } } })
+      } else {
+        // Remove first entry if over limit and add a new entry
+        const currentCursors = (
+          await tx.recentlyRead.findMany({
+            select: { cursor: true },
+            where: { userId },
+            orderBy: { cursor: 'desc' },
+            take: Math.max(this.configService.get('RECENTLY_READ_COUNT') - 1, 1),
+          })
+        ).map((e) => e.cursor)
+        await tx.recentlyRead.deleteMany({ where: { userId, cursor: { notIn: currentCursors } } })
+
+        // Add this article to RecentlyRead
+        await tx.recentlyRead.create({ data: { articleId, userId } })
+      }
+
+      return tx.userArticle.update({
+        select: { article: true, unread: true, cursor: true },
+        data: { unread },
+        where: { userId_articleId: { articleId, userId } },
+      })
     })
   }
 
