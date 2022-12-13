@@ -3,7 +3,7 @@ import { IsBoolean } from 'class-validator'
 
 import { Article, ArticleResponse, PaginatedArticles, ToggleUnreadRequest } from '@plusone/feeds/shared/types'
 
-export class ArticleDto implements Article {
+class ArticleDto implements Article {
   @ApiProperty()
   id: string
 
@@ -32,6 +32,9 @@ export class ArticleResponseDto implements ArticleResponse {
 
   @ApiProperty()
   unread: boolean
+
+  @ApiProperty()
+  starred: boolean
 }
 
 export class ArticleToggleUnreadDto implements ToggleUnreadRequest {
@@ -40,7 +43,7 @@ export class ArticleToggleUnreadDto implements ToggleUnreadRequest {
   unread: boolean
 }
 
-export class PaginatedArticlesDto implements PaginatedArticles {
+export class PaginatedArticleResponseDto implements PaginatedArticles {
   @ApiProperty({ type: [ArticleResponseDto] })
   content: ArticleResponseDto[]
 
@@ -55,4 +58,9 @@ export class PaginatedArticlesDto implements PaginatedArticles {
 
   @ApiPropertyOptional()
   lastCursor?: number
+}
+
+export class StarArticleDto {
+  @ApiProperty()
+  starred: boolean
 }

@@ -29,6 +29,7 @@ export function SearchBar() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TextField
+        id={'search-input'}
         InputProps={{
           startAdornment: (
             <InputAdornment position={'start'}>

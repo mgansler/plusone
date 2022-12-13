@@ -9,6 +9,7 @@ export interface Article {
 
 export interface ArticleResponse {
   unread: boolean
+  starred: boolean
   cursor: number
   article: Article
 }

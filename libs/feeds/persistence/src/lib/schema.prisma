@@ -59,6 +59,7 @@ model UserArticle {
   articleId String  @db.Uuid
   cursor    Int     @unique @default(autoincrement())
   unread    Boolean @default(true)
+  starred   Boolean @default(false)
 
   @@unique([userId, articleId])
 }

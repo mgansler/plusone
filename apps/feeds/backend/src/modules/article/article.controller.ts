@@ -1,12 +1,12 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common'
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { Feed } from '@plusone/feeds-persistence'
 import { Pagination, Sort } from '@plusone/feeds/shared/types'
 
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 
-import { ArticleDto, ArticleResponseDto, ArticleToggleUnreadDto, PaginatedArticlesDto } from './article.dto'
+import { ArticleResponseDto, ArticleToggleUnreadDto, PaginatedArticleResponseDto, StarArticleDto } from './article.dto'
 import { ArticleService } from './article.service'
 
 @UseGuards(JwtAccessTokenGuard)
@@ -36,16 +36,25 @@ export class ArticleController {
   }
 
   @ApiOperation({ operationId: 'toggle-unread' })
-  @ApiParam({ name: 'id', description: 'The id of the article.', type: String })
+  @ApiParam({ name: 'articleId', description: 'The id of the article.', type: String })
   @ApiOkResponse({ description: 'The read status of article has been toggled.', type: ArticleResponseDto })
-  @Post(':id')
+  @Post(':articleId')
   @HttpCode(HttpStatus.OK)
   async toggleUnread(
-    @Param('id') id: string,
+    @Param('articleId') id: string,
     @Body() toggleUnreadDto: ArticleToggleUnreadDto,
     @Req() { user },
   ): Promise<ArticleResponseDto> {
     return this.articleService.toggleUnreadForUser(id, user.id, toggleUnreadDto.unread)
+  }
+
+  @ApiOperation({ operationId: 'star-article' })
+  @ApiParam({ name: 'articleId', description: 'The id of the article.', type: String })
+  @ApiBody({ description: '', type: StarArticleDto })
+  @Put(':articleId/star')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  starArticle(@Param('articleId') articleId: string, @Body() starArticleDto: StarArticleDto, @Req() { user }) {
+    return this.articleService.starArticle(starArticleDto, articleId, user.id)
   }
 
   @ApiOperation({ operationId: 'find-articles' })
@@ -75,35 +84,46 @@ export class ArticleController {
     required: false,
   })
   @ApiQuery({
+    name: 'starred',
+    description: 'Should articles appear in chronically ascending or descending order.',
+    type: Boolean,
+    required: false,
+  })
+  @ApiQuery({
     name: 'r',
     description: 'Should read articles be included.',
     type: Boolean,
     required: false,
   })
-  @ApiOkResponse({ description: 'A list of articles matching the provided search string.', type: PaginatedArticlesDto })
+  @ApiOkResponse({
+    description: 'A list of articles matching the provided search string.',
+    type: PaginatedArticleResponseDto,
+  })
   @Get('find')
   find(
+    @Req() { user },
     @Query('cursor') cursor: Pagination['cursor'],
     @Query('s') searchTerm: string,
     @Query('f') feedId: Feed['id'],
     @Query('sort') sort: Sort = Sort.NewestFirst,
     @Query('r') includeRead = true,
-    @Req() { user },
-  ): Promise<PaginatedArticlesDto> {
+    @Query('starred') starred?: boolean,
+  ): Promise<PaginatedArticleResponseDto> {
     return this.articleService.find(user.id, {
       cursor,
       searchTerm,
       feedId,
       sort,
-      // includeUnread is parsed as string, we need to manually convert
+      // starred & includeUnread are parsed as string, we need to manually convert
+      starred: (starred as unknown as string) === 'true' ? true : undefined,
       includeRead: (includeRead as unknown as string) === 'true',
     })
   }
 
   @ApiOperation({ operationId: 'recently-read-articles' })
-  @ApiOkResponse({ description: 'List of recently read articles', type: [ArticleDto] })
+  @ApiOkResponse({ description: 'List of recently read articles', type: [ArticleResponseDto] })
   @Get('recentlyRead')
-  recentlyReadArticles(@Req() { user }): Promise<ArticleDto[]> {
+  recentlyReadArticles(@Req() { user }): Promise<ArticleResponseDto[]> {
     return this.articleService.findRecentlyReadArticles(user.id)
   }
 }

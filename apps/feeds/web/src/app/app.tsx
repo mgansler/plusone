@@ -70,8 +70,8 @@ export function App() {
             <Route path={'member'} element={<Member />}>
               <Route path={'new'} element={<NewFeed />} />
               <Route path={'feeds'} element={<FeedList />}>
-                <Route path={'recent'} element={<RecentArticles />} />
                 <Route path={':feedId/settings'} element={<FeedIdSettings />} />
+                <Route path={'recent'} element={<RecentArticles />} />
                 <Route path={':feedId'} element={<Articles />} />
               </Route>
               <Route path={'tags'} element={<Tags />} />

@@ -104,6 +104,7 @@ export function FeedList() {
   const classNames = useClassNames()
   const { feedId } = useParams()
   const isRecentPath = useMatch('/member/feeds/recent')
+  const isStarredPath = useMatch('/member/feeds/starred')
   const navigate = useNavigate()
   const { data } = useGetUserFeeds()
   const [searchParams] = useSearchParams()
@@ -151,6 +152,16 @@ export function FeedList() {
               onClick={() => navigate({ pathname: 'recent' })}
             >
               <ListItemText>Recently Read</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem>
+            <ListItemButton
+              aria-label={'starred articles'}
+              selected={isStarredPath !== null}
+              onClick={() => navigate({ pathname: 'starred' })}
+            >
+              <ListItemText>Starred</ListItemText>
             </ListItemButton>
           </ListItem>
           <ListItem>
