@@ -2,7 +2,7 @@ import { CheckBoxOutlineBlank, CheckBoxOutlined, OpenInNew } from '@mui/icons-ma
 import { Card, CardContent, CardHeader, IconButton } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import type { RefObject } from 'react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import {
   getFindArticlesQueryKey,
@@ -26,11 +26,16 @@ export function useReadArticle() {
     },
   })
 
-  return async (id: ArticleDto['id'], read: boolean) =>
-    await mutateAsync({
-      id,
-      data: { unread: !read },
-    })
+  const readArticle = useCallback(
+    async (id: ArticleDto['id'], read: boolean) =>
+      await mutateAsync({
+        id,
+        data: { unread: !read },
+      }),
+    [mutateAsync],
+  )
+
+  return readArticle
 }
 
 type ArticleProps = {

@@ -54,7 +54,7 @@ export function RecentlyReadArticleList({ articles }: ArticleListProps) {
       // console.log('removing event listener')
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [articles, selectedArticle])
+  }, [articles, readArticle, selectedArticle])
 
   useEffect(() => {
     if (containerRef.current && scrollTargetRef.current) {

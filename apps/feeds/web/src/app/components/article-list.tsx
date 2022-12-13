@@ -61,7 +61,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
       // console.log('removing event listener')
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [articles, fetchNextPage, selectedArticle])
+  }, [articles, fetchNextPage, readArticle, selectedArticle])
 
   useEffect(() => {
     if (containerRef.current && scrollTargetRef.current) {
