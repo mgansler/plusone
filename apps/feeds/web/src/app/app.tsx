@@ -16,7 +16,6 @@ import { FeedList } from './pages/member/feeds'
 import { Articles } from './pages/member/feeds/$feedId'
 import { FeedIdSettings } from './pages/member/feeds/$feedId.settings'
 import { RecentArticles } from './pages/member/feeds/recent'
-import { StarredArticles } from './pages/member/feeds/starred'
 import { NewFeed } from './pages/member/new-feed'
 import { Tags } from './pages/member/tags'
 
@@ -73,7 +72,6 @@ export function App() {
               <Route path={'feeds'} element={<FeedList />}>
                 <Route path={':feedId/settings'} element={<FeedIdSettings />} />
                 <Route path={'recent'} element={<RecentArticles />} />
-                <Route path={'starred'} element={<StarredArticles />} />
                 <Route path={':feedId'} element={<Articles />} />
               </Route>
               <Route path={'tags'} element={<Tags />} />

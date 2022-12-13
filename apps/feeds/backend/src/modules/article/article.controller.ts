@@ -84,6 +84,12 @@ export class ArticleController {
     required: false,
   })
   @ApiQuery({
+    name: 'starred',
+    description: 'Should articles appear in chronically ascending or descending order.',
+    type: Boolean,
+    required: false,
+  })
+  @ApiQuery({
     name: 'r',
     description: 'Should read articles be included.',
     type: Boolean,
@@ -95,19 +101,21 @@ export class ArticleController {
   })
   @Get('find')
   find(
+    @Req() { user },
     @Query('cursor') cursor: Pagination['cursor'],
     @Query('s') searchTerm: string,
     @Query('f') feedId: Feed['id'],
     @Query('sort') sort: Sort = Sort.NewestFirst,
     @Query('r') includeRead = true,
-    @Req() { user },
+    @Query('starred') starred?: boolean,
   ): Promise<PaginatedArticleResponseDto> {
     return this.articleService.find(user.id, {
       cursor,
       searchTerm,
       feedId,
       sort,
-      // includeUnread is parsed as string, we need to manually convert
+      // starred & includeUnread are parsed as string, we need to manually convert
+      starred: (starred as unknown as string) === 'true' ? true : undefined,
       includeRead: (includeRead as unknown as string) === 'true',
     })
   }
@@ -117,21 +125,5 @@ export class ArticleController {
   @Get('recentlyRead')
   recentlyReadArticles(@Req() { user }): Promise<ArticleResponseDto[]> {
     return this.articleService.findRecentlyReadArticles(user.id)
-  }
-
-  @ApiOperation({ operationId: 'starred-articles' })
-  @ApiQuery({
-    name: 'cursor',
-    description: 'Cursor of the last article for pagination.',
-    type: Number,
-    required: false,
-  })
-  @ApiOkResponse({ description: 'List of starred articles', type: PaginatedArticleResponseDto })
-  @Get('starredArticles')
-  starredArticles(
-    @Query('cursor') cursor: Pagination['cursor'],
-    @Req() { user },
-  ): Promise<PaginatedArticleResponseDto> {
-    return this.articleService.getStarredArticles(user.id, { cursor })
   }
 }

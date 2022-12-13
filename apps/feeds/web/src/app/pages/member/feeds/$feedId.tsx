@@ -23,8 +23,11 @@ export function Articles() {
 
   const queryClient = useQueryClient()
 
+  const f = feedId === 'all' || feedId === 'starred' ? undefined : feedId
+  const starred = feedId === 'starred' ? true : undefined
+
   const { data, hasNextPage, fetchNextPage } = useFindArticlesInfinite(
-    { f: feedId !== 'all' ? feedId : undefined, s: search, sort, r: includeRead },
+    { f, s: search, sort, r: includeRead, starred },
     {
       query: {
         getNextPageParam: (lastPage) =>

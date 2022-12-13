@@ -20,6 +20,10 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
     const handleKeyDown = async (event: KeyboardEvent) => {
       const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
 
+      if (event.target['id'] === 'search-input') {
+        return
+      }
+
       switch (true) {
         case isKeyCombo(event, 'ArrowUp') && currentIndex > 0:
           setSelectedArticle(articles[currentIndex - 1].article.id)

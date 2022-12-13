@@ -76,7 +76,14 @@ export type DiscoverFeedParams = { url: string }
 
 export type StarredArticlesParams = { cursor?: number }
 
-export type FindArticlesParams = { s?: string; r?: boolean; sort?: Sort; f?: string; cursor?: number }
+export type FindArticlesParams = {
+  s?: string
+  starred?: boolean
+  r?: boolean
+  sort?: Sort
+  f?: string
+  cursor?: number
+}
 
 export type MarkArticlesReadParams = { s?: string; f?: string }
 
