@@ -1,4 +1,4 @@
-import { CheckBoxOutlineBlank, CheckBoxOutlined, OpenInNew } from '@mui/icons-material'
+import { CheckBoxOutlineBlank, CheckBoxOutlined, OpenInNew, Star, StarOutline } from '@mui/icons-material'
 import { Card, CardContent, CardHeader, IconButton } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import type { RefObject } from 'react'
@@ -8,6 +8,8 @@ import {
   getFindArticlesQueryKey,
   getGetUserFeedsQueryKey,
   getRecentlyReadArticlesQueryKey,
+  getStarredArticlesQueryKey,
+  useStarArticle,
   useToggleUnread,
 } from '@plusone/feeds/api-client'
 import type { ArticleDto, ArticleResponseDto } from '@plusone/feeds/api-client'
@@ -26,31 +28,43 @@ export function useReadArticle() {
     },
   })
 
-  const readArticle = useCallback(
-    async (id: ArticleDto['id'], read: boolean) =>
-      await mutateAsync({
-        id,
-        data: { unread: !read },
-      }),
+  return useCallback(
+    async (articleId: ArticleDto['id'], read: boolean) => await mutateAsync({ articleId, data: { unread: !read } }),
     [mutateAsync],
   )
+}
 
-  return readArticle
+function useMarkArticleStarred() {
+  const queryClient = useQueryClient()
+  const { mutateAsync } = useStarArticle({
+    mutation: {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(getFindArticlesQueryKey())
+        await queryClient.invalidateQueries(getStarredArticlesQueryKey())
+      },
+    },
+  })
+
+  return useCallback(
+    async (articleId: ArticleDto['id'], starred: boolean) => await mutateAsync({ articleId, data: { starred } }),
+    [mutateAsync],
+  )
 }
 
 type ArticleProps = {
-  article: Omit<ArticleResponseDto, 'cursor'>
+  article: ArticleResponseDto
   selectedArticle: string
   scrollTargetRef?: RefObject<HTMLDivElement | undefined>
 }
 
-export function Article({ article: { article, unread }, selectedArticle, scrollTargetRef }: ArticleProps) {
+export function Article({ article: { article, unread, starred }, selectedArticle, scrollTargetRef }: ArticleProps) {
   const { expandContent } = useFeedSettingsContext()
   const [showContent, setShowContent] = useState<boolean>(expandContent)
 
   useEffect(() => setShowContent(expandContent), [expandContent])
 
   const readArticle = useReadArticle()
+  const starArticle = useMarkArticleStarred()
 
   const color = selectedArticle === article.id ? 'primary' : 'inherit'
 
@@ -59,9 +73,14 @@ export function Article({ article: { article, unread }, selectedArticle, scrollT
       <Card ref={scrollTargetRef}>
         <CardHeader
           avatar={
-            <IconButton onClick={() => readArticle(article.id, unread)}>
-              {unread ? <CheckBoxOutlineBlank color={color} /> : <CheckBoxOutlined color={color} />}
-            </IconButton>
+            <>
+              <IconButton onClick={() => readArticle(article.id, unread)}>
+                {unread ? <CheckBoxOutlineBlank color={color} /> : <CheckBoxOutlined color={color} />}
+              </IconButton>
+              <IconButton onClick={() => starArticle(article.id, !starred)}>
+                {starred ? <Star /> : <StarOutline />}
+              </IconButton>
+            </>
           }
           title={article.title}
           action={

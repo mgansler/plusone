@@ -74,6 +74,8 @@ export type HealthControllerGetHealthStatus200 = {
 
 export type DiscoverFeedParams = { url: string }
 
+export type StarredArticlesParams = { cursor?: number }
+
 export type FindArticlesParams = { s?: string; r?: boolean; sort?: Sort; f?: string; cursor?: number }
 
 export type MarkArticlesReadParams = { s?: string; f?: string }
@@ -160,6 +162,14 @@ export interface UserLoginDto {
   password: string
 }
 
+export interface PaginatedArticleResponseDto {
+  content: ArticleResponseDto[]
+  pageSize: number
+  totalCount: number
+  unreadCount: number
+  lastCursor?: number
+}
+
 export type Sort = typeof Sort[keyof typeof Sort]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -167,6 +177,10 @@ export const Sort = {
   desc: 'desc',
   asc: 'asc',
 } as const
+
+export interface StarArticleDto {
+  starred: boolean
+}
 
 export interface ArticleDto {
   id: string
@@ -181,14 +195,7 @@ export interface ArticleResponseDto {
   article: ArticleDto
   cursor: number
   unread: boolean
-}
-
-export interface PaginatedArticlesDto {
-  content: ArticleResponseDto[]
-  pageSize: number
-  totalCount: number
-  unreadCount: number
-  lastCursor?: number
+  starred: boolean
 }
 
 export interface ArticleToggleUnreadDto {
@@ -230,9 +237,9 @@ export const useMarkArticlesRead = <TError = unknown, TContext = unknown>(option
   >(mutationFn, mutationOptions)
 }
 
-export const toggleUnread = (id: string, articleToggleUnreadDto: ArticleToggleUnreadDto) => {
+export const toggleUnread = (articleId: string, articleToggleUnreadDto: ArticleToggleUnreadDto) => {
   return customAxiosInstance<ArticleResponseDto>({
-    url: `/api/article/${id}`,
+    url: `/api/article/${articleId}`,
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     data: articleToggleUnreadDto,
@@ -247,7 +254,7 @@ export const useToggleUnread = <TError = unknown, TContext = unknown>(options?: 
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof toggleUnread>>,
     TError,
-    { id: string; data: ArticleToggleUnreadDto },
+    { articleId: string; data: ArticleToggleUnreadDto },
     TContext
   >
 }) => {
@@ -255,23 +262,63 @@ export const useToggleUnread = <TError = unknown, TContext = unknown>(options?: 
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof toggleUnread>>,
-    { id: string; data: ArticleToggleUnreadDto }
+    { articleId: string; data: ArticleToggleUnreadDto }
   > = (props) => {
-    const { id, data } = props ?? {}
+    const { articleId, data } = props ?? {}
 
-    return toggleUnread(id, data)
+    return toggleUnread(articleId, data)
   }
 
   return useMutation<
     Awaited<ReturnType<typeof toggleUnread>>,
     TError,
-    { id: string; data: ArticleToggleUnreadDto },
+    { articleId: string; data: ArticleToggleUnreadDto },
+    TContext
+  >(mutationFn, mutationOptions)
+}
+
+export const starArticle = (articleId: string, starArticleDto: StarArticleDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/article/${articleId}/star`,
+    method: 'put',
+    headers: { 'Content-Type': 'application/json' },
+    data: starArticleDto,
+  })
+}
+
+export type StarArticleMutationResult = NonNullable<Awaited<ReturnType<typeof starArticle>>>
+export type StarArticleMutationBody = StarArticleDto
+export type StarArticleMutationError = unknown
+
+export const useStarArticle = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof starArticle>>,
+    TError,
+    { articleId: string; data: StarArticleDto },
+    TContext
+  >
+}) => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof starArticle>>,
+    { articleId: string; data: StarArticleDto }
+  > = (props) => {
+    const { articleId, data } = props ?? {}
+
+    return starArticle(articleId, data)
+  }
+
+  return useMutation<
+    Awaited<ReturnType<typeof starArticle>>,
+    TError,
+    { articleId: string; data: StarArticleDto },
     TContext
   >(mutationFn, mutationOptions)
 }
 
 export const findArticles = (params?: FindArticlesParams, signal?: AbortSignal) => {
-  return customAxiosInstance<PaginatedArticlesDto>({ url: `/api/article/find`, method: 'get', params, signal })
+  return customAxiosInstance<PaginatedArticleResponseDto>({ url: `/api/article/find`, method: 'get', params, signal })
 }
 
 export const getFindArticlesQueryKey = (params?: FindArticlesParams) => [
@@ -329,7 +376,7 @@ export const useFindArticles = <TData = Awaited<ReturnType<typeof findArticles>>
 }
 
 export const recentlyReadArticles = (signal?: AbortSignal) => {
-  return customAxiosInstance<ArticleDto[]>({ url: `/api/article/recentlyRead`, method: 'get', signal })
+  return customAxiosInstance<ArticleResponseDto[]>({ url: `/api/article/recentlyRead`, method: 'get', signal })
 }
 
 export const getRecentlyReadArticlesQueryKey = () => [`/api/article/recentlyRead`]
@@ -378,6 +425,70 @@ export const useRecentlyReadArticles = <
     recentlyReadArticles(signal)
 
   const query = useQuery<Awaited<ReturnType<typeof recentlyReadArticles>>, TError, TData>(
+    queryKey,
+    queryFn,
+    queryOptions,
+  ) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export const starredArticles = (params?: StarredArticlesParams, signal?: AbortSignal) => {
+  return customAxiosInstance<PaginatedArticleResponseDto>({
+    url: `/api/article/starredArticles`,
+    method: 'get',
+    params,
+    signal,
+  })
+}
+
+export const getStarredArticlesQueryKey = (params?: StarredArticlesParams) => [
+  `/api/article/starredArticles`,
+  ...(params ? [params] : []),
+]
+
+export type StarredArticlesInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof starredArticles>>>
+export type StarredArticlesInfiniteQueryError = unknown
+
+export const useStarredArticlesInfinite = <TData = Awaited<ReturnType<typeof starredArticles>>, TError = unknown>(
+  params?: StarredArticlesParams,
+  options?: { query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof starredArticles>>, TError, TData> },
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getStarredArticlesQueryKey(params)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof starredArticles>>> = ({ signal, pageParam }) =>
+    starredArticles({ cursor: pageParam, ...params }, signal)
+
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof starredArticles>>, TError, TData>(
+    queryKey,
+    queryFn,
+    queryOptions,
+  ) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export type StarredArticlesQueryResult = NonNullable<Awaited<ReturnType<typeof starredArticles>>>
+export type StarredArticlesQueryError = unknown
+
+export const useStarredArticles = <TData = Awaited<ReturnType<typeof starredArticles>>, TError = unknown>(
+  params?: StarredArticlesParams,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof starredArticles>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getStarredArticlesQueryKey(params)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof starredArticles>>> = ({ signal }) =>
+    starredArticles(params, signal)
+
+  const query = useQuery<Awaited<ReturnType<typeof starredArticles>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,

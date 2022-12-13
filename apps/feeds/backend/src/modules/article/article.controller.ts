@@ -1,12 +1,12 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common'
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { Feed } from '@plusone/feeds-persistence'
 import { Pagination, Sort } from '@plusone/feeds/shared/types'
 
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 
-import { ArticleDto, ArticleResponseDto, ArticleToggleUnreadDto, PaginatedArticlesDto } from './article.dto'
+import { ArticleResponseDto, ArticleToggleUnreadDto, PaginatedArticleResponseDto, StarArticleDto } from './article.dto'
 import { ArticleService } from './article.service'
 
 @UseGuards(JwtAccessTokenGuard)
@@ -36,16 +36,25 @@ export class ArticleController {
   }
 
   @ApiOperation({ operationId: 'toggle-unread' })
-  @ApiParam({ name: 'id', description: 'The id of the article.', type: String })
+  @ApiParam({ name: 'articleId', description: 'The id of the article.', type: String })
   @ApiOkResponse({ description: 'The read status of article has been toggled.', type: ArticleResponseDto })
-  @Post(':id')
+  @Post(':articleId')
   @HttpCode(HttpStatus.OK)
   async toggleUnread(
-    @Param('id') id: string,
+    @Param('articleId') id: string,
     @Body() toggleUnreadDto: ArticleToggleUnreadDto,
     @Req() { user },
   ): Promise<ArticleResponseDto> {
     return this.articleService.toggleUnreadForUser(id, user.id, toggleUnreadDto.unread)
+  }
+
+  @ApiOperation({ operationId: 'star-article' })
+  @ApiParam({ name: 'articleId', description: 'The id of the article.', type: String })
+  @ApiBody({ description: '', type: StarArticleDto })
+  @Put(':articleId/star')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  starArticle(@Param('articleId') articleId: string, @Body() starArticleDto: StarArticleDto, @Req() { user }) {
+    return this.articleService.starArticle(starArticleDto, articleId, user.id)
   }
 
   @ApiOperation({ operationId: 'find-articles' })
@@ -80,7 +89,10 @@ export class ArticleController {
     type: Boolean,
     required: false,
   })
-  @ApiOkResponse({ description: 'A list of articles matching the provided search string.', type: PaginatedArticlesDto })
+  @ApiOkResponse({
+    description: 'A list of articles matching the provided search string.',
+    type: PaginatedArticleResponseDto,
+  })
   @Get('find')
   find(
     @Query('cursor') cursor: Pagination['cursor'],
@@ -89,7 +101,7 @@ export class ArticleController {
     @Query('sort') sort: Sort = Sort.NewestFirst,
     @Query('r') includeRead = true,
     @Req() { user },
-  ): Promise<PaginatedArticlesDto> {
+  ): Promise<PaginatedArticleResponseDto> {
     return this.articleService.find(user.id, {
       cursor,
       searchTerm,
@@ -101,9 +113,25 @@ export class ArticleController {
   }
 
   @ApiOperation({ operationId: 'recently-read-articles' })
-  @ApiOkResponse({ description: 'List of recently read articles', type: [ArticleDto] })
+  @ApiOkResponse({ description: 'List of recently read articles', type: [ArticleResponseDto] })
   @Get('recentlyRead')
-  recentlyReadArticles(@Req() { user }): Promise<ArticleDto[]> {
+  recentlyReadArticles(@Req() { user }): Promise<ArticleResponseDto[]> {
     return this.articleService.findRecentlyReadArticles(user.id)
+  }
+
+  @ApiOperation({ operationId: 'starred-articles' })
+  @ApiQuery({
+    name: 'cursor',
+    description: 'Cursor of the last article for pagination.',
+    type: Number,
+    required: false,
+  })
+  @ApiOkResponse({ description: 'List of starred articles', type: PaginatedArticleResponseDto })
+  @Get('starredArticles')
+  starredArticles(
+    @Query('cursor') cursor: Pagination['cursor'],
+    @Req() { user },
+  ): Promise<PaginatedArticleResponseDto> {
+    return this.articleService.getStarredArticles(user.id, { cursor })
   }
 }

@@ -5,6 +5,7 @@ import { Item } from 'rss-parser'
 import { Article, Feed, Prisma, PrismaService, User } from '@plusone/feeds-persistence'
 import { PaginatedArticles, Pagination, Sort } from '@plusone/feeds/shared/types'
 
+import { ArticleResponseDto, StarArticleDto } from './article.dto'
 import { getArticleBuilderFunction } from './transformation/transformation'
 
 type ArticleFindParams = Pagination & {
@@ -89,7 +90,7 @@ export class ArticleService {
       this.prismaService.userArticle.count({ where }),
       this.prismaService.userArticle.findMany({
         ...pagination,
-        select: { article: true, unread: true, cursor: true },
+        select: { article: true, unread: true, cursor: true, starred: true },
         where,
         orderBy,
       }),
@@ -105,14 +106,55 @@ export class ArticleService {
     }
   }
 
-  async findRecentlyReadArticles(userId: User['id']): Promise<Article[]> {
+  async findRecentlyReadArticles(userId: User['id']): Promise<ArticleResponseDto[]> {
     const recentlyRead = await this.prismaService.recentlyRead.findMany({
-      include: { article: true },
+      include: {
+        article: {
+          include: {
+            UserArticle: {
+              select: { starred: true, unread: true, cursor: true },
+              where: { userId },
+            },
+          },
+        },
+      },
       where: { userId },
       orderBy: { cursor: 'desc' },
     })
 
-    return recentlyRead.map((r) => r.article)
+    return recentlyRead.map(({ article: { UserArticle, ...article } }) => ({
+      article,
+      cursor: UserArticle[0].cursor,
+      unread: UserArticle[0].unread,
+      starred: UserArticle[0].starred,
+    }))
+  }
+
+  async getStarredArticles(userId: User['id'], { cursor }: Pagination): Promise<PaginatedArticles> {
+    const pagination = this.normalizePagination(cursor)
+
+    const where: Prisma.UserArticleFindManyArgs['where'] = {
+      userId,
+      starred: true,
+    }
+
+    const [totalCount, content, unreadCount] = await this.prismaService.$transaction([
+      this.prismaService.userArticle.count({ where }),
+      this.prismaService.userArticle.findMany({
+        ...pagination,
+        select: { article: true, unread: true, cursor: true, starred: true },
+        where,
+      }),
+      this.prismaService.userArticle.count({ where: { ...where, unread: true } }),
+    ])
+
+    return {
+      content,
+      totalCount,
+      lastCursor: content[content.length - 1]?.cursor,
+      pageSize: this.configService.get('PAGE_SIZE'),
+      unreadCount,
+    }
   }
 
   async toggleUnreadForUser(articleId: Article['id'], userId: User['id'], unread: boolean) {
@@ -142,10 +184,17 @@ export class ArticleService {
       }
 
       return tx.userArticle.update({
-        select: { article: true, unread: true, cursor: true },
+        select: { article: true, unread: true, cursor: true, starred: true },
         data: { unread },
         where: { userId_articleId: { articleId, userId } },
       })
+    })
+  }
+
+  async starArticle({ starred }: StarArticleDto, articleId: Article['id'], userId: User['id']) {
+    return this.prismaService.userArticle.update({
+      where: { userId_articleId: { userId, articleId } },
+      data: { starred },
     })
   }
 
