@@ -67,7 +67,7 @@ describe('feeds', () => {
     cy.findByRole('textbox', { name: 'feed-url' }).type('https://www.heise.de/rss/heise.rdf')
     cy.findByRole('button', { name: 'save' }).click()
 
-    cy.on('uncaught:exception', (err, runnable) => {
+    cy.on('uncaught:exception', (err) => {
       if (err.message.includes('You are already subscribed to this feed')) {
         return false
       }
