@@ -8,7 +8,6 @@ import {
   getFindArticlesQueryKey,
   getGetUserFeedsQueryKey,
   getRecentlyReadArticlesQueryKey,
-  getStarredArticlesQueryKey,
   useStarArticle,
   useToggleUnread,
 } from '@plusone/feeds/api-client'
@@ -40,7 +39,6 @@ function useMarkArticleStarred() {
     mutation: {
       onSuccess: async () => {
         await queryClient.invalidateQueries(getFindArticlesQueryKey())
-        await queryClient.invalidateQueries(getStarredArticlesQueryKey())
       },
     },
   })

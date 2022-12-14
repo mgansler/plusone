@@ -5,6 +5,8 @@ import { Item } from 'rss-parser'
 import { Article, Feed, Prisma, PrismaService, User } from '@plusone/feeds-persistence'
 import { PaginatedArticles, Pagination, Sort } from '@plusone/feeds/shared/types'
 
+import { PAGE_SIZE } from '../../app/consts'
+
 import { ArticleResponseDto, StarArticleDto } from './article.dto'
 import { getArticleBuilderFunction } from './transformation/transformation'
 
@@ -188,7 +190,7 @@ export class ArticleService {
     return {
       cursor: isFirstRequest ? undefined : { cursor: Number(cursor) },
       skip: isFirstRequest ? 0 : 1,
-      take: this.configService.get('PAGE_SIZE'),
+      take: this.configService.get(PAGE_SIZE),
     }
   }
 
@@ -230,7 +232,7 @@ export class ArticleService {
       content,
       totalCount,
       lastCursor: content[content.length - 1]?.cursor,
-      pageSize: this.configService.get('PAGE_SIZE'),
+      pageSize: this.configService.get(PAGE_SIZE),
       unreadCount,
     }
   }

@@ -74,8 +74,6 @@ export type HealthControllerGetHealthStatus200 = {
 
 export type DiscoverFeedParams = { url: string }
 
-export type StarredArticlesParams = { cursor?: number }
-
 export type FindArticlesParams = {
   s?: string
   starred?: boolean
@@ -145,6 +143,10 @@ export interface DiscoverResponseDto {
   feedUrl: string
   title: string
   url: string
+}
+
+export interface BootInfoDto {
+  pageSize: number
 }
 
 export interface UserResponseDto {
@@ -442,70 +444,6 @@ export const useRecentlyReadArticles = <
   return query
 }
 
-export const starredArticles = (params?: StarredArticlesParams, signal?: AbortSignal) => {
-  return customAxiosInstance<PaginatedArticleResponseDto>({
-    url: `/api/article/starredArticles`,
-    method: 'get',
-    params,
-    signal,
-  })
-}
-
-export const getStarredArticlesQueryKey = (params?: StarredArticlesParams) => [
-  `/api/article/starredArticles`,
-  ...(params ? [params] : []),
-]
-
-export type StarredArticlesInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof starredArticles>>>
-export type StarredArticlesInfiniteQueryError = unknown
-
-export const useStarredArticlesInfinite = <TData = Awaited<ReturnType<typeof starredArticles>>, TError = unknown>(
-  params?: StarredArticlesParams,
-  options?: { query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof starredArticles>>, TError, TData> },
-): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getStarredArticlesQueryKey(params)
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof starredArticles>>> = ({ signal, pageParam }) =>
-    starredArticles({ cursor: pageParam, ...params }, signal)
-
-  const query = useInfiniteQuery<Awaited<ReturnType<typeof starredArticles>>, TError, TData>(
-    queryKey,
-    queryFn,
-    queryOptions,
-  ) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
-
-  query.queryKey = queryKey
-
-  return query
-}
-
-export type StarredArticlesQueryResult = NonNullable<Awaited<ReturnType<typeof starredArticles>>>
-export type StarredArticlesQueryError = unknown
-
-export const useStarredArticles = <TData = Awaited<ReturnType<typeof starredArticles>>, TError = unknown>(
-  params?: StarredArticlesParams,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof starredArticles>>, TError, TData> },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getStarredArticlesQueryKey(params)
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof starredArticles>>> = ({ signal }) =>
-    starredArticles(params, signal)
-
-  const query = useQuery<Awaited<ReturnType<typeof starredArticles>>, TError, TData>(
-    queryKey,
-    queryFn,
-    queryOptions,
-  ) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
-
-  query.queryKey = queryKey
-
-  return query
-}
-
 export const login = (userLoginDto: UserLoginDto) => {
   return customAxiosInstance<LoginResponseDto>({
     url: `/api/authentication/login`,
@@ -712,6 +650,58 @@ export const useRefresh = <TData = Awaited<ReturnType<typeof refresh>>, TError =
   const queryFn: QueryFunction<Awaited<ReturnType<typeof refresh>>> = ({ signal }) => refresh(signal)
 
   const query = useQuery<Awaited<ReturnType<typeof refresh>>, TError, TData>(
+    queryKey,
+    queryFn,
+    queryOptions,
+  ) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export const bootInfo = (signal?: AbortSignal) => {
+  return customAxiosInstance<BootInfoDto>({ url: `/api/boot-info`, method: 'get', signal })
+}
+
+export const getBootInfoQueryKey = () => [`/api/boot-info`]
+
+export type BootInfoInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof bootInfo>>>
+export type BootInfoInfiniteQueryError = unknown
+
+export const useBootInfoInfinite = <TData = Awaited<ReturnType<typeof bootInfo>>, TError = unknown>(options?: {
+  query?: UseInfiniteQueryOptions<Awaited<ReturnType<typeof bootInfo>>, TError, TData>
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getBootInfoQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof bootInfo>>> = ({ signal }) => bootInfo(signal)
+
+  const query = useInfiniteQuery<Awaited<ReturnType<typeof bootInfo>>, TError, TData>(
+    queryKey,
+    queryFn,
+    queryOptions,
+  ) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryKey
+
+  return query
+}
+
+export type BootInfoQueryResult = NonNullable<Awaited<ReturnType<typeof bootInfo>>>
+export type BootInfoQueryError = unknown
+
+export const useBootInfo = <TData = Awaited<ReturnType<typeof bootInfo>>, TError = unknown>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof bootInfo>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getBootInfoQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof bootInfo>>> = ({ signal }) => bootInfo(signal)
+
+  const query = useQuery<Awaited<ReturnType<typeof bootInfo>>, TError, TData>(
     queryKey,
     queryFn,
     queryOptions,

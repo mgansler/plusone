@@ -2,6 +2,7 @@ import { Stack } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 
 import type { ArticleResponseDto, useFindArticlesInfinite } from '@plusone/feeds/api-client'
+import { useBootInfo } from '@plusone/feeds/api-client'
 
 import { isKeyCombo } from '../utils/keyboard'
 
@@ -15,6 +16,8 @@ type ArticleListProps = {
 export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
   const [selectedArticle, setSelectedArticle] = useState<string>(articles[0]?.article.id)
   const readArticle = useReadArticle()
+
+  const { data: bootInfo } = useBootInfo()
 
   useEffect(() => {
     const handleKeyDown = async (event: KeyboardEvent) => {
@@ -31,7 +34,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
 
         case isKeyCombo(event, 'ArrowDown') && currentIndex < articles.length - 1:
           setSelectedArticle(articles[currentIndex + 1].article.id)
-          if (currentIndex > articles.length - 20) {
+          if (currentIndex > articles.length - (bootInfo?.data.pageSize ?? 20) - 1) {
             fetchNextPage()
           }
           break
@@ -44,7 +47,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
           await readArticle(articles[currentIndex].article.id, true)
           if (currentIndex < articles.length - 1) {
             setSelectedArticle(articles[currentIndex + 1].article.id)
-            if (currentIndex > articles.length - 20) {
+            if (currentIndex > articles.length - (bootInfo?.data.pageSize ?? 20) - 1) {
               fetchNextPage()
             }
           }
@@ -65,7 +68,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
       // console.log('removing event listener')
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [articles, fetchNextPage, readArticle, selectedArticle])
+  }, [articles, bootInfo?.data.pageSize, fetchNextPage, readArticle, selectedArticle])
 
   useEffect(() => {
     if (containerRef.current && scrollTargetRef.current) {
