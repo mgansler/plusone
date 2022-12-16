@@ -146,6 +146,7 @@ export interface DiscoverResponseDto {
 }
 
 export interface BootInfoDto {
+  appVersion: string
   pageSize: number
 }
 
