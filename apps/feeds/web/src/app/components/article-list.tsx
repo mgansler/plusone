@@ -20,13 +20,26 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
   const { data: bootInfo } = useBootInfo()
 
   useEffect(() => {
-    const handleKeyDown = async (event: KeyboardEvent) => {
-      const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
-      const loadMoreThreshold = articles.length - Math.floor((bootInfo?.data.pageSize ?? 20) / 2)
+    const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
+    if (currentIndex === -1) {
+      setSelectedArticle(articles[0].article.id)
+    }
+  }, [articles, selectedArticle])
 
+  useEffect(() => {
+    const handleKeyDown = async (event: KeyboardEvent) => {
       if (event.target['id'] === 'search-input') {
+        // Disable keyboard control in case the search-input is focused
         return
       }
+
+      const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
+      if (currentIndex < 0 || currentIndex >= articles.length) {
+        // Out of bounds
+        return
+      }
+
+      const loadMoreThreshold = articles.length - Math.floor((bootInfo?.data.pageSize ?? 20) / 2)
 
       switch (true) {
         case isKeyCombo(event, 'ArrowUp') && currentIndex > 0:
