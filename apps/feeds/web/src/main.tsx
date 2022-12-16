@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { DarkModeThemeProvider } from '@plusone/dark-mode-theme-provider'
 
 import { App } from './app/app'
+import { AppVersion } from './app/components/app-version'
 import { UserContextProvider } from './app/context/user'
 
 const queryClient = new QueryClient({
@@ -29,6 +30,7 @@ root.render(
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
           <UserContextProvider>
+            <AppVersion />
             <App />
           </UserContextProvider>
           {typeof window['Cypress'] === 'undefined' && <ReactQueryDevtools initialIsOpen={false} />}

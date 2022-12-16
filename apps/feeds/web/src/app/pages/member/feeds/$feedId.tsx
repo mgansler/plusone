@@ -31,7 +31,7 @@ export function Articles() {
     {
       query: {
         getNextPageParam: (lastPage) =>
-          lastPage.data.content.length < lastPage.data.pageSize ? false : lastPage.data.lastCursor,
+          lastPage.data.content.length < lastPage.data.pageSize ? undefined : lastPage.data.lastCursor,
       },
     },
   )
