@@ -29,11 +29,13 @@ export function RecentlyReadArticleList({ articles }: ArticleListProps) {
           break
 
         case isKeyCombo(event, 'Space'):
-          await readArticle(articles[currentIndex].article.id, true)
+          await readArticle(articles[currentIndex].article.id, false)
+          if (currentIndex < articles.length - 1) {
+            setSelectedArticle(articles[currentIndex + 1].article.id)
+          }
           break
 
         case isKeyCombo(event, 'KeyN'):
-          await readArticle(articles[currentIndex].article.id, true)
           if (currentIndex < articles.length - 1) {
             setSelectedArticle(articles[currentIndex + 1].article.id)
           }
@@ -41,7 +43,6 @@ export function RecentlyReadArticleList({ articles }: ArticleListProps) {
 
         case isKeyCombo(event, 'KeyO'):
           window.open(articles[currentIndex].article.link, '_blank')
-          await readArticle(articles[currentIndex].article.id, true)
           break
       }
     }

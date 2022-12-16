@@ -20,12 +20,26 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
   const { data: bootInfo } = useBootInfo()
 
   useEffect(() => {
-    const handleKeyDown = async (event: KeyboardEvent) => {
-      const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
+    const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
+    if (currentIndex === -1) {
+      setSelectedArticle(articles[0].article.id)
+    }
+  }, [articles, selectedArticle])
 
+  useEffect(() => {
+    const handleKeyDown = async (event: KeyboardEvent) => {
       if (event.target['id'] === 'search-input') {
+        // Disable keyboard control in case the search-input is focused
         return
       }
+
+      const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
+      if (currentIndex < 0 || currentIndex >= articles.length) {
+        // Out of bounds
+        return
+      }
+
+      const loadMoreThreshold = articles.length - Math.floor((bootInfo?.data.pageSize ?? 20) / 2)
 
       switch (true) {
         case isKeyCombo(event, 'ArrowUp') && currentIndex > 0:
@@ -34,7 +48,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
 
         case isKeyCombo(event, 'ArrowDown') && currentIndex < articles.length - 1:
           setSelectedArticle(articles[currentIndex + 1].article.id)
-          if (currentIndex > articles.length - (bootInfo?.data.pageSize ?? 20) - 1) {
+          if (currentIndex > loadMoreThreshold) {
             fetchNextPage()
           }
           break
@@ -44,13 +58,13 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
           break
 
         case isKeyCombo(event, 'KeyN'):
-          await readArticle(articles[currentIndex].article.id, true)
           if (currentIndex < articles.length - 1) {
             setSelectedArticle(articles[currentIndex + 1].article.id)
-            if (currentIndex > articles.length - (bootInfo?.data.pageSize ?? 20) - 1) {
+            if (currentIndex > loadMoreThreshold) {
               fetchNextPage()
             }
           }
+          await readArticle(articles[currentIndex].article.id, true)
           break
 
         case isKeyCombo(event, 'KeyO'):
