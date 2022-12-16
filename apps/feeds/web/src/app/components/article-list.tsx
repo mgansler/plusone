@@ -58,13 +58,13 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
           break
 
         case isKeyCombo(event, 'KeyN'):
-          await readArticle(articles[currentIndex].article.id, true)
           if (currentIndex < articles.length - 1) {
             setSelectedArticle(articles[currentIndex + 1].article.id)
             if (currentIndex > loadMoreThreshold) {
               fetchNextPage()
             }
           }
+          await readArticle(articles[currentIndex].article.id, true)
           break
 
         case isKeyCombo(event, 'KeyO'):
