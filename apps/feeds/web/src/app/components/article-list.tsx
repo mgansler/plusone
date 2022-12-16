@@ -22,6 +22,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
   useEffect(() => {
     const handleKeyDown = async (event: KeyboardEvent) => {
       const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
+      const loadMoreThreshold = articles.length - Math.floor((bootInfo?.data.pageSize ?? 20) / 2)
 
       if (event.target['id'] === 'search-input') {
         return
@@ -34,7 +35,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
 
         case isKeyCombo(event, 'ArrowDown') && currentIndex < articles.length - 1:
           setSelectedArticle(articles[currentIndex + 1].article.id)
-          if (currentIndex > articles.length - (bootInfo?.data.pageSize ?? 20) - 1) {
+          if (currentIndex > loadMoreThreshold) {
             fetchNextPage()
           }
           break
@@ -47,7 +48,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
           await readArticle(articles[currentIndex].article.id, true)
           if (currentIndex < articles.length - 1) {
             setSelectedArticle(articles[currentIndex + 1].article.id)
-            if (currentIndex > articles.length - (bootInfo?.data.pageSize ?? 20) - 1) {
+            if (currentIndex > loadMoreThreshold) {
               fetchNextPage()
             }
           }
