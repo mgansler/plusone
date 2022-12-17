@@ -69,6 +69,12 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
 
         case isKeyCombo(event, 'KeyO'):
           window.open(articles[currentIndex].article.link, '_blank')
+          if (currentIndex < articles.length - 1) {
+            setSelectedArticle(articles[currentIndex + 1].article.id)
+            if (currentIndex > loadMoreThreshold) {
+              fetchNextPage()
+            }
+          }
           await readArticle(articles[currentIndex].article.id, true)
           break
       }
