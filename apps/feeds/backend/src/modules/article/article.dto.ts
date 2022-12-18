@@ -21,6 +21,9 @@ class ArticleDto implements Article {
 
   @ApiProperty()
   link: string
+
+  @ApiProperty()
+  date: Date
 }
 
 export class ArticleResponseDto implements ArticleResponse {

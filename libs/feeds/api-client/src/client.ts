@@ -199,6 +199,7 @@ export interface ArticleDto {
   contentBody: string
   guid: string
   link: string
+  date: string
 }
 
 export interface ArticleResponseDto {

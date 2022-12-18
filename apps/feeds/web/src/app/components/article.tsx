@@ -49,6 +49,19 @@ function useMarkArticleStarred() {
   )
 }
 
+function subheader({ date }: ArticleDto): string {
+  const dateString = new Date(date).toLocaleString([], {
+    weekday: 'long',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+
+  return dateString
+}
+
 type ArticleProps = {
   article: ArticleResponseDto
   selectedArticle: string
@@ -81,6 +94,7 @@ export function Article({ article: { article, unread, starred }, selectedArticle
             </>
           }
           title={article.title}
+          subheader={subheader(article)}
           action={
             <IconButton target={'_blank'} href={article.link} onClick={() => readArticle(article.id, true)}>
               <OpenInNew />
