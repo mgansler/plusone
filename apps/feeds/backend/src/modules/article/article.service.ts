@@ -77,7 +77,6 @@ export class ArticleService {
     userId: User['id'],
     { cursor, sort, searchTerm, feedId, includeRead, starred }: ArticleFindParams,
   ): Promise<PaginatedArticles> {
-    console.log(starred)
     this.logger.debug(`User is searching for '${searchTerm}', limited by '${feedId}', sorted: '${sort}'.`)
 
     const pagination = this.normalizePagination(cursor)

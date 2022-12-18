@@ -5,25 +5,25 @@ import { Article, ArticleResponse, PaginatedArticles, ToggleUnreadRequest } from
 
 class ArticleDto implements Article {
   @ApiProperty()
-  id: string
-
-  @ApiProperty()
-  title: string
-
-  @ApiProperty()
   content: string
 
   @ApiProperty()
   contentBody: string
 
   @ApiProperty()
+  date: Date
+
+  @ApiProperty()
   guid: string
+
+  @ApiProperty()
+  id: string
 
   @ApiProperty()
   link: string
 
   @ApiProperty()
-  date: Date
+  title: string
 }
 
 export class ArticleResponseDto implements ArticleResponse {
@@ -34,10 +34,10 @@ export class ArticleResponseDto implements ArticleResponse {
   cursor: number
 
   @ApiProperty()
-  unread: boolean
+  starred: boolean
 
   @ApiProperty()
-  starred: boolean
+  unread: boolean
 }
 
 export class ArticleToggleUnreadDto implements ToggleUnreadRequest {

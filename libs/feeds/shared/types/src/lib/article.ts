@@ -1,17 +1,18 @@
 export interface Article {
-  id: string
-  title: string
   content: string
   contentBody: string
+  date: Date
   guid: string
+  id: string
   link: string
+  title: string
 }
 
 export interface ArticleResponse {
-  unread: boolean
-  starred: boolean
-  cursor: number
   article: Article
+  cursor: number
+  starred: boolean
+  unread: boolean
 }
 
 export interface ToggleUnreadRequest {

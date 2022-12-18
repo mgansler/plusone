@@ -193,20 +193,20 @@ export interface StarArticleDto {
 }
 
 export interface ArticleDto {
-  id: string
-  title: string
   content: string
   contentBody: string
-  guid: string
-  link: string
   date: string
+  guid: string
+  id: string
+  link: string
+  title: string
 }
 
 export interface ArticleResponseDto {
   article: ArticleDto
   cursor: number
-  unread: boolean
   starred: boolean
+  unread: boolean
 }
 
 export interface ArticleToggleUnreadDto {
