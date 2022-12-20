@@ -18,7 +18,7 @@ enum Order {
 model Article {
   id           String         @id @default(uuid()) @db.Uuid
   title        String?
-  contentBody  String?
+  content      String?
   guid         String
   link         String?
   date         DateTime       @default(now())

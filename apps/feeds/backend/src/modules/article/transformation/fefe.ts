@@ -2,7 +2,7 @@ import { ArticleBuilderFn } from './transformation'
 
 export const fefeArticleBuilder: ArticleBuilderFn = async (item) => {
   return {
-    contentBody: item.content,
+    content: item.content,
     guid: item.guid ?? item.id,
     link: item.link,
     title: item.title,

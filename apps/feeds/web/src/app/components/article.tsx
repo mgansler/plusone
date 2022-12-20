@@ -103,7 +103,7 @@ export function Article({ article: { article, unread, starred }, selectedArticle
         />
         {showContent && (
           <CardContent>
-            <div dangerouslySetInnerHTML={{ __html: article.contentBody }} />
+            <div dangerouslySetInnerHTML={{ __html: article.content }} />
           </CardContent>
         )}
       </Card>

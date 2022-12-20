@@ -1,7 +1,7 @@
 import { ArticleBuilderFn } from './transformation'
 
 export const youtubeArticleBuilder: ArticleBuilderFn = async (item) => {
-  const contentBody = `
+  const content = `
   <iframe
     src='${item.link.replace('watch?v=', 'embed/')}'
     frameborder='0'
@@ -11,7 +11,7 @@ export const youtubeArticleBuilder: ArticleBuilderFn = async (item) => {
 `
 
   return {
-    contentBody,
+    content,
     guid: item.id,
     link: item.link,
     title: item.title,

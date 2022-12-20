@@ -1,5 +1,5 @@
 export interface Article {
-  contentBody: string
+  content: string
   date: Date
   guid: string
   id: string

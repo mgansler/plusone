@@ -60,7 +60,7 @@ export class ArticleService {
         },
       },
       update: {
-        contentBody: article.contentBody,
+        content: article.content,
         title: article.title,
         UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })), skipDuplicates: true } },
       },

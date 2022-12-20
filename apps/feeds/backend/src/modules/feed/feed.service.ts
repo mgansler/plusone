@@ -96,7 +96,7 @@ export class FeedService {
               },
             },
             update: {
-              contentBody: article.contentBody,
+              content: article.content,
               title: article.title,
               UserArticle: {
                 createMany: {

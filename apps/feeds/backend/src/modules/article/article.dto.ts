@@ -5,7 +5,7 @@ import { Article, ArticleResponse, PaginatedArticles, ToggleUnreadRequest } from
 
 class ArticleDto implements Article {
   @ApiProperty()
-  contentBody: string
+  content: string
 
   @ApiProperty()
   date: Date
