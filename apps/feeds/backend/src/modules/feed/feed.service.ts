@@ -96,7 +96,6 @@ export class FeedService {
               },
             },
             update: {
-              content: article.content,
               contentBody: article.contentBody,
               title: article.title,
               UserArticle: {

@@ -11,7 +11,6 @@ export const youtubeArticleBuilder: ArticleBuilderFn = async (item) => {
 `
 
   return {
-    content: '',
     contentBody,
     guid: item.id,
     link: item.link,
