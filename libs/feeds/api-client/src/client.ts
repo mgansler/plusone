@@ -194,7 +194,6 @@ export interface StarArticleDto {
 
 export interface ArticleDto {
   content: string
-  contentBody: string
   date: string
   guid: string
   id: string

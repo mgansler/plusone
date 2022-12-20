@@ -19,7 +19,6 @@ model Article {
   id           String         @id @default(uuid()) @db.Uuid
   title        String?
   content      String?
-  contentBody  String?
   guid         String
   link         String?
   date         DateTime       @default(now())

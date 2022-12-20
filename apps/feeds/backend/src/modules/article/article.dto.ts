@@ -8,9 +8,6 @@ class ArticleDto implements Article {
   content: string
 
   @ApiProperty()
-  contentBody: string
-
-  @ApiProperty()
   date: Date
 
   @ApiProperty()

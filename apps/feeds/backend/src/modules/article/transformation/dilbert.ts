@@ -13,8 +13,7 @@ export const dilbertArticleBuilder: ArticleBuilderFn = async (item) => {
   date.setDate(date.getDate() - 1)
 
   return {
-    content: '',
-    contentBody: `<img src="${src}" alt="${title}"/>`,
+    content: `<img src="${src}" alt="${title}"/>`,
     guid: item.id,
     link: item.link,
     title: item.title,
