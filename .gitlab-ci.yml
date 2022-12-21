@@ -13,8 +13,6 @@ cache:
 
 default:
   before_script:
-    # libssl is required for prisma
-    - apk add --no-cache git libssl1.1
     - yarn install --network-timeout 150000
 
 include:
