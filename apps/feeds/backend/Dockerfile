@@ -1,6 +1,4 @@
 FROM node:18-alpine
-# Required for prisma
-RUN apk add --no-cache libssl1.1
 WORKDIR /usr/src/app
 CMD ["npm", "start"]
 EXPOSE 3333/tcp
