@@ -1,4 +1,4 @@
-image: node:18-alpine
+image: node:19-alpine
 
 variables:
   APP_SUITE_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/suite/${CI_COMMIT_REF_SLUG}:latest
