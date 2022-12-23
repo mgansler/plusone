@@ -1,4 +1,5 @@
 {
+  "name": "github-pipeline-status",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/github-pipeline-status/src",
   "projectType": "application",
@@ -8,7 +9,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "swc",
+        "compiler": "babel",
         "outputPath": "dist/apps/github-pipeline-status",
         "index": "apps/github-pipeline-status/src/index.html",
         "baseHref": "/",
@@ -79,12 +80,9 @@
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "apps/github-pipeline-status/cypress.config.ts",
-        "testingType": "component"
-      },
-      "configurations": {
-        "watch": {
-          "watch": true
-        }
+        "testingType": "component",
+        "devServerTarget": "github-pipeline-status:build",
+        "skipServe": true
       }
     }
   },

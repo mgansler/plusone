@@ -1,4 +1,5 @@
 {
+  "name": "dinner-plan",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/dinner-plan/src",
   "projectType": "library",
@@ -22,12 +23,9 @@
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "libs/dinner-plan/cypress.config.ts",
-        "testingType": "component"
-      },
-      "configurations": {
-        "watch": {
-          "watch": true
-        }
+        "testingType": "component",
+        "devServerTarget": "suite:build",
+        "skipServe": true
       }
     }
   },
