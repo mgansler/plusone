@@ -26,6 +26,11 @@
         "testingType": "component",
         "devServerTarget": "github-pipeline-status:build",
         "skipServe": true
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
       }
     }
   },
