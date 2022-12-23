@@ -1,4 +1,5 @@
 {
+  "name": "suite",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/suite/src",
   "projectType": "application",
@@ -8,7 +9,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "swc",
+        "compiler": "babel",
         "outputPath": "dist/apps/suite",
         "index": "apps/suite/src/index.html",
         "baseHref": "/",
