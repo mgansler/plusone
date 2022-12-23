@@ -4,5 +4,5 @@ import { nxComponentTestingPreset } from '@nrwl/react/plugins/component-testing'
 export default defineConfig({
   component: nxComponentTestingPreset(__filename, {
     bundler: 'webpack',
-  }) as any,
+  }) as Cypress.ConfigOptions['component'],
 })
