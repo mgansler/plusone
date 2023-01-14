@@ -1,17 +1,17 @@
+import { Button, TextField, Typography } from '@mui/material'
+import { Octokit } from '@octokit/core'
 import type { ReactNode } from 'react'
 import { createContext, useContext, useMemo, useRef } from 'react'
-import { Octokit } from '@octokit/core'
-import { Button, TextField, Typography } from '@mui/material'
 
-import { useLocalStorage } from '@plusone/hooks'
 import { LoginCard } from '@plusone/components'
+import { useLocalStorage } from '@plusone/hooks'
 
 interface Context {
   octokit: Octokit
   logout: () => void
 }
 
-const OctokitContext = createContext<Context>(null)
+const OctokitContext = createContext<Context | undefined>(undefined)
 
 interface TokenInputProps {
   setToken: (value: string) => void
@@ -84,9 +84,9 @@ export function OctokitProvider({ children }: { children: ReactNode }) {
 }
 
 export function useOctokit() {
-  const context = useContext<Context>(OctokitContext)
+  const context = useContext(OctokitContext)
 
-  if (!context) {
+  if (typeof context === 'undefined') {
     throw new Error('useOctokit must be used within an OctokitProvider')
   }
 
@@ -94,9 +94,9 @@ export function useOctokit() {
 }
 
 export function useLogout() {
-  const context = useContext<Context>(OctokitContext)
+  const context = useContext(OctokitContext)
 
-  if (!context) {
+  if (typeof context === 'undefined') {
     throw new Error('useOctokit must be used within an OctokitProvider')
   }
 

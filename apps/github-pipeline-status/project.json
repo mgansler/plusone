@@ -5,21 +5,11 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nrwl/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "babel",
-        "outputPath": "dist/apps/github-pipeline-status",
-        "index": "apps/github-pipeline-status/src/index.html",
-        "baseHref": "/",
-        "main": "apps/github-pipeline-status/src/main.tsx",
-        "polyfills": "apps/github-pipeline-status/src/polyfills.ts",
-        "tsConfig": "apps/github-pipeline-status/tsconfig.app.json",
-        "assets": ["apps/github-pipeline-status/src/favicon.ico", "apps/github-pipeline-status/src/assets"],
-        "styles": [],
-        "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
+        "outputPath": "dist/apps/github-pipeline-status"
       },
       "configurations": {
         "production": {
@@ -45,7 +35,7 @@
       }
     },
     "serve": {
-      "executor": "@nrwl/webpack:dev-server",
+      "executor": "@nrwl/vite:dev-server",
       "options": {
         "buildTarget": "github-pipeline-status:build",
         "hmr": true
