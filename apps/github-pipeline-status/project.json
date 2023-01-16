@@ -12,44 +12,30 @@
         "outputPath": "dist/apps/github-pipeline-status"
       },
       "configurations": {
-        "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/github-pipeline-status/src/environments/environment.ts",
-              "with": "apps/github-pipeline-status/src/environments/environment.prod.ts"
-            }
-          ],
-          "optimization": true,
-          "outputHashing": "all",
-          "sourceMap": false,
-          "namedChunks": false,
-          "extractLicenses": true,
-          "vendorChunk": false
-        },
         "development": {
-          "extractLicenses": false,
-          "optimization": false,
-          "sourceMap": true,
-          "vendorChunk": true
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
         }
       }
     },
     "serve": {
       "executor": "@nrwl/vite:dev-server",
+      "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "github-pipeline-status:build",
-        "hmr": true
+        "buildTarget": "github-pipeline-status:build"
       },
       "configurations": {
+        "development": {
+          "buildTarget": "github-pipeline-status:build:development",
+          "hmr": true
+        },
         "production": {
           "buildTarget": "github-pipeline-status:build:production",
           "hmr": false
-        },
-        "development": {
-          "buildTarget": "github-pipeline-status:build:development"
         }
-      },
-      "defaultConfiguration": "development"
+      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
