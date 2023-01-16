@@ -4,7 +4,7 @@
   "sourceRoot": "apps/github-pipeline-status/src",
   "projectType": "application",
   "targets": {
-    "build": {
+    "build_": {
       "executor": "@nrwl/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
@@ -24,15 +24,15 @@
       "executor": "@nrwl/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "github-pipeline-status:build"
+        "buildTarget": "github-pipeline-status:build_"
       },
       "configurations": {
         "development": {
-          "buildTarget": "github-pipeline-status:build:development",
+          "buildTarget": "github-pipeline-status:build_:development",
           "hmr": true
         },
         "production": {
-          "buildTarget": "github-pipeline-status:build:production",
+          "buildTarget": "github-pipeline-status:build_:production",
           "hmr": false
         }
       }
