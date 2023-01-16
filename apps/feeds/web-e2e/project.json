@@ -8,6 +8,8 @@
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "apps/feeds/web-e2e/cypress.config.ts",
+        "tsConfig": "apps/feeds/web-e2e/tsconfig.e2e.json",
+        "baseUrl": "http://localhost:4200",
         "testingType": "e2e"
       },
       "defaultConfiguration": "production",
