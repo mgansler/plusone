@@ -4,62 +4,38 @@
   "sourceRoot": "apps/github-pipeline-status/src",
   "projectType": "application",
   "targets": {
-    "build": {
-      "executor": "@nrwl/webpack:webpack",
+    "build_": {
+      "executor": "@nrwl/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "babel",
-        "outputPath": "dist/apps/github-pipeline-status",
-        "index": "apps/github-pipeline-status/src/index.html",
-        "baseHref": "/",
-        "main": "apps/github-pipeline-status/src/main.tsx",
-        "polyfills": "apps/github-pipeline-status/src/polyfills.ts",
-        "tsConfig": "apps/github-pipeline-status/tsconfig.app.json",
-        "assets": ["apps/github-pipeline-status/src/favicon.ico", "apps/github-pipeline-status/src/assets"],
-        "styles": [],
-        "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
+        "outputPath": "dist/apps/github-pipeline-status"
       },
       "configurations": {
-        "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/github-pipeline-status/src/environments/environment.ts",
-              "with": "apps/github-pipeline-status/src/environments/environment.prod.ts"
-            }
-          ],
-          "optimization": true,
-          "outputHashing": "all",
-          "sourceMap": false,
-          "namedChunks": false,
-          "extractLicenses": true,
-          "vendorChunk": false
-        },
         "development": {
-          "extractLicenses": false,
-          "optimization": false,
-          "sourceMap": true,
-          "vendorChunk": true
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
         }
       }
     },
     "serve": {
-      "executor": "@nrwl/webpack:dev-server",
+      "executor": "@nrwl/vite:dev-server",
+      "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "github-pipeline-status:build",
-        "hmr": true
+        "buildTarget": "github-pipeline-status:build_"
       },
       "configurations": {
-        "production": {
-          "buildTarget": "github-pipeline-status:build:production",
-          "hmr": false
-        },
         "development": {
-          "buildTarget": "github-pipeline-status:build:development"
+          "buildTarget": "github-pipeline-status:build_:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "github-pipeline-status:build_:production",
+          "hmr": false
         }
-      },
-      "defaultConfiguration": "development"
+      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

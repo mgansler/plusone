@@ -1,3 +1,5 @@
+const TIMEOUT = 10_000
+
 describe('advent-of-code-2021', () => {
   beforeEach(() => cy.visit('http://localhost:3000/'))
 
@@ -7,7 +9,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 1', () => {
     cy.findByRole('link', { name: '01' }).click()
-    cy.fixture('01.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('01.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -17,7 +19,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 2', () => {
     cy.findByRole('link', { name: '02' }).click()
-    cy.fixture('02.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('02.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -27,7 +29,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 3', () => {
     cy.findByRole('link', { name: '03' }).click()
-    cy.fixture('03.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('03.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -37,7 +39,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 4', () => {
     cy.findByRole('link', { name: '04' }).click()
-    cy.fixture('04.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('04.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -47,7 +49,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 5', () => {
     cy.findByRole('link', { name: '05' }).click()
-    cy.fixture('05.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('05.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -57,7 +59,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 6', () => {
     cy.findByRole('link', { name: '06' }).click()
-    cy.fixture('06.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('06.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -67,7 +69,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 7', () => {
     cy.findByRole('link', { name: '07' }).click()
-    cy.fixture('07.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('07.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -77,7 +79,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 8', () => {
     cy.findByRole('link', { name: '08' }).click()
-    cy.fixture('08.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('08.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -87,7 +89,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 9', () => {
     cy.findByRole('link', { name: '09' }).click()
-    cy.fixture('09.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('09.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -97,7 +99,9 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 10', () => {
     cy.findByRole('link', { name: '10' }).click()
-    cy.fixture('10.txt').then((input) => cy.findByRole('textbox').type(input, { parseSpecialCharSequences: false }))
+    cy.fixture('10.txt').then((input) =>
+      cy.findByRole('textbox', { timeout: TIMEOUT }).type(input, { parseSpecialCharSequences: false }),
+    )
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -107,7 +111,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 11', () => {
     cy.findByRole('link', { name: '11' }).click()
-    cy.fixture('11.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('11.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -117,7 +121,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 12', () => {
     cy.findByRole('link', { name: '12' }).click()
-    cy.fixture('12.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('12.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -127,7 +131,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 13', () => {
     cy.findByRole('link', { name: '13' }).click()
-    cy.fixture('13.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('13.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -137,7 +141,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 14', () => {
     cy.findByRole('link', { name: '14' }).click()
-    cy.fixture('14.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('14.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -147,7 +151,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 15', () => {
     cy.findByRole('link', { name: '15' }).click()
-    cy.fixture('15.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('15.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -162,7 +166,7 @@ describe('advent-of-code-2021', () => {
   ].forEach(({ transmission, versionSum }) => {
     it(`should solve day 16 - part 1 (${transmission} should produce ${versionSum})`, () => {
       cy.findByRole('link', { name: '16' }).click()
-      cy.findByRole('textbox').type(transmission)
+      cy.findByRole('textbox', { timeout: TIMEOUT }).type(transmission)
 
       cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -181,7 +185,7 @@ describe('advent-of-code-2021', () => {
   ].forEach(({ transmission, result }) => {
     it(`should solve day 16 - part 2 (${transmission} should produce ${result})`, () => {
       cy.findByRole('link', { name: '16' }).click()
-      cy.findByRole('textbox').type(transmission)
+      cy.findByRole('textbox', { timeout: TIMEOUT }).type(transmission)
 
       cy.findByRole('button', { name: 'Solution!' }).click()
 
@@ -191,7 +195,7 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 17', () => {
     cy.findByRole('link', { name: '17' }).click()
-    cy.fixture('17.txt').then((input) => cy.findByRole('textbox').type(input))
+    cy.fixture('17.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
 

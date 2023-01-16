@@ -5,21 +5,11 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nrwl/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "babel",
-        "outputPath": "dist/apps/feeds/web",
-        "index": "apps/feeds/web/src/index.html",
-        "baseHref": "/",
-        "main": "apps/feeds/web/src/main.tsx",
-        "polyfills": "apps/feeds/web/src/polyfills.ts",
-        "tsConfig": "apps/feeds/web/tsconfig.app.json",
-        "assets": ["apps/feeds/web/src/favicon.ico", "apps/feeds/web/src/assets"],
-        "styles": [],
-        "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
+        "outputPath": "dist/apps/feeds/web"
       },
       "configurations": {
         "development": {
@@ -51,7 +41,7 @@
       ]
     },
     "serve": {
-      "executor": "@nrwl/webpack:dev-server",
+      "executor": "@nrwl/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "feeds-web:build",
