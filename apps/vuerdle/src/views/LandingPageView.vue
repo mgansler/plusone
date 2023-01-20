@@ -1,13 +1,13 @@
 <template>
   <h2>Landing Page View</h2>
-  <p>I know {{ count }} different words, today's word is {{ todaysWord }}</p>
+  <p>I know {{ wordStore.count }} different words, today's word is {{ todaysWord }}</p>
 </template>
 
 <script setup lang="ts">
-import { wordStore } from '../stores/wordStore'
+import { useWordStore } from '../stores/useWordStore'
 
-const { count, wordForDay } = wordStore()
-const todaysWord = wordForDay(new Date())
+const wordStore = useWordStore()
+const todaysWord = wordStore.wordForDay(new Date())
 </script>
 
 <style scoped></style>
