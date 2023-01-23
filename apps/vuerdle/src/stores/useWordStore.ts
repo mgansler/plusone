@@ -12,10 +12,12 @@ export const useWordStore = defineStore('word', {
       (word: string): boolean => {
         return words.includes(word)
       },
-    wordForDay: (state) => (date: Date) => {
-      // TODO: better algorithm for setting the word
-      const timestamp = date.valueOf()
-      return words[Math.floor(timestamp / DAY_MS) % state.count]
-    },
+    wordForDay:
+      (state) =>
+      (date: Date): string => {
+        // TODO: better algorithm for setting the word
+        const timestamp = date.valueOf()
+        return words[Math.floor(timestamp / DAY_MS) % state.count]
+      },
   },
 })

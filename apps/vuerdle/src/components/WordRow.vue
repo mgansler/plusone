@@ -18,13 +18,6 @@ type Props = {
 }
 
 const props = defineProps<Props>()
-
-// watch(
-//   () => props.checkResult,
-//   (newValue, oldValue) => {
-//     console.log(oldValue, newValue)
-//   },
-// )
 </script>
 
 <style scoped>

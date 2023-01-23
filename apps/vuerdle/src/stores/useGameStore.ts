@@ -8,7 +8,6 @@ export const useGameStore = defineStore('game', {
   state: () => ({
     word: [] as string[],
     currentGuess: 0,
-    // guesses: Array<string[]>(6).fill([]),
     guesses: [[] as string[], [] as string[], [] as string[], [] as string[], [] as string[], [] as string[]],
     results: Array<CharCheckResult[]>(6).fill(Array<CharCheckResult>(5).fill('unchecked')),
   }),
@@ -20,13 +19,11 @@ export const useGameStore = defineStore('game', {
       if (this.guesses[this.currentGuess].length < 5) {
         this.guesses[this.currentGuess].push(char)
       }
-      console.log(this.guesses)
     },
     removeChar() {
       this.guesses[this.currentGuess].pop()
     },
     check() {
-      console.log('checking...', this.currentGuess)
       if (this.guesses[this.currentGuess].length < 5) {
         return
       }
