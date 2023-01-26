@@ -1,10 +1,11 @@
 <template>
-  <div class="tile" :class="{ correct: isCorrect, 'wrong-position': isWrongPosition }">
+  <CCol class="tile" :class="{ correct: isCorrect, 'wrong-position': isWrongPosition }">
     {{ props.char?.toLocaleUpperCase() }}
-  </div>
+  </CCol>
 </template>
 
 <script setup lang="ts">
+import { CCol } from '@coreui/vue'
 import { watch } from 'vue'
 import { CharCheckResult } from '../stores/useGameStore'
 

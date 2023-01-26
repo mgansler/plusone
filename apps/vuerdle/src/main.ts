@@ -1,3 +1,4 @@
+import '@coreui/coreui/dist/css/coreui.min.css'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 

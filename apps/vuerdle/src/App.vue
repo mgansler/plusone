@@ -1,16 +1,20 @@
 <template>
   <div class="app-root">
     <h1>Welcome vuerdle</h1>
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/calendar">Calendar</RouterLink>
-    </nav>
+
+    <CNav>
+      <RouterLink to="/" class="nav-link">Home</RouterLink>
+      <RouterLink to="/calendar" class="nav-link">Calendar</RouterLink>
+    </CNav>
 
     <RouterView />
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { CNav } from '@coreui/vue'
+import { RouterLink } from 'vue-router'
+</script>
 
 <style scoped>
 .app-root {

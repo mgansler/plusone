@@ -1,15 +1,16 @@
 <template>
-  <div @keydown="keydown" tabindex="0" class="game">
+  <CContainer @keydown="keydown" tabindex="0" class="game">
     <WordRow :word="gameState.guesses[0]" :check-result="gameState.results[0]" />
     <WordRow :word="gameState.guesses[1]" :check-result="gameState.results[1]" />
     <WordRow :word="gameState.guesses[2]" :check-result="gameState.results[2]" />
     <WordRow :word="gameState.guesses[3]" :check-result="gameState.results[3]" />
     <WordRow :word="gameState.guesses[4]" :check-result="gameState.results[4]" />
     <WordRow :word="gameState.guesses[5]" :check-result="gameState.results[5]" />
-  </div>
+  </CContainer>
 </template>
 
 <script setup lang="ts">
+import { CContainer } from '@coreui/vue'
 import { useGameStore } from '../stores/useGameStore'
 import WordRow from './WordRow.vue'
 
