@@ -25,5 +25,7 @@ export default async function (options: ServeSchema, context: ExecutorContext) {
   config.assetsBuildDirectory = resolve(context.root, 'tmp', targetRoot, 'public/build')
   config.serverBuildPath = resolve(context.root, 'tmp', targetRoot, 'build/index.js')
 
-  return serve(config, mode, options.port)
+  // When this breaks check changes in the `dev()` function in `commands.ts` in the remix package
+  await serve(config, mode, options.port)
+  return await new Promise(() => ({}))
 }
