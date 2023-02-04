@@ -9,9 +9,15 @@
         "command": "curl https://docs.github.com/public/schema.docs.graphql -o libs/github-schema/src/schema.graphql"
       }
     },
-    "graphql-schema": {
+    "generate": {
       "executor": "./tools/executors:graphql-schema",
-      "options": {}
+      "options": {},
+      "dependsOn": [
+        {
+          "target": "download",
+          "projects": "self"
+        }
+      ]
     }
   },
   "tags": []
