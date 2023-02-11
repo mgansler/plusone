@@ -4,6 +4,7 @@ CMD ["npm", "start"]
 EXPOSE 3333/tcp
 
 COPY ./dist/apps/feeds/backend/package.json .
-RUN npm install --legacy-peer-deps
+COPY ./dist/apps/feeds/backend/yarn.lock .
+RUN yarn install --frozen-lockfile
 
 COPY ./dist/apps/feeds/backend .
