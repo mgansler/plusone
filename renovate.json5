@@ -8,8 +8,12 @@
       allowedVersions: '!/0.14.0/',
     },
     {
+      matchPackageNames: ['@swc-node/register'],
+      allowedVersions: '!/1.6.2/',
+    },
+    {
       matchPackageNames: ['@swc-node/core'],
-      allowedVersions: '!/1.10.0/',
+      allowedVersions: '!/1.10.[0-9]+/',
     },
   ],
 }
