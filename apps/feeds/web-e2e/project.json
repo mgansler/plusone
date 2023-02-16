@@ -27,7 +27,13 @@
           "devServerTarget": "",
           "watch": true
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "docker",
+          "projects": "dependencies"
+        }
+      ]
     },
     "serve-all": {
       "executor": "nx:run-commands",
