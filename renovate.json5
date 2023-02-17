@@ -4,10 +4,6 @@
   automerge: false,
   packageRules: [
     {
-      matchPackageNames: ['class-validator'],
-      allowedVersions: '!/0.14.0/',
-    },
-    {
       matchPackageNames: ['@swc-node/register'],
       allowedVersions: '!/1.6.2/',
     },
