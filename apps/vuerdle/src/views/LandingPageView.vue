@@ -1,5 +1,4 @@
 <template>
-  <h2>Landing Page View</h2>
   <p>I know {{ wordStore.count }} different words, today's word is {{ todaysWord }}</p>
   <VuerdleGame :word="todaysWord" />
 </template>

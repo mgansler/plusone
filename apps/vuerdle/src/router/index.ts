@@ -10,10 +10,5 @@ export const router = createRouter({
       name: 'landing-page',
       component: LandingPageView,
     },
-    {
-      path: '/calendar',
-      name: 'calendar',
-      component: () => import('../views/CalendarView.vue'),
-    },
   ],
 })
