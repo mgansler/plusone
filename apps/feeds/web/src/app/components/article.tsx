@@ -1,5 +1,7 @@
 import { CheckBoxOutlineBlank, CheckBoxOutlined, OpenInNew, Star, StarOutline } from '@mui/icons-material'
+import type { Theme } from '@mui/material'
 import { Card, CardContent, CardHeader, IconButton } from '@mui/material'
+import { createStyles, makeStyles } from '@mui/styles'
 import { useQueryClient } from '@tanstack/react-query'
 import type { RefObject } from 'react'
 import { useCallback, useEffect, useState } from 'react'
@@ -68,7 +70,18 @@ type ArticleProps = {
   scrollTargetRef?: RefObject<HTMLDivElement | undefined>
 }
 
+const useClassNames = makeStyles<Theme, object, 'article'>((theme) =>
+  createStyles({
+    article: {
+      '& a': {
+        color: theme.palette.primary.main,
+      },
+    },
+  }),
+)
+
 export function Article({ article: { article, unread, starred }, selectedArticle, scrollTargetRef }: ArticleProps) {
+  const classNames = useClassNames()
   const { expandContent } = useFeedSettingsContext()
   const [showContent, setShowContent] = useState<boolean>(expandContent)
 
@@ -103,7 +116,7 @@ export function Article({ article: { article, unread, starred }, selectedArticle
         />
         {showContent && (
           <CardContent>
-            <div dangerouslySetInnerHTML={{ __html: article.content }} />
+            <div className={classNames.article} dangerouslySetInnerHTML={{ __html: article.content }} />
           </CardContent>
         )}
       </Card>
