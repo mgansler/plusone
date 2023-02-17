@@ -29,8 +29,15 @@ function AddTag() {
         <TextField
           label={'Tag Name'}
           {...register('name', {
-            validate: (value) =>
-              currentTags?.data.map((tag) => tag.name).includes(value) ? 'This tag already exists.' : true,
+            validate: (value) => {
+              if (value.length === 0) {
+                return "Tag can't be empty."
+              }
+              if (currentTags?.data.map((tag) => tag.name).includes(value)) {
+                return 'This tag already exists.'
+              }
+              return true
+            },
           })}
           error={typeof formState.errors.name !== 'undefined'}
           helperText={formState.errors.name?.message}

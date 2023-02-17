@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsNotEmpty } from 'class-validator'
 
 import { TagInput } from '@plusone/feeds/shared/types'
 
@@ -12,5 +13,6 @@ export class TagResponseDto {
 
 export class TagInputDto implements TagInput {
   @ApiProperty()
+  @IsNotEmpty()
   name: string
 }
