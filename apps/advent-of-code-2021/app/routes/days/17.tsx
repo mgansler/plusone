@@ -61,7 +61,7 @@ export const action: ActionFunction = async ({ request }) => {
     throw new Error('check your input')
   }
 
-  const [_, x1s, x2s, y1s, y2s] = match
+  const [, x1s, x2s, y1s, y2s] = match
   const x1 = Number(x1s)
   const x2 = Number(x2s)
   const y1 = Number(y2s)

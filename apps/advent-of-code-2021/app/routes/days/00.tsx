@@ -8,6 +8,8 @@ type ActionResponse = {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
+  // This is just a template
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const input = (formData.get('input') as string).split('\r\n')
 
   return json({ part1: -1 } as ActionResponse)

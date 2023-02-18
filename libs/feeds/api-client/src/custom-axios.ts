@@ -1,6 +1,6 @@
 import type { AxiosError } from '@nestjs/terminus/dist/errors/axios.error'
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
-import Axios from 'axios'
+import AxiosStatic, { AxiosHeaders } from 'axios'
 
 import type { LoginResponseDto } from './index'
 import { AUTHENTICATION_LOCAL_STORAGE_KEY } from './index'
@@ -25,7 +25,7 @@ async function refreshAccessToken(): Promise<string | undefined> {
   const headers = getAuthorizationHeader('refresh_token')
   if (headers) {
     try {
-      const resp = await Axios.create().get<LoginResponseDto>('/api/authentication/refresh', { headers })
+      const resp = await AxiosStatic.create().get<LoginResponseDto>('/api/authentication/refresh', { headers })
       localStorage.setItem(AUTHENTICATION_LOCAL_STORAGE_KEY, JSON.stringify(resp.data))
       return resp.data.refresh_token
     } catch (e) {
@@ -39,13 +39,13 @@ async function refreshAccessToken(): Promise<string | undefined> {
 }
 
 export async function customAxiosInstance<T>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-  const axios = Axios.create()
+  const axios = AxiosStatic.create()
 
   axios.interceptors.request.use(
     async (config) => {
       const headers = getAuthorizationHeader('access_token')
       if (headers) {
-        config.headers = headers
+        config.headers = new AxiosHeaders(headers)
       }
       return config
     },
