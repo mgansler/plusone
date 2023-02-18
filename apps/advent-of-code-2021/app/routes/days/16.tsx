@@ -102,7 +102,7 @@ export const action: ActionFunction = async ({ request }) => {
     })
     .join('')
 
-  const [part1, _, part2] = parsePacket(input)
+  const [part1, , part2] = parsePacket(input)
 
   return json({ part1, part2 } as ActionResponse)
 }
