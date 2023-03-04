@@ -19,7 +19,7 @@
         "passWithNoTests": true
       }
     },
-    "component-test-disabled": {
+    "component-test": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "libs/dinner-plan/cypress.config.ts",
