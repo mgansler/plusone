@@ -25,17 +25,17 @@ describe('feeds', () => {
   it('should allow adding a feed manually and mark all articles as read', () => {
     cy.loginFreshUser()
 
-    cy.findByText('Dilbert Daily Strips').should('not.exist')
+    cy.findByText('xkcd.com').should('not.exist')
 
     cy.findByRole('link', { name: 'add feed' }).click()
 
-    cy.findByRole('textbox', { name: 'url' }).type('https://dilbert.com')
-    cy.findByRole('textbox', { name: 'title' }).type('Dilbert Daily Strips')
-    cy.findByRole('textbox', { name: 'feed-url' }).type('https://dilbert.com/feed')
+    cy.findByRole('textbox', { name: 'url' }).type('https://xkcd.com')
+    cy.findByRole('textbox', { name: 'title' }).type('xkcd.com')
+    cy.findByRole('textbox', { name: 'feed-url' }).type('https://xkcd.com/rss.xml')
 
     cy.findByRole('button', { name: 'save' }).click()
 
-    cy.findByRole('button', { name: /Dilbert Daily Strips/, timeout: 20_000 }).click()
+    cy.findByRole('button', { name: /xkcd.com/, timeout: 20_000 }).click()
 
     cy.get('article').findAllByTestId('CheckBoxOutlinedIcon').should('have.length', 0)
     let articleCount: number
