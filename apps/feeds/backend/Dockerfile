@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:19-alpine
 WORKDIR /usr/src/app
 CMD ["npm", "start"]
 EXPOSE 3333/tcp
