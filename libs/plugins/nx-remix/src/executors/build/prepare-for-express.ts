@@ -3,8 +3,8 @@ import { resolve } from 'path'
 
 import type { ExecutorContext } from '@nrwl/devkit'
 import { writeJsonFile } from '@nrwl/devkit'
+import { createPackageJson } from '@nrwl/js'
 import { readCachedProjectGraph } from '@nrwl/workspace/src/core/project-graph'
-import { createPackageJson } from 'nx/src/utils/create-package-json'
 
 import type { NormalizedOptions } from './normalize-options'
 
