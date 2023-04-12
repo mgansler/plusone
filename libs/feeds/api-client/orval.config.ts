@@ -1,7 +1,7 @@
 import { defineConfig } from 'orval'
 
 module.exports = defineConfig({
-  'config-api': {
+  api: {
     input: { target: 'http://localhost:3333/api-json' },
     hooks: {
       afterAllFilesWrite: 'nx format --files libs/feeds/api/client/src/client.ts',
