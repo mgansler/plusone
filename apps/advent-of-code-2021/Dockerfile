@@ -1,4 +1,4 @@
-FROM node:19-alpine
+FROM node:20-alpine
 EXPOSE 3000/tcp
 CMD ["npm", "start"]
 WORKDIR /myapp
