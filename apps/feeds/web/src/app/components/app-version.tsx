@@ -8,11 +8,9 @@ function isUpdateAvailable(installed: string, available: string): boolean {
   const [installedMajor, installedMinor] = installed.split('.').map(Number)
   const [availableMajor, availableMinor] = available.split('.').map(Number)
 
-  if (availableMajor > installedMajor || (availableMajor === installedMajor && availableMinor > installedMinor)) {
-    return true
-  }
-
-  return false
+  const newMajor = availableMajor > installedMajor
+  const newMinor = availableMajor === installedMajor && availableMinor > installedMinor
+  return newMajor || newMinor
 }
 
 export function AppVersion() {
@@ -34,7 +32,7 @@ export function AppVersion() {
         }
       }
     }
-  }, [bootInfo.appVersion])
+  }, [bootInfo?.appVersion])
 
   return null
 }

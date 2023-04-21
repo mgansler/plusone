@@ -1,23 +1,34 @@
+import type { QueryKey, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
+import type { AxiosResponse } from 'axios'
 import type { z, ZodType } from 'zod'
 
-import type { bootInfo } from './client'
-import { useBootInfo } from './client'
+import { bootInfo, useBootInfo } from './client'
 import { bootInfoResponse } from './zod'
 
 type ValidatedUseQueryReturnType<
-  OriginalUseQueryReturnType extends { data: any },
-  ValidationSchema extends ZodType<any, any, any>,
+  OriginalUseQueryReturnType extends { data: unknown },
+  ValidationSchema extends ZodType<unknown, unknown, unknown>,
 > = Omit<OriginalUseQueryReturnType, 'data'> & {
   data: z.infer<ValidationSchema> | undefined
 }
 
-export function useValidatedBootInfo(
-  options: Parameters<typeof useBootInfo<Awaited<ReturnType<typeof bootInfo>>>>[0],
-): ValidatedUseQueryReturnType<ReturnType<typeof useBootInfo>, typeof bootInfoResponse> {
-  const { data, ...rest } = useBootInfo(options)
+function factory<Schema extends ZodType<unknown, unknown, unknown>>(
+  fetchWrapper: (signal?: AbortSignal) => Promise<AxiosResponse<object>>,
+  useQueryWrapper: (options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<typeof fetchWrapper>>, unknown, Awaited<ReturnType<typeof fetchWrapper>>>
+  }) => UseQueryResult<Awaited<ReturnType<typeof fetchWrapper>>> & { queryKey: QueryKey },
+  schema: Schema,
+) {
+  return (options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<typeof fetchWrapper>>, unknown, Awaited<ReturnType<typeof fetchWrapper>>>
+  }): ValidatedUseQueryReturnType<ReturnType<typeof useQueryWrapper>, typeof schema> => {
+    const { data, ...rest } = useQueryWrapper(options)
 
-  return {
-    ...rest,
-    data: rest.isSuccess ? bootInfoResponse.parse(data.data) : undefined,
+    return {
+      ...rest,
+      data: rest.isSuccess ? schema.parse(data.data) : undefined,
+    }
   }
 }
+
+export const useValidatedBootInfo = factory<typeof bootInfoResponse>(bootInfo, useBootInfo, bootInfoResponse)
