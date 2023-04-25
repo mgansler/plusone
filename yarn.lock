@@ -5459,10 +5459,10 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
-"@mui/base@5.0.0-alpha.126":
-  version "5.0.0-alpha.126"
-  resolved "https://registry.yarnpkg.com/@mui/base/-/base-5.0.0-alpha.126.tgz#99555a5876a60e7dad772d75eb171e3d1336321d"
-  integrity sha512-I5e52A0Muv9Gaoy2GcqbYrQ6dpRyC2UXeA00brT3HuW0nF0E4fiTOIqdNTN+N5gyaYK0z3O6jtLt/97CCrIxVA==
+"@mui/base@5.0.0-alpha.127":
+  version "5.0.0-alpha.127"
+  resolved "https://registry.yarnpkg.com/@mui/base/-/base-5.0.0-alpha.127.tgz#bc61eaf1fd31094c939b6521cfea21643207c3b4"
+  integrity sha512-FoRQd0IOH9MnfyL5yXssyQRnC4vXI+1bwkU1idr+wNkP1ZfxE+JsThHcfl1dy5azLssVUGTtQFD9edQLdbyJog==
   dependencies:
     "@babel/runtime" "^7.21.0"
     "@emotion/is-prop-valid" "^1.2.0"
@@ -5473,10 +5473,10 @@
     prop-types "^15.8.1"
     react-is "^18.2.0"
 
-"@mui/core-downloads-tracker@^5.12.1":
-  version "5.12.1"
-  resolved "https://registry.yarnpkg.com/@mui/core-downloads-tracker/-/core-downloads-tracker-5.12.1.tgz#f828554889e6ab7345395626bb46e561c113435e"
-  integrity sha512-rNiQYHtkXljcvCEnhWrJzie1ifff5O98j3uW7ZlchFgD8HWxEcz/QoxZvo+sCKC9aayAgxi9RsVn2VjCyp5CrA==
+"@mui/core-downloads-tracker@^5.12.2":
+  version "5.12.2"
+  resolved "https://registry.yarnpkg.com/@mui/core-downloads-tracker/-/core-downloads-tracker-5.12.2.tgz#4a0186d25b01d693171366e1c00de0e7c8c35f6a"
+  integrity sha512-Qn7dy8tql6T0hY6gTFPkpWlnqVVFGu5Z6QzEzUSzzmLZpfAx4kf8sFz0PHiB7gU5yrqcZF9picMx1shpRY/rXw==
 
 "@mui/icons-material@5.11.16":
   version "5.11.16"
@@ -5485,13 +5485,13 @@
   dependencies:
     "@babel/runtime" "^7.21.0"
 
-"@mui/lab@5.0.0-alpha.127":
-  version "5.0.0-alpha.127"
-  resolved "https://registry.yarnpkg.com/@mui/lab/-/lab-5.0.0-alpha.127.tgz#158f59cb0ab993be840cbf79ab643ca32fd9a5d8"
-  integrity sha512-D+Q7MV06rn31g8ZgNcLxgsmh94PJYfyqXAcM3BokgMJ4u89QfwneSlaoHnQ9qitvWFyTz7Ic4HVMNT08FkRG7Q==
+"@mui/lab@5.0.0-alpha.128":
+  version "5.0.0-alpha.128"
+  resolved "https://registry.yarnpkg.com/@mui/lab/-/lab-5.0.0-alpha.128.tgz#c8ccdcf39805e56b8dcc5f34725dc6d0616277e1"
+  integrity sha512-jsGP8bbAvnG+cBCveHhF49BHhVNojBvblWrNUuMkkLYS6T239Dela/+UvVnfIn/1hfUUNf/G/RiB42qC6ud7vQ==
   dependencies:
     "@babel/runtime" "^7.21.0"
-    "@mui/base" "5.0.0-alpha.126"
+    "@mui/base" "5.0.0-alpha.127"
     "@mui/system" "^5.12.1"
     "@mui/types" "^7.2.4"
     "@mui/utils" "^5.12.0"
@@ -5499,14 +5499,14 @@
     prop-types "^15.8.1"
     react-is "^18.2.0"
 
-"@mui/material@5.12.1":
-  version "5.12.1"
-  resolved "https://registry.yarnpkg.com/@mui/material/-/material-5.12.1.tgz#3297ffc6836f426a26568332d68357c1398f0630"
-  integrity sha512-m+G9J6+FzIMhRqKV2y30yONH97wX107z9EWgiNCeS1/+y1CnytFZNG1ENdOuaJo1NimCRnmB/iXPvoOaSo6dOg==
+"@mui/material@5.12.2":
+  version "5.12.2"
+  resolved "https://registry.yarnpkg.com/@mui/material/-/material-5.12.2.tgz#c3fcc94e523d9e673e2e045dfad04d12ab454a80"
+  integrity sha512-XOVy6fVC0rI2dEwDq/1s4Te2hewTUe6lznzeVnruyATGkdmM06WnHqkZOoLVIWo9hWwAxpcgTDcAIVpFtt1nrw==
   dependencies:
     "@babel/runtime" "^7.21.0"
-    "@mui/base" "5.0.0-alpha.126"
-    "@mui/core-downloads-tracker" "^5.12.1"
+    "@mui/base" "5.0.0-alpha.127"
+    "@mui/core-downloads-tracker" "^5.12.2"
     "@mui/system" "^5.12.1"
     "@mui/types" "^7.2.4"
     "@mui/utils" "^5.12.0"
@@ -19807,10 +19807,10 @@ rollup@^3.18.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
-rollup@^3.20.2:
-  version "3.20.6"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.20.6.tgz#53c0fd73e397269d2ce5f0ec12851457dd53cacd"
-  integrity sha512-2yEB3nQXp/tBQDN0hJScJQheXdvU2wFhh6ld7K/aiZ1vYcak6N/BKjY1QrU6BvO2JWYS8bEs14FRaxXosxy2zw==
+rollup@^3.21.0:
+  version "3.21.0"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.21.0.tgz#0a71517db56e150222670f88e5e7acfa4fede7c8"
+  integrity sha512-ANPhVcyeHvYdQMUyCbczy33nbLzI7RzrBje4uvNiTDJGIMtlKoOStmympwr9OtS1LZxiDmE2wvxHyVhoLtf1KQ==
   optionalDependencies:
     fsevents "~2.3.2"
 
@@ -21092,10 +21092,10 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
-testcontainers@9.5.0:
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-9.5.0.tgz#a2163ac803dec3944fdc6d433f8005f61274562e"
-  integrity sha512-XdLZec7CN8/eXfT/A0zR03J2bNIpwLM3O3kLbp1OZPpZTNtjnR1zsdhS688o2qAx5+FS+xZ8nHL+vm3UBMnfHg==
+testcontainers@9.6.0:
+  version "9.6.0"
+  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-9.6.0.tgz#5af58822d27580c90bd92f308b6b9df94f6ab4bd"
+  integrity sha512-f7HWR0dIwDTx46CRX7dAM1oajOHvGwn8aliWVsEiBJDZkSsAII2uYD1qkst8NvHXyzpAgu4+3LP8fnpSVWtLrg==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
     "@types/archiver" "^5.3.2"
@@ -21977,14 +21977,14 @@ vite-tsconfig-paths@4.2.0:
     globrex "^0.1.2"
     tsconfck "^2.1.0"
 
-vite@4.3.1:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-4.3.1.tgz#9badb1377f995632cdcf05f32103414db6fbb95a"
-  integrity sha512-EPmfPLAI79Z/RofuMvkIS0Yr091T2ReUoXQqc5ppBX/sjFRhHKiPPF/R46cTdoci/XgeQpB23diiJxq5w30vdg==
+vite@4.3.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-4.3.2.tgz#95a5e0ebee80ae218849312019318aa9e3a05c26"
+  integrity sha512-9R53Mf+TBoXCYejcL+qFbZde+eZveQLDYd9XgULILLC1a5ZwPaqgmdVpL8/uvw2BM/1TzetWjglwm+3RO+xTyw==
   dependencies:
     esbuild "^0.17.5"
     postcss "^8.4.21"
-    rollup "^3.20.2"
+    rollup "^3.21.0"
   optionalDependencies:
     fsevents "~2.3.2"
 
