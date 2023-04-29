@@ -1,6 +1,6 @@
 import { resolve } from 'path'
 
-import type { ExecutorContext } from '@nrwl/devkit'
+import type { ExecutorContext } from '@nx/devkit'
 
 import type { BuildOptions } from './schema'
 

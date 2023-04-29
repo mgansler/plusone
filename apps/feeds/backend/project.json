@@ -5,7 +5,7 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/feeds/backend",
@@ -55,27 +55,27 @@
       "dependsOn": [
         {
           "target": "generate",
-          "projects": "dependencies"
+          "dependencies": true
         },
         {
           "target": "build",
-          "projects": "dependencies"
+          "dependencies": true
         }
       ]
     },
     "serve": {
-      "executor": "@nrwl/node:node",
+      "executor": "@nx/node:node",
       "options": {
         "buildTarget": "feeds-backend:build"
       },
       "dependsOn": [
         {
           "target": "push",
-          "projects": "dependencies"
+          "dependencies": true
         },
         {
           "target": "build",
-          "projects": "dependencies"
+          "dependencies": true
         }
       ]
     },
@@ -86,14 +86,14 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/feeds/backend/**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/feeds/backend"],
       "options": {
         "jestConfig": "apps/feeds/backend/jest.config.ts",
@@ -102,7 +102,7 @@
       "dependsOn": [
         {
           "target": "generate",
-          "projects": "dependencies"
+          "dependencies": true
         }
       ]
     }

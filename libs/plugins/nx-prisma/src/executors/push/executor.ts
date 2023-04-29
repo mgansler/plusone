@@ -1,7 +1,7 @@
 import { spawn } from 'child_process'
 import { join } from 'path'
 
-import type { ExecutorContext } from '@nrwl/devkit'
+import type { ExecutorContext } from '@nx/devkit'
 
 import type { FormatExecutorSchema } from './schema'
 

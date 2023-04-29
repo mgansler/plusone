@@ -1,5 +1,5 @@
-import type { Tree } from '@nrwl/devkit'
-import { getWorkspaceLayout, names } from '@nrwl/devkit'
+import type { Tree } from '@nx/devkit'
+import { getWorkspaceLayout, names } from '@nx/devkit'
 
 import type { ApplicationGeneratorSchema } from './schema'
 

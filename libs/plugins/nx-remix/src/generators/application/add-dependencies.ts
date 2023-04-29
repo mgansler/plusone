@@ -1,5 +1,5 @@
-import type { Tree } from '@nrwl/devkit'
-import { addDependenciesToPackageJson, updateJson } from '@nrwl/devkit'
+import type { Tree } from '@nx/devkit'
+import { addDependenciesToPackageJson, updateJson } from '@nx/devkit'
 
 type PackageJson = {
   scripts: {

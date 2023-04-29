@@ -5,7 +5,7 @@
   "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@nrwl/cypress:cypress",
+      "executor": "@nx/cypress:cypress",
       "options": {
         "cypressConfig": "apps/advent-of-code-2021-e2e/cypress.config.ts",
         "tsConfig": "apps/advent-of-code-2021-e2e/tsconfig.e2e.json",
@@ -27,7 +27,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/advent-of-code-2021-e2e/**/*.{js,ts}"]

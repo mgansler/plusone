@@ -1,6 +1,6 @@
 import { resolve } from 'path'
 
-import type { ExecutorContext } from '@nrwl/devkit'
+import type { ExecutorContext } from '@nx/devkit'
 import { readConfig } from '@remix-run/dev/dist/config'
 import { serve } from '@remix-run/dev/dist/devServer/serve'
 

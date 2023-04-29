@@ -3,7 +3,7 @@ export default {
   displayName: 'suite',
 
   transform: {
-    '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest',
+    '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nx/react/plugins/jest',
     '^.+\\.[tj]sx?$': ['babel-jest', { cwd: __dirname, configFile: './babel-jest.config.json' }],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],

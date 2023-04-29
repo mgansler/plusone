@@ -1,15 +1,15 @@
 import { copyFileSync } from 'fs'
 import { resolve } from 'path'
 
-import type { ExecutorContext } from '@nrwl/devkit'
-import { deleteOutputDir } from '@nrwl/web/src/utils/fs'
+import type { ExecutorContext } from '@nx/devkit'
+import { deleteOutputDir } from '@nx/webpack/src/utils/fs'
 
 import { buildApp } from './build-app'
 import { normalizeOptions } from './normalize-options'
 import { prepareForExpress } from './prepare-for-express'
 import type { BuildOptions } from './schema'
 
-export default async function (options: BuildOptions, context: ExecutorContext) {
+export default async function(options: BuildOptions, context: ExecutorContext) {
   if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = 'production'
   }

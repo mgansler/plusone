@@ -27,7 +27,18 @@
     ]
   },
   "generators": {
-    "@nrwl/react": {
+    "@nx/web:application": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "vitest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nx/web:library": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "vitest"
+    },
+    "@nx/react": {
       "application": {
         "style": "none",
         "linter": "eslint",
@@ -43,17 +54,6 @@
         "linter": "eslint",
         "strict": true
       }
-    },
-    "@nrwl/web:application": {
-      "style": "css",
-      "linter": "eslint",
-      "unitTestRunner": "vitest",
-      "e2eTestRunner": "cypress"
-    },
-    "@nrwl/web:library": {
-      "style": "css",
-      "linter": "eslint",
-      "unitTestRunner": "vitest"
     }
   },
   "defaultProject": "github-pipeline-status",

@@ -1,9 +1,9 @@
 import { spawn } from 'child_process'
 import { join } from 'path'
 
-import { ExecutorContext } from '@nrwl/devkit'
+import type { ExecutorContext } from '@nx/devkit'
 
-import { GenerateOptions } from './generate'
+import type { GenerateOptions } from './generate'
 
 export default async function (options: GenerateOptions, context: ExecutorContext) {
   const projectRoot = context.workspace.projects[context.projectName].root
