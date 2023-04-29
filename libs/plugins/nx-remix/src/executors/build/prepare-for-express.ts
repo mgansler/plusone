@@ -1,10 +1,10 @@
 import { copyFileSync } from 'fs'
 import { resolve } from 'path'
 
-import type { ExecutorContext } from '@nrwl/devkit'
-import { writeJsonFile } from '@nrwl/devkit'
-import { createPackageJson } from '@nrwl/js'
-import { readCachedProjectGraph } from '@nrwl/workspace/src/core/project-graph'
+import type { ExecutorContext } from '@nx/devkit'
+import { writeJsonFile } from '@nx/devkit'
+import { createPackageJson } from '@nx/js'
+import { readCachedProjectGraph } from '@nx/workspace/src/core/project-graph'
 
 import type { NormalizedOptions } from './normalize-options'
 

@@ -22,20 +22,19 @@
       "executor": "@mgansler/nx-prisma:push",
       "dependsOn": [
         {
-          "target": "generate",
-          "projects": "self"
+          "target": "generate"
         }
       ]
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/feeds/persistence/**/*.ts"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/feeds/persistence"],
       "options": {
         "jestConfig": "libs/feeds/persistence/jest.config.ts",

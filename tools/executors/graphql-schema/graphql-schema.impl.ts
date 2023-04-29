@@ -1,7 +1,7 @@
 import path = require('path')
 import { spawn } from 'child_process'
 
-import { ExecutorContext } from '@nrwl/devkit'
+import type { ExecutorContext } from '@nx/devkit'
 
 interface Schema {
   config: string

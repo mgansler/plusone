@@ -1,5 +1,5 @@
-import type { Tree } from '@nrwl/devkit'
-import { Linter, lintProjectGenerator } from '@nrwl/linter'
+import type { Tree } from '@nx/devkit'
+import { Linter, lintProjectGenerator } from '@nx/linter'
 
 import type { NormalizedSchema } from './normalize-options'
 

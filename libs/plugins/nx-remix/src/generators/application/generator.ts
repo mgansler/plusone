@@ -1,6 +1,5 @@
-import type { GeneratorCallback, Tree } from '@nrwl/devkit'
-import { addProjectConfiguration, formatFiles } from '@nrwl/devkit'
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial'
+import type { GeneratorCallback, Tree } from '@nx/devkit'
+import { addProjectConfiguration, formatFiles, runTasksInSerial } from '@nx/devkit'
 
 import { addDependencies } from './add-dependencies'
 import { addFiles } from './add-files'

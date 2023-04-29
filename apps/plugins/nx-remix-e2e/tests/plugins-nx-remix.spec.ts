@@ -1,4 +1,4 @@
-import { checkFilesExist, ensureNxProject, readJson, runNxCommandAsync, uniq } from '@nrwl/nx-plugin/testing'
+import { checkFilesExist, ensureNxProject, readJson, runNxCommandAsync, uniq } from '@nx/plugin/testing'
 
 describe('plugins-nx-remix e2e', () => {
   it('should create plugins-nx-remix', async () => {
