@@ -1,11 +1,4 @@
 import { Link, Links, LiveReload, Outlet, Scripts, useCatch } from '@remix-run/react'
-import type { LinksFunction } from 'remix'
-
-import globalStylesUrl from './styles/global.css'
-
-export const links: LinksFunction = () => {
-  return [{ rel: 'stylesheet', href: globalStylesUrl }]
-}
 
 export function CatchBoundary() {
   const caught = useCatch()
