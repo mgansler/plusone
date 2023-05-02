@@ -14,7 +14,6 @@ export default async function (options: ServeSchema, context: ExecutorContext) {
   if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = 'development'
   }
-  const mode = context.configurationName === 'production' ? 'production' : 'development'
 
   const targetRoot = context.workspace.projects[context.projectName].root
   const config = await readConfig(targetRoot)
@@ -26,6 +25,6 @@ export default async function (options: ServeSchema, context: ExecutorContext) {
   config.serverBuildPath = resolve(context.root, 'tmp', targetRoot, 'build/index.js')
 
   // When this breaks check changes in the `dev()` function in `commands.ts` in the remix package
-  await serve(config, mode, options.port)
+  await serve(config, options.port)
   return await new Promise(() => ({}))
 }

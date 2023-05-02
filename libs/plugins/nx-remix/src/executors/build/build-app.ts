@@ -16,5 +16,5 @@ export async function buildApp(options: NormalizedOptions, context: ExecutorCont
 
   config.serverBuildPath = resolve(context.root, options.outputPath, 'build/index.js')
 
-  await build(config, { mode, sourcemap: mode === 'development' })
+  await build({ config, options: { mode, sourcemap: mode === 'development' } })
 }
