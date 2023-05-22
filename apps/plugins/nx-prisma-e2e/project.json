@@ -5,12 +5,13 @@
   "sourceRoot": "apps/plugins/nx-prisma-e2e/src",
   "targets": {
     "e2e": {
-      "executor": "@nx/plugin:e2e",
+      "executor": "@nx/jest:jest",
       "options": {
-        "target": "plugins-nx-prisma:build",
         "jestConfig": "apps/plugins/nx-prisma-e2e/jest.config.ts",
-        "passWithNoTests": true
-      }
+        "passWithNoTests": true,
+        "runInBand": true
+      },
+      "dependsOn": ["plugins-nx-prisma:build"]
     }
   },
   "tags": [],

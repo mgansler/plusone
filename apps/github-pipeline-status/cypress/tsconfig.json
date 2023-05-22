@@ -4,7 +4,8 @@
     "outDir": "../../../dist/out-tsc",
     "module": "commonjs",
     "resolveJsonModule": true,
-    "types": ["cypress", "node", "@mgansler/cypress-graphql", "@testing-library/cypress"]
+    "types": ["cypress", "node", "@mgansler/cypress-graphql", "@testing-library/cypress"],
+    "sourceMap": false
   },
   "include": [
     "support/**/*.ts",
