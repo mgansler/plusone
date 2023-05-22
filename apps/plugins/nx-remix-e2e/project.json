@@ -5,11 +5,12 @@
   "sourceRoot": "apps/plugins/nx-remix-e2e/src",
   "targets": {
     "e2e": {
-      "executor": "@nx/plugin:e2e",
+      "executor": "@nx/jest:jest",
       "options": {
-        "target": "plugins-nx-remix:build",
-        "jestConfig": "apps/plugins/nx-remix-e2e/jest.config.ts"
-      }
+        "jestConfig": "apps/plugins/nx-remix-e2e/jest.config.ts",
+        "runInBand": true
+      },
+      "dependsOn": ["plugins-nx-remix:build"]
     }
   },
   "tags": [],

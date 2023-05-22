@@ -22,13 +22,13 @@
   "include": ["src"],
   "references": [
     {
-      "path": "./cypress/tsconfig.cy.json"
-    },
-    {
       "path": "./tsconfig.app.json"
     },
     {
       "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./cypress/tsconfig.json"
     }
   ]
 }
