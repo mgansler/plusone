@@ -4,7 +4,7 @@
   automerge: false,
   packageRules: [
     {
-      matchPackageNames: ['@?remix.*'],
+      matchPackageNames: ['remix'],
       // 1.17.0 fails to build
       allowedVersions: '1.16.1',
     },
