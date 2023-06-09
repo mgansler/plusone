@@ -2,6 +2,7 @@ import { resolve } from 'path'
 
 import type { ExecutorContext } from '@nx/devkit'
 import { build } from '@remix-run/dev/dist/compiler/build'
+import { createFileWatchCache } from '@remix-run/dev/dist/compiler/fileWatchCache'
 import { readConfig } from '@remix-run/dev/dist/config'
 
 import type { NormalizedOptions } from './normalize-options'
@@ -16,5 +17,5 @@ export async function buildApp(options: NormalizedOptions, context: ExecutorCont
 
   config.serverBuildPath = resolve(context.root, options.outputPath, 'build/index.js')
 
-  await build({ config, options: { mode, sourcemap: mode === 'development' } })
+  await build({ config, options: { mode, sourcemap: mode === 'development' }, fileWatchCache: createFileWatchCache() })
 }
