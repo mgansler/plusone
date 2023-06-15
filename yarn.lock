@@ -5765,10 +5765,10 @@
     iterare "1.2.1"
     tslib "2.5.3"
 
-"@nestjs/config@2.3.3":
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/config/-/config-2.3.3.tgz#a8e5e7c903661580cdd645bc8d01e19313f4875b"
-  integrity sha512-WcBA+0sv8euzKoYpxsCAdMzADxZEeUq8ulD+T+7QBNF0Yha6KC9edkXzk5xTJcanrKL9qnP0kboAXONscHb/Kw==
+"@nestjs/config@2.3.4":
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/@nestjs/config/-/config-2.3.4.tgz#6378a3c5b163a429e9ba728f28eed7513855bd50"
+  integrity sha512-IGdSF+0F9MJO6dCRTEahdxPz4iVijjtolcFBxnY+2QYM3bXYQvAgzskGZi+WkAFJN/VzR3TEp60gN5sI74GxPA==
   dependencies:
     dotenv "16.1.4"
     dotenv-expand "10.0.0"
@@ -7366,15 +7366,15 @@
     "@babel/runtime" "^7.14.6"
     "@testing-library/dom" "^8.1.0"
 
-"@testing-library/dom@9.3.0":
-  version "9.3.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-9.3.0.tgz#ed8ce10aa5e05eb6eaf0635b5b8975d889f66075"
-  integrity sha512-Dffe68pGwI6WlLRYR2I0piIkyole9cSBH5jGQKCGMRpHW5RHCqAUaqc2Kv0tUyd4dU4DLPKhJIjyKOnjv4tuUw==
+"@testing-library/dom@9.3.1":
+  version "9.3.1"
+  resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-9.3.1.tgz#8094f560e9389fb973fe957af41bf766937a9ee9"
+  integrity sha512-0DGPd9AR3+iDTjGoMpxIkAsUihHZ3Ai6CneU6bRRrffXMgzCdlNk43jTrD2/5LT6CBb3MWTP8v510JzYtahD2w==
   dependencies:
     "@babel/code-frame" "^7.10.4"
     "@babel/runtime" "^7.12.5"
     "@types/aria-query" "^5.0.1"
-    aria-query "^5.0.0"
+    aria-query "5.1.3"
     chalk "^4.1.0"
     dom-accessibility-api "^0.5.9"
     lz-string "^1.5.0"
@@ -9300,17 +9300,17 @@ argparse@^2.0.1:
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
   integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
-aria-query@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/aria-query/-/aria-query-5.0.0.tgz#210c21aaf469613ee8c9a62c7f86525e058db52c"
-  integrity sha512-V+SM7AbUwJ+EBnB8+DXs0hPZHO0W6pqBcc0dW90OwtVG02PswOu/teuARoLQjdDOH+t9pJgGnW5/Qmouf3gPJg==
-
-aria-query@^5.1.3:
+aria-query@5.1.3, aria-query@^5.1.3:
   version "5.1.3"
   resolved "https://registry.yarnpkg.com/aria-query/-/aria-query-5.1.3.tgz#19db27cd101152773631396f7a95a3b58c22c35e"
   integrity sha512-R5iJ5lkuHybztUfuOAznmboyjWq8O6sqNqtK7CLOqdydi54VNbORp49mb14KbWgG1QD3JFO9hJdZ+y4KutfdOQ==
   dependencies:
     deep-equal "^2.0.5"
+
+aria-query@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/aria-query/-/aria-query-5.0.0.tgz#210c21aaf469613ee8c9a62c7f86525e058db52c"
+  integrity sha512-V+SM7AbUwJ+EBnB8+DXs0hPZHO0W6pqBcc0dW90OwtVG02PswOu/teuARoLQjdDOH+t9pJgGnW5/Qmouf3gPJg==
 
 array-flatten@1.1.1:
   version "1.1.1"
@@ -11926,10 +11926,10 @@ enhanced-resolve@^5.0.0, enhanced-resolve@^5.13.0, enhanced-resolve@^5.7.0:
     graceful-fs "^4.2.4"
     tapable "^2.2.0"
 
-enhanced-resolve@^5.14.1:
-  version "5.14.1"
-  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.14.1.tgz#de684b6803724477a4af5d74ccae5de52c25f6b3"
-  integrity sha512-Vklwq2vDKtl0y/vtwjSesgJ5MYS7Etuk5txS8VdKL4AOS1aUlD96zqIfsOSLQsdv3xgMRbtkWM8eG9XDfKUPow==
+enhanced-resolve@^5.15.0:
+  version "5.15.0"
+  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.15.0.tgz#1af946c7d93603eb88e9896cee4904dc012e9c35"
+  integrity sha512-LXYT42KJ7lpIKECr2mAXIaMldcNCh/7E0KBKOu4KSfkHmP+mZmSs+8V5gBAqisWBy0OO4W5Oyys0GO1Y8KtdKg==
   dependencies:
     graceful-fs "^4.2.4"
     tapable "^2.2.0"
@@ -18056,10 +18056,10 @@ pify@^4.0.1:
   resolved "https://registry.yarnpkg.com/pify/-/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
   integrity sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==
 
-pinia@2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.1.3.tgz#50c70c7b4c94c109fade0ed4122231cbba72f8c5"
-  integrity sha512-XNA/z/ye4P5rU1pieVmh0g/hSuDO98/a5UC8oSP0DNdvt6YtetJNHTrXwpwsQuflkGT34qKxAEcp7lSxXNjf/A==
+pinia@2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.1.4.tgz#a642adfe6208e10c36d3dc16184a91064788142a"
+  integrity sha512-vYlnDu+Y/FXxv1ABo1vhjC+IbqvzUdiUC3sfDRrRyY2CQSrqqaa+iiHmqtARFxJVqWQMCJfXx1PBvFs9aJVLXQ==
   dependencies:
     "@vue/devtools-api" "^6.5.0"
     vue-demi ">=0.14.5"
@@ -18862,13 +18862,13 @@ react-router-dom@6.12.0:
     "@remix-run/router" "1.6.3"
     react-router "6.12.0"
 
-react-router-dom@6.12.1:
-  version "6.12.1"
-  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.12.1.tgz#601fe7eb493071a33dc7573a20b920324a834606"
-  integrity sha512-POIZN9UDKWwEDga054LvYr2KnK8V+0HR4Ny4Bwv8V7/FZCPxJgsCjYxXGxqxzHs7VBxMKZfgvtKhafuJkJSPGA==
+react-router-dom@6.13.0:
+  version "6.13.0"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.13.0.tgz#6651f456bb2af42ef14f6880123b1f575539e81f"
+  integrity sha512-6Nqoqd7fgwxxVGdbiMHTpDHCYPq62d7Wk1Of7B82vH7ZPwwsRaIa22zRZKPPg413R5REVNiyuQPKDG1bubcOFA==
   dependencies:
     "@remix-run/router" "1.6.3"
-    react-router "6.12.1"
+    react-router "6.13.0"
 
 react-router@6.12.0:
   version "6.12.0"
@@ -18877,10 +18877,10 @@ react-router@6.12.0:
   dependencies:
     "@remix-run/router" "1.6.3"
 
-react-router@6.12.1:
-  version "6.12.1"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.12.1.tgz#9e4126aa1139ec6b5d347e19576d5e940cd46362"
-  integrity sha512-evd/GrKJOeOypD0JB9e1r7pQh2gWCsTbUfq059Wm1AFT/K2MNZuDo19lFtAgIhlBrp0MmpgpqtvZC7LPAs7vSw==
+react-router@6.13.0:
+  version "6.13.0"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.13.0.tgz#7e4427a271dae0cafbdb88c56ccbd9b1434ee93f"
+  integrity sha512-Si6KnfEnJw7gUQkNa70dlpI1bul46FuSxX5t5WwlUBxE25DAz2BjVkwaK8Y2s242bQrZPXCpmwLPtIO5pv4tXg==
   dependencies:
     "@remix-run/router" "1.6.3"
 
@@ -19548,6 +19548,15 @@ schema-utils@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-3.1.2.tgz#36c10abca6f7577aeae136c804b0c741edeadc99"
   integrity sha512-pvjEHOgWc9OWA/f/DE3ohBWTD6EleVLf7iFUkoSwAxttdBhB9QUebQgxER2kWueOvRJXPHNnyrvvh9eZINB8Eg==
+  dependencies:
+    "@types/json-schema" "^7.0.8"
+    ajv "^6.12.5"
+    ajv-keywords "^3.5.2"
+
+schema-utils@^3.2.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-3.3.0.tgz#f50a88877c3c01652a15b622ae9e9795df7a60fe"
+  integrity sha512-pN/yOAvcC+5rQ5nERGuwrjLlYvLTbCibnZ1I7B1LaiAz9BRBlE9GMgE/eqV30P7aJQUf7Ddimy/RsbYO/GrVGg==
   dependencies:
     "@types/json-schema" "^7.0.8"
     ajv "^6.12.5"
@@ -21849,10 +21858,10 @@ webpack-subresource-integrity@^5.1.0:
   dependencies:
     typed-assert "^1.0.8"
 
-webpack@5.86.0:
-  version "5.86.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.86.0.tgz#b0eb81794b62aee0b7e7eb8c5073495217d9fc6d"
-  integrity sha512-3BOvworZ8SO/D4GVP+GoRC3fVeg5MO4vzmq8TJJEkdmopxyazGDxN8ClqN12uzrZW9Tv8EED8v5VSb6Sqyi0pg==
+webpack@5.87.0:
+  version "5.87.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.87.0.tgz#df8a9c094c6037f45e0d77598f9e59d33ca3a98c"
+  integrity sha512-GOu1tNbQ7p1bDEoFRs2YPcfyGs8xq52yyPBZ3m2VGnXGtV9MxjrkABHm4V9Ia280OefsSLzvbVoXcfLxjKY/Iw==
   dependencies:
     "@types/eslint-scope" "^3.7.3"
     "@types/estree" "^1.0.0"
@@ -21863,7 +21872,7 @@ webpack@5.86.0:
     acorn-import-assertions "^1.9.0"
     browserslist "^4.14.5"
     chrome-trace-event "^1.0.2"
-    enhanced-resolve "^5.14.1"
+    enhanced-resolve "^5.15.0"
     es-module-lexer "^1.2.1"
     eslint-scope "5.1.1"
     events "^3.2.0"
@@ -21873,7 +21882,7 @@ webpack@5.86.0:
     loader-runner "^4.2.0"
     mime-types "^2.1.27"
     neo-async "^2.6.2"
-    schema-utils "^3.1.2"
+    schema-utils "^3.2.0"
     tapable "^2.1.1"
     terser-webpack-plugin "^5.3.7"
     watchpack "^2.4.0"
