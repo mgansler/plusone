@@ -58,6 +58,7 @@ jobs:
           else
             baseRef=HEAD~1
           fi
+          # Output must be ["string","string"] with no spaces.
           affectedApps=$(yarn -s nx show projects --base ${baseRef} --affected --withTarget e2e --json | jq -c)
           echo "affected_apps=${affectedApps}" >> ${GITHUB_OUTPUT}
 
