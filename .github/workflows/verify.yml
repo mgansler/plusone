@@ -58,7 +58,7 @@ jobs:
           else
             baseRef=HEAD~1
           fi
-          affectedApps=$(yarn -s nx print-affected --base ${baseRef} --target e2e | jq -c '.tasks | map(.target.project)')
+          affectedApps=$(yarn nx show projects --base ${baseRef} --affected --withTarget e2e --json)
           echo "affected_apps=${affectedApps}" >> ${GITHUB_OUTPUT}
 
   # E2E tests use their own matrix so that each of them can be retried independently
