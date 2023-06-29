@@ -80,5 +80,5 @@ feeds:deploy:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
   script:
-    - docker-compose -f apps/feeds/docker-compose.deploy.yml pull
-    - docker-compose -f apps/feeds/docker-compose.deploy.yml up -d --remove-orphans
+    - docker compose -f apps/feeds/docker-compose.deploy.yml pull
+    - docker compose -f apps/feeds/docker-compose.deploy.yml up -d --remove-orphans
