@@ -4,9 +4,6 @@ services:
   app:
     image: ${FEEDS_BACKEND_DOCKER_IMAGE}
     restart: always
-    networks:
-      - default
-      - traefik
     depends_on:
       - database
     environment:
@@ -18,11 +15,9 @@ services:
       ADMIN_USER: root
       ADMIN_PASSWORD: ${FEEDS_ADMIN_PASSWORD}
     labels:
-      traefik.enable: true
-      traefik.docker.network: traefik
-      traefik.default.port: 3333
-      traefik.default.frontend.rule: 'Host:rss.martingansler.de'
-      com.centurylinklabs.watchtower.enable: false
+      - 'traefik.http.routers.git.rule=Host(`rss.martingansler.de`)'
+      - 'traefik.http.routers.git.tls=true'
+      - 'traefik.http.routers.git.tls.certresolver=letsencrypt'
 
   database:
     restart: always
@@ -35,11 +30,6 @@ services:
       POSTGRES_DB: feeds
     volumes:
       - data:/var/lib/postgresql/data
-
-networks:
-  traefik:
-    external:
-      name: traefik
 
 volumes:
   data:
