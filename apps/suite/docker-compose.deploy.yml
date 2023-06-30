@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  web:
+  suite:
     image: ${APP_SUITE_DOCKER_IMAGE}
     labels:
-      - 'traefik.http.routers.git.rule=Host(`suite.martingansler.de`)'
-      - 'traefik.http.routers.git.tls=true'
-      - 'traefik.http.routers.git.tls.certresolver=letsencrypt'
+      - 'traefik.http.routers.suite.rule=Host(`suite.martingansler.de`)'
+      - 'traefik.http.routers.suite.tls=true'
+      - 'traefik.http.routers.suite.tls.certresolver=letsencrypt'
