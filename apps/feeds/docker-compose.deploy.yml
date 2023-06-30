@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  app:
+  feeds-app:
     image: ${FEEDS_BACKEND_DOCKER_IMAGE}
     restart: always
     depends_on:
@@ -15,9 +15,10 @@ services:
       ADMIN_USER: root
       ADMIN_PASSWORD: ${FEEDS_ADMIN_PASSWORD}
     labels:
-      - 'traefik.http.routers.git.rule=Host(`rss.martingansler.de`)'
-      - 'traefik.http.routers.git.tls=true'
-      - 'traefik.http.routers.git.tls.certresolver=letsencrypt'
+      - 'traefik.http.services.feeds-app.loadbalancer.server.port=3333'
+      - 'traefik.http.routers.feeds-app.rule=Host(`rss.martingansler.de`)'
+      - 'traefik.http.routers.feeds-app.tls=true'
+      - 'traefik.http.routers.feeds-app.tls.certresolver=letsencrypt'
 
   database:
     restart: always
