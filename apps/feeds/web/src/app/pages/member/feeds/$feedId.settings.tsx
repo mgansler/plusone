@@ -7,17 +7,21 @@ import { FeedTags } from '../../../components/feed-tags'
 export function FeedIdSettings() {
   const { feedId } = useParams()
 
-  return <Container maxWidth={'md'} key={feedId}>
-    <Stack gap={2}>
-      <MuiLink to={`../${feedId}`} component={Link}>Close</MuiLink>
+  return (
+    <Container maxWidth={'md'} key={feedId}>
+      <Stack gap={2}>
+        <MuiLink to={`../${feedId}`} component={Link}>
+          Close
+        </MuiLink>
 
-      <Divider />
+        <Divider />
 
-      <FeedSettings />
+        <FeedSettings />
 
-      <Divider />
+        <Divider />
 
-      <FeedTags />
-    </Stack>
-  </Container>
+        <FeedTags />
+      </Stack>
+    </Container>
+  )
 }

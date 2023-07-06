@@ -2,5 +2,11 @@
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: ['config:base', ':pinAllExceptPeerDependencies', 'group:allNonMajor'],
   automerge: false,
-  packageRules: [],
+  packageRules: [
+    {
+      matchPackageNames: ['prettier'],
+      // 3.x does not work with Nx yet
+      allowedVersions: '2.8.8',
+    },
+  ],
 }
