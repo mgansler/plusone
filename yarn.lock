@@ -17527,10 +17527,10 @@ node-fetch@2.6.7, node-fetch@^2.6.0, node-fetch@^2.6.1, node-fetch@^2.6.7:
   dependencies:
     whatwg-url "^5.0.0"
 
-node-fetch@^2.6.11:
-  version "2.6.11"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.11.tgz#cde7fc71deef3131ef80a738919f999e6edfff25"
-  integrity sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==
+node-fetch@^2.6.12:
+  version "2.6.12"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.12.tgz#02eb8e22074018e3d5a83016649d04df0e348fba"
+  integrity sha512-C/fGU2E8ToujUivIO0H+tpQ6HWo4eEmchoPIoXtxCrVghxdKq+QOHqEZW7tuP3KlV3bC8FRMO5nMCC7Zm1VP6g==
   dependencies:
     whatwg-url "^5.0.0"
 
@@ -20935,10 +20935,10 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
-testcontainers@9.10.0:
-  version "9.10.0"
-  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-9.10.0.tgz#a763f3009f2647b4db7d6e4e8db2a3c8b51087a1"
-  integrity sha512-gU3fU9jNvyhSyFdeVPH3Lxq2l4o09kmIa8edGcB6EJM3M6E8m1vC5aOtqmL1Bj/aC/DNCp0m5FMehm/rRB8lhg==
+testcontainers@9.10.1:
+  version "9.10.1"
+  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-9.10.1.tgz#3513f9cabaa66ace020095597451700d40b85551"
+  integrity sha512-+kTLawnZCiSWTL2Iljx+CtYbWIPzfTe8KiouFbTvJ8lAYN5esAj+bT2AKWcixotV4ddKCAbL6ESn35J0jvFCNg==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
     "@types/archiver" "^5.3.2"
@@ -20950,7 +20950,7 @@ testcontainers@9.10.0:
     docker-compose "^0.24.1"
     dockerode "^3.3.5"
     get-port "^5.1.1"
-    node-fetch "^2.6.11"
+    node-fetch "^2.6.12"
     properties-reader "^2.2.0"
     ssh-remote-port-forward "^1.0.4"
     tar-fs "^2.1.1"
