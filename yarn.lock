@@ -3982,22 +3982,22 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
-"@prisma/client@5.0.0":
-  version "5.0.0"
-  resolved "https://registry.npmjs.org/@prisma/client/-/client-5.0.0.tgz"
-  integrity sha512-XlO5ELNAQ7rV4cXIDJUNBEgdLwX3pjtt9Q/RHqDpGf43szpNJx2hJnggfFs7TKNx0cOFsl6KJCSfqr5duEU/bQ==
+"@prisma/client@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-5.1.0.tgz#6c378a2b7ecdeab6b3f24179484980257beac25d"
+  integrity sha512-aIxuXlH3p3Vy91buodQhYgAD9m0yuxJzpXMhc1ejQ/WN3pNNWzBA0iDcBObLq8DMdszcXmoLAk3hiRq/ZwBsOw==
   dependencies:
-    "@prisma/engines-version" "4.17.0-26.6b0aef69b7cdfc787f822ecd7cdc76d5f1991584"
+    "@prisma/engines-version" "5.1.0-28.a9b7003df90aa623086e4d6f4e43c72468e6339b"
 
-"@prisma/engines-version@4.17.0-26.6b0aef69b7cdfc787f822ecd7cdc76d5f1991584":
-  version "4.17.0-26.6b0aef69b7cdfc787f822ecd7cdc76d5f1991584"
-  resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-4.17.0-26.6b0aef69b7cdfc787f822ecd7cdc76d5f1991584.tgz"
-  integrity sha512-HHiUF6NixsldsP3JROq07TYBLEjXFKr6PdH8H4gK/XAoTmIplOJBCgrIUMrsRAnEuGyRoRLXKXWUb943+PFoKQ==
+"@prisma/engines-version@5.1.0-28.a9b7003df90aa623086e4d6f4e43c72468e6339b":
+  version "5.1.0-28.a9b7003df90aa623086e4d6f4e43c72468e6339b"
+  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-5.1.0-28.a9b7003df90aa623086e4d6f4e43c72468e6339b.tgz#0a6400d709a64cc43b076f0567715f459fadd5bc"
+  integrity sha512-jTwE2oy1yjICmTfnCR0ASIpuMZXZ18sUzQXB7V0RMbrM9OlcmbUwXPuYhnxXuWN8XwRmujeIhsXs/Zeh+fjPOQ==
 
-"@prisma/engines@5.0.0":
-  version "5.0.0"
-  resolved "https://registry.npmjs.org/@prisma/engines/-/engines-5.0.0.tgz"
-  integrity sha512-kyT/8fd0OpWmhAU5YnY7eP31brW1q1YrTGoblWrhQJDiN/1K+Z8S1kylcmtjqx5wsUGcP1HBWutayA/jtyt+sg==
+"@prisma/engines@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-5.1.0.tgz#4ccf7f344eaeee08ca1e4a1bb2dc14e36ff1d5ec"
+  integrity sha512-HqaFsnPmZOdMWkPq6tT2eTVTQyaAXEDdKszcZ4yc7DGMBIYRP6j/zAJTtZUG9SsMV8FaucdL5vRyxY/p5Ni28g==
 
 "@remix-run/dev@1.19.1":
   version "1.19.1"
@@ -15087,12 +15087,12 @@ printj@~1.1.0:
   resolved "https://registry.npmjs.org/printj/-/printj-1.1.2.tgz"
   integrity sha512-zA2SmoLaxZyArQTOPj5LXecR+RagfPSU5Kw1qP+jkWeNlrq+eJZyY2oS68SU1Z/7/myXM4lo9716laOFAVStCQ==
 
-prisma@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.npmjs.org/prisma/-/prisma-5.0.0.tgz"
-  integrity sha512-KYWk83Fhi1FH59jSpavAYTt2eoMVW9YKgu8ci0kuUnt6Dup5Qy47pcB4/TLmiPAbhGrxxSz7gsSnJcCmkyPANA==
+prisma@5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/prisma/-/prisma-5.1.0.tgz#29e316b54844f5694a83017a9781a6d6f7cb99ea"
+  integrity sha512-wkXvh+6wxk03G8qwpZMOed4Y3j+EQ+bMTlvbDZHeal6k1E8QuGKzRO7DRXlE1NV0WNgOAas8kwZqcLETQ2+BiQ==
   dependencies:
-    "@prisma/engines" "5.0.0"
+    "@prisma/engines" "5.1.0"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
@@ -17913,7 +17913,18 @@ vite-tsconfig-paths@4.2.0:
     globrex "^0.1.2"
     tsconfck "^2.1.0"
 
-vite@4.4.7, "vite@^3.0.0 || ^4.0.0", vite@^4.1.4:
+vite@4.4.8:
+  version "4.4.8"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-4.4.8.tgz#31e4a438f8748695c68bd57ffd262ba93540fdf7"
+  integrity sha512-LONawOUUjxQridNWGQlNizfKH89qPigK36XhMI7COMGztz8KNY0JHim7/xDd71CZwGT4HtSRgI7Hy+RlhG0Gvg==
+  dependencies:
+    esbuild "^0.18.10"
+    postcss "^8.4.26"
+    rollup "^3.25.2"
+  optionalDependencies:
+    fsevents "~2.3.2"
+
+"vite@^3.0.0 || ^4.0.0", vite@^4.1.4:
   version "4.4.7"
   resolved "https://registry.npmjs.org/vite/-/vite-4.4.7.tgz"
   integrity sha512-6pYf9QJ1mHylfVh39HpuSfMPojPSKVxZvnclX1K1FyZ1PXDOcLBibdq5t1qxJSnL63ca8Wf4zts6mD8u8oc9Fw==
