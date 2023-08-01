@@ -2,7 +2,7 @@ import * as process from 'process'
 
 import react from '@vitejs/plugin-react'
 import { defineConfig, searchForWorkspaceRoot } from 'vite'
-import viteTsConfigPaths from 'vite-tsconfig-paths'
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
 
 export default defineConfig({
   server: {
@@ -13,12 +13,7 @@ export default defineConfig({
     },
   },
 
-  plugins: [
-    react(),
-    viteTsConfigPaths({
-      root: '../../',
-    }),
-  ],
+  plugins: [react(), nxViteTsPaths()],
 
   resolve: {
     alias: {
