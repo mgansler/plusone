@@ -5,7 +5,12 @@ import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
 import { Sort } from '@plusone/feeds/shared/types'
-import { getGetUserFeedsQueryKey, useGetFeedSettings, useUpdateFeedSettings } from '@plusone/feeds/api-client'
+import {
+  getGetUserFeedsQueryKey,
+  useGetFeedSettings,
+  useUpdateFeedSettings,
+  useValidatedGetFeedSettings,
+} from '@plusone/feeds/api-client'
 import type { UpdateFeedSettingsMutationBody } from '@plusone/feeds/api-client'
 
 type FeedSettingsForm = UpdateFeedSettingsMutationBody
@@ -20,6 +25,8 @@ export function FeedSettings() {
       reset(currentSettings.data)
     }
   }, [currentSettings?.data, reset])
+
+  useValidatedGetFeedSettings(feedId)
 
   const queryClient = useQueryClient()
   const { mutateAsync } = useUpdateFeedSettings({
