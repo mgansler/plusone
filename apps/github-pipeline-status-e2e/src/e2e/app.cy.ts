@@ -42,9 +42,10 @@ describe('github-pipeline-status', () => {
   it('should have filters', () => {
     cy.visit('/organization/org2')
 
-    cy.findByLabelText(/repository name/i).should('have.value', '')
-    cy.findByLabelText(/repository name/i).type('repo-one')
-    cy.window().url().should('contain', 'filter=repo-one')
+    cy.findByLabelText(/repository name/i)
+      .should('have.value', '')
+      .type('repo-one')
+    cy.location().its('search').should('contain', 'filter=repo-one')
 
     cy.findByText(/show all/i).should('be.visible')
     cy.findByLabelText(/filter details by user/i).click()
