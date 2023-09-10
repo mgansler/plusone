@@ -19,12 +19,12 @@ export class ValidatedClientBuilder<TSchema extends ZodType<unknown, unknown, un
     this.schema = schema
   }
 
-  wrapperWithoutArgs(fetchWrapper: FetchWrapperWithoutArgs) {
+  fetchWrapperWithoutArgs(fetchWrapper: FetchWrapperWithoutArgs) {
     return new WithoutArgsBuilder(this.schema, fetchWrapper)
   }
 
-  wrapperWithArgs<TArgs>(fetchWrapper: FetchWrapperWithArgs<TArgs>) {
-    return new WithArgsBuilder<typeof this.schema, TArgs>(this.schema, fetchWrapper)
+  fetchWrapperWithArgs<TFetchArgs>(fetchWrapper: FetchWrapperWithArgs<TFetchArgs>) {
+    return new WithArgsBuilder<typeof this.schema, TFetchArgs>(this.schema, fetchWrapper)
   }
 }
 
@@ -37,7 +37,7 @@ class WithoutArgsBuilder<TSchema extends ZodType<unknown, unknown, unknown>> {
     this.fetchWrapper = fetchWrapper
   }
 
-  build(
+  withQueryWrapper(
     useQueryWrapper: (options?: {
       query?: UseQueryOptions<
         Awaited<ReturnType<FetchWrapperWithoutArgs>>,
@@ -62,29 +62,29 @@ class WithoutArgsBuilder<TSchema extends ZodType<unknown, unknown, unknown>> {
   }
 }
 
-class WithArgsBuilder<TSchema extends ZodType<unknown, unknown, unknown>, TArgs> {
+class WithArgsBuilder<TSchema extends ZodType<unknown, unknown, unknown>, TFetchArgs> {
   private readonly schema: TSchema
-  private readonly fetchWrapper: FetchWrapperWithArgs<TArgs>
+  private readonly fetchWrapper: FetchWrapperWithArgs<TFetchArgs>
 
-  constructor(schema: TSchema, fetchWrapper: FetchWrapperWithArgs<TArgs>) {
+  constructor(schema: TSchema, fetchWrapper: FetchWrapperWithArgs<TFetchArgs>) {
     this.schema = schema
     this.fetchWrapper = fetchWrapper
   }
 
-  build(
+  withQueryWrapper(
     useQueryWrapper: (
-      args: TArgs,
+      args: TFetchArgs,
       options?: {
         query?: UseQueryOptions<
-          Awaited<ReturnType<FetchWrapperWithArgs<TArgs>>>,
+          Awaited<ReturnType<FetchWrapperWithArgs<TFetchArgs>>>,
           unknown,
-          Awaited<ReturnType<FetchWrapperWithArgs<TArgs>>>
+          Awaited<ReturnType<FetchWrapperWithArgs<TFetchArgs>>>
         >
       },
     ) => UseQueryResult<Awaited<ReturnType<typeof this.fetchWrapper>>> & { queryKey: QueryKey },
   ) {
     return (
-      args: TArgs,
+      args: TFetchArgs,
       options?: {
         query?: UseQueryOptions<
           Awaited<ReturnType<typeof this.fetchWrapper>>,
