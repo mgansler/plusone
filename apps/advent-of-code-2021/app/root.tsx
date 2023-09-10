@@ -1,31 +1,23 @@
-import { Link, Links, LiveReload, Outlet, Scripts, useCatch } from '@remix-run/react'
+import type { MetaFunction } from '@remix-run/node'
+import { Link, Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
 
-export function CatchBoundary() {
-  const caught = useCatch()
+export const meta: MetaFunction = () => ({
+  charset: 'utf-8',
+  title: 'Advent of Code 2021',
+  viewport: 'width=device-width,initial-scale=1',
+})
 
-  console.log(caught)
-
-  return (
-    <main>
-      <p>The page you are looking for does not exist!</p>
-    </main>
-  )
-}
-
-export default function Root() {
+export default function App() {
   const days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17']
 
   return (
-    <html lang={'en'}>
+    <html lang="en">
       <head>
-        <meta charSet={'utf-8'} />
-        <title>Advent of Code 2021</title>
+        <Meta />
         <Links />
       </head>
       <body>
         Welcome to my Advent of Code App
-        <Scripts />
-        {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
         <nav>
           {days.map((day) => (
             <Link key={day} to={`days/${day}`}>
@@ -34,6 +26,9 @@ export default function Root() {
           ))}
         </nav>
         <Outlet />
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
       </body>
     </html>
   )

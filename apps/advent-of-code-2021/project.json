@@ -1,40 +1,43 @@
 {
   "name": "advent-of-code-2021",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/advent-of-code-2021/src",
+  "sourceRoot": "apps/advent-of-code-2021",
   "projectType": "application",
+  "tags": [],
   "targets": {
     "build": {
-      "executor": "@mgansler/nx-remix:build",
+      "executor": "@nx/remix:build",
       "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/advent-of-code-2021",
-        "express": true
-      },
-      "configurations": {
-        "production": {}
+        "outputPath": "dist/apps/advent-of-code-2021"
       }
     },
     "serve": {
-      "executor": "@mgansler/nx-remix:serve",
+      "executor": "@nx/remix:serve",
       "options": {
-        "port": 3000
-      },
-      "configurations": {
-        "e2e": {
-          "watch": false
-        }
+        "port": 4200
       }
     },
-    "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+    "start": {
+      "dependsOn": ["build"],
+      "command": "remix-serve build",
       "options": {
-        "lintFilePatterns": ["apps/advent-of-code-2021/**/*.{ts,tsx,js,jsx}"]
+        "cwd": "apps/advent-of-code-2021"
+      }
+    },
+    "typecheck": {
+      "command": "tsc",
+      "options": {
+        "cwd": "apps/advent-of-code-2021"
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/apps/advent-of-code-2021"
       }
     }
-  },
-  "tags": [],
-  "implicitDependencies": ["plugins-nx-remix"]
+  }
 }
