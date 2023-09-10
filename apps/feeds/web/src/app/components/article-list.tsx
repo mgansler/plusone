@@ -2,7 +2,7 @@ import { Stack } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 
 import type { ArticleResponseDto, useFindArticlesInfinite } from '@plusone/feeds/api-client'
-import { useBootInfo } from '@plusone/feeds/api-client'
+import { useValidatedBootInfo } from '@plusone/feeds/api-client'
 
 import { isKeyCombo } from '../utils/keyboard'
 
@@ -17,7 +17,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
   const [selectedArticle, setSelectedArticle] = useState<string>(articles[0]?.article.id)
   const readArticle = useReadArticle()
 
-  const { data: bootInfo } = useBootInfo()
+  const { data: bootInfo } = useValidatedBootInfo()
 
   useEffect(() => {
     const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
@@ -39,7 +39,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
         return
       }
 
-      const loadMoreThreshold = articles.length - Math.floor((bootInfo?.data.pageSize ?? 20) / 2)
+      const loadMoreThreshold = articles.length - Math.floor((bootInfo?.pageSize ?? 20) / 2)
 
       switch (true) {
         case isKeyCombo(event, 'ArrowUp') && currentIndex > 0:
@@ -88,7 +88,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
       // console.log('removing event listener')
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [articles, bootInfo?.data.pageSize, fetchNextPage, readArticle, selectedArticle])
+  }, [articles, bootInfo?.pageSize, fetchNextPage, readArticle, selectedArticle])
 
   useEffect(() => {
     if (containerRef.current && scrollTargetRef.current) {
