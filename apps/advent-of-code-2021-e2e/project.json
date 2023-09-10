@@ -27,13 +27,13 @@
       }
     },
     "dev-server": {
-      "command": "nx serve advent-of-code-2022",
+      "command": "nx serve advent-of-code-2021",
       "options": {
         "readyWhen": "Server started"
       },
       "configurations": {
         "production": {
-          "command": "nx serve advent-of-code-2022 --configuration=production"
+          "command": "nx serve advent-of-code-2021 --configuration=production"
         }
       }
     }
