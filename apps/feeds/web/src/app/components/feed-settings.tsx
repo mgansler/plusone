@@ -5,12 +5,7 @@ import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
 import { Sort } from '@plusone/feeds/shared/types'
-import {
-  getGetUserFeedsQueryKey,
-  useGetFeedSettings,
-  useUpdateFeedSettings,
-  useValidatedGetFeedSettings,
-} from '@plusone/feeds/api-client'
+import { getGetUserFeedsQueryKey, useUpdateFeedSettings, useValidatedGetFeedSettings } from '@plusone/feeds/api-client'
 import type { UpdateFeedSettingsMutationBody } from '@plusone/feeds/api-client'
 
 type FeedSettingsForm = UpdateFeedSettingsMutationBody
@@ -19,14 +14,12 @@ export function FeedSettings() {
   const { feedId } = useParams()
   const { reset, register, handleSubmit } = useForm<FeedSettingsForm>()
 
-  const { data: currentSettings, isFetching } = useGetFeedSettings(feedId)
+  const { data: currentSettings, isFetching } = useValidatedGetFeedSettings(feedId)
   useEffect(() => {
-    if (currentSettings?.data) {
-      reset(currentSettings.data)
+    if (currentSettings) {
+      reset(currentSettings)
     }
-  }, [currentSettings?.data, reset])
-
-  useValidatedGetFeedSettings(feedId)
+  }, [currentSettings, reset])
 
   const queryClient = useQueryClient()
   const { mutateAsync } = useUpdateFeedSettings({
@@ -50,22 +43,22 @@ export function FeedSettings() {
       <Stack gap={2}>
         <Typography>Feed Settings</Typography>
 
-        <TextField aria-readonly={true} disabled={true} label={'Feed Id'} value={currentSettings?.data.id} />
+        <TextField aria-readonly={true} disabled={true} label={'Feed Id'} value={currentSettings?.id} />
 
         <TextField label={'Feed Title'} {...register('title')} />
 
-        <TextField label={'Order'} select={true} defaultValue={currentSettings?.data.order} {...register('order')}>
+        <TextField label={'Order'} select={true} defaultValue={currentSettings?.order} {...register('order')}>
           <MenuItem value={Sort.OldestFirst}>Oldest First</MenuItem>
           <MenuItem value={Sort.NewestFirst}>Newest First</MenuItem>
         </TextField>
 
         <FormControlLabel
-          control={<Checkbox defaultChecked={currentSettings?.data.includeRead} {...register('includeRead')} />}
+          control={<Checkbox defaultChecked={currentSettings?.includeRead} {...register('includeRead')} />}
           label={'Include Read'}
         />
 
         <FormControlLabel
-          control={<Checkbox defaultChecked={currentSettings?.data.expandContent} {...register('expandContent')} />}
+          control={<Checkbox defaultChecked={currentSettings?.expandContent} {...register('expandContent')} />}
           label={'Expand Content'}
         />
 
