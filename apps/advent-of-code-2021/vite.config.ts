@@ -20,6 +20,9 @@ export default defineConfig({
       dir: '../../node_modules/.vitest',
     },
     environment: 'jsdom',
+    coverage: {
+      provider: 'v8',
+    },
     include: ['./app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },
 })
