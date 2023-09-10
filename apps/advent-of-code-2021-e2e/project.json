@@ -8,21 +8,15 @@
       "executor": "@nx/cypress:cypress",
       "options": {
         "cypressConfig": "apps/advent-of-code-2021-e2e/cypress.config.ts",
-        "baseUrl": "http://localhost:3000",
-        "devServerTarget": "advent-of-code-2021-e2e:serve-app",
-        "testingType": "e2e"
+        "baseUrl": "http://localhost:4200",
+        "testingType": "e2e",
+        "skipServe": true
       },
+      "dependsOn": ["dev-server"],
       "configurations": {
         "watch": {
           "watch": true
         }
-      }
-    },
-    "serve-app": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["nx run advent-of-code-2021:serve"],
-        "readyWhen": "Remix App Server started at"
       }
     },
     "lint": {
@@ -30,6 +24,17 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/advent-of-code-2021-e2e/**/*.{js,ts}"]
+      }
+    },
+    "dev-server": {
+      "command": "nx serve advent-of-code-2022",
+      "options": {
+        "readyWhen": "Server started"
+      },
+      "configurations": {
+        "production": {
+          "command": "nx serve advent-of-code-2022 --configuration=production"
+        }
       }
     }
   },
