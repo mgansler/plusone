@@ -7,6 +7,17 @@
 import { useQuery } from '@tanstack/react-query'
 import type { UseQueryOptions, QueryFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
+export interface DeviceDetails {
+  productName: string
+  displayName: string
+}
+
+export interface DeviceDetailsResponseDto {
+  id: string
+  name: string
+  details: DeviceDetails
+}
+
 export interface DeviceResponseDto {
   id: string
   name: string
@@ -41,6 +52,41 @@ export const useDeviceList = <TData = Awaited<ReturnType<typeof deviceList>>, TE
   query?: UseQueryOptions<Awaited<ReturnType<typeof deviceList>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getDeviceListQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const deviceDetails = (id: string, signal?: AbortSignal) => {
+  return customAxiosInstance<DeviceDetailsResponseDto>({ url: `/api/devices/${id}`, method: 'get', signal })
+}
+
+export const getDeviceDetailsQueryKey = (id: string) => [`/api/devices/${id}`] as const
+
+export const getDeviceDetailsQueryOptions = <TData = Awaited<ReturnType<typeof deviceDetails>>, TError = unknown>(
+  id: string,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof deviceDetails>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<typeof deviceDetails>>, TError, TData> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getDeviceDetailsQueryKey(id)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof deviceDetails>>> = ({ signal }) => deviceDetails(id, signal)
+
+  return { queryKey, queryFn, enabled: !!id, ...queryOptions }
+}
+
+export type DeviceDetailsQueryResult = NonNullable<Awaited<ReturnType<typeof deviceDetails>>>
+export type DeviceDetailsQueryError = unknown
+
+export const useDeviceDetails = <TData = Awaited<ReturnType<typeof deviceDetails>>, TError = unknown>(
+  id: string,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof deviceDetails>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getDeviceDetailsQueryOptions(id, options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 

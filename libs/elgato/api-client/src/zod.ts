@@ -14,3 +14,16 @@ export const deviceListResponse = zod.object({
     }),
   ),
 })
+
+export const deviceDetailsParams = zod.object({
+  id: zod.string(),
+})
+
+export const deviceDetailsResponse = zod.object({
+  id: zod.string(),
+  name: zod.string(),
+  details: zod.object({
+    productName: zod.string(),
+    displayName: zod.string(),
+  }),
+})

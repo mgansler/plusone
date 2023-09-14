@@ -1,5 +1,6 @@
 import { Link, Route, Routes } from 'react-router-dom'
 
+import { DeviceDetails } from './device-details'
 import { Devices } from './devices'
 
 export function App() {
@@ -14,7 +15,9 @@ export function App() {
           </div>
         }
       />
-      <Route path={'/devices'} element={<Devices />} />
+      <Route path={'devices'} element={<Devices />}>
+        <Route path={':deviceId'} element={<DeviceDetails />} />
+      </Route>
     </Routes>
   )
 }
