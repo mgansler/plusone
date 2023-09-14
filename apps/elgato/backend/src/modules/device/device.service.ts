@@ -4,8 +4,8 @@ import Bonjour from 'bonjour-service'
 import { PrismaService } from '@plusone/elgato-persistence'
 
 @Injectable()
-export class AppService {
-  private logger = new Logger(AppService.name)
+export class DeviceService {
+  private logger = new Logger(DeviceService.name)
 
   constructor(private readonly prismaService: PrismaService) {}
 

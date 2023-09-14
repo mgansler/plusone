@@ -1,12 +1,12 @@
 import { Controller, Get } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 
-import { DeviceResponseDto } from './app.dto'
-import { AppService } from './app.service'
+import { DeviceResponseDto } from './device.dto'
+import { DeviceService } from './device.service'
 
 @Controller()
-export class AppController {
-  constructor(private readonly appService: AppService) {}
+export class DeviceController {
+  constructor(private readonly appService: DeviceService) {}
 
   @ApiOperation({ operationId: 'device-list' })
   @ApiOkResponse({ description: 'List of all devices in the local network.', type: [DeviceResponseDto] })
