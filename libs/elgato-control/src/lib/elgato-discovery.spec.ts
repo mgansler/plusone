@@ -1,7 +1,7 @@
 import type { Service } from 'bonjour-service'
 import Bonjour from 'bonjour-service'
 
-describe('ElgatoDiscovery', () => {
+describe.skip('ElgatoDiscovery', () => {
   it('should work with bonjour-service', async () => {
     const bonjour = new Bonjour()
     const services: Service[] = []

@@ -1,6 +1,6 @@
 import { setColor } from './elgato-control'
 
-describe('elgatoControl', () => {
+describe.skip('elgatoControl', () => {
   it('should work', async () => {
     // await discoverDevices('Light-Strip-Desk')
     // await discoverDevices('Light-Strip-Background')

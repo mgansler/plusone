@@ -21,7 +21,13 @@
       "configurations": {
         "development": {},
         "production": {}
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "dependencies": true
+        }
+      ]
     },
     "serve": {
       "executor": "@nx/js:node",

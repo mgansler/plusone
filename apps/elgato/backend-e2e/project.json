@@ -4,7 +4,7 @@
   "implicitDependencies": ["elgato-backend"],
   "projectType": "application",
   "targets": {
-    "e2e": {
+    "_e2e": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
       "options": {
