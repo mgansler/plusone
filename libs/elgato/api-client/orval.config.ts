@@ -2,7 +2,7 @@ import { defineConfig } from 'orval'
 
 module.exports = defineConfig({
   api: {
-    input: { target: 'http://localhost:3333/api-json' },
+    input: { target: 'http://localhost:3000/api-json' },
     output: {
       client: 'react-query',
       target: './src/client.ts',
@@ -13,23 +13,21 @@ module.exports = defineConfig({
         },
         query: {
           useQuery: true,
-          useInfinite: true,
-          useInfiniteQueryParam: 'cursor',
         },
       },
     },
     hooks: {
-      afterAllFilesWrite: 'nx format --files libs/feeds/api-client/src/client.ts',
+      afterAllFilesWrite: 'nx format --files libs/elgato/api-client/src/client.ts',
     },
   },
   zod: {
-    input: { target: 'http://localhost:3333/api-json' },
+    input: { target: 'http://localhost:3000/api-json' },
     output: {
       client: 'zod',
       target: './src/zod.ts',
     },
     hooks: {
-      afterAllFilesWrite: 'nx format --files libs/feeds/api-client/src/zod.ts',
+      afterAllFilesWrite: 'nx format --files libs/elgato/api-client/src/zod.ts',
     },
   },
 })

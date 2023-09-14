@@ -7,3 +7,8 @@ export class DeviceResponseDto {
   @ApiProperty()
   name: string
 }
+
+export class DeviceListResponseDto {
+  @ApiProperty({ type: [DeviceResponseDto] })
+  devices: DeviceResponseDto[]
+}

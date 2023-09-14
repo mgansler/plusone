@@ -1,20 +1,20 @@
 {
-  "name": "feeds-api-client",
+  "name": "elgato-api-client",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/feeds/api-client/src",
+  "sourceRoot": "libs/elgato/api-client/src",
   "projectType": "library",
   "targets": {
     "generate": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "yarn orval --config libs/feeds/api-client/orval.config.ts"
+        "command": "yarn orval --config libs/elgato/api-client/orval.config.ts"
       }
     },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/feeds/api-client/**/*.ts"]
+        "lintFilePatterns": ["libs/elgato/api-client/**/*.ts"]
       }
     }
   },
