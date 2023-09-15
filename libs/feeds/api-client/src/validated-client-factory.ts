@@ -2,8 +2,8 @@ import type { QueryKey, UseQueryOptions, UseQueryResult } from '@tanstack/react-
 import type { AxiosResponse } from 'axios'
 import type { z, ZodType } from 'zod'
 
-type FetchWrapperWithArgs<TArgs> = (args: TArgs, signal?: AbortSignal) => Promise<AxiosResponse<object>>
-type FetchWrapperWithoutArgs = (signal?: AbortSignal) => Promise<AxiosResponse<object>>
+type FetchWrapperWithArgs<TArgs> = (args: TArgs, signal?: AbortSignal) => Promise<AxiosResponse<unknown>>
+type FetchWrapperWithoutArgs = (signal?: AbortSignal) => Promise<AxiosResponse<unknown>>
 
 type ValidatedUseQueryReturnType<
   OriginalUseQueryReturnType extends { data: unknown },

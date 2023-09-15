@@ -11,9 +11,6 @@ module.exports = defineConfig({
           path: './src/custom-axios.ts',
           name: 'customAxiosInstance',
         },
-        query: {
-          useQuery: true,
-        },
       },
     },
     hooks: {

@@ -1,9 +1,8 @@
 import type { QueryKey, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
-import type { AxiosResponse } from 'axios'
 import type { z, ZodType } from 'zod'
 
-type FetchWrapperWithArgs<TArgs> = (args: TArgs, signal?: AbortSignal) => Promise<AxiosResponse<object>>
-type FetchWrapperWithoutArgs = (signal?: AbortSignal) => Promise<AxiosResponse<object>>
+type FetchWrapperWithArg<TArg> = (arg: TArg, signal?: AbortSignal) => Promise<unknown>
+type FetchWrapperWithoutArgs = (signal?: AbortSignal) => Promise<unknown>
 
 type ValidatedUseQueryReturnType<
   OriginalUseQueryReturnType extends { data: unknown },
@@ -23,8 +22,8 @@ export class ValidatedClientBuilder<TSchema extends ZodType<unknown, unknown, un
     return new WithoutArgsBuilder(this.schema, fetchWrapper)
   }
 
-  fetchWrapperWithArgs<TFetchArgs>(fetchWrapper: FetchWrapperWithArgs<TFetchArgs>) {
-    return new WithArgsBuilder<typeof this.schema, TFetchArgs>(this.schema, fetchWrapper)
+  fetchWrapperWithArg<TFetchArg>(fetchWrapper: FetchWrapperWithArg<TFetchArg>) {
+    return new WithArgsBuilder<typeof this.schema, TFetchArg>(this.schema, fetchWrapper)
   }
 }
 
@@ -56,7 +55,7 @@ class WithoutArgsBuilder<TSchema extends ZodType<unknown, unknown, unknown>> {
       const { data, ...rest } = useQueryWrapper(options)
       return {
         ...rest,
-        data: rest.isSuccess ? this.schema.parse(data.data) : undefined,
+        data: rest.isSuccess ? this.schema.parse(data) : undefined,
       }
     }
   }
@@ -64,9 +63,9 @@ class WithoutArgsBuilder<TSchema extends ZodType<unknown, unknown, unknown>> {
 
 class WithArgsBuilder<TSchema extends ZodType<unknown, unknown, unknown>, TFetchArgs> {
   private readonly schema: TSchema
-  private readonly fetchWrapper: FetchWrapperWithArgs<TFetchArgs>
+  private readonly fetchWrapper: FetchWrapperWithArg<TFetchArgs>
 
-  constructor(schema: TSchema, fetchWrapper: FetchWrapperWithArgs<TFetchArgs>) {
+  constructor(schema: TSchema, fetchWrapper: FetchWrapperWithArg<TFetchArgs>) {
     this.schema = schema
     this.fetchWrapper = fetchWrapper
   }
@@ -76,9 +75,9 @@ class WithArgsBuilder<TSchema extends ZodType<unknown, unknown, unknown>, TFetch
       args: TFetchArgs,
       options?: {
         query?: UseQueryOptions<
-          Awaited<ReturnType<FetchWrapperWithArgs<TFetchArgs>>>,
+          Awaited<ReturnType<FetchWrapperWithArg<TFetchArgs>>>,
           unknown,
-          Awaited<ReturnType<FetchWrapperWithArgs<TFetchArgs>>>
+          Awaited<ReturnType<FetchWrapperWithArg<TFetchArgs>>>
         >
       },
     ) => UseQueryResult<Awaited<ReturnType<typeof this.fetchWrapper>>> & { queryKey: QueryKey },
@@ -96,7 +95,7 @@ class WithArgsBuilder<TSchema extends ZodType<unknown, unknown, unknown>, TFetch
       const { data, ...rest } = useQueryWrapper(args, options)
       return {
         ...rest,
-        data: rest.isSuccess ? this.schema.parse(data.data) : undefined,
+        data: rest.isSuccess ? this.schema.parse(data) : undefined,
       }
     }
   }

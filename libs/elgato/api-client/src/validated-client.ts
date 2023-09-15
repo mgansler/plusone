@@ -7,5 +7,5 @@ export const useValidatedListDevices = new ValidatedClientBuilder(deviceListResp
   .withQueryWrapper(useDeviceList)
 
 export const useValidatedDeviceDetails = new ValidatedClientBuilder(deviceDetailsResponse)
-  .fetchWrapperWithArgs(deviceDetails)
+  .fetchWrapperWithArg(deviceDetails)
   .withQueryWrapper(useDeviceDetails)
