@@ -3,9 +3,9 @@ import { ValidatedClientBuilder } from './validated-client-factory'
 import { deviceDetailsResponse, deviceListResponse } from './zod'
 
 export const useValidatedListDevices = new ValidatedClientBuilder(deviceListResponse)
-  .fetchWrapperWithoutArgs(deviceList)
-  .withQueryWrapper(useDeviceList)
+  .withFetchWrapper(deviceList)
+  .withUseQueryWrapper(useDeviceList)
 
 export const useValidatedDeviceDetails = new ValidatedClientBuilder(deviceDetailsResponse)
-  .fetchWrapperWithArg(deviceDetails)
-  .withQueryWrapper(useDeviceDetails)
+  .withFetchWrapper(deviceDetails)
+  .withUseQueryWrapper(useDeviceDetails)

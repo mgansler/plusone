@@ -1,8 +1,5 @@
-import type { QueryKey, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
 import type { z, ZodType } from 'zod'
-
-type FetchWrapperWithArg<TArg> = (arg: TArg, signal?: AbortSignal) => Promise<unknown>
-type FetchWrapperWithoutArgs = (signal?: AbortSignal) => Promise<unknown>
 
 type ValidatedUseQueryReturnType<
   OriginalUseQueryReturnType extends { data: unknown },
@@ -11,6 +8,10 @@ type ValidatedUseQueryReturnType<
   data: z.infer<ValidationSchema> | undefined
 }
 
+type FetchWrapper<WrappedFunction extends (...args: unknown[]) => Promise<unknown>> = (
+  ...args: Parameters<WrappedFunction>
+) => ReturnType<WrappedFunction>
+
 export class ValidatedClientBuilder<TSchema extends ZodType<unknown, unknown, unknown>> {
   private readonly schema: TSchema
 
@@ -18,81 +19,45 @@ export class ValidatedClientBuilder<TSchema extends ZodType<unknown, unknown, un
     this.schema = schema
   }
 
-  fetchWrapperWithoutArgs(fetchWrapper: FetchWrapperWithoutArgs) {
-    return new WithoutArgsBuilder(this.schema, fetchWrapper)
-  }
-
-  fetchWrapperWithArg<TFetchArg>(fetchWrapper: FetchWrapperWithArg<TFetchArg>) {
-    return new WithArgsBuilder<typeof this.schema, TFetchArg>(this.schema, fetchWrapper)
+  withFetchWrapper<TFetchWrapper extends (...args: unknown[]) => Promise<unknown>>(fetchWrapper: TFetchWrapper) {
+    return new FlexibleBuilder(this.schema, fetchWrapper)
   }
 }
 
-class WithoutArgsBuilder<TSchema extends ZodType<unknown, unknown, unknown>> {
-  private readonly schema: TSchema
-  private readonly fetchWrapper: FetchWrapperWithoutArgs
+class FlexibleBuilder<TSchema extends ZodType<unknown, unknown, unknown>, TRequiredArgs extends unknown[]> {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  constructor(private readonly schema: TSchema, private readonly fetchWrapper: FetchWrapper<TRequiredArgs>) {}
 
-  constructor(schema: TSchema, fetchWrapper: FetchWrapperWithoutArgs) {
-    this.schema = schema
-    this.fetchWrapper = fetchWrapper
-  }
-
-  withQueryWrapper(
-    useQueryWrapper: (options?: {
-      query?: UseQueryOptions<
-        Awaited<ReturnType<FetchWrapperWithoutArgs>>,
-        unknown,
-        Awaited<ReturnType<FetchWrapperWithoutArgs>>
-      >
-    }) => UseQueryResult<Awaited<ReturnType<typeof this.fetchWrapper>>> & { queryKey: QueryKey },
-  ) {
-    return (options?: {
-      query?: UseQueryOptions<
-        Awaited<ReturnType<typeof this.fetchWrapper>>,
-        unknown,
-        Awaited<ReturnType<typeof this.fetchWrapper>>
-      >
-    }): ValidatedUseQueryReturnType<ReturnType<typeof useQueryWrapper>, typeof this.schema> => {
-      const { data, ...rest } = useQueryWrapper(options)
-      return {
-        ...rest,
-        data: rest.isSuccess ? this.schema.parse(data) : undefined,
-      }
-    }
-  }
-}
-
-class WithArgsBuilder<TSchema extends ZodType<unknown, unknown, unknown>, TFetchArgs> {
-  private readonly schema: TSchema
-  private readonly fetchWrapper: FetchWrapperWithArg<TFetchArgs>
-
-  constructor(schema: TSchema, fetchWrapper: FetchWrapperWithArg<TFetchArgs>) {
-    this.schema = schema
-    this.fetchWrapper = fetchWrapper
-  }
-
-  withQueryWrapper(
-    useQueryWrapper: (
-      args: TFetchArgs,
-      options?: {
-        query?: UseQueryOptions<
-          Awaited<ReturnType<FetchWrapperWithArg<TFetchArgs>>>,
-          unknown,
-          Awaited<ReturnType<FetchWrapperWithArg<TFetchArgs>>>
-        >
-      },
-    ) => UseQueryResult<Awaited<ReturnType<typeof this.fetchWrapper>>> & { queryKey: QueryKey },
-  ) {
+  withUseQueryWrapper<
+    TUseQueryWrapper extends (
+      ...args: [
+        ...args: Parameters<typeof this.fetchWrapper>,
+        options:
+          | {
+              query?: UseQueryOptions
+            }
+          | undefined,
+      ]
+    ) => UseQueryResult,
+  >(useQueryWrapper: TUseQueryWrapper) {
     return (
-      args: TFetchArgs,
-      options?: {
-        query?: UseQueryOptions<
-          Awaited<ReturnType<typeof this.fetchWrapper>>,
-          unknown,
-          Awaited<ReturnType<typeof this.fetchWrapper>>
-        >
-      },
-    ): ValidatedUseQueryReturnType<ReturnType<typeof useQueryWrapper>, typeof this.schema> => {
-      const { data, ...rest } = useQueryWrapper(args, options)
+      ...args: [
+        ...args: Parameters<TUseQueryWrapper>,
+        options?: {
+          query?: UseQueryOptions<
+            Awaited<ReturnType<typeof this.fetchWrapper>>,
+            unknown,
+            Awaited<ReturnType<typeof this.fetchWrapper>>
+          >
+        },
+      ]
+    ): ValidatedUseQueryReturnType<ReturnType<TUseQueryWrapper>, typeof this.schema> => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const { data, ...rest } = useQueryWrapper(...args)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       return {
         ...rest,
         data: rest.isSuccess ? this.schema.parse(data) : undefined,
