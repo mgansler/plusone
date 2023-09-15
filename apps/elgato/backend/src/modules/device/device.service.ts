@@ -56,6 +56,7 @@ export class DeviceService {
       throw new HttpException(`The device with the given id '${id}' is currently not known.`, HttpStatus.NOT_FOUND)
     }
 
+    const beforeDeviceCallTS = Date.now()
     const resp = await firstValueFrom(
       this.httpService
         .get<DeviceDetails>(`http://${device.host}:${device.port}/elgato/accessory-info`, {
@@ -68,6 +69,10 @@ export class DeviceService {
           }),
         ),
     )
+    const afterDeviceCallTS = Date.now()
+    if (afterDeviceCallTS - beforeDeviceCallTS > 200) {
+      this.logger.debug(`Querying the device took longer then expected: ${afterDeviceCallTS - beforeDeviceCallTS} ms`)
+    }
 
     const details: DeviceDetails = {
       displayName: resp.data.displayName,
