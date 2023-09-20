@@ -26,4 +26,11 @@ export const deviceDetailsResponse = zod.object({
     productName: zod.string(),
     displayName: zod.string(),
   }),
+  state: zod.object({
+    on: zod.boolean(),
+  }),
+})
+
+export const toggleDeviceParams = zod.object({
+  id: zod.string(),
 })

@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common'
+import { Controller, Get, Param, Put } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 
 import { DeviceDetailsResponseDto, DeviceListResponseDto } from './device.dto'
@@ -24,5 +24,11 @@ export class DeviceController {
   @Get('/devices/:id')
   async getDevice(@Param('id') id: string): Promise<DeviceDetailsResponseDto> {
     return this.deviceService.getDevice(id)
+  }
+
+  @ApiOperation({ operationId: 'toggle-device' })
+  @Put('/devices/:id/toggle')
+  async toggleDevice(@Param('id') id: string) {
+    return this.deviceService.toggle(id)
   }
 }

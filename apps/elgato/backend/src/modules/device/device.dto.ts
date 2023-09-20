@@ -8,6 +8,11 @@ export class DeviceDetails {
   displayName: string
 }
 
+export class DeviceState {
+  @ApiProperty()
+  on: boolean
+}
+
 export class DeviceResponseDto {
   @ApiProperty()
   id: string
@@ -19,6 +24,9 @@ export class DeviceResponseDto {
 export class DeviceDetailsResponseDto extends DeviceResponseDto {
   @ApiProperty({ type: () => DeviceDetails })
   details: DeviceDetails
+
+  @ApiProperty({ type: () => DeviceState })
+  state: DeviceState
 }
 
 export class DeviceListResponseDto {

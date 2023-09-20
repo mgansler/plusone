@@ -4,9 +4,20 @@
  * Elgato API
  * OpenAPI spec version: 0.1
  */
-import { useQuery } from '@tanstack/react-query'
-import type { UseQueryOptions, QueryFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import type {
+  UseQueryOptions,
+  UseMutationOptions,
+  QueryFunction,
+  MutationFunction,
+  UseQueryResult,
+  QueryKey,
+} from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
+export interface DeviceState {
+  on: boolean
+}
+
 export interface DeviceDetails {
   productName: string
   displayName: string
@@ -16,6 +27,7 @@ export interface DeviceDetailsResponseDto {
   id: string
   name: string
   details: DeviceDetails
+  state: DeviceState
 }
 
 export interface DeviceResponseDto {
@@ -93,4 +105,34 @@ export const useDeviceDetails = <TData = Awaited<ReturnType<typeof deviceDetails
   query.queryKey = queryOptions.queryKey
 
   return query
+}
+
+export const toggleDevice = (id: string) => {
+  return customAxiosInstance<void>({ url: `/api/devices/${id}/toggle`, method: 'put' })
+}
+
+export const getToggleDeviceMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { id: string }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { id: string }, TContext> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof toggleDevice>>, { id: string }> = (props) => {
+    const { id } = props ?? {}
+
+    return toggleDevice(id)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type ToggleDeviceMutationResult = NonNullable<Awaited<ReturnType<typeof toggleDevice>>>
+
+export type ToggleDeviceMutationError = unknown
+
+export const useToggleDevice = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { id: string }, TContext>
+}) => {
+  const mutationOptions = getToggleDeviceMutationOptions(options)
+
+  return useMutation(mutationOptions)
 }
