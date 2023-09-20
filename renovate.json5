@@ -8,5 +8,9 @@
       // 3.x does not work with Nx yet
       allowedVersions: '2.8.8',
     },
+    {
+      matchPackageNames: ['@types/react'],
+      allowedVersions: '!/18.2.22/',
+    },
   ],
 }
