@@ -1,0 +1,24 @@
+image: node:20-alpine
+
+elgato:deploy:
+  cache: []
+  stage: deploy
+  tags:
+    - elgato
+  only:
+    - main
+  before_script:
+    - source ~/.nvm/nvm.sh
+    - yarn install
+  script:
+    - yarn nx run elgato-backend:build:production
+    - yarn nx run elgato-frontend:build:production
+    # Copy to app directory
+    - mkdir -p ~/app
+    - cp -r ./dist/apps/elgato/backend/* ~/app
+    - cp -r ./dist/apps/elgato/frontend/* ~/app/web
+    - cd ~/app
+    - yarn install --frozen-lockfile
+    - sed -i 's#file:./elgato.db#file:/home/elgato/app/elgato.db#' schema.prisma
+    - npx -y prisma migrate deploy
+    - pm2 restart main.js

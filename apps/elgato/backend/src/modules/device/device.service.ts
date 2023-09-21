@@ -56,25 +56,25 @@ export class DeviceService {
     const beforeDeviceCallTS = Date.now()
     const accessoryInfo = await firstValueFrom(
       this.httpService
-        .get<DeviceDetails>(`http://${device.host}:${device.port}/elgato/accessory-info`, {
+        .get<DeviceDetails>(`http://${device.host.replace('.local', '')}:${device.port}/elgato/accessory-info`, {
           httpAgent: new http.Agent({ family: 4 }),
         })
         .pipe(
           catchError((error: AxiosError) => {
             this.logger.error(error.response.data)
-            throw `Could not connect to '${device.host}'`
+            throw `Could not connect to '${device.host.replace('.local', '')}'`
           }),
         ),
     )
     const currentState = await firstValueFrom(
       this.httpService
-        .get(`http://${device.host}:${device.port}/elgato/lights`, {
+        .get(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`, {
           httpAgent: new http.Agent({ family: 4 }),
         })
         .pipe(
           catchError((error: AxiosError) => {
             this.logger.error(error.response.data)
-            throw `Could not connect to '${device.host}'`
+            throw `Could not connect to '${device.host.replace('.local', '')}'`
           }),
         ),
     )
@@ -103,13 +103,13 @@ export class DeviceService {
 
     const currentState = await firstValueFrom(
       this.httpService
-        .get(`http://${device.host}:${device.port}/elgato/lights`, {
+        .get(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`, {
           httpAgent: new http.Agent({ family: 4 }),
         })
         .pipe(
           catchError((error: AxiosError) => {
             this.logger.error(error.response.data)
-            throw `Could not connect to '${device.host}'`
+            throw `Could not connect to '${device.host.replace('.local', '')}'`
           }),
         ),
     )
@@ -117,7 +117,7 @@ export class DeviceService {
     await firstValueFrom(
       this.httpService
         .put(
-          `http://${device.host}:${device.port}/elgato/lights`,
+          `http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`,
           JSON.stringify({ lights: [{ on: !currentState.data.lights[0].on }] }),
           {
             httpAgent: new http.Agent({ family: 4 }),
@@ -126,7 +126,7 @@ export class DeviceService {
         .pipe(
           catchError((error: AxiosError) => {
             this.logger.error(error.response.data)
-            throw `Could not connect to '${device.host}'`
+            throw `Could not connect to '${device.host.replace('.local', '')}'`
           }),
         ),
     )

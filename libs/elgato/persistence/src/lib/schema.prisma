@@ -6,7 +6,7 @@ datasource db {
 generator client {
   provider      = "prisma-client-js"
   output        = "client"
-  binaryTargets = ["linux-musl", "native"]
+  binaryTargets = ["linux-musl", "native", "linux-musl-arm64-openssl-3.0.x"]
 }
 
 model Device {

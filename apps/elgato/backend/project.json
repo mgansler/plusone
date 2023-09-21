@@ -9,6 +9,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
+        "generatePackageJson": true,
         "target": "node",
         "compiler": "tsc",
         "outputPath": "dist/apps/elgato/backend",
@@ -20,7 +21,26 @@
       },
       "configurations": {
         "development": {},
-        "production": {}
+        "production": {
+          "assets": [
+            "apps/elgato/backend/src/assets",
+            {
+              "input": "libs/elgato/persistence/src/lib/client",
+              "glob": "schema.prisma",
+              "output": ""
+            },
+            {
+              "input": "libs/elgato/persistence/src/lib/",
+              "glob": "migrations",
+              "output": "migrations"
+            },
+            {
+              "input": "libs/elgato/persistence/src/lib/client",
+              "glob": "libquery_engine-linux-musl*",
+              "output": ""
+            }
+          ]
+        }
       },
       "dependsOn": [
         {
