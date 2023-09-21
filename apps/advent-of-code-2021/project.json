@@ -13,14 +13,14 @@
       }
     },
     "serve": {
-      "executor": "@nx/remix:serve",
+      "command": "remix dev",
       "options": {
-        "port": 4200
+        "cwd": "apps/advent-of-code-2021"
       }
     },
     "start": {
       "dependsOn": ["build"],
-      "command": "remix-serve build",
+      "command": "remix-serve ./build/index.js",
       "options": {
         "cwd": "apps/advent-of-code-2021"
       }

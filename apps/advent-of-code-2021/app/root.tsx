@@ -1,11 +1,15 @@
 import type { MetaFunction } from '@remix-run/node'
 import { Link, Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
 
-export const meta: MetaFunction = () => ({
-  charset: 'utf-8',
-  title: 'Advent of Code 2021',
-  viewport: 'width=device-width,initial-scale=1',
-})
+export const meta: MetaFunction = () => {
+  return [
+    {
+      charset: 'utf-8',
+      title: 'Advent of Code 2021',
+      viewport: 'width=device-width,initial-scale=1',
+    },
+  ]
+}
 
 export default function App() {
   const days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17']

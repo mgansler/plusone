@@ -8,7 +8,7 @@
       "executor": "@nx/cypress:cypress",
       "options": {
         "cypressConfig": "apps/advent-of-code-2021-e2e/cypress.config.ts",
-        "baseUrl": "http://localhost:4200",
+        "baseUrl": "http://localhost:3000",
         "testingType": "e2e",
         "skipServe": true
       },
@@ -29,7 +29,7 @@
     "dev-server": {
       "command": "nx serve advent-of-code-2021",
       "options": {
-        "readyWhen": "Server started"
+        "readyWhen": "[remix-serve]"
       },
       "configurations": {
         "production": {
