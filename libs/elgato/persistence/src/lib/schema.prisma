@@ -1,0 +1,18 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./elgato.db"
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "client"
+  binaryTargets = ["linux-musl", "native", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+model Device {
+  id   String @id
+  name String
+  fqdn String
+  host String
+  port Int
+}

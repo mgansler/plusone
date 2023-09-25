@@ -1,0 +1,37 @@
+{
+  "name": "elgato-persistence",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/elgato/persistence/src",
+  "projectType": "library",
+  "targets": {
+    "format": {
+      "executor": "@mgansler/nx-prisma:format"
+    },
+    "generate": {
+      "executor": "@mgansler/nx-prisma:generate"
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn prisma migrate dev --schema libs/elgato/persistence/src/lib/schema.prisma"
+      }
+    },
+    "push": {
+      "executor": "@mgansler/nx-prisma:push",
+      "dependsOn": [
+        {
+          "target": "generate"
+        }
+      ]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/elgato/persistence/**/*.ts"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["plugins-nx-prisma"]
+}

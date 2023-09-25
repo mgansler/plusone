@@ -52,7 +52,8 @@
       "library": {
         "style": "none",
         "linter": "eslint",
-        "strict": true
+        "strict": true,
+        "unitTestRunner": "vitest"
       }
     }
   },
@@ -96,5 +97,8 @@
     "lint": {
       "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
     }
+  },
+  "workspaceLayout": {
+    "projectNameAndRootFormat": "as-provided"
   }
 }
