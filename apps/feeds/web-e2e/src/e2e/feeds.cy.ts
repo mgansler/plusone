@@ -88,12 +88,12 @@ describe('feeds', () => {
     cy.findByRole('link', { name: 'add feed' }).click()
 
     cy.findByRole('textbox', { name: 'import' }).type(
-      '{{}"title": "AnandTech","feedUrl": "https://www.anandtech.com/rss/articlefeed.aspx"},{{}"title": "ComputerBase","feedUrl": "https://www.computerbase.de/rss/news.xml"}',
+      '{{}"title": "EK2","feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCby13HqmxFqWEYeHUG72TQw"},{{}"title": "ComputerBase","feedUrl": "https://www.computerbase.de/rss/news.xml"}',
     )
 
     cy.findByRole('button', { name: 'import' }).click()
 
-    cy.findByRole('button', { name: /AnandTech/, timeout: 20_000 }).should('be.visible')
+    cy.findByRole('button', { name: /EK2/, timeout: 20_000 }).should('be.visible')
     cy.findByRole('button', { name: /ComputerBase/, timeout: 20_000 }).should('be.visible')
   })
 })
