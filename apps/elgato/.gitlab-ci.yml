@@ -5,11 +5,11 @@ elgato:deploy:
   stage: deploy
   tags:
     - elgato
-  #  only:
-  #    - main
+  only:
+    - main
   before_script:
     - source ~/.nvm/nvm.sh
     - yarn install
   script:
-    - yarn nx run elgato-app:build
-    - docker compose -f apps/elgato/app/docker-compose.yml up -d
+    - yarn nx run elgato-elgato:build
+    - docker compose -f apps/elgato/elgato/docker-compose.yml up -d
