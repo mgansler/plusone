@@ -10,9 +10,17 @@ generator client {
 }
 
 model Device {
-  id   String @id
-  name String
-  fqdn String
-  host String
-  port Int
+  id     String @id
+  name   String
+  fqdn   String
+  host   String
+  port   Int
+  Room   Room?  @relation(fields: [roomId], references: [id])
+  roomId Int?
+}
+
+model Room {
+  id      Int      @id @default(autoincrement())
+  name    String
+  devices Device[]
 }

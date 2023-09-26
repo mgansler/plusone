@@ -7,7 +7,7 @@ import { AxiosError } from 'axios'
 import Bonjour from 'bonjour-service'
 import { catchError, firstValueFrom } from 'rxjs'
 
-import { PrismaService } from '@plusone/elgato-persistence'
+import { Device, PrismaService, Room } from '@plusone/elgato-persistence'
 
 import { DeviceDetails, DeviceDetailsResponseDto, DeviceState } from './device.dto'
 
@@ -29,7 +29,6 @@ export class DeviceService {
 
   async getDevice(id: string): Promise<DeviceDetailsResponseDto> {
     const device = await this.prismaService.device.findUniqueOrThrow({
-      select: { id: true, name: true, host: true, port: true },
       where: { id },
     })
 
@@ -46,18 +45,7 @@ export class DeviceService {
           }),
         ),
     )
-    const currentState = await firstValueFrom(
-      this.httpService
-        .get(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`, {
-          httpAgent: new http.Agent({ family: 4 }),
-        })
-        .pipe(
-          catchError((error: AxiosError) => {
-            this.logger.error(error.response.data)
-            throw `Could not connect to '${device.host.replace('.local', '')}'`
-          }),
-        ),
-    )
+    const currentState = await this.getDeviceState(device)
     const afterDeviceCallTS = Date.now()
     if (afterDeviceCallTS - beforeDeviceCallTS > 200) {
       this.logger.debug(`Querying the device took longer then expected: ${afterDeviceCallTS - beforeDeviceCallTS} ms`)
@@ -77,22 +65,10 @@ export class DeviceService {
 
   async toggle(id: string) {
     const device = await this.prismaService.device.findUniqueOrThrow({
-      select: { id: true, name: true, host: true, port: true },
       where: { id },
     })
 
-    const currentState = await firstValueFrom(
-      this.httpService
-        .get(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`, {
-          httpAgent: new http.Agent({ family: 4 }),
-        })
-        .pipe(
-          catchError((error: AxiosError) => {
-            this.logger.error(error.response.data)
-            throw `Could not connect to '${device.host.replace('.local', '')}'`
-          }),
-        ),
-    )
+    const currentState = await this.getDeviceState(device)
 
     await firstValueFrom(
       this.httpService
@@ -110,6 +86,35 @@ export class DeviceService {
           }),
         ),
     )
+  }
+
+  async assignDeviceToRoom(deviceId: Device['id'], roomId: Room['id']) {
+    await this.prismaService.device.update({
+      where: { id: deviceId },
+      data: { roomId },
+    })
+  }
+
+  async setRoomState(roomId: Room['id'], shouldBeOn: boolean) {
+    const devices = await this.prismaService.device.findMany({ where: { roomId } })
+    for (const device of devices) {
+      await firstValueFrom(
+        this.httpService
+          .put(
+            `http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`,
+            JSON.stringify({ lights: [{ on: shouldBeOn ? 1 : 0 }] }),
+            {
+              httpAgent: new http.Agent({ family: 4 }),
+            },
+          )
+          .pipe(
+            catchError((error: AxiosError) => {
+              this.logger.error(error.response.data)
+              throw `Could not connect to '${device.host.replace('.local', '')}'`
+            }),
+          ),
+      )
+    }
   }
 
   @Cron(CronExpression.EVERY_30_SECONDS)
@@ -139,5 +144,20 @@ export class DeviceService {
         this.logger.log(`Known devices: ${updatedDeviceCount}`)
       }
     })
+  }
+
+  private getDeviceState(device: Device) {
+    return firstValueFrom(
+      this.httpService
+        .get(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`, {
+          httpAgent: new http.Agent({ family: 4 }),
+        })
+        .pipe(
+          catchError((error: AxiosError) => {
+            this.logger.error(error.response.data)
+            throw `Could not connect to '${device.host.replace('.local', '')}'`
+          }),
+        ),
+    )
   }
 }

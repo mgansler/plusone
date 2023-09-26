@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsInt } from 'class-validator'
 
 export class DeviceDetails {
   @ApiProperty()
@@ -32,4 +33,10 @@ export class DeviceDetailsResponseDto extends DeviceResponseDto {
 export class DeviceListResponseDto {
   @ApiProperty({ type: [DeviceResponseDto] })
   devices: DeviceResponseDto[]
+}
+
+export class DeviceAssignToRoomInputDto {
+  @ApiProperty()
+  @IsInt()
+  roomId: number
 }
