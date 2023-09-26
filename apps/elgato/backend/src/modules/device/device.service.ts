@@ -2,6 +2,7 @@ import * as http from 'http'
 
 import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
+import { Cron, CronExpression } from '@nestjs/schedule'
 import { AxiosError } from 'axios'
 import Bonjour from 'bonjour-service'
 import { catchError, firstValueFrom } from 'rxjs'
@@ -13,34 +14,13 @@ import { DeviceDetails, DeviceDetailsResponseDto, DeviceState } from './device.d
 @Injectable()
 export class DeviceService {
   private logger = new Logger(DeviceService.name)
+  private bonjour = new Bonjour()
 
   constructor(private readonly prismaService: PrismaService, private readonly httpService: HttpService) {}
 
   async onModuleInit() {
     const knownDevices = await this.prismaService.device.count()
     this.logger.log(`Known devices: ${knownDevices}`)
-
-    const bonjour = new Bonjour()
-    bonjour.find({ type: 'elg' }, async (service) => {
-      this.logger.debug(`Got a response from a device: ${service.name}.`)
-      await this.prismaService.device.upsert({
-        where: {
-          id: service.txt.id,
-        },
-        create: {
-          id: service.txt.id,
-          name: service.name,
-          fqdn: service.fqdn,
-          host: service.host,
-          port: service.port,
-        },
-        update: {
-          fqdn: service.fqdn,
-          host: service.host,
-          port: service.port,
-        },
-      })
-    })
   }
 
   async getAllDevices() {
@@ -130,5 +110,34 @@ export class DeviceService {
           }),
         ),
     )
+  }
+
+  @Cron(CronExpression.EVERY_30_SECONDS)
+  private async findDevices() {
+    this.bonjour.find({ type: 'elg' }, async (service) => {
+      this.logger.debug(`Got a response from a device: ${service.name}.`)
+      const currentDeviceCount = await this.prismaService.device.count()
+      await this.prismaService.device.upsert({
+        where: {
+          id: service.txt.id,
+        },
+        create: {
+          id: service.txt.id,
+          name: service.name,
+          fqdn: service.fqdn,
+          host: service.host,
+          port: service.port,
+        },
+        update: {
+          fqdn: service.fqdn,
+          host: service.host,
+          port: service.port,
+        },
+      })
+      const updatedDeviceCount = await this.prismaService.device.count()
+      if (currentDeviceCount !== updatedDeviceCount) {
+        this.logger.log(`Known devices: ${updatedDeviceCount}`)
+      }
+    })
   }
 }
