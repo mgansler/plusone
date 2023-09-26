@@ -9,6 +9,8 @@ import { catchError, firstValueFrom } from 'rxjs'
 
 import { Device, PrismaService, Room } from '@plusone/elgato-persistence'
 
+import { DevicePowerState } from '../room/room.dto'
+
 import { DeviceDetails, DeviceDetailsResponseDto, DeviceState } from './device.dto'
 
 @Injectable()
@@ -95,14 +97,14 @@ export class DeviceService {
     })
   }
 
-  async setRoomState(roomId: Room['id'], shouldBeOn: boolean) {
+  async setRoomState(roomId: Room['id'], targetState: DevicePowerState) {
     const devices = await this.prismaService.device.findMany({ where: { roomId } })
     for (const device of devices) {
       await firstValueFrom(
         this.httpService
           .put(
             `http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`,
-            JSON.stringify({ lights: [{ on: shouldBeOn ? 1 : 0 }] }),
+            JSON.stringify({ lights: [{ on: targetState === 'on' ? 1 : 0 }] }),
             {
               httpAgent: new http.Agent({ family: 4 }),
             },

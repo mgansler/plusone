@@ -4,7 +4,7 @@ import { PrismaService, Room } from '@plusone/elgato-persistence'
 
 import { DeviceService } from '../device/device.service'
 
-import { RoomCreateDto } from './room.dto'
+import { DevicePowerState, RoomCreateDto } from './room.dto'
 
 @Injectable()
 export class RoomService {
@@ -22,8 +22,8 @@ export class RoomService {
     })
   }
 
-  async setRoomState(id: Room['id'], shouldBeOn: boolean) {
+  async setRoomState(id: Room['id'], targetState: DevicePowerState) {
     await this.prismaService.room.findUniqueOrThrow({ where: { id } })
-    return this.deviceService.setRoomState(id, shouldBeOn)
+    return this.deviceService.setRoomState(id, targetState)
   }
 }

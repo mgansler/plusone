@@ -1,5 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsBoolean, IsString } from 'class-validator'
+import { IsString } from 'class-validator'
+
+export enum DevicePowerState {
+  on = 'on',
+  off = 'off',
+}
 
 export class RoomResponseDto {
   @ApiProperty()
@@ -21,7 +26,6 @@ export class RoomCreateDto {
 }
 
 export class RoomStateInputDto {
-  @ApiProperty()
-  @IsBoolean()
-  desiredState: boolean
+  @ApiProperty({ enum: DevicePowerState, enumName: 'DevicePowerState' })
+  desiredPowerState: DevicePowerState
 }

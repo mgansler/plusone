@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common'
-import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
+import { ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 
 import { RoomCreateDto, RoomListResponseDto, RoomResponseDto, RoomStateInputDto } from './room.dto'
 import { RoomService } from './room.service'
@@ -26,8 +26,9 @@ export class RoomController {
 
   @ApiOperation({ operationId: 'todo-set-room' })
   @ApiBody({ description: 'Switches all devices in that room on or off.', type: RoomStateInputDto })
+  @ApiNoContentResponse({ description: 'All devices have been switched on or off.' })
   @Put('/room/:id/state')
   async setRoomState(@Param('id', ParseIntPipe) id: number, @Body() roomStateInputDto: RoomStateInputDto) {
-    return await this.roomService.setRoomState(id, roomStateInputDto.desiredState)
+    return await this.roomService.setRoomState(id, roomStateInputDto.desiredPowerState)
   }
 }
