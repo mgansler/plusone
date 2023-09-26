@@ -1,0 +1,27 @@
+{
+  "name": "elgato-app",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/elgato/app",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker build -t elgato-app -f apps/elgato/app/Dockerfile ."
+      },
+      "dependsOn": [
+        {
+          "target": "build",
+          "dependencies": true
+        }
+      ],
+      "configurations": {
+        "macos": {
+          "command": "docker buildx build --platform linux/arm64/v8 -t elgato-app -f apps/elgato/app/Dockerfile ."
+        }
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["elgato-backend", "elgato-frontend"]
+}
