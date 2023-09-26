@@ -11,8 +11,10 @@
       }
     },
     "generate": {
-      "executor": "./tools/executors:graphql-schema",
-      "options": {},
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn graphql-codegen --config libs/github-schema/codegen.yml"
+      },
       "dependsOn": [
         {
           "target": "download"

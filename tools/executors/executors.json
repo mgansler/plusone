@@ -1,17 +1,5 @@
 {
   "executors": {
-    "graphql-schema": {
-      "implementation": "./graphql-schema/graphql-schema.impl",
-      "schema": "./graphql-schema/schema.json"
-    },
-    "prisma-format": {
-      "implementation": "./prisma/format.impl",
-      "schema": "./prisma/format.json"
-    },
-    "prisma-generate": {
-      "implementation": "./prisma/generate.impl",
-      "schema": "./prisma/generate.json"
-    },
     "typeorm-generate-migration": {
       "implementation": "./typeorm/generate.impl",
       "schema": "./typeorm/generate.json"
