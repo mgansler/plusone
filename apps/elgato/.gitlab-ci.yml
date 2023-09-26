@@ -11,5 +11,5 @@ elgato:deploy:
     - source ~/.nvm/nvm.sh
     - yarn install
   script:
-    - yarn nx run elgato-elgato:build
+    - yarn nx run elgato-app:build
     - docker compose -f apps/elgato/elgato/docker-compose.yml up -d
