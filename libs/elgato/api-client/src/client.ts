@@ -14,6 +14,41 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
+export type DevicePowerState = (typeof DevicePowerState)[keyof typeof DevicePowerState]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DevicePowerState = {
+  on: 'on',
+  off: 'off',
+} as const
+
+export interface RoomStateInputDto {
+  desiredPowerState: DevicePowerState
+}
+
+export interface RoomWithDevicesResponseDto {
+  id: number
+  name: string
+  devices: DeviceDetailsResponseDto[]
+}
+
+export interface RoomCreateDto {
+  name: string
+}
+
+export interface RoomResponseDto {
+  id: number
+  name: string
+}
+
+export interface RoomListResponseDto {
+  rooms: RoomResponseDto[]
+}
+
+export interface DeviceAssignToRoomInputDto {
+  roomId: number
+}
+
 export interface DeviceState {
   on: boolean
 }
@@ -145,6 +180,215 @@ export const useToggleDevice = <TError = unknown, TContext = unknown>(options?: 
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { id: string }, TContext>
 }) => {
   const mutationOptions = getToggleDeviceMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
+export const assignDeviceToRoom = (id: string, deviceAssignToRoomInputDto: DeviceAssignToRoomInputDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/devices/${id}/assign-to-room`,
+    method: 'put',
+    headers: { 'Content-Type': 'application/json' },
+    data: deviceAssignToRoomInputDto,
+  })
+}
+
+export const getAssignDeviceToRoomMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof assignDeviceToRoom>>,
+    TError,
+    { id: string; data: DeviceAssignToRoomInputDto },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof assignDeviceToRoom>>,
+  TError,
+  { id: string; data: DeviceAssignToRoomInputDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof assignDeviceToRoom>>,
+    { id: string; data: DeviceAssignToRoomInputDto }
+  > = (props) => {
+    const { id, data } = props ?? {}
+
+    return assignDeviceToRoom(id, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type AssignDeviceToRoomMutationResult = NonNullable<Awaited<ReturnType<typeof assignDeviceToRoom>>>
+export type AssignDeviceToRoomMutationBody = DeviceAssignToRoomInputDto
+export type AssignDeviceToRoomMutationError = unknown
+
+export const useAssignDeviceToRoom = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof assignDeviceToRoom>>,
+    TError,
+    { id: string; data: DeviceAssignToRoomInputDto },
+    TContext
+  >
+}) => {
+  const mutationOptions = getAssignDeviceToRoomMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
+export const roomList = (signal?: AbortSignal) => {
+  return customAxiosInstance<RoomListResponseDto>({ url: `/api/rooms`, method: 'get', signal })
+}
+
+export const getRoomListQueryKey = () => [`/api/rooms`] as const
+
+export const getRoomListQueryOptions = <TData = Awaited<ReturnType<typeof roomList>>, TError = unknown>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof roomList>>, TError, TData>
+}): UseQueryOptions<Awaited<ReturnType<typeof roomList>>, TError, TData> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getRoomListQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof roomList>>> = ({ signal }) => roomList(signal)
+
+  return { queryKey, queryFn, ...queryOptions }
+}
+
+export type RoomListQueryResult = NonNullable<Awaited<ReturnType<typeof roomList>>>
+export type RoomListQueryError = unknown
+
+export const useRoomList = <TData = Awaited<ReturnType<typeof roomList>>, TError = unknown>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof roomList>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getRoomListQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const createRoom = (roomCreateDto: RoomCreateDto) => {
+  return customAxiosInstance<RoomResponseDto>({
+    url: `/api/room`,
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: roomCreateDto,
+  })
+}
+
+export const getCreateRoomMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof createRoom>>, TError, { data: RoomCreateDto }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof createRoom>>, TError, { data: RoomCreateDto }, TContext> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof createRoom>>, { data: RoomCreateDto }> = (props) => {
+    const { data } = props ?? {}
+
+    return createRoom(data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type CreateRoomMutationResult = NonNullable<Awaited<ReturnType<typeof createRoom>>>
+export type CreateRoomMutationBody = RoomCreateDto
+export type CreateRoomMutationError = unknown
+
+export const useCreateRoom = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof createRoom>>, TError, { data: RoomCreateDto }, TContext>
+}) => {
+  const mutationOptions = getCreateRoomMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
+export const roomDetails = (roomId: number, signal?: AbortSignal) => {
+  return customAxiosInstance<RoomWithDevicesResponseDto>({ url: `/api/room/${roomId}`, method: 'get', signal })
+}
+
+export const getRoomDetailsQueryKey = (roomId: number) => [`/api/room/${roomId}`] as const
+
+export const getRoomDetailsQueryOptions = <TData = Awaited<ReturnType<typeof roomDetails>>, TError = unknown>(
+  roomId: number,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof roomDetails>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<typeof roomDetails>>, TError, TData> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getRoomDetailsQueryKey(roomId)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof roomDetails>>> = ({ signal }) => roomDetails(roomId, signal)
+
+  return { queryKey, queryFn, enabled: !!roomId, ...queryOptions }
+}
+
+export type RoomDetailsQueryResult = NonNullable<Awaited<ReturnType<typeof roomDetails>>>
+export type RoomDetailsQueryError = unknown
+
+export const useRoomDetails = <TData = Awaited<ReturnType<typeof roomDetails>>, TError = unknown>(
+  roomId: number,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof roomDetails>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getRoomDetailsQueryOptions(roomId, options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const controlRoomState = (roomId: number, roomStateInputDto: RoomStateInputDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/room/${roomId}/state`,
+    method: 'put',
+    headers: { 'Content-Type': 'application/json' },
+    data: roomStateInputDto,
+  })
+}
+
+export const getControlRoomStateMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof controlRoomState>>,
+    TError,
+    { roomId: number; data: RoomStateInputDto },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof controlRoomState>>,
+  TError,
+  { roomId: number; data: RoomStateInputDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof controlRoomState>>,
+    { roomId: number; data: RoomStateInputDto }
+  > = (props) => {
+    const { roomId, data } = props ?? {}
+
+    return controlRoomState(roomId, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type ControlRoomStateMutationResult = NonNullable<Awaited<ReturnType<typeof controlRoomState>>>
+export type ControlRoomStateMutationBody = RoomStateInputDto
+export type ControlRoomStateMutationError = unknown
+
+export const useControlRoomState = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof controlRoomState>>,
+    TError,
+    { roomId: number; data: RoomStateInputDto },
+    TContext
+  >
+}) => {
+  const mutationOptions = getControlRoomStateMutationOptions(options)
 
   return useMutation(mutationOptions)
 }

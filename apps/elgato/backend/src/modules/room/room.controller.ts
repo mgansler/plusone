@@ -1,7 +1,13 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common'
 import { ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 
-import { RoomCreateDto, RoomListResponseDto, RoomResponseDto, RoomStateInputDto } from './room.dto'
+import {
+  RoomCreateDto,
+  RoomListResponseDto,
+  RoomResponseDto,
+  RoomStateInputDto,
+  RoomWithDevicesResponseDto,
+} from './room.dto'
 import { RoomService } from './room.service'
 
 @Controller()
@@ -24,11 +30,21 @@ export class RoomController {
     return await this.roomService.createRoom(roomCreateDto)
   }
 
-  @ApiOperation({ operationId: 'todo-set-room' })
+  @ApiOperation({ operationId: 'room-details' })
+  @ApiOkResponse({
+    description: 'Returns a room with all devices and their current state in it.',
+    type: RoomWithDevicesResponseDto,
+  })
+  @Get('/room/:roomId')
+  async getRoom(@Param('roomId', ParseIntPipe) roomId: number) {
+    return this.roomService.getRoom(roomId)
+  }
+
+  @ApiOperation({ operationId: 'control-room-state' })
   @ApiBody({ description: 'Switches all devices in that room on or off.', type: RoomStateInputDto })
   @ApiNoContentResponse({ description: 'All devices have been switched on or off.' })
-  @Put('/room/:id/state')
-  async setRoomState(@Param('id', ParseIntPipe) id: number, @Body() roomStateInputDto: RoomStateInputDto) {
-    return await this.roomService.setRoomState(id, roomStateInputDto.desiredPowerState)
+  @Put('/room/:roomId/state')
+  async controlRoomState(@Param('roomId', ParseIntPipe) roomId: number, @Body() roomStateInputDto: RoomStateInputDto) {
+    return await this.roomService.setRoomState(roomId, roomStateInputDto.desiredPowerState)
   }
 }

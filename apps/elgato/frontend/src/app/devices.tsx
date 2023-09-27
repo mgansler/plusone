@@ -19,6 +19,7 @@ export function Devices() {
           </li>
         ))}
       </ul>
+
       <Outlet />
     </>
   )

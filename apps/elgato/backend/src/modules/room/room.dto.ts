@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsString } from 'class-validator'
 
+import { DeviceDetailsResponseDto } from '../device/device.dto'
+
 export enum DevicePowerState {
   on = 'on',
   off = 'off',
@@ -12,6 +14,11 @@ export class RoomResponseDto {
 
   @ApiProperty()
   name: string
+}
+
+export class RoomWithDevicesResponseDto extends RoomResponseDto {
+  @ApiProperty({ type: [DeviceDetailsResponseDto] })
+  devices: DeviceDetailsResponseDto[]
 }
 
 export class RoomListResponseDto {

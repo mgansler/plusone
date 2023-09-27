@@ -34,3 +34,54 @@ export const deviceDetailsResponse = zod.object({
 export const toggleDeviceParams = zod.object({
   id: zod.string(),
 })
+
+export const assignDeviceToRoomParams = zod.object({
+  id: zod.string(),
+})
+
+export const assignDeviceToRoomBody = zod.object({
+  roomId: zod.number(),
+})
+
+export const roomListResponse = zod.object({
+  rooms: zod.array(
+    zod.object({
+      id: zod.number(),
+      name: zod.string(),
+    }),
+  ),
+})
+
+export const createRoomBody = zod.object({
+  name: zod.string(),
+})
+
+export const roomDetailsParams = zod.object({
+  roomId: zod.number(),
+})
+
+export const roomDetailsResponse = zod.object({
+  id: zod.number(),
+  name: zod.string(),
+  devices: zod.array(
+    zod.object({
+      id: zod.string(),
+      name: zod.string(),
+      details: zod.object({
+        productName: zod.string(),
+        displayName: zod.string(),
+      }),
+      state: zod.object({
+        on: zod.boolean(),
+      }),
+    }),
+  ),
+})
+
+export const controlRoomStateParams = zod.object({
+  roomId: zod.number(),
+})
+
+export const controlRoomStateBody = zod.object({
+  desiredPowerState: zod.enum(['on', 'off']),
+})
