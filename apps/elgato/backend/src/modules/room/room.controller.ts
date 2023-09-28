@@ -1,13 +1,11 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common'
 import { ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 
-import {
-  RoomCreateDto,
-  RoomListResponseDto,
-  RoomResponseDto,
-  RoomStateInputDto,
-  RoomWithDevicesResponseDto,
-} from './room.dto'
+import { RoomCreateDto } from './dto/room-create.dto'
+import { RoomListResponseDto } from './dto/room-list-response.dto'
+import { RoomResponseDto } from './dto/room-response.dto'
+import { RoomStateInputDto } from './dto/room-state-input.dto'
+import { RoomWithDevicesResponseDto } from './dto/room-with-response.dto'
 import { RoomService } from './room.service'
 
 @Controller()
@@ -36,7 +34,7 @@ export class RoomController {
     type: RoomWithDevicesResponseDto,
   })
   @Get('/room/:roomId')
-  async getRoom(@Param('roomId', ParseIntPipe) roomId: number) {
+  async getRoom(@Param('roomId', ParseIntPipe) roomId: number): Promise<RoomWithDevicesResponseDto> {
     return this.roomService.getRoom(roomId)
   }
 

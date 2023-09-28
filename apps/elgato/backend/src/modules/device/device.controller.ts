@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Param, Put } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 
-import { DeviceAssignToRoomInputDto, DeviceDetailsResponseDto, DeviceListResponseDto } from './device.dto'
 import { DeviceService } from './device.service'
+import { DeviceAssignToRoomInputDto } from './dto/device-assign-to-room-input.dto'
+import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
+import { DeviceListResponseDto } from './dto/device-list-response'
 
 @Controller()
 export class DeviceController {

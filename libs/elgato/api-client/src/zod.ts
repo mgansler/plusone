@@ -22,6 +22,12 @@ export const deviceDetailsParams = zod.object({
 export const deviceDetailsResponse = zod.object({
   id: zod.string(),
   name: zod.string(),
+  room: zod
+    .object({
+      id: zod.number(),
+      name: zod.string(),
+    })
+    .nullable(),
   details: zod.object({
     productName: zod.string(),
     displayName: zod.string(),
@@ -67,6 +73,12 @@ export const roomDetailsResponse = zod.object({
     zod.object({
       id: zod.string(),
       name: zod.string(),
+      room: zod
+        .object({
+          id: zod.number(),
+          name: zod.string(),
+        })
+        .nullable(),
       details: zod.object({
         productName: zod.string(),
         displayName: zod.string(),

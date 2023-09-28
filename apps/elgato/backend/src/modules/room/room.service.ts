@@ -2,9 +2,12 @@ import { Injectable, Logger } from '@nestjs/common'
 
 import { PrismaService, Room } from '@plusone/elgato-persistence'
 
+import { DevicePowerState } from '../device/device-power-state'
 import { DeviceService } from '../device/device.service'
 
-import { DevicePowerState, RoomCreateDto, RoomResponseDto, RoomWithDevicesResponseDto } from './room.dto'
+import { RoomCreateDto } from './dto/room-create.dto'
+import { RoomResponseDto } from './dto/room-response.dto'
+import { RoomWithDevicesResponseDto } from './dto/room-with-response.dto'
 
 @Injectable()
 export class RoomService {

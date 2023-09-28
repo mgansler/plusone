@@ -9,9 +9,10 @@ import { catchError, firstValueFrom } from 'rxjs'
 
 import { Device, PrismaService, Room } from '@plusone/elgato-persistence'
 
-import { DevicePowerState } from '../room/room.dto'
-
-import { DeviceDetails, DeviceDetailsResponseDto, DeviceState } from './device.dto'
+import { DevicePowerState } from './device-power-state'
+import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
+import { DeviceDetails } from './dto/device-details.dto'
+import { DeviceState } from './dto/device-state'
 
 @Injectable()
 export class DeviceService {
@@ -26,11 +27,12 @@ export class DeviceService {
   }
 
   async getAllDevices() {
-    return this.prismaService.device.findMany({ select: { id: true, name: true } })
+    return this.prismaService.device.findMany({ include: { room: true } })
   }
 
   async getDevice(id: string): Promise<DeviceDetailsResponseDto> {
     const device = await this.prismaService.device.findUniqueOrThrow({
+      include: { room: true },
       where: { id },
     })
 
@@ -62,7 +64,7 @@ export class DeviceService {
       on: currentState.data.lights[0].on === 1,
     }
 
-    return { name: device.name, id: device.id, details, state }
+    return { name: device.name, id: device.id, room: device.room, details, state }
   }
 
   async toggle(id: string) {

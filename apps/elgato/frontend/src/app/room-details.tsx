@@ -5,24 +5,18 @@ import { useControlRoomState, useToggleDevice, useValidatedRoomDetails } from '@
 
 export function RoomDetails() {
   const { roomId } = useParams()
+  const { data, isLoading, queryKey } = useValidatedRoomDetails(Number(roomId))
 
   const queryClient = useQueryClient()
-  const { data, isLoading, queryKey } = useValidatedRoomDetails(Number(roomId))
-  const { mutate: toggleDevice } = useToggleDevice({
+  const options = {
     mutation: {
       onSuccess: async () => {
         await queryClient.invalidateQueries(queryKey)
       },
     },
-  })
-
-  const { mutate: toggleRoom } = useControlRoomState({
-    mutation: {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(queryKey)
-      },
-    },
-  })
+  }
+  const { mutate: toggleDevice } = useToggleDevice(options)
+  const { mutate: toggleRoom } = useControlRoomState(options)
 
   if (isLoading) {
     return null

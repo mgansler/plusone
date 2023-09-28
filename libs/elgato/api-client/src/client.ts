@@ -27,17 +27,12 @@ export interface RoomStateInputDto {
 }
 
 export interface RoomWithDevicesResponseDto {
+  devices: DeviceDetailsResponseDto[]
   id: number
   name: string
-  devices: DeviceDetailsResponseDto[]
 }
 
 export interface RoomCreateDto {
-  name: string
-}
-
-export interface RoomResponseDto {
-  id: number
   name: string
 }
 
@@ -58,10 +53,18 @@ export interface DeviceDetails {
   productName: string
 }
 
+export interface RoomResponseDto {
+  id: number
+  name: string
+}
+
+export type DeviceDetailsResponseDtoRoom = RoomResponseDto | null
+
 export interface DeviceDetailsResponseDto {
   details: DeviceDetails
   id: string
   name: string
+  room: DeviceDetailsResponseDtoRoom
   state: DeviceState
 }
 
@@ -241,18 +244,24 @@ export const roomList = (signal?: AbortSignal) => {
   return customAxiosInstance<RoomListResponseDto>({ url: `/api/rooms`, method: 'get', signal })
 }
 
-export const getRoomListQueryKey = () => [`/api/rooms`] as const
+export const getRoomListQueryKey = () => {
+  return [`/api/rooms`] as const
+}
 
 export const getRoomListQueryOptions = <TData = Awaited<ReturnType<typeof roomList>>, TError = unknown>(options?: {
   query?: UseQueryOptions<Awaited<ReturnType<typeof roomList>>, TError, TData>
-}): UseQueryOptions<Awaited<ReturnType<typeof roomList>>, TError, TData> & { queryKey: QueryKey } => {
+}) => {
   const { query: queryOptions } = options ?? {}
 
   const queryKey = queryOptions?.queryKey ?? getRoomListQueryKey()
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof roomList>>> = ({ signal }) => roomList(signal)
 
-  return { queryKey, queryFn, ...queryOptions }
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof roomList>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey }
 }
 
 export type RoomListQueryResult = NonNullable<Awaited<ReturnType<typeof roomList>>>
@@ -309,19 +318,25 @@ export const roomDetails = (roomId: number, signal?: AbortSignal) => {
   return customAxiosInstance<RoomWithDevicesResponseDto>({ url: `/api/room/${roomId}`, method: 'get', signal })
 }
 
-export const getRoomDetailsQueryKey = (roomId: number) => [`/api/room/${roomId}`] as const
+export const getRoomDetailsQueryKey = (roomId: number) => {
+  return [`/api/room/${roomId}`] as const
+}
 
 export const getRoomDetailsQueryOptions = <TData = Awaited<ReturnType<typeof roomDetails>>, TError = unknown>(
   roomId: number,
   options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof roomDetails>>, TError, TData> },
-): UseQueryOptions<Awaited<ReturnType<typeof roomDetails>>, TError, TData> & { queryKey: QueryKey } => {
+) => {
   const { query: queryOptions } = options ?? {}
 
   const queryKey = queryOptions?.queryKey ?? getRoomDetailsQueryKey(roomId)
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof roomDetails>>> = ({ signal }) => roomDetails(roomId, signal)
 
-  return { queryKey, queryFn, enabled: !!roomId, ...queryOptions }
+  return { queryKey, queryFn, enabled: !!roomId, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof roomDetails>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey }
 }
 
 export type RoomDetailsQueryResult = NonNullable<Awaited<ReturnType<typeof roomDetails>>>
