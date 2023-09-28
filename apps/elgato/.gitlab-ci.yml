@@ -5,8 +5,11 @@ elgato:deploy:
   stage: deploy
   tags:
     - elgato
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual
   before_script:
     - source ~/.nvm/nvm.sh
     - yarn install
