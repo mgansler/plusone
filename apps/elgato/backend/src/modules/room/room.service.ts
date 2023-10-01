@@ -4,6 +4,7 @@ import { PrismaService, Room } from '@plusone/elgato-persistence'
 
 import { DevicePowerState } from '../device/device-power-state'
 import { DeviceService } from '../device/device.service'
+import { DeviceDetailsResponseDto } from '../device/dto/device-details-response.dto'
 
 import { RoomCreateDto } from './dto/room-create.dto'
 import { RoomResponseDto } from './dto/room-response.dto'
@@ -25,7 +26,7 @@ export class RoomService {
       where: { id: roomId },
     })
 
-    const devicesWithState = []
+    const devicesWithState: DeviceDetailsResponseDto[] = []
     for (const device of devices) {
       devicesWithState.push(await this.deviceService.getDevice(device.id))
     }

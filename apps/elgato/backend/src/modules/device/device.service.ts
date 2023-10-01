@@ -11,8 +11,9 @@ import { Device, PrismaService, Room } from '@plusone/elgato-persistence'
 
 import { DevicePowerState } from './device-power-state'
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
-import { DeviceDetails } from './dto/device-details.dto'
 import { DeviceState } from './dto/device-state'
+import { ElgatoDeviceDetailsDto } from './dto/elgato-device-details.dto'
+import { ElgatoDeviceStateDto } from './dto/elgato-device-state.dto'
 
 @Injectable()
 export class DeviceService {
@@ -37,34 +38,23 @@ export class DeviceService {
     })
 
     const beforeDeviceCallTS = Date.now()
-    const accessoryInfo = await firstValueFrom(
-      this.httpService
-        .get<DeviceDetails>(`http://${device.host.replace('.local', '')}:${device.port}/elgato/accessory-info`, {
-          httpAgent: new http.Agent({ family: 4 }),
-        })
-        .pipe(
-          catchError((error: AxiosError) => {
-            this.logger.error(error.response.data)
-            throw `Could not connect to '${device.host.replace('.local', '')}'`
-          }),
-        ),
-    )
+    const accessoryInfo = await this.getDeviceAccessoryInfo(device)
     const currentState = await this.getDeviceState(device)
     const afterDeviceCallTS = Date.now()
     if (afterDeviceCallTS - beforeDeviceCallTS > 200) {
       this.logger.debug(`Querying the device took longer then expected: ${afterDeviceCallTS - beforeDeviceCallTS} ms`)
     }
 
-    const details: DeviceDetails = {
-      displayName: accessoryInfo.data.displayName,
-      productName: accessoryInfo.data.productName,
+    const details: ElgatoDeviceDetailsDto = {
+      displayName: accessoryInfo.displayName,
+      productName: accessoryInfo.productName,
     }
 
     const state: DeviceState = {
-      on: currentState.data.lights[0].on === 1,
+      on: currentState.lights[0].on === 1,
     }
 
-    return { name: device.name, id: device.id, room: device.room, details, state }
+    return { name: device.name, id: device.id, room: device.room, lastSeen: device.lastSeen, details, state }
   }
 
   async toggle(id: string) {
@@ -78,7 +68,7 @@ export class DeviceService {
       this.httpService
         .put(
           `http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`,
-          JSON.stringify({ lights: [{ on: !currentState.data.lights[0].on }] }),
+          JSON.stringify({ lights: [{ on: !currentState.lights[0].on }] }),
           {
             httpAgent: new http.Agent({ family: 4 }),
           },
@@ -136,11 +126,13 @@ export class DeviceService {
           fqdn: service.fqdn,
           host: service.host,
           port: service.port,
+          lastSeen: new Date(),
         },
         update: {
           fqdn: service.fqdn,
           host: service.host,
           port: service.port,
+          lastSeen: new Date(),
         },
       })
       const updatedDeviceCount = await this.prismaService.device.count()
@@ -150,10 +142,32 @@ export class DeviceService {
     })
   }
 
-  private getDeviceState(device: Device) {
-    return firstValueFrom(
+  @Cron(CronExpression.EVERY_10_MINUTES)
+  private async checkKnownDevices() {
+    const devices = await this.getAllDevices()
+    for (const device of devices) {
+      try {
+        const NINE_MINUTES = 9 * 60 * 1_000
+        if (Date.now() - device.lastSeen.valueOf() > NINE_MINUTES) {
+          this.logger.debug(`Device ${device.name} hasn't been seen for over 9 minutes, pinging device now.`)
+          await this.getDeviceAccessoryInfo(device)
+          await this.prismaService.device.update({
+            data: {
+              lastSeen: new Date(),
+            },
+            where: { id: device.id },
+          })
+        }
+      } catch (e) {
+        this.logger.warn(`Could not reach ${device.name}, trying again in 10 minutes.`)
+      }
+    }
+  }
+
+  private async getDeviceState(device: Device) {
+    const resp = await firstValueFrom(
       this.httpService
-        .get(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`, {
+        .get<ElgatoDeviceStateDto>(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`, {
           httpAgent: new http.Agent({ family: 4 }),
         })
         .pipe(
@@ -163,5 +177,26 @@ export class DeviceService {
           }),
         ),
     )
+
+    return resp.data
+  }
+
+  private async getDeviceAccessoryInfo(device: Device) {
+    const resp = await firstValueFrom(
+      this.httpService
+        .get<ElgatoDeviceDetailsDto>(
+          `http://${device.host.replace('.local', '')}:${device.port}/elgato/accessory-info`,
+          {
+            httpAgent: new http.Agent({ family: 4 }),
+          },
+        )
+        .pipe(
+          catchError((error: AxiosError) => {
+            this.logger.error(error.response.data)
+            throw `Could not connect to '${device.host.replace('.local', '')}'`
+          }),
+        ),
+    )
+    return resp.data
   }
 }

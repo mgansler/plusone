@@ -10,13 +10,17 @@ generator client {
 }
 
 model Device {
-  id     String @id
-  name   String
-  fqdn   String
-  host   String
-  port   Int
-  room   Room?  @relation(fields: [roomId], references: [id])
+  id   String @id
+  name String
+  fqdn String
+  host String
+  port Int
+
+  // Room relation
+  room   Room? @relation(fields: [roomId], references: [id])
   roomId Int?
+
+  lastSeen DateTime?
 }
 
 model Room {
