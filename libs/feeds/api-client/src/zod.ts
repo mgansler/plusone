@@ -94,7 +94,7 @@ export const refreshResponse = zod.object({
   refresh_token: zod.string(),
 })
 
-export const bootInfoResponseAppVersionRegExp = new RegExp('^\\\\d\\\\.\\\\d$')
+export const bootInfoResponseAppVersionRegExp = new RegExp('^\\d\\.\\d+$')
 
 export const bootInfoResponse = zod.object({
   appVersion: zod.string().regex(bootInfoResponseAppVersionRegExp),
