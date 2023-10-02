@@ -35,6 +35,7 @@ export const deviceDetailsResponse = zod.object({
   state: zod.object({
     on: zod.boolean(),
   }),
+  lastSeen: zod.string().datetime(),
 })
 
 export const toggleDeviceParams = zod.object({
@@ -86,6 +87,7 @@ export const roomDetailsResponse = zod.object({
       state: zod.object({
         on: zod.boolean(),
       }),
+      lastSeen: zod.string().datetime(),
     }),
   ),
 })

@@ -48,7 +48,7 @@ export interface DeviceState {
   on: boolean
 }
 
-export interface DeviceDetails {
+export interface ElgatoDeviceDetailsDto {
   displayName: string
   productName: string
 }
@@ -61,8 +61,9 @@ export interface RoomResponseDto {
 export type DeviceDetailsResponseDtoRoom = RoomResponseDto | null
 
 export interface DeviceDetailsResponseDto {
-  details: DeviceDetails
+  details: ElgatoDeviceDetailsDto
   id: string
+  lastSeen: string
   name: string
   room: DeviceDetailsResponseDtoRoom
   state: DeviceState
