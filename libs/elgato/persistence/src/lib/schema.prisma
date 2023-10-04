@@ -16,15 +16,14 @@ model Device {
   host String
   port Int
 
-  // Room relation
-  room   Room? @relation(fields: [roomId], references: [id])
-  roomId Int?
-
   lastSeen DateTime?
+
+  groups Group[]
 }
 
-model Room {
+model Group {
   id      Int      @id @default(autoincrement())
   name    String
   devices Device[]
+  isRoom  Boolean  @default(false)
 }

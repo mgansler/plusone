@@ -1,11 +1,13 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import { useControlRoomState, useToggleDevice, useValidatedRoomDetails } from '@plusone/elgato-api-client'
+import { useControlGroupState, useToggleDevice, useValidatedGroupDetails } from '@plusone/elgato-api-client'
 
-export function RoomDetails() {
-  const { roomId } = useParams()
-  const { data, isLoading, queryKey } = useValidatedRoomDetails(Number(roomId))
+import { AddDevices } from './add-devices'
+
+export function GroupDetails() {
+  const { groupId } = useParams()
+  const { data, isLoading, queryKey } = useValidatedGroupDetails(Number(groupId))
 
   const queryClient = useQueryClient()
   const options = {
@@ -16,7 +18,7 @@ export function RoomDetails() {
     },
   }
   const { mutate: toggleDevice } = useToggleDevice(options)
-  const { mutate: toggleRoom } = useControlRoomState(options)
+  const { mutate: toggleRoom } = useControlGroupState(options)
 
   if (isLoading) {
     return null
@@ -24,12 +26,10 @@ export function RoomDetails() {
 
   return (
     <div>
-      <Link to={'..'}>Back</Link>
-
-      <button onClick={() => toggleRoom({ roomId: Number(roomId), data: { desiredPowerState: 'on' } })}>
+      <button onClick={() => toggleRoom({ groupId: Number(groupId), data: { desiredPowerState: 'on' } })}>
         Turn all devices on
       </button>
-      <button onClick={() => toggleRoom({ roomId: Number(roomId), data: { desiredPowerState: 'off' } })}>
+      <button onClick={() => toggleRoom({ groupId: Number(groupId), data: { desiredPowerState: 'off' } })}>
         Turn all devices off
       </button>
 
@@ -39,6 +39,8 @@ export function RoomDetails() {
           <button onClick={() => toggleDevice({ id: device.id })}>{device.state.on ? 'Turn off' : 'Turn on'}</button>
         </div>
       ))}
+
+      <AddDevices groupId={Number(groupId)} />
     </div>
   )
 }

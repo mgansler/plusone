@@ -6,12 +6,12 @@ import { PrismaService } from '@plusone/elgato-persistence'
 import { DeviceModule } from '../device/device.module'
 import { DeviceService } from '../device/device.service'
 
-import { RoomController } from './room.controller'
-import { RoomService } from './room.service'
+import { GroupController } from './group.controller'
+import { GroupService } from './group.service'
 
 @Module({
-  controllers: [RoomController],
+  controllers: [GroupController],
   imports: [DeviceModule, HttpModule],
-  providers: [RoomService, PrismaService, DeviceService],
+  providers: [GroupService, PrismaService, DeviceService],
 })
-export class RoomModule {}
+export class GroupModule {}

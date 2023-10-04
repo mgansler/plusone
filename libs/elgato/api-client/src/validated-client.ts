@@ -1,15 +1,15 @@
 import {
   deviceDetails,
   deviceList,
-  roomDetails,
-  roomList,
+  groupDetails,
+  groupList,
   useDeviceDetails,
   useDeviceList,
-  useRoomDetails,
-  useRoomList,
+  useGroupDetails,
+  useGroupList,
 } from './client'
 import { ValidatedClientBuilder } from './validated-client-factory'
-import { deviceDetailsResponse, deviceListResponse, roomDetailsResponse, roomListResponse } from './zod'
+import { deviceDetailsResponse, deviceListResponse, groupDetailsResponse, groupListResponse } from './zod'
 
 export const useValidatedListDevices = new ValidatedClientBuilder(deviceListResponse)
   .withFetchWrapper(deviceList)
@@ -19,10 +19,10 @@ export const useValidatedDeviceDetails = new ValidatedClientBuilder(deviceDetail
   .withFetchWrapper(deviceDetails)
   .withUseQueryWrapper(useDeviceDetails)
 
-export const useValidatedListRooms = new ValidatedClientBuilder(roomListResponse)
-  .withFetchWrapper(roomList)
-  .withUseQueryWrapper(useRoomList)
+export const useValidatedListGroups = new ValidatedClientBuilder(groupListResponse)
+  .withFetchWrapper(groupList)
+  .withUseQueryWrapper(useGroupList)
 
-export const useValidatedRoomDetails = new ValidatedClientBuilder(roomDetailsResponse)
-  .withFetchWrapper(roomDetails)
-  .withUseQueryWrapper(useRoomDetails)
+export const useValidatedGroupDetails = new ValidatedClientBuilder(groupDetailsResponse)
+  .withFetchWrapper(groupDetails)
+  .withUseQueryWrapper(useGroupDetails)

@@ -1,9 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { StrictMode } from 'react'
 import * as ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { App } from './app/app'
+import { DeviceDetails } from './app/device-details'
+import { Devices } from './app/devices'
+import { GroupCreate } from './app/group-create'
+import { GroupDetails } from './app/group-details'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,7 +24,14 @@ root.render(
   <StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <Routes>
+          <Route path={'/'} element={<App />}>
+            <Route path={'all'} element={<Devices />} />
+            <Route path={'new'} element={<GroupCreate />} />
+            <Route path={':groupId'} element={<GroupDetails />} />
+            <Route path={'device/:deviceId'} element={<DeviceDetails />} />
+          </Route>
+        </Routes>
       </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>,

@@ -22,26 +22,23 @@ export const DevicePowerState = {
   off: 'off',
 } as const
 
-export interface RoomStateInputDto {
+export interface GroupStateInputDto {
   desiredPowerState: DevicePowerState
 }
 
-export interface RoomWithDevicesResponseDto {
+export interface GroupWithDevicesResponseDto {
   devices: DeviceDetailsResponseDto[]
   id: number
   name: string
 }
 
-export interface RoomCreateDto {
+export interface GroupCreateDto {
+  isRoom?: boolean
   name: string
 }
 
-export interface RoomListResponseDto {
-  rooms: RoomResponseDto[]
-}
-
-export interface DeviceAssignToRoomInputDto {
-  roomId: number
+export interface DeviceAddToGroupInputDto {
+  groupId: number
 }
 
 export interface DeviceState {
@@ -53,19 +50,21 @@ export interface ElgatoDeviceDetailsDto {
   productName: string
 }
 
-export interface RoomResponseDto {
+export interface GroupResponseDto {
   id: number
   name: string
 }
 
-export type DeviceDetailsResponseDtoRoom = RoomResponseDto | null
+export interface GroupListResponseDto {
+  groups: GroupResponseDto[]
+}
 
 export interface DeviceDetailsResponseDto {
   details: ElgatoDeviceDetailsDto
+  groups: GroupResponseDto[]
   id: string
   lastSeen: string
   name: string
-  room: DeviceDetailsResponseDtoRoom
   state: DeviceState
 }
 
@@ -188,90 +187,90 @@ export const useToggleDevice = <TError = unknown, TContext = unknown>(options?: 
   return useMutation(mutationOptions)
 }
 
-export const assignDeviceToRoom = (id: string, deviceAssignToRoomInputDto: DeviceAssignToRoomInputDto) => {
+export const addDeviceToGroup = (id: string, deviceAddToGroupInputDto: DeviceAddToGroupInputDto) => {
   return customAxiosInstance<void>({
-    url: `/api/devices/${id}/assign-to-room`,
+    url: `/api/devices/${id}/add-to-group`,
     method: 'put',
     headers: { 'Content-Type': 'application/json' },
-    data: deviceAssignToRoomInputDto,
+    data: deviceAddToGroupInputDto,
   })
 }
 
-export const getAssignDeviceToRoomMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const getAddDeviceToGroupMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof assignDeviceToRoom>>,
+    Awaited<ReturnType<typeof addDeviceToGroup>>,
     TError,
-    { id: string; data: DeviceAssignToRoomInputDto },
+    { id: string; data: DeviceAddToGroupInputDto },
     TContext
   >
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof assignDeviceToRoom>>,
+  Awaited<ReturnType<typeof addDeviceToGroup>>,
   TError,
-  { id: string; data: DeviceAssignToRoomInputDto },
+  { id: string; data: DeviceAddToGroupInputDto },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {}
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof assignDeviceToRoom>>,
-    { id: string; data: DeviceAssignToRoomInputDto }
+    Awaited<ReturnType<typeof addDeviceToGroup>>,
+    { id: string; data: DeviceAddToGroupInputDto }
   > = (props) => {
     const { id, data } = props ?? {}
 
-    return assignDeviceToRoom(id, data)
+    return addDeviceToGroup(id, data)
   }
 
   return { mutationFn, ...mutationOptions }
 }
 
-export type AssignDeviceToRoomMutationResult = NonNullable<Awaited<ReturnType<typeof assignDeviceToRoom>>>
-export type AssignDeviceToRoomMutationBody = DeviceAssignToRoomInputDto
-export type AssignDeviceToRoomMutationError = unknown
+export type AddDeviceToGroupMutationResult = NonNullable<Awaited<ReturnType<typeof addDeviceToGroup>>>
+export type AddDeviceToGroupMutationBody = DeviceAddToGroupInputDto
+export type AddDeviceToGroupMutationError = unknown
 
-export const useAssignDeviceToRoom = <TError = unknown, TContext = unknown>(options?: {
+export const useAddDeviceToGroup = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof assignDeviceToRoom>>,
+    Awaited<ReturnType<typeof addDeviceToGroup>>,
     TError,
-    { id: string; data: DeviceAssignToRoomInputDto },
+    { id: string; data: DeviceAddToGroupInputDto },
     TContext
   >
 }) => {
-  const mutationOptions = getAssignDeviceToRoomMutationOptions(options)
+  const mutationOptions = getAddDeviceToGroupMutationOptions(options)
 
   return useMutation(mutationOptions)
 }
 
-export const roomList = (signal?: AbortSignal) => {
-  return customAxiosInstance<RoomListResponseDto>({ url: `/api/rooms`, method: 'get', signal })
+export const groupList = (signal?: AbortSignal) => {
+  return customAxiosInstance<GroupListResponseDto>({ url: `/api/groups`, method: 'get', signal })
 }
 
-export const getRoomListQueryKey = () => {
-  return [`/api/rooms`] as const
+export const getGroupListQueryKey = () => {
+  return [`/api/groups`] as const
 }
 
-export const getRoomListQueryOptions = <TData = Awaited<ReturnType<typeof roomList>>, TError = unknown>(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof roomList>>, TError, TData>
+export const getGroupListQueryOptions = <TData = Awaited<ReturnType<typeof groupList>>, TError = unknown>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof groupList>>, TError, TData>
 }) => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getRoomListQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getGroupListQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof roomList>>> = ({ signal }) => roomList(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof groupList>>> = ({ signal }) => groupList(signal)
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof roomList>>,
+    Awaited<ReturnType<typeof groupList>>,
     TError,
     TData
   > & { queryKey: QueryKey }
 }
 
-export type RoomListQueryResult = NonNullable<Awaited<ReturnType<typeof roomList>>>
-export type RoomListQueryError = unknown
+export type GroupListQueryResult = NonNullable<Awaited<ReturnType<typeof groupList>>>
+export type GroupListQueryError = unknown
 
-export const useRoomList = <TData = Awaited<ReturnType<typeof roomList>>, TError = unknown>(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof roomList>>, TError, TData>
+export const useGroupList = <TData = Awaited<ReturnType<typeof groupList>>, TError = unknown>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof groupList>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getRoomListQueryOptions(options)
+  const queryOptions = getGroupListQueryOptions(options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -280,74 +279,74 @@ export const useRoomList = <TData = Awaited<ReturnType<typeof roomList>>, TError
   return query
 }
 
-export const createRoom = (roomCreateDto: RoomCreateDto) => {
-  return customAxiosInstance<RoomResponseDto>({
-    url: `/api/room`,
+export const createGroup = (groupCreateDto: GroupCreateDto) => {
+  return customAxiosInstance<GroupResponseDto>({
+    url: `/api/group`,
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
-    data: roomCreateDto,
+    data: groupCreateDto,
   })
 }
 
-export const getCreateRoomMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof createRoom>>, TError, { data: RoomCreateDto }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof createRoom>>, TError, { data: RoomCreateDto }, TContext> => {
+export const getCreateGroupMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof createGroup>>, TError, { data: GroupCreateDto }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof createGroup>>, TError, { data: GroupCreateDto }, TContext> => {
   const { mutation: mutationOptions } = options ?? {}
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof createRoom>>, { data: RoomCreateDto }> = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof createGroup>>, { data: GroupCreateDto }> = (props) => {
     const { data } = props ?? {}
 
-    return createRoom(data)
+    return createGroup(data)
   }
 
   return { mutationFn, ...mutationOptions }
 }
 
-export type CreateRoomMutationResult = NonNullable<Awaited<ReturnType<typeof createRoom>>>
-export type CreateRoomMutationBody = RoomCreateDto
-export type CreateRoomMutationError = unknown
+export type CreateGroupMutationResult = NonNullable<Awaited<ReturnType<typeof createGroup>>>
+export type CreateGroupMutationBody = GroupCreateDto
+export type CreateGroupMutationError = unknown
 
-export const useCreateRoom = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof createRoom>>, TError, { data: RoomCreateDto }, TContext>
+export const useCreateGroup = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof createGroup>>, TError, { data: GroupCreateDto }, TContext>
 }) => {
-  const mutationOptions = getCreateRoomMutationOptions(options)
+  const mutationOptions = getCreateGroupMutationOptions(options)
 
   return useMutation(mutationOptions)
 }
 
-export const roomDetails = (roomId: number, signal?: AbortSignal) => {
-  return customAxiosInstance<RoomWithDevicesResponseDto>({ url: `/api/room/${roomId}`, method: 'get', signal })
+export const groupDetails = (groupId: number, signal?: AbortSignal) => {
+  return customAxiosInstance<GroupWithDevicesResponseDto>({ url: `/api/group/${groupId}`, method: 'get', signal })
 }
 
-export const getRoomDetailsQueryKey = (roomId: number) => {
-  return [`/api/room/${roomId}`] as const
+export const getGroupDetailsQueryKey = (groupId: number) => {
+  return [`/api/group/${groupId}`] as const
 }
 
-export const getRoomDetailsQueryOptions = <TData = Awaited<ReturnType<typeof roomDetails>>, TError = unknown>(
-  roomId: number,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof roomDetails>>, TError, TData> },
+export const getGroupDetailsQueryOptions = <TData = Awaited<ReturnType<typeof groupDetails>>, TError = unknown>(
+  groupId: number,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof groupDetails>>, TError, TData> },
 ) => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getRoomDetailsQueryKey(roomId)
+  const queryKey = queryOptions?.queryKey ?? getGroupDetailsQueryKey(groupId)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof roomDetails>>> = ({ signal }) => roomDetails(roomId, signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof groupDetails>>> = ({ signal }) => groupDetails(groupId, signal)
 
-  return { queryKey, queryFn, enabled: !!roomId, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof roomDetails>>,
+  return { queryKey, queryFn, enabled: !!groupId, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof groupDetails>>,
     TError,
     TData
   > & { queryKey: QueryKey }
 }
 
-export type RoomDetailsQueryResult = NonNullable<Awaited<ReturnType<typeof roomDetails>>>
-export type RoomDetailsQueryError = unknown
+export type GroupDetailsQueryResult = NonNullable<Awaited<ReturnType<typeof groupDetails>>>
+export type GroupDetailsQueryError = unknown
 
-export const useRoomDetails = <TData = Awaited<ReturnType<typeof roomDetails>>, TError = unknown>(
-  roomId: number,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof roomDetails>>, TError, TData> },
+export const useGroupDetails = <TData = Awaited<ReturnType<typeof groupDetails>>, TError = unknown>(
+  groupId: number,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof groupDetails>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getRoomDetailsQueryOptions(roomId, options)
+  const queryOptions = getGroupDetailsQueryOptions(groupId, options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -356,55 +355,55 @@ export const useRoomDetails = <TData = Awaited<ReturnType<typeof roomDetails>>, 
   return query
 }
 
-export const controlRoomState = (roomId: number, roomStateInputDto: RoomStateInputDto) => {
+export const controlGroupState = (groupId: number, groupStateInputDto: GroupStateInputDto) => {
   return customAxiosInstance<void>({
-    url: `/api/room/${roomId}/state`,
+    url: `/api/group/${groupId}/state`,
     method: 'put',
     headers: { 'Content-Type': 'application/json' },
-    data: roomStateInputDto,
+    data: groupStateInputDto,
   })
 }
 
-export const getControlRoomStateMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const getControlGroupStateMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof controlRoomState>>,
+    Awaited<ReturnType<typeof controlGroupState>>,
     TError,
-    { roomId: number; data: RoomStateInputDto },
+    { groupId: number; data: GroupStateInputDto },
     TContext
   >
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof controlRoomState>>,
+  Awaited<ReturnType<typeof controlGroupState>>,
   TError,
-  { roomId: number; data: RoomStateInputDto },
+  { groupId: number; data: GroupStateInputDto },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {}
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof controlRoomState>>,
-    { roomId: number; data: RoomStateInputDto }
+    Awaited<ReturnType<typeof controlGroupState>>,
+    { groupId: number; data: GroupStateInputDto }
   > = (props) => {
-    const { roomId, data } = props ?? {}
+    const { groupId, data } = props ?? {}
 
-    return controlRoomState(roomId, data)
+    return controlGroupState(groupId, data)
   }
 
   return { mutationFn, ...mutationOptions }
 }
 
-export type ControlRoomStateMutationResult = NonNullable<Awaited<ReturnType<typeof controlRoomState>>>
-export type ControlRoomStateMutationBody = RoomStateInputDto
-export type ControlRoomStateMutationError = unknown
+export type ControlGroupStateMutationResult = NonNullable<Awaited<ReturnType<typeof controlGroupState>>>
+export type ControlGroupStateMutationBody = GroupStateInputDto
+export type ControlGroupStateMutationError = unknown
 
-export const useControlRoomState = <TError = unknown, TContext = unknown>(options?: {
+export const useControlGroupState = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof controlRoomState>>,
+    Awaited<ReturnType<typeof controlGroupState>>,
     TError,
-    { roomId: number; data: RoomStateInputDto },
+    { groupId: number; data: GroupStateInputDto },
     TContext
   >
 }) => {
-  const mutationOptions = getControlRoomStateMutationOptions(options)
+  const mutationOptions = getControlGroupStateMutationOptions(options)
 
   return useMutation(mutationOptions)
 }

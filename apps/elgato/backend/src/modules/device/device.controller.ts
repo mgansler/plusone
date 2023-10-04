@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Put } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 
 import { DeviceService } from './device.service'
-import { DeviceAssignToRoomInputDto } from './dto/device-assign-to-room-input.dto'
+import { DeviceAddToGroupInputDto } from './dto/device-add-to-group-input.dto'
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
 import { DeviceListResponseDto } from './dto/device-list-response'
 
@@ -34,9 +34,9 @@ export class DeviceController {
     return this.deviceService.toggle(id)
   }
 
-  @ApiOperation({ operationId: 'assign-device-to-room' })
-  @Put('/devices/:id/assign-to-room')
-  async assignDeviceToRoom(@Param('id') id: string, @Body() assignDeviceToRoomInputDto: DeviceAssignToRoomInputDto) {
-    return this.deviceService.assignDeviceToRoom(id, assignDeviceToRoomInputDto.roomId)
+  @ApiOperation({ operationId: 'add-device-to-group' })
+  @Put('/devices/:id/add-to-group')
+  async addDeviceToGroup(@Param('id') id: string, @Body() addToGroupInputDto: DeviceAddToGroupInputDto) {
+    return this.deviceService.addDeviceToGroup(id, addToGroupInputDto.groupId)
   }
 }

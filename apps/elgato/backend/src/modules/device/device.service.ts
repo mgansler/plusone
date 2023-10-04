@@ -7,7 +7,7 @@ import { AxiosError } from 'axios'
 import Bonjour from 'bonjour-service'
 import { catchError, firstValueFrom } from 'rxjs'
 
-import { Device, PrismaService, Room } from '@plusone/elgato-persistence'
+import { Device, Group, PrismaService } from '@plusone/elgato-persistence'
 
 import { DevicePowerState } from './device-power-state'
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
@@ -28,12 +28,12 @@ export class DeviceService {
   }
 
   async getAllDevices() {
-    return this.prismaService.device.findMany({ include: { room: true } })
+    return this.prismaService.device.findMany({ include: { groups: true } })
   }
 
   async getDevice(id: string): Promise<DeviceDetailsResponseDto> {
     const device = await this.prismaService.device.findUniqueOrThrow({
-      include: { room: true },
+      include: { groups: true },
       where: { id },
     })
 
@@ -54,7 +54,7 @@ export class DeviceService {
       on: currentState.lights[0].on === 1,
     }
 
-    return { name: device.name, id: device.id, room: device.room, lastSeen: device.lastSeen, details, state }
+    return { name: device.name, id: device.id, groups: device.groups, lastSeen: device.lastSeen, details, state }
   }
 
   async toggle(id: string) {
@@ -82,15 +82,21 @@ export class DeviceService {
     )
   }
 
-  async assignDeviceToRoom(deviceId: Device['id'], roomId: Room['id']) {
-    await this.prismaService.device.update({
-      where: { id: deviceId },
-      data: { roomId },
+  async addDeviceToGroup(deviceId: Device['id'], groupId: Group['id']) {
+    await this.prismaService.group.update({
+      where: { id: groupId },
+      data: {
+        devices: {
+          connect: {
+            id: deviceId,
+          },
+        },
+      },
     })
   }
 
-  async setRoomState(roomId: Room['id'], targetState: DevicePowerState) {
-    const devices = await this.prismaService.device.findMany({ where: { roomId } })
+  async setGroupState(groupId: Group['id'], targetState: DevicePowerState) {
+    const devices = await this.prismaService.device.findMany({ where: { groups: { some: { id: groupId } } } })
     for (const device of devices) {
       await firstValueFrom(
         this.httpService

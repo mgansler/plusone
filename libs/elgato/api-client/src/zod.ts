@@ -22,12 +22,12 @@ export const deviceDetailsParams = zod.object({
 export const deviceDetailsResponse = zod.object({
   id: zod.string(),
   name: zod.string(),
-  room: zod
-    .object({
+  groups: zod.array(
+    zod.object({
       id: zod.number(),
       name: zod.string(),
-    })
-    .nullable(),
+    }),
+  ),
   details: zod.object({
     productName: zod.string(),
     displayName: zod.string(),
@@ -42,16 +42,16 @@ export const toggleDeviceParams = zod.object({
   id: zod.string(),
 })
 
-export const assignDeviceToRoomParams = zod.object({
+export const addDeviceToGroupParams = zod.object({
   id: zod.string(),
 })
 
-export const assignDeviceToRoomBody = zod.object({
-  roomId: zod.number(),
+export const addDeviceToGroupBody = zod.object({
+  groupId: zod.number(),
 })
 
-export const roomListResponse = zod.object({
-  rooms: zod.array(
+export const groupListResponse = zod.object({
+  groups: zod.array(
     zod.object({
       id: zod.number(),
       name: zod.string(),
@@ -59,27 +59,28 @@ export const roomListResponse = zod.object({
   ),
 })
 
-export const createRoomBody = zod.object({
+export const createGroupBody = zod.object({
   name: zod.string(),
+  isRoom: zod.boolean().optional(),
 })
 
-export const roomDetailsParams = zod.object({
-  roomId: zod.number(),
+export const groupDetailsParams = zod.object({
+  groupId: zod.number(),
 })
 
-export const roomDetailsResponse = zod.object({
+export const groupDetailsResponse = zod.object({
   id: zod.number(),
   name: zod.string(),
   devices: zod.array(
     zod.object({
       id: zod.string(),
       name: zod.string(),
-      room: zod
-        .object({
+      groups: zod.array(
+        zod.object({
           id: zod.number(),
           name: zod.string(),
-        })
-        .nullable(),
+        }),
+      ),
       details: zod.object({
         productName: zod.string(),
         displayName: zod.string(),
@@ -92,10 +93,10 @@ export const roomDetailsResponse = zod.object({
   ),
 })
 
-export const controlRoomStateParams = zod.object({
-  roomId: zod.number(),
+export const controlGroupStateParams = zod.object({
+  groupId: zod.number(),
 })
 
-export const controlRoomStateBody = zod.object({
+export const controlGroupStateBody = zod.object({
   desiredPowerState: zod.enum(['on', 'off']),
 })

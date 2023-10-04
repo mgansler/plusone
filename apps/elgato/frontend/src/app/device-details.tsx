@@ -3,8 +3,6 @@ import { Link, useParams } from 'react-router-dom'
 
 import { useToggleDevice, useValidatedDeviceDetails } from '@plusone/elgato-api-client'
 
-import { AssignToRoom } from './assign-to-room'
-
 export function DeviceDetails() {
   const { deviceId } = useParams()
 
@@ -35,7 +33,6 @@ export function DeviceDetails() {
       <div>
         <div>Display Name: {data.details.displayName}</div>
         <div>Product Name: {data.details.productName}</div>
-        <AssignToRoom key={deviceId} roomId={data.room?.id} />
         <button onClick={toggle}>{data.state.on ? 'Turn off' : 'Turn on'}</button>
       </div>
     </div>

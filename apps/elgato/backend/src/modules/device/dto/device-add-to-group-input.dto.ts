@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsInt } from 'class-validator'
 
-export class DeviceAssignToRoomInputDto {
+export class DeviceAddToGroupInputDto {
   @ApiProperty()
   @IsInt()
-  roomId: number
+  groupId: number
 }

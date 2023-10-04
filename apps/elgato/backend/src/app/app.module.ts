@@ -5,14 +5,14 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { ServeStaticModule } from '@nestjs/serve-static'
 
 import { DeviceModule } from '../modules/device/device.module'
-import { RoomModule } from '../modules/room/room.module'
+import { GroupModule } from '../modules/group/group.module'
 
 import { LoggerMiddleware } from './logger.middleware'
 
 @Module({
   imports: [
     DeviceModule,
-    RoomModule,
+    GroupModule,
     ScheduleModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, 'web'),

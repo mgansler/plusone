@@ -1,29 +1,43 @@
-import { Link, Route, Routes } from 'react-router-dom'
+import type { ReactEventHandler } from 'react'
+import { useEffect } from 'react'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-import { DeviceDetails } from './device-details'
-import { Devices } from './devices'
-import { RoomDetails } from './room-details'
-import { Rooms } from './rooms'
+import { useValidatedListGroups } from '@plusone/elgato-api-client'
 
 export function App() {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const { data, isLoading } = useValidatedListGroups()
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      navigate('/all')
+    }
+  }, [location.pathname, navigate])
+
+  if (isLoading) {
+    return null
+  }
+
+  const selectGroup: ReactEventHandler<HTMLSelectElement> = (event) => {
+    navigate(event.currentTarget.value)
+  }
+
   return (
-    <Routes>
-      <Route
-        path={'/'}
-        element={
-          <div>
-            <h1>Welcome to Elgato Control</h1>
-            <Link to={'/devices'}>Click here to see all devices.</Link>
-            <Link to={'/rooms'}>Click here to see all rooms.</Link>
-          </div>
-        }
-      />
-      <Route path={'devices'} element={<Devices />}>
-        <Route path={':deviceId'} element={<DeviceDetails />} />
-      </Route>
-      <Route path={'rooms'} element={<Rooms />}>
-        <Route path={':roomId'} element={<RoomDetails />} />
-      </Route>
-    </Routes>
+    <>
+      <h1>Welcome to Elgato Control</h1>
+      <select onChange={selectGroup} defaultValue={location.pathname.replace('/', '')}>
+        <option value={'all'}>All</option>
+        {data.groups.map((group) => (
+          <option key={group.id} value={group.id}>
+            {group.name}
+          </option>
+        ))}
+        <option value={'new'}>New</option>
+      </select>
+
+      <Outlet />
+    </>
   )
 }
