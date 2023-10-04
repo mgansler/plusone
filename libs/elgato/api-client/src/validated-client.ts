@@ -11,7 +11,7 @@ import {
 import { ValidatedClientBuilder } from './validated-client-factory'
 import { deviceDetailsResponse, deviceListResponse, groupDetailsResponse, groupListResponse } from './zod'
 
-export const useValidatedListDevices = new ValidatedClientBuilder(deviceListResponse)
+export const useValidatedDeviceList = new ValidatedClientBuilder(deviceListResponse)
   .withFetchWrapper(deviceList)
   .withUseQueryWrapper(useDeviceList)
 
@@ -19,7 +19,7 @@ export const useValidatedDeviceDetails = new ValidatedClientBuilder(deviceDetail
   .withFetchWrapper(deviceDetails)
   .withUseQueryWrapper(useDeviceDetails)
 
-export const useValidatedListGroups = new ValidatedClientBuilder(groupListResponse)
+export const useValidatedGroupList = new ValidatedClientBuilder(groupListResponse)
   .withFetchWrapper(groupList)
   .withUseQueryWrapper(useGroupList)
 

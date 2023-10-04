@@ -4,10 +4,11 @@ import * as ReactDOM from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { App } from './app/app'
-import { DeviceDetails } from './app/device-details'
-import { Devices } from './app/devices'
-import { GroupCreate } from './app/group-create'
-import { GroupDetails } from './app/group-details'
+import { DeviceList } from './app/devices/device-list'
+import { GroupDetails } from './app/groups/group-details'
+import { GroupList } from './app/groups/group-list'
+import { GroupSettings } from './app/settings/group-settings'
+import { Settings } from './app/settings/settings'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,10 +27,14 @@ root.render(
       <QueryClientProvider client={queryClient}>
         <Routes>
           <Route path={'/'} element={<App />}>
-            <Route path={'all'} element={<Devices />} />
-            <Route path={'new'} element={<GroupCreate />} />
-            <Route path={':groupId'} element={<GroupDetails />} />
-            <Route path={'device/:deviceId'} element={<DeviceDetails />} />
+            <Route path={'devices'} element={<DeviceList />}>
+              <Route path={':deviceId'} element={<div>Device Details</div>} />
+            </Route>
+            <Route path={'groups'} element={<GroupList />}>
+              <Route path={':groupId'} element={<GroupDetails />} />
+            </Route>
+            <Route path={'settings'} element={<Settings />}></Route>
+            <Route path={'settings/:groupId'} element={<GroupSettings />} />
           </Route>
         </Routes>
       </QueryClientProvider>

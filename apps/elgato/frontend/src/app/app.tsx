@@ -1,43 +1,41 @@
+import { useNavigate } from '@remix-run/react'
 import type { ReactEventHandler } from 'react'
 import { useEffect } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-
-import { useValidatedListGroups } from '@plusone/elgato-api-client'
+import { Outlet, useLocation } from 'react-router-dom'
 
 export function App() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const { data, isLoading } = useValidatedListGroups()
-
   useEffect(() => {
     if (location.pathname === '/') {
-      navigate('/all')
+      navigate('devices')
     }
   }, [location.pathname, navigate])
 
-  if (isLoading) {
-    return null
+  const onSelectChange: ReactEventHandler<HTMLSelectElement> = (event) => {
+    navigate(event.currentTarget.value)
   }
 
-  const selectGroup: ReactEventHandler<HTMLSelectElement> = (event) => {
-    navigate(event.currentTarget.value)
+  const selectDefaultValue = (): string => {
+    if (['/', '/devices'].includes(location.pathname)) {
+      return 'devices'
+    }
+    return 'groups'
   }
 
   return (
     <>
       <h1>Welcome to Elgato Control</h1>
-      <select onChange={selectGroup} defaultValue={location.pathname.replace('/', '')}>
-        <option value={'all'}>All</option>
-        {data.groups.map((group) => (
-          <option key={group.id} value={group.id}>
-            {group.name}
-          </option>
-        ))}
-        <option value={'new'}>New</option>
+
+      <select onChange={onSelectChange} defaultValue={selectDefaultValue()}>
+        <option value={'devices'}>Devices</option>
+        <option value={'groups'}>Groups</option>
       </select>
 
       <Outlet />
+
+      {!location.pathname.includes('settings') ? <button onClick={() => navigate('/settings')}>Settings</button> : null}
     </>
   )
 }
