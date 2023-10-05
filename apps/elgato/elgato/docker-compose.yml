@@ -6,6 +6,11 @@ services:
     network_mode: host
     volumes:
       - sqlite:/usr/elgato/sqlite/
+    labels:
+      - 'traefik.http.services.elgato-app.loadbalancer.server.port=3000'
+      - 'traefik.http.routers.elgato-app.rule=Host(`deskmini.ludwigstrasse.dynv6.net`)'
+      - 'traefik.http.routers.elgato-app.tls=true'
+      - 'traefik.http.routers.elgato-app.tls.certresolver=letsencrypt'
 
 volumes:
   sqlite:
