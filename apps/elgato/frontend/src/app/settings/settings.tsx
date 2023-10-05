@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 
 import { useCreateGroup, useValidatedGroupList } from '@plusone/elgato-api-client'
 
+import { LocationSettings } from './location-settings'
+
 export function Settings() {
   const newGroupNameRef = useRef<HTMLInputElement>()
   const newGroupIsRoomRef = useRef<HTMLInputElement>()
@@ -28,12 +30,15 @@ export function Settings() {
       <button onClick={() => navigate(-1)}>Back</button>
 
       <div>
+        <h4>Location</h4>
+        <LocationSettings />
+      </div>
+
+      <div>
         <h4>Groups</h4>
         {data?.groups.map((group) => (
-          <div>
-            <Link key={group.id} to={`/settings/${group.id}`}>
-              {group.name}
-            </Link>
+          <div key={group.id}>
+            <Link to={`/settings/${group.id}`}>{group.name}</Link>
           </div>
         ))}
 
