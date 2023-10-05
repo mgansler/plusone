@@ -50,6 +50,11 @@ export const addDeviceToGroupBody = zod.object({
   groupId: zod.number(),
 })
 
+export const createGroupBody = zod.object({
+  name: zod.string(),
+  isRoom: zod.boolean().optional(),
+})
+
 export const groupListResponse = zod.object({
   groups: zod.array(
     zod.object({
@@ -57,11 +62,6 @@ export const groupListResponse = zod.object({
       name: zod.string(),
     }),
   ),
-})
-
-export const createGroupBody = zod.object({
-  name: zod.string(),
-  isRoom: zod.boolean().optional(),
 })
 
 export const groupDetailsParams = zod.object({
@@ -99,4 +99,10 @@ export const controlGroupStateParams = zod.object({
 
 export const controlGroupStateBody = zod.object({
   desiredPowerState: zod.enum(['on', 'off']),
+})
+
+export const updateLocationBody = zod.object({
+  longitude: zod.number(),
+  latitude: zod.number(),
+  name: zod.string(),
 })

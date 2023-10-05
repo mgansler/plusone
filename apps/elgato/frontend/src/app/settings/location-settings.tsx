@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { useUpdateLocation } from '@plusone/elgato-api-client'
+
 type LocationFormFields = {
   name: string
   longitude: number
@@ -12,12 +14,13 @@ export function LocationSettings() {
   const [lookupInProgress, setLookupInProgress] = useState<boolean>(false)
 
   const { handleSubmit, register, reset } = useForm<LocationFormFields>()
+
+  const { mutate } = useUpdateLocation()
+
   const getGeoCoordinates = () => {
     setLookupInProgress(true)
     navigator.geolocation.getCurrentPosition(
       (currentPosition) => {
-        console.log(currentPosition)
-
         reset((formValues) => {
           return {
             ...formValues,
@@ -37,15 +40,8 @@ export function LocationSettings() {
     )
   }
 
-  const checkPermissions = () => {
-    navigator.permissions.query({ name: 'geolocation' }).then((res) => {
-      console.log(res)
-      alert(res.state)
-    })
-  }
-
-  const onSubmit = (data) => {
-    console.log(data)
+  const onSubmit = (data: LocationFormFields) => {
+    mutate({ data })
   }
 
   return (
@@ -56,9 +52,6 @@ export function LocationSettings() {
       </label>
       <button type={'button'} onClick={getGeoCoordinates} disabled={lookupInProgress}>
         get current coordinates
-      </button>
-      <button type={'button'} onClick={checkPermissions}>
-        check permissions
       </button>
       <label>
         Longitude

@@ -27,3 +27,9 @@ model Group {
   devices Device[]
   isRoom  Boolean  @default(false)
 }
+
+model Location {
+  name      String @unique
+  longitude Float
+  latitude  Float
+}

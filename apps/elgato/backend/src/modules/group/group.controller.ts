@@ -8,24 +8,24 @@ import { GroupStateInputDto } from './dto/group-state-input.dto'
 import { GroupWithDevicesResponseDto } from './dto/group-with-devices-response.dto'
 import { GroupService } from './group.service'
 
-@Controller()
+@Controller('/group')
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
-
-  @ApiOperation({ operationId: 'group-list' })
-  @ApiOkResponse({ description: 'List of groups.', type: GroupListResponseDto })
-  @Get('/groups')
-  async getGroups(): Promise<GroupListResponseDto> {
-    const groups = await this.groupService.getAllGroups()
-    return { groups }
-  }
 
   @ApiOperation({ operationId: 'create-group' })
   @ApiBody({ description: 'Information about the new group.', type: GroupCreateDto })
   @ApiCreatedResponse({ description: 'The newly created group.', type: GroupResponseDto })
-  @Post('/group')
+  @Post('')
   async createGroup(@Body() groupCreateDto: GroupCreateDto): Promise<GroupResponseDto> {
     return await this.groupService.createGroup(groupCreateDto)
+  }
+
+  @ApiOperation({ operationId: 'group-list' })
+  @ApiOkResponse({ description: 'List of groups.', type: GroupListResponseDto })
+  @Get('/all')
+  async getGroups(): Promise<GroupListResponseDto> {
+    const groups = await this.groupService.getAllGroups()
+    return { groups }
   }
 
   @ApiOperation({ operationId: 'group-details' })
@@ -33,7 +33,7 @@ export class GroupController {
     description: 'Returns a group with all devices and their current state in it.',
     type: GroupWithDevicesResponseDto,
   })
-  @Get('/group/:groupId')
+  @Get('/:groupId')
   async getGroup(@Param('groupId', ParseIntPipe) groupId: number): Promise<GroupWithDevicesResponseDto> {
     return this.groupService.getGroup(groupId)
   }
@@ -41,7 +41,7 @@ export class GroupController {
   @ApiOperation({ operationId: 'control-group-state' })
   @ApiBody({ description: 'Switches all devices in that group on or off.', type: GroupStateInputDto })
   @ApiNoContentResponse({ description: 'All devices have been switched on or off.' })
-  @Put('/group/:groupId/state')
+  @Put('/:groupId/state')
   async controlGroupState(
     @Param('groupId', ParseIntPipe) groupId: number,
     @Body() groupStateInputDto: GroupStateInputDto,
