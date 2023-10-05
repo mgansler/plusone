@@ -100,11 +100,11 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
 
   // Fetch the data
   const { data, isLoading, pages, prevPage, nextPage } = useFetchRepositoryData({
-    organizationName,
+    organizationName: organizationName as string,
     queryString,
   })
 
-  if (isLoading) {
+  if (isLoading || data === undefined) {
     return (
       <React.Fragment>
         {[1, 2, 3, 4, 5, 6, 7, 8].map((value) => (
@@ -114,9 +114,11 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
     )
   }
 
-  const filteredRepositories = data.search.nodes
+  const filteredRepositories = (data.search.nodes ?? [])
     .filter((repo) => showArchivedRepositories || !(repo as RepositoryFieldsFragment).isArchived)
-    .filter((repo) => !showOnlyOpenPRs || (repo as RepositoryFieldsFragment).pullRequests.totalCount > 0)
+    .filter(
+      (repo) => !showOnlyOpenPRs || (repo as RepositoryFieldsFragment).pullRequests.totalCount > 0,
+    ) as RepositoryFieldsFragment[]
 
   return (
     <React.Fragment>
@@ -168,7 +170,7 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
       </Portal>
 
       {filteredRepositories.map((repo: RepositoryFieldsFragment) => (
-        <RepositoryAccordion key={repo.id} userFilter={userFilter} repository={repo} />
+        <RepositoryAccordion key={repo.id} userFilter={userFilter as UserFilter} repository={repo} />
       ))}
 
       <div className={classNames.pagination}>
