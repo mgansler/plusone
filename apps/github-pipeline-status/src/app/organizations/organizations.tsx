@@ -3,12 +3,13 @@ import { FormControl, InputLabel, LinearProgress, MenuItem, Paper, Select, Toolb
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
 import { useQuery } from '@tanstack/react-query'
+import type { MutableRefObject, RefObject } from 'react'
 import { useRef } from 'react'
 import { Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 
-import { useGitHubPagination } from '@plusone/github-hooks'
-import type { OrganizationsQuery } from '@plusone/github-schema'
 import { OrganizationsDocument } from '@plusone/github-schema'
+import type { OrganizationsQuery } from '@plusone/github-schema'
+import { useGitHubPagination } from '@plusone/github-hooks'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryOverview } from '../repository-overview/repository-overview'
@@ -56,15 +57,15 @@ export function Organizations() {
 
   const { data, isLoading } = useFetchOrganizations()
 
-  const toolbar = useRef<HTMLDivElement>(null)
+  const toolbar = useRef<HTMLDivElement>()
 
-  if (isLoading) {
+  if (isLoading || data === undefined) {
     return <LinearProgress />
   }
 
   return (
     <Paper>
-      <Toolbar className={classNames.toolbar} ref={toolbar}>
+      <Toolbar className={classNames.toolbar} ref={toolbar as RefObject<HTMLDivElement>}>
         <FormControl className={classNames.formControl}>
           <InputLabel id={'select-org-label'}>Select Organization</InputLabel>
           <Select
@@ -73,9 +74,9 @@ export function Organizations() {
             onChange={(event) => navigate(`/organization/${event.target.value}`)}
           >
             {organizationName === '' && <MenuItem value={''} />}
-            {data.viewer.organizations.nodes.map((organization) => (
-              <MenuItem key={organization.id} value={organization.login}>
-                {organization.name}
+            {data.viewer.organizations.nodes!.map((organization) => (
+              <MenuItem key={organization!.id} value={organization!.login}>
+                {organization!.name}
               </MenuItem>
             ))}
           </Select>
@@ -84,7 +85,10 @@ export function Organizations() {
 
       <Routes>
         <Route path={'/'} element={null} />
-        <Route path={'/organization/:organizationName'} element={<RepositoryOverview toolbarRef={toolbar} />} />
+        <Route
+          path={'/organization/:organizationName'}
+          element={<RepositoryOverview toolbarRef={toolbar as MutableRefObject<HTMLDivElement>} />}
+        />
       </Routes>
     </Paper>
   )
