@@ -153,9 +153,11 @@ export class DeviceService {
     const devices = await this.getAllDevices()
     for (const device of devices) {
       try {
-        const NINE_MINUTES = 9 * 60 * 1_000
-        if (Date.now() - device.lastSeen.valueOf() > NINE_MINUTES) {
-          this.logger.debug(`Device ${device.name} hasn't been seen for over 9 minutes, pinging device now.`)
+        const lastSeenMinutes = Math.floor((Date.now() - device.lastSeen.valueOf()) / 60 / 1_000)
+        if (Date.now() - device.lastSeen.valueOf() > 9) {
+          this.logger.debug(
+            `Device ${device.name} hasn't been seen for over ${lastSeenMinutes} minutes, pinging device now.`,
+          )
           await this.getDeviceAccessoryInfo(device)
           await this.prismaService.device.update({
             data: {
