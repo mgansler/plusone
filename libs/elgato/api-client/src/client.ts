@@ -14,6 +14,24 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
+export interface LocationDataResponseDto {
+  longitude: number
+  latitude: number
+  name: string
+  sunrise: string
+  sunset: string
+  firstLight: string
+  lastLight: string
+  dawn: string
+  dusk: string
+  solarNoon: string
+  goldenHour: string
+  /** Time between sunrise and sunset in seconds. */
+  dayLength: number
+  timeZone: string
+  utcOffset: number
+}
+
 export interface LocationUpdateRequestDto {
   longitude: number
   latitude: number
@@ -464,4 +482,46 @@ export const useUpdateLocation = <TError = unknown, TContext = unknown>(options?
   const mutationOptions = getUpdateLocationMutationOptions(options)
 
   return useMutation(mutationOptions)
+}
+
+export const getLocationData = (signal?: AbortSignal) => {
+  return customAxiosInstance<LocationDataResponseDto>({ url: `/api/location`, method: 'get', signal })
+}
+
+export const getGetLocationDataQueryKey = () => {
+  return [`/api/location`] as const
+}
+
+export const getGetLocationDataQueryOptions = <
+  TData = Awaited<ReturnType<typeof getLocationData>>,
+  TError = unknown,
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof getLocationData>>, TError, TData>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetLocationDataQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getLocationData>>> = ({ signal }) => getLocationData(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getLocationData>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey }
+}
+
+export type GetLocationDataQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationData>>>
+export type GetLocationDataQueryError = unknown
+
+export const useGetLocationData = <TData = Awaited<ReturnType<typeof getLocationData>>, TError = unknown>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof getLocationData>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getGetLocationDataQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
 }

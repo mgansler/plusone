@@ -106,3 +106,20 @@ export const updateLocationBody = zod.object({
   latitude: zod.number(),
   name: zod.string(),
 })
+
+export const getLocationDataResponse = zod.object({
+  longitude: zod.number(),
+  latitude: zod.number(),
+  name: zod.string(),
+  sunrise: zod.string().datetime(),
+  sunset: zod.string().datetime(),
+  firstLight: zod.string().datetime(),
+  lastLight: zod.string().datetime(),
+  dawn: zod.string().datetime(),
+  dusk: zod.string().datetime(),
+  solarNoon: zod.string().datetime(),
+  goldenHour: zod.string().datetime(),
+  dayLength: zod.number(),
+  timeZone: zod.string(),
+  utcOffset: zod.number(),
+})
