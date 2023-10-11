@@ -45,7 +45,7 @@ describe('Organizations', () => {
 
     cy.wait('@organizations')
 
-    cy.findByRole('button', { name: 'Select Organization' }).click()
+    cy.findByRole('combobox', { name: 'Select Organization' }).click()
     cy.findByText('Organization Name').click()
 
     cy.wait('@repository-overview')
