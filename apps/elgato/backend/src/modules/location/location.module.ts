@@ -10,5 +10,6 @@ import { LocationService } from './location.service'
   controllers: [LocationController],
   imports: [HttpModule, PrismaModule],
   providers: [LocationService],
+  exports: [LocationService],
 })
 export class LocationModule {}

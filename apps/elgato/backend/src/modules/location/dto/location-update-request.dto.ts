@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsString } from 'class-validator'
 
 export class LocationUpdateRequestDto {
   @ApiProperty()
@@ -8,5 +9,6 @@ export class LocationUpdateRequestDto {
   latitude: number
 
   @ApiProperty()
+  @IsString()
   name: string
 }

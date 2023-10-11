@@ -19,6 +19,9 @@ model Device {
   lastSeen DateTime?
 
   groups Group[]
+
+  sunrise Boolean @default(false)
+  sunset  Boolean @default(false)
 }
 
 model Group {
