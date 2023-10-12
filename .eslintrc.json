@@ -73,6 +73,35 @@
       "rules": {}
     },
     {
+      "files": ["**/*.{spec,cy}.{ts,tsx}"],
+      "rules": {
+        "no-restricted-imports": "off",
+        "no-restricted-properties": [
+          "error",
+          {
+            "object": "describe",
+            "property": "skip",
+            "message": "🙅 Unexpected describe.skip. Please remove before committing. 💻👮"
+          },
+          {
+            "object": "describe",
+            "property": "only",
+            "message": "🙅 Unexpected describe.only. Please remove before committing. 💻👮"
+          },
+          {
+            "object": "it",
+            "property": "skip",
+            "message": "🙅 Unexpected it.skip. Please remove before committing. 💻👮"
+          },
+          {
+            "object": "it",
+            "property": "only",
+            "message": "🙅 Unexpected it.only. Please remove before committing. 💻👮"
+          }
+        ]
+      }
+    },
+    {
       "files": "*.json",
       "parser": "jsonc-eslint-parser",
       "rules": {}

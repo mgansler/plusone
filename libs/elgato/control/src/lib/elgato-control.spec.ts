@@ -1,5 +1,6 @@
 import { setColor } from './elgato-control'
 
+// eslint-disable-next-line no-restricted-properties
 describe.skip('elgatoControl', () => {
   it('should work', async () => {
     // await discoverDevices('Light-Strip-Desk')
