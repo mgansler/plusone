@@ -38,7 +38,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": ["apps/github-pipeline-status/**/*.{ts,tsx,js,jsx}"]
       },
