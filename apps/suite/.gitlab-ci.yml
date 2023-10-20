@@ -19,6 +19,9 @@ suite:test:
 
 suite:build:
   stage: build
+  needs:
+    - lint
+    - suite:test
   tags:
     - docker
   script:

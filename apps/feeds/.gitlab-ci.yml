@@ -22,6 +22,9 @@ feeds:test:
 
 feeds:build:
   stage: build
+  needs:
+    - lint
+    - feeds:test
   tags:
     - docker
   parallel:
