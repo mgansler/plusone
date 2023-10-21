@@ -1,5 +1,3 @@
-import * as console from 'console'
-
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { CronJob } from 'cron'
@@ -52,14 +50,13 @@ export class SunriseSunsetService implements OnModuleInit {
         const sunriseJob = new CronJob({
           cronTime: sunriseSunsetTimes.dawn,
           onTick: () => {
-            console.log(
-              'Starting sunrise...',
-              devices.map((d) => d.name),
-            )
+            this.logger.log(`Starting sunrise for ${devices.length}: [${devices.map((d) => d.name).join(', ')}]`)
             devices.forEach((d) => this.elgatoService.setLightStripState(d, sunrise))
 
             const turnOffCallback = () => {
-              this.logger.log(`Turning off ${devices.length} devices after sunrise`)
+              this.logger.log(
+                `Turning off ${devices.length} devices after sunrise: [${devices.map((d) => d.name).join(', ')}]`,
+              )
               devices.forEach((device) => this.elgatoService.setDevicePowerState(device, DevicePowerState.off))
             }
 
