@@ -15,26 +15,26 @@ import type {
 } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
 export interface LocationDataResponseDto {
-  longitude: number
-  latitude: number
-  name: string
-  sunrise: string
-  sunset: string
-  firstLight: string
-  lastLight: string
   dawn: string
-  dusk: string
-  solarNoon: string
-  goldenHour: string
   /** Time between sunrise and sunset in seconds. */
   dayLength: number
+  dusk: string
+  firstLight: string
+  goldenHour: string
+  lastLight: string
+  latitude: number
+  longitude: number
+  name: string
+  solarNoon: string
+  sunrise: string
+  sunset: string
   timeZone: string
   utcOffset: number
 }
 
 export interface LocationUpdateRequestDto {
-  longitude: number
   latitude: number
+  longitude: number
   name: string
 }
 
@@ -56,9 +56,23 @@ export interface GroupWithDevicesResponseDto {
   name: string
 }
 
+export interface GroupListResponseDto {
+  groups: GroupResponseDto[]
+}
+
 export interface GroupCreateDto {
   isRoom?: boolean
   name: string
+}
+
+export interface DeviceSettingsRequestDto {
+  sunrise?: boolean
+  sunset?: boolean
+}
+
+export interface DeviceSettingsResponseDto {
+  sunrise: boolean
+  sunset: boolean
 }
 
 export interface DeviceAddToGroupRequestDto {
@@ -77,10 +91,6 @@ export interface ElgatoDeviceDetailsDto {
 export interface GroupResponseDto {
   id: number
   name: string
-}
-
-export interface GroupListResponseDto {
-  groups: GroupResponseDto[]
 }
 
 export interface DeviceDetailsResponseDto {
@@ -102,11 +112,11 @@ export interface DeviceListResponseDto {
 }
 
 export const deviceList = (signal?: AbortSignal) => {
-  return customAxiosInstance<DeviceListResponseDto>({ url: `/api/device/all`, method: 'get', signal })
+  return customAxiosInstance<DeviceListResponseDto>({ url: `/api/devices`, method: 'get', signal })
 }
 
 export const getDeviceListQueryKey = () => {
-  return [`/api/device/all`] as const
+  return [`/api/devices`] as const
 }
 
 export const getDeviceListQueryOptions = <TData = Awaited<ReturnType<typeof deviceList>>, TError = unknown>(options?: {
@@ -141,11 +151,11 @@ export const useDeviceList = <TData = Awaited<ReturnType<typeof deviceList>>, TE
 }
 
 export const deviceDetails = (id: string, signal?: AbortSignal) => {
-  return customAxiosInstance<DeviceDetailsResponseDto>({ url: `/api/device/${id}`, method: 'get', signal })
+  return customAxiosInstance<DeviceDetailsResponseDto>({ url: `/api/devices/${id}`, method: 'get', signal })
 }
 
 export const getDeviceDetailsQueryKey = (id: string) => {
-  return [`/api/device/${id}`] as const
+  return [`/api/devices/${id}`] as const
 }
 
 export const getDeviceDetailsQueryOptions = <TData = Awaited<ReturnType<typeof deviceDetails>>, TError = unknown>(
@@ -182,7 +192,7 @@ export const useDeviceDetails = <TData = Awaited<ReturnType<typeof deviceDetails
 }
 
 export const toggleDevice = (id: string) => {
-  return customAxiosInstance<void>({ url: `/api/device/${id}/toggle`, method: 'put' })
+  return customAxiosInstance<void>({ url: `/api/devices/${id}/toggle`, method: 'put' })
 }
 
 export const getToggleDeviceMutationOptions = <TError = unknown, TContext = unknown>(options?: {
@@ -213,7 +223,7 @@ export const useToggleDevice = <TError = unknown, TContext = unknown>(options?: 
 
 export const addDeviceToGroup = (id: string, deviceAddToGroupRequestDto: DeviceAddToGroupRequestDto) => {
   return customAxiosInstance<void>({
-    url: `/api/device/${id}/add-to-group`,
+    url: `/api/devices/${id}/add-to-group`,
     method: 'put',
     headers: { 'Content-Type': 'application/json' },
     data: deviceAddToGroupRequestDto,
@@ -260,6 +270,104 @@ export const useAddDeviceToGroup = <TError = unknown, TContext = unknown>(option
   >
 }) => {
   const mutationOptions = getAddDeviceToGroupMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
+export const currentDeviceSettings = (id: string, signal?: AbortSignal) => {
+  return customAxiosInstance<DeviceSettingsResponseDto>({ url: `/api/devices/${id}/settings`, method: 'get', signal })
+}
+
+export const getCurrentDeviceSettingsQueryKey = (id: string) => {
+  return [`/api/devices/${id}/settings`] as const
+}
+
+export const getCurrentDeviceSettingsQueryOptions = <
+  TData = Awaited<ReturnType<typeof currentDeviceSettings>>,
+  TError = unknown,
+>(
+  id: string,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof currentDeviceSettings>>, TError, TData> },
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getCurrentDeviceSettingsQueryKey(id)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof currentDeviceSettings>>> = ({ signal }) =>
+    currentDeviceSettings(id, signal)
+
+  return { queryKey, queryFn, enabled: !!id, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof currentDeviceSettings>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey }
+}
+
+export type CurrentDeviceSettingsQueryResult = NonNullable<Awaited<ReturnType<typeof currentDeviceSettings>>>
+export type CurrentDeviceSettingsQueryError = unknown
+
+export const useCurrentDeviceSettings = <TData = Awaited<ReturnType<typeof currentDeviceSettings>>, TError = unknown>(
+  id: string,
+  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof currentDeviceSettings>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getCurrentDeviceSettingsQueryOptions(id, options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const updateDeviceSettings = (id: string, deviceSettingsRequestDto: DeviceSettingsRequestDto) => {
+  return customAxiosInstance<DeviceSettingsResponseDto>({
+    url: `/api/devices/${id}/settings`,
+    method: 'patch',
+    headers: { 'Content-Type': 'application/json' },
+    data: deviceSettingsRequestDto,
+  })
+}
+
+export const getUpdateDeviceSettingsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateDeviceSettings>>,
+    TError,
+    { id: string; data: DeviceSettingsRequestDto },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateDeviceSettings>>,
+  TError,
+  { id: string; data: DeviceSettingsRequestDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateDeviceSettings>>,
+    { id: string; data: DeviceSettingsRequestDto }
+  > = (props) => {
+    const { id, data } = props ?? {}
+
+    return updateDeviceSettings(id, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type UpdateDeviceSettingsMutationResult = NonNullable<Awaited<ReturnType<typeof updateDeviceSettings>>>
+export type UpdateDeviceSettingsMutationBody = DeviceSettingsRequestDto
+export type UpdateDeviceSettingsMutationError = unknown
+
+export const useUpdateDeviceSettings = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateDeviceSettings>>,
+    TError,
+    { id: string; data: DeviceSettingsRequestDto },
+    TContext
+  >
+}) => {
+  const mutationOptions = getUpdateDeviceSettingsMutationOptions(options)
 
   return useMutation(mutationOptions)
 }

@@ -50,6 +50,29 @@ export const addDeviceToGroupBody = zod.object({
   groupId: zod.number(),
 })
 
+export const currentDeviceSettingsParams = zod.object({
+  id: zod.string(),
+})
+
+export const currentDeviceSettingsResponse = zod.object({
+  sunrise: zod.boolean(),
+  sunset: zod.boolean(),
+})
+
+export const updateDeviceSettingsParams = zod.object({
+  id: zod.string(),
+})
+
+export const updateDeviceSettingsBody = zod.object({
+  sunrise: zod.boolean().optional(),
+  sunset: zod.boolean().optional(),
+})
+
+export const updateDeviceSettingsResponse = zod.object({
+  sunrise: zod.boolean(),
+  sunset: zod.boolean(),
+})
+
 export const createGroupBody = zod.object({
   name: zod.string(),
   isRoom: zod.boolean().optional(),

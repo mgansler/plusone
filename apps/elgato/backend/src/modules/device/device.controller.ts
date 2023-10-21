@@ -6,13 +6,13 @@ import { DeviceAddToGroupRequestDto } from './dto/device-add-to-group-request.dt
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
 import { DeviceListResponseDto } from './dto/device-list-response'
 
-@Controller('/device')
+@Controller('/devices')
 export class DeviceController {
   constructor(private readonly deviceService: DeviceService) {}
 
   @ApiOperation({ operationId: 'device-list' })
   @ApiOkResponse({ description: 'List of all devices in the local network.', type: DeviceListResponseDto })
-  @Get('/all')
+  @Get('')
   async getDevices(): Promise<DeviceListResponseDto> {
     const devices = await this.deviceService.getAllDevices()
     return { devices }

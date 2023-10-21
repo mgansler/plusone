@@ -3,8 +3,10 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 
-import { useCreateGroup, useValidatedGroupList } from '@plusone/elgato-api-client'
+import { useCreateGroup, useValidatedDeviceList, useValidatedGroupList } from '@plusone/elgato-api-client'
+import type { DeviceResponseDto } from '@plusone/elgato-api-client'
 
+import { DeviceSettings } from './device-settings'
 import { LocationSettings } from './location-settings'
 
 export function Settings() {
@@ -14,8 +16,11 @@ export function Settings() {
   const navigate = useNavigate()
 
   const queryClient = useQueryClient()
-  const { data, queryKey } = useValidatedGroupList()
+  const { data: { groups } = {}, queryKey } = useValidatedGroupList()
+  const { data: { devices } = {} } = useValidatedDeviceList()
   const { mutate } = useCreateGroup({ mutation: { onSuccess: () => queryClient.invalidateQueries(queryKey) } })
+
+  console.log(devices)
 
   const addGroup = () => {
     const name = newGroupNameRef.current.value
@@ -36,10 +41,15 @@ export function Settings() {
 
       <div>
         <h4>Groups</h4>
-        {data?.groups.map((group) => (
+        {groups?.map((group) => (
           <div key={group.id}>
             <Link to={`/settings/${group.id}`}>{group.name}</Link>
           </div>
+        ))}
+
+        <h4>Devices</h4>
+        {devices?.map((device: DeviceResponseDto) => (
+          <DeviceSettings key={device.id} device={device} />
         ))}
 
         <input type={'text'} ref={newGroupNameRef} />
