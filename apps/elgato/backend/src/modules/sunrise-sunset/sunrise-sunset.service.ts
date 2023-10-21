@@ -30,7 +30,6 @@ export class SunriseSunsetService implements OnModuleInit {
     // We want to start/end the sequence at dawn/dusk
     try {
       const sunriseSunsetTimes = await this.locationService.getLocationData()
-
       const devices = await this.prismaService.device.findMany({ where: { sunrise: true } })
 
       const sunriseSequenceTotalDuration = getTotalDurationInMs(sunrise)
@@ -69,6 +68,7 @@ export class SunriseSunsetService implements OnModuleInit {
         })
 
         this.schedulerRegistry.addCronJob('sunrise', sunriseJob)
+        this.logger.log(`Added sunrise cronjob for ${sunriseSunsetTimes.dawn.toLocaleTimeString()}`)
         sunriseJob.start()
       }
     } catch (e) {
