@@ -1,11 +1,40 @@
-import { deviceDetails, deviceList, useDeviceDetails, useDeviceList } from './client'
+import {
+  currentDeviceSettings,
+  deviceDetails,
+  deviceList,
+  groupDetails,
+  groupList,
+  useCurrentDeviceSettings,
+  useDeviceDetails,
+  useDeviceList,
+  useGroupDetails,
+  useGroupList,
+} from './client'
 import { ValidatedClientBuilder } from './validated-client-factory'
-import { deviceDetailsResponse, deviceListResponse } from './zod'
+import {
+  currentDeviceSettingsResponse,
+  deviceDetailsResponse,
+  deviceListResponse,
+  groupDetailsResponse,
+  groupListResponse,
+} from './zod'
 
-export const useValidatedListDevices = new ValidatedClientBuilder(deviceListResponse)
+export const useValidatedDeviceList = new ValidatedClientBuilder(deviceListResponse)
   .withFetchWrapper(deviceList)
   .withUseQueryWrapper(useDeviceList)
 
 export const useValidatedDeviceDetails = new ValidatedClientBuilder(deviceDetailsResponse)
   .withFetchWrapper(deviceDetails)
   .withUseQueryWrapper(useDeviceDetails)
+
+export const useValidatedDeviceSettings = new ValidatedClientBuilder(currentDeviceSettingsResponse)
+  .withFetchWrapper(currentDeviceSettings)
+  .withUseQueryWrapper(useCurrentDeviceSettings)
+
+export const useValidatedGroupList = new ValidatedClientBuilder(groupListResponse)
+  .withFetchWrapper(groupList)
+  .withUseQueryWrapper(useGroupList)
+
+export const useValidatedGroupDetails = new ValidatedClientBuilder(groupDetailsResponse)
+  .withFetchWrapper(groupDetails)
+  .withUseQueryWrapper(useGroupDetails)

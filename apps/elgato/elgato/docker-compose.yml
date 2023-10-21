@@ -4,8 +4,14 @@ services:
   app:
     image: elgato-app:latest
     network_mode: host
+    restart: always
     volumes:
       - sqlite:/usr/elgato/sqlite/
+    labels:
+      - 'traefik.http.services.elgato-app.loadbalancer.server.port=3001'
+      - 'traefik.http.routers.elgato-app.rule=Host(`elgato.ludwigstrasse.dynv6.net`)'
+      - 'traefik.http.routers.elgato-app.tls=true'
+      - 'traefik.http.routers.elgato-app.tls.certresolver=letsencrypt'
 
 volumes:
   sqlite:

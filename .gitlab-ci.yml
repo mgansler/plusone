@@ -25,4 +25,4 @@ lint:
   tags:
     - docker
   script:
-    - yarn nx run-many --target=lint --all
+    - yarn nx run-many --target=lint --all --parallel 4

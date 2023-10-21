@@ -62,7 +62,13 @@
         "production": {
           "buildTarget": "elgato-backend:build:production"
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "dependencies": true
+        }
+      ]
     },
     "lint": {
       "executor": "@nx/eslint:lint",

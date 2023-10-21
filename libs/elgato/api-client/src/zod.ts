@@ -22,6 +22,12 @@ export const deviceDetailsParams = zod.object({
 export const deviceDetailsResponse = zod.object({
   id: zod.string(),
   name: zod.string(),
+  groups: zod.array(
+    zod.object({
+      id: zod.number(),
+      name: zod.string(),
+    }),
+  ),
   details: zod.object({
     productName: zod.string(),
     displayName: zod.string(),
@@ -29,8 +35,114 @@ export const deviceDetailsResponse = zod.object({
   state: zod.object({
     on: zod.boolean(),
   }),
+  lastSeen: zod.string().datetime(),
 })
 
 export const toggleDeviceParams = zod.object({
   id: zod.string(),
+})
+
+export const addDeviceToGroupParams = zod.object({
+  id: zod.string(),
+})
+
+export const addDeviceToGroupBody = zod.object({
+  groupId: zod.number(),
+})
+
+export const currentDeviceSettingsParams = zod.object({
+  id: zod.string(),
+})
+
+export const currentDeviceSettingsResponse = zod.object({
+  sunrise: zod.boolean(),
+  sunset: zod.boolean(),
+})
+
+export const updateDeviceSettingsParams = zod.object({
+  id: zod.string(),
+})
+
+export const updateDeviceSettingsBody = zod.object({
+  sunrise: zod.boolean().optional(),
+  sunset: zod.boolean().optional(),
+})
+
+export const updateDeviceSettingsResponse = zod.object({
+  sunrise: zod.boolean(),
+  sunset: zod.boolean(),
+})
+
+export const createGroupBody = zod.object({
+  name: zod.string(),
+  isRoom: zod.boolean().optional(),
+})
+
+export const groupListResponse = zod.object({
+  groups: zod.array(
+    zod.object({
+      id: zod.number(),
+      name: zod.string(),
+    }),
+  ),
+})
+
+export const groupDetailsParams = zod.object({
+  groupId: zod.number(),
+})
+
+export const groupDetailsResponse = zod.object({
+  id: zod.number(),
+  name: zod.string(),
+  devices: zod.array(
+    zod.object({
+      id: zod.string(),
+      name: zod.string(),
+      groups: zod.array(
+        zod.object({
+          id: zod.number(),
+          name: zod.string(),
+        }),
+      ),
+      details: zod.object({
+        productName: zod.string(),
+        displayName: zod.string(),
+      }),
+      state: zod.object({
+        on: zod.boolean(),
+      }),
+      lastSeen: zod.string().datetime(),
+    }),
+  ),
+})
+
+export const controlGroupStateParams = zod.object({
+  groupId: zod.number(),
+})
+
+export const controlGroupStateBody = zod.object({
+  desiredPowerState: zod.enum(['on', 'off']),
+})
+
+export const updateLocationBody = zod.object({
+  longitude: zod.number(),
+  latitude: zod.number(),
+  name: zod.string(),
+})
+
+export const getLocationDataResponse = zod.object({
+  longitude: zod.number(),
+  latitude: zod.number(),
+  name: zod.string(),
+  sunrise: zod.string().datetime(),
+  sunset: zod.string().datetime(),
+  firstLight: zod.string().datetime(),
+  lastLight: zod.string().datetime(),
+  dawn: zod.string().datetime(),
+  dusk: zod.string().datetime(),
+  solarNoon: zod.string().datetime(),
+  goldenHour: zod.string().datetime(),
+  dayLength: zod.number(),
+  timeZone: zod.string(),
+  utcOffset: zod.number(),
 })

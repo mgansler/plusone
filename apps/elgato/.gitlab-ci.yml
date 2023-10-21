@@ -3,10 +3,15 @@ image: node:20-alpine
 elgato:deploy:
   cache: []
   stage: deploy
+  needs:
+    - lint
   tags:
     - elgato
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual
   before_script:
     - source ~/.nvm/nvm.sh
     - yarn install

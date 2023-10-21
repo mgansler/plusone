@@ -1,15 +1,18 @@
-import { HttpModule } from '@nestjs/axios'
 import { Module } from '@nestjs/common'
 
-import { PrismaService } from '@plusone/elgato-persistence'
+import { PrismaModule } from '@plusone/elgato-persistence'
 
+import { ElgatoModule } from '../elgato/elgato.module'
+
+import { DeviceSettingsController } from './device-settings.controller'
+import { DeviceSettingsService } from './device-settings.service'
 import { DeviceController } from './device.controller'
 import { DeviceService } from './device.service'
 
 @Module({
-  imports: [HttpModule],
-  controllers: [DeviceController],
-  providers: [DeviceService, PrismaService],
+  imports: [ElgatoModule, PrismaModule],
+  controllers: [DeviceController, DeviceSettingsController],
+  providers: [DeviceService, DeviceSettingsService],
   exports: [DeviceService],
 })
 export class DeviceModule {}

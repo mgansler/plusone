@@ -1,23 +1,41 @@
-import { Link, Route, Routes } from 'react-router-dom'
-
-import { DeviceDetails } from './device-details'
-import { Devices } from './devices'
+import { useNavigate } from '@remix-run/react'
+import type { ReactEventHandler } from 'react'
+import { useEffect } from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
 
 export function App() {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      navigate('devices')
+    }
+  }, [location.pathname, navigate])
+
+  const onSelectChange: ReactEventHandler<HTMLSelectElement> = (event) => {
+    navigate(event.currentTarget.value)
+  }
+
+  const selectDefaultValue = (): string => {
+    if (['/', '/devices'].includes(location.pathname)) {
+      return 'devices'
+    }
+    return 'groups'
+  }
+
   return (
-    <Routes>
-      <Route
-        path={'/'}
-        element={
-          <div>
-            <h1>Welcome to Elgato Control</h1>
-            <Link to={'/devices'}>Click here to see all devices.</Link>
-          </div>
-        }
-      />
-      <Route path={'devices'} element={<Devices />}>
-        <Route path={':deviceId'} element={<DeviceDetails />} />
-      </Route>
-    </Routes>
+    <>
+      <h1>Welcome to Elgato Control</h1>
+
+      <select onChange={onSelectChange} defaultValue={selectDefaultValue()}>
+        <option value={'devices'}>Devices</option>
+        <option value={'groups'}>Groups</option>
+      </select>
+
+      <Outlet />
+
+      {!location.pathname.includes('settings') ? <button onClick={() => navigate('/settings')}>Settings</button> : null}
+    </>
   )
 }

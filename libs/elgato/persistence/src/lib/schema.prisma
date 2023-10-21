@@ -15,4 +15,24 @@ model Device {
   fqdn String
   host String
   port Int
+
+  lastSeen DateTime?
+
+  groups Group[]
+
+  sunrise Boolean @default(false)
+  sunset  Boolean @default(false)
+}
+
+model Group {
+  id      Int      @id @default(autoincrement())
+  name    String
+  devices Device[]
+  isRoom  Boolean  @default(false)
+}
+
+model Location {
+  name      String @unique
+  longitude Float
+  latitude  Float
 }

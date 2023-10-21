@@ -22,10 +22,11 @@ feeds:test:
 
 feeds:build:
   stage: build
+  needs:
+    - lint
+    - feeds:test
   tags:
     - docker
-  only:
-    - main
   parallel:
     matrix:
       - FEEDS_APP:
