@@ -20,8 +20,6 @@ export function Settings() {
   const { data: { devices } = {} } = useValidatedDeviceList()
   const { mutate } = useCreateGroup({ mutation: { onSuccess: () => queryClient.invalidateQueries(queryKey) } })
 
-  console.log(devices)
-
   const addGroup = () => {
     const name = newGroupNameRef.current.value
     const isRoom = newGroupNameRef.current.checked
