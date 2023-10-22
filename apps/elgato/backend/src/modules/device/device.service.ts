@@ -123,7 +123,7 @@ export class DeviceService {
     for (const device of devices) {
       try {
         const lastSeenMinutes = Math.floor((Date.now() - device.lastSeen.valueOf()) / 60 / 1_000)
-        if (Date.now() - device.lastSeen.valueOf() > 11) {
+        if (lastSeenMinutes > 11) {
           this.logger.debug(
             `Device ${device.name} hasn't been seen for over ${lastSeenMinutes} minutes, pinging device now.`,
           )
