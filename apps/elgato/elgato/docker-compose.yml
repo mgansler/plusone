@@ -5,6 +5,8 @@ services:
     image: elgato-app:latest
     network_mode: host
     restart: always
+    environment:
+      TZ: Europe/Berlin
     volumes:
       - sqlite:/usr/elgato/sqlite/
     labels:

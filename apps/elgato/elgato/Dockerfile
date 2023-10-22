@@ -1,5 +1,6 @@
 FROM node:20-alpine
-RUN apk add --no-cache avahi avahi-tools
+RUN apk add --no-cache avahi avahi-tools tzdata
+
 
 WORKDIR /usr/elgato
 CMD ["npm", "start"]
