@@ -46,25 +46,22 @@ export class SunriseSunsetService implements OnModuleInit {
           clearTimeout(this.schedulerRegistry.getTimeout('sunrise'))
         }
 
-        const sunriseJob = new CronJob({
-          cronTime: sunriseSunsetTimes.dawn,
-          onTick: () => {
-            this.logger.log(`Starting sunrise for ${devices.length}: [${devices.map((d) => d.name).join(', ')}]`)
-            devices.forEach((d) => this.elgatoService.setLightStripState(d, sunrise))
+        const sunriseJob = new CronJob(sunriseSunsetTimes.dawn, () => {
+          this.logger.log(`Starting sunrise for ${devices.length}: [${devices.map((d) => d.name).join(', ')}]`)
+          devices.forEach((d) => this.elgatoService.setLightStripState(d, sunrise))
 
-            const turnOffCallback = () => {
-              this.logger.log(
-                `Turning off ${devices.length} devices after sunrise: [${devices.map((d) => d.name).join(', ')}]`,
-              )
-              devices.forEach((device) => this.elgatoService.setDevicePowerState(device, DevicePowerState.off))
-            }
-
-            // The last scene (brightness: 0) has a duration of 60s. Turn the device off during that duration.
-            this.schedulerRegistry.addTimeout(
-              'sunrise',
-              setTimeout(turnOffCallback, sunriseSequenceTotalDuration - 30_000),
+          const turnOffCallback = () => {
+            this.logger.log(
+              `Turning off ${devices.length} devices after sunrise: [${devices.map((d) => d.name).join(', ')}]`,
             )
-          },
+            devices.forEach((device) => this.elgatoService.setDevicePowerState(device, DevicePowerState.off))
+          }
+
+          // The last scene (brightness: 0) has a duration of 60s. Turn the device off during that duration.
+          this.schedulerRegistry.addTimeout(
+            'sunrise',
+            setTimeout(turnOffCallback, sunriseSequenceTotalDuration - 30_000),
+          )
         })
 
         this.schedulerRegistry.addCronJob('sunrise', sunriseJob)
