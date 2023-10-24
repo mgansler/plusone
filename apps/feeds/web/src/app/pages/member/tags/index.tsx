@@ -56,7 +56,9 @@ function TagChip({ tag }: TagChipProps) {
   const queryClient = useQueryClient()
   const { mutateAsync } = useRemoveTag({
     mutation: {
-      onSuccess: () => queryClient.invalidateQueries({ queryKey: [getGetTagsQueryKey()] }),
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: [getGetTagsQueryKey()] })
+      },
     },
   })
 
