@@ -12,9 +12,10 @@ interface EnableAutoMergeProps {
 
 export function EnableAutoMerge({ pullRequestId }: EnableAutoMergeProps) {
   const octokit = useOctokit()
-  const { mutate } = useMutation(['pr-approval'], () =>
-    octokit.graphql(EnablePullRequestAutoMergeDocument, { pullRequestId }),
-  )
+  const { mutate } = useMutation({
+    mutationKey: ['pr-approval'],
+    mutationFn: () => octokit.graphql(EnablePullRequestAutoMergeDocument, { pullRequestId }),
+  })
 
   const approve = () => {
     console.log('enable auto merge', { pullRequestId })

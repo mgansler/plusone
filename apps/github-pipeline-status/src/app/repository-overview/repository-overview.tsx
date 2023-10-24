@@ -3,7 +3,7 @@ import type { Theme } from '@mui/material'
 import { FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import type { MutableRefObject } from 'react'
 import React, { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
@@ -47,25 +47,26 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
   const { pages, onSuccess, nextPage, prevPage, goToPage, getPageRequest } = useGitHubPagination(PAGE_SIZE)
 
   const octokit = useOctokit()
-  const { data, isLoading } = useQuery(
-    ['repositories', organizationName, queryString, pages.currentPage],
-    async () =>
+  const { data, isLoading } = useQuery({
+    queryKey: ['repositories', organizationName, queryString, pages.currentPage],
+    queryFn: async () =>
       octokit.graphql<RepositoryOverviewQuery>(RepositoryOverviewDocument, {
         first: PAGE_SIZE,
         after: getPageRequest(),
         queryString: `org:${organizationName} ${queryString}`,
       }),
-    {
-      keepPreviousData: true,
-      refetchInterval: 5_000,
-      refetchIntervalInBackground: true,
-      onSuccess: (response) => {
-        searchParams.set('filter', queryString)
-        setSearchParams(searchParams)
-        onSuccess(response.search.pageInfo, response.search.repositoryCount)
-      },
-    },
-  )
+    placeholderData: keepPreviousData,
+    refetchInterval: 5_000,
+    refetchIntervalInBackground: true,
+  })
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      searchParams.set('filter', queryString)
+      setSearchParams(searchParams)
+      onSuccess(data.search.pageInfo, data.search.repositoryCount)
+    }
+  }, [data, isLoading, onSuccess, queryString, searchParams, setSearchParams])
 
   useEffect(() => goToPage(0), [goToPage, queryString])
 

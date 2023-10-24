@@ -12,7 +12,10 @@ interface ApproveButtonProps {
 
 export function ApproveButton({ pullRequestId }: ApproveButtonProps) {
   const octokit = useOctokit()
-  const { mutate } = useMutation(['pr-approval'], () => octokit.graphql(ApprovePullRequestDocument, { pullRequestId }))
+  const { mutate } = useMutation({
+    mutationKey: ['pr-approval'],
+    mutationFn: () => octokit.graphql(ApprovePullRequestDocument, { pullRequestId }),
+  })
 
   const approve = () => {
     console.log('approve', { pullRequestId })
