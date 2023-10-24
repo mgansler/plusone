@@ -51,11 +51,8 @@ export function Articles() {
   if (!data) {
     return null
   }
-  console.log(data)
 
   const articles = data.pages.reduce((prev, cur) => [...prev, ...cur.content], [])
-
-  console.log(articles)
 
   return (
     <>
