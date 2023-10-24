@@ -12,8 +12,8 @@ export function Admin() {
     <div>
       <h3>Admin Area</h3>
       <Health />
-      <div>total feeds: {feeds?.data.length}</div>
-      <Link to={'users'}>total users: {users?.data.length}</Link>
+      <div>total feeds: {feeds?.length}</div>
+      <Link to={'users'}>total users: {users?.length}</Link>
       <Outlet />
     </div>
   )

@@ -25,8 +25,8 @@ function RemovableTag({ tag }: RemovableChipProps) {
   const { mutateAsync } = useUntagFeed({
     mutation: {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(getGetFeedTagsQueryKey(feedId))
-        await queryClient.invalidateQueries(getGetUserFeedsQueryKey())
+        await queryClient.invalidateQueries({ queryKey: getGetFeedTagsQueryKey(feedId) })
+        await queryClient.invalidateQueries({ queryKey: getGetUserFeedsQueryKey() })
       },
     },
   })
@@ -52,18 +52,18 @@ export function FeedTags() {
   const { mutateAsync } = useTagFeed({
     mutation: {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(getGetFeedTagsQueryKey(feedId))
-        await queryClient.invalidateQueries(getGetUserFeedsQueryKey())
+        await queryClient.invalidateQueries({ queryKey: getGetFeedTagsQueryKey(feedId) })
+        await queryClient.invalidateQueries({ queryKey: getGetUserFeedsQueryKey() })
       },
     },
   })
 
   const addableTags = useMemo(() => {
-    return availableTags?.data.filter((tag) => !currentTags?.data.some((t) => t.id === tag.id)).map((t) => t.name)
-  }, [availableTags?.data, currentTags?.data])
+    return availableTags?.filter((tag) => !currentTags?.some((t) => t.id === tag.id)).map((t) => t.name)
+  }, [availableTags, currentTags])
 
   const onSubmit = async (data: FeedTagsForm) => {
-    const tag = availableTags.data.find((tag) => tag.name === data.newTag)
+    const tag = availableTags.find((tag) => tag.name === data.newTag)
     if (tag) {
       await mutateAsync({ id: feedId, data: { tagId: tag.id } })
     }
@@ -73,7 +73,7 @@ export function FeedTags() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack gap={2}>
         <Stack direction={'row'} spacing={1}>
-          {currentTags?.data.map((tag) => (
+          {currentTags?.map((tag) => (
             <RemovableTag key={tag.id} tag={tag} />
           ))}
         </Stack>

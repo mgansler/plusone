@@ -1,5 +1,5 @@
 import type { AxiosError } from '@nestjs/terminus/dist/errors/axios.error'
-import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { AxiosRequestConfig } from 'axios'
 import AxiosStatic, { AxiosHeaders } from 'axios'
 
 import type { LoginResponseDto } from './index'
@@ -38,7 +38,7 @@ async function refreshAccessToken(): Promise<string | undefined> {
   return undefined
 }
 
-export async function customAxiosInstance<T>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+export async function customAxiosInstance<T>(config: AxiosRequestConfig): Promise<T> {
   const axios = AxiosStatic.create()
 
   axios.interceptors.request.use(
@@ -71,5 +71,18 @@ export async function customAxiosInstance<T>(config: AxiosRequestConfig): Promis
     },
   )
 
-  return axios({ ...config })
+  // eslint-disable-next-line import/no-named-as-default-member
+  const source = AxiosStatic.CancelToken.source()
+  const promise = axios({
+    ...config,
+    cancelToken: source.token,
+  }).then<T>(({ data }) => data)
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  promise.cancel = () => {
+    source.cancel('Query was cancelled')
+  }
+
+  return promise
 }

@@ -56,6 +56,7 @@ class FlexibleBuilder<TSchema extends ZodType<unknown, unknown, unknown>, TRequi
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const { data, ...rest } = useQueryWrapper(...args)
+
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return {

@@ -13,7 +13,7 @@ function AddTag() {
   const { mutateAsync } = useAddTag({
     mutation: {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(getGetTagsQueryKey())
+        await queryClient.invalidateQueries({ queryKey: getGetTagsQueryKey() })
       },
     },
   })
@@ -33,7 +33,7 @@ function AddTag() {
               if (value.length === 0) {
                 return "Tag can't be empty."
               }
-              if (currentTags?.data.map((tag) => tag.name).includes(value)) {
+              if (currentTags?.map((tag) => tag.name).includes(value)) {
                 return 'This tag already exists.'
               }
               return true
@@ -56,9 +56,7 @@ function TagChip({ tag }: TagChipProps) {
   const queryClient = useQueryClient()
   const { mutateAsync } = useRemoveTag({
     mutation: {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(getGetTagsQueryKey())
-      },
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: [getGetTagsQueryKey()] }),
     },
   })
 
@@ -79,7 +77,7 @@ export function Tags() {
         </MuiLink>
         <Divider />
         <Stack direction={'row'} spacing={1}>
-          {data?.data.map((tag) => (
+          {data?.map((tag) => (
             <TagChip key={tag.id} tag={tag} />
           ))}
         </Stack>

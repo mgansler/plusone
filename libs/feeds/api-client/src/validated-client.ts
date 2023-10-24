@@ -3,9 +3,9 @@ import { ValidatedClientBuilder } from './validated-client-factory'
 import { bootInfoResponse, getFeedSettingsResponse } from './zod'
 
 export const useValidatedBootInfo = new ValidatedClientBuilder(bootInfoResponse)
-  .fetchWrapperWithoutArgs(bootInfo)
-  .withQueryWrapper(useBootInfo)
+  .withFetchWrapper(bootInfo)
+  .withUseQueryWrapper(useBootInfo)
 
 export const useValidatedGetFeedSettings = new ValidatedClientBuilder(getFeedSettingsResponse)
-  .fetchWrapperWithArgs(getFeedSettings)
-  .withQueryWrapper(useGetFeedSettings)
+  .withFetchWrapper(getFeedSettings)
+  .withUseQueryWrapper(useGetFeedSettings)

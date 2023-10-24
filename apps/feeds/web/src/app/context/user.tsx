@@ -30,19 +30,8 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
     query: {
       enabled: location.pathname !== '/login',
       refetchInterval: 30_000,
-      onSuccess: ({ data }) => {
-        setUserInfo(data)
-        if (location.pathname !== '/home') {
-          // data.isAdmin ? navigate('/admin') : navigate('/member')
-        }
-      },
-      onError: async (err) => {
-        if ((err as AxiosError).response?.status === 401) {
-          localStorage.removeItem(AUTHENTICATION_LOCAL_STORAGE_KEY)
-          // Clear local state
-          queryClient.clear()
-          setUserInfo(undefined)
-        }
+      meta: {
+        name: 'fetch-profile',
       },
     },
   })
@@ -53,11 +42,16 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
 
   const login = async (auth: LoginResponse) => {
     localStorage.setItem(AUTHENTICATION_LOCAL_STORAGE_KEY, JSON.stringify(auth))
-    const { data } = await fetchProfile()
-    if (data.data.isAdmin) {
-      navigate('/admin')
-    } else {
-      navigate('/member/feeds')
+    try {
+      const response = await fetchProfile()
+      // FIXME: this is bad, see https://tkdodo.eu/blog/breaking-react-querys-api-on-purpose
+      setUserInfo(response.data)
+
+      navigate(response.data.isAdmin ? '/admin' : '/member/feeds')
+    } catch (error) {
+      if ((error as AxiosError).response?.status === 401) {
+        setUserInfo(undefined)
+      }
     }
   }
 

@@ -20,7 +20,9 @@ export function Login() {
 
   const onSubmit = async (data: LoginForm) => {
     const resp = await mutateAsync({ data })
-    login(resp.data)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    login(resp)
   }
 
   return (

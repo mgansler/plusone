@@ -120,7 +120,7 @@ export const getDeviceListQueryKey = () => {
 }
 
 export const getDeviceListQueryOptions = <TData = Awaited<ReturnType<typeof deviceList>>, TError = unknown>(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof deviceList>>, TError, TData>
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof deviceList>>, TError, TData>>
 }) => {
   const { query: queryOptions } = options ?? {}
 
@@ -139,7 +139,7 @@ export type DeviceListQueryResult = NonNullable<Awaited<ReturnType<typeof device
 export type DeviceListQueryError = unknown
 
 export const useDeviceList = <TData = Awaited<ReturnType<typeof deviceList>>, TError = unknown>(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof deviceList>>, TError, TData>
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof deviceList>>, TError, TData>>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getDeviceListQueryOptions(options)
 
@@ -160,7 +160,7 @@ export const getDeviceDetailsQueryKey = (id: string) => {
 
 export const getDeviceDetailsQueryOptions = <TData = Awaited<ReturnType<typeof deviceDetails>>, TError = unknown>(
   id: string,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof deviceDetails>>, TError, TData> },
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof deviceDetails>>, TError, TData>> },
 ) => {
   const { query: queryOptions } = options ?? {}
 
@@ -180,7 +180,7 @@ export type DeviceDetailsQueryError = unknown
 
 export const useDeviceDetails = <TData = Awaited<ReturnType<typeof deviceDetails>>, TError = unknown>(
   id: string,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof deviceDetails>>, TError, TData> },
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof deviceDetails>>, TError, TData>> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getDeviceDetailsQueryOptions(id, options)
 
@@ -287,7 +287,7 @@ export const getCurrentDeviceSettingsQueryOptions = <
   TError = unknown,
 >(
   id: string,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof currentDeviceSettings>>, TError, TData> },
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof currentDeviceSettings>>, TError, TData>> },
 ) => {
   const { query: queryOptions } = options ?? {}
 
@@ -308,7 +308,7 @@ export type CurrentDeviceSettingsQueryError = unknown
 
 export const useCurrentDeviceSettings = <TData = Awaited<ReturnType<typeof currentDeviceSettings>>, TError = unknown>(
   id: string,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof currentDeviceSettings>>, TError, TData> },
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof currentDeviceSettings>>, TError, TData>> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getCurrentDeviceSettingsQueryOptions(id, options)
 
@@ -416,7 +416,7 @@ export const getGroupListQueryKey = () => {
 }
 
 export const getGroupListQueryOptions = <TData = Awaited<ReturnType<typeof groupList>>, TError = unknown>(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof groupList>>, TError, TData>
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof groupList>>, TError, TData>>
 }) => {
   const { query: queryOptions } = options ?? {}
 
@@ -435,7 +435,7 @@ export type GroupListQueryResult = NonNullable<Awaited<ReturnType<typeof groupLi
 export type GroupListQueryError = unknown
 
 export const useGroupList = <TData = Awaited<ReturnType<typeof groupList>>, TError = unknown>(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof groupList>>, TError, TData>
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof groupList>>, TError, TData>>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getGroupListQueryOptions(options)
 
@@ -456,7 +456,7 @@ export const getGroupDetailsQueryKey = (groupId: number) => {
 
 export const getGroupDetailsQueryOptions = <TData = Awaited<ReturnType<typeof groupDetails>>, TError = unknown>(
   groupId: number,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof groupDetails>>, TError, TData> },
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof groupDetails>>, TError, TData>> },
 ) => {
   const { query: queryOptions } = options ?? {}
 
@@ -476,7 +476,7 @@ export type GroupDetailsQueryError = unknown
 
 export const useGroupDetails = <TData = Awaited<ReturnType<typeof groupDetails>>, TError = unknown>(
   groupId: number,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof groupDetails>>, TError, TData> },
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof groupDetails>>, TError, TData>> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getGroupDetailsQueryOptions(groupId, options)
 
@@ -604,7 +604,7 @@ export const getGetLocationDataQueryOptions = <
   TData = Awaited<ReturnType<typeof getLocationData>>,
   TError = unknown,
 >(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getLocationData>>, TError, TData>
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationData>>, TError, TData>>
 }) => {
   const { query: queryOptions } = options ?? {}
 
@@ -623,7 +623,7 @@ export type GetLocationDataQueryResult = NonNullable<Awaited<ReturnType<typeof g
 export type GetLocationDataQueryError = unknown
 
 export const useGetLocationData = <TData = Awaited<ReturnType<typeof getLocationData>>, TError = unknown>(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getLocationData>>, TError, TData>
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationData>>, TError, TData>>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getGetLocationDataQueryOptions(options)
 
