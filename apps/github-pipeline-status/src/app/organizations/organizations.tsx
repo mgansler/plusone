@@ -2,9 +2,9 @@ import type { Theme } from '@mui/material'
 import { FormControl, InputLabel, LinearProgress, MenuItem, Paper, Select, Toolbar } from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import type { MutableRefObject, RefObject } from 'react'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 
 import { OrganizationsDocument } from '@plusone/github-schema'
@@ -24,16 +24,18 @@ const useFetchOrganizations = () => {
   const { pages, onSuccess, getPageRequest } = useGitHubPagination(PAGE_SIZE)
 
   const octokit = useOctokit()
-  const { data, isLoading } = useQuery(
-    ['organizations', pages.currentPage],
-    async () =>
+  const { data, isLoading } = useQuery({
+    queryKey: ['organizations', pages.currentPage],
+    queryFn: async () =>
       octokit.graphql<OrganizationsQuery>(OrganizationsDocument, { first: PAGE_SIZE, after: getPageRequest() }),
-    {
-      keepPreviousData: true,
-      onSuccess: (response) =>
-        onSuccess(response.viewer.organizations.pageInfo, response.viewer.organizations.totalCount),
-    },
-  )
+    placeholderData: keepPreviousData,
+  })
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      onSuccess(data.viewer.organizations.pageInfo, data.viewer.organizations.totalCount)
+    }
+  }, [data, isLoading, onSuccess])
 
   return { data, isLoading }
 }

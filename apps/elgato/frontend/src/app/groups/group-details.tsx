@@ -13,9 +13,11 @@ export function GroupDetails() {
   const { data, isLoading } = useValidatedGroupDetails(Number(groupId))
   const { mutate } = useControlGroupState({
     mutation: {
-      onSuccess: () => {
+      onSuccess: async () => {
         for (const device of data.devices) {
-          queryClient.invalidateQueries(getDeviceDetailsQueryKey(device.id))
+          await queryClient.invalidateQueries({
+            queryKey: getDeviceDetailsQueryKey(device.id),
+          })
         }
       },
     },

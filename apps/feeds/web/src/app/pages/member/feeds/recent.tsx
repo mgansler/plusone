@@ -21,7 +21,7 @@ export function RecentArticles() {
         <FeedSettingsBar />
       </Stack>
 
-      <RecentlyReadArticleList articles={articles.data} />
+      <RecentlyReadArticleList articles={articles} />
     </>
   )
 }

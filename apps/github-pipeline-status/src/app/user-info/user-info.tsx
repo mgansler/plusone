@@ -9,7 +9,7 @@ import { useLogout, useOctokit } from '../octokit-provider/octokit-provider'
 
 const useFetchUserInfo = () => {
   const octokit = useOctokit()
-  return useQuery(['currentUser'], () => octokit.graphql<UserQuery>(UserDocument))
+  return useQuery({ queryKey: ['currentUser'], queryFn: () => octokit.graphql<UserQuery>(UserDocument) })
 }
 
 export function UserInfo() {

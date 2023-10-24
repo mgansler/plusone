@@ -9,7 +9,13 @@ type DevicePowerStateProps = {
 export function DevicePowerStateControl({ deviceId }: DevicePowerStateProps) {
   const queryClient = useQueryClient()
   const { data, isLoading, queryKey } = useValidatedDeviceDetails(deviceId)
-  const { mutate } = useToggleDevice({ mutation: { onSuccess: () => queryClient.invalidateQueries(queryKey) } })
+  const { mutate } = useToggleDevice({
+    mutation: {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey })
+      },
+    },
+  })
 
   const toggle = () => mutate({ id: deviceId })
 

@@ -31,7 +31,7 @@ export function Articles() {
     {
       query: {
         getNextPageParam: (lastPage) =>
-          lastPage.data.content.length < lastPage.data.pageSize ? undefined : lastPage.data.lastCursor,
+          lastPage.content.length < lastPage.pageSize ? undefined : lastPage.lastCursor,
       },
     },
   )
@@ -39,8 +39,8 @@ export function Articles() {
   const { mutateAsync } = useMarkArticlesRead({
     mutation: {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(getFindArticlesQueryKey())
-        await queryClient.invalidateQueries(getGetUserFeedsQueryKey())
+        await queryClient.invalidateQueries({ queryKey: getFindArticlesQueryKey() })
+        await queryClient.invalidateQueries({ queryKey: getGetUserFeedsQueryKey() })
       },
     },
   })
@@ -52,7 +52,7 @@ export function Articles() {
     return null
   }
 
-  const articles = data.pages.reduce((prev, cur) => [...prev, ...cur.data.content], [])
+  const articles = data.pages.reduce((prev, cur) => [...prev, ...cur.content], [])
 
   return (
     <>

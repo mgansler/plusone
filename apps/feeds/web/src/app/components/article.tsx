@@ -22,9 +22,9 @@ export function useReadArticle() {
   const { mutateAsync } = useToggleUnread({
     mutation: {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(getFindArticlesQueryKey())
-        await queryClient.invalidateQueries(getGetUserFeedsQueryKey())
-        await queryClient.invalidateQueries(getRecentlyReadArticlesQueryKey())
+        await queryClient.invalidateQueries({ queryKey: getFindArticlesQueryKey() })
+        await queryClient.invalidateQueries({ queryKey: getGetUserFeedsQueryKey() })
+        await queryClient.invalidateQueries({ queryKey: getRecentlyReadArticlesQueryKey() })
       },
     },
   })
@@ -40,7 +40,7 @@ function useMarkArticleStarred() {
   const { mutateAsync } = useStarArticle({
     mutation: {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(getFindArticlesQueryKey())
+        await queryClient.invalidateQueries({ queryKey: getFindArticlesQueryKey() })
       },
     },
   })

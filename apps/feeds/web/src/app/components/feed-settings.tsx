@@ -25,7 +25,7 @@ export function FeedSettings() {
   const { mutateAsync } = useUpdateFeedSettings({
     mutation: {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(getGetUserFeedsQueryKey())
+        await queryClient.invalidateQueries({ queryKey: getGetUserFeedsQueryKey() })
       },
     },
   })

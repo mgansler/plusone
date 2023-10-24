@@ -20,6 +20,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
   const { data: bootInfo } = useValidatedBootInfo()
 
   useEffect(() => {
+    // FIXME: this crashes when there are no articles (empty array)
     const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
     if (currentIndex === -1) {
       setSelectedArticle(articles[0].article.id)

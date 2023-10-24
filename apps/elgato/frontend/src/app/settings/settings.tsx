@@ -18,7 +18,13 @@ export function Settings() {
   const queryClient = useQueryClient()
   const { data: { groups } = {}, queryKey } = useValidatedGroupList()
   const { data: { devices } = {} } = useValidatedDeviceList()
-  const { mutate } = useCreateGroup({ mutation: { onSuccess: () => queryClient.invalidateQueries(queryKey) } })
+  const { mutate } = useCreateGroup({
+    mutation: {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey })
+      },
+    },
+  })
 
   const addGroup = () => {
     const name = newGroupNameRef.current.value

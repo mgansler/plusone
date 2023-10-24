@@ -12,7 +12,9 @@ function User({ user }: UserProps) {
   const queryClient = useQueryClient()
   const { mutateAsync } = useDeleteUser({
     mutation: {
-      onSuccess: () => queryClient.invalidateQueries(getGetUsersQueryKey()),
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: getGetUsersQueryKey() })
+      },
     },
   })
 
@@ -36,7 +38,7 @@ export function Users() {
   return (
     <div>
       <Link to={'..'}>up</Link>
-      {users?.data.map((user) => (
+      {users?.map((user) => (
         <User key={user.id} user={user} />
       ))}
     </div>

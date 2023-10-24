@@ -28,7 +28,7 @@ function DiscoverFeedForm({ resetAddFeed }: DiscoverFeedFormProps) {
 
   const onDiscoverFeedSubmit = async (data: DiscoverFeedForm) => {
     const discoverResp = await discover({ params: data })
-    resetAddFeed(discoverResp.data)
+    resetAddFeed(discoverResp)
   }
 
   return (
@@ -52,8 +52,8 @@ function AddFeedForm({ methods: { register, handleSubmit } }: AddFeedFormProps) 
 
   const { mutateAsync } = useAddFeed({
     mutation: {
-      useErrorBoundary: true,
-      onMutate: () => queryClient.invalidateQueries(getGetUserFeedsQueryKey()),
+      throwOnError: true,
+      onMutate: () => queryClient.invalidateQueries({ queryKey: getGetUserFeedsQueryKey() }),
     },
   })
 
@@ -84,7 +84,7 @@ function ImportForm() {
 
   const { register, handleSubmit } = useForm<ImportFormForm>()
   const { mutateAsync } = useImportFeeds({
-    mutation: { onSuccess: () => queryClient.invalidateQueries(getGetUserFeedsQueryKey()) },
+    mutation: { onSuccess: () => queryClient.invalidateQueries({ queryKey: getGetUserFeedsQueryKey() }) },
   })
 
   const onSubmit = async (data: ImportFormForm) => {

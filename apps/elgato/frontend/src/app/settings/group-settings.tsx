@@ -19,7 +19,13 @@ function FilteredDevices({ group, devices }: FilteredDevicesProps) {
 
   const queryClient = useQueryClient()
   const { mutate } = useAddDeviceToGroup({
-    mutation: { onSuccess: () => queryClient.invalidateQueries(getGroupDetailsQueryKey(Number(groupId))) },
+    mutation: {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: getGroupDetailsQueryKey(Number(groupId)),
+        })
+      },
+    },
   })
 
   const addDevice = (deviceId) => {

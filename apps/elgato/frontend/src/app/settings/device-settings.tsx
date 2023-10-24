@@ -13,14 +13,22 @@ type DeviceSettingsProps = {
 }
 
 export function DeviceSettings({ device }: DeviceSettingsProps) {
-  const { handleSubmit, register, reset } = useForm<DeviceSettingsForm>()
+  const { refetch } = useValidatedDeviceSettings(device.id, { query: { enabled: false } })
+  const { mutate } = useUpdateDeviceSettings()
 
-  useValidatedDeviceSettings(device.id, {
-    query: {
-      onSuccess: (data) => reset(data),
+  const { handleSubmit, register } = useForm<DeviceSettingsForm>({
+    defaultValues: async () => {
+      try {
+        const response = await refetch()
+        return response.data as DeviceSettingsForm
+      } catch (e) {
+        return {
+          sunrise: false,
+          sunset: false,
+        }
+      }
     },
   })
-  const { mutate } = useUpdateDeviceSettings()
 
   const onSubmit = (data: DeviceSettingsForm) => {
     mutate({ id: device.id, data })

@@ -111,7 +111,7 @@ export function FeedList() {
   const { setIncludeRead, setSort } = useFeedSettingsContext()
 
   const taggedFeeds = useMemo(() => {
-    return data?.data.reduce((prev, cur) => {
+    return data?.reduce((prev, cur) => {
       for (const { name } of cur.tags) {
         prev[name] = Array.isArray(prev[name]) ? [...prev[name], cur] : [cur]
       }
@@ -120,7 +120,7 @@ export function FeedList() {
       }
       return prev
     }, {})
-  }, [data?.data])
+  }, [data])
 
   const goToAll = () => {
     setSort(Sort.NewestFirst)
@@ -128,7 +128,7 @@ export function FeedList() {
     navigate({ pathname: 'all', search: searchParams.toString() })
   }
 
-  const totalUnreadCount = data?.data.reduce((total, feed) => total + feed.unreadCount, 0)
+  const totalUnreadCount = data?.reduce((total, feed) => total + feed.unreadCount, 0)
 
   return (
     <>
