@@ -1,7 +1,6 @@
-import { useNavigate } from '@remix-run/react'
 import type { ReactEventHandler } from 'react'
 import { useEffect } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 export function App() {
   const navigate = useNavigate()
