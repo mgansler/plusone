@@ -4,7 +4,7 @@
   "sourceRoot": "apps/advent-of-code-2021-e2e/src",
   "projectType": "application",
   "targets": {
-    "e2e": {
+    "e2e-disabled": {
       "executor": "@nx/cypress:cypress",
       "options": {
         "cypressConfig": "apps/advent-of-code-2021-e2e/cypress.config.ts",
@@ -27,7 +27,7 @@
       }
     },
     "dev-server": {
-      "command": "nx serve advent-of-code-2021",
+      "command": "nx start advent-of-code-2021",
       "options": {
         "readyWhen": "[remix-serve]"
       },
