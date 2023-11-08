@@ -3061,10 +3061,10 @@
     "@types/jsonwebtoken" "9.0.2"
     jsonwebtoken "9.0.0"
 
-"@nestjs/mapped-types@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/@nestjs/mapped-types/-/mapped-types-2.0.2.tgz#c8a090a8d22145b85ed977414c158534210f2e4f"
-  integrity sha512-V0izw6tWs6fTp9+KiiPUbGHWALy563Frn8X6Bm87ANLRuE46iuBMD5acKBDP5lKL/75QFvrzSJT7HkCbB0jTpg==
+"@nestjs/mapped-types@2.0.3":
+  version "2.0.3"
+  resolved "https://registry.npmjs.org/@nestjs/mapped-types/-/mapped-types-2.0.3.tgz#f400432da6c98d02b94b14e893fd7fa46c152403"
+  integrity sha512-40Zdqg98lqoF0+7ThWIZFStxgzisK6GG22+1ABO4kZiGF/Tu2FE+DYLw+Q9D94vcFWizJ+MSjNN4ns9r6hIGxw==
 
 "@nestjs/passport@10.0.2":
   version "10.0.2"
@@ -3118,16 +3118,16 @@
   dependencies:
     path-to-regexp "0.2.5"
 
-"@nestjs/swagger@7.1.14":
-  version "7.1.14"
-  resolved "https://registry.npmjs.org/@nestjs/swagger/-/swagger-7.1.14.tgz#492b3816308264472b3619f5c0336f378f1c9995"
-  integrity sha512-2Ol4S6qHeYVVmkshkWBM8E/qkmEqEOUj2QIewr0jLSyo30H7f3v81pJyks6pTLy4PK0LGUXojMvIfFIE3mmGQQ==
+"@nestjs/swagger@7.1.15":
+  version "7.1.15"
+  resolved "https://registry.npmjs.org/@nestjs/swagger/-/swagger-7.1.15.tgz#247c39f67bef7c4ff5ec86652a17657815d3561c"
+  integrity sha512-ZaAO90R9MQXk4iLQLijIH6jrsllkUSYoh0Su6DECGgu8Y4Q/9LfdESwsZ9nmzr/48aLOu+wrv+cdI5Wr6fLKJw==
   dependencies:
-    "@nestjs/mapped-types" "2.0.2"
+    "@nestjs/mapped-types" "2.0.3"
     js-yaml "4.1.0"
     lodash "4.17.21"
     path-to-regexp "3.2.0"
-    swagger-ui-dist "5.9.0"
+    swagger-ui-dist "5.9.1"
 
 "@nestjs/terminus@10.1.1":
   version "10.1.1"
@@ -4780,29 +4780,29 @@
   dependencies:
     tslib "^2.4.0"
 
-"@tanstack/query-core@5.7.2":
-  version "5.7.2"
-  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.7.2.tgz#c4a994d6f2b0a6901741a805c32da94db964880d"
-  integrity sha512-vPYoNCOI8W+jFLnyEAYQL7/qURE7XzVE/TvkmNSko8LU55jFshee342p4GNFOTsYFgJty7Da5bw4m2P3vaKWMw==
+"@tanstack/query-core@5.8.1":
+  version "5.8.1"
+  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.8.1.tgz#5215a028370d9b2f32e83787a0ea119e2f977996"
+  integrity sha512-Y0enatz2zQXBAsd7XmajlCs+WaitdR7dIFkqz9Xd7HL4KV04JOigWVreYseTmNH7YFSBSC/BJ9uuNp1MAf+GfA==
 
 "@tanstack/query-devtools@5.7.4":
   version "5.7.4"
   resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.7.4.tgz#6564ce1a6e9932542ec06d3b7cbb11e9b6ff8524"
   integrity sha512-wx+gwRZUZq7ISXKFJgaAYvVPt+DwTaLKlzaVLB9SLBFIzcL8Jz8jDQGR9ZQp7/O7SVj0TohS8aFuiiGzQUvWyg==
 
-"@tanstack/react-query-devtools@5.7.4":
-  version "5.7.4"
-  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.7.4.tgz#62d5cf2c4b9600aae1a5ecc6d0996aa53c286183"
-  integrity sha512-yzpXyiPyZHJP1zaX2qpEbjqQ64vrgPVdkW3PGqtfyYwvhepLmyEEI2DZF+lydMaLrEfXqPycOrAiHKeWcuROVQ==
+"@tanstack/react-query-devtools@5.8.1":
+  version "5.8.1"
+  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.8.1.tgz#95ec15b7a931893da39d8d3e5713dca9d18da2fa"
+  integrity sha512-sE6El2Yj98LlPDzf2Ju9IjWPZvqh2RgoQZ+Jomrfm80uA1HlHUvhXuOB0mOcyc706ZpNpL54no59JbgpHcMuUg==
   dependencies:
     "@tanstack/query-devtools" "5.7.4"
 
-"@tanstack/react-query@5.7.2":
-  version "5.7.2"
-  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.7.2.tgz#28a697ed9b8e5ae5c19f79a692180e819555c91f"
-  integrity sha512-NMsfz0Wd3VPDvSpX9sw2x07r0kf9HwuAlNNHQvwMUHM7EcuVN/LYmlmTe40dWER1c/92Jhc5LODdtW0PyvHsFg==
+"@tanstack/react-query@5.8.1":
+  version "5.8.1"
+  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.8.1.tgz#22a122016e23a39acd90341954a895980ec21ade"
+  integrity sha512-YMagxS8iNPOLg0pK6WOjdSDlAvWKOf69udLOwQrBVmkC2SRLNLko7elo5Ro3ptlJkXvTVHidxC/h5KGi5bH1XQ==
   dependencies:
-    "@tanstack/query-core" "5.7.2"
+    "@tanstack/query-core" "5.8.1"
 
 "@testing-library/cypress@10.0.1":
   version "10.0.1"
@@ -4854,10 +4854,10 @@
     lodash "^4.17.15"
     redent "^3.0.0"
 
-"@testing-library/react@14.0.0":
-  version "14.0.0"
-  resolved "https://registry.npmjs.org/@testing-library/react/-/react-14.0.0.tgz#59030392a6792450b9ab8e67aea5f3cc18d6347c"
-  integrity sha512-S04gSNJbYE30TlIMLTzv6QCTzt9AqIF5y6s6SzVFILNcNvbV/jU96GeiTPillGQo+Ny64M/5PV7klNYYgv5Dfg==
+"@testing-library/react@14.1.0":
+  version "14.1.0"
+  resolved "https://registry.npmjs.org/@testing-library/react/-/react-14.1.0.tgz#01d64915111db99b50f8361d51d7217606805989"
+  integrity sha512-hcvfZEEyO0xQoZeHmUbuMs7APJCGELpilL7bY+BaJaMP57aWc6q1etFwScnoZDheYjk4ESdlzPdQ33IbsKAK/A==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@testing-library/dom" "^9.0.0"
@@ -16839,10 +16839,10 @@ svgo@^3.0.2:
     csso "^5.0.5"
     picocolors "^1.0.0"
 
-swagger-ui-dist@5.9.0:
-  version "5.9.0"
-  resolved "https://registry.npmjs.org/swagger-ui-dist/-/swagger-ui-dist-5.9.0.tgz#d52b6cf52fd0a8e6930866c402aaa793fe4e3f76"
-  integrity sha512-NUHSYoe5XRTk/Are8jPJ6phzBh3l9l33nEyXosM17QInoV95/jng8+PuSGtbD407QoPf93MH3Bkh773OgesJpA==
+swagger-ui-dist@5.9.1:
+  version "5.9.1"
+  resolved "https://registry.npmjs.org/swagger-ui-dist/-/swagger-ui-dist-5.9.1.tgz#d0bcd614e3752da02df141846348f84468ae815e"
+  integrity sha512-5zAx+hUwJb9T3EAntc7TqYkV716CMqG6sZpNlAAMOMWkNXRYxGkN8ADIvD55dQZ10LxN90ZM/TQmN7y1gpICnw==
 
 swagger2openapi@^7.0.8:
   version "7.0.8"
