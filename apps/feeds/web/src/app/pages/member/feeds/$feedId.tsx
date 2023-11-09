@@ -30,8 +30,7 @@ export function Articles() {
     { f, s: search, sort, r: includeRead, starred },
     {
       query: {
-        getNextPageParam: (lastPage) =>
-          lastPage.content.length < lastPage.pageSize ? undefined : lastPage.lastCursor,
+        getNextPageParam: (lastPage) => (lastPage.content.length < lastPage.pageSize ? undefined : lastPage.lastCursor),
       },
     },
   )
