@@ -15,8 +15,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/hooks"],
       "options": {
-        "jestConfig": "libs/hooks/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/hooks/jest.config.ts"
       }
     }
   },

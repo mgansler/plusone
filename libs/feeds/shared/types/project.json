@@ -15,8 +15,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/feeds/shared/types"],
       "options": {
-        "jestConfig": "libs/feeds/shared/types/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/feeds/shared/types/jest.config.ts"
       }
     }
   },

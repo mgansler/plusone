@@ -48,8 +48,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/github-pipeline-status"],
       "options": {
-        "jestConfig": "apps/github-pipeline-status/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "apps/github-pipeline-status/jest.config.ts"
       }
     },
     "component-test": {

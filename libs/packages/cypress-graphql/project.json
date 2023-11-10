@@ -26,8 +26,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/packages/cypress-graphql"],
       "options": {
-        "jestConfig": "libs/packages/cypress-graphql/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/packages/cypress-graphql/jest.config.ts"
       }
     }
   },

@@ -79,8 +79,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/suite"],
       "options": {
-        "jestConfig": "apps/suite/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "apps/suite/jest.config.ts"
       }
     }
   },
