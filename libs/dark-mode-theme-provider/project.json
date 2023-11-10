@@ -15,8 +15,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/dark-mode-theme-provider"],
       "options": {
-        "jestConfig": "libs/dark-mode-theme-provider/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/dark-mode-theme-provider/jest.config.ts"
       }
     }
   },
