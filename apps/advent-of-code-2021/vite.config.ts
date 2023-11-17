@@ -1,20 +1,26 @@
 /// <reference types="vitest" />
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
-import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { unstable_vitePlugin as remix } from '@remix-run/dev'
+import { defineConfig, UserConfig } from 'vite'
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/advent-of-code-2021',
 
-  plugins: [react(), nxViteTsPaths()],
+  server: {
+    fs: {
+      allow: ['../..'],
+    },
+  },
+
+  plugins: [remix(), nxViteTsPaths()],
 
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],
   // },
 
+  // @ts-ignore
   test: {
-    setupFiles: ['./test-setup.ts'],
     globals: true,
     cache: {
       dir: '../../node_modules/.vitest',
@@ -23,6 +29,6 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
     },
-    include: ['./app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    include: ['app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },
-})
+}) as UserConfig

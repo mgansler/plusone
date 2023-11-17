@@ -4,16 +4,18 @@
   "sourceRoot": "apps/advent-of-code-2021-e2e/src",
   "projectType": "application",
   "targets": {
-    "e2e-disabled": {
+    "e2e": {
       "executor": "@nx/cypress:cypress",
       "options": {
         "cypressConfig": "apps/advent-of-code-2021-e2e/cypress.config.ts",
-        "baseUrl": "http://localhost:3000",
-        "testingType": "e2e",
-        "skipServe": true
+        "devServerTarget": "advent-of-code-2021:serve:development",
+        "baseUrl": "http://localhost:5173",
+        "testingType": "e2e"
       },
-      "dependsOn": ["dev-server"],
       "configurations": {
+        "production": {
+          "devServerTarget": "elgato-frontend:serve:production"
+        },
         "watch": {
           "watch": true
         }
@@ -24,17 +26,6 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/advent-of-code-2021-e2e/**/*.{js,ts}"]
-      }
-    },
-    "dev-server": {
-      "command": "nx start advent-of-code-2021",
-      "options": {
-        "readyWhen": "[remix-serve]"
-      },
-      "configurations": {
-        "production": {
-          "command": "nx serve advent-of-code-2021 --configuration=production"
-        }
       }
     }
   },

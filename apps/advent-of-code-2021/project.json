@@ -6,29 +6,36 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nx/remix:build",
+      "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/advent-of-code-2021"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
       }
     },
     "serve": {
-      "command": "remix dev",
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
       "options": {
-        "cwd": "apps/advent-of-code-2021"
-      }
-    },
-    "start": {
-      "dependsOn": ["build"],
-      "command": "remix-serve ./build/index.js",
-      "options": {
-        "cwd": "apps/advent-of-code-2021"
-      }
-    },
-    "typecheck": {
-      "command": "tsc",
-      "options": {
-        "cwd": "apps/advent-of-code-2021"
+        "buildTarget": "advent-of-code-2021:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "advent-of-code-2021:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "advent-of-code-2021:build:production",
+          "hmr": false
+        }
       }
     },
     "test": {
