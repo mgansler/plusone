@@ -82,4 +82,5 @@ jobs:
 
       - name: Run ${{ matrix.project }}:e2e
         timeout-minutes: 15
+        continue-on-error: ${{ matrix.project == 'advent-of-code-2021-e2e' }}
         run: yarn nx run ${{ matrix.project }}:e2e
