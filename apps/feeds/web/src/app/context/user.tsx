@@ -1,7 +1,7 @@
 import type { AxiosError } from '@nestjs/terminus/dist/errors/axios.error'
 import { useQueryClient } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import type { LoginResponse, UserResponse } from '@plusone/feeds/shared/types'
@@ -23,12 +23,17 @@ type UserContextProviderProps = {
 export function UserContextProvider({ children }: UserContextProviderProps) {
   const navigate = useNavigate()
   const location = useLocation()
-  const [userInfo, setUserInfo] = useState<UserResponse | undefined>()
   const queryClient = useQueryClient()
 
-  const { refetch: fetchProfile } = useProfile({
+  const isLoginOrRegister = location.pathname === '/login' || location.pathname === '/register'
+
+  const {
+    data: profile,
+    refetch: fetchProfile,
+    error: profileError,
+  } = useProfile({
     query: {
-      enabled: location.pathname !== '/login',
+      enabled: !isLoginOrRegister,
       refetchInterval: 30_000,
       meta: {
         name: 'fetch-profile',
@@ -36,21 +41,23 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
     },
   })
 
-  const { refetch: logoutAddServer } = useLogout({ query: { enabled: false } })
+  useEffect(() => {
+    if ((profileError as Error)?.message === 'Unauthorized' && !isLoginOrRegister) {
+      navigate('/login')
+    }
+  }, [isLoginOrRegister, navigate, profileError])
 
-  const isLoggedIn = userInfo !== undefined
+  const { refetch: logoutAddServer } = useLogout({ query: { enabled: false } })
+  const isLoggedIn = profile !== undefined
 
   const login = async (auth: LoginResponse) => {
     localStorage.setItem(AUTHENTICATION_LOCAL_STORAGE_KEY, JSON.stringify(auth))
     try {
       const response = await fetchProfile()
-      // FIXME: this is bad, see https://tkdodo.eu/blog/breaking-react-querys-api-on-purpose
-      setUserInfo(response.data)
-
       navigate(response.data.isAdmin ? '/admin' : '/member/feeds')
     } catch (error) {
       if ((error as AxiosError).response?.status === 401) {
-        setUserInfo(undefined)
+        console.error('You are not authorized.')
       }
     }
   }
@@ -61,12 +68,11 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
     localStorage.removeItem(AUTHENTICATION_LOCAL_STORAGE_KEY)
     // Clear local state
     queryClient.clear()
-    setUserInfo(undefined)
     // Finally redirect to the login page
     navigate('/login')
   }
 
-  return <UserContext.Provider children={children} value={{ userInfo, isLoggedIn, login, logout }} />
+  return <UserContext.Provider children={children} value={{ userInfo: profile, isLoggedIn, login, logout }} />
 }
 
 export function useUserContext() {

@@ -20,10 +20,9 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
   const { data: bootInfo } = useValidatedBootInfo()
 
   useEffect(() => {
-    // FIXME: this crashes when there are no articles (empty array)
     const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
     if (currentIndex === -1) {
-      setSelectedArticle(articles[0].article.id)
+      setSelectedArticle(articles[0]?.article.id)
     }
   }, [articles, selectedArticle])
 
@@ -102,6 +101,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
 
   return (
     <Stack style={{ maxHeight: '100%', overflow: 'scroll' }} gap={1} ref={containerRef}>
+      {articles.length === 0 ? <div>No Articles</div> : null}
       {articles.map((article) => (
         <Article
           key={article.article.id}
