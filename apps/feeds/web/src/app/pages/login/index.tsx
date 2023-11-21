@@ -37,7 +37,7 @@ export function Login() {
           Login
         </Button>
 
-        <MuiLink component={Link} to={'../register'}>
+        <MuiLink component={Link} to={'/register'}>
           I don't have an account
         </MuiLink>
       </LoginCard>

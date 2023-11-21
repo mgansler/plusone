@@ -33,6 +33,7 @@ Cypress.Commands.add('login', () => {
   cy.findByRole('textbox', { name: /username/i }).type('user')
   cy.findByLabelText(/password/i).type('just_secret')
   cy.findByRole('button', { name: /login/i }).click()
+  cy.location('pathname', { timeout: 10_000 }).should('eq', '/member/feeds')
 })
 
 Cypress.Commands.add('loginFreshUser', () => {
@@ -42,10 +43,11 @@ Cypress.Commands.add('loginFreshUser', () => {
   cy.findByLabelText(/password/i).type('random_password')
   cy.findByRole('button', { name: 'register' }).click()
   // eslint-disable-next-line cypress/no-unnecessary-waiting,testing-library/await-async-utils
-  cy.location('pathname').should('eq', '/login').wait(500)
+  cy.location('pathname', { timeout: 10_000 }).should('eq', '/login').wait(500)
   cy.findByRole('textbox', { name: /username/i }).type(username)
   cy.findByLabelText(/password/i).type('random_password')
   cy.findByRole('button', { name: /login/i }).click()
+  cy.location('pathname', { timeout: 10_000 }).should('eq', '/member/feeds')
 })
 
 Cypress.Commands.add('loginAdmin', () => {
@@ -53,6 +55,7 @@ Cypress.Commands.add('loginAdmin', () => {
   cy.findByRole('textbox', { name: /username/i }).type('root')
   cy.findByLabelText(/password/i).type('keep_this_secret')
   cy.findByRole('button', { name: /login/i }).click()
+  cy.location('pathname', { timeout: 10_000 }).should('eq', '/admin')
 })
 
 Cypress.Commands.add('addHeiseFeedToDefaultUser', () => {
