@@ -5,6 +5,7 @@ import { DeviceService } from './device.service'
 import { DeviceAddToGroupRequestDto } from './dto/device-add-to-group-request.dto'
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
 import { DeviceListResponseDto } from './dto/device-list-response'
+import { DevicePowerStateRequestDto } from './dto/device-power-state-request.dto'
 
 @Controller('/devices')
 export class DeviceController {
@@ -32,6 +33,12 @@ export class DeviceController {
   @Put('/:id/toggle')
   async toggleDevice(@Param('id') id: string) {
     return this.deviceService.toggle(id)
+  }
+
+  @ApiOperation({ operationId: 'device-set-power-state' })
+  @Put('/:id/power-state')
+  async powerState(@Param('id') id: string, @Body() targetPowerState: DevicePowerStateRequestDto) {
+    return this.deviceService.setPowerState(id, targetPowerState)
   }
 
   @ApiOperation({ operationId: 'add-device-to-group' })

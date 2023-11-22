@@ -79,6 +79,10 @@ export interface DeviceAddToGroupRequestDto {
   groupId: number
 }
 
+export interface DevicePowerStateRequestDto {
+  on: boolean
+}
+
 export interface DeviceState {
   on: boolean
 }
@@ -217,6 +221,59 @@ export const useToggleDevice = <TError = unknown, TContext = unknown>(options?: 
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { id: string }, TContext>
 }) => {
   const mutationOptions = getToggleDeviceMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
+export const deviceSetPowerState = (id: string, devicePowerStateRequestDto: DevicePowerStateRequestDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/devices/${id}/power-state`,
+    method: 'put',
+    headers: { 'Content-Type': 'application/json' },
+    data: devicePowerStateRequestDto,
+  })
+}
+
+export const getDeviceSetPowerStateMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deviceSetPowerState>>,
+    TError,
+    { id: string; data: DevicePowerStateRequestDto },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deviceSetPowerState>>,
+  TError,
+  { id: string; data: DevicePowerStateRequestDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deviceSetPowerState>>,
+    { id: string; data: DevicePowerStateRequestDto }
+  > = (props) => {
+    const { id, data } = props ?? {}
+
+    return deviceSetPowerState(id, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type DeviceSetPowerStateMutationResult = NonNullable<Awaited<ReturnType<typeof deviceSetPowerState>>>
+export type DeviceSetPowerStateMutationBody = DevicePowerStateRequestDto
+export type DeviceSetPowerStateMutationError = unknown
+
+export const useDeviceSetPowerState = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deviceSetPowerState>>,
+    TError,
+    { id: string; data: DevicePowerStateRequestDto },
+    TContext
+  >
+}) => {
+  const mutationOptions = getDeviceSetPowerStateMutationOptions(options)
 
   return useMutation(mutationOptions)
 }
