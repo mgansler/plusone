@@ -42,6 +42,14 @@ export const toggleDeviceParams = zod.object({
   id: zod.string(),
 })
 
+export const deviceSetPowerStateParams = zod.object({
+  id: zod.string(),
+})
+
+export const deviceSetPowerStateBody = zod.object({
+  on: zod.boolean(),
+})
+
 export const addDeviceToGroupParams = zod.object({
   id: zod.string(),
 })

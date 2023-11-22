@@ -66,6 +66,14 @@ export class DeviceService {
     )
   }
 
+  async setPowerState(id: string, state: DeviceState) {
+    const device = await this.prismaService.device.findUniqueOrThrow({
+      where: { id },
+    })
+
+    await this.elgatoService.setDevicePowerState(device, state.on ? DevicePowerState.on : DevicePowerState.off)
+  }
+
   async addDeviceToGroup(deviceId: Device['id'], groupId: Group['id']) {
     await this.prismaService.group.update({
       where: { id: groupId },

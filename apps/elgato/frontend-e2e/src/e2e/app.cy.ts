@@ -19,5 +19,6 @@ describe('elgato-frontend', () => {
 
     cy.findByRole('heading', { name: 'Welcome to Elgato Control' }).should('be.visible')
     cy.findByText('is stuck').should('be.visible')
+    cy.findByRole('button', { name: 'Turn off' }).should('be.visible')
   })
 })
