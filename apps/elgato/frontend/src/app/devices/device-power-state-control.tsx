@@ -8,7 +8,7 @@ type DevicePowerStateProps = {
 
 export function DevicePowerStateControl({ deviceId }: DevicePowerStateProps) {
   const queryClient = useQueryClient()
-  const { data, isLoading, queryKey } = useValidatedDeviceDetails(deviceId)
+  const { data, isLoading, queryKey, error } = useValidatedDeviceDetails(deviceId)
   const { mutate } = useToggleDevice({
     mutation: {
       onSuccess: async () => {
@@ -21,6 +21,10 @@ export function DevicePowerStateControl({ deviceId }: DevicePowerStateProps) {
 
   if (isLoading) {
     return null
+  }
+
+  if (error) {
+    return <span> is stuck</span>
   }
 
   return <button onClick={toggle}>{data.state.on ? 'Turn off' : 'Turn on'}</button>
