@@ -1,7 +1,8 @@
 /// <reference types="vitest" />
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
 import { unstable_vitePlugin as remix } from '@remix-run/dev'
-import { defineConfig, UserConfig } from 'vite'
+import type { UserConfig } from 'vite'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/advent-of-code-2021',
@@ -19,7 +20,6 @@ export default defineConfig({
   //  plugins: [ nxViteTsPaths() ],
   // },
 
-  // @ts-ignore
   test: {
     globals: true,
     cache: {
@@ -31,4 +31,4 @@ export default defineConfig({
     },
     include: ['app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },
-}) as UserConfig
+} as UserConfig)

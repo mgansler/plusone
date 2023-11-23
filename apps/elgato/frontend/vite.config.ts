@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
 import react from '@vitejs/plugin-react'
+import type { UserConfig } from 'vite'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
@@ -34,4 +35,4 @@ export default defineConfig({
     },
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },
-})
+} as UserConfig)
