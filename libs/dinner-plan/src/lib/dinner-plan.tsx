@@ -1,8 +1,8 @@
-import React from 'react'
-import { Navigate, Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 import { Button, Container, Paper, Toolbar, Typography } from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
+import React from 'react'
+import { Navigate, Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 
 import { getDateFor, getWeekOfYearFor, getYearFor } from '@plusone/date-utils'
 
@@ -43,20 +43,20 @@ export function DinnerPlan() {
           <Toolbar className={classNames.toolbar}>
             <Typography>KW {match?.params.week}</Typography>
             <nav className={classNames.navigation}>
-              <Button variant={'outlined'} onClick={() => navigate(`${lastWeeksYear}/${lastWeek}`)}>
+              <Button variant={'outlined'} onClick={() => navigate(`/dinner-plan/${lastWeeksYear}/${lastWeek}`)}>
                 Last Week
               </Button>
-              <Button variant={'outlined'} onClick={() => navigate(`${thisWeeksYear}/${thisWeek}`)}>
+              <Button variant={'outlined'} onClick={() => navigate(`/dinner-plan/${thisWeeksYear}/${thisWeek}`)}>
                 This Week
               </Button>
-              <Button variant={'outlined'} onClick={() => navigate(`${nextWeeksYear}/${nextWeek}`)}>
+              <Button variant={'outlined'} onClick={() => navigate(`/dinner-plan/${nextWeeksYear}/${nextWeek}`)}>
                 Next Week
               </Button>
             </nav>
           </Toolbar>
 
           <Routes>
-            <Route path={'*'} element={<Navigate to={`${thisWeeksYear}/${thisWeek}`} />} />
+            <Route path={'*'} element={<Navigate to={`/dinner-plan/${thisWeeksYear}/${thisWeek}`} />} />
             <Route path={':year/:week'} element={<Week />} />
           </Routes>
 
