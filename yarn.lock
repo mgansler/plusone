@@ -5254,6 +5254,22 @@
   dependencies:
     "@types/ms" "*"
 
+"@types/docker-modem@*":
+  version "3.0.6"
+  resolved "https://registry.npmjs.org/@types/docker-modem/-/docker-modem-3.0.6.tgz#1f9262fcf85425b158ca725699a03eb23cddbf87"
+  integrity sha512-yKpAGEuKRSS8wwx0joknWxsmLha78wNMe9R2S3UNsVOkZded8UqOrV8KoeDXoXsjndxwyF3eIhyClGbO1SEhEg==
+  dependencies:
+    "@types/node" "*"
+    "@types/ssh2" "*"
+
+"@types/dockerode@^3.3.21":
+  version "3.3.23"
+  resolved "https://registry.npmjs.org/@types/dockerode/-/dockerode-3.3.23.tgz#07b2084013d01e14d5d97856446f4d9c9f27c223"
+  integrity sha512-Lz5J+NFgZS4cEVhquwjIGH4oQwlVn2h7LXD3boitujBnzOE5o7s9H8hchEjoDK2SlRsJTogdKnQeiJgPPKLIEw==
+  dependencies:
+    "@types/docker-modem" "*"
+    "@types/node" "*"
+
 "@types/es-aggregate-error@^1.0.2":
   version "1.0.3"
   resolved "https://registry.npmjs.org/@types/es-aggregate-error/-/es-aggregate-error-1.0.3.tgz#d9e7f6627e39fd72c7381972068aebcde2be409c"
@@ -5464,6 +5480,13 @@
   dependencies:
     undici-types "~5.26.4"
 
+"@types/node@^18.11.18":
+  version "18.18.12"
+  resolved "https://registry.npmjs.org/@types/node/-/node-18.18.12.tgz#0c40e52e5ff2569386b160f6f6bb019ff1361cb4"
+  integrity sha512-G7slVfkwOm7g8VqcEF1/5SXiMjP3Tbt+pXDU3r/qhlM2KkGm786DUD4xyMA2QzEElFrv/KZV9gjygv4LnkpbMQ==
+  dependencies:
+    undici-types "~5.26.4"
+
 "@types/node@^18.17.5":
   version "18.18.0"
   resolved "https://registry.npmjs.org/@types/node/-/node-18.18.0.tgz#bd19d5133a6e5e2d0152ec079ac27c120e7f1763"
@@ -5633,6 +5656,13 @@
   integrity sha512-r3HYPL0kPxRwk7Nk1P4JxaWPyJ2Mfnfm5efuK0vYgYZu16RerZUTyun6Yqu5KEfc3AR7BvTL1x+nzf7+kbKftQ==
   dependencies:
     "@types/node" "*"
+
+"@types/ssh2@*":
+  version "1.11.17"
+  resolved "https://registry.npmjs.org/@types/ssh2/-/ssh2-1.11.17.tgz#6bc186f3ccaa11128f13209e7561caf85d871b01"
+  integrity sha512-owd0cyrAzaUICWvgpvwg7mMZcPvY4pH2Zs3fg0dgT+I/O9+kFJ4i+AUrX82INWJtEHbX70ubnSVqWJvt2VxmqQ==
+  dependencies:
+    "@types/node" "^18.11.18"
 
 "@types/ssh2@^0.5.48":
   version "0.5.52"
@@ -16908,12 +16938,13 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
-testcontainers@10.2.2:
-  version "10.2.2"
-  resolved "https://registry.npmjs.org/testcontainers/-/testcontainers-10.2.2.tgz#a7cc0b3512642131cff4ffc9af93e15edc765463"
-  integrity sha512-5GZ93rtoVXMx/s3xZjydftrKLnv1Yf+ETzGkXYRCm16LB60W48SGodxuiouYvNlVy0y0ogoQhdOw3DqsPActEA==
+testcontainers@10.3.1:
+  version "10.3.1"
+  resolved "https://registry.npmjs.org/testcontainers/-/testcontainers-10.3.1.tgz#b805f8555209107db6d538d2402a4c46006f9074"
+  integrity sha512-w7WgoAD8p2Hd5gE6CluWd3EBg7qb6u/JcKJGl0TTs/Cdq326Fsfw1ARnHjk4UzYEsp3XZ5YtvgY7bl5E3iudfw==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
+    "@types/dockerode" "^3.3.21"
     archiver "^5.3.2"
     async-lock "^1.4.0"
     byline "^5.0.0"
