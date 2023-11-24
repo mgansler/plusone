@@ -4,11 +4,13 @@ import * as ReactDOM from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { App } from './app/app'
+import { DeviceDetails } from './app/devices/device-details'
 import { DeviceList } from './app/devices/device-list'
 import { GroupDetails } from './app/groups/group-details'
 import { GroupList } from './app/groups/group-list'
 import { GroupSettings } from './app/settings/group-settings'
 import { Settings } from './app/settings/settings'
+import './styles.scss'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,9 +29,8 @@ root.render(
       <QueryClientProvider client={queryClient}>
         <Routes>
           <Route path={'/'} element={<App />}>
-            <Route path={'devices'} element={<DeviceList />}>
-              <Route path={':deviceId'} element={<div>Device Details</div>} />
-            </Route>
+            <Route path={'devices'} element={<DeviceList />} />
+            <Route path={'devices/:deviceId'} element={<DeviceDetails />} />
             <Route path={'groups'} element={<GroupList />}>
               <Route path={':groupId'} element={<GroupDetails />} />
             </Route>
