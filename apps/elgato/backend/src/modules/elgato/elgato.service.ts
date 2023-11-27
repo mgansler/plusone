@@ -56,55 +56,25 @@ export class ElgatoService {
   }
 
   setDevicePowerState(device: Device, state: DevicePowerState) {
-    return firstValueFrom(
-      this.httpService
-        .put(
-          `http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`,
-          JSON.stringify({ lights: [{ on: state === 'on' ? 1 : 0 }] }),
-          {
-            httpAgent: new http.Agent({ family: 4 }),
-          },
-        )
-        .pipe(
-          catchError((error: AxiosError) => {
-            this.logger.error(error.response.data)
-            throw `Could not connect to '${device.host.replace('.local', '')}'`
-          }),
-        ),
-    )
+    return this.makePutRequest(device, { lights: [{ on: state === 'on' ? 1 : 0 }] })
   }
 
   setLightStripScene(device: Device, scene: ElgatoSceneRequestDto) {
-    return firstValueFrom(
-      this.httpService
-        .put(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`, JSON.stringify(scene), {
-          httpAgent: new http.Agent({ family: 4 }),
-        })
-        .pipe(
-          catchError((error: AxiosError) => {
-            if (error.code === 'ENOTFOUND') {
-              this.logger.error(`Could not resolve '${device.host.replace('.local', '')}' on current network.`)
-            } else {
-              this.logger.error(error.response.data)
-            }
-            throw `Could not connect to '${device.host.replace('.local', '')}'`
-          }),
-        ),
-    )
+    return this.makePutRequest(device, scene)
   }
 
   setLightStripColor(device: Device, color: TransitionToColorRequestDto) {
+    return this.makePutRequest(device, {
+      lights: [{ on: 1, hue: color.hue, saturation: color.saturation, brightness: color.brightness }],
+    })
+  }
+
+  private makePutRequest(device: Pick<Device, 'host' | 'port'>, payload: unknown) {
     return firstValueFrom(
       this.httpService
-        .put(
-          `http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`,
-          JSON.stringify({
-            lights: [{ on: 1, hue: color.hue, saturation: color.saturation, brightness: color.brightness }],
-          }),
-          {
-            httpAgent: new http.Agent({ family: 4 }),
-          },
-        )
+        .put(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`, JSON.stringify(payload), {
+          httpAgent: new http.Agent({ family: 4 }),
+        })
         .pipe(
           catchError((error: AxiosError) => {
             if (error.code === 'ENOTFOUND') {
