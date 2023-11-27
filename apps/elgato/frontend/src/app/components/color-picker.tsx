@@ -1,5 +1,4 @@
 import { convert } from 'colvertize'
-import './color-picker.scss'
 
 type LightStripProps = {
   hue: number
