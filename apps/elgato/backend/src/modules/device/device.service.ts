@@ -118,8 +118,9 @@ export class DeviceService {
 
     const d = await this.prismaService.device.findUniqueOrThrow({ where: { id } })
     await this.elgatoService.setLightStripScene(d, scene)
-    await new Promise((resolve) => setTimeout(resolve, 1_500))
-    await this.elgatoService.setLightStripColor(d, color)
+    new Promise((resolve) => setTimeout(resolve, 1_100)).then(() => {
+      this.elgatoService.setLightStripColor(d, color)
+    })
   }
 
   async addDeviceToGroup(deviceId: Device['id'], groupId: Group['id']) {

@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Put } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 
 import { DeviceService } from './device.service'
 import { DeviceAddToGroupRequestDto } from './dto/device-add-to-group-request.dto'
@@ -42,6 +43,7 @@ export class DeviceController {
     return this.deviceService.setPowerState(id, targetPowerState)
   }
 
+  @Throttle({ default: { limit: 1, ttl: 1_100 } })
   @ApiOperation({ operationId: 'transition-to-color' })
   @Put('/:id/transition-to-color')
   async transitionToColor(@Param('id') id: string, @Body() color: TransitionToColorRequestDto) {
