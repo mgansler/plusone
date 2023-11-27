@@ -1,5 +1,5 @@
 export enum DeviceType {
-  RingLight = 'Ring-Light',
+  RingLight = 'RingLight',
   LightStrip = 'LightStrip',
   Unknown = 'Unknown',
 }

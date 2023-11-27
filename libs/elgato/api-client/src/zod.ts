@@ -30,7 +30,7 @@ export const deviceDetailsResponse = zod.object({
   ),
   details: zod.object({
     productName: zod.string(),
-    deviceType: zod.enum(['Ring-Light', 'LightStrip', 'Unknown']),
+    deviceType: zod.enum(['RingLight', 'LightStrip', 'Unknown']),
     displayName: zod.string(),
   }),
   state: zod.object({
@@ -131,7 +131,7 @@ export const groupDetailsResponse = zod.object({
       ),
       details: zod.object({
         productName: zod.string(),
-        deviceType: zod.enum(['Ring-Light', 'LightStrip', 'Unknown']),
+        deviceType: zod.enum(['RingLight', 'LightStrip', 'Unknown']),
         displayName: zod.string(),
       }),
       state: zod.object({
