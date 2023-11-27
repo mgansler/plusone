@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class Light {
+export class LightStateWithColor {
   @ApiProperty({ minimum: 0, maximum: 0, required: false })
   on: 0 | 1
 
@@ -22,6 +22,6 @@ export class ElgatoDeviceStateDto {
   @ApiProperty()
   numberOfLights: number
 
-  @ApiProperty({ type: () => [Light] })
-  lights: Light[]
+  @ApiProperty({ type: () => [LightStateWithColor] })
+  lights: LightStateWithColor[]
 }

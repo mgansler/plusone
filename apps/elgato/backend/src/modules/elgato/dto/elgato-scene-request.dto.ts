@@ -34,7 +34,7 @@ const sceneElementSchema = zod.object({
   durationMs: zod.number().int().min(0),
 })
 
-export class Lights {
+export class LightStateWithScene {
   @ApiProperty()
   id: string
 
@@ -54,7 +54,7 @@ export class Lights {
   numberOfSceneElements: number
 }
 
-function splitTransition(data: Lights): Lights {
+function splitTransition(data: LightStateWithScene): LightStateWithScene {
   const scene: SceneElement[] = []
   for (const [index, element] of data.scene.entries()) {
     if (element.transitionMs <= 60_000) {
@@ -102,7 +102,7 @@ function splitTransition(data: Lights): Lights {
   }
 }
 
-function splitDuration(data: Lights): Lights {
+function splitDuration(data: LightStateWithScene): LightStateWithScene {
   const scene: SceneElement[] = []
   for (const element of data.scene) {
     if (element.durationMs <= 60_000) {
@@ -158,8 +158,8 @@ export class ElgatoSceneRequestDto {
   @ApiProperty()
   numberOfLights: number
 
-  @ApiProperty({ type: () => [Lights] })
-  lights: Array<Lights>
+  @ApiProperty({ type: () => [LightStateWithScene] })
+  lights: Array<LightStateWithScene>
 }
 
 export const elgatoSceneRequestSchema = zod
