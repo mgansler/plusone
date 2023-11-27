@@ -7,7 +7,8 @@ import { catchError, firstValueFrom } from 'rxjs'
 
 import { Device } from '@plusone/elgato-persistence'
 
-import { DevicePowerState } from '../device/device-power-state'
+import { TransitionToColorRequestDto } from '../device/dto/transition-to-color-request.dto'
+import { DevicePowerState } from '../device/enum/device-power-state'
 
 import { ElgatoDeviceDetailsDto } from './dto/elgato-device-details.dto'
 import { ElgatoDeviceStateDto } from './dto/elgato-device-state.dto'
@@ -73,12 +74,37 @@ export class ElgatoService {
     )
   }
 
-  setLightStripState(device: Device, scene: ElgatoSceneRequestDto) {
+  setLightStripScene(device: Device, scene: ElgatoSceneRequestDto) {
     return firstValueFrom(
       this.httpService
         .put(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`, JSON.stringify(scene), {
           httpAgent: new http.Agent({ family: 4 }),
         })
+        .pipe(
+          catchError((error: AxiosError) => {
+            if (error.code === 'ENOTFOUND') {
+              this.logger.error(`Could not resolve '${device.host.replace('.local', '')}' on current network.`)
+            } else {
+              this.logger.error(error.response.data)
+            }
+            throw `Could not connect to '${device.host.replace('.local', '')}'`
+          }),
+        ),
+    )
+  }
+
+  setLightStripColor(device: Device, color: TransitionToColorRequestDto) {
+    return firstValueFrom(
+      this.httpService
+        .put(
+          `http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`,
+          JSON.stringify({
+            lights: [{ on: 1, hue: color.hue, saturation: color.saturation, brightness: color.brightness }],
+          }),
+          {
+            httpAgent: new http.Agent({ family: 4 }),
+          },
+        )
         .pipe(
           catchError((error: AxiosError) => {
             if (error.code === 'ENOTFOUND') {

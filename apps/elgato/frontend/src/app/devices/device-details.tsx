@@ -1,15 +1,46 @@
 import { useParams } from '@remix-run/react'
+import { useQueryClient } from '@tanstack/react-query'
+import { convert } from 'colvertize'
 
-import { ColorPicker } from '../components/color-picker'
+import { DeviceType, useTransitionToColor, useValidatedDeviceDetails } from '@plusone/elgato-api-client'
+
+import { LightColorPicker } from '../components/color-picker'
+
+import { DevicePowerStateControl } from './device-power-state-control'
 
 export function DeviceDetails() {
   const { deviceId } = useParams()
-  console.log({ deviceId })
+
+  const queryClient = useQueryClient()
+  const { data: deviceDetails, isLoading, queryKey } = useValidatedDeviceDetails(deviceId)
+  const { mutate } = useTransitionToColor({
+    mutation: { onSuccess: () => queryClient.invalidateQueries({ queryKey }) },
+  })
+
+  const setStripColor = (color: string) => {
+    const { h, s, l } = convert(color, 'hsl')
+    const hue = Math.round(h)
+    const saturation = Math.round(s * 100)
+    const brightness = Math.round(l * 100)
+    mutate({ id: deviceId, data: { hue, saturation, brightness } })
+  }
+
+  if (isLoading) {
+    return null
+  }
 
   return (
     <div>
-      <h2>Device Details</h2>
-      <ColorPicker />
+      <h2>Device Details {deviceDetails.name}</h2>
+      {deviceDetails.details.deviceType === DeviceType.LightStrip && (
+        <LightColorPicker
+          hue={deviceDetails.state.hue}
+          saturation={deviceDetails.state.saturation}
+          brightness={deviceDetails.state.brightness}
+          setColor={setStripColor}
+        />
+      )}
+      <DevicePowerStateControl deviceId={deviceId} />
     </div>
   )
 }

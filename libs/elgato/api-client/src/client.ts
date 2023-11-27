@@ -79,15 +79,37 @@ export interface DeviceAddToGroupRequestDto {
   groupId: number
 }
 
+export interface TransitionToColorRequestDto {
+  brightness: number
+  hue: number
+  saturation: number
+}
+
 export interface DevicePowerStateRequestDto {
+  brightness?: number
+  hue?: number
   on: boolean
+  saturation?: number
 }
 
 export interface DeviceState {
+  brightness?: number
+  hue?: number
   on: boolean
+  saturation?: number
 }
 
+export type DeviceType = (typeof DeviceType)[keyof typeof DeviceType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeviceType = {
+  'Ring-Light': 'Ring-Light',
+  LightStrip: 'LightStrip',
+  Unknown: 'Unknown',
+} as const
+
 export interface ElgatoDeviceDetailsDto {
+  deviceType: DeviceType
   displayName: string
   productName: string
 }
@@ -274,6 +296,59 @@ export const useDeviceSetPowerState = <TError = unknown, TContext = unknown>(opt
   >
 }) => {
   const mutationOptions = getDeviceSetPowerStateMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
+export const transitionToColor = (id: string, transitionToColorRequestDto: TransitionToColorRequestDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/devices/${id}/transition-to-color`,
+    method: 'put',
+    headers: { 'Content-Type': 'application/json' },
+    data: transitionToColorRequestDto,
+  })
+}
+
+export const getTransitionToColorMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof transitionToColor>>,
+    TError,
+    { id: string; data: TransitionToColorRequestDto },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof transitionToColor>>,
+  TError,
+  { id: string; data: TransitionToColorRequestDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof transitionToColor>>,
+    { id: string; data: TransitionToColorRequestDto }
+  > = (props) => {
+    const { id, data } = props ?? {}
+
+    return transitionToColor(id, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type TransitionToColorMutationResult = NonNullable<Awaited<ReturnType<typeof transitionToColor>>>
+export type TransitionToColorMutationBody = TransitionToColorRequestDto
+export type TransitionToColorMutationError = unknown
+
+export const useTransitionToColor = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof transitionToColor>>,
+    TError,
+    { id: string; data: TransitionToColorRequestDto },
+    TContext
+  >
+}) => {
+  const mutationOptions = getTransitionToColorMutationOptions(options)
 
   return useMutation(mutationOptions)
 }

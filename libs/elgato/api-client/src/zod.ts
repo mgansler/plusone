@@ -30,10 +30,14 @@ export const deviceDetailsResponse = zod.object({
   ),
   details: zod.object({
     productName: zod.string(),
+    deviceType: zod.enum(['Ring-Light', 'LightStrip', 'Unknown']),
     displayName: zod.string(),
   }),
   state: zod.object({
     on: zod.boolean(),
+    hue: zod.number().optional(),
+    saturation: zod.number().optional(),
+    brightness: zod.number().optional(),
   }),
   lastSeen: zod.string().datetime(),
 })
@@ -48,6 +52,19 @@ export const deviceSetPowerStateParams = zod.object({
 
 export const deviceSetPowerStateBody = zod.object({
   on: zod.boolean(),
+  hue: zod.number().optional(),
+  saturation: zod.number().optional(),
+  brightness: zod.number().optional(),
+})
+
+export const transitionToColorParams = zod.object({
+  id: zod.string(),
+})
+
+export const transitionToColorBody = zod.object({
+  hue: zod.number(),
+  saturation: zod.number(),
+  brightness: zod.number(),
 })
 
 export const addDeviceToGroupParams = zod.object({
@@ -114,10 +131,14 @@ export const groupDetailsResponse = zod.object({
       ),
       details: zod.object({
         productName: zod.string(),
+        deviceType: zod.enum(['Ring-Light', 'LightStrip', 'Unknown']),
         displayName: zod.string(),
       }),
       state: zod.object({
         on: zod.boolean(),
+        hue: zod.number().optional(),
+        saturation: zod.number().optional(),
+        brightness: zod.number().optional(),
       }),
       lastSeen: zod.string().datetime(),
     }),

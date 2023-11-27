@@ -73,9 +73,6 @@ function splitTransition(data: Lights): Lights {
       const x = Math.floor(element.transitionMs / 60_000)
       const y = element.transitionMs % 60_000
 
-      // console.log({ hueDiff, satDiff, briDiff })
-      // console.log({ hueStepPerMs, satStepPerMs, briStepPerMs })
-
       for (let i = 1; i <= x; i++) {
         scene.push({
           transitionMs: 60_000,

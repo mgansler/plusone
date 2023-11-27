@@ -2,9 +2,9 @@ import { Injectable, Logger } from '@nestjs/common'
 
 import { Group, PrismaService } from '@plusone/elgato-persistence'
 
-import { DevicePowerState } from '../device/device-power-state'
 import { DeviceService } from '../device/device.service'
 import { DeviceDetailsResponseDto } from '../device/dto/device-details-response.dto'
+import { DevicePowerState } from '../device/enum/device-power-state'
 
 import { GroupCreateDto } from './dto/group-create.dto'
 import { GroupResponseDto } from './dto/group-response.dto'
