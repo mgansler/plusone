@@ -34,7 +34,7 @@ const sceneElementSchema = zod.object({
   durationMs: zod.number().int().min(0),
 })
 
-class Lights {
+export class Lights {
   @ApiProperty()
   id: string
 
@@ -151,6 +151,8 @@ const lightsSchema = zod
   )
   .transform(splitTransition)
   .transform(splitDuration)
+
+export type LightStripWithScene = zod.infer<typeof lightsSchema>
 
 export class ElgatoSceneRequestDto {
   @ApiProperty()

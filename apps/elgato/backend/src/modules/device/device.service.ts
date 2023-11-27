@@ -5,7 +5,8 @@ import Bonjour from 'bonjour-service'
 import { Device, Group, PrismaService } from '@plusone/elgato-persistence'
 
 import { ElgatoDeviceDetailsDto } from '../elgato/dto/elgato-device-details.dto'
-import { ElgatoSceneRequestDto, elgatoSceneRequestSchema } from '../elgato/dto/elgato-scene-request.dto'
+import { Light } from '../elgato/dto/elgato-device-state.dto'
+import { ElgatoSceneRequestDto, elgatoSceneRequestSchema, Lights } from '../elgato/dto/elgato-scene-request.dto'
 import { ElgatoService } from '../elgato/elgato.service'
 
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
@@ -203,8 +204,12 @@ export class DeviceService {
     }
   }
 
-  private getCurrentColor(state: any): { hue: number; saturation: number; brightness: number } {
-    if (Array.isArray(state.scene)) {
+  private getCurrentColor(state: Light | Lights): { hue: number; saturation: number; brightness: number } {
+    const isLights = (state: Light | Lights): state is Lights => {
+      return Array.isArray((state as Lights).scene)
+    }
+
+    if (isLights(state)) {
       const lastElement = state.scene[state.scene.length - 1]
       return {
         hue: lastElement.hue,
