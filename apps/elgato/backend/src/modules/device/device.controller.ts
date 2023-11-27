@@ -1,11 +1,13 @@
 import { Body, Controller, Get, Param, Put } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 
 import { DeviceService } from './device.service'
 import { DeviceAddToGroupRequestDto } from './dto/device-add-to-group-request.dto'
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
 import { DeviceListResponseDto } from './dto/device-list-response'
 import { DevicePowerStateRequestDto } from './dto/device-power-state-request.dto'
+import { TransitionToColorRequestDto } from './dto/transition-to-color-request.dto'
 
 @Controller('/devices')
 export class DeviceController {
@@ -39,6 +41,13 @@ export class DeviceController {
   @Put('/:id/power-state')
   async powerState(@Param('id') id: string, @Body() targetPowerState: DevicePowerStateRequestDto) {
     return this.deviceService.setPowerState(id, targetPowerState)
+  }
+
+  @Throttle({ default: { limit: 1, ttl: 1_100 } })
+  @ApiOperation({ operationId: 'transition-to-color' })
+  @Put('/:id/transition-to-color')
+  async transitionToColor(@Param('id') id: string, @Body() color: TransitionToColorRequestDto) {
+    return this.deviceService.transitionToColor(id, color)
   }
 
   @ApiOperation({ operationId: 'add-device-to-group' })

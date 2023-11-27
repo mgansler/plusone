@@ -4,7 +4,7 @@ import { CronJob } from 'cron'
 
 import { PrismaService } from '@plusone/elgato-persistence'
 
-import { DevicePowerState } from '../device/device-power-state'
+import { DevicePowerState } from '../device/enum/device-power-state'
 import { ElgatoService } from '../elgato/elgato.service'
 import { sunrise } from '../elgato/scenes/sunrise'
 import { getTotalDurationInMs } from '../elgato/scenes/utils'
@@ -48,7 +48,7 @@ export class SunriseSunsetService implements OnModuleInit {
 
         const sunriseJob = new CronJob(sunriseSunsetTimes.dawn, () => {
           this.logger.log(`Starting sunrise for ${devices.length}: [${devices.map((d) => d.name).join(', ')}]`)
-          devices.forEach((d) => this.elgatoService.setLightStripState(d, sunrise))
+          devices.forEach((d) => this.elgatoService.setLightStripScene(d, sunrise))
 
           const turnOffCallback = () => {
             this.logger.log(

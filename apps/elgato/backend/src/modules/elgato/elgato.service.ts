@@ -7,7 +7,8 @@ import { catchError, firstValueFrom } from 'rxjs'
 
 import { Device } from '@plusone/elgato-persistence'
 
-import { DevicePowerState } from '../device/device-power-state'
+import { TransitionToColorRequestDto } from '../device/dto/transition-to-color-request.dto'
+import { DevicePowerState } from '../device/enum/device-power-state'
 
 import { ElgatoDeviceDetailsDto } from './dto/elgato-device-details.dto'
 import { ElgatoDeviceStateDto } from './dto/elgato-device-state.dto'
@@ -55,28 +56,23 @@ export class ElgatoService {
   }
 
   setDevicePowerState(device: Device, state: DevicePowerState) {
-    return firstValueFrom(
-      this.httpService
-        .put(
-          `http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`,
-          JSON.stringify({ lights: [{ on: state === 'on' ? 1 : 0 }] }),
-          {
-            httpAgent: new http.Agent({ family: 4 }),
-          },
-        )
-        .pipe(
-          catchError((error: AxiosError) => {
-            this.logger.error(error.response.data)
-            throw `Could not connect to '${device.host.replace('.local', '')}'`
-          }),
-        ),
-    )
+    return this.makePutRequest(device, { lights: [{ on: state === 'on' ? 1 : 0 }] })
   }
 
-  setLightStripState(device: Device, scene: ElgatoSceneRequestDto) {
+  setLightStripScene(device: Device, scene: ElgatoSceneRequestDto) {
+    return this.makePutRequest(device, scene)
+  }
+
+  setLightStripColor(device: Device, color: TransitionToColorRequestDto) {
+    return this.makePutRequest(device, {
+      lights: [{ on: 1, hue: color.hue, saturation: color.saturation, brightness: color.brightness }],
+    })
+  }
+
+  private makePutRequest(device: Pick<Device, 'host' | 'port'>, payload: unknown) {
     return firstValueFrom(
       this.httpService
-        .put(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`, JSON.stringify(scene), {
+        .put(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`, JSON.stringify(payload), {
           httpAgent: new http.Agent({ family: 4 }),
         })
         .pipe(

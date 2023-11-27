@@ -5,11 +5,19 @@ import Bonjour from 'bonjour-service'
 import { Device, Group, PrismaService } from '@plusone/elgato-persistence'
 
 import { ElgatoDeviceDetailsDto } from '../elgato/dto/elgato-device-details.dto'
+import { LightStateWithColor } from '../elgato/dto/elgato-device-state.dto'
+import {
+  ElgatoSceneRequestDto,
+  elgatoSceneRequestSchema,
+  LightStateWithScene,
+} from '../elgato/dto/elgato-scene-request.dto'
 import { ElgatoService } from '../elgato/elgato.service'
 
-import { DevicePowerState } from './device-power-state'
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
 import { DeviceState } from './dto/device-state'
+import { TransitionToColorRequestDto } from './dto/transition-to-color-request.dto'
+import { DevicePowerState } from './enum/device-power-state'
+import { DeviceType } from './enum/device-type'
 
 @Injectable()
 export class DeviceService {
@@ -43,11 +51,13 @@ export class DeviceService {
 
     const details: ElgatoDeviceDetailsDto = {
       displayName: accessoryInfo.displayName,
+      deviceType: this.mapProductNameToDeviceType(accessoryInfo.productName),
       productName: accessoryInfo.productName,
     }
 
     const state: DeviceState = {
       on: currentState.lights[0].on === 1,
+      ...this.getCurrentColor(currentState.lights[0]),
     }
 
     return { name: device.name, id: device.id, groups: device.groups, lastSeen: device.lastSeen, details, state }
@@ -72,6 +82,45 @@ export class DeviceService {
     })
 
     await this.elgatoService.setDevicePowerState(device, state.on ? DevicePowerState.on : DevicePowerState.off)
+  }
+
+  async transitionToColor(id: string, color: TransitionToColorRequestDto) {
+    const device = await this.getDevice(id)
+
+    const scene = elgatoSceneRequestSchema.parse({
+      numberOfLights: 1,
+      lights: [
+        {
+          id: 'de.martingansler.elgato.scene.transition',
+          brightness: 100,
+          name: 'Transition',
+          on: 1,
+          numberOfSceneElements: 2,
+          scene: [
+            {
+              hue: device.state.hue ?? color.hue,
+              saturation: device.state.saturation ?? color.saturation,
+              brightness: device.state.brightness ?? color.brightness,
+              transitionMs: 0,
+              durationMs: 100,
+            },
+            {
+              hue: color.hue,
+              saturation: color.saturation,
+              brightness: color.brightness,
+              transitionMs: 1_000,
+              durationMs: 60_000,
+            },
+          ],
+        },
+      ],
+    }) as ElgatoSceneRequestDto
+
+    const d = await this.prismaService.device.findUniqueOrThrow({ where: { id } })
+    await this.elgatoService.setLightStripScene(d, scene)
+    new Promise((resolve) => setTimeout(resolve, 1_100)).then(() => {
+      this.elgatoService.setLightStripColor(d, color)
+    })
   }
 
   async addDeviceToGroup(deviceId: Device['id'], groupId: Group['id']) {
@@ -146,6 +195,41 @@ export class DeviceService {
       } catch (e) {
         this.logger.warn(`Could not reach ${device.name}, trying again in 10 minutes.`)
       }
+    }
+  }
+
+  private mapProductNameToDeviceType(productName: string): DeviceType {
+    switch (productName) {
+      case 'Elgato Ring Light':
+        return DeviceType.RingLight
+      case 'Elgato Light Strip':
+        return DeviceType.LightStrip
+      default:
+        return DeviceType.Unknown
+    }
+  }
+
+  private getCurrentColor(state: LightStateWithColor | LightStateWithScene): {
+    hue: number
+    saturation: number
+    brightness: number
+  } {
+    const isLightStateWithScene = (state: LightStateWithColor | LightStateWithScene): state is LightStateWithScene => {
+      return Array.isArray((state as LightStateWithScene).scene)
+    }
+
+    if (isLightStateWithScene(state)) {
+      const lastElement = state.scene[state.scene.length - 1]
+      return {
+        hue: lastElement.hue,
+        saturation: lastElement.saturation,
+        brightness: lastElement.brightness,
+      }
+    }
+    return {
+      hue: state.hue,
+      saturation: state.saturation,
+      brightness: state.brightness,
     }
   }
 }
