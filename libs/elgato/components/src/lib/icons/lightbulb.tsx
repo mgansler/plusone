@@ -1,15 +1,16 @@
 import type { IconProps } from './defaults'
 import { defaults } from './defaults'
 
-export function Lightbulb({ variant }: IconProps) {
+export function Lightbulb({ variant, size = defaults.size }: IconProps) {
+  console.log({ size })
   return variant === 'solid' ? (
     <svg
       name={`lightbulb-${variant}`}
-      className={'w-6 h-6 text-gray-800 dark:text-white'}
+      className={`w-[${size}px] h-[${size}px] text-gray-800 dark:text-white`}
       aria-hidden={'true'}
       xmlns={'http://www.w3.org/2000/svg'}
-      width={defaults.width}
-      height={defaults.height}
+      width={size}
+      height={size}
       fill={'currentColor'}
       viewBox={`0 0 ${defaults.width} ${defaults.height}`}
     >
@@ -22,11 +23,11 @@ export function Lightbulb({ variant }: IconProps) {
   ) : (
     <svg
       name={`lightbulb-${variant}`}
-      className={'w-6 h-6 text-gray-800 dark:text-white'}
+      className={`w-[${size}px] h-[${size}px] text-gray-800 dark:text-white`}
       aria-hidden={'true'}
       xmlns={'http://www.w3.org/2000/svg'}
-      width={defaults.width}
-      height={defaults.height}
+      width={size}
+      height={size}
       fill={'none'}
       viewBox={`0 0 ${defaults.width} ${defaults.height}`}
     >
