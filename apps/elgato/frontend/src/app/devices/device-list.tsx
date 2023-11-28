@@ -14,7 +14,7 @@ export function DeviceList() {
   return (
     <>
       {data.devices.map((device) => (
-        <div key={device.id}>
+        <div key={device.id} className={'flex'}>
           <span>{device.name}</span>
           <Link to={device.id}>Details</Link>
           <DevicePowerStateControl deviceId={device.id} />
