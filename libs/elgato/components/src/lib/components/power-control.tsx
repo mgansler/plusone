@@ -1,7 +1,6 @@
 import type { MouseEventHandler } from 'react'
 
-import { LightbulbOutline } from '../icons/lightbulb-outline'
-import { LightbulbSolid } from '../icons/lightbulb-solid'
+import { Lightbulb } from '../icons'
 
 type PowerControlProps = {
   state: 'on' | 'off'
@@ -11,7 +10,7 @@ type PowerControlProps = {
 export function PowerControl({ state, onClick }: PowerControlProps) {
   return (
     <div role={'button'} className={'w-[24px] h-[24px] mx-1'} onClick={onClick}>
-      {state === 'on' ? <LightbulbSolid /> : <LightbulbOutline />}
+      <Lightbulb variant={state === 'on' ? 'solid' : 'outline'} />
     </div>
   )
 }

@@ -1,7 +1,7 @@
 # elgato-components
 
-This library was generated with [Nx](https://nx.dev).
+## Components
 
-## Running unit tests
+## Icons
 
-Run `nx test elgato-components` to execute the unit tests via [Vitest](https://vitest.dev/).
+Source: https://flowbite.com/icons/
