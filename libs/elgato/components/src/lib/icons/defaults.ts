@@ -6,5 +6,5 @@ export const defaults = {
 
 export interface IconProps {
   size?: number
-  variant: 'outline' | 'solid'
+  variant?: 'outline' | 'solid'
 }

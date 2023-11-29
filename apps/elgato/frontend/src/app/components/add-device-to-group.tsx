@@ -1,15 +1,17 @@
+import type { QueryKey } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 import { Button } from 'flowbite-react'
 
-import type { GroupResponseDto } from '@plusone/elgato-api-client'
 import { getGroupDetailsQueryKey, useAddDeviceToGroup } from '@plusone/elgato-api-client'
+import type { GroupResponseDto } from '@plusone/elgato-api-client'
 
 type AddDeviceToGroupProps = {
   deviceId: string
   group: GroupResponseDto
+  queryKeys?: QueryKey[]
 }
 
-export function AddDeviceToGroup({ deviceId, group }: AddDeviceToGroupProps) {
+export function AddDeviceToGroup({ deviceId, group, queryKeys }: AddDeviceToGroupProps) {
   const queryClient = useQueryClient()
   const { mutate: addDevice } = useAddDeviceToGroup({
     mutation: {
@@ -17,12 +19,14 @@ export function AddDeviceToGroup({ deviceId, group }: AddDeviceToGroupProps) {
         await queryClient.invalidateQueries({
           queryKey: getGroupDetailsQueryKey(Number(group.id)),
         })
+        for (const queryKey of queryKeys) {
+          await queryClient.invalidateQueries({ queryKey })
+        }
       },
     },
   })
 
   const handleClick = () => {
-    console.log('adding device?')
     addDevice({ id: deviceId, data: { groupId: group.id } })
   }
 

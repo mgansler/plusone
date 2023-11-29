@@ -14,6 +14,7 @@ import type { GroupResponseDto } from '@plusone/elgato-api-client'
 
 import { AddDeviceToGroup } from '../components/add-device-to-group'
 import { LightColorPicker } from '../components/color-picker'
+import { RemovableGroup } from '../components/removable-group'
 
 import { DevicePowerStateControl } from './device-power-state-control'
 
@@ -52,9 +53,9 @@ export function DeviceDetails() {
       <fieldset className={'border border-solid border-gray-300'}>
         <legend>Rooms</legend>
         {deviceDetails.groups
-          .filter((g) => g.isRoom)
-          .map((g) => (
-            <div>{g.name}</div>
+          .filter((group) => group.isRoom)
+          .map((group: GroupResponseDto) => (
+            <RemovableGroup key={group.id} group={group} deviceId={deviceDetails.id} queryKeys={[queryKey]} />
           ))}
         {groups?.groups
           .filter(
@@ -62,16 +63,21 @@ export function DeviceDetails() {
               group.isRoom && !isAssignedToGroup(deviceDetails.groups as GroupResponseDto[], group),
           )
           .map((group) => (
-            <AddDeviceToGroup key={group.id} group={group as GroupResponseDto} deviceId={deviceDetails.id} />
+            <AddDeviceToGroup
+              key={group.id}
+              group={group as GroupResponseDto}
+              deviceId={deviceDetails.id}
+              queryKeys={[queryKey]}
+            />
           ))}
       </fieldset>
 
       <fieldset className={'border border-solid border-gray-300'}>
         <legend>Groups</legend>
         {deviceDetails.groups
-          .filter((g) => !g.isRoom)
-          .map((g) => (
-            <div>{g.name}</div>
+          .filter((group) => !group.isRoom)
+          .map((group: GroupResponseDto) => (
+            <RemovableGroup key={group.id} group={group} deviceId={deviceDetails.id} queryKeys={[queryKey]} />
           ))}
         {groups?.groups
           .filter(
@@ -79,7 +85,12 @@ export function DeviceDetails() {
               !group.isRoom && !isAssignedToGroup(deviceDetails.groups as GroupResponseDto[], group),
           )
           .map((group) => (
-            <AddDeviceToGroup key={group.id} group={group as GroupResponseDto} deviceId={deviceDetails.id} />
+            <AddDeviceToGroup
+              key={group.id}
+              group={group as GroupResponseDto}
+              deviceId={deviceDetails.id}
+              queryKeys={[queryKey]}
+            />
           ))}
       </fieldset>
 

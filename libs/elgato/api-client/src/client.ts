@@ -76,6 +76,10 @@ export interface DeviceSettingsResponseDto {
   sunset: boolean
 }
 
+export interface DeviceRemoveFromGroupRequestDto {
+  groupId: number
+}
+
 export interface DeviceAddToGroupRequestDto {
   groupId: number
 }
@@ -404,6 +408,59 @@ export const useAddDeviceToGroup = <TError = unknown, TContext = unknown>(option
   >
 }) => {
   const mutationOptions = getAddDeviceToGroupMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
+export const removeDeviceFromGroup = (id: string, deviceRemoveFromGroupRequestDto: DeviceRemoveFromGroupRequestDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/devices/${id}/remove-from-group`,
+    method: 'delete',
+    headers: { 'Content-Type': 'application/json' },
+    data: deviceRemoveFromGroupRequestDto,
+  })
+}
+
+export const getRemoveDeviceFromGroupMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof removeDeviceFromGroup>>,
+    TError,
+    { id: string; data: DeviceRemoveFromGroupRequestDto },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof removeDeviceFromGroup>>,
+  TError,
+  { id: string; data: DeviceRemoveFromGroupRequestDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof removeDeviceFromGroup>>,
+    { id: string; data: DeviceRemoveFromGroupRequestDto }
+  > = (props) => {
+    const { id, data } = props ?? {}
+
+    return removeDeviceFromGroup(id, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type RemoveDeviceFromGroupMutationResult = NonNullable<Awaited<ReturnType<typeof removeDeviceFromGroup>>>
+export type RemoveDeviceFromGroupMutationBody = DeviceRemoveFromGroupRequestDto
+export type RemoveDeviceFromGroupMutationError = unknown
+
+export const useRemoveDeviceFromGroup = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof removeDeviceFromGroup>>,
+    TError,
+    { id: string; data: DeviceRemoveFromGroupRequestDto },
+    TContext
+  >
+}) => {
+  const mutationOptions = getRemoveDeviceFromGroupMutationOptions(options)
 
   return useMutation(mutationOptions)
 }

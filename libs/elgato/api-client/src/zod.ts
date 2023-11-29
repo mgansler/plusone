@@ -76,6 +76,14 @@ export const addDeviceToGroupBody = zod.object({
   groupId: zod.number(),
 })
 
+export const removeDeviceFromGroupParams = zod.object({
+  id: zod.string(),
+})
+
+export const removeDeviceFromGroupBody = zod.object({
+  groupId: zod.number(),
+})
+
 export const currentDeviceSettingsParams = zod.object({
   id: zod.string(),
 })

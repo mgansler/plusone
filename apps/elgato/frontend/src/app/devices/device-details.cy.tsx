@@ -8,7 +8,7 @@ describe('DeviceDetails', () => {
 
   beforeEach(() => {
     queryClient = new QueryClient({
-      defaultOptions: { queries: { retry: 0, refetchOnWindowFocus: false } },
+      defaultOptions: { queries: { retry: 0, refetchOnWindowFocus: false, staleTime: 30_000 } },
     })
     cy.intercept('GET', '/api/groups', { fixture: 'groups.json' }).as('groups')
   })
@@ -48,8 +48,9 @@ describe('DeviceDetails', () => {
       </MemoryRouter>,
     )
 
-    cy.wait('@deviceDetails')
     cy.wait('@groups')
+    cy.wait('@deviceDetails')
+    cy.get('@deviceDetails.all').should('have.length', 1)
 
     cy.findByRole('group', { name: 'Rooms' }).within(() => {
       cy.findByText('Office')
@@ -58,11 +59,16 @@ describe('DeviceDetails', () => {
 
     cy.findByRole('group', { name: 'Groups' }).within(() => {
       cy.findByText('All')
-      cy.findByRole('button').should('not.exist')
     })
 
     cy.intercept('PUT', '/api/devices/AA:BB:CC:DD:EE:FF/add-to-group', { statusCode: 200 }).as('addDevice')
     cy.findByRole('button', { name: /Living Room/ }).click()
     cy.wait('@addDevice')
+    cy.get('@deviceDetails.all').should('have.length', 2)
+
+    cy.intercept('DELETE', '/api/devices/AA:BB:CC:DD:EE:FF/remove-from-group', { statusCode: 200 }).as('removeDevice')
+    cy.findByRole('button', { name: /Remove device from Office/ }).click()
+    cy.wait('@removeDevice')
+    cy.get('@deviceDetails.all').should('have.length', 3)
   })
 })
