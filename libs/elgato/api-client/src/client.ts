@@ -53,6 +53,7 @@ export interface GroupStateInputDto {
 export interface GroupWithDevicesResponseDto {
   devices: DeviceDetailsResponseDto[]
   id: number
+  isRoom: boolean
   name: string
 }
 
@@ -116,6 +117,7 @@ export interface ElgatoDeviceDetailsDto {
 
 export interface GroupResponseDto {
   id: number
+  isRoom: boolean
   name: string
 }
 
@@ -506,7 +508,7 @@ export const useUpdateDeviceSettings = <TError = unknown, TContext = unknown>(op
 
 export const createGroup = (groupCreateDto: GroupCreateDto) => {
   return customAxiosInstance<GroupResponseDto>({
-    url: `/api/group`,
+    url: `/api/groups`,
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     data: groupCreateDto,
@@ -540,11 +542,11 @@ export const useCreateGroup = <TError = unknown, TContext = unknown>(options?: {
 }
 
 export const groupList = (signal?: AbortSignal) => {
-  return customAxiosInstance<GroupListResponseDto>({ url: `/api/group/all`, method: 'GET', signal })
+  return customAxiosInstance<GroupListResponseDto>({ url: `/api/groups`, method: 'GET', signal })
 }
 
 export const getGroupListQueryKey = () => {
-  return [`/api/group/all`] as const
+  return [`/api/groups`] as const
 }
 
 export const getGroupListQueryOptions = <TData = Awaited<ReturnType<typeof groupList>>, TError = unknown>(options?: {
@@ -579,11 +581,11 @@ export const useGroupList = <TData = Awaited<ReturnType<typeof groupList>>, TErr
 }
 
 export const groupDetails = (groupId: number, signal?: AbortSignal) => {
-  return customAxiosInstance<GroupWithDevicesResponseDto>({ url: `/api/group/${groupId}`, method: 'GET', signal })
+  return customAxiosInstance<GroupWithDevicesResponseDto>({ url: `/api/groups/${groupId}`, method: 'GET', signal })
 }
 
 export const getGroupDetailsQueryKey = (groupId: number) => {
-  return [`/api/group/${groupId}`] as const
+  return [`/api/groups/${groupId}`] as const
 }
 
 export const getGroupDetailsQueryOptions = <TData = Awaited<ReturnType<typeof groupDetails>>, TError = unknown>(
@@ -621,7 +623,7 @@ export const useGroupDetails = <TData = Awaited<ReturnType<typeof groupDetails>>
 
 export const controlGroupState = (groupId: number, groupStateInputDto: GroupStateInputDto) => {
   return customAxiosInstance<void>({
-    url: `/api/group/${groupId}/state`,
+    url: `/api/groups/${groupId}/state`,
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     data: groupStateInputDto,

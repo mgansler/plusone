@@ -8,7 +8,7 @@ import { GroupStateInputDto } from './dto/group-state-input.dto'
 import { GroupWithDevicesResponseDto } from './dto/group-with-devices-response.dto'
 import { GroupService } from './group.service'
 
-@Controller('/group')
+@Controller('/groups')
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
@@ -22,7 +22,7 @@ export class GroupController {
 
   @ApiOperation({ operationId: 'group-list' })
   @ApiOkResponse({ description: 'List of groups.', type: GroupListResponseDto })
-  @Get('/all')
+  @Get('/')
   async getGroups(): Promise<GroupListResponseDto> {
     const groups = await this.groupService.getAllGroups()
     return { groups }

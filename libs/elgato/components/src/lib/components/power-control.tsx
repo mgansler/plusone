@@ -9,7 +9,12 @@ type PowerControlProps = {
 
 export function PowerControl({ state, onClick }: PowerControlProps) {
   return (
-    <div role={'button'} className={'w-[24px] h-[24px] mx-1'} onClick={onClick}>
+    <div
+      role={'button'}
+      className={'w-[24px] h-[24px] mx-1'}
+      onClick={onClick}
+      aria-label={state === 'on' ? 'Turn off' : 'Turn on'}
+    >
       <Lightbulb variant={state === 'on' ? 'solid' : 'outline'} />
     </div>
   )

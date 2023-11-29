@@ -2,7 +2,6 @@ import type { IconProps } from './defaults'
 import { defaults } from './defaults'
 
 export function Lightbulb({ variant, size = defaults.size }: IconProps) {
-  console.log({ size })
   return variant === 'solid' ? (
     <svg
       name={`lightbulb-${variant}`}
