@@ -45,10 +45,11 @@
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nx/jest:jest",
+      "executor": "@nx/vite:test",
       "outputs": ["{workspaceRoot}/coverage/apps/github-pipeline-status"],
       "options": {
-        "jestConfig": "apps/github-pipeline-status/jest.config.ts"
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/apps/github-pipeline-status"
       }
     },
     "component-test": {
@@ -56,7 +57,6 @@
       "options": {
         "cypressConfig": "apps/github-pipeline-status/cypress.config.ts",
         "testingType": "component",
-        "devServerTarget": "github-pipeline-status:build",
         "skipServe": true
       },
       "configurations": {

@@ -62,6 +62,19 @@
         "reportsDirectory": "../../../coverage/apps/elgato/frontend"
       }
     },
+    "component-test": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/elgato/frontend/cypress.config.ts",
+        "testingType": "component",
+        "skipServe": true
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
+      }
+    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],

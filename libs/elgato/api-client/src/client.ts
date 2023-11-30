@@ -53,6 +53,7 @@ export interface GroupStateInputDto {
 export interface GroupWithDevicesResponseDto {
   devices: DeviceDetailsResponseDto[]
   id: number
+  isRoom: boolean
   name: string
 }
 
@@ -73,6 +74,10 @@ export interface DeviceSettingsRequestDto {
 export interface DeviceSettingsResponseDto {
   sunrise: boolean
   sunset: boolean
+}
+
+export interface DeviceRemoveFromGroupRequestDto {
+  groupId: number
 }
 
 export interface DeviceAddToGroupRequestDto {
@@ -116,6 +121,7 @@ export interface ElgatoDeviceDetailsDto {
 
 export interface GroupResponseDto {
   id: number
+  isRoom: boolean
   name: string
 }
 
@@ -406,6 +412,59 @@ export const useAddDeviceToGroup = <TError = unknown, TContext = unknown>(option
   return useMutation(mutationOptions)
 }
 
+export const removeDeviceFromGroup = (id: string, deviceRemoveFromGroupRequestDto: DeviceRemoveFromGroupRequestDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/devices/${id}/remove-from-group`,
+    method: 'delete',
+    headers: { 'Content-Type': 'application/json' },
+    data: deviceRemoveFromGroupRequestDto,
+  })
+}
+
+export const getRemoveDeviceFromGroupMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof removeDeviceFromGroup>>,
+    TError,
+    { id: string; data: DeviceRemoveFromGroupRequestDto },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof removeDeviceFromGroup>>,
+  TError,
+  { id: string; data: DeviceRemoveFromGroupRequestDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof removeDeviceFromGroup>>,
+    { id: string; data: DeviceRemoveFromGroupRequestDto }
+  > = (props) => {
+    const { id, data } = props ?? {}
+
+    return removeDeviceFromGroup(id, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type RemoveDeviceFromGroupMutationResult = NonNullable<Awaited<ReturnType<typeof removeDeviceFromGroup>>>
+export type RemoveDeviceFromGroupMutationBody = DeviceRemoveFromGroupRequestDto
+export type RemoveDeviceFromGroupMutationError = unknown
+
+export const useRemoveDeviceFromGroup = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof removeDeviceFromGroup>>,
+    TError,
+    { id: string; data: DeviceRemoveFromGroupRequestDto },
+    TContext
+  >
+}) => {
+  const mutationOptions = getRemoveDeviceFromGroupMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
 export const currentDeviceSettings = (id: string, signal?: AbortSignal) => {
   return customAxiosInstance<DeviceSettingsResponseDto>({ url: `/api/devices/${id}/settings`, method: 'GET', signal })
 }
@@ -506,7 +565,7 @@ export const useUpdateDeviceSettings = <TError = unknown, TContext = unknown>(op
 
 export const createGroup = (groupCreateDto: GroupCreateDto) => {
   return customAxiosInstance<GroupResponseDto>({
-    url: `/api/group`,
+    url: `/api/groups`,
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     data: groupCreateDto,
@@ -540,11 +599,11 @@ export const useCreateGroup = <TError = unknown, TContext = unknown>(options?: {
 }
 
 export const groupList = (signal?: AbortSignal) => {
-  return customAxiosInstance<GroupListResponseDto>({ url: `/api/group/all`, method: 'GET', signal })
+  return customAxiosInstance<GroupListResponseDto>({ url: `/api/groups`, method: 'GET', signal })
 }
 
 export const getGroupListQueryKey = () => {
-  return [`/api/group/all`] as const
+  return [`/api/groups`] as const
 }
 
 export const getGroupListQueryOptions = <TData = Awaited<ReturnType<typeof groupList>>, TError = unknown>(options?: {
@@ -579,11 +638,11 @@ export const useGroupList = <TData = Awaited<ReturnType<typeof groupList>>, TErr
 }
 
 export const groupDetails = (groupId: number, signal?: AbortSignal) => {
-  return customAxiosInstance<GroupWithDevicesResponseDto>({ url: `/api/group/${groupId}`, method: 'GET', signal })
+  return customAxiosInstance<GroupWithDevicesResponseDto>({ url: `/api/groups/${groupId}`, method: 'GET', signal })
 }
 
 export const getGroupDetailsQueryKey = (groupId: number) => {
-  return [`/api/group/${groupId}`] as const
+  return [`/api/groups/${groupId}`] as const
 }
 
 export const getGroupDetailsQueryOptions = <TData = Awaited<ReturnType<typeof groupDetails>>, TError = unknown>(
@@ -621,7 +680,7 @@ export const useGroupDetails = <TData = Awaited<ReturnType<typeof groupDetails>>
 
 export const controlGroupState = (groupId: number, groupStateInputDto: GroupStateInputDto) => {
   return customAxiosInstance<void>({
-    url: `/api/group/${groupId}/state`,
+    url: `/api/groups/${groupId}/state`,
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     data: groupStateInputDto,

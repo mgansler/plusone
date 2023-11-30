@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 import { Throttle } from '@nestjs/throttler'
 
@@ -7,6 +7,7 @@ import { DeviceAddToGroupRequestDto } from './dto/device-add-to-group-request.dt
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
 import { DeviceListResponseDto } from './dto/device-list-response'
 import { DevicePowerStateRequestDto } from './dto/device-power-state-request.dto'
+import { DeviceRemoveFromGroupRequestDto } from './dto/device-remove-from-group-request.dto'
 import { TransitionToColorRequestDto } from './dto/transition-to-color-request.dto'
 
 @Controller('/devices')
@@ -54,5 +55,14 @@ export class DeviceController {
   @Put('/:id/add-to-group')
   async addDeviceToGroup(@Param('id') id: string, @Body() addToGroupInputDto: DeviceAddToGroupRequestDto) {
     return this.deviceService.addDeviceToGroup(id, addToGroupInputDto.groupId)
+  }
+
+  @ApiOperation({ operationId: 'remove-device-from-group' })
+  @Delete('/:id/remove-from-group')
+  async removeDeviceFromGroup(
+    @Param('id') id: string,
+    @Body() removeFromGroupRequestDto: DeviceRemoveFromGroupRequestDto,
+  ) {
+    return this.deviceService.removeDeviceFromGroup(id, removeFromGroupRequestDto.groupId)
   }
 }

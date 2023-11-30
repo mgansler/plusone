@@ -31,7 +31,11 @@ export class ElgatoService {
         )
         .pipe(
           catchError((error: AxiosError) => {
-            this.logger.error(error.response.data)
+            if (error.code === 'ENOTFOUND') {
+              this.logger.error(`Could not resolve '${device.host.replace('.local', '')}' on current network.`)
+            } else {
+              this.logger.error(error.response.data)
+            }
             throw `Could not connect to '${device.host.replace('.local', '')}'`
           }),
         ),
@@ -47,7 +51,11 @@ export class ElgatoService {
         })
         .pipe(
           catchError((error: AxiosError) => {
-            this.logger.error(error.response.data)
+            if (error.code === 'ENOTFOUND') {
+              this.logger.error(`Could not resolve '${device.host.replace('.local', '')}' on current network.`)
+            } else {
+              this.logger.error(error.response.data)
+            }
             throw `Could not connect to '${device.host.replace('.local', '')}'`
           }),
         ),

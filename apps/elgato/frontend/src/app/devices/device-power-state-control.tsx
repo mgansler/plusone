@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query'
 
 import { useDeviceSetPowerState, useToggleDevice, useValidatedDeviceDetails } from '@plusone/elgato-api-client'
+import { PowerControl } from '@plusone/elgato-components'
 
 type DevicePowerStateProps = {
   deviceId: string
@@ -33,5 +34,5 @@ export function DevicePowerStateControl({ deviceId }: DevicePowerStateProps) {
     )
   }
 
-  return <button onClick={toggle}>{data.state.on ? 'Turn off' : 'Turn on'}</button>
+  return <PowerControl state={data.state.on ? 'on' : 'off'} onClick={toggle} />
 }

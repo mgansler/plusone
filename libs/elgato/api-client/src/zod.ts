@@ -26,6 +26,7 @@ export const deviceDetailsResponse = zod.object({
     zod.object({
       id: zod.number(),
       name: zod.string(),
+      isRoom: zod.boolean(),
     }),
   ),
   details: zod.object({
@@ -75,6 +76,14 @@ export const addDeviceToGroupBody = zod.object({
   groupId: zod.number(),
 })
 
+export const removeDeviceFromGroupParams = zod.object({
+  id: zod.string(),
+})
+
+export const removeDeviceFromGroupBody = zod.object({
+  groupId: zod.number(),
+})
+
 export const currentDeviceSettingsParams = zod.object({
   id: zod.string(),
 })
@@ -108,6 +117,7 @@ export const groupListResponse = zod.object({
     zod.object({
       id: zod.number(),
       name: zod.string(),
+      isRoom: zod.boolean(),
     }),
   ),
 })
@@ -119,6 +129,7 @@ export const groupDetailsParams = zod.object({
 export const groupDetailsResponse = zod.object({
   id: zod.number(),
   name: zod.string(),
+  isRoom: zod.boolean(),
   devices: zod.array(
     zod.object({
       id: zod.string(),
@@ -127,6 +138,7 @@ export const groupDetailsResponse = zod.object({
         zod.object({
           id: zod.number(),
           name: zod.string(),
+          isRoom: zod.boolean(),
         }),
       ),
       details: zod.object({

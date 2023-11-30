@@ -136,6 +136,19 @@ export class DeviceService {
     })
   }
 
+  async removeDeviceFromGroup(deviceId: Device['id'], groupId: Group['id']) {
+    await this.prismaService.group.update({
+      where: { id: groupId },
+      data: {
+        devices: {
+          disconnect: {
+            id: deviceId,
+          },
+        },
+      },
+    })
+  }
+
   async setGroupState(groupId: Group['id'], targetState: DevicePowerState) {
     const devices = await this.prismaService.device.findMany({ where: { groups: { some: { id: groupId } } } })
     for (const device of devices) {

@@ -6,4 +6,7 @@ export class GroupResponseDto {
 
   @ApiProperty()
   name: string
+
+  @ApiProperty()
+  isRoom: boolean
 }

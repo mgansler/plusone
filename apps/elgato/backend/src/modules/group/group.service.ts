@@ -21,7 +21,7 @@ export class GroupService {
   }
 
   async getGroup(groupId: Group['id']): Promise<GroupWithDevicesResponseDto> {
-    const { id, name, devices } = await this.prismaService.group.findUniqueOrThrow({
+    const { id, name, isRoom, devices } = await this.prismaService.group.findUniqueOrThrow({
       include: { devices: true },
       where: { id: groupId },
     })
@@ -34,6 +34,7 @@ export class GroupService {
     return {
       id,
       name,
+      isRoom,
       devices: devicesWithState,
     }
   }

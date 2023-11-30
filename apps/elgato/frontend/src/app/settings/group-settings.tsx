@@ -1,13 +1,9 @@
 import { useNavigate, useParams } from '@remix-run/react'
-import { useQueryClient } from '@tanstack/react-query'
 
 import type { DeviceListResponseDto, DeviceResponseDto, GroupWithDevicesResponseDto } from '@plusone/elgato-api-client'
-import {
-  getGroupDetailsQueryKey,
-  useAddDeviceToGroup,
-  useValidatedDeviceList,
-  useValidatedGroupDetails,
-} from '@plusone/elgato-api-client'
+import { useValidatedDeviceList, useValidatedGroupDetails } from '@plusone/elgato-api-client'
+
+import { AddDeviceToGroup } from '../components/add-device-to-group'
 
 type FilteredDevicesProps = {
   group?: GroupWithDevicesResponseDto
@@ -15,23 +11,6 @@ type FilteredDevicesProps = {
 }
 
 function FilteredDevices({ group, devices }: FilteredDevicesProps) {
-  const { groupId } = useParams()
-
-  const queryClient = useQueryClient()
-  const { mutate } = useAddDeviceToGroup({
-    mutation: {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries({
-          queryKey: getGroupDetailsQueryKey(Number(groupId)),
-        })
-      },
-    },
-  })
-
-  const addDevice = (deviceId) => {
-    mutate({ id: deviceId, data: { groupId: Number(groupId) } })
-  }
-
   if (!group || !devices) {
     return null
   }
@@ -42,9 +21,7 @@ function FilteredDevices({ group, devices }: FilteredDevicesProps) {
       {devices
         .filter((device) => group?.devices.find(({ id }) => id === device.id) === undefined)
         .map((device) => (
-          <button key={device.id} onClick={() => addDevice(device.id)}>
-            Add {device.name}
-          </button>
+          <AddDeviceToGroup key={device.id} deviceId={device.id} group={group} />
         ))}
     </>
   )
