@@ -82,7 +82,13 @@
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/elgato/backend/jest.config.ts"
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "generate",
+          "dependencies": true
+        }
+      ]
     }
   },
   "tags": []

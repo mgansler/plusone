@@ -4,7 +4,6 @@ import Bonjour from 'bonjour-service'
 
 import { Device, Group, PrismaService } from '@plusone/elgato-persistence'
 
-import { ElgatoDeviceDetailsDto } from '../elgato/dto/elgato-device-details.dto'
 import { LightStateWithColor } from '../elgato/dto/elgato-device-state.dto'
 import {
   ElgatoSceneRequestDto,
@@ -15,6 +14,7 @@ import { ElgatoService } from '../elgato/elgato.service'
 
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
 import { DeviceState } from './dto/device-state'
+import { ElgatoDeviceDetailsDto } from './dto/elgato-device-details.dto'
 import { TransitionToColorRequestDto } from './dto/transition-to-color-request.dto'
 import { DevicePowerState } from './enum/device-power-state'
 import { DeviceType } from './enum/device-type'

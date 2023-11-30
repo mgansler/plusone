@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { DeviceType } from '../../device/enum/device-type'
+import { DeviceType } from '../enum/device-type'
 
 export class ElgatoDeviceDetailsDto {
   @ApiProperty()
