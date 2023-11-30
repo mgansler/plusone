@@ -10,7 +10,7 @@ import { Device } from '@plusone/elgato-persistence'
 import { TransitionToColorRequestDto } from '../device/dto/transition-to-color-request.dto'
 import { DevicePowerState } from '../device/enum/device-power-state'
 
-import { ElgatoDeviceDetailsDto } from './dto/elgato-device-details.dto'
+import { ElgatoAccessoryInfoResponseDto } from './dto/elgato-accessory-info-response.dto'
 import { ElgatoDeviceStateDto } from './dto/elgato-device-state.dto'
 import { ElgatoSceneRequestDto } from './dto/elgato-scene-request.dto'
 
@@ -23,7 +23,7 @@ export class ElgatoService {
   async getDeviceAccessoryInfo(device: Device) {
     const resp = await firstValueFrom(
       this.httpService
-        .get<ElgatoDeviceDetailsDto>(
+        .get<ElgatoAccessoryInfoResponseDto>(
           `http://${device.host.replace('.local', '')}:${device.port}/elgato/accessory-info`,
           {
             httpAgent: new http.Agent({ family: 4 }),
