@@ -58,8 +58,11 @@ jobs:
           else
             baseRef=HEAD~1
           fi
+
+          npx nx show projects --base ${baseRef} --affected --withTarget e2e
+
           # Output must be ["string","string"] with no spaces.
-          affectedApps=$(yarn -s nx show projects --base ${baseRef} --affected --withTarget e2e --json | jq -c)
+          affectedApps=$(npx nx show projects --base ${baseRef} --affected --withTarget e2e --json | jq -c)
           echo "affected_apps=${affectedApps}" >> ${GITHUB_OUTPUT}
 
   # E2E tests use their own matrix so that each of them can be retried independently
@@ -83,4 +86,4 @@ jobs:
       - name: Run ${{ matrix.project }}:e2e
         timeout-minutes: 15
         continue-on-error: ${{ matrix.project == 'advent-of-code-2021-e2e' }}
-        run: yarn nx run ${{ matrix.project }}:e2e
+        run: npx nx run ${{ matrix.project }}:e2e

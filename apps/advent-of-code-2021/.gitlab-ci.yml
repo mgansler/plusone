@@ -1,5 +1,3 @@
-image: node:21-alpine
-
 variables:
   AOC21_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/aoc-21/${CI_COMMIT_REF_SLUG}:latest
 
