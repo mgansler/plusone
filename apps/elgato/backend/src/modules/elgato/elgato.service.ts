@@ -13,6 +13,7 @@ import { DevicePowerState } from '../device/enum/device-power-state'
 import { ElgatoAccessoryInfoResponseDto } from './dto/elgato-accessory-info-response.dto'
 import { ElgatoDeviceStateDto } from './dto/elgato-device-state.dto'
 import { ElgatoSceneRequestDto } from './dto/elgato-scene-request.dto'
+import { ElgatoSettingsResponseDto } from './dto/elgato-settings-response.dto'
 
 @Injectable()
 export class ElgatoService {
@@ -20,7 +21,7 @@ export class ElgatoService {
 
   constructor(private readonly httpService: HttpService) {}
 
-  async getDeviceAccessoryInfo(device: Device) {
+  async getDeviceAccessoryInfo(device: Pick<Device, 'host' | 'port'>) {
     const resp = await firstValueFrom(
       this.httpService
         .get<ElgatoAccessoryInfoResponseDto>(
@@ -43,7 +44,7 @@ export class ElgatoService {
     return resp.data
   }
 
-  async getDeviceState(device: Device) {
+  async getDeviceState(device: Pick<Device, 'host' | 'port'>): Promise<ElgatoDeviceStateDto> {
     const resp = await firstValueFrom(
       this.httpService
         .get<ElgatoDeviceStateDto>(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights`, {
@@ -60,18 +61,70 @@ export class ElgatoService {
           }),
         ),
     )
+
+    if (typeof resp.data === 'string' && resp.data === '') {
+      // There is probably a very long sequence active
+      this.logger.warn(`Could not get state for ${device.host}, there probably is a long sequence active.`)
+      return {
+        lights: [{ on: 1, brightness: 0, saturation: 0, hue: 0 }],
+        numberOfLights: 1,
+      }
+    }
+
     return resp.data
   }
 
-  setDevicePowerState(device: Device, state: DevicePowerState) {
+  async getDeviceSettings(device: Pick<Device, 'host' | 'port'>): Promise<ElgatoSettingsResponseDto> {
+    const resp = await firstValueFrom(
+      this.httpService
+        .get(`http://${device.host.replace('.local', '')}:${device.port}/elgato/lights/settings`, {
+          httpAgent: new http.Agent({ family: 4 }),
+        })
+        .pipe(
+          catchError((error: AxiosError) => {
+            console.log(error)
+            if (error.code === 'ENOTFOUND') {
+              this.logger.error(`Could not resolve '${device.host.replace('.local', '')}' on current network.`)
+            } else {
+              this.logger.error(error.response.data)
+            }
+            throw `Could not connect to '${device.host.replace('.local', '')}'`
+          }),
+        ),
+    )
+
+    return resp.data
+  }
+
+  async identify(device: Pick<Device, 'host' | 'port'>): Promise<void> {
+    await firstValueFrom(
+      this.httpService
+        .post(`http://${device.host.replace('.local', '')}:${device.port}/elgato/identify`, undefined, {
+          httpAgent: new http.Agent({ family: 4 }),
+        })
+        .pipe(
+          catchError((error: AxiosError) => {
+            console.log(error)
+            if (error.code === 'ENOTFOUND') {
+              this.logger.error(`Could not resolve '${device.host.replace('.local', '')}' on current network.`)
+            } else {
+              this.logger.error(error.response.data)
+            }
+            throw `Could not connect to '${device.host.replace('.local', '')}'`
+          }),
+        ),
+    )
+  }
+
+  setDevicePowerState(device: Pick<Device, 'host' | 'port'>, state: DevicePowerState) {
     return this.makePutRequest(device, { lights: [{ on: state === 'on' ? 1 : 0 }] })
   }
 
-  setLightStripScene(device: Device, scene: ElgatoSceneRequestDto) {
+  setLightStripScene(device: Pick<Device, 'host' | 'port'>, scene: ElgatoSceneRequestDto) {
     return this.makePutRequest(device, scene)
   }
 
-  setLightStripColor(device: Device, color: TransitionToColorRequestDto) {
+  setLightStripColor(device: Pick<Device, 'host' | 'port'>, color: TransitionToColorRequestDto) {
     return this.makePutRequest(device, {
       lights: [{ on: 1, hue: color.hue, saturation: color.saturation, brightness: color.brightness }],
     })
