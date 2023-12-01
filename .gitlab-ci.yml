@@ -1,4 +1,9 @@
-image: node:20.10.0-alpine
+image: node:20
+
+variables:
+  GIT_DEPTH: 0
+  CYPRESS_CACHE_FOLDER: .cache/Cypress # https://docs.cypress.io/guides/references/advanced-installation
+  YARN_CACHE: .cache/yarn
 
 stages:
   - test
@@ -6,24 +11,150 @@ stages:
   - package
   - deploy
 
-cache:
-  key:
-    files:
-      - yarn.lock
-  paths:
-    - node_modules/
-
-default:
+.distributed:
+  interruptible: true
+  tags:
+    - docker
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules
+      - .cache/
   before_script:
-    - yarn install --network-timeout 150000
+    - yarn install --frozen-lockfile --cache-folder $YARN_CACHE
+    - NX_HEAD=$CI_COMMIT_SHA
+    - NX_BASE=${CI_MERGE_REQUEST_DIFF_BASE_SHA:-$CI_COMMIT_BEFORE_SHA}
+
+.dind:
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: 'tcp://docker:2375'
+    DOCKER_TLS_CERTDIR: ''
+    DOCKER_DRIVER: overlay2
+
+format-check:
+  stage: test
+  extends:
+    - .distributed
+  script:
+    - npx nx format:check --base=$NX_BASE --head=$NX_HEAD
 
 lint:
   stage: test
-  tags:
-    - docker
+  extends:
+    - .distributed
   script:
-    - yarn nx run-many --target=lint --all --parallel 8
+    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t lint --parallel=8
 
-include:
-  - /apps/feeds/.gitlab-ci.yml
-  - /apps/suite/.gitlab-ci.yml
+test:
+  stage: test
+  extends:
+    - .distributed
+  script:
+    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t test --parallel=8 --configuration=ci
+
+component-test:
+  stage: test
+  extends:
+    - .distributed
+  script:
+    - sh tools/scripts/install-cypress-dependencies.sh
+    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t component-test --parallel=1 --configuration=ci
+
+e2e:
+  stage: test
+  extends:
+    - .distributed
+    - .dind
+  needs:
+    - format-check
+    - lint
+    - test
+  variables:
+    DATABASE_URL: postgres://postgres:local_db_password@docker:5434/feeds
+  script:
+    - sh tools/scripts/install-cypress-dependencies.sh
+    - sh tools/scripts/install-docker-debian.sh
+    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t e2e --parallel=1 --configuration=ci
+
+build:
+  stage: build
+  extends:
+    - .distributed
+  needs:
+    - format-check
+    - lint
+    - test
+    - component-test
+  script:
+    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t build --parallel=8
+  artifacts:
+    paths:
+      - dist/apps
+    expire_in: 1 hour
+
+package:
+  stage: package
+  extends:
+    - .distributed
+    - .dind
+  needs:
+    - build
+    - e2e
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+  script:
+    - sh tools/scripts/install-docker-debian.sh
+    - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
+    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t package --parallel=1 --configuration=ci
+
+.deploy:
+  needs:
+    - package
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules
+      - .cache/
+  before_script:
+    - source ~/.nvm/nvm.sh
+    - yarn install --frozen-lockfile --cache-folder $YARN_CACHE
+    - NX_HEAD=$CI_COMMIT_SHA
+    - NX_BASE=${CI_MERGE_REQUEST_DIFF_BASE_SHA:-$CI_COMMIT_BEFORE_SHA}
+    - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
+
+deploy-on-nas:
+  stage: deploy
+  extends:
+    - .deploy
+  tags:
+    - elgato
+  script:
+    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t deploy --parallel=1 --configuration=ci --exclude='*,!tag:nas'
+
+deploy-on-server:
+  stage: deploy
+  extends:
+    - .deploy
+  tags:
+    - deploy
+  script:
+    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t deploy --parallel=1 --configuration=ci --exclude='tag:nas'

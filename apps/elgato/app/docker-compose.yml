@@ -2,7 +2,8 @@ version: '3'
 
 services:
   app:
-    image: elgato-app:latest
+    image: ${DOCKER_IMAGE_NAME}
+    container_name: elgato-app
     network_mode: host
     restart: always
     environment:
