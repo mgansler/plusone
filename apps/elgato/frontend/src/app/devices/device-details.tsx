@@ -1,8 +1,8 @@
-import { useParams } from '@remix-run/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { convert } from 'colvertize'
 import { throttle } from 'lodash'
 import { useCallback } from 'react'
+import { useParams } from 'react-router-dom'
 
 import {
   DeviceType,

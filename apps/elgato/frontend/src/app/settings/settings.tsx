@@ -1,7 +1,6 @@
-import { useNavigate } from '@remix-run/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { useCreateGroup, useValidatedDeviceList, useValidatedGroupList } from '@plusone/elgato-api-client'
 import type { DeviceResponseDto } from '@plusone/elgato-api-client'
