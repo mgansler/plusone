@@ -25,12 +25,8 @@ feeds-build:
     - feeds-test
   tags:
     - docker
-  parallel:
-    matrix:
-      - FEEDS_APP:
-          - backend
   script:
-    - yarn nx run feeds-${FEEDS_APP}:build:production
+    - yarn nx run feeds-backend:build:production
   artifacts:
     paths:
       - dist/apps/feeds/${FEEDS_APP}
