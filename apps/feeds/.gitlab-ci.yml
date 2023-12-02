@@ -1,4 +1,4 @@
-feeds:test:
+feeds-test:
   services:
     - docker:dind
   variables:
@@ -18,11 +18,11 @@ feeds:test:
       junit:
         - reports/test/junit-feeds.xml
 
-feeds:build:
+feeds-build:
   stage: build
   needs:
     - lint
-    - feeds:test
+    - feeds-test
   tags:
     - docker
   parallel:
@@ -36,7 +36,7 @@ feeds:build:
       - dist/apps/feeds/${FEEDS_APP}
     expire_in: 1 hour
 
-feeds:package:
+feeds-package:
   cache: []
   image: docker
   services:
@@ -47,7 +47,7 @@ feeds:package:
     DOCKER_DRIVER: overlay2
   stage: package
   needs:
-    - feeds:build
+    - feeds-build
   tags:
     - docker
   rules:
@@ -62,11 +62,11 @@ feeds:package:
     - docker build -f apps/feeds/${FEEDS_APP}/Dockerfile -t ${DOCKER_IMAGE_NAME} .
     - docker push ${DOCKER_IMAGE_NAME}
 
-feeds:deploy:
+feeds-deploy:
   cache: []
   stage: deploy
   needs:
-    - feeds:package
+    - feeds-package
   tags:
     - deploy
   rules:
@@ -75,7 +75,7 @@ feeds:deploy:
     - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
       when: manual
   variables:
-    FEEDS_BACKEND_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-backend/${CI_COMMIT_REF_SLUG}:latest
+    FEEDS_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds/${CI_COMMIT_REF_SLUG}:latest
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}

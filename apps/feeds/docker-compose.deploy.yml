@@ -2,7 +2,7 @@ version: '3'
 
 services:
   feeds-app:
-    image: ${FEEDS_BACKEND_DOCKER_IMAGE}
+    image: ${FEEDS_DOCKER_IMAGE}
     restart: always
     depends_on:
       - database
