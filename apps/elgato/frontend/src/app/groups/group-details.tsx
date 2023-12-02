@@ -1,5 +1,5 @@
-import { useParams } from '@remix-run/react'
 import { useQueryClient } from '@tanstack/react-query'
+import { useParams } from 'react-router-dom'
 
 import type { DevicePowerState } from '@plusone/elgato-api-client'
 import { getDeviceDetailsQueryKey, useControlGroupState, useValidatedGroupDetails } from '@plusone/elgato-api-client'

@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from '@remix-run/react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import type { DeviceListResponseDto, DeviceResponseDto, GroupWithDevicesResponseDto } from '@plusone/elgato-api-client'
 import { useValidatedDeviceList, useValidatedGroupDetails } from '@plusone/elgato-api-client'

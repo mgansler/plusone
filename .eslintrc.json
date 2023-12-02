@@ -51,6 +51,12 @@
             ],
             "pathGroupsExcludedImportTypes": ["builtin"]
           }
+        ],
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": ["@remix-run/*"]
+          }
         ]
       }
     },
