@@ -1,5 +1,3 @@
-image: node:21-alpine
-
 feeds:test:
   services:
     - docker:dind
@@ -52,15 +50,14 @@ feeds:package:
     - feeds:build
   tags:
     - docker
-  parallel:
-    matrix:
-      - FEEDS_APP:
-          - backend
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
-    - export DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds-${FEEDS_APP}/${CI_COMMIT_REF_SLUG}:latest
+    - export DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds/${CI_COMMIT_REF_SLUG}:latest
   script:
     - docker build -f apps/feeds/${FEEDS_APP}/Dockerfile -t ${DOCKER_IMAGE_NAME} .
     - docker push ${DOCKER_IMAGE_NAME}
@@ -72,11 +69,13 @@ feeds:deploy:
     - feeds:package
   tags:
     - deploy
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual
   variables:
     FEEDS_BACKEND_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-backend/${CI_COMMIT_REF_SLUG}:latest
-  #    FEEDS_WEB_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-web/${CI_COMMIT_REF_SLUG}:latest
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
