@@ -55,7 +55,7 @@ feeds-package:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - export DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds/${CI_COMMIT_REF_SLUG}:latest
   script:
-    - docker build -f apps/feeds/${FEEDS_APP}/Dockerfile -t ${DOCKER_IMAGE_NAME} .
+    - docker build -f apps/feeds/backend/Dockerfile -t ${DOCKER_IMAGE_NAME} .
     - docker push ${DOCKER_IMAGE_NAME}
 
 feeds-deploy:
