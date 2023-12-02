@@ -1,7 +1,7 @@
 variables:
   APP_SUITE_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/suite/${CI_COMMIT_REF_SLUG}:latest
 
-suite:test:
+suite-test:
   stage: test
   tags:
     - docker
@@ -15,11 +15,11 @@ suite:test:
       junit:
         - reports/test/junit-suite.xml
 
-suite:build:
+suite-build:
   stage: build
   needs:
     - lint
-    - suite:test
+    - suite-test
   tags:
     - docker
   script:
@@ -29,7 +29,7 @@ suite:build:
       - dist/apps/suite
     expire_in: 1 hour
 
-suite:package:
+suite-package:
   image: docker
   variables:
     DOCKER_HOST: 'tcp://docker:2375'
@@ -39,7 +39,7 @@ suite:package:
     - docker:dind
   stage: package
   needs:
-    - suite:build
+    - suite-build
   tags:
     - docker
   only:
@@ -50,10 +50,10 @@ suite:package:
     - docker build -f apps/suite/Dockerfile -t ${APP_SUITE_DOCKER_IMAGE} .
     - docker push ${APP_SUITE_DOCKER_IMAGE}
 
-suite:deploy:
+suite-deploy:
   stage: deploy
   needs:
-    - suite:package
+    - suite-package
   tags:
     - deploy
   only:

@@ -1,6 +1,4 @@
-image: node:21-alpine
-
-feeds:test:
+feeds-test:
   services:
     - docker:dind
   variables:
@@ -20,25 +18,21 @@ feeds:test:
       junit:
         - reports/test/junit-feeds.xml
 
-feeds:build:
+feeds-build:
   stage: build
   needs:
     - lint
-    - feeds:test
+    - feeds-test
   tags:
     - docker
-  parallel:
-    matrix:
-      - FEEDS_APP:
-          - backend
   script:
-    - yarn nx run feeds-${FEEDS_APP}:build:production
+    - yarn nx run feeds-backend:build:production
   artifacts:
     paths:
       - dist/apps/feeds/${FEEDS_APP}
     expire_in: 1 hour
 
-feeds:package:
+feeds-package:
   cache: []
   image: docker
   services:
@@ -49,37 +43,37 @@ feeds:package:
     DOCKER_DRIVER: overlay2
   stage: package
   needs:
-    - feeds:build
+    - feeds-build
   tags:
     - docker
-  parallel:
-    matrix:
-      - FEEDS_APP:
-          - backend
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
-    - export DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds-${FEEDS_APP}/${CI_COMMIT_REF_SLUG}:latest
+    - export DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds/${CI_COMMIT_REF_SLUG}:latest
   script:
-    - docker build -f apps/feeds/${FEEDS_APP}/Dockerfile -t ${DOCKER_IMAGE_NAME} .
+    - docker build -f apps/feeds/backend/Dockerfile -t ${DOCKER_IMAGE_NAME} .
     - docker push ${DOCKER_IMAGE_NAME}
 
-feeds:deploy:
+feeds-deploy:
   cache: []
   stage: deploy
   needs:
-    - feeds:package
+    - feeds-package
   tags:
     - deploy
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual
   variables:
-    FEEDS_BACKEND_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-backend/${CI_COMMIT_REF_SLUG}:latest
-  #    FEEDS_WEB_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds-web/${CI_COMMIT_REF_SLUG}:latest
+    FEEDS_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/feeds/${CI_COMMIT_REF_SLUG}:latest
   before_script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
-    - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
   script:
     - docker compose -f apps/feeds/docker-compose.deploy.yml pull
     - docker compose -f apps/feeds/docker-compose.deploy.yml up -d --remove-orphans

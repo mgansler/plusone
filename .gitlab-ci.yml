@@ -1,3 +1,5 @@
+image: node:20-alpine
+
 stages:
   - test
   - build
@@ -20,7 +22,7 @@ lint:
   tags:
     - docker
   script:
-    - yarn nx run-many --target=lint --all --parallel 4
+    - yarn nx run-many --target=lint --all --parallel 8
 
 include:
   - /apps/elgato/.gitlab-ci.yml

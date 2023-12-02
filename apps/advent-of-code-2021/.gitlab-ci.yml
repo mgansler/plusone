@@ -1,7 +1,7 @@
 variables:
   AOC21_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}/aoc-21/${CI_COMMIT_REF_SLUG}:latest
 
-aoc-21:build:
+aoc-21-build:
   stage: build
   tags:
     - docker
@@ -12,7 +12,7 @@ aoc-21:build:
       - dist/apps/advent-of-code-2021
     expire_in: 1 hour
 
-aoc-21:package:
+aoc-21-package:
   image: docker
   variables:
     DOCKER_HOST: 'tcp://docker:2375'
@@ -22,7 +22,7 @@ aoc-21:package:
     - docker:dind
   stage: package
   needs:
-    - aoc-21:build
+    - aoc-21-build
   tags:
     - docker
   only:
@@ -33,10 +33,10 @@ aoc-21:package:
     - docker build -f apps/advent-of-code-2021/Dockerfile -t ${AOC21_DOCKER_IMAGE} .
     - docker push ${AOC21_DOCKER_IMAGE}
 
-aoc-21:deploy:
+aoc-21-deploy:
   stage: deploy
   needs:
-    - aoc-21:package
+    - aoc-21-package
   tags:
     - deploy
   only:
@@ -45,5 +45,5 @@ aoc-21:deploy:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
   script:
-    - docker-compose -f apps/advent-of-code-2021/docker-compose.deploy.yml pull
-    - docker-compose -f apps/advent-of-code-2021/docker-compose.deploy.yml up -d --remove-orphans
+    - docker compose -f apps/advent-of-code-2021/docker-compose.deploy.yml pull
+    - docker compose -f apps/advent-of-code-2021/docker-compose.deploy.yml up -d --remove-orphans
