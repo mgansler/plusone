@@ -8,10 +8,10 @@ Put this into `targets` of your `project.json`.
 
 ```json
 {
-  "format": {
+  "prisma-format": {
     "executor": "@mgansler/nx-prisma:format"
   },
-  "generate": {
+  "prisma-generate": {
     "executor": "@mgansler/nx-prisma:generate"
   }
 }
