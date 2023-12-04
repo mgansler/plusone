@@ -1,9 +1,9 @@
 import { HttpService } from '@nestjs/axios'
-import { http } from 'msw'
 import { SetupServer, setupServer } from 'msw/node'
 
 import { getAccessoryInfoResponse } from '../../stubs/accessory-info-response.stub'
 import { getDevice } from '../../stubs/device.stub'
+import { getAccessoryInfo, getLights, getSettings, getStuckDevice } from '../../stubs/handler'
 import { DeviceType } from '../device/enum/device-type'
 
 import { ElgatoAccessoryInfoResponseDto } from './dto/elgato-accessory-info-response.dto'
@@ -18,58 +18,12 @@ describe('ElgatoService', () => {
 
   beforeAll(() => {
     server = setupServer(
-      http.get('http://my-lightstrip-device:9123/elgato/accessory-info', () => {
-        return new Response(
-          JSON.stringify(
-            getAccessoryInfoResponse({
-              productName: 'Elgato Light Strip',
-              displayName: 'My Light Strip Device',
-            }),
-          ),
-        )
-      }),
-      http.get('http://my-lightstrip-device:9123/elgato/lights', () => {
-        return new Response(
-          JSON.stringify({
-            numberOfLights: 1,
-            lights: [{ on: 1, hue: 0, brightness: 50, saturation: 50 }],
-          }),
-        )
-      }),
-      http.get('http://my-lightstrip-device:9123/elgato/lights/settings', () => {
-        return new Response(
-          JSON.stringify({
-            colorChangeDurationMs: 0,
-            powerOnBehavior: 0,
-            powerOnBrightness: 0,
-            powerOnHue: 0,
-            powerOnSaturation: 0,
-            switchOffDurationMs: 0,
-            switchOnDurationMs: 0,
-          }),
-        )
-      }),
-      http.get('http://my-ringlight-device:9123/elgato/accessory-info', () => {
-        return new Response(
-          JSON.stringify(
-            getAccessoryInfoResponse({
-              productName: 'Elgato Ring Light',
-              displayName: 'My Ring Light Device',
-            }),
-          ),
-        )
-      }),
-      http.get('http://my-ringlight-device:9123/elgato/lights', () => {
-        return new Response(
-          JSON.stringify({
-            numberOfLights: 1,
-            lights: [{ on: 1, temperature: 200 }],
-          }),
-        )
-      }),
-      http.get('http://my-stuck-device:9123/elgato/lights', () => {
-        return new Response('')
-      }),
+      getAccessoryInfo(DeviceType.LightStrip),
+      getAccessoryInfo(DeviceType.RingLight),
+      getLights(DeviceType.LightStrip),
+      getLights(DeviceType.RingLight),
+      getSettings(),
+      getStuckDevice(),
     )
     server.listen()
   })
