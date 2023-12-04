@@ -7,6 +7,7 @@
     "build": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/feeds/backend",
         "main": "apps/feeds/backend/src/main.ts",
@@ -29,11 +30,6 @@
             "input": "libs/feeds/persistence/src/lib/client",
             "glob": "libquery_engine-linux-musl*",
             "output": ""
-          },
-          {
-            "input": "dist/apps/feeds/web/",
-            "glob": "**",
-            "output": "web"
           }
         ],
         "target": "node",
@@ -54,11 +50,7 @@
       },
       "dependsOn": [
         {
-          "target": "generate",
-          "dependencies": true
-        },
-        {
-          "target": "build",
+          "target": "prisma-generate",
           "dependencies": true
         }
       ]
@@ -70,11 +62,7 @@
       },
       "dependsOn": [
         {
-          "target": "push",
-          "dependencies": true
-        },
-        {
-          "target": "build",
+          "target": "prisma-push",
           "dependencies": true
         }
       ]

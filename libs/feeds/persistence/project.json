@@ -4,40 +4,31 @@
   "sourceRoot": "libs/feeds/persistence/src",
   "projectType": "library",
   "targets": {
-    "format": {
-      "executor": "@mgansler/nx-prisma:format",
-      "envFile": "apps/feeds/backend/.local.env"
+    "prisma-format": {
+      "executor": "@mgansler/nx-prisma:format"
     },
-    "generate": {
+    "prisma-generate": {
       "executor": "@mgansler/nx-prisma:generate"
     },
-    "migrate": {
+    "prisma-migrate": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "yarn prisma migrate dev --schema libs/feeds/persistence/src/lib/schema.prisma",
-        "envFile": "libs/feeds/persistence/.local.env"
+        "command": "yarn prisma migrate dev --schema libs/feeds/persistence/src/lib/schema.prisma"
       }
     },
-    "push": {
+    "prisma-push": {
       "executor": "@mgansler/nx-prisma:push",
       "dependsOn": [
         {
-          "target": "generate"
+          "target": "prisma-generate"
         }
       ]
     },
     "lint": {
       "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/feeds/persistence/**/*.ts"]
-      },
-      "outputs": ["{options.outputFile}"]
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/feeds/persistence"],
-      "options": {
-        "jestConfig": "libs/feeds/persistence/jest.config.ts"
       }
     }
   },

@@ -44,7 +44,7 @@
       },
       "dependsOn": [
         {
-          "target": "generate",
+          "target": "prisma-generate",
           "dependencies": true
         }
       ]
@@ -65,7 +65,7 @@
       },
       "dependsOn": [
         {
-          "target": "generate",
+          "target": "prisma-push",
           "dependencies": true
         }
       ]

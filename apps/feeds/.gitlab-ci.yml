@@ -26,10 +26,10 @@ feeds-build:
   tags:
     - docker
   script:
-    - yarn nx run feeds-backend:build:production
+    - yarn nx run feeds-app:build
   artifacts:
     paths:
-      - dist/apps/feeds/${FEEDS_APP}
+      - dist/apps/feeds
     expire_in: 1 hour
 
 feeds-package:
@@ -55,7 +55,7 @@ feeds-package:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - export DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds/${CI_COMMIT_REF_SLUG}:latest
   script:
-    - docker build -f apps/feeds/backend/Dockerfile -t ${DOCKER_IMAGE_NAME} .
+    - docker build -f apps/feeds/app/Dockerfile -t ${DOCKER_IMAGE_NAME} .
     - docker push ${DOCKER_IMAGE_NAME}
 
 feeds-deploy:

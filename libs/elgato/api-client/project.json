@@ -4,7 +4,7 @@
   "sourceRoot": "libs/elgato/api-client/src",
   "projectType": "library",
   "targets": {
-    "generate": {
+    "generate-api-client": {
       "executor": "nx:run-commands",
       "options": {
         "command": "yarn orval --config libs/elgato/api-client/orval.config.ts"
