@@ -62,6 +62,13 @@
       },
       "dependsOn": [
         {
+          "target": "docker"
+        },
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        },
+        {
           "target": "prisma-deploy",
           "dependencies": true
         }

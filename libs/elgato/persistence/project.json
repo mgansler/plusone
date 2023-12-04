@@ -10,6 +10,9 @@
     "prisma-generate": {
       "executor": "@mgansler/nx-prisma:generate"
     },
+    "prisma-deploy": {
+      "executor": "@mgansler/nx-prisma:deploy"
+    },
     "prisma-migrate": {
       "executor": "nx:run-commands",
       "options": {
