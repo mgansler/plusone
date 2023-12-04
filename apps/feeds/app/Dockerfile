@@ -8,3 +8,4 @@ COPY ./dist/apps/feeds/backend/yarn.lock .
 RUN yarn install --frozen-lockfile
 
 COPY ./dist/apps/feeds/backend .
+COPY ./dist/apps/feeds/web/ web

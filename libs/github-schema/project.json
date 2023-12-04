@@ -10,7 +10,7 @@
         "command": "curl https://docs.github.com/public/schema.docs.graphql -o libs/github-schema/src/schema.graphql"
       }
     },
-    "generate": {
+    "generate-api-client": {
       "executor": "nx:run-commands",
       "options": {
         "command": "yarn graphql-codegen --config libs/github-schema/codegen.yml"

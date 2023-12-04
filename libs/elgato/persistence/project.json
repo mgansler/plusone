@@ -4,23 +4,26 @@
   "sourceRoot": "libs/elgato/persistence/src",
   "projectType": "library",
   "targets": {
-    "format": {
+    "prisma-format": {
       "executor": "@mgansler/nx-prisma:format"
     },
-    "generate": {
+    "prisma-generate": {
       "executor": "@mgansler/nx-prisma:generate"
     },
-    "migrate": {
+    "prisma-deploy": {
+      "executor": "@mgansler/nx-prisma:deploy"
+    },
+    "prisma-migrate": {
       "executor": "nx:run-commands",
       "options": {
         "command": "yarn prisma migrate dev --schema libs/elgato/persistence/src/lib/schema.prisma"
       }
     },
-    "push": {
+    "prisma-push": {
       "executor": "@mgansler/nx-prisma:push",
       "dependsOn": [
         {
-          "target": "generate"
+          "target": "prisma-generate"
         }
       ]
     },

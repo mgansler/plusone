@@ -1,6 +1,11 @@
 {
   "$schema": "http://json-schema.org/schema",
   "executors": {
+    "deploy": {
+      "implementation": "./src/executors/deploy/executor",
+      "schema": "./src/executors/deploy/schema.json",
+      "description": "deploy executor"
+    },
     "format": {
       "implementation": "./src/executors/format/executor",
       "schema": "./src/executors/format/schema.json",

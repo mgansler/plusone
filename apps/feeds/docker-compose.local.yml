@@ -5,7 +5,7 @@ services:
     image: feeds-app
     build:
       context: ../../
-      dockerfile: apps/feeds/backend/Dockerfile
+      dockerfile: apps/feeds/app/Dockerfile
     restart: always
     ports:
       - '3333:3333'

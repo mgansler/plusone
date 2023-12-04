@@ -7,7 +7,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "docker build -t elgato-app -f apps/elgato/elgato/Dockerfile ."
+        "command": "docker build -t elgato-app -f apps/elgato/app/Dockerfile ."
       },
       "dependsOn": [
         {
@@ -17,7 +17,7 @@
       ],
       "configurations": {
         "macos": {
-          "command": "docker buildx build --platform linux/arm64/v8 -t elgato-app -f apps/elgato/elgato/Dockerfile ."
+          "command": "docker buildx build --platform linux/arm64/v8 -t elgato-app -f apps/elgato/app/Dockerfile ."
         }
       }
     }
