@@ -102,7 +102,6 @@ package:
     - e2e
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      when: always
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
   script:
@@ -115,7 +114,6 @@ package:
     - package
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      when: always
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
   before_script:
