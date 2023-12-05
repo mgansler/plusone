@@ -2,15 +2,14 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "types": ["node"]
+    "sourceMap": true,
+    "types": ["node", "@nx/react/typings/cssmodule.d.ts", "@nx/react/typings/image.d.ts", "vite/client"]
   },
-  "files": ["../../node_modules/@nx/react/typings/cssmodule.d.ts", "../../node_modules/@nx/react/typings/image.d.ts"],
   "exclude": [
     "cypress/**",
     "**/*.cy.tsx",
     "**/*.spec.ts",
     "**/*.spec.tsx",
-    "jest.config.ts",
     "cypress/**/*",
     "cypress.config.ts",
     "**/*.cy.ts",

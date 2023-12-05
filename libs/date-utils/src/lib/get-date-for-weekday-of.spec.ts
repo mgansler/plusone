@@ -1,12 +1,13 @@
+import { afterEach, beforeEach } from 'vitest'
 import { getDateForWeekdayOf } from './get-date-for-weekday-of'
 
 describe('getDateForWeekdayOf', () => {
-  beforeAll(() => {
-    jest.useFakeTimers()
-    jest.setSystemTime(new Date(Date.UTC(2021, 0, 1)))
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(Date.UTC(2021, 0, 1)))
   })
-  afterAll(() => {
-    jest.useRealTimers()
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   describe('this-week', () => {

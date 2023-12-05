@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  cacheDir: '../../../node_modules/.vite/elgato-frontend',
+  cacheDir: '../../../node_modules/.vite/vitest',
 
   server: {
     port: 4200,

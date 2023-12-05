@@ -34,7 +34,8 @@
       "@plusone/github-hooks": ["libs/github-hooks/src/index.ts"],
       "@plusone/github-schema": ["libs/github-schema/src/index.ts"],
       "@plusone/hooks": ["libs/hooks/src/index.ts"],
-      "@plusone/validated-query-factory": ["libs/validated-query-factory/src/index.ts"]
+      "@plusone/validated-query-factory": ["libs/validated-query-factory/src/index.ts"],
+      "vitest": ["libs/vitest/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

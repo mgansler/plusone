@@ -5,43 +5,66 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/webpack:webpack",
+      "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "babel",
-        "outputPath": "dist/apps/suite",
-        "index": "apps/suite/src/index.html",
-        "baseHref": "/",
-        "main": "apps/suite/src/main.tsx",
-        "polyfills": "apps/suite/src/polyfills.ts",
-        "tsConfig": "apps/suite/tsconfig.app.json",
-        "assets": ["apps/suite/src/favicon.ico", "apps/suite/src/assets"],
-        "styles": [],
-        "scripts": [],
-        "webpackConfig": "@nx/react/plugins/webpack"
+        "outputPath": "dist/apps/suite"
       },
       "configurations": {
-        "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/suite/src/environments/environment.ts",
-              "with": "apps/suite/src/environments/environment.prod.ts"
-            }
-          ],
-          "optimization": true,
-          "outputHashing": "all",
-          "sourceMap": false,
-          "namedChunks": false,
-          "extractLicenses": true,
-          "vendorChunk": false
-        },
         "development": {
-          "extractLicenses": false,
-          "optimization": false,
-          "sourceMap": true,
-          "vendorChunk": true
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
         }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "suite:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "suite:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "suite:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "suite:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "suite:build:development"
+        },
+        "production": {
+          "buildTarget": "suite:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/vitest"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/suite/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "package": {
@@ -72,37 +95,6 @@
             "DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/suite-app/${CI_COMMIT_REF_SLUG} docker compose -f apps/suite/docker-compose.deploy.yml up -d --remove-orphans"
           ]
         }
-      }
-    },
-    "serve": {
-      "executor": "@nx/webpack:dev-server",
-      "options": {
-        "buildTarget": "suite:build",
-        "hmr": true
-      },
-      "configurations": {
-        "production": {
-          "buildTarget": "suite:build:production",
-          "hmr": false
-        },
-        "development": {
-          "buildTarget": "suite:build:development"
-        }
-      },
-      "defaultConfiguration": "development"
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "options": {
-        "lintFilePatterns": ["apps/suite/**/*.{ts,tsx,js,jsx}"]
-      },
-      "outputs": ["{options.outputFile}"]
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/apps/suite"],
-      "options": {
-        "jestConfig": "apps/suite/jest.config.ts"
       }
     }
   },

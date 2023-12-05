@@ -12,10 +12,11 @@
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/components"],
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "jestConfig": "libs/components/jest.config.ts"
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/libs/components"
       }
     },
     "component-test": {
