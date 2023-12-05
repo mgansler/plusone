@@ -2,7 +2,7 @@ version: '3'
 
 services:
   suite:
-    image: ${APP_SUITE_DOCKER_IMAGE}
+    image: ${DOCKER_IMAGE_NAME}
     labels:
       - 'traefik.http.routers.suite.rule=Host(`suite.martingansler.de`)'
       - 'traefik.http.routers.suite.tls=true'

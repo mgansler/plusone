@@ -9,6 +9,8 @@ describe('advent-of-code-2021', () => {
 
   it('should solve day 1', () => {
     cy.findByRole('link', { name: '01' }).click()
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.location('pathname', { timeout: 10_000 }).should('eq', '/days/01').wait(500)
     cy.fixture('01.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()

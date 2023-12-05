@@ -77,7 +77,7 @@
     "docker": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "docker-compose -f apps/feeds/docker-compose.database.yml up -d"
+        "command": "docker compose -f apps/feeds/docker-compose.database.yml up -d"
       }
     },
     "lint": {

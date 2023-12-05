@@ -4,17 +4,38 @@
   "sourceRoot": "apps/elgato/elgato",
   "projectType": "application",
   "targets": {
-    "build": {
+    "package": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "echo Building feeds-web and feeds-backend"
+        "commands": ["docker build -t ${DOCKER_IMAGE_NAME} -f apps/feeds/app/Dockerfile ."],
+        "parallel": false
       },
-      "dependsOn": [
-        {
-          "target": "build",
-          "dependencies": true
+      "configurations": {
+        "ci": {
+          "commands": [
+            "docker build -t ${CI_REGISTRY_IMAGE}/feeds-app/${CI_COMMIT_REF_SLUG} -f apps/feeds/app/Dockerfile .",
+            "docker push ${CI_REGISTRY_IMAGE}/feeds-app/${CI_COMMIT_REF_SLUG}:latest"
+          ]
+        },
+        "macos": {
+          "commands": ["docker buildx build --platform linux/arm64/v8 -t feeds-app -f apps/feeds/app/Dockerfile ."]
         }
-      ]
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["docker compose -f apps/feeds/docker-compose.deploy.yml up -d --remove-orphans"],
+        "parallel": false
+      },
+      "configurations": {
+        "ci": {
+          "commands": [
+            "DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds-app/${CI_COMMIT_REF_SLUG} docker compose -f apps/feeds/docker-compose.deploy.yml pull",
+            "DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds-app/${CI_COMMIT_REF_SLUG} docker compose -f apps/feeds/docker-compose.deploy.yml up -d --remove-orphans"
+          ]
+        }
+      }
     }
   },
   "tags": [],
