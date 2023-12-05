@@ -25,6 +25,5 @@ lint:
     - yarn nx run-many --target=lint --all --parallel 8
 
 include:
-  - /apps/elgato/.gitlab-ci.yml
   - /apps/feeds/.gitlab-ci.yml
   - /apps/suite/.gitlab-ci.yml
