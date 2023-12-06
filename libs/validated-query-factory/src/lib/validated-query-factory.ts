@@ -25,10 +25,10 @@ export class ValidatedClientBuilder<TSchema extends ZodType<unknown, unknown, un
 }
 
 class FlexibleBuilder<TSchema extends ZodType<unknown, unknown, unknown>, TRequiredArgs extends unknown[]> {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   constructor(
     private readonly schema: TSchema,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     private readonly fetchWrapper: FetchWrapper<TRequiredArgs>,
   ) {}
 
