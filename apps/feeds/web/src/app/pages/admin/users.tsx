@@ -38,9 +38,7 @@ export function Users() {
   return (
     <div>
       <Link to={'..'}>up</Link>
-      {users?.map((user) => (
-        <User key={user.id} user={user} />
-      ))}
+      {users?.map((user) => <User key={user.id} user={user} />)}
     </div>
   )
 }

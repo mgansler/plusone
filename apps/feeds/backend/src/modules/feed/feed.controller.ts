@@ -32,7 +32,10 @@ import { FeedService } from './feed.service'
 @ApiTags('feed')
 @Controller('feed')
 export class FeedController {
-  constructor(private readonly feedService: FeedService, private readonly tagService: TagService) {}
+  constructor(
+    private readonly feedService: FeedService,
+    private readonly tagService: TagService,
+  ) {}
 
   @ApiOperation({ operationId: 'discover-feed' })
   @ApiQuery({ name: 'url', description: 'URL of the website where a feed should be discovered.', type: String })

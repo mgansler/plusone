@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common'
 
 import { PrismaService } from '@plusone/feeds-persistence'
 
-import { ArticleService } from './article.service'
 import { ArticleController } from './article.controller'
+import { ArticleService } from './article.service'
 
 @Module({
   imports: [],

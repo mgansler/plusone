@@ -14,7 +14,10 @@ import { GroupWithDevicesResponseDto } from './dto/group-with-devices-response.d
 export class GroupService {
   private logger = new Logger(GroupService.name)
 
-  constructor(private readonly prismaService: PrismaService, private readonly deviceService: DeviceService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly deviceService: DeviceService,
+  ) {}
 
   async getAllGroups() {
     return this.prismaService.group.findMany({ include: { devices: true } })

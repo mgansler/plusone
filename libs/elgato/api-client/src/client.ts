@@ -4,7 +4,6 @@
  * Elgato API
  * OpenAPI spec version: 0.1
  */
-import { useMutation, useQuery } from '@tanstack/react-query'
 import type {
   MutationFunction,
   QueryFunction,
@@ -13,7 +12,9 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
+
 export interface LocationDataResponseDto {
   dawn: string
   /** Time between sunrise and sunset in seconds. */

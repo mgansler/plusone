@@ -79,9 +79,7 @@ export function Tags() {
         </MuiLink>
         <Divider />
         <Stack direction={'row'} spacing={1}>
-          {data?.map((tag) => (
-            <TagChip key={tag.id} tag={tag} />
-          ))}
+          {data?.map((tag) => <TagChip key={tag.id} tag={tag} />)}
         </Stack>
         <Divider />
         <AddTag />

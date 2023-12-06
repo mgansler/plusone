@@ -73,9 +73,7 @@ export function FeedTags() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack gap={2}>
         <Stack direction={'row'} spacing={1}>
-          {currentTags?.map((tag) => (
-            <RemovableTag key={tag.id} tag={tag} />
-          ))}
+          {currentTags?.map((tag) => <RemovableTag key={tag.id} tag={tag} />)}
         </Stack>
         <Autocomplete
           disablePortal={true}

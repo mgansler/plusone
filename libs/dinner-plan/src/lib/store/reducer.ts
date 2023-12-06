@@ -1,5 +1,5 @@
-import type { DinnerPlanActions, DinnerPlanState } from './types'
 import { addDish, planDish, removeDish } from './actions'
+import type { DinnerPlanActions, DinnerPlanState } from './types'
 
 export function dinnerPlanReducer(state: DinnerPlanState, action: DinnerPlanActions): DinnerPlanState {
   switch (action.type) {
