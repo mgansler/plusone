@@ -102,7 +102,7 @@ package:
     - e2e
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME !~ /^renovate/
       when: manual
     - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^renovate/
       when: never
@@ -116,7 +116,7 @@ package:
     - package
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME !~ /^renovate/
       when: manual
     - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^renovate/
       when: never
