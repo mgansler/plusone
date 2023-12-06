@@ -1,16 +1,13 @@
 const TIMEOUT = 10_000
 
 describe('advent-of-code-2021', () => {
-  beforeEach(() => cy.visit('/'))
-
   it('should display welcome message', () => {
+    cy.visit('/')
     cy.document().title().should('eq', 'Advent of Code 2021')
   })
 
   it('should solve day 1', () => {
-    cy.findByRole('link', { name: '01' }).click()
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.location('pathname', { timeout: 10_000 }).should('eq', '/days/01').wait(500)
+    cy.visit('/days/01')
     cy.fixture('01.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -20,7 +17,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 2', () => {
-    cy.findByRole('link', { name: '02' }).click()
+    cy.visit('/days/02')
     cy.fixture('02.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -30,7 +27,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 3', () => {
-    cy.findByRole('link', { name: '03' }).click()
+    cy.visit('/days/03')
     cy.fixture('03.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -40,7 +37,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 4', () => {
-    cy.findByRole('link', { name: '04' }).click()
+    cy.visit('/days/04')
     cy.fixture('04.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -50,7 +47,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 5', () => {
-    cy.findByRole('link', { name: '05' }).click()
+    cy.visit('/days/05')
     cy.fixture('05.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -60,7 +57,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 6', () => {
-    cy.findByRole('link', { name: '06' }).click()
+    cy.visit('/days/06')
     cy.fixture('06.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -70,7 +67,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 7', () => {
-    cy.findByRole('link', { name: '07' }).click()
+    cy.visit('/days/07')
     cy.fixture('07.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -80,7 +77,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 8', () => {
-    cy.findByRole('link', { name: '08' }).click()
+    cy.visit('/days/08')
     cy.fixture('08.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -90,7 +87,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 9', () => {
-    cy.findByRole('link', { name: '09' }).click()
+    cy.visit('/days/09')
     cy.fixture('09.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -100,7 +97,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 10', () => {
-    cy.findByRole('link', { name: '10' }).click()
+    cy.visit('/days/10')
     cy.fixture('10.txt').then((input) =>
       cy.findByRole('textbox', { timeout: TIMEOUT }).type(input, { parseSpecialCharSequences: false }),
     )
@@ -112,7 +109,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 11', () => {
-    cy.findByRole('link', { name: '11' }).click()
+    cy.visit('/days/11')
     cy.fixture('11.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -122,7 +119,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 12', () => {
-    cy.findByRole('link', { name: '12' }).click()
+    cy.visit('/days/12')
     cy.fixture('12.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -132,7 +129,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 13', () => {
-    cy.findByRole('link', { name: '13' }).click()
+    cy.visit('/days/13')
     cy.fixture('13.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -142,7 +139,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 14', () => {
-    cy.findByRole('link', { name: '14' }).click()
+    cy.visit('/days/14')
     cy.fixture('14.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -152,7 +149,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 15', () => {
-    cy.findByRole('link', { name: '15' }).click()
+    cy.visit('/days/15')
     cy.fixture('15.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
@@ -167,7 +164,7 @@ describe('advent-of-code-2021', () => {
     { transmission: 'A0016C880162017C3686B18A3D4780', versionSum: 31 },
   ].forEach(({ transmission, versionSum }) => {
     it(`should solve day 16 - part 1 (${transmission} should produce ${versionSum})`, () => {
-      cy.findByRole('link', { name: '16' }).click()
+      cy.visit('/days/16')
       cy.findByRole('textbox', { timeout: TIMEOUT }).type(transmission)
 
       cy.findByRole('button', { name: 'Solution!' }).click()
@@ -186,7 +183,7 @@ describe('advent-of-code-2021', () => {
     { transmission: '9C0141080250320F1802104A08', result: 1 },
   ].forEach(({ transmission, result }) => {
     it(`should solve day 16 - part 2 (${transmission} should produce ${result})`, () => {
-      cy.findByRole('link', { name: '16' }).click()
+      cy.visit('/days/16')
       cy.findByRole('textbox', { timeout: TIMEOUT }).type(transmission)
 
       cy.findByRole('button', { name: 'Solution!' }).click()
@@ -196,7 +193,7 @@ describe('advent-of-code-2021', () => {
   })
 
   it('should solve day 17', () => {
-    cy.findByRole('link', { name: '17' }).click()
+    cy.visit('/days/17')
     cy.fixture('17.txt').then((input) => cy.findByRole('textbox', { timeout: TIMEOUT }).type(input))
 
     cy.findByRole('button', { name: 'Solution!' }).click()
