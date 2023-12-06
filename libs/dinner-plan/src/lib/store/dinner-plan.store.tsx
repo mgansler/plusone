@@ -3,8 +3,8 @@ import { createContext, useContext, useEffect, useReducer } from 'react'
 
 import { useLocalStorage } from '@plusone/hooks'
 
-import type { DinnerPlanActions, DinnerPlanReducer, DinnerPlanState, Dish } from './types'
 import { dinnerPlanReducer } from './reducer'
+import type { DinnerPlanActions, DinnerPlanReducer, DinnerPlanState, Dish } from './types'
 
 const defaultState: DinnerPlanState = {
   plan: {},

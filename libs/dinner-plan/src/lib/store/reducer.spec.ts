@@ -1,6 +1,6 @@
-import type { DinnerPlanState } from './types'
-import { dinnerPlanReducer } from './reducer'
 import type { AddDish, PlanDish, RemoveDish } from './actions'
+import { dinnerPlanReducer } from './reducer'
+import type { DinnerPlanState } from './types'
 
 describe('reducer', () => {
   const initialState = Object.freeze<DinnerPlanState>({

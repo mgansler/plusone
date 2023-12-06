@@ -13,7 +13,10 @@ import { SunriseSunsetResponseDto } from './dto/sunrise-sunset-response.dto'
 export class LocationService {
   private logger = new Logger(LocationService.name)
 
-  constructor(private readonly prismaService: PrismaService, private readonly httpService: HttpService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly httpService: HttpService,
+  ) {}
 
   async updateLocation({ name, longitude, latitude }: LocationUpdateRequestDto) {
     await this.prismaService.$transaction(async (tx) => {

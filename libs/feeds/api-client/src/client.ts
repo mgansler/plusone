@@ -4,7 +4,6 @@
  * Feeds API
  * OpenAPI spec version: 0.1
  */
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import type {
   InfiniteData,
   MutationFunction,
@@ -16,7 +15,9 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
+
 export type HealthControllerGetHealthStatus503Info = {
   [key: string]: {
     status?: string
@@ -432,7 +433,14 @@ export const getFindArticlesInfiniteQueryOptions = <
   const queryFn: QueryFunction<Awaited<ReturnType<typeof findArticles>>, QueryKey, FindArticlesParams['cursor']> = ({
     signal,
     pageParam,
-  }) => findArticles({ ...params, cursor: pageParam || params?.['cursor'] }, signal)
+  }) =>
+    findArticles(
+      {
+        ...params,
+        cursor: pageParam || params?.['cursor'],
+      },
+      signal,
+    )
 
   return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
     Awaited<ReturnType<typeof findArticles>>,

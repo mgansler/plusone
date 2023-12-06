@@ -16,14 +16,18 @@ export const action: ActionFunction = async ({ request }) => {
 
   let partOne = 0
   for (let i = 0; i < values.length - 1; i++) {
-    if (values[i] < values[i + 1]) partOne++
+    if (values[i] < values[i + 1]) {
+      partOne++
+    }
   }
 
   let partTwo = 0
   for (let i = 0; i < values.length - 3; i++) {
     const firstWindow = values[i] + values[i + 1] + values[i + 2]
     const secondWindow = values[i + 1] + values[i + 2] + values[i + 3]
-    if (firstWindow < secondWindow) partTwo++
+    if (firstWindow < secondWindow) {
+      partTwo++
+    }
   }
 
   return json({ partOne, partTwo })

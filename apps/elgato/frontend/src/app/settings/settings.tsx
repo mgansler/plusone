@@ -51,9 +51,7 @@ export function Settings() {
         ))}
 
         <h4>Devices</h4>
-        {devices?.map((device: DeviceResponseDto) => (
-          <DeviceSettings key={device.id} device={device} />
-        ))}
+        {devices?.map((device: DeviceResponseDto) => <DeviceSettings key={device.id} device={device} />)}
 
         <input type={'text'} ref={newGroupNameRef} />
         <input type={'checkbox'} ref={newGroupIsRoomRef} />

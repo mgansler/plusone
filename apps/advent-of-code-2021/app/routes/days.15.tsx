@@ -28,10 +28,18 @@ function initDistanceMap(map: Map): Map {
 
 function getNeighbours({ x, y }: Point, visited: Visited): Point[] {
   const neighbours: Point[] = []
-  if (x > 0) neighbours.push({ x: x - 1, y })
-  if (x < visited.length - 1) neighbours.push({ x: x + 1, y })
-  if (y > 0) neighbours.push({ x, y: y - 1 })
-  if (y < visited.length - 1) neighbours.push({ x, y: y + 1 })
+  if (x > 0) {
+    neighbours.push({ x: x - 1, y })
+  }
+  if (x < visited.length - 1) {
+    neighbours.push({ x: x + 1, y })
+  }
+  if (y > 0) {
+    neighbours.push({ x, y: y - 1 })
+  }
+  if (y < visited.length - 1) {
+    neighbours.push({ x, y: y + 1 })
+  }
   return neighbours.filter(({ x, y }) => !visited[y][x])
 }
 

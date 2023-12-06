@@ -33,7 +33,10 @@ type PrismaPagination = {
 export class ArticleService {
   private logger = new Logger(ArticleService.name)
 
-  constructor(private readonly prismaService: PrismaService, private readonly configService: ConfigService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly configService: ConfigService,
+  ) {}
 
   async create(item: Item, feed: Feed) {
     const article = await this.itemToArticle(feed.feedUrl, item)

@@ -1,5 +1,5 @@
-import { getWeekOfYearFor } from './get-week-of-year-for'
 import { getDateFor } from './get-date-for'
+import { getWeekOfYearFor } from './get-week-of-year-for'
 
 describe('getWeekOfYear', () => {
   describe('this-week', () => {

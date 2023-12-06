@@ -35,18 +35,22 @@ PRAGMA foreign_keys=on;
 
 -- RedefineTables
 PRAGMA foreign_keys=OFF;
-CREATE TABLE "new_Device" (
-    "id" TEXT NOT NULL PRIMARY KEY,
-    "name" TEXT NOT NULL,
-    "fqdn" TEXT NOT NULL,
-    "host" TEXT NOT NULL,
-    "port" INTEGER NOT NULL,
-    "lastSeen" DATETIME,
-    "sunrise" BOOLEAN NOT NULL DEFAULT false,
-    "sunset" BOOLEAN NOT NULL DEFAULT false
+CREATE TABLE "new_Device"
+(
+  "id"       TEXT    NOT NULL PRIMARY KEY,
+  "name"     TEXT    NOT NULL,
+  "fqdn"     TEXT    NOT NULL,
+  "host"     TEXT    NOT NULL,
+  "port"     INTEGER NOT NULL,
+  "lastSeen" DATETIME,
+  "sunrise"  BOOLEAN NOT NULL DEFAULT false,
+  "sunset"   BOOLEAN NOT NULL DEFAULT false
 );
-INSERT INTO "new_Device" ("fqdn", "host", "id", "lastSeen", "name", "port") SELECT "fqdn", "host", "id", "lastSeen", "name", "port" FROM "Device";
+INSERT INTO "new_Device" ("fqdn", "host", "id", "lastSeen", "name", "port")
+SELECT "fqdn", "host", "id", "lastSeen", "name", "port"
+FROM "Device";
 DROP TABLE "Device";
-ALTER TABLE "new_Device" RENAME TO "Device";
+ALTER TABLE "new_Device"
+  RENAME TO "Device";
 PRAGMA foreign_key_check;
 PRAGMA foreign_keys=ON;

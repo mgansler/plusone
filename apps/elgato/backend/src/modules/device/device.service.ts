@@ -24,7 +24,10 @@ export class DeviceService {
   private logger = new Logger(DeviceService.name)
   private bonjour = new Bonjour()
 
-  constructor(private readonly prismaService: PrismaService, private readonly elgatoService: ElgatoService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly elgatoService: ElgatoService,
+  ) {}
 
   async onModuleInit() {
     const knownDevices = await this.prismaService.device.count()

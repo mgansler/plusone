@@ -39,9 +39,7 @@ export function GroupSettings() {
       <h3>Group Settings {group?.name}</h3>
       <button onClick={() => navigate(-1)}>Back</button>
 
-      {group?.devices.map((device) => (
-        <div key={device.id}>{device.name}</div>
-      ))}
+      {group?.devices.map((device) => <div key={device.id}>{device.name}</div>)}
 
       <FilteredDevices group={group as GroupWithDevicesResponseDto} devices={data?.devices as DeviceResponseDto[]} />
     </>

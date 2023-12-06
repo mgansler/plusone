@@ -67,14 +67,17 @@ export const action: ActionFunction = async ({ request }) => {
   const separator = rawInput.indexOf('\r') > 0 ? '\r\n' : '\n'
   const lines = rawInput.split(separator).filter((line) => line.length)
 
-  const edges = lines.reduce((acc, currentValue) => {
-    const [start, end] = currentValue.split('-')
-    return {
-      ...acc,
-      [start]: [...(acc[start] || []), end],
-      [end]: [...(acc[end] || []), start],
-    }
-  }, {} as Record<string, string[]>)
+  const edges = lines.reduce(
+    (acc, currentValue) => {
+      const [start, end] = currentValue.split('-')
+      return {
+        ...acc,
+        [start]: [...(acc[start] || []), end],
+        [end]: [...(acc[end] || []), start],
+      }
+    },
+    {} as Record<string, string[]>,
+  )
 
   return json({
     partOne: countPathsPartOne(edges, 'start'),
