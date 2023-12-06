@@ -15,9 +15,9 @@ stages:
     - docker
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      when: always
+      when: on_success
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: always
+      when: on_success
   before_script:
     - yarn install --frozen-lockfile
     - NX_HEAD=$CI_COMMIT_SHA
