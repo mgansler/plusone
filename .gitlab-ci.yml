@@ -19,6 +19,7 @@ stages:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: always
   before_script:
+    - env
     - yarn install --frozen-lockfile
     - NX_HEAD=$CI_COMMIT_SHA
     - NX_BASE=${CI_MERGE_REQUEST_DIFF_BASE_SHA:-$CI_COMMIT_BEFORE_SHA}
