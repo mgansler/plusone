@@ -6,20 +6,17 @@ describe('feeds', () => {
   it('should discover and add a feed', () => {
     cy.loginFreshUser()
 
-    cy.findByText('iskall85').should('not.exist')
+    cy.findByText('Feed 00').should('not.exist')
 
     cy.findByRole('link', { name: 'add feed' }).click()
 
-    cy.findByRole('textbox', { name: 'url' }).type('https://www.youtube.com/c/iskall85/videos')
+    cy.findByRole('textbox', { name: 'url' }).type('http://localhost:3334/feeds/discover.html')
     cy.findByRole('button', { name: 'search' }).click()
-    cy.findByRole('textbox', { name: 'title', timeout: 20_000 }).should('have.value', 'iskall85')
-    cy.findByRole('textbox', { name: 'feed-url' }).should(
-      'have.value',
-      'http://www.youtube.com/feeds/videos.xml?channel_id=UCZ9x-z3iOnIbJxVpm1rsu2A',
-    )
+    cy.findByRole('textbox', { name: 'title', timeout: 20_000 }).should('have.value', 'Feed Discover')
+    cy.findByRole('textbox', { name: 'feed-url' }).should('have.value', 'http://localhost:3334/feeds/discover.xml')
     cy.findByRole('button', { name: /save/i }).click()
 
-    cy.findByRole('button', { name: /iskall85/, timeout: 20_000 }).should('be.visible')
+    cy.findByRole('button', { name: /Feed Discover/, timeout: 20_000 }).should('be.visible')
   })
 
   it('should allow adding a feed manually and mark all articles as read', () => {
@@ -29,13 +26,13 @@ describe('feeds', () => {
 
     cy.findByRole('link', { name: 'add feed' }).click()
 
-    cy.findByRole('textbox', { name: 'url' }).type('https://xkcd.com')
-    cy.findByRole('textbox', { name: 'title' }).type('xkcd.com')
-    cy.findByRole('textbox', { name: 'feed-url' }).type('https://xkcd.com/rss.xml')
+    cy.findByRole('textbox', { name: 'url' }).type('http://localhost:3334/feeds/manual.html')
+    cy.findByRole('textbox', { name: 'title' }).type('Feed Manual')
+    cy.findByRole('textbox', { name: 'feed-url' }).type('http://localhost:3334/feeds/manual.xml')
 
     cy.findByRole('button', { name: 'save' }).click()
 
-    cy.findByRole('button', { name: /xkcd.com/, timeout: 20_000 }).click()
+    cy.findByRole('button', { name: /Feed Manual/, timeout: 20_000 }).click()
 
     cy.get('article').findAllByTestId('CheckBoxOutlinedIcon').should('have.length', 0)
     let articleCount: number
@@ -57,14 +54,14 @@ describe('feeds', () => {
   })
 
   it('should handle failing to add an existing feed', () => {
-    cy.addHeiseFeedToDefaultUser()
+    cy.addFeedExistingToDefaultUser()
     cy.login()
 
     cy.findByRole('link', { name: 'add feed' }).click()
 
-    cy.findByRole('textbox', { name: 'url' }).type('https://heise.de')
-    cy.findByRole('textbox', { name: 'title' }).type('heise online News')
-    cy.findByRole('textbox', { name: 'feed-url' }).type('https://www.heise.de/rss/heise.rdf')
+    cy.findByRole('textbox', { name: 'url' }).type('http://localhost:3334/feeds/existing.html')
+    cy.findByRole('textbox', { name: 'title' }).type('Feed Existing')
+    cy.findByRole('textbox', { name: 'feed-url' }).type('http://localhost:3334/feeds/existing.xml')
     cy.findByRole('button', { name: 'save' }).click()
 
     cy.on('uncaught:exception', (err) => {
@@ -88,12 +85,12 @@ describe('feeds', () => {
     cy.findByRole('link', { name: 'add feed' }).click()
 
     cy.findByRole('textbox', { name: 'import' }).type(
-      '{{}"title": "EK2","feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCby13HqmxFqWEYeHUG72TQw"},{{}"title": "ComputerBase","feedUrl": "https://www.computerbase.de/rss/news.xml"}',
+      '{{}"title": "Multiple 01","feedUrl": "http://localhost:3334/feeds/multiple-01.xml"},{{}"title": "Multiple 02","feedUrl": "http://localhost:3334/feeds/multiple-02.xml"}',
     )
 
     cy.findByRole('button', { name: 'import' }).click()
 
-    cy.findByRole('button', { name: /EK2/, timeout: 20_000 }).should('be.visible')
-    cy.findByRole('button', { name: /ComputerBase/, timeout: 20_000 }).should('be.visible')
+    cy.findByRole('button', { name: /Multiple 01/, timeout: 20_000 }).should('be.visible')
+    cy.findByRole('button', { name: /Multiple 02/, timeout: 20_000 }).should('be.visible')
   })
 })
