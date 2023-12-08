@@ -37,13 +37,21 @@
     "serve-all": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["nx run feeds-web:serve --watch", "nx run feeds-backend:serve --watch"],
+        "commands": [
+          "nx run feeds-dummy-rss-server:serve --watch",
+          "nx run feeds-web:serve --watch",
+          "nx run feeds-backend:serve --watch"
+        ],
         "parallel": true,
         "readyWhen": "Application is running on"
       },
       "configurations": {
         "production": {
-          "commands": ["nx run feeds-web:serve:production --watch", "nx run feeds-backend:serve:production --watch"]
+          "commands": [
+            "nx run feeds-dummy-rss-server:serve --watch",
+            "nx run feeds-web:serve:production --watch",
+            "nx run feeds-backend:serve:production --watch"
+          ]
         }
       }
     },

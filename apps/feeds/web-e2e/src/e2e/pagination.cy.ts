@@ -4,13 +4,13 @@ describe('feeds-web', () => {
   })
 
   it('should load pages of articles', () => {
-    cy.addHeiseFeedToDefaultUser()
+    cy.addFeedPaginationToDefaultUser()
     cy.forceFetchFeeds()
     cy.login()
 
-    cy.findByRole('button', { name: 'heise online News' }).click()
+    cy.findByRole('button', { name: 'Feed Pagination' }).click()
     cy.findAllByRole('article').should('have.length', 20)
     cy.findByRole('button', { name: /more/i }).click()
-    cy.findAllByRole('article').should('have.length', 40)
+    cy.findAllByRole('article').should('have.length', 25)
   })
 })

@@ -25,21 +25,21 @@ export class DiscoverResponseDto implements DiscoverResponse {
 
 export class FeedDiscoverDto implements Pick<FeedInput, 'url'> {
   @ApiProperty()
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   url: string
 }
 
 export class FeedInputDto implements FeedInput {
   @ApiProperty({ required: false })
   @ValidateIf((o) => typeof o.url !== 'undefined')
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   url?: string
 
   @ApiProperty()
   title?: string
 
   @ApiProperty()
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   feedUrl: string
 }
 

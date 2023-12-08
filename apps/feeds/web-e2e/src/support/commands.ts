@@ -10,7 +10,9 @@ declare namespace Cypress {
 
     loginAdmin(): void
 
-    addHeiseFeedToDefaultUser(): void
+    addFeedExistingToDefaultUser(): void
+
+    addFeedPaginationToDefaultUser(): void
   }
 }
 
@@ -61,7 +63,7 @@ Cypress.Commands.add('loginAdmin', () => {
   cy.location('pathname', { timeout: 10_000 }).should('eq', '/admin')
 })
 
-Cypress.Commands.add('addHeiseFeedToDefaultUser', () => {
+Cypress.Commands.add('addFeedExistingToDefaultUser', () => {
   cy.request({
     method: 'POST',
     url: '/api/authentication/register',
@@ -75,9 +77,32 @@ Cypress.Commands.add('addHeiseFeedToDefaultUser', () => {
       url: '/api/feed',
       auth: { bearer: resp.body.access_token },
       body: {
-        title: 'heise online News',
-        url: 'https://heise.de',
-        feedUrl: 'https://www.heise.de/rss/heise.rdf',
+        title: 'Feed Existing',
+        url: 'http://localhost:3334/feeds/existing.html',
+        feedUrl: 'http://localhost:3334/feeds/existing.xml',
+      },
+      failOnStatusCode: false,
+    })
+  })
+})
+
+Cypress.Commands.add('addFeedPaginationToDefaultUser', () => {
+  cy.request({
+    method: 'POST',
+    url: '/api/authentication/register',
+    body: { username: 'user', password: 'just_secret' },
+    failOnStatusCode: false,
+  })
+
+  cy.request('POST', '/api/authentication/login', { username: 'user', password: 'just_secret' }).then((resp) => {
+    cy.request({
+      method: 'POST',
+      url: '/api/feed',
+      auth: { bearer: resp.body.access_token },
+      body: {
+        title: 'Feed Pagination',
+        url: 'http://localhost:3334/feeds/pagination.html',
+        feedUrl: 'http://localhost:3334/feeds/pagination.xml',
       },
       failOnStatusCode: false,
     })
