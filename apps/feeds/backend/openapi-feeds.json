@@ -1,0 +1,1386 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/article/mark-articles-read": {
+      "post": {
+        "operationId": "mark-articles-read",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "s",
+            "required": false,
+            "in": "query",
+            "description": "The string that the article should match.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "f",
+            "required": false,
+            "in": "query",
+            "description": "The id of the feed where all articles should be marked as read.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All articles have been marked as read."
+          }
+        },
+        "tags": ["article"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/article/{articleId}": {
+      "post": {
+        "operationId": "toggle-unread",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "articleId",
+            "required": true,
+            "in": "path",
+            "description": "The id of the article.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArticleToggleUnreadDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The read status of article has been toggled.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["article"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/article/{articleId}/star": {
+      "put": {
+        "operationId": "star-article",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "articleId",
+            "required": true,
+            "in": "path",
+            "description": "The id of the article.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StarArticleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": ["article"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/article/find": {
+      "get": {
+        "operationId": "find-articles",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "s",
+            "required": false,
+            "in": "query",
+            "description": "The string that the article should match.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "starred",
+            "required": false,
+            "in": "query",
+            "description": "Should articles appear in chronically ascending or descending order.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "r",
+            "required": false,
+            "in": "query",
+            "description": "Should read articles be included.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Should articles appear in chronically ascending or descending order.",
+            "schema": {
+              "$ref": "#/components/schemas/Sort"
+            }
+          },
+          {
+            "name": "f",
+            "required": false,
+            "in": "query",
+            "description": "The id of the feed this query should be limited to.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor of the last article for pagination.",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of articles matching the provided search string.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedArticleResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["article"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/article/recentlyRead": {
+      "get": {
+        "operationId": "recently-read-articles",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of recently read articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ArticleResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["article"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/authentication/login": {
+      "post": {
+        "operationId": "login",
+        "summary": "",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "The username and password of the user that wants to login.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tokens that can be used to access the other endpoints.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["authentication"]
+      }
+    },
+    "/api/authentication/logout": {
+      "get": {
+        "operationId": "logout",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["authentication"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/authentication/register": {
+      "post": {
+        "operationId": "register",
+        "summary": "",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRegistrationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User information after registration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["authentication"]
+      }
+    },
+    "/api/authentication/profile": {
+      "get": {
+        "operationId": "profile",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["authentication"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/authentication/refresh": {
+      "get": {
+        "operationId": "refresh",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Tokens that can be used to access the other endpoints.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["authentication"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/boot-info": {
+      "get": {
+        "operationId": "boot-info",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Configuration for the application",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BootInfoDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["boot-info"]
+      }
+    },
+    "/api/feed/discover": {
+      "post": {
+        "operationId": "discover-feed",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "url",
+            "required": true,
+            "in": "query",
+            "description": "URL of the website where a feed should be discovered.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Metadata for feed that has been discovered.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoverResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["feed"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/feed": {
+      "post": {
+        "operationId": "add-feed",
+        "summary": "",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Required information to create a feed.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedInputDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Metadata of the feed that has been created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["feed"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "get-user-feeds",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Metadata of all feeds.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserFeedResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["feed"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/feed/import": {
+      "post": {
+        "operationId": "import-feeds",
+        "summary": "",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Required information to create a feed.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/FeedInputDto"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": ["feed"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/feed/all": {
+      "get": {
+        "operationId": "get-feeds",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Metadata of all feeds.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FeedResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["feed"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/feed/{id}/settings": {
+      "get": {
+        "operationId": "get-feed-settings",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The id of the feed.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Settings for feed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedSettingsResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["feed"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "update-feed-settings",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The id of the feed.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFeedSettingsInputDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["feed"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/feed/{id}/tags": {
+      "get": {
+        "operationId": "get-feed-tags",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The id of the feed.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Settings for feed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TagResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["feed"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "tag-feed",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The id of the feed.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Description of the tag to add to a feed.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TagFeedInputDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": ["feed"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "untag-feed",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The id of the feed.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Description of the tag to remove a feed.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TagFeedInputDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["feed"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/tag": {
+      "get": {
+        "operationId": "get-tags",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Get all tags for the user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TagResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["tag"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "add-tag",
+        "summary": "",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Request Body to create a new tag",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TagInputDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Metadata of the feed that has been created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["tag"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/tag/{id}": {
+      "delete": {
+        "operationId": "remove-tag",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The id of the tag.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["tag"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/health": {
+      "get": {
+        "operationId": "HealthController_getHealthStatus",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The Health Check is successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {},
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The Health Check is not successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        },
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["health"]
+      }
+    },
+    "/api/scheduling/now": {
+      "post": {
+        "operationId": "force-fetching",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Fetching all feeds has been triggered."
+          }
+        },
+        "tags": ["scheduling"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/user": {
+      "get": {
+        "operationId": "get-users",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all users.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["user"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/user/{userId}": {
+      "delete": {
+        "operationId": "delete-user",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "description": "The id of the user to be deleted",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User has been deleted"
+          }
+        },
+        "tags": ["user"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Feeds API",
+    "description": "",
+    "version": "0.1",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "ArticleToggleUnreadDto": {
+        "type": "object",
+        "properties": {
+          "unread": {
+            "type": "boolean"
+          }
+        },
+        "required": ["unread"]
+      },
+      "ArticleDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "guid": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": ["content", "date", "guid", "id", "link", "title"]
+      },
+      "ArticleResponseDto": {
+        "type": "object",
+        "properties": {
+          "article": {
+            "$ref": "#/components/schemas/ArticleDto"
+          },
+          "cursor": {
+            "type": "number"
+          },
+          "starred": {
+            "type": "boolean"
+          },
+          "unread": {
+            "type": "boolean"
+          }
+        },
+        "required": ["article", "cursor", "starred", "unread"]
+      },
+      "StarArticleDto": {
+        "type": "object",
+        "properties": {
+          "starred": {
+            "type": "boolean"
+          }
+        },
+        "required": ["starred"]
+      },
+      "Sort": {
+        "type": "string",
+        "enum": ["desc", "asc"]
+      },
+      "PaginatedArticleResponseDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleResponseDto"
+            }
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "totalCount": {
+            "type": "number"
+          },
+          "unreadCount": {
+            "type": "number"
+          },
+          "lastCursor": {
+            "type": "number"
+          }
+        },
+        "required": ["content", "pageSize", "totalCount", "unreadCount"]
+      },
+      "UserLoginDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["username", "password"]
+      },
+      "LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          }
+        },
+        "required": ["access_token", "refresh_token"]
+      },
+      "UserRegistrationDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["username", "password"]
+      },
+      "UserResponseDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "isAdmin": {
+            "type": "boolean"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "isAdmin", "username"]
+      },
+      "BootInfoDto": {
+        "type": "object",
+        "properties": {
+          "appVersion": {
+            "type": "string",
+            "pattern": "^\\d\\.\\d+$"
+          },
+          "pageSize": {
+            "type": "number"
+          }
+        },
+        "required": ["appVersion", "pageSize"]
+      },
+      "DiscoverResponseDto": {
+        "type": "object",
+        "properties": {
+          "feedUrl": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": ["feedUrl", "title", "url"]
+      },
+      "FeedInputDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "feedUrl": {
+            "type": "string"
+          }
+        },
+        "required": ["title", "feedUrl"]
+      },
+      "FeedResponseDto": {
+        "type": "object",
+        "properties": {
+          "feedUrl": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "originalTitle": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": ["feedUrl", "id", "originalTitle"]
+      },
+      "TagResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "name"]
+      },
+      "UserFeedResponseDto": {
+        "type": "object",
+        "properties": {
+          "feedUrl": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "feedId": {
+            "type": "string"
+          },
+          "originalTitle": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "includeRead": {
+            "type": "boolean"
+          },
+          "order": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "expandContent": {
+            "type": "boolean"
+          },
+          "unreadCount": {
+            "type": "number"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagResponseDto"
+            }
+          }
+        },
+        "required": [
+          "feedUrl",
+          "id",
+          "feedId",
+          "originalTitle",
+          "includeRead",
+          "order",
+          "expandContent",
+          "unreadCount",
+          "tags"
+        ]
+      },
+      "FeedSettingsResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "expandContent": {
+            "type": "boolean"
+          },
+          "includeRead": {
+            "type": "boolean"
+          },
+          "order": {
+            "$ref": "#/components/schemas/Sort"
+          }
+        },
+        "required": ["id", "title", "expandContent", "includeRead", "order"]
+      },
+      "UpdateFeedSettingsInputDto": {
+        "type": "object",
+        "properties": {
+          "expandContent": {
+            "type": "boolean"
+          },
+          "includeRead": {
+            "type": "boolean"
+          },
+          "order": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": ["expandContent", "includeRead", "order"]
+      },
+      "TagFeedInputDto": {
+        "type": "object",
+        "properties": {
+          "tagId": {
+            "type": "string"
+          }
+        },
+        "required": ["tagId"]
+      },
+      "TagInputDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["name"]
+      }
+    }
+  }
+}
