@@ -1,4 +1,5 @@
 import { afterEach, beforeEach } from 'vitest'
+
 import { getDateForWeekdayOf } from './get-date-for-weekday-of'
 
 describe('getDateForWeekdayOf', () => {

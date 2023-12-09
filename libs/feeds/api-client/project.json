@@ -14,7 +14,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/feeds/api-client/**/*.ts"]
+        "lintFilePatterns": ["libs/feeds/api-client/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

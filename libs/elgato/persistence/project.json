@@ -31,7 +31,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/elgato/persistence/**/*.ts"]
+        "lintFilePatterns": ["libs/elgato/persistence/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },
