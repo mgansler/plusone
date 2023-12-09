@@ -3202,10 +3202,10 @@
   dependencies:
     tslib "2.6.2"
 
-"@nestjs/throttler@5.0.1":
-  version "5.0.1"
-  resolved "https://registry.npmjs.org/@nestjs/throttler/-/throttler-5.0.1.tgz#54e49009f8d8d355cac7fda7e0da3178b55d8c56"
-  integrity sha512-6gHmKmus7LDgzK/wRh7W9cT3gtZw1rY4mLVymvx6pYyRA46A9fMvjmZNQKJbo02jGg2R7gNo+3pyfvNnjDqg4A==
+"@nestjs/throttler@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.npmjs.org/@nestjs/throttler/-/throttler-5.1.0.tgz#95cff2c2d02cc16a6e67452e451624fc9190b1e4"
+  integrity sha512-3Wi15O4R8zjwM8jsx3zND5VVdqjTlFx8K5JUJZwBjZa6B+iV6IFeYnYInJh10/ybf29xIueKECEbD7hT1Id3/g==
   dependencies:
     md5 "^2.2.1"
 
@@ -18365,6 +18365,25 @@ ts-node@10.9.1:
     v8-compile-cache-lib "^3.0.1"
     yn "3.1.1"
 
+ts-node@10.9.2:
+  version "10.9.2"
+  resolved "https://registry.npmjs.org/ts-node/-/ts-node-10.9.2.tgz#70f021c9e185bccdca820e26dc413805c101c71f"
+  integrity sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==
+  dependencies:
+    "@cspotcode/source-map-support" "^0.8.0"
+    "@tsconfig/node10" "^1.0.7"
+    "@tsconfig/node12" "^1.0.7"
+    "@tsconfig/node14" "^1.0.0"
+    "@tsconfig/node16" "^1.0.2"
+    acorn "^8.4.1"
+    acorn-walk "^8.1.1"
+    arg "^4.1.0"
+    create-require "^1.1.0"
+    diff "^4.0.1"
+    make-error "^1.1.1"
+    v8-compile-cache-lib "^3.0.1"
+    yn "3.1.1"
+
 ts-pattern@^4.3.0:
   version "4.3.0"
   resolved "https://registry.npmjs.org/ts-pattern/-/ts-pattern-4.3.0.tgz#7a995b39342f1b00d1507c2d2f3b90ea16e178a6"
@@ -19087,10 +19106,10 @@ vite-tsconfig-paths@4.2.2:
     globrex "^0.1.2"
     tsconfck "^2.1.0"
 
-vite@5.0.6, "vite@^3.0.0 || ^4.0.0 || ^5.0.0-0", "vite@^3.1.0 || ^4.0.0 || ^5.0.0-0", vite@^5.0.0:
-  version "5.0.6"
-  resolved "https://registry.npmjs.org/vite/-/vite-5.0.6.tgz#f9e13503a4c5ccd67312c67803dec921f3bdea7c"
-  integrity sha512-MD3joyAEBtV7QZPl2JVVUai6zHms3YOmLR+BpMzLlX2Yzjfcc4gTgNi09d/Rua3F4EtC8zdwPU8eQYyib4vVMQ==
+vite@5.0.7:
+  version "5.0.7"
+  resolved "https://registry.npmjs.org/vite/-/vite-5.0.7.tgz#ad081d735f6769f76b556818500bdafb72c3fe93"
+  integrity sha512-B4T4rJCDPihrQo2B+h1MbeGL/k/GMAHzhQ8S0LjQ142s6/+l3hHTT095ORvsshj4QCkoWu3Xtmob5mazvakaOw==
   dependencies:
     esbuild "^0.19.3"
     postcss "^8.4.32"
@@ -19108,6 +19127,17 @@ vite@5.0.6, "vite@^3.0.0 || ^4.0.0 || ^5.0.0-0", "vite@^3.1.0 || ^4.0.0 || ^5.0.
     rollup "^3.27.1"
   optionalDependencies:
     fsevents "~2.3.2"
+
+"vite@^3.0.0 || ^4.0.0 || ^5.0.0-0", "vite@^3.1.0 || ^4.0.0 || ^5.0.0-0", vite@^5.0.0:
+  version "5.0.6"
+  resolved "https://registry.npmjs.org/vite/-/vite-5.0.6.tgz#f9e13503a4c5ccd67312c67803dec921f3bdea7c"
+  integrity sha512-MD3joyAEBtV7QZPl2JVVUai6zHms3YOmLR+BpMzLlX2Yzjfcc4gTgNi09d/Rua3F4EtC8zdwPU8eQYyib4vVMQ==
+  dependencies:
+    esbuild "^0.19.3"
+    postcss "^8.4.32"
+    rollup "^4.2.0"
+  optionalDependencies:
+    fsevents "~2.3.3"
 
 vitest@1.0.2:
   version "1.0.2"

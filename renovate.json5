@@ -7,5 +7,9 @@
       matchPackageNames: ['node'],
       allowedVersions: '20.10.0',
     },
+    {
+      matchPackagePatterns: ['^nx', '^@nx'],
+      allowedVersions: '!/17\\.2\\.0/',
+    },
   ],
 }
