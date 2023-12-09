@@ -25,7 +25,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/advent-of-code-2021-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["apps/advent-of-code-2021-e2e/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

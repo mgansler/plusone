@@ -7,12 +7,12 @@ import { DinnerPlanStore } from '../store/dinner-plan.store'
 import { Day } from './day'
 
 describe('Day', () => {
-  beforeAll(() => {
-    jest.useFakeTimers()
+  beforeEach(() => {
+    vi.useFakeTimers()
   })
 
-  afterAll(() => {
-    jest.useRealTimers()
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   const theme = createTheme()
@@ -28,7 +28,7 @@ describe('Day', () => {
     ${'Sunday'}    | ${7}    | ${16}
   `('should highlight the current day: $day', ({ day, date, weekday }) => {
     // week 19, 10th of may to 16th of may
-    jest.setSystemTime(new Date(Date.UTC(2021, 4, date)))
+    vi.setSystemTime(new Date(Date.UTC(2021, 4, date)))
 
     render(
       <DinnerPlanStore>

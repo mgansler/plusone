@@ -7,15 +7,16 @@
     "lint": {
       "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["libs/dom-utils/**/*.ts"]
+        "lintFilePatterns": ["libs/dom-utils/**/*.{ts,tsx,js,jsx}"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/dom-utils"],
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "jestConfig": "libs/dom-utils/jest.config.ts"
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/libs/dom-utils"
       }
     }
   },

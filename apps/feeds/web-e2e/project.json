@@ -59,7 +59,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/feeds/web-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["apps/feeds/web-e2e/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

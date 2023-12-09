@@ -7,16 +7,9 @@
     "lint": {
       "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["libs/feeds/shared/types/**/*.ts"]
+        "lintFilePatterns": ["libs/feeds/shared/types/**/*.{ts,tsx,js,jsx}"]
       },
       "outputs": ["{options.outputFile}"]
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/feeds/shared/types"],
-      "options": {
-        "jestConfig": "libs/feeds/shared/types/jest.config.ts"
-      }
     }
   },
   "tags": []

@@ -7,15 +7,16 @@
     "lint": {
       "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["libs/date-utils/**/*.ts"]
+        "lintFilePatterns": ["libs/date-utils/**/*.{ts,tsx,js,jsx}"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/date-utils"],
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "jestConfig": "libs/date-utils/jest.config.ts"
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/libs/date-utils"
       }
     }
   },

@@ -23,7 +23,7 @@
     "lint": {
       "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["apps/suite-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["apps/suite-e2e/**/*.{ts,tsx,js,jsx}"]
       },
       "outputs": ["{options.outputFile}"]
     }

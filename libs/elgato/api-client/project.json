@@ -14,7 +14,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/elgato/api-client/**/*.ts"]
+        "lintFilePatterns": ["libs/elgato/api-client/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

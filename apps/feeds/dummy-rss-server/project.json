@@ -42,7 +42,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/feeds/dummy-rss-server/**/*.ts"]
+        "lintFilePatterns": ["apps/feeds/dummy-rss-server/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },
