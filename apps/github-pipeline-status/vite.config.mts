@@ -6,6 +6,14 @@ import * as process from 'process'
 import { defineConfig, searchForWorkspaceRoot } from 'vite'
 
 export default defineConfig({
+  root: __dirname,
+  build: {
+    outDir: '../../dist/apps/github-pipeline-status',
+    reportCompressedSize: true,
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+  },
   server: {
     port: 4200,
     host: 'localhost',
@@ -31,8 +39,12 @@ export default defineConfig({
   //  plugins: [ nxViteTsPaths() ],
   // },
 
-  // @ts-expect-error vitest needs this
   test: {
+    reporters: ['default'],
+    coverage: {
+      reportsDirectory: '../../coverage/apps/github-pipeline-status',
+      provider: 'v8',
+    },
     globals: true,
     cache: {
       dir: '../../node_modules/.vitest',

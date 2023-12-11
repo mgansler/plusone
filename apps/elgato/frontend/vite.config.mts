@@ -4,6 +4,14 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+  root: __dirname,
+  build: {
+    outDir: '../../../dist/apps/elgato/frontend',
+    reportCompressedSize: true,
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+  },
   cacheDir: '../../../node_modules/.vite/elgato-frontend',
 
   server: {
@@ -23,8 +31,12 @@ export default defineConfig({
   //  plugins: [ nxViteTsPaths() ],
   // },
 
-  // @ts-expect-error vitest needs this
   test: {
+    reporters: ['default'],
+    coverage: {
+      reportsDirectory: '../../../coverage/apps/elgato/frontend',
+      provider: 'v8',
+    },
     globals: true,
     cache: {
       dir: '../../../node_modules/.vitest',
