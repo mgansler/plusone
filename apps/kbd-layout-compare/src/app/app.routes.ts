@@ -1,4 +1,4 @@
-import type { Route } from '@angular/router'
+import { Route } from '@angular/router'
 
 import { AppRootComponent } from './app-root.component'
 import { KeyboardComponent } from './keyboard.component'

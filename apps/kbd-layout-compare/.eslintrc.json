@@ -21,13 +21,27 @@
             "prefix": "app",
             "style": "kebab-case"
           }
+        ],
+        "@typescript-eslint/consistent-type-imports": [
+          "error",
+          {
+            "prefer": "no-type-imports"
+          }
         ]
+      }
+    },
+    {
+      "files": ["*.spec.ts"],
+      "rules": {
+        "import/no-unresolved": "off"
       }
     },
     {
       "files": ["*.html"],
       "extends": ["plugin:@nx/angular-template"],
-      "rules": {}
+      "rules": {
+        "import/namespace": "off"
+      }
     }
   ]
 }
