@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router'
 
 @Component({
   standalone: true,
-  template: '<div>Keyboard goes here: {{ kbdName }}</div>',
+  templateUrl: './keyboard.component.html',
+  styleUrl: './keyboard.component.scss',
 })
 export class KeyboardComponent {
   kbdName: string | undefined
