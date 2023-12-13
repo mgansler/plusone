@@ -1,0 +1,67 @@
+@import '../keyboard/keyboard.component';
+
+.keyboard {
+  grid-template-rows: repeat(6, 1fr);
+  width: calc(15 * $key-height) + calc(14 * $gap);
+
+  & > .f-row {
+    grid-template-columns: 2fr repeat(13, 1fr);
+
+    > .key {
+      margin-top: calc(1 / 3 * $key-height);
+      height: calc(2 / 3 * $key-height);
+    }
+  }
+
+  & > .number-row {
+    grid-template-columns: repeat(13, 1fr) 2fr;
+  }
+
+  & > .q-row {
+    grid-template-columns: 1.625fr repeat(12, 1fr) 1.375fr;
+  }
+
+  & > .a-row {
+    grid-template-columns: 2fr repeat(12, 1fr) 1fr;
+  }
+
+  & > .z-row {
+    grid-template-columns: 1.375fr repeat(11, 1fr) 2.875fr;
+  }
+
+  & > .space-row {
+    grid-template-columns: repeat(3, 1fr) 4.425fr repeat(3, 1fr);
+  }
+}
+
+.key {
+  border-radius: 0.25rem;
+  padding: 0 0.9rem 0 0.9rem;
+
+  color: rgb(255 255 255);
+  background-color: rgb(107 114 128);
+
+  &.rounded-top-left {
+    border-top-left-radius: 1.5rem;
+  }
+
+  &.rounded-bottom-left {
+    border-bottom-left-radius: 1.5rem;
+  }
+
+  &.return-top {
+    border-bottom-right-radius: 0;
+  }
+
+  &.return-bottom {
+    height: calc($key-height + $gap);
+    margin-top: -$gap;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  &.text-right {
+    display: flex;
+    justify-content: end;
+  }
+}

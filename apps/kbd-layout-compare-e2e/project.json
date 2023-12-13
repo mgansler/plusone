@@ -1,0 +1,33 @@
+{
+  "name": "kbd-layout-compare-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/kbd-layout-compare-e2e/src",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/kbd-layout-compare-e2e/cypress.config.ts",
+        "testingType": "e2e",
+        "devServerTarget": "kbd-layout-compare:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "kbd-layout-compare:serve:production"
+        },
+        "ci": {
+          "devServerTarget": "kbd-layout-compare:serve-static"
+        },
+        "watch": {
+          "watch": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["kbd-layout-compare"]
+}

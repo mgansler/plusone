@@ -6,10 +6,19 @@
     "node": ">=20"
   },
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "ts-node tools/scripts/patch-angular-max-ts.ts"
   },
   "private": true,
   "dependencies": {
+    "@angular/animations": "~17.0.0",
+    "@angular/common": "~17.0.0",
+    "@angular/compiler": "~17.0.0",
+    "@angular/core": "~17.0.0",
+    "@angular/forms": "~17.0.0",
+    "@angular/platform-browser": "~17.0.0",
+    "@angular/platform-browser-dynamic": "~17.0.0",
+    "@angular/router": "~17.0.0",
     "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
     "@mui/base": "5.0.0-beta.27",
@@ -75,9 +84,19 @@
     "rxjs": "7.8.1",
     "subscriptions-transport-ws": "0.11.0",
     "tslib": "2.6.2",
-    "zod": "3.22.4"
+    "zod": "3.22.4",
+    "zone.js": "~0.14.0"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "~17.0.0",
+    "@angular-devkit/core": "~17.0.0",
+    "@angular-devkit/schematics": "~17.0.0",
+    "@angular-eslint/eslint-plugin": "~17.0.0",
+    "@angular-eslint/eslint-plugin-template": "~17.0.0",
+    "@angular-eslint/template-parser": "~17.0.0",
+    "@angular/cli": "~17.0.0",
+    "@angular/compiler-cli": "~17.0.0",
+    "@angular/language-service": "~17.0.0",
     "@babel/core": "7.23.6",
     "@babel/plugin-proposal-private-property-in-object": "7.21.11",
     "@babel/preset-env": "7.23.6",
@@ -91,6 +110,7 @@
     "@graphql-codegen/typescript-react-query": "6.0.0",
     "@nestjs/schematics": "10.0.3",
     "@nestjs/testing": "10.2.10",
+    "@nx/angular": "17.2.0",
     "@nx/cypress": "17.2.3",
     "@nx/devkit": "17.2.3",
     "@nx/eslint": "17.2.3",
@@ -109,6 +129,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.11",
     "@remix-run/dev": "2.3.1",
     "@remix-run/eslint-config": "2.3.1",
+    "@schematics/angular": "~17.0.0",
     "@svgr/webpack": "8.1.0",
     "@swc-node/register": "1.6.8",
     "@swc/cli": "0.1.63",
@@ -157,6 +178,7 @@
     "jest-environment-jsdom": "29.7.0",
     "jest-environment-node": "29.7.0",
     "jest-junit": "16.0.0",
+    "jest-preset-angular": "~13.1.4",
     "jsonc-eslint-parser": "2.4.0",
     "junit-report-merger": "6.0.3",
     "msw": "2.0.11",

@@ -1,0 +1,98 @@
+{
+  "name": "kbd-layout-compare",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/kbd-layout-compare/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/kbd-layout-compare",
+        "index": "apps/kbd-layout-compare/src/index.html",
+        "browser": "apps/kbd-layout-compare/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/kbd-layout-compare/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/kbd-layout-compare/src/favicon.ico", "apps/kbd-layout-compare/src/assets"],
+        "styles": ["apps/kbd-layout-compare/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "kbd-layout-compare:build:production"
+        },
+        "development": {
+          "buildTarget": "kbd-layout-compare:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "kbd-layout-compare:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/kbd-layout-compare/jest.config.ts"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "kbd-layout-compare:build",
+        "staticFilePath": "dist/apps/kbd-layout-compare/browser"
+      }
+    },
+    "component-test": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/kbd-layout-compare/cypress.config.ts",
+        "testingType": "component",
+        "skipServe": true,
+        "devServerTarget": "kbd-layout-compare:build"
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
+      }
+    }
+  }
+}

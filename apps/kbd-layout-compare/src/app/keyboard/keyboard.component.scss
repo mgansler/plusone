@@ -1,0 +1,45 @@
+$gap: 0.5rem;
+$key-height: 3.5rem;
+
+.keyboard {
+  display: grid;
+  gap: $gap;
+  margin: auto;
+
+  & > .f-row {
+    display: grid;
+    gap: $gap;
+  }
+
+  & > .number-row {
+    display: grid;
+    gap: $gap;
+  }
+
+  & > .q-row {
+    display: grid;
+    gap: $gap;
+  }
+
+  & > .a-row {
+    display: grid;
+    gap: $gap;
+  }
+
+  & > .z-row {
+    display: grid;
+    gap: $gap;
+  }
+
+  & > .space-row {
+    display: grid;
+    gap: $gap;
+  }
+}
+
+.key {
+  height: $key-height;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

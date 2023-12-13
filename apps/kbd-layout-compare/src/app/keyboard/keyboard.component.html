@@ -1,0 +1,28 @@
+<div>
+  <h2>Current Keyboard: {{ keyboardName }}</h2>
+  <div class="keyboard">
+    <div class="f-row">
+      <div class="{{ ['key', key.class].join(' ') }}" *ngFor="let key of fRow">{{ key.label }}</div>
+    </div>
+
+    <div class="number-row">
+      <div class="{{ ['key', key.class].join(' ') }}" *ngFor="let key of numberRow">{{ key.label }}</div>
+    </div>
+
+    <div class="q-row">
+      <div class="{{ ['key', key.class].join(' ') }}" *ngFor="let key of qRow">{{ key.label }}</div>
+    </div>
+
+    <div class="a-row">
+      <div class="{{ ['key', key.class].join(' ') }}" *ngFor="let key of aRow">{{ key.label }}</div>
+    </div>
+
+    <div class="z-row">
+      <div class="{{ ['key', key.class].join(' ') }}" *ngFor="let key of zRow">{{ key.label }}</div>
+    </div>
+
+    <div class="space-row">
+      <div class="{{ ['key', key.class].join(' ') }}" *ngFor="let key of spaceRow">{{ key.label }}</div>
+    </div>
+  </div>
+</div>
