@@ -79,6 +79,20 @@
         "buildTarget": "kbd-layout-compare:build",
         "staticFilePath": "dist/apps/kbd-layout-compare/browser"
       }
+    },
+    "component-test": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/kbd-layout-compare/cypress.config.ts",
+        "testingType": "component",
+        "skipServe": true,
+        "devServerTarget": "kbd-layout-compare:build"
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
+      }
     }
   }
 }

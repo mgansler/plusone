@@ -31,7 +31,7 @@
       }
     },
     {
-      "files": ["*.spec.ts"],
+      "files": ["*.spec.ts", "*.cy.ts"],
       "rules": {
         "import/no-unresolved": "off"
       }
@@ -41,6 +41,14 @@
       "extends": ["plugin:@nx/angular-template"],
       "rules": {
         "import/namespace": "off"
+      }
+    },
+    {
+      "files": ["*.cy.ts"],
+      "rules": {
+        "testing-library/await-async-utils": "off",
+        "testing-library/await-async-queries": "off",
+        "testing-library/prefer-screen-queries": "off"
       }
     }
   ]
