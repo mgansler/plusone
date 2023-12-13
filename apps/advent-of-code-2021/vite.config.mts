@@ -27,6 +27,7 @@ export default defineConfig({
   //  plugins: [ nxViteTsPaths() ],
   // },
 
+  // @ts-expect-error vitest needs this
   test: {
     reporters: ['default'],
     coverage: {
