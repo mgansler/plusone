@@ -352,7 +352,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GroupStateInputDto"
+                "$ref": "#/components/schemas/GroupStateRequestDto"
               }
             }
           }
@@ -458,7 +458,7 @@
         "type": "string",
         "enum": ["RingLight", "LightStrip", "Unknown"]
       },
-      "ElgatoDeviceDetailsDto": {
+      "ElgatoDeviceDetailsResponseDto": {
         "type": "object",
         "properties": {
           "productName": {
@@ -507,7 +507,7 @@
             }
           },
           "details": {
-            "$ref": "#/components/schemas/ElgatoDeviceDetailsDto"
+            "$ref": "#/components/schemas/ElgatoDeviceDetailsResponseDto"
           },
           "state": {
             "$ref": "#/components/schemas/DeviceState"
@@ -643,7 +643,7 @@
         "type": "string",
         "enum": ["on", "off"]
       },
-      "GroupStateInputDto": {
+      "GroupStateRequestDto": {
         "type": "object",
         "properties": {
           "desiredPowerState": {

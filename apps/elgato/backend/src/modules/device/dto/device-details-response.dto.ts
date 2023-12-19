@@ -2,11 +2,11 @@ import { ApiProperty } from '@nestjs/swagger'
 
 import { DeviceState } from './device-state'
 import { DeviceWithGroupResponseDto } from './device-with-group-response.dto'
-import { ElgatoDeviceDetailsDto } from './elgato-device-details.dto'
+import { ElgatoDeviceDetailsResponseDto } from './elgato-device-details-response.dto'
 
 export class DeviceDetailsResponseDto extends DeviceWithGroupResponseDto {
-  @ApiProperty({ type: () => ElgatoDeviceDetailsDto })
-  details: ElgatoDeviceDetailsDto
+  @ApiProperty({ type: () => ElgatoDeviceDetailsResponseDto })
+  details: ElgatoDeviceDetailsResponseDto
 
   @ApiProperty({ type: () => DeviceState })
   state: DeviceState

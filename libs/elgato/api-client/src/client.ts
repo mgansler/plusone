@@ -46,7 +46,7 @@ export const DevicePowerState = {
   off: 'off',
 } as const
 
-export interface GroupStateInputDto {
+export interface GroupStateRequestDto {
   desiredPowerState: DevicePowerState
 }
 
@@ -113,7 +113,7 @@ export const DeviceType = {
   Unknown: 'Unknown',
 } as const
 
-export interface ElgatoDeviceDetailsDto {
+export interface ElgatoDeviceDetailsResponseDto {
   deviceType: DeviceType
   displayName: string
   productName: string
@@ -126,7 +126,7 @@ export interface GroupResponseDto {
 }
 
 export interface DeviceDetailsResponseDto {
-  details: ElgatoDeviceDetailsDto
+  details: ElgatoDeviceDetailsResponseDto
   groups: GroupResponseDto[]
   id: string
   lastSeen: string
@@ -678,12 +678,12 @@ export const useGroupDetails = <TData = Awaited<ReturnType<typeof groupDetails>>
   return query
 }
 
-export const controlGroupState = (groupId: number, groupStateInputDto: GroupStateInputDto) => {
+export const controlGroupState = (groupId: number, groupStateRequestDto: GroupStateRequestDto) => {
   return customAxiosInstance<void>({
     url: `/api/groups/${groupId}/state`,
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    data: groupStateInputDto,
+    data: groupStateRequestDto,
   })
 }
 
@@ -691,20 +691,20 @@ export const getControlGroupStateMutationOptions = <TError = unknown, TContext =
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof controlGroupState>>,
     TError,
-    { groupId: number; data: GroupStateInputDto },
+    { groupId: number; data: GroupStateRequestDto },
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof controlGroupState>>,
   TError,
-  { groupId: number; data: GroupStateInputDto },
+  { groupId: number; data: GroupStateRequestDto },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {}
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof controlGroupState>>,
-    { groupId: number; data: GroupStateInputDto }
+    { groupId: number; data: GroupStateRequestDto }
   > = (props) => {
     const { groupId, data } = props ?? {}
 
@@ -715,14 +715,14 @@ export const getControlGroupStateMutationOptions = <TError = unknown, TContext =
 }
 
 export type ControlGroupStateMutationResult = NonNullable<Awaited<ReturnType<typeof controlGroupState>>>
-export type ControlGroupStateMutationBody = GroupStateInputDto
+export type ControlGroupStateMutationBody = GroupStateRequestDto
 export type ControlGroupStateMutationError = unknown
 
 export const useControlGroupState = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof controlGroupState>>,
     TError,
-    { groupId: number; data: GroupStateInputDto },
+    { groupId: number; data: GroupStateRequestDto },
     TContext
   >
 }) => {

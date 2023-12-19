@@ -2,7 +2,7 @@ import { defineConfig } from 'orval'
 
 module.exports = defineConfig({
   api: {
-    input: { target: 'apps/feeds/backend/openapi-feeds.json' },
+    input: { target: '../../../apps/feeds/backend/openapi-feeds.json' },
     output: {
       client: 'react-query',
       target: './src/client.ts',
@@ -23,7 +23,7 @@ module.exports = defineConfig({
     },
   },
   zod: {
-    input: { target: 'http://localhost:3333/api-json' },
+    input: { target: '../../../apps/feeds/backend/openapi-feeds.json' },
     output: {
       client: 'zod',
       target: './src/zod.ts',
