@@ -14,7 +14,7 @@ import { ElgatoService } from '../elgato/elgato.service'
 
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
 import { DeviceState } from './dto/device-state'
-import { ElgatoDeviceDetailsDto } from './dto/elgato-device-details.dto'
+import { ElgatoDeviceDetailsResponseDto } from './dto/elgato-device-details-response.dto'
 import { TransitionToColorRequestDto } from './dto/transition-to-color-request.dto'
 import { DevicePowerState } from './enum/device-power-state'
 import { DeviceType } from './enum/device-type'
@@ -52,7 +52,7 @@ export class DeviceService {
       this.logger.debug(`Querying the device took longer then expected: ${afterDeviceCallTS - beforeDeviceCallTS} ms`)
     }
 
-    const details: ElgatoDeviceDetailsDto = {
+    const details: ElgatoDeviceDetailsResponseDto = {
       displayName: accessoryInfo.displayName,
       deviceType: this.mapProductNameToDeviceType(accessoryInfo.productName),
       productName: accessoryInfo.productName,

@@ -2,7 +2,7 @@ import { defineConfig } from 'orval'
 
 module.exports = defineConfig({
   api: {
-    input: { target: 'apps/elgato/backend/openapi-elgato.json' },
+    input: { target: '../../../apps/elgato/backend/openapi-elgato.json' },
     output: {
       client: 'react-query',
       target: './src/client.ts',
@@ -18,7 +18,7 @@ module.exports = defineConfig({
     },
   },
   zod: {
-    input: { target: 'http://localhost:3001/api-json' },
+    input: { target: '../../../apps/elgato/backend/openapi-elgato.json' },
     output: {
       client: 'zod',
       target: './src/zod.ts',
