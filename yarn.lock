@@ -4526,6 +4526,11 @@
   resolved "https://registry.npmjs.org/@remix-run/router/-/router-1.14.0.tgz#9bc39a5a3a71b81bdb310eba6def5bc3966695b7"
   integrity sha512-WOHih+ClN7N8oHk9N4JUiMxQJmRVaOxcg8w7F/oHUXzJt920ekASLI/7cYX8XkntDWRhLZtsk6LbGrkgOAvi5A==
 
+"@remix-run/router@1.14.1":
+  version "1.14.1"
+  resolved "https://registry.npmjs.org/@remix-run/router/-/router-1.14.1.tgz#6d2dd03d52e604279c38911afc1079d58c50a755"
+  integrity sha512-Qg4DMQsfPNAs88rb2xkdk03N3bjK4jgX5fR24eHCTR9q6PrhZQZ4UJBPzCHJkIpTRN1UKxx2DzjZmnC+7Lj0Ow==
+
 "@remix-run/serve@2.4.0":
   version "2.4.0"
   resolved "https://registry.npmjs.org/@remix-run/serve/-/serve-2.4.0.tgz#95780f83ae11d9dce1388fa32eab79e5d6734a5b"
@@ -5165,17 +5170,17 @@
   resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.14.2.tgz#ef0c1a93e142d5cce90b0ac2d0333a88fc0fbb95"
   integrity sha512-QmoJvC72sSWs3hgGis8JdmlDvqLfYGWUK4UG6OR9Q6t28JMN9m2FDwKPqoSJ9YVocELCSjMt/FGjEiLfk8000Q==
 
-"@tanstack/query-devtools@5.13.5":
-  version "5.13.5"
-  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.13.5.tgz#1f9f9ea198b99b824bcb989c434db9c847b6230b"
-  integrity sha512-effSYz9AWcZ6sNd+c8LCBYFIuDZApoCTXEpRlEYChBZpMz9QUUVMLToThwCyUY49+T5pANL3XxgZf3HV7hwJlg==
+"@tanstack/query-devtools@5.14.5":
+  version "5.14.5"
+  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.14.5.tgz#7e6db903a595b7b0242fc5cdac9ab5b16cf27f0d"
+  integrity sha512-xM8BQbE4FBAVEPr8t6MFbOJP+canDFz0hcY9Ho+5Z4LQciC60wE+7ZALx5n3InP4R7IELx8AodS5G3KYzBAwCg==
 
-"@tanstack/react-query-devtools@5.14.2":
-  version "5.14.2"
-  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.14.2.tgz#9ea915988e2266a4dc8c8c5f02fb86760ed11dd8"
-  integrity sha512-qSV88emQbUNM61IWCZqUdqjShPNyVcQnEaAJMFM1eaCAcUnDIpRtsGRMNEYYAjuWAXbkCjAo/JdwArF/z5hyMQ==
+"@tanstack/react-query-devtools@5.14.5":
+  version "5.14.5"
+  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.14.5.tgz#26a460fab2d7550558bcedfe0ba54bda67ab2458"
+  integrity sha512-aDntW1dWc/feVUYwVqfM/r5OXa3RN06VhtYrTYW9fhj0Ks2dJw6Diknh9VpYqhI+gJrhVID95Rv/ZzS6W2lANA==
   dependencies:
-    "@tanstack/query-devtools" "5.13.5"
+    "@tanstack/query-devtools" "5.14.5"
 
 "@tanstack/react-query@5.14.2":
   version "5.14.2"
@@ -16831,12 +16836,27 @@ react-router-dom@6.21.0:
     "@remix-run/router" "1.14.0"
     react-router "6.21.0"
 
+react-router-dom@6.21.1:
+  version "6.21.1"
+  resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.21.1.tgz#58b459d2fe1841388c95bb068f85128c45e27349"
+  integrity sha512-QCNrtjtDPwHDO+AO21MJd7yIcr41UetYt5jzaB9Y1UYaPTCnVuJq6S748g1dE11OQlCFIQg+RtAA1SEZIyiBeA==
+  dependencies:
+    "@remix-run/router" "1.14.1"
+    react-router "6.21.1"
+
 react-router@6.21.0:
   version "6.21.0"
   resolved "https://registry.npmjs.org/react-router/-/react-router-6.21.0.tgz#6fe3e59877aca3dccceec1801d26991ddf42d12b"
   integrity sha512-hGZ0HXbwz3zw52pLZV3j3+ec+m/PQ9cTpBvqjFQmy2XVUWGn5MD+31oXHb6dVTxYzmAeaiUBYjkoNz66n3RGCg==
   dependencies:
     "@remix-run/router" "1.14.0"
+
+react-router@6.21.1:
+  version "6.21.1"
+  resolved "https://registry.npmjs.org/react-router/-/react-router-6.21.1.tgz#8db7ee8d7cfc36513c9a66b44e0897208c33be34"
+  integrity sha512-W0l13YlMTm1YrpVIOpjCADJqEUpz1vm+CMo47RuFX4Ftegwm6KOYsL5G3eiE52jnJpKvzm6uB/vTKTPKM8dmkA==
+  dependencies:
+    "@remix-run/router" "1.14.1"
 
 react-shallow-renderer@^16.15.0:
   version "16.15.0"
