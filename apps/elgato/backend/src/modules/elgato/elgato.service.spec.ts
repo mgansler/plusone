@@ -66,7 +66,11 @@ describe('ElgatoService', () => {
         numberOfLights: 1,
         lights: [{ on: 1, hue: 0, brightness: 0, saturation: 0 } as LightStateWithColor],
       }
-      const actual = await elgatoService.getDeviceState({ host: 'my-stuck-device.local', port: 9123 })
+      const actual = await elgatoService.getDeviceState({
+        host: 'my-stuck-device.local',
+        port: 9123,
+        type: DeviceType.LightStrip,
+      })
       expect(actual).toStrictEqual(expected)
     })
   })
@@ -82,7 +86,11 @@ describe('ElgatoService', () => {
         switchOffDurationMs: 0,
         switchOnDurationMs: 0,
       }
-      const actual = await elgatoService.getDeviceSettings({ host: 'my-lightstrip-device', port: 9123 })
+      const actual = await elgatoService.getDeviceSettings({
+        host: 'my-lightstrip-device',
+        port: 9123,
+        type: DeviceType.LightStrip,
+      })
       expect(actual).toStrictEqual(expected)
     })
   })

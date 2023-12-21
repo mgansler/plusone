@@ -12,5 +12,6 @@ export function getDevice(type: DeviceType): Device {
     port: 9123,
     sunrise: false,
     sunset: false,
+    type: type,
   }
 }

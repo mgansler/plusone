@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import Bonjour from 'bonjour-service'
 
@@ -20,7 +20,7 @@ import { DevicePowerState } from './enum/device-power-state'
 import { DeviceType } from './enum/device-type'
 
 @Injectable()
-export class DeviceService {
+export class DeviceService implements OnModuleInit {
   private logger = new Logger(DeviceService.name)
   private bonjour = new Bonjour()
 
@@ -162,7 +162,7 @@ export class DeviceService {
   @Cron(CronExpression.EVERY_30_SECONDS, { name: 'find-devices' })
   private async findDevices() {
     this.bonjour.find({ type: 'elg' }, async (service) => {
-      // this.logger.debug(`Got a response from a device: ${service.name}.`)
+      // TODO: get accessoryInfo and update type in DB
       const currentDeviceCount = await this.prismaService.device.count()
       await this.prismaService.device.upsert({
         where: {
@@ -200,10 +200,11 @@ export class DeviceService {
           this.logger.debug(
             `Device ${device.name} hasn't been seen for over ${lastSeenMinutes} minutes, pinging device now.`,
           )
-          await this.elgatoService.getDeviceAccessoryInfo(device)
+          const accessoryInfo = await this.elgatoService.getDeviceAccessoryInfo(device)
           await this.prismaService.device.update({
             data: {
               lastSeen: new Date(),
+              type: this.mapProductNameToDeviceType(accessoryInfo.productName),
             },
             where: { id: device.id },
           })
