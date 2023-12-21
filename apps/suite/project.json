@@ -77,7 +77,12 @@
             "docker push ${CI_REGISTRY_IMAGE}/suite-app/${CI_COMMIT_REF_SLUG}:latest"
           ]
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "build"
+        }
+      ]
     },
     "deploy": {
       "executor": "nx:run-commands",

@@ -88,10 +88,6 @@ build:
     - component-test
   script:
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t build --parallel=8
-  artifacts:
-    paths:
-      - dist/apps
-    expire_in: 1 hour
 
 package:
   stage: package
@@ -111,6 +107,10 @@ package:
     - sh tools/scripts/install-docker-debian.sh
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t package --parallel=1 --configuration=ci
+  artifacts:
+    paths:
+      - dist/apps
+    expire_in: 1 hour
 
 .deploy:
   needs:
