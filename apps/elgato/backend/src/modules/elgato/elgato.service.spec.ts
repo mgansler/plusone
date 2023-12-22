@@ -3,7 +3,16 @@ import { SetupServer, setupServer } from 'msw/node'
 
 import { getAccessoryInfoResponse } from '../../stubs/accessory-info-response.stub'
 import { getDevice } from '../../stubs/device.stub'
-import { getAccessoryInfo, getLights, getSettings, getStuckDevice } from '../../stubs/handler'
+import {
+  doesNotResolve,
+  getAccessoryInfo,
+  getLights,
+  getSettings,
+  getStuckDevice,
+  postIdentify,
+  putState,
+} from '../../stubs/handler'
+import { DevicePowerState } from '../device/enum/device-power-state'
 import { DeviceType } from '../device/enum/device-type'
 
 import { ElgatoAccessoryInfoResponseDto } from './dto/elgato-accessory-info-response.dto'
@@ -15,6 +24,8 @@ describe('ElgatoService', () => {
   let server: SetupServer
   let elgatoService: ElgatoService
   let httpService: HttpService
+  let errSpy: jest.SpyInstance
+  let warnSpy: jest.SpyInstance
 
   beforeAll(() => {
     server = setupServer(
@@ -24,6 +35,10 @@ describe('ElgatoService', () => {
       getLights(DeviceType.RingLight),
       getSettings(),
       getStuckDevice(),
+      doesNotResolve(),
+      postIdentify(),
+      putState(DeviceType.LightStrip),
+      putState(DeviceType.RingLight),
     )
     server.listen()
   })
@@ -32,6 +47,11 @@ describe('ElgatoService', () => {
     server.resetHandlers()
     httpService = new HttpService()
     elgatoService = new ElgatoService(httpService)
+
+    // @ts-expect-error We need to spy on a private member to assert log statements
+    errSpy = jest.spyOn(elgatoService.logger, 'error').mockImplementation()
+    // @ts-expect-error We need to spy on a private member to assert log statements
+    warnSpy = jest.spyOn(elgatoService.logger, 'warn').mockImplementation()
   })
 
   afterAll(() => {
@@ -48,6 +68,37 @@ describe('ElgatoService', () => {
 
       expect(actual).toStrictEqual(expected)
     })
+
+    it('should throw error on unreachable host', async () => {
+      // @ts-expect-error We need to spy on a private member to assert log statements
+      elgatoService.logger.error = jest.fn()
+
+      await expect(
+        elgatoService.getDeviceAccessoryInfo({
+          host: 'does-not-resolve',
+          port: 9123,
+          type: DeviceType.Unknown,
+        }),
+      ).rejects.toEqual(Error("Could not connect to 'does-not-resolve:9123'"))
+    })
+  })
+
+  describe('identify', () => {
+    it('should make a post request', async () => {
+      await elgatoService.identify({ host: 'identify', port: 9123, type: DeviceType.Unknown })
+    })
+
+    it('should throw error on unreachable host', async () => {
+      await expect(
+        elgatoService.identify({
+          host: 'does-not-resolve',
+          port: 9123,
+          type: DeviceType.Unknown,
+        }),
+      ).rejects.toThrow(Error("Could not connect to 'does-not-resolve:9123'"))
+
+      expect(errSpy).toHaveBeenCalledWith("Could not resolve 'does-not-resolve' on current network.")
+    })
   })
 
   describe('getDeviceState', () => {
@@ -61,17 +112,26 @@ describe('ElgatoService', () => {
       expect(actual).toStrictEqual(expected)
     })
 
-    it('should handle failure', async () => {
+    it.each([
+      { type: DeviceType.RingLight, light: { on: 1 } },
+      { type: DeviceType.LightStrip, light: { on: 1, hue: 0, brightness: 0, saturation: 0 } },
+    ])('should handle failure', async ({ type, light }) => {
       const expected: ElgatoDeviceStateDto = {
         numberOfLights: 1,
-        lights: [{ on: 1, hue: 0, brightness: 0, saturation: 0 } as LightStateWithColor],
+        lights: [light as LightStateWithColor],
       }
       const actual = await elgatoService.getDeviceState({
         host: 'my-stuck-device.local',
         port: 9123,
-        type: DeviceType.LightStrip,
+        type,
       })
       expect(actual).toStrictEqual(expected)
+
+      if (type === DeviceType.LightStrip) {
+        expect(warnSpy).toHaveBeenCalledWith(
+          'Could not get state for my-stuck-device.local, there probably is a long sequence active.',
+        )
+      }
     })
   })
 
@@ -92,6 +152,56 @@ describe('ElgatoService', () => {
         type: DeviceType.LightStrip,
       })
       expect(actual).toStrictEqual(expected)
+    })
+  })
+
+  describe('setDevicePowerState', () => {
+    it.each([
+      { type: DeviceType.LightStrip, state: DevicePowerState.on },
+      { type: DeviceType.LightStrip, state: DevicePowerState.off },
+      { type: DeviceType.RingLight, state: DevicePowerState.on },
+      { type: DeviceType.RingLight, state: DevicePowerState.off },
+    ])('should set the desired device power state', async ({ type, state }) => {
+      await elgatoService.setDevicePowerState(getDevice(type), state)
+    })
+
+    it('should throw error on unreachable host', async () => {
+      await expect(
+        elgatoService.setDevicePowerState(
+          {
+            host: 'does-not-resolve',
+            port: 9123,
+            type: DeviceType.Unknown,
+          },
+          DevicePowerState.off,
+        ),
+      ).rejects.toThrow(Error("Could not connect to 'does-not-resolve:9123'"))
+
+      expect(errSpy).toHaveBeenCalledWith("Could not resolve 'does-not-resolve' on current network.")
+    })
+  })
+
+  describe('setLightStripScene', () => {
+    it('should set desired color', async () => {
+      await elgatoService.setLightStripScene(getDevice(DeviceType.LightStrip), {
+        numberOfLights: 1,
+        lights: [
+          {
+            id: 'my.test.scene',
+            name: 'My Test Scene',
+            numberOfSceneElements: 1,
+            brightness: 100,
+            on: 1,
+            scene: [{ hue: 1, brightness: 1, saturation: 1, durationMs: 500, transitionMs: 500 }],
+          },
+        ],
+      })
+    })
+  })
+
+  describe('setLightStripColor', () => {
+    it('should set desired color', async () => {
+      await elgatoService.setLightStripColor(getDevice(DeviceType.LightStrip), { hue: 1, brightness: 1, saturation: 1 })
     })
   })
 })

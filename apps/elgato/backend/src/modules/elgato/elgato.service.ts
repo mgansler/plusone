@@ -3,7 +3,7 @@ import http from 'http'
 import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
 import { AxiosError, AxiosResponse } from 'axios'
-import { catchError, firstValueFrom } from 'rxjs'
+import { catchError, firstValueFrom, ObservableInput } from 'rxjs'
 
 import { Device } from '@plusone/elgato-persistence'
 
@@ -12,6 +12,7 @@ import { DevicePowerState } from '../device/enum/device-power-state'
 import { DeviceType } from '../device/enum/device-type'
 
 import { ElgatoAccessoryInfoResponseDto } from './dto/elgato-accessory-info-response.dto'
+import { ElgatoDeviceStatePayloadDto } from './dto/elgato-device-state-payload.dto'
 import { ElgatoDeviceStateDto } from './dto/elgato-device-state.dto'
 import { ElgatoSceneRequestDto } from './dto/elgato-scene-request.dto'
 import { ElgatoSettingsResponseDto } from './dto/elgato-settings-response.dto'
@@ -58,28 +59,18 @@ export class ElgatoService {
     return resp.data
   }
 
-  async identify(device: DeviceAddress): Promise<void> {
+  async identify(address: DeviceAddress): Promise<void> {
+    const url = this.constructUrl(address, '/elgato/identify')
     await firstValueFrom(
       this.httpService
-        .post(`http://${device.host.replace('.local', '')}:${device.port}/elgato/identify`, undefined, {
-          httpAgent,
-        })
-        .pipe(
-          catchError((error: AxiosError) => {
-            console.log(error)
-            if (error.code === 'ENOTFOUND') {
-              this.logger.error(`Could not resolve '${device.host.replace('.local', '')}' on current network.`)
-            } else {
-              this.logger.error(error.response.data)
-            }
-            throw `Could not connect to '${device.host.replace('.local', '')}'`
-          }),
-        ),
+        .post(url.toString(), undefined, { httpAgent })
+        .pipe(catchError((error: AxiosError) => this.handleError(error, url))),
     )
   }
 
   setDevicePowerState(device: DeviceAddress, state: DevicePowerState) {
-    return this.put(device, '/elgato/lights', { lights: [{ on: state === 'on' ? 1 : 0 }] })
+    const payload: ElgatoDeviceStatePayloadDto = { lights: [{ on: state === 'on' ? 1 : 0 }] }
+    return this.put(device, '/elgato/lights', payload)
   }
 
   setLightStripScene(device: DeviceAddress, scene: ElgatoSceneRequestDto) {
@@ -87,40 +78,27 @@ export class ElgatoService {
   }
 
   setLightStripColor(device: DeviceAddress, color: TransitionToColorRequestDto) {
-    return this.put(device, '/elgato/lights', {
+    const payload: ElgatoDeviceStatePayloadDto = {
       lights: [{ on: 1, hue: color.hue, saturation: color.saturation, brightness: color.brightness }],
-    })
+    }
+    return this.put(device, '/elgato/lights', payload)
   }
 
   private get<Response>(address: DeviceAddress, path: string): Promise<AxiosResponse<Response>> {
     const url = this.constructUrl(address, path)
     return firstValueFrom(
-      this.httpService.get<Response>(url.toString(), { httpAgent }).pipe(
-        catchError((error: AxiosError) => {
-          if (error.code === 'ENOTFOUND') {
-            this.logger.error(`Could not resolve '${url.hostname}' on current network.`)
-          } else {
-            this.logger.error(error.response.data)
-          }
-          throw `Could not connect to '${url.host}'`
-        }),
-      ),
+      this.httpService
+        .get<Response>(url.toString(), { httpAgent })
+        .pipe(catchError((error: AxiosError) => this.handleError(error, url))),
     )
   }
 
   private put(address: DeviceAddress, path: string, payload: unknown) {
     const url = this.constructUrl(address, path)
     return firstValueFrom(
-      this.httpService.put(url.toString(), JSON.stringify(payload), { httpAgent }).pipe(
-        catchError((error: AxiosError) => {
-          if (error.code === 'ENOTFOUND') {
-            this.logger.error(`Could not resolve '${url.hostname}' on current network.`)
-          } else {
-            this.logger.error(error.response.data)
-          }
-          throw `Could not connect to '${url.host}'`
-        }),
-      ),
+      this.httpService
+        .put(url.toString(), JSON.stringify(payload), { httpAgent })
+        .pipe(catchError((error: AxiosError) => this.handleError(error, url))),
     )
   }
 
@@ -128,5 +106,14 @@ export class ElgatoService {
     const url = new URL(`http://${address.host.replace('.local', '')}:${address.port}`)
     url.pathname = path
     return url
+  }
+
+  private handleError(error: AxiosError, url: URL): ObservableInput<never> {
+    if (error.code === 'ENOTFOUND' || error.message === 'Network error') {
+      this.logger.error(`Could not resolve '${url.hostname}' on current network.`)
+    } else if (error.response?.data) {
+      this.logger.error(error.response.data)
+    }
+    throw new Error(`Could not connect to '${url.host}'`)
   }
 }

@@ -1,4 +1,4 @@
-import { http } from 'msw'
+import { http, HttpResponse } from 'msw'
 
 import { DeviceType } from '../modules/device/enum/device-type'
 
@@ -7,23 +7,19 @@ import { getAccessoryInfoResponse } from './accessory-info-response.stub'
 export function getAccessoryInfo(deviceType: DeviceType) {
   return deviceType === DeviceType.LightStrip
     ? http.get('http://my-lightstrip-device:9123/elgato/accessory-info', () => {
-        return new Response(
-          JSON.stringify(
-            getAccessoryInfoResponse({
-              productName: 'Elgato Light Strip',
-              displayName: 'My Light Strip Device',
-            }),
-          ),
+        return HttpResponse.json(
+          getAccessoryInfoResponse({
+            productName: 'Elgato Light Strip',
+            displayName: 'My Light Strip Device',
+          }),
         )
       })
     : http.get('http://my-ringlight-device:9123/elgato/accessory-info', () => {
-        return new Response(
-          JSON.stringify(
-            getAccessoryInfoResponse({
-              productName: 'Elgato Ring Light',
-              displayName: 'My Ring Light Device',
-            }),
-          ),
+        return HttpResponse.json(
+          getAccessoryInfoResponse({
+            productName: 'Elgato Ring Light',
+            displayName: 'My Ring Light Device',
+          }),
         )
       })
 }
@@ -31,41 +27,74 @@ export function getAccessoryInfo(deviceType: DeviceType) {
 export function getLights(deviceType: DeviceType) {
   return deviceType === DeviceType.LightStrip
     ? http.get('http://my-lightstrip-device:9123/elgato/lights', () => {
-        return new Response(
-          JSON.stringify({
-            numberOfLights: 1,
-            lights: [{ on: 1, hue: 0, brightness: 50, saturation: 50 }],
-          }),
-        )
+        return HttpResponse.json({
+          numberOfLights: 1,
+          lights: [{ on: 1, hue: 0, brightness: 50, saturation: 50 }],
+        })
       })
     : http.get('http://my-ringlight-device:9123/elgato/lights', () => {
-        return new Response(
-          JSON.stringify({
-            numberOfLights: 1,
-            lights: [{ on: 1, temperature: 200 }],
-          }),
-        )
+        return HttpResponse.json({
+          numberOfLights: 1,
+          lights: [{ on: 1, temperature: 200 }],
+        })
       })
 }
 
 export function getSettings() {
   return http.get('http://my-lightstrip-device:9123/elgato/lights/settings', () => {
-    return new Response(
-      JSON.stringify({
-        colorChangeDurationMs: 0,
-        powerOnBehavior: 0,
-        powerOnBrightness: 0,
-        powerOnHue: 0,
-        powerOnSaturation: 0,
-        switchOffDurationMs: 0,
-        switchOnDurationMs: 0,
-      }),
-    )
+    return HttpResponse.json({
+      colorChangeDurationMs: 0,
+      powerOnBehavior: 0,
+      powerOnBrightness: 0,
+      powerOnHue: 0,
+      powerOnSaturation: 0,
+      switchOffDurationMs: 0,
+      switchOnDurationMs: 0,
+    })
   })
 }
 
 export function getStuckDevice() {
   return http.get('http://my-stuck-device:9123/elgato/lights', () => {
+    return new Response('')
+  })
+}
+
+export function putState(deviceType: DeviceType) {
+  return deviceType === DeviceType.LightStrip
+    ? http.put('http://my-lightstrip-device:9123/elgato/lights', () => {
+        return HttpResponse.json({
+          numberOfLights: 1,
+          lights: [
+            {
+              on: 1,
+              hue: 37.0,
+              saturation: 100.0,
+              brightness: 33,
+            },
+          ],
+        })
+      })
+    : http.put('http://my-ringlight-device:9123/elgato/lights', () => {
+        return HttpResponse.json({
+          numberOfLights: 1,
+          lights: [
+            {
+              on: 1,
+              brightness: 43,
+              temperature: 43,
+            },
+          ],
+        })
+      })
+}
+
+export function doesNotResolve() {
+  return http.all('http://does-not-resolve:9123/*', () => HttpResponse.error())
+}
+
+export function postIdentify() {
+  return http.post('http://identify:9123/elgato/identify', () => {
     return new Response('')
   })
 }
