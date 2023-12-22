@@ -16,6 +16,10 @@ model Device {
   host String
   port Int
 
+  // This should be an enum but unfortunately, sqlite doesn't support enums
+  // See DeviceType
+  type String @default("unknown")
+
   lastSeen DateTime?
 
   groups Group[]

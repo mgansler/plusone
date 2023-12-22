@@ -5,17 +5,18 @@ export class LightStateWithColor {
   on: 0 | 1
 
   @ApiProperty({ minimum: 0, maximum: 100, required: false })
-  brightness: number
+  // In reality, minimum is 3, below 3 the LEDs won't turn on.
+  brightness?: number
 
   @ApiProperty({ minimum: 0, maximum: 360, required: false })
-  hue: number | undefined
+  hue?: number | undefined
 
   @ApiProperty({ minimum: 0, maximum: 100, required: false })
-  saturation: number | undefined
+  saturation?: number | undefined
 
   // 143: 7000K; 344: 2900K
-  @ApiProperty({ minimum: 143, maximum: 100, required: false })
-  temperature: number | undefined
+  @ApiProperty({ minimum: 143, maximum: 344, required: false })
+  temperature?: number | undefined
 }
 
 export class ElgatoDeviceStateDto {

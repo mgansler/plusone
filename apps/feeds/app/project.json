@@ -20,7 +20,13 @@
         "macos": {
           "commands": ["docker buildx build --platform linux/arm64/v8 -t feeds-app -f apps/feeds/app/Dockerfile ."]
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "build",
+          "dependencies": true
+        }
+      ]
     },
     "deploy": {
       "executor": "nx:run-commands",
