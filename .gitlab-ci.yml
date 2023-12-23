@@ -52,6 +52,16 @@ test:
     - .distributed
   script:
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t test --parallel=8 --configuration=ci
+  after_script:
+    - echo TODO merge test reports
+    - ls -l reports
+    - ls -l reports/test
+  artifacts:
+    when: always
+    paths:
+      - reports/test/test-elgato-backend.xml
+    reports:
+      junit: reports/test/test-elgato-backend.xml
 
 component-test:
   stage: test
