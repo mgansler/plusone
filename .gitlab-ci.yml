@@ -53,13 +53,13 @@ test:
   script:
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t test --parallel=8 --configuration=ci
   after_script:
-    - yarn jrm ./reports/combined.xml "./reports/**/*.xml"
+    - yarn jrm ./reports/test.xml "./reports/test/*.xml"
   artifacts:
     when: always
     paths:
-      - reports/combined.xml
+      - reports/test.xml
     reports:
-      junit: reports/combined.xml
+      junit: reports/test.xml
     expire_in: 2 weeks
 
 component-test:
@@ -69,6 +69,15 @@ component-test:
   script:
     - sh tools/scripts/install-cypress-dependencies.sh
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t component-test --parallel=1 --configuration=ci
+  after_script:
+    - yarn jrm ./reports/component-test.xml "./reports/component-test/*.xml"
+  artifacts:
+    when: always
+    paths:
+      - reports/component-test.xml
+    reports:
+      junit: reports/component-test.xml
+    expire_in: 2 weeks
 
 e2e:
   stage: test
