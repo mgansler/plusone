@@ -94,6 +94,15 @@ e2e:
     - sh tools/scripts/install-cypress-dependencies.sh
     - sh tools/scripts/install-docker-debian.sh
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t e2e --parallel=1 --configuration=ci
+  after_script:
+    - yarn jrm ./reports/e2e.xml "./reports/e2e/*.xml"
+  artifacts:
+    when: always
+    paths:
+      - reports/e2e.xml
+    reports:
+      junit: reports/e2e.xml
+    expire_in: 2 weeks
 
 build:
   stage: build
