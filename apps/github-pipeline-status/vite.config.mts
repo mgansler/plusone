@@ -41,7 +41,8 @@ export default defineConfig({
 
   // @ts-expect-error vitest needs this
   test: {
-    reporters: ['default'],
+    reporters: ['default', 'junit'],
+    outputFile: '../../reports/test/github-pipeline-status.xml',
     coverage: {
       reportsDirectory: '../../coverage/apps/github-pipeline-status',
       provider: 'v8',
