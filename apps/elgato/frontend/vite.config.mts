@@ -33,7 +33,8 @@ export default defineConfig({
 
   // @ts-expect-error vitest needs this
   test: {
-    reporters: ['default'],
+    reporters: ['default', 'junit'],
+    outputFile: '../../../reports/test/elgato-frontend.xml',
     coverage: {
       reportsDirectory: '../../../coverage/apps/elgato/frontend',
       provider: 'v8',

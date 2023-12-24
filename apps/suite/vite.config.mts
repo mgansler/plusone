@@ -33,7 +33,8 @@ export default defineConfig({
 
   // @ts-expect-error vitest needs this
   test: {
-    reporters: ['default'],
+    reporters: ['default', 'junit'],
+    outputFile: '../../reports/test/suite.xml',
     coverage: {
       reportsDirectory: '../../coverage/vitest',
       provider: 'v8',

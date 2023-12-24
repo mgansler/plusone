@@ -14,6 +14,8 @@ export default defineConfig({
 
   // @ts-expect-error vitest needs this
   test: {
+    reporters: ['default', 'junit'],
+    outputFile: '../../reports/test/dom-utils.xml',
     globals: true,
     cache: { dir: '../../node_modules/.vitest' },
     environment: 'jsdom',

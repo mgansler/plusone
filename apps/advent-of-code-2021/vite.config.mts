@@ -29,7 +29,8 @@ export default defineConfig({
 
   // @ts-expect-error vitest needs this
   test: {
-    reporters: ['default'],
+    reporters: ['default', 'junit'],
+    outputFile: '../../reports/test/advent-of-code-2021.xml',
     coverage: {
       reportsDirectory: '../../coverage/apps/advent-of-code-2021',
       provider: 'v8',
