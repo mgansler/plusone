@@ -1,4 +1,5 @@
 {
+  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "allowJs": false,
@@ -19,6 +20,5 @@
     {
       "path": "./cypress/tsconfig.json"
     }
-  ],
-  "extends": "../../../tsconfig.base.json"
+  ]
 }

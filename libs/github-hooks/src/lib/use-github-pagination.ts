@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import type { PageInfo } from '@plusone/github-schema'
+import type { Maybe, PageInfo } from '@plusone/github-schema'
 
 type PageMeta = {
   currentPage: number
@@ -15,7 +15,7 @@ type GitHubPagination = {
   nextPage: () => void
   prevPage: () => void
   goToPage: (page: number) => void
-  getPageRequest: () => string | null
+  getPageRequest: () => Maybe<string | undefined> | null
 }
 
 export const useGitHubPagination = (pageSize: number): GitHubPagination => {
