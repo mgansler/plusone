@@ -5,17 +5,6 @@
     "strict": false,
     "types": ["node", "@nx/react/typings/cssmodule.d.ts", "@nx/react/typings/image.d.ts", "vite/client"]
   },
-  "exclude": [
-    "**/*.cy.tsx",
-    "cypress/**",
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "jest.config.ts",
-    "cypress/**/*",
-    "cypress.config.ts",
-    "**/*.cy.ts",
-    "**/*.cy.js",
-    "**/*.cy.jsx"
-  ],
+  "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "cypress/**", "cypress.config.ts", "**/*.cy.tsx", "**/*.cy.ts"],
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
 }

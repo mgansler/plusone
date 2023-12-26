@@ -12,7 +12,7 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
   },
-  cacheDir: '../../../node_modules/.vite/vitest',
+  cacheDir: '../../../node_modules/.vite/feeds-web',
 
   server: {
     port: 4200,

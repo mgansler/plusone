@@ -14,8 +14,9 @@ export default defineConfig({
 
   // @ts-expect-error vitest needs this
   test: {
-    reporters: ['default', 'junit'],
-    outputFile: '../../../reports/test/elgato-components.xml',
+    // Enable when adding tests
+    // reporters: ['default', 'junit'],
+    // outputFile: '../../../reports/test/elgato-components.xml',
     globals: true,
     cache: { dir: '../../../node_modules/.vitest' },
     environment: 'jsdom',
