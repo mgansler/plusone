@@ -15,7 +15,7 @@ export default async function runExecutor(
 
   const schemaPath = resolve(context.workspace.projects[context.projectName].sourceRoot, options.schema)
   const args = ['prisma', 'generate', '--schema', schemaPath]
-  const prismaGenerate = spawn('yarn', args)
+  const prismaGenerate = spawn('pnpm', args)
 
   return new Promise((resolve) => {
     prismaGenerate.stdout.on('data', (data) => console.log(data.toString()))

@@ -15,7 +15,7 @@ export default async function runExecutor(
 
   const schemaPath = join(context.workspace.projects[context.projectName].sourceRoot, options.schema)
   const args: string[] = ['prisma', 'format', '--schema', schemaPath]
-  const prismaFormat = spawn('yarn', args)
+  const prismaFormat = spawn('pnpm', args)
 
   return new Promise((resolve) => {
     prismaFormat.stdout.on('data', (data) => console.log(data.toString()))

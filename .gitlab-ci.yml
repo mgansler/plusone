@@ -56,7 +56,7 @@ test:
   script:
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t test --parallel=8 --configuration=ci
   after_script:
-    - yarn jrm ./reports/test.xml "./reports/test/*.xml"
+    - pnpm jrm ./reports/test.xml "./reports/test/*.xml"
   artifacts:
     when: always
     paths:
@@ -73,7 +73,7 @@ component-test:
     - sh tools/scripts/install-cypress-dependencies.sh
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t component-test --parallel=1 --configuration=ci
   after_script:
-    - yarn jrm ./reports/component-test.xml "./reports/component-test/*.xml"
+    - pnpm jrm ./reports/component-test.xml "./reports/component-test/*.xml"
   artifacts:
     when: always
     paths:
@@ -98,7 +98,7 @@ e2e:
     - sh tools/scripts/install-docker-debian.sh
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t e2e --parallel=1 --configuration=ci
   after_script:
-    - yarn jrm ./reports/e2e.xml "./reports/e2e/*.xml"
+    - pnpm jrm ./reports/e2e.xml "./reports/e2e/*.xml"
   artifacts:
     when: always
     paths:

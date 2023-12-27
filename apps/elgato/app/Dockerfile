@@ -1,15 +1,16 @@
 FROM node:20.10.0-alpine
-RUN apk add --no-cache avahi avahi-tools tzdata
-
-
 WORKDIR /usr/elgato
 CMD ["npm", "start"]
 EXPOSE 3000/tcp
 
+RUN corepack enable && corepack prepare pnpm@latest-8 --activate
+
+RUN apk add --no-cache avahi avahi-tools tzdata
+
 # Install dependencies. When these don't update we can use a cached version if available
 COPY ./dist/apps/elgato/backend/package.json .
-COPY ./dist/apps/elgato/backend/yarn.lock .
-RUN yarn install --frozen-lockfile
+COPY ./dist/apps/elgato/backend/pnpm-lock.yaml .
+RUN pnpm install
 
 # Copy the app itself
 COPY ./dist/apps/elgato/backend/ .

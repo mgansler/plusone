@@ -15,7 +15,7 @@ export default async function runExecutor(
 
   const schemaPath = join(context.workspace.projects[context.projectName].sourceRoot, options.schema)
   const args: string[] = ['prisma', 'migrate', 'deploy', '--schema', schemaPath]
-  const prismaDeploy = spawn('yarn', args)
+  const prismaDeploy = spawn('pnpm', args)
 
   return new Promise((resolve) => {
     prismaDeploy.stdout.on('data', (data) => console.log(data.toString()))
