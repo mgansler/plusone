@@ -7,6 +7,7 @@
   },
   "scripts": {
     "cleanup": "./tools/scripts/cleanup-repo.sh",
+    "preinstall": "npx only-allow pnpm",
     "prepare": "husky install"
   },
   "private": true,
