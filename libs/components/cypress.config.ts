@@ -4,7 +4,7 @@ import { defineConfig } from 'cypress'
 export default defineConfig({
   reporter: 'junit',
   reporterOptions: {
-    mochaFile: '../../reports/component-test/components.xml',
+    mochaFile: '../../reports/component-test/components-[hash].xml',
   },
   component: nxComponentTestingPreset(__filename, {
     bundler: 'vite',

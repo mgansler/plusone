@@ -4,7 +4,7 @@ import { defineConfig } from 'cypress'
 export default defineConfig({
   reporter: 'junit',
   reporterOptions: {
-    mochaFile: '../../reports/e2e/advent-of-code-2021.xml',
+    mochaFile: '../../reports/e2e/advent-of-code-2021-[hash].xml',
   },
   e2e: {
     ...nxE2EPreset(__dirname),

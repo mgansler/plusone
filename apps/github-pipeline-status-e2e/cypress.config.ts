@@ -4,7 +4,7 @@ import { defineConfig } from 'cypress'
 export default defineConfig({
   reporter: 'junit',
   reporterOptions: {
-    mochaFile: '../../reports/e2e/github-pipeline-status.xml',
+    mochaFile: '../../reports/e2e/github-pipeline-status-[hash].xml',
   },
   e2e: {
     ...nxE2EPreset(__dirname),
