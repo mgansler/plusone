@@ -4,7 +4,7 @@ import { defineConfig } from 'cypress'
 export default defineConfig({
   reporter: 'junit',
   reporterOptions: {
-    mochaFile: '../../../reports/component-test/elgato-frontend.xml',
+    mochaFile: '../../../reports/component-test/elgato-frontend-[hash].xml',
   },
   component: nxComponentTestingPreset(__filename, {
     bundler: 'vite',
