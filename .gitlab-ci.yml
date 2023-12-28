@@ -113,6 +113,13 @@ build:
     - lint
     - test
     - component-test
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      # We do not need to run this on the main branch as package runs build on its own.
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      # We want this job for merge requests because sometime this fails even though lint is happy
+      when: on_success
   script:
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t build --parallel=8
 
@@ -122,7 +129,6 @@ package:
     - .distributed
     - .dind
   needs:
-    - build
     - e2e
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
