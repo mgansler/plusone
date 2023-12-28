@@ -4,7 +4,7 @@
   "sourceRoot": "apps/feeds/dummy-rss-server/src",
   "projectType": "application",
   "targets": {
-    "build": {
+    "build_": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
@@ -27,14 +27,14 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "feeds-dummy-rss-server:build"
+        "buildTarget": "feeds-dummy-rss-server:build_"
       },
       "configurations": {
         "development": {
-          "buildTarget": "feeds-dummy-rss-server:build:development"
+          "buildTarget": "feeds-dummy-rss-server:build_:development"
         },
         "production": {
-          "buildTarget": "feeds-dummy-rss-server:build:production"
+          "buildTarget": "feeds-dummy-rss-server:build_:production"
         }
       }
     },
