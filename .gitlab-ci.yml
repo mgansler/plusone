@@ -5,6 +5,7 @@ variables:
 
 stages:
   - test
+  - build
   - package
   - deploy
 
@@ -103,16 +104,29 @@ e2e:
       junit: reports/e2e.xml
     expire_in: 2 weeks
 
+build:
+  stage: build
+  extends:
+    - .distributed
+  needs:
+    - format-check
+    - lint
+    - test
+    - component-test
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: on_success
+  script:
+    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t build --parallel=8
+
 package:
   stage: package
   extends:
     - .distributed
     - .dind
   needs:
-    - format-check
-    - lint
-    - test
-    - component-test
     - e2e
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
