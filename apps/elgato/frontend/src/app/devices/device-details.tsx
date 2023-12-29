@@ -17,6 +17,7 @@ import { LightColorPicker } from '../components/color-picker'
 import { RemovableGroup } from '../components/removable-group'
 
 import { DevicePowerStateControl } from './device-power-state-control'
+import { GetStreamDeckUrl } from './get-stream-deck-url'
 
 function isAssignedToGroup(deviceGroups: GroupResponseDto[], group: GroupResponseDto) {
   return deviceGroups.find((g) => g.name === group.name) !== undefined
@@ -103,6 +104,7 @@ export function DeviceDetails() {
         />
       )}
       <DevicePowerStateControl deviceId={deviceId} />
+      <GetStreamDeckUrl deviceId={deviceId} />
     </div>
   )
 }
