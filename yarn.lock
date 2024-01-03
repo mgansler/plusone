@@ -7542,7 +7542,15 @@ body-parser@1.20.2:
     type-is "~1.6.18"
     unpipe "1.0.0"
 
-bonjour-service@1.1.1, bonjour-service@^1.0.11:
+bonjour-service@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/bonjour-service/-/bonjour-service-1.2.0.tgz#1c56da07a76e33b049ba7d865859abee5297f55a"
+  integrity sha512-xdzMA6JGckxyJzZByjEWRcfKmDxXaGXZWVftah3FkCqdlePNS9DjHSUN5zkP4oEfz/t0EXXlro88EIhzwMB4zA==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+    multicast-dns "^7.2.5"
+
+bonjour-service@^1.0.11:
   version "1.1.1"
   resolved "https://registry.npmjs.org/bonjour-service/-/bonjour-service-1.1.1.tgz#960948fa0e0153f5d26743ab15baf8e33752c135"
   integrity sha512-Z/5lQRMOG9k7W+FkeGTNjh7htqn/2LMnfOvBZ8pynNZCM9MwkQkI3zeI4oz09uWdcgmgHugVvBqxGg4VQJ5PCg==
