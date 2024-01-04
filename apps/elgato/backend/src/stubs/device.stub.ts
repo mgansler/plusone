@@ -7,6 +7,7 @@ export function getDevice(type: DeviceType): Device {
     id: 'aa:bb:cc:dd:ee:ff',
     fqdn: `My ${type === DeviceType.LightStrip ? 'Light Strip' : 'Ring Light'} Device._elg._tcp.local`,
     host: `my-${type}-device.local`,
+    address: null,
     lastSeen: new Date(),
     name: `My ${type === DeviceType.LightStrip ? 'Light Strip' : 'Ring Light'} Device`,
     port: 9123,
