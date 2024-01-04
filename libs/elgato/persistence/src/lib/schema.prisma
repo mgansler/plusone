@@ -10,11 +10,12 @@ generator client {
 }
 
 model Device {
-  id   String @id
-  name String
-  fqdn String
-  host String
-  port Int
+  id      String  @id
+  name    String
+  fqdn    String
+  host    String
+  address String?
+  port    Int
 
   // This should be an enum but unfortunately, sqlite doesn't support enums
   // See DeviceType

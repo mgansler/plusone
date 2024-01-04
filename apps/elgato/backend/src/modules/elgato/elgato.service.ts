@@ -19,7 +19,7 @@ import { ElgatoSettingsResponseDto } from './dto/elgato-settings-response.dto'
 
 const httpAgent = new http.Agent({ family: 4 })
 
-type DeviceAddress = Pick<Device, 'host' | 'port' | 'type'>
+type DeviceAddress = Pick<Device, 'address' | 'host' | 'port' | 'type'>
 
 @Injectable()
 export class ElgatoService {
@@ -102,8 +102,10 @@ export class ElgatoService {
     )
   }
 
-  private constructUrl(address: DeviceAddress, path: string): URL {
-    const url = new URL(`http://${address.host.replace('.local', '')}:${address.port}`)
+  private constructUrl(deviceAddress: DeviceAddress, path: string): URL {
+    const address = deviceAddress.address ?? deviceAddress.host.replace('.local', '')
+
+    const url = new URL(`http://${address}:${deviceAddress.port}`)
     url.pathname = path
     return url
   }

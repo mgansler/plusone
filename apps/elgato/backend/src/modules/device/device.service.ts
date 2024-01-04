@@ -1,3 +1,5 @@
+import { promises as dns } from 'dns'
+
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import Bonjour from 'bonjour-service'
@@ -164,23 +166,33 @@ export class DeviceService implements OnModuleInit {
     this.bonjour.find({ type: 'elg' }, async (service) => {
       // TODO: get accessoryInfo and update type in DB
       const currentDeviceCount = await this.prismaService.device.count()
+      const accessoryInfo = await this.elgatoService.getDeviceAccessoryInfo({
+        host: service.host,
+        port: service.port,
+        address: service.referer.address,
+        type: DeviceType.Unknown,
+      })
+
+      const deviceData: Omit<Device, 'id' | 'sunset' | 'sunrise'> = {
+        name: service.name,
+        fqdn: service.fqdn,
+        host: service.host,
+        address: service.referer.family === 'IPv4' ? service.referer.address : null,
+        port: service.port,
+        lastSeen: new Date(),
+        type: this.mapProductNameToDeviceType(accessoryInfo.productName),
+      }
+
       await this.prismaService.device.upsert({
         where: {
           id: service.txt.id,
         },
         create: {
           id: service.txt.id,
-          name: service.name,
-          fqdn: service.fqdn,
-          host: service.host,
-          port: service.port,
-          lastSeen: new Date(),
+          ...deviceData,
         },
         update: {
-          fqdn: service.fqdn,
-          host: service.host,
-          port: service.port,
-          lastSeen: new Date(),
+          ...deviceData,
         },
       })
       const updatedDeviceCount = await this.prismaService.device.count()
@@ -200,10 +212,26 @@ export class DeviceService implements OnModuleInit {
           this.logger.debug(
             `Device ${device.name} hasn't been seen for over ${lastSeenMinutes} minutes, pinging device now.`,
           )
-          const accessoryInfo = await this.elgatoService.getDeviceAccessoryInfo(device)
+
+          // Try manual lookup
+          let address = device.address
+          if (device.address === null) {
+            try {
+              address = (await dns.lookup(device.host.replace('.local', ''), 4)).address
+            } catch (e) {
+              this.logger.warn(`DNS lookup failed for ${device.name}.`)
+            }
+          }
+
+          const accessoryInfo = await this.elgatoService.getDeviceAccessoryInfo({
+            ...device,
+            host: address,
+          })
+
           await this.prismaService.device.update({
             data: {
               lastSeen: new Date(),
+              address: address,
               type: this.mapProductNameToDeviceType(accessoryInfo.productName),
             },
             where: { id: device.id },
