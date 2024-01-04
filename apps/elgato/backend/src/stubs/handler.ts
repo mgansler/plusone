@@ -98,3 +98,14 @@ export function postIdentify() {
     return new Response('')
   })
 }
+
+export function setDisplayName() {
+  return http.put('http://display-name:9123/elgato/accessory-info', async ({ request }) => {
+    const data = (await request.json()) as { displayName: string }
+    if (data.displayName !== 'My new Display Name') {
+      return new HttpResponse('displayName is missing', { status: 400 })
+    }
+
+    return new Response('')
+  })
+}

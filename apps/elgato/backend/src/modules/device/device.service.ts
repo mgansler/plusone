@@ -15,6 +15,7 @@ import {
 import { ElgatoService } from '../elgato/elgato.service'
 
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
+import { DeviceDisplayNameRequestDto } from './dto/device-display-name-request.dto'
 import { DeviceState } from './dto/device-state'
 import { ElgatoDeviceDetailsResponseDto } from './dto/elgato-device-details-response.dto'
 import { TransitionToColorRequestDto } from './dto/transition-to-color-request.dto'
@@ -65,7 +66,29 @@ export class DeviceService implements OnModuleInit {
       ...this.getCurrentColor(currentState.lights[0]),
     }
 
-    return { name: device.name, id: device.id, groups: device.groups, lastSeen: device.lastSeen, details, state }
+    return {
+      name: device.name,
+      id: device.id,
+      groups: device.groups,
+      lastSeen: device.lastSeen,
+      details,
+      state,
+      displayName: details.displayName,
+    }
+  }
+
+  async setDisplayName(id: string, { displayName }: DeviceDisplayNameRequestDto) {
+    const device = await this.prismaService.device.findUniqueOrThrow({
+      where: { id },
+    })
+
+    await this.elgatoService.setDisplayName(device, displayName)
+    await this.prismaService.device.update({
+      where: { id },
+      data: {
+        displayName,
+      },
+    })
   }
 
   async toggle(id: string) {
@@ -181,6 +204,7 @@ export class DeviceService implements OnModuleInit {
         port: service.port,
         lastSeen: new Date(),
         type: this.mapProductNameToDeviceType(accessoryInfo.productName),
+        displayName: accessoryInfo.displayName,
       }
 
       await this.prismaService.device.upsert({

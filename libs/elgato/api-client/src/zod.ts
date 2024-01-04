@@ -11,6 +11,7 @@ export const deviceListResponse = zod.object({
     zod.object({
       id: zod.string(),
       name: zod.string(),
+      displayName: zod.string(),
     }),
   ),
 })
@@ -22,6 +23,7 @@ export const deviceDetailsParams = zod.object({
 export const deviceDetailsResponse = zod.object({
   id: zod.string(),
   name: zod.string(),
+  displayName: zod.string(),
   groups: zod.array(
     zod.object({
       id: zod.number(),
@@ -41,6 +43,14 @@ export const deviceDetailsResponse = zod.object({
     brightness: zod.number().optional(),
   }),
   lastSeen: zod.string().datetime(),
+})
+
+export const setDisplayNameParams = zod.object({
+  id: zod.string(),
+})
+
+export const setDisplayNameBody = zod.object({
+  displayName: zod.string(),
 })
 
 export const toggleDeviceParams = zod.object({
@@ -134,6 +144,7 @@ export const groupDetailsResponse = zod.object({
     zod.object({
       id: zod.string(),
       name: zod.string(),
+      displayName: zod.string(),
       groups: zod.array(
         zod.object({
           id: zod.number(),
@@ -186,4 +197,8 @@ export const getLocationDataResponse = zod.object({
   dayLength: zod.number(),
   timeZone: zod.string(),
   utcOffset: zod.number(),
+})
+
+export const streamDeckControllerToggleDeviceParams = zod.object({
+  deviceId: zod.string(),
 })

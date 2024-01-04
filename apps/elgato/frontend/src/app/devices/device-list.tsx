@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 
 import { useValidatedDeviceList } from '@plusone/elgato-api-client'
@@ -12,16 +13,16 @@ export function DeviceList() {
   }
 
   return (
-    <>
+    <div className={'max-w-96 my-4 grid grid-cols-[5fr_2fr_1fr]  gap-2'}>
       {data.devices.map((device) => (
-        <div key={device.id} className={'flex'}>
-          <span>{device.name}</span>
+        <Fragment key={device.id}>
+          <span>{device.displayName}</span>
           <Link to={device.id}>Details</Link>
           <DevicePowerStateControl deviceId={device.id} />
-        </div>
+        </Fragment>
       ))}
 
       <Outlet />
-    </>
+    </div>
   )
 }

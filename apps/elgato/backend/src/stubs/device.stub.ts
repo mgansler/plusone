@@ -14,5 +14,6 @@ export function getDevice(type: DeviceType): Device {
     sunrise: false,
     sunset: false,
     type: type,
+    displayName: `My ${type === DeviceType.LightStrip ? 'Light Strip' : 'Ring Light'}`,
   }
 }

@@ -21,6 +21,8 @@ model Device {
   // See DeviceType
   type String @default("unknown")
 
+  displayName String
+
   lastSeen DateTime?
 
   groups Group[]

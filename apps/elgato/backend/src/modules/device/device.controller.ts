@@ -5,6 +5,7 @@ import { Throttle } from '@nestjs/throttler'
 import { DeviceService } from './device.service'
 import { DeviceAddToGroupRequestDto } from './dto/device-add-to-group-request.dto'
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
+import { DeviceDisplayNameRequestDto } from './dto/device-display-name-request.dto'
 import { DeviceListResponseDto } from './dto/device-list-response'
 import { DevicePowerStateRequestDto } from './dto/device-power-state-request.dto'
 import { DeviceRemoveFromGroupRequestDto } from './dto/device-remove-from-group-request.dto'
@@ -30,6 +31,12 @@ export class DeviceController {
   @Get('/:id')
   async getDevice(@Param('id') id: string): Promise<DeviceDetailsResponseDto> {
     return this.deviceService.getDevice(id)
+  }
+
+  @ApiOperation({ operationId: 'set-display-name' })
+  @Put('/:id/display-name')
+  async setDisplayName(@Param('id') id: string, @Body() displayName: DeviceDisplayNameRequestDto) {
+    return this.deviceService.setDisplayName(id, displayName)
   }
 
   @ApiOperation({ operationId: 'toggle-device' })

@@ -48,6 +48,37 @@
         }
       }
     },
+    "/api/devices/{id}/display-name": {
+      "put": {
+        "operationId": "set-display-name",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeviceDisplayNameRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/devices/{id}/toggle": {
       "put": {
         "operationId": "toggle-device",
@@ -442,10 +473,14 @@
             "type": "string"
           },
           "name": {
+            "type": "string",
+            "deprecated": true
+          },
+          "displayName": {
             "type": "string"
           }
         },
-        "required": ["id", "name"]
+        "required": ["id", "name", "displayName"]
       },
       "DeviceListResponseDto": {
         "type": "object",
@@ -518,6 +553,10 @@
             "type": "string"
           },
           "name": {
+            "type": "string",
+            "deprecated": true
+          },
+          "displayName": {
             "type": "string"
           },
           "groups": {
@@ -537,7 +576,16 @@
             "type": "string"
           }
         },
-        "required": ["id", "name", "groups", "details", "state", "lastSeen"]
+        "required": ["id", "name", "displayName", "groups", "details", "state", "lastSeen"]
+      },
+      "DeviceDisplayNameRequestDto": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string"
+          }
+        },
+        "required": ["displayName"]
       },
       "DevicePowerStateRequestDto": {
         "type": "object",
