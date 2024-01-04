@@ -1,8 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import type { DeviceDetailsResponseDto } from '@plusone/elgato-api-client'
 import { useSetDisplayName, useValidatedDeviceDetails } from '@plusone/elgato-api-client'
+import type { DeviceDetailsResponseDto } from '@plusone/elgato-api-client'
 
 type DisplayNameFormFields = {
   displayName: string
@@ -13,8 +14,10 @@ type UpdatableDisplayNameProps = {
 }
 
 export function UpdatableDisplayName({ deviceId }: UpdatableDisplayNameProps) {
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+
   const queryClient = useQueryClient()
-  const { refetch, queryKey } = useValidatedDeviceDetails(deviceId)
+  const { data: deviceDetails, refetch, queryKey, isLoading } = useValidatedDeviceDetails(deviceId)
   const { mutate } = useSetDisplayName({
     mutation: {
       onSuccess: async () => {
@@ -39,13 +42,29 @@ export function UpdatableDisplayName({ deviceId }: UpdatableDisplayNameProps) {
   })
 
   const onSubmit = (data: DisplayNameFormFields) => {
-    mutate({ id: deviceId, data })
+    const displayName = data.displayName.trim()
+    mutate({ id: deviceId, data: { displayName } })
+    setIsEditing(false)
+  }
+
+  if (isLoading) {
+    return null
+  }
+
+  if (!isEditing) {
+    return (
+      <h2 style={{ cursor: 'pointer' }} onClick={() => setIsEditing(true)}>
+        {deviceDetails.details.displayName}
+      </h2>
+    )
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input type={'text'} {...register('displayName')} />
-      <button type={'submit'}>Save</button>
+      <button type={'submit'} hidden={!isEditing}>
+        Save
+      </button>
     </form>
   )
 }
