@@ -169,6 +169,7 @@ export class DeviceService implements OnModuleInit {
       const accessoryInfo = await this.elgatoService.getDeviceAccessoryInfo({
         host: service.host,
         port: service.port,
+        address: service.referer.address,
         type: DeviceType.Unknown,
       })
 
