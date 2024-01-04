@@ -473,10 +473,14 @@
             "type": "string"
           },
           "name": {
+            "type": "string",
+            "deprecated": true
+          },
+          "displayName": {
             "type": "string"
           }
         },
-        "required": ["id", "name"]
+        "required": ["id", "name", "displayName"]
       },
       "DeviceListResponseDto": {
         "type": "object",
@@ -549,6 +553,10 @@
             "type": "string"
           },
           "name": {
+            "type": "string",
+            "deprecated": true
+          },
+          "displayName": {
             "type": "string"
           },
           "groups": {
@@ -568,7 +576,7 @@
             "type": "string"
           }
         },
-        "required": ["id", "name", "groups", "details", "state", "lastSeen"]
+        "required": ["id", "name", "displayName", "groups", "details", "state", "lastSeen"]
       },
       "DeviceDisplayNameRequestDto": {
         "type": "object",

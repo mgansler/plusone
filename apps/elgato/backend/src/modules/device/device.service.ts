@@ -66,7 +66,15 @@ export class DeviceService implements OnModuleInit {
       ...this.getCurrentColor(currentState.lights[0]),
     }
 
-    return { name: device.name, id: device.id, groups: device.groups, lastSeen: device.lastSeen, details, state }
+    return {
+      name: device.name,
+      id: device.id,
+      groups: device.groups,
+      lastSeen: device.lastSeen,
+      details,
+      state,
+      displayName: details.displayName,
+    }
   }
 
   async setDisplayName(id: string, { displayName }: DeviceDisplayNameRequestDto) {
@@ -74,7 +82,13 @@ export class DeviceService implements OnModuleInit {
       where: { id },
     })
 
-    return this.elgatoService.setDisplayName(device, displayName)
+    await this.elgatoService.setDisplayName(device, displayName)
+    await this.prismaService.device.update({
+      where: { id },
+      data: {
+        displayName,
+      },
+    })
   }
 
   async toggle(id: string) {
@@ -190,6 +204,7 @@ export class DeviceService implements OnModuleInit {
         port: service.port,
         lastSeen: new Date(),
         type: this.mapProductNameToDeviceType(accessoryInfo.productName),
+        displayName: accessoryInfo.displayName,
       }
 
       await this.prismaService.device.upsert({

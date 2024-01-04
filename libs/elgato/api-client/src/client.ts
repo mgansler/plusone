@@ -131,15 +131,19 @@ export interface GroupResponseDto {
 
 export interface DeviceDetailsResponseDto {
   details: ElgatoDeviceDetailsResponseDto
+  displayName: string
   groups: GroupResponseDto[]
   id: string
   lastSeen: string
+  /** @deprecated */
   name: string
   state: DeviceState
 }
 
 export interface DeviceResponseDto {
+  displayName: string
   id: string
+  /** @deprecated */
   name: string
 }
 

@@ -11,6 +11,7 @@ export const deviceListResponse = zod.object({
     zod.object({
       id: zod.string(),
       name: zod.string(),
+      displayName: zod.string(),
     }),
   ),
 })
@@ -22,6 +23,7 @@ export const deviceDetailsParams = zod.object({
 export const deviceDetailsResponse = zod.object({
   id: zod.string(),
   name: zod.string(),
+  displayName: zod.string(),
   groups: zod.array(
     zod.object({
       id: zod.number(),
@@ -142,6 +144,7 @@ export const groupDetailsResponse = zod.object({
     zod.object({
       id: zod.string(),
       name: zod.string(),
+      displayName: zod.string(),
       groups: zod.array(
         zod.object({
           id: zod.number(),
