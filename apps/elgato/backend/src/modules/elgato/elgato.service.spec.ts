@@ -11,6 +11,7 @@ import {
   getStuckDevice,
   postIdentify,
   putState,
+  setDisplayName,
 } from '../../stubs/handler'
 import { DevicePowerState } from '../device/enum/device-power-state'
 import { DeviceType } from '../device/enum/device-type'
@@ -39,6 +40,7 @@ describe('ElgatoService', () => {
       postIdentify(),
       putState(DeviceType.LightStrip),
       putState(DeviceType.RingLight),
+      setDisplayName(),
     )
     server.listen()
   })
@@ -87,6 +89,38 @@ describe('ElgatoService', () => {
   describe('identify', () => {
     it('should make a post request', async () => {
       await elgatoService.identify({ address: null, host: 'identify', port: 9123, type: DeviceType.Unknown })
+    })
+
+    it('should throw error on unreachable host', async () => {
+      await expect(
+        elgatoService.identify({
+          address: null,
+          host: 'does-not-resolve',
+          port: 9123,
+          type: DeviceType.Unknown,
+        }),
+      ).rejects.toThrow(Error("Could not connect to 'does-not-resolve:9123'"))
+
+      expect(errSpy).toHaveBeenCalledWith("Could not resolve 'does-not-resolve' on current network.")
+    })
+  })
+
+  describe('setDisplayName', () => {
+    beforeEach(() => {
+      server = setupServer(setDisplayName(), doesNotResolve())
+      server.listen()
+    })
+
+    it('should make a put request', async () => {
+      await elgatoService.setDisplayName(
+        {
+          address: null,
+          host: 'display-name',
+          port: 9123,
+          type: DeviceType.Unknown,
+        },
+        'My new Display Name',
+      )
     })
 
     it('should throw error on unreachable host', async () => {

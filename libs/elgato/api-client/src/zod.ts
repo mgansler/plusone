@@ -43,6 +43,14 @@ export const deviceDetailsResponse = zod.object({
   lastSeen: zod.string().datetime(),
 })
 
+export const setDisplayNameParams = zod.object({
+  id: zod.string(),
+})
+
+export const setDisplayNameBody = zod.object({
+  displayName: zod.string(),
+})
+
 export const toggleDeviceParams = zod.object({
   id: zod.string(),
 })
@@ -186,4 +194,8 @@ export const getLocationDataResponse = zod.object({
   dayLength: zod.number(),
   timeZone: zod.string(),
   utcOffset: zod.number(),
+})
+
+export const streamDeckControllerToggleDeviceParams = zod.object({
+  deviceId: zod.string(),
 })

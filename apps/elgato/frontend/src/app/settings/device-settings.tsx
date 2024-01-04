@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import type { DeviceResponseDto } from '@plusone/elgato-api-client'
 import { useUpdateDeviceSettings, useValidatedDeviceSettings } from '@plusone/elgato-api-client'
 
-type DeviceSettingsForm = {
+type DeviceSettingsFormFields = {
   sunrise: boolean
   sunset: boolean
 }
@@ -16,11 +16,11 @@ export function DeviceSettings({ device }: DeviceSettingsProps) {
   const { refetch } = useValidatedDeviceSettings(device.id, { query: { enabled: false } })
   const { mutate } = useUpdateDeviceSettings()
 
-  const { handleSubmit, register } = useForm<DeviceSettingsForm>({
+  const { handleSubmit, register } = useForm<DeviceSettingsFormFields>({
     defaultValues: async () => {
       try {
         const response = await refetch()
-        return response.data as DeviceSettingsForm
+        return response.data as DeviceSettingsFormFields
       } catch (e) {
         return {
           sunrise: false,
@@ -30,7 +30,7 @@ export function DeviceSettings({ device }: DeviceSettingsProps) {
     },
   })
 
-  const onSubmit = (data: DeviceSettingsForm) => {
+  const onSubmit = (data: DeviceSettingsFormFields) => {
     mutate({ id: device.id, data })
   }
 

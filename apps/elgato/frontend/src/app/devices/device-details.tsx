@@ -15,6 +15,7 @@ import type { GroupResponseDto } from '@plusone/elgato-api-client'
 import { AddDeviceToGroup } from '../components/add-device-to-group'
 import { LightColorPicker } from '../components/color-picker'
 import { RemovableGroup } from '../components/removable-group'
+import { UpdatableDisplayName } from '../components/updateable-display-name'
 
 import { DevicePowerStateControl } from './device-power-state-control'
 import { GetStreamDeckUrl } from './get-stream-deck-url'
@@ -49,7 +50,7 @@ export function DeviceDetails() {
 
   return (
     <div className={'flex flex-col gap-1 p-1'}>
-      <h2>{deviceDetails.name}</h2>
+      <UpdatableDisplayName deviceId={deviceId} />
 
       <fieldset className={'border border-solid border-gray-300'}>
         <legend>Rooms</legend>

@@ -14,6 +14,7 @@ import { DeviceType } from '../device/enum/device-type'
 import { ElgatoAccessoryInfoResponseDto } from './dto/elgato-accessory-info-response.dto'
 import { ElgatoDeviceStatePayloadDto } from './dto/elgato-device-state-payload.dto'
 import { ElgatoDeviceStateDto } from './dto/elgato-device-state.dto'
+import { ElgatoDisplayNamePayloadDto } from './dto/elgato-display-name-payload.dto'
 import { ElgatoSceneRequestDto } from './dto/elgato-scene-request.dto'
 import { ElgatoSettingsResponseDto } from './dto/elgato-settings-response.dto'
 
@@ -66,6 +67,11 @@ export class ElgatoService {
         .post(url.toString(), undefined, { httpAgent })
         .pipe(catchError((error: AxiosError) => this.handleError(error, url))),
     )
+  }
+
+  async setDisplayName(device: DeviceAddress, displayName: string) {
+    const payload: ElgatoDisplayNamePayloadDto = { displayName }
+    await this.put(device, '/elgato/accessory-info', payload)
   }
 
   setDevicePowerState(device: DeviceAddress, state: DevicePowerState) {

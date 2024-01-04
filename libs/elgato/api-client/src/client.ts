@@ -97,6 +97,10 @@ export interface DevicePowerStateRequestDto {
   saturation?: number
 }
 
+export interface DeviceDisplayNameRequestDto {
+  displayName: string
+}
+
 export interface DeviceState {
   brightness?: number
   hue?: number
@@ -221,6 +225,59 @@ export const useDeviceDetails = <TData = Awaited<ReturnType<typeof deviceDetails
   query.queryKey = queryOptions.queryKey
 
   return query
+}
+
+export const setDisplayName = (id: string, deviceDisplayNameRequestDto: DeviceDisplayNameRequestDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/devices/${id}/display-name`,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    data: deviceDisplayNameRequestDto,
+  })
+}
+
+export const getSetDisplayNameMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof setDisplayName>>,
+    TError,
+    { id: string; data: DeviceDisplayNameRequestDto },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof setDisplayName>>,
+  TError,
+  { id: string; data: DeviceDisplayNameRequestDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof setDisplayName>>,
+    { id: string; data: DeviceDisplayNameRequestDto }
+  > = (props) => {
+    const { id, data } = props ?? {}
+
+    return setDisplayName(id, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type SetDisplayNameMutationResult = NonNullable<Awaited<ReturnType<typeof setDisplayName>>>
+export type SetDisplayNameMutationBody = DeviceDisplayNameRequestDto
+export type SetDisplayNameMutationError = unknown
+
+export const useSetDisplayName = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof setDisplayName>>,
+    TError,
+    { id: string; data: DeviceDisplayNameRequestDto },
+    TContext
+  >
+}) => {
+  const mutationOptions = getSetDisplayNameMutationOptions(options)
+
+  return useMutation(mutationOptions)
 }
 
 export const toggleDevice = (id: string) => {
@@ -817,6 +874,60 @@ export const useGetLocationData = <TData = Awaited<ReturnType<typeof getLocation
   query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationData>>, TError, TData>>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getGetLocationDataQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const streamDeckControllerToggleDevice = (deviceId: string, signal?: AbortSignal) => {
+  return customAxiosInstance<void>({ url: `/api/stream-deck/toggle/${deviceId}`, method: 'GET', signal })
+}
+
+export const getStreamDeckControllerToggleDeviceQueryKey = (deviceId: string) => {
+  return [`/api/stream-deck/toggle/${deviceId}`] as const
+}
+
+export const getStreamDeckControllerToggleDeviceQueryOptions = <
+  TData = Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>,
+  TError = unknown,
+>(
+  deviceId: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>, TError, TData>>
+  },
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getStreamDeckControllerToggleDeviceQueryKey(deviceId)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>> = ({ signal }) =>
+    streamDeckControllerToggleDevice(deviceId, signal)
+
+  return { queryKey, queryFn, enabled: !!deviceId, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey }
+}
+
+export type StreamDeckControllerToggleDeviceQueryResult = NonNullable<
+  Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>
+>
+export type StreamDeckControllerToggleDeviceQueryError = unknown
+
+export const useStreamDeckControllerToggleDevice = <
+  TData = Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>,
+  TError = unknown,
+>(
+  deviceId: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>, TError, TData>>
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getStreamDeckControllerToggleDeviceQueryOptions(deviceId, options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
