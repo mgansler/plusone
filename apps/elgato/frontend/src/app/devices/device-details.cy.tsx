@@ -50,7 +50,8 @@ describe('DeviceDetails', () => {
 
     cy.wait('@groups')
     cy.wait('@deviceDetails')
-    cy.get('@deviceDetails.all').should('have.length', 1)
+    // We start with 2 here because there's a child component that also fetches the details
+    cy.get('@deviceDetails.all').should('have.length', 2)
 
     cy.findByRole('group', { name: 'Rooms' }).within(() => {
       cy.findByText('Office')
@@ -64,11 +65,11 @@ describe('DeviceDetails', () => {
     cy.intercept('PUT', '/api/devices/AA:BB:CC:DD:EE:FF/add-to-group', { statusCode: 200 }).as('addDevice')
     cy.findByRole('button', { name: /Living Room/ }).click()
     cy.wait('@addDevice')
-    cy.get('@deviceDetails.all').should('have.length', 2)
+    cy.get('@deviceDetails.all').should('have.length', 3)
 
     cy.intercept('DELETE', '/api/devices/AA:BB:CC:DD:EE:FF/remove-from-group', { statusCode: 200 }).as('removeDevice')
     cy.findByRole('button', { name: /Remove device from Office/ }).click()
     cy.wait('@removeDevice')
-    cy.get('@deviceDetails.all').should('have.length', 3)
+    cy.get('@deviceDetails.all').should('have.length', 4)
   })
 })
