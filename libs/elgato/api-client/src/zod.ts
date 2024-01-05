@@ -6,11 +6,35 @@
  */
 import { z as zod } from 'zod'
 
-export const deviceListResponse = zod.object({
+export const discoveredDevicesResponse = zod.object({
   devices: zod.array(
     zod.object({
       id: zod.string(),
       name: zod.string(),
+      fqdn: zod.string(),
+      host: zod.string(),
+      ipv4: zod.string(),
+      port: zod.number(),
+      displayName: zod.string(),
+      productName: zod.string(),
+      type: zod.enum(['RingLight', 'LightStrip', 'Unknown']),
+      isControlled: zod.boolean(),
+    }),
+  ),
+})
+
+export const addDiscoveredDeviceParams = zod.object({
+  deviceId: zod.string(),
+})
+
+export const addManualDeviceParams = zod.object({
+  address: zod.string(),
+})
+
+export const deviceListResponse = zod.object({
+  devices: zod.array(
+    zod.object({
+      id: zod.string(),
       displayName: zod.string(),
     }),
   ),
@@ -22,15 +46,7 @@ export const deviceDetailsParams = zod.object({
 
 export const deviceDetailsResponse = zod.object({
   id: zod.string(),
-  name: zod.string(),
   displayName: zod.string(),
-  groups: zod.array(
-    zod.object({
-      id: zod.number(),
-      name: zod.string(),
-      isRoom: zod.boolean(),
-    }),
-  ),
   details: zod.object({
     productName: zod.string(),
     deviceType: zod.enum(['RingLight', 'LightStrip', 'Unknown']),
@@ -78,22 +94,6 @@ export const transitionToColorBody = zod.object({
   brightness: zod.number(),
 })
 
-export const addDeviceToGroupParams = zod.object({
-  id: zod.string(),
-})
-
-export const addDeviceToGroupBody = zod.object({
-  groupId: zod.number(),
-})
-
-export const removeDeviceFromGroupParams = zod.object({
-  id: zod.string(),
-})
-
-export const removeDeviceFromGroupBody = zod.object({
-  groupId: zod.number(),
-})
-
 export const currentDeviceSettingsParams = zod.object({
   id: zod.string(),
 })
@@ -117,66 +117,13 @@ export const updateDeviceSettingsResponse = zod.object({
   sunset: zod.boolean(),
 })
 
-export const createGroupBody = zod.object({
-  name: zod.string(),
-  isRoom: zod.boolean().optional(),
-})
-
-export const groupListResponse = zod.object({
-  groups: zod.array(
-    zod.object({
-      id: zod.number(),
-      name: zod.string(),
-      isRoom: zod.boolean(),
-    }),
-  ),
-})
-
-export const groupDetailsParams = zod.object({
-  groupId: zod.number(),
-})
-
-export const groupDetailsResponse = zod.object({
-  id: zod.number(),
-  name: zod.string(),
-  isRoom: zod.boolean(),
-  devices: zod.array(
-    zod.object({
-      id: zod.string(),
-      name: zod.string(),
-      displayName: zod.string(),
-      groups: zod.array(
-        zod.object({
-          id: zod.number(),
-          name: zod.string(),
-          isRoom: zod.boolean(),
-        }),
-      ),
-      details: zod.object({
-        productName: zod.string(),
-        deviceType: zod.enum(['RingLight', 'LightStrip', 'Unknown']),
-        displayName: zod.string(),
-      }),
-      state: zod.object({
-        on: zod.boolean(),
-        hue: zod.number().optional(),
-        saturation: zod.number().optional(),
-        brightness: zod.number().optional(),
-      }),
-      lastSeen: zod.string().datetime(),
-    }),
-  ),
-})
-
-export const controlGroupStateParams = zod.object({
-  groupId: zod.number(),
-})
-
-export const controlGroupStateBody = zod.object({
-  desiredPowerState: zod.enum(['on', 'off']),
-})
-
 export const updateLocationBody = zod.object({
+  longitude: zod.number(),
+  latitude: zod.number(),
+  name: zod.string(),
+})
+
+export const currentLocationResponse = zod.object({
   longitude: zod.number(),
   latitude: zod.number(),
   name: zod.string(),
