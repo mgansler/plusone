@@ -1,40 +1,16 @@
-import type { ReactEventHandler } from 'react'
-import { useEffect } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Outlet } from '@tanstack/react-router'
+
+import { discoveryRoute, settingsRoute } from '../routes'
 
 export function App() {
-  const navigate = useNavigate()
-  const location = useLocation()
-
-  useEffect(() => {
-    if (location.pathname === '/') {
-      navigate('devices')
-    }
-  }, [location.pathname, navigate])
-
-  const onSelectChange: ReactEventHandler<HTMLSelectElement> = (event) => {
-    navigate(event.currentTarget.value)
-  }
-
-  const selectDefaultValue = (): string => {
-    if (['/', '/devices'].includes(location.pathname)) {
-      return 'devices'
-    }
-    return 'groups'
-  }
-
   return (
-    <>
-      <h1>Welcome to Elgato Control</h1>
-
-      <select onChange={onSelectChange} defaultValue={selectDefaultValue()}>
-        <option value={'devices'}>Devices</option>
-        <option value={'groups'}>Groups</option>
-      </select>
+    <div className={'flex flex-col'}>
+      <h1>Elgato Control</h1>
 
       <Outlet />
 
-      {!location.pathname.includes('settings') ? <button onClick={() => navigate('/settings')}>Settings</button> : null}
-    </>
+      <Link to={discoveryRoute.to}>Discovery</Link>
+      <Link to={settingsRoute.to}>Settings</Link>
+    </div>
   )
 }

@@ -2,34 +2,21 @@ import { useQueryClient } from '@tanstack/react-query'
 import { convert } from 'colvertize'
 import { throttle } from 'lodash'
 import { useCallback } from 'react'
-import { useParams } from 'react-router-dom'
 
-import {
-  DeviceType,
-  useTransitionToColor,
-  useValidatedDeviceDetails,
-  useValidatedGroupList,
-} from '@plusone/elgato-api-client'
-import type { GroupResponseDto } from '@plusone/elgato-api-client'
+import { DeviceType, useTransitionToColor, useValidatedDeviceDetails } from '@plusone/elgato-api-client'
 
-import { AddDeviceToGroup } from '../components/add-device-to-group'
+import { deviceDetailsRoute } from '../../routes'
 import { LightColorPicker } from '../components/color-picker'
-import { RemovableGroup } from '../components/removable-group'
 import { UpdatableDisplayName } from '../components/updateable-display-name'
 
 import { DevicePowerStateControl } from './device-power-state-control'
 import { GetStreamDeckUrl } from './get-stream-deck-url'
 
-function isAssignedToGroup(deviceGroups: GroupResponseDto[], group: GroupResponseDto) {
-  return deviceGroups.find((g) => g.name === group.name) !== undefined
-}
-
 export function DeviceDetails() {
-  const { deviceId } = useParams()
+  const { deviceId } = deviceDetailsRoute.useParams()
 
   const queryClient = useQueryClient()
-  const { data: deviceDetails, isLoading, queryKey } = useValidatedDeviceDetails(deviceId)
-  const { data: groups } = useValidatedGroupList()
+  const { data: deviceDetails, queryKey } = useValidatedDeviceDetails(deviceId)
   const { mutate } = useTransitionToColor({
     mutation: { onSuccess: () => queryClient.invalidateQueries({ queryKey }) },
   })
@@ -44,59 +31,11 @@ export function DeviceDetails() {
     transitionToColor({ id: deviceId, data: { hue, saturation, brightness } })
   }
 
-  if (isLoading) {
-    return null
-  }
-
   return (
     <div className={'flex flex-col gap-1 p-1'}>
       <UpdatableDisplayName deviceId={deviceId} />
 
-      <fieldset className={'border border-solid border-gray-300'}>
-        <legend>Rooms</legend>
-        {deviceDetails.groups
-          .filter((group) => group.isRoom)
-          .map((group: GroupResponseDto) => (
-            <RemovableGroup key={group.id} group={group} deviceId={deviceDetails.id} queryKeys={[queryKey]} />
-          ))}
-        {groups?.groups
-          .filter(
-            (group: GroupResponseDto) =>
-              group.isRoom && !isAssignedToGroup(deviceDetails.groups as GroupResponseDto[], group),
-          )
-          .map((group) => (
-            <AddDeviceToGroup
-              key={group.id}
-              group={group as GroupResponseDto}
-              deviceId={deviceDetails.id}
-              queryKeys={[queryKey]}
-            />
-          ))}
-      </fieldset>
-
-      <fieldset className={'border border-solid border-gray-300'}>
-        <legend>Groups</legend>
-        {deviceDetails.groups
-          .filter((group) => !group.isRoom)
-          .map((group: GroupResponseDto) => (
-            <RemovableGroup key={group.id} group={group} deviceId={deviceDetails.id} queryKeys={[queryKey]} />
-          ))}
-        {groups?.groups
-          .filter(
-            (group: GroupResponseDto) =>
-              !group.isRoom && !isAssignedToGroup(deviceDetails.groups as GroupResponseDto[], group),
-          )
-          .map((group) => (
-            <AddDeviceToGroup
-              key={group.id}
-              group={group as GroupResponseDto}
-              deviceId={deviceDetails.id}
-              queryKeys={[queryKey]}
-            />
-          ))}
-      </fieldset>
-
-      {deviceDetails.details.deviceType === DeviceType.LightStrip && (
+      {deviceDetails?.details.deviceType === DeviceType.LightStrip && (
         <LightColorPicker
           hue={deviceDetails.state.hue}
           saturation={deviceDetails.state.saturation}

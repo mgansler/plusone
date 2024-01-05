@@ -9,33 +9,38 @@ generator client {
   binaryTargets = ["linux-musl", "native", "linux-musl-arm64-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
 }
 
-model Device {
-  id      String  @id
-  name    String
-  fqdn    String
-  host    String
-  address String?
-  port    Int
-
-  // This should be an enum but unfortunately, sqlite doesn't support enums
-  // See DeviceType
-  type String @default("unknown")
+model DiscoveredDevice {
+  id   String  @id
+  name String
+  fqdn String
+  host String
+  ipv4 String?
+  port Int
 
   displayName String
+  productName String
 
-  lastSeen DateTime?
+  isControlled Boolean @default(false)
+}
 
-  groups Group[]
+model Device {
+  id          String    @id
+  displayName String
+  lastSeen    DateTime?
+  type        String // See enum DeviceType, unfortunately, sqlite doesn't support enums
+  address     String
+  port        Int
 
   sunrise Boolean @default(false)
   sunset  Boolean @default(false)
 }
 
-model Group {
-  id      Int      @id @default(autoincrement())
-  name    String
-  devices Device[]
-  isRoom  Boolean  @default(false)
+model Color {
+  id          Int  @id @default(autoincrement())
+  brightness  Int
+  hue         Int?
+  saturation  Int?
+  temperature Int?
 }
 
 model Location {

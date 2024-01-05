@@ -1,11 +1,10 @@
-import { promises as dns } from 'dns'
-
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import Bonjour from 'bonjour-service'
 
-import { Device, Group, PrismaService } from '@plusone/elgato-persistence'
+import { PrismaService } from '@plusone/elgato-persistence'
 
+import { mapProductNameToDeviceType } from '../../shared/map-product-name-to-device-type'
 import { LightStateWithColor } from '../elgato/dto/elgato-device-state.dto'
 import {
   ElgatoSceneRequestDto,
@@ -20,7 +19,6 @@ import { DeviceState } from './dto/device-state'
 import { ElgatoDeviceDetailsResponseDto } from './dto/elgato-device-details-response.dto'
 import { TransitionToColorRequestDto } from './dto/transition-to-color-request.dto'
 import { DevicePowerState } from './enum/device-power-state'
-import { DeviceType } from './enum/device-type'
 
 @Injectable()
 export class DeviceService implements OnModuleInit {
@@ -38,12 +36,11 @@ export class DeviceService implements OnModuleInit {
   }
 
   async getAllDevices() {
-    return this.prismaService.device.findMany({ include: { groups: true } })
+    return this.prismaService.device.findMany()
   }
 
   async getDevice(id: string): Promise<DeviceDetailsResponseDto> {
     const device = await this.prismaService.device.findUniqueOrThrow({
-      include: { groups: true },
       where: { id },
     })
 
@@ -57,7 +54,7 @@ export class DeviceService implements OnModuleInit {
 
     const details: ElgatoDeviceDetailsResponseDto = {
       displayName: accessoryInfo.displayName,
-      deviceType: this.mapProductNameToDeviceType(accessoryInfo.productName),
+      deviceType: mapProductNameToDeviceType(accessoryInfo.productName),
       productName: accessoryInfo.productName,
     }
 
@@ -67,9 +64,7 @@ export class DeviceService implements OnModuleInit {
     }
 
     return {
-      name: device.name,
       id: device.id,
-      groups: device.groups,
       lastSeen: device.lastSeen,
       details,
       state,
@@ -151,130 +146,28 @@ export class DeviceService implements OnModuleInit {
     })
   }
 
-  async addDeviceToGroup(deviceId: Device['id'], groupId: Group['id']) {
-    await this.prismaService.group.update({
-      where: { id: groupId },
-      data: {
-        devices: {
-          connect: {
-            id: deviceId,
-          },
-        },
-      },
-    })
-  }
-
-  async removeDeviceFromGroup(deviceId: Device['id'], groupId: Group['id']) {
-    await this.prismaService.group.update({
-      where: { id: groupId },
-      data: {
-        devices: {
-          disconnect: {
-            id: deviceId,
-          },
-        },
-      },
-    })
-  }
-
-  async setGroupState(groupId: Group['id'], targetState: DevicePowerState) {
-    const devices = await this.prismaService.device.findMany({ where: { groups: { some: { id: groupId } } } })
-    for (const device of devices) {
-      await this.elgatoService.setDevicePowerState(device, targetState)
-    }
-  }
-
-  @Cron(CronExpression.EVERY_30_SECONDS, { name: 'find-devices' })
-  private async findDevices() {
-    this.bonjour.find({ type: 'elg' }, async (service) => {
-      // TODO: get accessoryInfo and update type in DB
-      const currentDeviceCount = await this.prismaService.device.count()
-      const accessoryInfo = await this.elgatoService.getDeviceAccessoryInfo({
-        host: service.host,
-        port: service.port,
-        address: service.referer.address,
-        type: DeviceType.Unknown,
-      })
-
-      const deviceData: Omit<Device, 'id' | 'sunset' | 'sunrise'> = {
-        name: service.name,
-        fqdn: service.fqdn,
-        host: service.host,
-        address: service.referer.family === 'IPv4' ? service.referer.address : null,
-        port: service.port,
-        lastSeen: new Date(),
-        type: this.mapProductNameToDeviceType(accessoryInfo.productName),
-        displayName: accessoryInfo.displayName,
-      }
-
-      await this.prismaService.device.upsert({
-        where: {
-          id: service.txt.id,
-        },
-        create: {
-          id: service.txt.id,
-          ...deviceData,
-        },
-        update: {
-          ...deviceData,
-        },
-      })
-      const updatedDeviceCount = await this.prismaService.device.count()
-      if (currentDeviceCount !== updatedDeviceCount) {
-        this.logger.log(`Known devices: ${updatedDeviceCount}`)
-      }
-    })
-  }
-
   @Cron(CronExpression.EVERY_10_MINUTES, { name: 'check-devices' })
   private async checkKnownDevices() {
     const devices = await this.getAllDevices()
     for (const device of devices) {
+      const lastSeenMinutes = Math.floor((Date.now() - device.lastSeen.valueOf()) / 60 / 1_000)
+
       try {
-        const lastSeenMinutes = Math.floor((Date.now() - device.lastSeen.valueOf()) / 60 / 1_000)
         if (lastSeenMinutes > 11) {
-          this.logger.debug(
-            `Device ${device.name} hasn't been seen for over ${lastSeenMinutes} minutes, pinging device now.`,
-          )
-
-          // Try manual lookup
-          let address = device.address
-          if (device.address === null) {
-            try {
-              address = (await dns.lookup(device.host.replace('.local', ''), 4)).address
-            } catch (e) {
-              this.logger.warn(`DNS lookup failed for ${device.name}.`)
-            }
-          }
-
-          const accessoryInfo = await this.elgatoService.getDeviceAccessoryInfo({
-            ...device,
-            host: address,
-          })
+          await this.elgatoService.getDeviceAccessoryInfo(device)
 
           await this.prismaService.device.update({
+            where: { id: device.id },
             data: {
               lastSeen: new Date(),
-              address: address,
-              type: this.mapProductNameToDeviceType(accessoryInfo.productName),
             },
-            where: { id: device.id },
           })
         }
       } catch (e) {
-        this.logger.warn(`Could not reach ${device.name}, trying again in 10 minutes.`)
+        this.logger.warn(
+          `Could not reach ${device.displayName} for ${lastSeenMinutes} minutes, trying again in 10 minutes.`,
+        )
       }
-    }
-  }
-
-  private mapProductNameToDeviceType(productName: string): DeviceType {
-    switch (productName) {
-      case 'Elgato Ring Light':
-        return DeviceType.RingLight
-      case 'Elgato Light Strip':
-        return DeviceType.LightStrip
-      default:
-        return DeviceType.Unknown
     }
   }
 

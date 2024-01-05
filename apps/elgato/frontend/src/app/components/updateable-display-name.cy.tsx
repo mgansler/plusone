@@ -12,7 +12,7 @@ describe('UpdatableDisplayName', () => {
   })
 
   it('should allow updating the display name', () => {
-    cy.intercept('GET', '/api/devices/de:vi:ce:id', { fixture: 'display-name-old.json' }).as('deviceDetailsOld')
+    cy.intercept('GET', '/api/devices/de:vi:ce:id', { fixture: 'display-name.old.json' }).as('deviceDetailsOld')
 
     cy.mount(
       <QueryClientProvider client={queryClient}>
@@ -23,7 +23,7 @@ describe('UpdatableDisplayName', () => {
     cy.wait('@deviceDetailsOld')
 
     cy.intercept('PUT', '/api/devices/de:vi:ce:id/display-name', { statusCode: 200 }).as('updateName')
-    cy.intercept('GET', '/api/devices/de:vi:ce:id', { fixture: 'display-name-new.json' }).as('deviceDetailsNew')
+    cy.intercept('GET', '/api/devices/de:vi:ce:id', { fixture: 'display-name.new.json' }).as('deviceDetailsNew')
     cy.findByRole('heading', { name: 'Old Name' }).should('have.css', 'cursor', 'pointer').click()
     cy.findByRole('heading').should('not.exist')
     cy.findByRole('textbox').clear().type(' New Name ')
@@ -35,7 +35,7 @@ describe('UpdatableDisplayName', () => {
   })
 
   it('should force editing display name when empty', () => {
-    cy.intercept('GET', '/api/devices/de:vi:ce:id', { fixture: 'display-name-empty.json' }).as('deviceDetailsEmpty')
+    cy.intercept('GET', '/api/devices/de:vi:ce:id', { fixture: 'display-name.empty.json' }).as('deviceDetailsEmpty')
 
     cy.mount(
       <QueryClientProvider client={queryClient}>

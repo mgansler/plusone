@@ -1,6 +1,70 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    "/api/discovery/devices": {
+      "get": {
+        "operationId": "discovered-devices",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of devices that have been discovered via bonjour at some point.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoveredDevicesResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["discovery"]
+      }
+    },
+    "/api/discovery/add-by-id/{deviceId}": {
+      "post": {
+        "operationId": "add-discovered-device",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": ["discovery"]
+      }
+    },
+    "/api/discovery/add-by-address/{address}": {
+      "post": {
+        "operationId": "add-manual-device",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "address",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": ["discovery"]
+      }
+    },
     "/api/devices": {
       "get": {
         "operationId": "device-list",
@@ -162,68 +226,6 @@
         }
       }
     },
-    "/api/devices/{id}/add-to-group": {
-      "put": {
-        "operationId": "add-device-to-group",
-        "summary": "",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeviceAddToGroupRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/devices/{id}/remove-from-group": {
-      "delete": {
-        "operationId": "remove-device-from-group",
-        "summary": "",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeviceRemoveFromGroupRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/api/devices/{id}/settings": {
       "get": {
         "operationId": "current-device-settings",
@@ -288,113 +290,6 @@
         }
       }
     },
-    "/api/groups": {
-      "post": {
-        "operationId": "create-group",
-        "summary": "",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "description": "Information about the new group.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GroupCreateDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "The newly created group.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GroupResponseDto"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "group-list",
-        "summary": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "List of groups.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GroupListResponseDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/groups/{groupId}": {
-      "get": {
-        "operationId": "group-details",
-        "summary": "",
-        "parameters": [
-          {
-            "name": "groupId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Returns a group with all devices and their current state in it.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GroupWithDevicesResponseDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/groups/{groupId}/state": {
-      "put": {
-        "operationId": "control-group-state",
-        "summary": "",
-        "parameters": [
-          {
-            "name": "groupId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "description": "Switches all devices in that group on or off.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GroupStateRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "All devices have been switched on or off."
-          }
-        }
-      }
-    },
     "/api/location": {
       "post": {
         "operationId": "update-location",
@@ -415,8 +310,29 @@
           "201": {
             "description": ""
           }
-        }
+        },
+        "tags": ["location"]
       },
+      "get": {
+        "operationId": "current-location",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["location"]
+      }
+    },
+    "/api/location/location-data": {
       "get": {
         "operationId": "get-location-data",
         "summary": "",
@@ -432,7 +348,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["location"]
       }
     },
     "/api/stream-deck/toggle/{deviceId}": {
@@ -466,21 +383,75 @@
   "servers": [],
   "components": {
     "schemas": {
+      "DeviceType": {
+        "type": "string",
+        "enum": ["RingLight", "LightStrip", "Unknown"]
+      },
+      "DiscoveredDeviceResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The mac address of the device.",
+            "example": "aa:bb:cc:dd:ee:ff"
+          },
+          "name": {
+            "type": "string"
+          },
+          "fqdn": {
+            "type": "string"
+          },
+          "host": {
+            "type": "string"
+          },
+          "ipv4": {
+            "type": "string",
+            "example": "192.168.0.50"
+          },
+          "port": {
+            "type": "number",
+            "example": 9123
+          },
+          "displayName": {
+            "type": "string",
+            "example": "Elgato Ring Light be4f"
+          },
+          "productName": {
+            "type": "string",
+            "example": "Elgato Ring Light"
+          },
+          "type": {
+            "$ref": "#/components/schemas/DeviceType"
+          },
+          "isControlled": {
+            "type": "boolean"
+          }
+        },
+        "required": ["id", "name", "fqdn", "host", "ipv4", "port", "displayName", "productName", "type", "isControlled"]
+      },
+      "DiscoveredDevicesResponseDto": {
+        "type": "object",
+        "properties": {
+          "devices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiscoveredDeviceResponseDto"
+            }
+          }
+        },
+        "required": ["devices"]
+      },
       "DeviceResponseDto": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string"
           },
-          "name": {
-            "type": "string",
-            "deprecated": true
-          },
           "displayName": {
             "type": "string"
           }
         },
-        "required": ["id", "name", "displayName"]
+        "required": ["id", "displayName"]
       },
       "DeviceListResponseDto": {
         "type": "object",
@@ -493,25 +464,6 @@
           }
         },
         "required": ["devices"]
-      },
-      "GroupResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "name": {
-            "type": "string"
-          },
-          "isRoom": {
-            "type": "boolean"
-          }
-        },
-        "required": ["id", "name", "isRoom"]
-      },
-      "DeviceType": {
-        "type": "string",
-        "enum": ["RingLight", "LightStrip", "Unknown"]
       },
       "ElgatoDeviceDetailsResponseDto": {
         "type": "object",
@@ -552,18 +504,8 @@
           "id": {
             "type": "string"
           },
-          "name": {
-            "type": "string",
-            "deprecated": true
-          },
           "displayName": {
             "type": "string"
-          },
-          "groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GroupResponseDto"
-            }
           },
           "details": {
             "$ref": "#/components/schemas/ElgatoDeviceDetailsResponseDto"
@@ -576,7 +518,7 @@
             "type": "string"
           }
         },
-        "required": ["id", "name", "displayName", "groups", "details", "state", "lastSeen"]
+        "required": ["id", "displayName", "details", "state", "lastSeen"]
       },
       "DeviceDisplayNameRequestDto": {
         "type": "object",
@@ -620,24 +562,6 @@
         },
         "required": ["hue", "saturation", "brightness"]
       },
-      "DeviceAddToGroupRequestDto": {
-        "type": "object",
-        "properties": {
-          "groupId": {
-            "type": "number"
-          }
-        },
-        "required": ["groupId"]
-      },
-      "DeviceRemoveFromGroupRequestDto": {
-        "type": "object",
-        "properties": {
-          "groupId": {
-            "type": "number"
-          }
-        },
-        "required": ["groupId"]
-      },
       "DeviceSettingsResponseDto": {
         "type": "object",
         "properties": {
@@ -661,66 +585,22 @@
           }
         }
       },
-      "GroupCreateDto": {
+      "LocationUpdateRequestDto": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string"
+          "longitude": {
+            "type": "number"
           },
-          "isRoom": {
-            "type": "boolean",
-            "default": false
-          }
-        },
-        "required": ["name"]
-      },
-      "GroupListResponseDto": {
-        "type": "object",
-        "properties": {
-          "groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GroupResponseDto"
-            }
-          }
-        },
-        "required": ["groups"]
-      },
-      "GroupWithDevicesResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
+          "latitude": {
             "type": "number"
           },
           "name": {
             "type": "string"
-          },
-          "isRoom": {
-            "type": "boolean"
-          },
-          "devices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DeviceDetailsResponseDto"
-            }
           }
         },
-        "required": ["id", "name", "isRoom", "devices"]
+        "required": ["longitude", "latitude", "name"]
       },
-      "DevicePowerState": {
-        "type": "string",
-        "enum": ["on", "off"]
-      },
-      "GroupStateRequestDto": {
-        "type": "object",
-        "properties": {
-          "desiredPowerState": {
-            "$ref": "#/components/schemas/DevicePowerState"
-          }
-        },
-        "required": ["desiredPowerState"]
-      },
-      "LocationUpdateRequestDto": {
+      "LocationResponseDto": {
         "type": "object",
         "properties": {
           "longitude": {

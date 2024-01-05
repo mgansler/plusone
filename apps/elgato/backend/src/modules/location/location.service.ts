@@ -29,6 +29,10 @@ export class LocationService {
     })
   }
 
+  async getLocation() {
+    return this.prismaService.location.findFirst()
+  }
+
   async getLocationData(): Promise<LocationDataResponseDto> {
     const location = await this.prismaService.location.findFirstOrThrow()
 

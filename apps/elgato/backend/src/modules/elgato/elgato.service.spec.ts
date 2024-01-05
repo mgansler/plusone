@@ -77,8 +77,7 @@ describe('ElgatoService', () => {
 
       await expect(
         elgatoService.getDeviceAccessoryInfo({
-          address: null,
-          host: 'does-not-resolve',
+          address: 'does-not-resolve',
           port: 9123,
           type: DeviceType.Unknown,
         }),
@@ -88,14 +87,13 @@ describe('ElgatoService', () => {
 
   describe('identify', () => {
     it('should make a post request', async () => {
-      await elgatoService.identify({ address: null, host: 'identify', port: 9123, type: DeviceType.Unknown })
+      await elgatoService.identify({ address: 'identify', port: 9123, type: DeviceType.Unknown })
     })
 
     it('should throw error on unreachable host', async () => {
       await expect(
         elgatoService.identify({
-          address: null,
-          host: 'does-not-resolve',
+          address: 'does-not-resolve',
           port: 9123,
           type: DeviceType.Unknown,
         }),
@@ -114,8 +112,7 @@ describe('ElgatoService', () => {
     it('should make a put request', async () => {
       await elgatoService.setDisplayName(
         {
-          address: null,
-          host: 'display-name',
+          address: 'display-name',
           port: 9123,
           type: DeviceType.Unknown,
         },
@@ -126,8 +123,7 @@ describe('ElgatoService', () => {
     it('should throw error on unreachable host', async () => {
       await expect(
         elgatoService.identify({
-          address: null,
-          host: 'does-not-resolve',
+          address: 'does-not-resolve',
           port: 9123,
           type: DeviceType.Unknown,
         }),
@@ -157,8 +153,7 @@ describe('ElgatoService', () => {
         lights: [light as LightStateWithColor],
       }
       const actual = await elgatoService.getDeviceState({
-        address: null,
-        host: 'my-stuck-device.local',
+        address: 'my-stuck-device',
         port: 9123,
         type,
       })
@@ -166,7 +161,7 @@ describe('ElgatoService', () => {
 
       if (type === DeviceType.LightStrip) {
         expect(warnSpy).toHaveBeenCalledWith(
-          'Could not get state for my-stuck-device.local, there probably is a long sequence active.',
+          'Could not get state for my-stuck-device, there probably is a long sequence active.',
         )
       }
     })
@@ -184,8 +179,7 @@ describe('ElgatoService', () => {
         switchOnDurationMs: 0,
       }
       const actual = await elgatoService.getDeviceSettings({
-        address: null,
-        host: 'my-lightstrip-device',
+        address: 'my-lightstrip-device',
         port: 9123,
         type: DeviceType.LightStrip,
       })
@@ -207,8 +201,7 @@ describe('ElgatoService', () => {
       await expect(
         elgatoService.setDevicePowerState(
           {
-            address: null,
-            host: 'does-not-resolve',
+            address: 'does-not-resolve',
             port: 9123,
             type: DeviceType.Unknown,
           },

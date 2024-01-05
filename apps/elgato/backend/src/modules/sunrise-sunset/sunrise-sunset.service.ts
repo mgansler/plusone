@@ -47,12 +47,14 @@ export class SunriseSunsetService implements OnModuleInit {
         }
 
         const sunriseJob = new CronJob(sunriseSunsetTimes.dawn, () => {
-          this.logger.log(`Starting sunrise for ${devices.length}: [${devices.map((d) => d.name).join(', ')}]`)
-          devices.forEach((d) => this.elgatoService.setLightStripScene(d, sunrise))
+          this.logger.log(
+            `Starting sunrise for ${devices.length}: [${devices.map((device) => device.displayName).join(', ')}]`,
+          )
+          devices.forEach((device) => this.elgatoService.setLightStripScene(device, sunrise))
 
           const turnOffCallback = () => {
             this.logger.log(
-              `Turning off ${devices.length} devices after sunrise: [${devices.map((d) => d.name).join(', ')}]`,
+              `Turning off ${devices.length} devices after sunrise: [${devices.map((d) => d.displayName).join(', ')}]`,
             )
             devices.forEach((device) => this.elgatoService.setDevicePowerState(device, DevicePowerState.off))
           }

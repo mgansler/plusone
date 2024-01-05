@@ -1,29 +1,37 @@
+import type { z } from 'zod'
+
 import { ValidatedClientBuilder } from '@plusone/validated-query-factory'
 
 import {
   currentDeviceSettings,
+  currentLocation,
   deviceDetails,
   deviceList,
-  groupDetails,
-  groupList,
+  discoveredDevices,
   useCurrentDeviceSettings,
+  useCurrentLocation,
   useDeviceDetails,
   useDeviceList,
-  useGroupDetails,
-  useGroupList,
+  useDiscoveredDevices,
 } from './client'
 import {
   currentDeviceSettingsResponse,
+  currentLocationResponse,
   deviceDetailsResponse,
   deviceListResponse,
-  groupDetailsResponse,
-  groupListResponse,
+  discoveredDevicesResponse,
 } from './zod'
+
+export type DiscoveredDevicesResponse = z.infer<typeof discoveredDevicesResponse>['devices'][0]
+export const useValidatedDiscoveredDevicesList = new ValidatedClientBuilder(discoveredDevicesResponse)
+  .withFetchWrapper(discoveredDevices)
+  .withUseQueryWrapper(useDiscoveredDevices)
 
 export const useValidatedDeviceList = new ValidatedClientBuilder(deviceListResponse)
   .withFetchWrapper(deviceList)
   .withUseQueryWrapper(useDeviceList)
 
+export type DeviceDetailsResponse = z.infer<typeof deviceDetailsResponse>
 export const useValidatedDeviceDetails = new ValidatedClientBuilder(deviceDetailsResponse)
   .withFetchWrapper(deviceDetails)
   .withUseQueryWrapper(useDeviceDetails)
@@ -32,10 +40,6 @@ export const useValidatedDeviceSettings = new ValidatedClientBuilder(currentDevi
   .withFetchWrapper(currentDeviceSettings)
   .withUseQueryWrapper(useCurrentDeviceSettings)
 
-export const useValidatedGroupList = new ValidatedClientBuilder(groupListResponse)
-  .withFetchWrapper(groupList)
-  .withUseQueryWrapper(useGroupList)
-
-export const useValidatedGroupDetails = new ValidatedClientBuilder(groupDetailsResponse)
-  .withFetchWrapper(groupDetails)
-  .withUseQueryWrapper(useGroupDetails)
+export const useValidatedCurrentLocation = new ValidatedClientBuilder(currentLocationResponse)
+  .withFetchWrapper(currentLocation)
+  .withUseQueryWrapper(useCurrentLocation)
