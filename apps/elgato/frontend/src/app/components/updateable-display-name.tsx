@@ -30,8 +30,12 @@ export function UpdatableDisplayName({ deviceId }: UpdatableDisplayNameProps) {
     defaultValues: async () => {
       try {
         const response = await refetch()
+        const displayName = (response.data as DeviceDetailsResponseDto).details.displayName
+        if (displayName.length === 0) {
+          setIsEditing(true)
+        }
         return {
-          displayName: (response.data as DeviceDetailsResponseDto).details.displayName,
+          displayName,
         }
       } catch (e) {
         return {
@@ -61,7 +65,7 @@ export function UpdatableDisplayName({ deviceId }: UpdatableDisplayNameProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input type={'text'} {...register('displayName')} />
+      <input type={'text'} {...register('displayName', { minLength: 5 })} />
       <button type={'submit'} hidden={!isEditing}>
         Save
       </button>

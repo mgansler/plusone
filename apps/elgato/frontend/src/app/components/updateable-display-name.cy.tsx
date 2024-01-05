@@ -33,4 +33,18 @@ describe('UpdatableDisplayName', () => {
     cy.wait('@deviceDetailsNew')
     cy.findByRole('heading', { name: 'New Name' }).should('be.visible')
   })
+
+  it('should force editing display name when empty', () => {
+    cy.intercept('GET', '/api/devices/de:vi:ce:id', { fixture: 'display-name-empty.json' }).as('deviceDetailsEmpty')
+
+    cy.mount(
+      <QueryClientProvider client={queryClient}>
+        <UpdatableDisplayName deviceId={'de:vi:ce:id'} />
+      </QueryClientProvider>,
+    )
+
+    cy.wait('@deviceDetailsEmpty')
+
+    cy.findByRole('textbox').should('be.visible')
+  })
 })
