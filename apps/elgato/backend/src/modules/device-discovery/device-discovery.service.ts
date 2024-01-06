@@ -85,11 +85,16 @@ export class DeviceDiscoveryService {
       const currentDeviceCount = await this.prismaService.discoveredDevice.count()
 
       try {
+        // We need the mac address because it will become our id
         const accessoryInfo = await this.elgatoService.getDeviceAccessoryInfo({
           address: service.referer.family === 'IPv4' ? service.referer.address : service.host,
           type: DeviceType.Unknown,
           port: service.port,
         })
+
+        // Check if the device is already controlled by our application
+        const isControlled =
+          (await this.prismaService.device.findUnique({ where: { id: accessoryInfo.macAddress } })) !== null
 
         const input: Omit<DiscoveredDeviceCreateInput, 'id'> = {
           name: service.name,
@@ -99,6 +104,7 @@ export class DeviceDiscoveryService {
           ipv4: service.referer.family === 'IPv4' ? service.referer.address : null,
           displayName: accessoryInfo.displayName,
           productName: accessoryInfo.productName,
+          isControlled,
         }
 
         await this.prismaService.discoveredDevice.upsert({
