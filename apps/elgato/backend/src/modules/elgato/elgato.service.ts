@@ -117,10 +117,13 @@ export class ElgatoService {
   }
 
   private handleError(error: AxiosError, url: URL): ObservableInput<never> {
-    if (error.code === 'ENOTFOUND' || error.message === 'Network error') {
-      this.logger.error(`Could not resolve '${url.hostname}' on current network.`)
-    } else if (error.response?.data) {
-      this.logger.error(error.response.data)
+    if (typeof error.code === 'string') {
+      this.logger.error(`Could not connect to '${url.host}' due to '${error.code}'`)
+    } else if (typeof error.message === 'string') {
+      this.logger.error(`There was an error when connecting to '${url.host}': '${error.message}'`)
+    }
+    if (error.response?.data) {
+      this.logger.error(`The device '${url.host}' responded with '${error.response.data}'`)
     }
     throw new Error(`Could not connect to '${url.host}'`)
   }

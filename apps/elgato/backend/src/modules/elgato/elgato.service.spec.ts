@@ -99,7 +99,9 @@ describe('ElgatoService', () => {
         }),
       ).rejects.toThrow(Error("Could not connect to 'does-not-resolve:9123'"))
 
-      expect(errSpy).toHaveBeenCalledWith("Could not resolve 'does-not-resolve' on current network.")
+      expect(errSpy).toHaveBeenCalledWith(
+        "There was an error when connecting to 'does-not-resolve:9123': 'Network error'",
+      )
     })
   })
 
@@ -129,7 +131,9 @@ describe('ElgatoService', () => {
         }),
       ).rejects.toThrow(Error("Could not connect to 'does-not-resolve:9123'"))
 
-      expect(errSpy).toHaveBeenCalledWith("Could not resolve 'does-not-resolve' on current network.")
+      expect(errSpy).toHaveBeenCalledWith(
+        "There was an error when connecting to 'does-not-resolve:9123': 'Network error'",
+      )
     })
   })
 
@@ -209,7 +213,9 @@ describe('ElgatoService', () => {
         ),
       ).rejects.toThrow(Error("Could not connect to 'does-not-resolve:9123'"))
 
-      expect(errSpy).toHaveBeenCalledWith("Could not resolve 'does-not-resolve' on current network.")
+      expect(errSpy).toHaveBeenCalledWith(
+        "There was an error when connecting to 'does-not-resolve:9123': 'Network error'",
+      )
     })
   })
 

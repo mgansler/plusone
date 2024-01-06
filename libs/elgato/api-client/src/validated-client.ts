@@ -22,11 +22,12 @@ import {
   discoveredDevicesResponse,
 } from './zod'
 
-export type DiscoveredDevicesResponse = z.infer<typeof discoveredDevicesResponse>['devices'][0]
+export type DiscoveredDevicesResponse = z.infer<typeof discoveredDevicesResponse>
 export const useValidatedDiscoveredDevicesList = new ValidatedClientBuilder(discoveredDevicesResponse)
   .withFetchWrapper(discoveredDevices)
   .withUseQueryWrapper(useDiscoveredDevices)
 
+export type DeviceListResponse = z.infer<typeof deviceListResponse>
 export const useValidatedDeviceList = new ValidatedClientBuilder(deviceListResponse)
   .withFetchWrapper(deviceList)
   .withUseQueryWrapper(useDeviceList)

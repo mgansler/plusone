@@ -98,9 +98,9 @@ export class DeviceDiscoveryService {
       }
 
       await this.prismaService.discoveredDevice.upsert({
-        where: { id: service.txt.id },
+        where: { id: accessoryInfo.macAddress },
         create: {
-          id: service.txt.id,
+          id: accessoryInfo.macAddress,
           ...input,
         },
         update: input,
