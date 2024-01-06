@@ -30,7 +30,7 @@ export class LocationService {
   }
 
   async getLocation() {
-    return this.prismaService.location.findFirst()
+    return this.prismaService.location.findFirstOrThrow()
   }
 
   async getLocationData(): Promise<LocationDataResponseDto> {
