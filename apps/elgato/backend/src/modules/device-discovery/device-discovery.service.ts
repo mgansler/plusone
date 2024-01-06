@@ -25,34 +25,38 @@ export class DeviceDiscoveryService {
   }
 
   async addDiscoveredDevice(id: string) {
-    return this.prismaService.$transaction(async (tx) => {
-      const discoveredDevice = await tx.discoveredDevice.findUniqueOrThrow({ where: { id, isControlled: false } })
+    const discoveredDevice = await this.prismaService.discoveredDevice.findUniqueOrThrow({
+      where: { id, isControlled: false },
+    })
 
-      try {
-        await this.elgatoService.getDeviceAccessoryInfo({
-          address: discoveredDevice.ipv4,
-          port: discoveredDevice.port,
-          type: DeviceType.Unknown,
-        })
-      } catch (e) {
-        throw new HttpException('Could not reach device.', HttpStatus.NOT_FOUND)
-      }
-
-      await tx.device.create({
-        data: {
-          id: id,
-          displayName: discoveredDevice.displayName,
-          lastSeen: new Date(),
-          type: mapProductNameToDeviceType(discoveredDevice.productName),
-          address: discoveredDevice.ipv4,
-          port: discoveredDevice.port,
-        },
+    try {
+      await this.elgatoService.getDeviceAccessoryInfo({
+        address: discoveredDevice.ipv4,
+        port: discoveredDevice.port,
+        type: DeviceType.Unknown,
       })
+    } catch (e) {
+      throw new HttpException('Could not reach device.', HttpStatus.NOT_FOUND)
+    }
 
-      await tx.discoveredDevice.update({
-        where: { id },
-        data: { isControlled: true },
-      })
+    await this.prismaService.device.upsert({
+      where: { id },
+      create: {
+        id: id,
+        displayName: discoveredDevice.displayName,
+        lastSeen: new Date(),
+        type: mapProductNameToDeviceType(discoveredDevice.productName),
+        address: discoveredDevice.ipv4,
+        port: discoveredDevice.port,
+      },
+      update: {
+        lastSeen: new Date(),
+      },
+    })
+
+    await this.prismaService.discoveredDevice.update({
+      where: { id },
+      data: { isControlled: true },
     })
   }
 
@@ -75,40 +79,51 @@ export class DeviceDiscoveryService {
     })
   }
 
-  // FIXME: reduce interval
-  @Cron(CronExpression.EVERY_10_SECONDS, { name: 'discover-devices' })
+  @Cron(CronExpression.EVERY_30_SECONDS, { name: 'discover-devices' })
   private async discoverDevices() {
     this.bonjour.find({ type: 'elg' }, async (service) => {
       const currentDeviceCount = await this.prismaService.discoveredDevice.count()
 
-      const accessoryInfo = await this.elgatoService.getDeviceAccessoryInfo({
-        address: service.referer.family === 'IPv4' ? service.referer.address : service.host,
-        type: DeviceType.Unknown,
-        port: service.port,
-      })
+      try {
+        // We need the mac address because it will become our id
+        const accessoryInfo = await this.elgatoService.getDeviceAccessoryInfo({
+          address: service.referer.family === 'IPv4' ? service.referer.address : service.host,
+          type: DeviceType.Unknown,
+          port: service.port,
+        })
 
-      const input: Omit<DiscoveredDeviceCreateInput, 'id'> = {
-        name: service.name,
-        host: service.host,
-        fqdn: service.fqdn,
-        port: service.port,
-        ipv4: service.referer.family === 'IPv4' ? service.referer.address : null,
-        displayName: accessoryInfo.displayName,
-        productName: accessoryInfo.productName,
-      }
+        // Check if the device is already controlled by our application
+        const isControlled =
+          (await this.prismaService.device.findUnique({ where: { id: accessoryInfo.macAddress } })) !== null
 
-      await this.prismaService.discoveredDevice.upsert({
-        where: { id: accessoryInfo.macAddress },
-        create: {
-          id: accessoryInfo.macAddress,
-          ...input,
-        },
-        update: input,
-      })
+        const input: Omit<DiscoveredDeviceCreateInput, 'id'> = {
+          name: service.name,
+          host: service.host,
+          fqdn: service.fqdn,
+          port: service.port,
+          ipv4: service.referer.family === 'IPv4' ? service.referer.address : null,
+          displayName: accessoryInfo.displayName,
+          productName: accessoryInfo.productName,
+          isControlled,
+        }
 
-      const updatedDeviceCount = await this.prismaService.discoveredDevice.count()
-      if (currentDeviceCount !== updatedDeviceCount) {
-        this.logger.log(`Discovered a new device: ${accessoryInfo.displayName}.`)
+        await this.prismaService.discoveredDevice.upsert({
+          where: { id: accessoryInfo.macAddress },
+          create: {
+            id: accessoryInfo.macAddress,
+            ...input,
+          },
+          update: input,
+        })
+
+        const updatedDeviceCount = await this.prismaService.discoveredDevice.count()
+        if (currentDeviceCount !== updatedDeviceCount) {
+          this.logger.log(`Discovered a new device: ${accessoryInfo.displayName}.`)
+        }
+      } catch (e) {
+        this.logger.warn(
+          `There was a new device (${service.name}: ${service.host}), but it didn't respond when getting accessoryInfo.`,
+        )
       }
     })
   }

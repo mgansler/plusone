@@ -3,7 +3,7 @@ import http from 'http'
 import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
 import { AxiosError, AxiosResponse } from 'axios'
-import { catchError, firstValueFrom, ObservableInput } from 'rxjs'
+import { catchError, firstValueFrom, Observable, throwError } from 'rxjs'
 
 import { TransitionToColorRequestDto } from '../device/dto/transition-to-color-request.dto'
 import { DevicePowerState } from '../device/enum/device-power-state'
@@ -116,7 +116,7 @@ export class ElgatoService {
     return url
   }
 
-  private handleError(error: AxiosError, url: URL): ObservableInput<never> {
+  private handleError(error: AxiosError, url: URL): Observable<never> {
     if (typeof error.code === 'string') {
       this.logger.error(`Could not connect to '${url.host}' due to '${error.code}'`)
     } else if (typeof error.message === 'string') {
@@ -125,6 +125,6 @@ export class ElgatoService {
     if (error.response?.data) {
       this.logger.error(`The device '${url.host}' responded with '${error.response.data}'`)
     }
-    throw new Error(`Could not connect to '${url.host}'`)
+    return throwError(() => new Error(`Could not connect to '${url.host}'`))
   }
 }
