@@ -107,5 +107,37 @@ describe('DeviceDiscoveryService', () => {
         data: { isControlled: true },
       })
     })
+
+    it('should not add a device when accessory info cannot be retrieved', async () => {
+      jest.spyOn(prismaService.discoveredDevice, 'findUniqueOrThrow').mockResolvedValue(discoveredDevice)
+      jest.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockRejectedValue(new Error('Could not connect'))
+      const deviceUpsertSpy = jest.spyOn(prismaService.device, 'upsert')
+      const discoveredDeviceUpdateSpy = jest.spyOn(prismaService.discoveredDevice, 'update')
+
+      await expect(deviceDiscoveryService.addDiscoveredDevice('de:vi:ce:id')).rejects.toThrow('Could not reach device.')
+
+      expect(deviceUpsertSpy).not.toHaveBeenCalled()
+      expect(discoveredDeviceUpdateSpy).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('addManualDevice', () => {
+    it('should add a device manually', async () => {
+      jest.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockResolvedValue(getAccessoryInfoResponse({}))
+      const deviceCreateSpy = jest.spyOn(prismaService.device, 'create').mockResolvedValue(device)
+
+      await deviceDiscoveryService.addManualDevice('127.0.0.1')
+
+      expect(deviceCreateSpy).toHaveBeenCalled()
+    })
+
+    it('should not add a device when accessory info cannot be retrieved', async () => {
+      jest.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockRejectedValue(new Error('Could not connect'))
+      const deviceCreateSpy = jest.spyOn(prismaService.device, 'create')
+
+      await expect(deviceDiscoveryService.addManualDevice('127.0.0.1')).rejects.toThrow('Could not connect')
+
+      expect(deviceCreateSpy).not.toHaveBeenCalled()
+    })
   })
 })
