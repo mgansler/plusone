@@ -4,7 +4,7 @@ import type { DiscoveredDevicesResponse } from '@plusone/elgato-api-client'
 import { getDiscoveredDevicesQueryKey, useAddDiscoveredDevice } from '@plusone/elgato-api-client'
 
 type DiscoveredDeviceProps = {
-  device: DiscoveredDevicesResponse
+  device: DiscoveredDevicesResponse['devices'][0]
 }
 
 export function DiscoveredDevice({ device }: DiscoveredDeviceProps) {
