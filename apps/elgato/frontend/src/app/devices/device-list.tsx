@@ -14,9 +14,9 @@ type DeviceListItemProps = {
 function DeviceListItem({ device }: DeviceListItemProps) {
   return (
     <div className={'aspect-square flex flex-col justify-center items-center border-2 rounded md:w-48'}>
-      <DevicePowerStateControl deviceId={device.id} />
+      <DevicePowerStateControl deviceId={device.macAddress} />
       <p>{device.displayName}</p>
-      <Link to={deviceDetailsRoute.to} params={{ deviceId: device.id }}>
+      <Link to={deviceDetailsRoute.to} params={{ deviceId: device.macAddress }}>
         Details
       </Link>
     </div>
@@ -29,7 +29,7 @@ export function DeviceList() {
   return (
     <>
       <div className={'my-4 mx-auto md:mx-2 grid grid-cols-2 gap-2 md:flex md:flex-wrap'}>
-        {data?.devices.map((device) => <DeviceListItem key={device.id} device={device} />)}
+        {data?.devices.map((device) => <DeviceListItem key={device.macAddress} device={device} />)}
       </div>
 
       <Outlet />

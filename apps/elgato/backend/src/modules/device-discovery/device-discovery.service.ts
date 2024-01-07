@@ -1,6 +1,6 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
-import Bonjour from 'bonjour-service'
+import Bonjour, { Browser, Service } from 'bonjour-service'
 
 import { DiscoveredDevice, Prisma, PrismaService } from '@plusone/elgato-persistence'
 
@@ -11,14 +11,24 @@ import { ElgatoService } from '../elgato/elgato.service'
 import DiscoveredDeviceCreateInput = Prisma.DiscoveredDeviceCreateInput
 
 @Injectable()
-export class DeviceDiscoveryService {
+export class DeviceDiscoveryService implements OnModuleInit {
   private logger = new Logger(DeviceDiscoveryService.name)
-  private bonjour = new Bonjour()
+  #bonjour: Bonjour
+  #browser: Browser
 
   constructor(
     private readonly prismaService: PrismaService,
     private readonly elgatoService: ElgatoService,
   ) {}
+
+  onModuleInit() {
+    this.#bonjour = new Bonjour()
+    this.#browser = this.#bonjour.find({ type: 'elg' })
+
+    this.#browser.on('up', async (service: Service) => {
+      this.logger.log(`Possible new device discovered: ${service.name} (${service.host})`)
+    })
+  }
 
   async getDiscoveredDevices(): Promise<Array<DiscoveredDevice>> {
     return this.prismaService.discoveredDevice.findMany()
@@ -40,24 +50,19 @@ export class DeviceDiscoveryService {
     }
 
     await this.prismaService.device.upsert({
-      where: { id },
+      where: { macAddress: discoveredDevice.macAddress },
       create: {
-        id: id,
+        macAddress: discoveredDevice.macAddress,
         displayName: discoveredDevice.displayName,
         lastSeen: new Date(),
         type: mapProductNameToDeviceType(discoveredDevice.productName),
         address: discoveredDevice.ipv4,
         port: discoveredDevice.port,
       },
-      update: {
-        lastSeen: new Date(),
-      },
+      update: { lastSeen: new Date() },
     })
 
-    await this.prismaService.discoveredDevice.update({
-      where: { id },
-      data: { isControlled: true },
-    })
+    await this.prismaService.discoveredDevice.update({ where: { id }, data: { isControlled: true } })
   }
 
   async addManualDevice(address: string) {
@@ -69,7 +74,7 @@ export class DeviceDiscoveryService {
 
     await this.prismaService.device.create({
       data: {
-        id: accessoryInfo.macAddress,
+        macAddress: accessoryInfo.macAddress,
         displayName: accessoryInfo.displayName,
         lastSeen: new Date(),
         type: mapProductNameToDeviceType(accessoryInfo.productName),
@@ -79,24 +84,31 @@ export class DeviceDiscoveryService {
     })
   }
 
-  @Cron(CronExpression.EVERY_30_SECONDS, { name: 'discover-devices' })
-  private async discoverDevices() {
-    this.bonjour.find({ type: 'elg' }, async (service) => {
+  @Cron(CronExpression.EVERY_30_SECONDS, { name: 'query-devices' })
+  private async queryDevices() {
+    this.#browser.update()
+
+    for (const service of this.#browser.services) {
+      if (await this.prismaService.discoveredDevice.findUnique({ where: { id: service.txt.id } })) {
+        // We already know this device, skipping
+        continue
+      }
       const currentDeviceCount = await this.prismaService.discoveredDevice.count()
 
       try {
-        // We need the mac address because it will become our id
+        // We need the mac address because it will become our id for controlled devices
         const accessoryInfo = await this.elgatoService.getDeviceAccessoryInfo({
-          address: service.referer.family === 'IPv4' ? service.referer.address : service.host,
+          address: service.referer.family === 'IPv4' ? service.referer.address : service.host.replace('.local', ''),
           type: DeviceType.Unknown,
           port: service.port,
         })
 
         // Check if the device is already controlled by our application
         const isControlled =
-          (await this.prismaService.device.findUnique({ where: { id: accessoryInfo.macAddress } })) !== null
+          (await this.prismaService.device.findUnique({ where: { macAddress: accessoryInfo.macAddress } })) !== null
 
         const input: Omit<DiscoveredDeviceCreateInput, 'id'> = {
+          macAddress: accessoryInfo.macAddress,
           name: service.name,
           host: service.host,
           fqdn: service.fqdn,
@@ -108,11 +120,8 @@ export class DeviceDiscoveryService {
         }
 
         await this.prismaService.discoveredDevice.upsert({
-          where: { id: accessoryInfo.macAddress },
-          create: {
-            id: accessoryInfo.macAddress,
-            ...input,
-          },
+          where: { id: service.txt.id },
+          create: { id: service.txt.id, ...input },
           update: input,
         })
 
@@ -125,6 +134,6 @@ export class DeviceDiscoveryService {
           `There was a new device (${service.name}: ${service.host}), but it didn't respond when getting accessoryInfo.`,
         )
       }
-    })
+    }
   }
 }

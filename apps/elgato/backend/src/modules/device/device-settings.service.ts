@@ -10,20 +10,17 @@ export class DeviceSettingsService {
 
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getCurrentSettings(id: Device['id']) {
+  async getCurrentSettings(macAddress: Device['macAddress']) {
     return this.prismaService.device.findUniqueOrThrow({
-      select: {
-        sunrise: true,
-        sunset: true,
-      },
-      where: { id },
+      select: { sunrise: true, sunset: true },
+      where: { macAddress },
     })
   }
 
-  async updateSettings(id: Device['id'], newSettings: DeviceSettingsRequestDto) {
+  async updateSettings(macAddress: Device['macAddress'], newSettings: DeviceSettingsRequestDto) {
     return this.prismaService.device.update({
       select: { sunrise: true, sunset: true },
-      where: { id },
+      where: { macAddress },
       data: newSettings,
     })
   }

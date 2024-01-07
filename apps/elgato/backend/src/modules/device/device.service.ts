@@ -39,9 +39,9 @@ export class DeviceService implements OnModuleInit {
     return this.prismaService.device.findMany()
   }
 
-  async getDevice(id: string): Promise<DeviceDetailsResponseDto> {
+  async getDevice(macAddress: string): Promise<DeviceDetailsResponseDto> {
     const device = await this.prismaService.device.findUniqueOrThrow({
-      where: { id },
+      where: { macAddress },
     })
 
     const beforeDeviceCallTS = Date.now()
@@ -64,7 +64,7 @@ export class DeviceService implements OnModuleInit {
     }
 
     return {
-      id: device.id,
+      macAddress: device.macAddress,
       lastSeen: device.lastSeen,
       details,
       state,
@@ -72,23 +72,23 @@ export class DeviceService implements OnModuleInit {
     }
   }
 
-  async setDisplayName(id: string, { displayName }: DeviceDisplayNameRequestDto) {
+  async setDisplayName(macAddress: string, { displayName }: DeviceDisplayNameRequestDto) {
     const device = await this.prismaService.device.findUniqueOrThrow({
-      where: { id },
+      where: { macAddress },
     })
 
     await this.elgatoService.setDisplayName(device, displayName)
     await this.prismaService.device.update({
-      where: { id },
+      where: { macAddress },
       data: {
         displayName,
       },
     })
   }
 
-  async toggle(id: string) {
+  async toggle(macAddress: string) {
     const device = await this.prismaService.device.findUniqueOrThrow({
-      where: { id },
+      where: { macAddress },
     })
 
     const currentState = await this.elgatoService.getDeviceState(device)
@@ -99,16 +99,16 @@ export class DeviceService implements OnModuleInit {
     )
   }
 
-  async setPowerState(id: string, state: DeviceState) {
+  async setPowerState(macAddress: string, state: DeviceState) {
     const device = await this.prismaService.device.findUniqueOrThrow({
-      where: { id },
+      where: { macAddress },
     })
 
     await this.elgatoService.setDevicePowerState(device, state.on ? DevicePowerState.on : DevicePowerState.off)
   }
 
-  async transitionToColor(id: string, color: TransitionToColorRequestDto) {
-    const device = await this.getDevice(id)
+  async transitionToColor(macAddress: string, color: TransitionToColorRequestDto) {
+    const device = await this.getDevice(macAddress)
 
     const scene = elgatoSceneRequestSchema.parse({
       numberOfLights: 1,
@@ -139,7 +139,7 @@ export class DeviceService implements OnModuleInit {
       ],
     }) as ElgatoSceneRequestDto
 
-    const d = await this.prismaService.device.findUniqueOrThrow({ where: { id } })
+    const d = await this.prismaService.device.findUniqueOrThrow({ where: { macAddress } })
     await this.elgatoService.setLightStripScene(d, scene)
     new Promise((resolve) => setTimeout(resolve, 1_100)).then(() => {
       this.elgatoService.setLightStripColor(d, color)
@@ -157,7 +157,7 @@ export class DeviceService implements OnModuleInit {
           await this.elgatoService.getDeviceAccessoryInfo(device)
 
           await this.prismaService.device.update({
-            where: { id: device.id },
+            where: { macAddress: device.macAddress },
             data: {
               lastSeen: new Date(),
             },

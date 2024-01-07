@@ -18,8 +18,8 @@ export function DevicePowerStateControl({ deviceId }: DevicePowerStateProps) {
   const { mutate: toggleDevice } = useToggleDevice({ mutation })
   const { mutate: setDevicePowerState } = useDeviceSetPowerState({ mutation })
 
-  const toggle = () => toggleDevice({ id: deviceId })
-  const turnOff = () => setDevicePowerState({ id: deviceId, data: { on: false } })
+  const toggle = () => toggleDevice({ macAddress: deviceId })
+  const turnOff = () => setDevicePowerState({ macAddress: deviceId, data: { on: false } })
 
   if (isLoading) {
     return null

@@ -10,12 +10,13 @@ generator client {
 }
 
 model DiscoveredDevice {
-  id   String  @id
-  name String
-  fqdn String
-  host String
-  ipv4 String?
-  port Int
+  id         String  @id
+  macAddress String  @unique
+  name       String
+  fqdn       String
+  host       String
+  ipv4       String?
+  port       Int
 
   displayName String
   productName String
@@ -24,7 +25,7 @@ model DiscoveredDevice {
 }
 
 model Device {
-  id          String    @id
+  macAddress  String    @id
   displayName String
   lastSeen    DateTime?
   type        String // See enum DeviceType, unfortunately, sqlite doesn't support enums

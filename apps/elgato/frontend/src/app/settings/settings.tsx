@@ -20,7 +20,7 @@ export function Settings() {
 
       <div>
         <h4>Devices</h4>
-        {devices?.map((device) => <DeviceSettings key={device.id} device={device} />)}
+        {devices?.map((device) => <DeviceSettings key={device.macAddress} device={device} />)}
       </div>
     </div>
   )

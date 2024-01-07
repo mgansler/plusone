@@ -28,7 +28,7 @@ export function DeviceDetails() {
     const hue = Math.round(h)
     const saturation = Math.round(s * 100)
     const brightness = Math.round(l * 100)
-    transitionToColor({ id: deviceId, data: { hue, saturation, brightness } })
+    transitionToColor({ macAddress: deviceId, data: { hue, saturation, brightness } })
   }
 
   return (

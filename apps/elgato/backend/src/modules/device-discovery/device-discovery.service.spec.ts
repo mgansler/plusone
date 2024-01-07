@@ -19,6 +19,7 @@ describe('DeviceDiscoveryService', () => {
     fqdn: 'elg.local',
     host: 'elg',
     id: 'de:vi:ce:id',
+    macAddress: 'ma:ca:dd:re:ss',
     ipv4: '127.0.0.1',
     isControlled: false,
     name: 'Ring Light 12ab',
@@ -29,7 +30,7 @@ describe('DeviceDiscoveryService', () => {
   const device: Device = {
     address: '127.0.0.1',
     displayName: 'Ring Light',
-    id: 'de:vi:ce:id',
+    macAddress: 'ma:ca:dd:re:ss',
     lastSeen: new Date(),
     port: 9123,
     sunrise: false,
@@ -91,11 +92,11 @@ describe('DeviceDiscoveryService', () => {
       await deviceDiscoveryService.addDiscoveredDevice('de:vi:ce:id')
 
       expect(deviceUpsertSpy).toHaveBeenCalledWith({
-        where: { id: 'de:vi:ce:id' },
+        where: { macAddress: 'ma:ca:dd:re:ss' },
         create: {
           address: device.address,
           displayName: device.displayName,
-          id: device.id,
+          macAddress: device.macAddress,
           lastSeen: fakeTime,
           port: device.port,
           type: DeviceType.RingLight,

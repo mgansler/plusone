@@ -1,6 +1,7 @@
 -- CreateTable
 CREATE TABLE "DiscoveredDevice" (
     "id" TEXT NOT NULL PRIMARY KEY,
+    "macAddress" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "fqdn" TEXT NOT NULL,
     "host" TEXT NOT NULL,
@@ -13,7 +14,7 @@ CREATE TABLE "DiscoveredDevice" (
 
 -- CreateTable
 CREATE TABLE "Device" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "macAddress" TEXT NOT NULL PRIMARY KEY,
     "displayName" TEXT NOT NULL,
     "lastSeen" DATETIME,
     "type" TEXT NOT NULL,
@@ -38,6 +39,9 @@ CREATE TABLE "Location" (
     "longitude" REAL NOT NULL,
     "latitude" REAL NOT NULL
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "DiscoveredDevice_macAddress_key" ON "DiscoveredDevice"("macAddress");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Location_name_key" ON "Location"("name");

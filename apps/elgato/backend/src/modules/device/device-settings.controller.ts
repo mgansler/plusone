@@ -5,7 +5,7 @@ import { DeviceSettingsService } from './device-settings.service'
 import { DeviceSettingsRequestDto } from './dto/device-settings-request.dto'
 import { DeviceSettingsResponseDto } from './dto/device-settings-response.dto'
 
-@Controller('/devices/:id/settings')
+@Controller('/devices/:macAddress/settings')
 export class DeviceSettingsController {
   private logger = new Logger(DeviceSettingsController.name)
 
@@ -14,17 +14,17 @@ export class DeviceSettingsController {
   @ApiOperation({ operationId: 'current-device-settings' })
   @ApiOkResponse({ description: 'Returns current settings', type: DeviceSettingsResponseDto })
   @Get()
-  async getSettings(@Param('id') id: string): Promise<DeviceSettingsResponseDto> {
-    return this.deviceSettingService.getCurrentSettings(id)
+  async getSettings(@Param('macAddress') macAddress: string): Promise<DeviceSettingsResponseDto> {
+    return this.deviceSettingService.getCurrentSettings(macAddress)
   }
 
   @ApiOperation({ operationId: 'update-device-settings' })
   @ApiOkResponse({ description: 'Returns all current settings when successful.', type: DeviceSettingsResponseDto })
   @Patch()
   updateSettings(
-    @Param('id') id: string,
+    @Param('macAddress') macAddress: string,
     @Body() updateSettingsDto: DeviceSettingsRequestDto,
   ): Promise<DeviceSettingsResponseDto> {
-    return this.deviceSettingService.updateSettings(id, updateSettingsDto)
+    return this.deviceSettingService.updateSettings(macAddress, updateSettingsDto)
   }
 }
