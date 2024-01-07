@@ -81,14 +81,16 @@ export interface DeviceState {
 export interface DeviceDetailsResponseDto {
   details: ElgatoDeviceDetailsResponseDto
   displayName: string
-  id: string
   lastSeen: string
+  /** The unique id for the device is its mac address. */
+  macAddress: string
   state: DeviceState
 }
 
 export interface DeviceResponseDto {
   displayName: string
-  id: string
+  /** The unique id for the device is its mac address. */
+  macAddress: string
 }
 
 export interface DeviceListResponseDto {
@@ -275,25 +277,26 @@ export const useDeviceList = <TData = Awaited<ReturnType<typeof deviceList>>, TE
   return query
 }
 
-export const deviceDetails = (id: string, signal?: AbortSignal) => {
-  return customAxiosInstance<DeviceDetailsResponseDto>({ url: `/api/devices/${id}`, method: 'GET', signal })
+export const deviceDetails = (macAddress: string, signal?: AbortSignal) => {
+  return customAxiosInstance<DeviceDetailsResponseDto>({ url: `/api/devices/${macAddress}`, method: 'GET', signal })
 }
 
-export const getDeviceDetailsQueryKey = (id: string) => {
-  return [`/api/devices/${id}`] as const
+export const getDeviceDetailsQueryKey = (macAddress: string) => {
+  return [`/api/devices/${macAddress}`] as const
 }
 
 export const getDeviceDetailsQueryOptions = <TData = Awaited<ReturnType<typeof deviceDetails>>, TError = unknown>(
-  id: string,
+  macAddress: string,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof deviceDetails>>, TError, TData>> },
 ) => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getDeviceDetailsQueryKey(id)
+  const queryKey = queryOptions?.queryKey ?? getDeviceDetailsQueryKey(macAddress)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof deviceDetails>>> = ({ signal }) => deviceDetails(id, signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof deviceDetails>>> = ({ signal }) =>
+    deviceDetails(macAddress, signal)
 
-  return { queryKey, queryFn, enabled: !!id, ...queryOptions } as UseQueryOptions<
+  return { queryKey, queryFn, enabled: !!macAddress, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof deviceDetails>>,
     TError,
     TData
@@ -304,10 +307,10 @@ export type DeviceDetailsQueryResult = NonNullable<Awaited<ReturnType<typeof dev
 export type DeviceDetailsQueryError = unknown
 
 export const useDeviceDetails = <TData = Awaited<ReturnType<typeof deviceDetails>>, TError = unknown>(
-  id: string,
+  macAddress: string,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof deviceDetails>>, TError, TData>> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getDeviceDetailsQueryOptions(id, options)
+  const queryOptions = getDeviceDetailsQueryOptions(macAddress, options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -316,9 +319,9 @@ export const useDeviceDetails = <TData = Awaited<ReturnType<typeof deviceDetails
   return query
 }
 
-export const setDisplayName = (id: string, deviceDisplayNameRequestDto: DeviceDisplayNameRequestDto) => {
+export const setDisplayName = (macAddress: string, deviceDisplayNameRequestDto: DeviceDisplayNameRequestDto) => {
   return customAxiosInstance<void>({
-    url: `/api/devices/${id}/display-name`,
+    url: `/api/devices/${macAddress}/display-name`,
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     data: deviceDisplayNameRequestDto,
@@ -329,24 +332,24 @@ export const getSetDisplayNameMutationOptions = <TError = unknown, TContext = un
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof setDisplayName>>,
     TError,
-    { id: string; data: DeviceDisplayNameRequestDto },
+    { macAddress: string; data: DeviceDisplayNameRequestDto },
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof setDisplayName>>,
   TError,
-  { id: string; data: DeviceDisplayNameRequestDto },
+  { macAddress: string; data: DeviceDisplayNameRequestDto },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {}
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof setDisplayName>>,
-    { id: string; data: DeviceDisplayNameRequestDto }
+    { macAddress: string; data: DeviceDisplayNameRequestDto }
   > = (props) => {
-    const { id, data } = props ?? {}
+    const { macAddress, data } = props ?? {}
 
-    return setDisplayName(id, data)
+    return setDisplayName(macAddress, data)
   }
 
   return { mutationFn, ...mutationOptions }
@@ -360,7 +363,7 @@ export const useSetDisplayName = <TError = unknown, TContext = unknown>(options?
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof setDisplayName>>,
     TError,
-    { id: string; data: DeviceDisplayNameRequestDto },
+    { macAddress: string; data: DeviceDisplayNameRequestDto },
     TContext
   >
 }) => {
@@ -369,19 +372,19 @@ export const useSetDisplayName = <TError = unknown, TContext = unknown>(options?
   return useMutation(mutationOptions)
 }
 
-export const toggleDevice = (id: string) => {
-  return customAxiosInstance<void>({ url: `/api/devices/${id}/toggle`, method: 'PUT' })
+export const toggleDevice = (macAddress: string) => {
+  return customAxiosInstance<void>({ url: `/api/devices/${macAddress}/toggle`, method: 'PUT' })
 }
 
 export const getToggleDeviceMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { id: string }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { id: string }, TContext> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { macAddress: string }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { macAddress: string }, TContext> => {
   const { mutation: mutationOptions } = options ?? {}
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof toggleDevice>>, { id: string }> = (props) => {
-    const { id } = props ?? {}
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof toggleDevice>>, { macAddress: string }> = (props) => {
+    const { macAddress } = props ?? {}
 
-    return toggleDevice(id)
+    return toggleDevice(macAddress)
   }
 
   return { mutationFn, ...mutationOptions }
@@ -392,16 +395,16 @@ export type ToggleDeviceMutationResult = NonNullable<Awaited<ReturnType<typeof t
 export type ToggleDeviceMutationError = unknown
 
 export const useToggleDevice = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { id: string }, TContext>
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { macAddress: string }, TContext>
 }) => {
   const mutationOptions = getToggleDeviceMutationOptions(options)
 
   return useMutation(mutationOptions)
 }
 
-export const deviceSetPowerState = (id: string, devicePowerStateRequestDto: DevicePowerStateRequestDto) => {
+export const deviceSetPowerState = (macAddress: string, devicePowerStateRequestDto: DevicePowerStateRequestDto) => {
   return customAxiosInstance<void>({
-    url: `/api/devices/${id}/power-state`,
+    url: `/api/devices/${macAddress}/power-state`,
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     data: devicePowerStateRequestDto,
@@ -412,24 +415,24 @@ export const getDeviceSetPowerStateMutationOptions = <TError = unknown, TContext
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof deviceSetPowerState>>,
     TError,
-    { id: string; data: DevicePowerStateRequestDto },
+    { macAddress: string; data: DevicePowerStateRequestDto },
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof deviceSetPowerState>>,
   TError,
-  { id: string; data: DevicePowerStateRequestDto },
+  { macAddress: string; data: DevicePowerStateRequestDto },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {}
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof deviceSetPowerState>>,
-    { id: string; data: DevicePowerStateRequestDto }
+    { macAddress: string; data: DevicePowerStateRequestDto }
   > = (props) => {
-    const { id, data } = props ?? {}
+    const { macAddress, data } = props ?? {}
 
-    return deviceSetPowerState(id, data)
+    return deviceSetPowerState(macAddress, data)
   }
 
   return { mutationFn, ...mutationOptions }
@@ -443,7 +446,7 @@ export const useDeviceSetPowerState = <TError = unknown, TContext = unknown>(opt
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof deviceSetPowerState>>,
     TError,
-    { id: string; data: DevicePowerStateRequestDto },
+    { macAddress: string; data: DevicePowerStateRequestDto },
     TContext
   >
 }) => {
@@ -452,9 +455,9 @@ export const useDeviceSetPowerState = <TError = unknown, TContext = unknown>(opt
   return useMutation(mutationOptions)
 }
 
-export const transitionToColor = (id: string, transitionToColorRequestDto: TransitionToColorRequestDto) => {
+export const transitionToColor = (macAddress: string, transitionToColorRequestDto: TransitionToColorRequestDto) => {
   return customAxiosInstance<void>({
-    url: `/api/devices/${id}/transition-to-color`,
+    url: `/api/devices/${macAddress}/transition-to-color`,
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     data: transitionToColorRequestDto,
@@ -465,24 +468,24 @@ export const getTransitionToColorMutationOptions = <TError = unknown, TContext =
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof transitionToColor>>,
     TError,
-    { id: string; data: TransitionToColorRequestDto },
+    { macAddress: string; data: TransitionToColorRequestDto },
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof transitionToColor>>,
   TError,
-  { id: string; data: TransitionToColorRequestDto },
+  { macAddress: string; data: TransitionToColorRequestDto },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {}
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof transitionToColor>>,
-    { id: string; data: TransitionToColorRequestDto }
+    { macAddress: string; data: TransitionToColorRequestDto }
   > = (props) => {
-    const { id, data } = props ?? {}
+    const { macAddress, data } = props ?? {}
 
-    return transitionToColor(id, data)
+    return transitionToColor(macAddress, data)
   }
 
   return { mutationFn, ...mutationOptions }
@@ -496,7 +499,7 @@ export const useTransitionToColor = <TError = unknown, TContext = unknown>(optio
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof transitionToColor>>,
     TError,
-    { id: string; data: TransitionToColorRequestDto },
+    { macAddress: string; data: TransitionToColorRequestDto },
     TContext
   >
 }) => {
@@ -505,29 +508,33 @@ export const useTransitionToColor = <TError = unknown, TContext = unknown>(optio
   return useMutation(mutationOptions)
 }
 
-export const currentDeviceSettings = (id: string, signal?: AbortSignal) => {
-  return customAxiosInstance<DeviceSettingsResponseDto>({ url: `/api/devices/${id}/settings`, method: 'GET', signal })
+export const currentDeviceSettings = (macAddress: string, signal?: AbortSignal) => {
+  return customAxiosInstance<DeviceSettingsResponseDto>({
+    url: `/api/devices/${macAddress}/settings`,
+    method: 'GET',
+    signal,
+  })
 }
 
-export const getCurrentDeviceSettingsQueryKey = (id: string) => {
-  return [`/api/devices/${id}/settings`] as const
+export const getCurrentDeviceSettingsQueryKey = (macAddress: string) => {
+  return [`/api/devices/${macAddress}/settings`] as const
 }
 
 export const getCurrentDeviceSettingsQueryOptions = <
   TData = Awaited<ReturnType<typeof currentDeviceSettings>>,
   TError = unknown,
 >(
-  id: string,
+  macAddress: string,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof currentDeviceSettings>>, TError, TData>> },
 ) => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getCurrentDeviceSettingsQueryKey(id)
+  const queryKey = queryOptions?.queryKey ?? getCurrentDeviceSettingsQueryKey(macAddress)
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof currentDeviceSettings>>> = ({ signal }) =>
-    currentDeviceSettings(id, signal)
+    currentDeviceSettings(macAddress, signal)
 
-  return { queryKey, queryFn, enabled: !!id, ...queryOptions } as UseQueryOptions<
+  return { queryKey, queryFn, enabled: !!macAddress, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof currentDeviceSettings>>,
     TError,
     TData
@@ -538,10 +545,10 @@ export type CurrentDeviceSettingsQueryResult = NonNullable<Awaited<ReturnType<ty
 export type CurrentDeviceSettingsQueryError = unknown
 
 export const useCurrentDeviceSettings = <TData = Awaited<ReturnType<typeof currentDeviceSettings>>, TError = unknown>(
-  id: string,
+  macAddress: string,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof currentDeviceSettings>>, TError, TData>> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getCurrentDeviceSettingsQueryOptions(id, options)
+  const queryOptions = getCurrentDeviceSettingsQueryOptions(macAddress, options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -550,9 +557,9 @@ export const useCurrentDeviceSettings = <TData = Awaited<ReturnType<typeof curre
   return query
 }
 
-export const updateDeviceSettings = (id: string, deviceSettingsRequestDto: DeviceSettingsRequestDto) => {
+export const updateDeviceSettings = (macAddress: string, deviceSettingsRequestDto: DeviceSettingsRequestDto) => {
   return customAxiosInstance<DeviceSettingsResponseDto>({
-    url: `/api/devices/${id}/settings`,
+    url: `/api/devices/${macAddress}/settings`,
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     data: deviceSettingsRequestDto,
@@ -563,24 +570,24 @@ export const getUpdateDeviceSettingsMutationOptions = <TError = unknown, TContex
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateDeviceSettings>>,
     TError,
-    { id: string; data: DeviceSettingsRequestDto },
+    { macAddress: string; data: DeviceSettingsRequestDto },
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof updateDeviceSettings>>,
   TError,
-  { id: string; data: DeviceSettingsRequestDto },
+  { macAddress: string; data: DeviceSettingsRequestDto },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {}
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof updateDeviceSettings>>,
-    { id: string; data: DeviceSettingsRequestDto }
+    { macAddress: string; data: DeviceSettingsRequestDto }
   > = (props) => {
-    const { id, data } = props ?? {}
+    const { macAddress, data } = props ?? {}
 
-    return updateDeviceSettings(id, data)
+    return updateDeviceSettings(macAddress, data)
   }
 
   return { mutationFn, ...mutationOptions }
@@ -594,7 +601,7 @@ export const useUpdateDeviceSettings = <TError = unknown, TContext = unknown>(op
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateDeviceSettings>>,
     TError,
-    { id: string; data: DeviceSettingsRequestDto },
+    { macAddress: string; data: DeviceSettingsRequestDto },
     TContext
   >
 }) => {
@@ -739,31 +746,31 @@ export const useGetLocationData = <TData = Awaited<ReturnType<typeof getLocation
   return query
 }
 
-export const streamDeckControllerToggleDevice = (deviceId: string, signal?: AbortSignal) => {
-  return customAxiosInstance<void>({ url: `/api/stream-deck/toggle/${deviceId}`, method: 'GET', signal })
+export const streamDeckControllerToggleDevice = (macAddress: string, signal?: AbortSignal) => {
+  return customAxiosInstance<void>({ url: `/api/stream-deck/toggle/${macAddress}`, method: 'GET', signal })
 }
 
-export const getStreamDeckControllerToggleDeviceQueryKey = (deviceId: string) => {
-  return [`/api/stream-deck/toggle/${deviceId}`] as const
+export const getStreamDeckControllerToggleDeviceQueryKey = (macAddress: string) => {
+  return [`/api/stream-deck/toggle/${macAddress}`] as const
 }
 
 export const getStreamDeckControllerToggleDeviceQueryOptions = <
   TData = Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>,
   TError = unknown,
 >(
-  deviceId: string,
+  macAddress: string,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>, TError, TData>>
   },
 ) => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getStreamDeckControllerToggleDeviceQueryKey(deviceId)
+  const queryKey = queryOptions?.queryKey ?? getStreamDeckControllerToggleDeviceQueryKey(macAddress)
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>> = ({ signal }) =>
-    streamDeckControllerToggleDevice(deviceId, signal)
+    streamDeckControllerToggleDevice(macAddress, signal)
 
-  return { queryKey, queryFn, enabled: !!deviceId, ...queryOptions } as UseQueryOptions<
+  return { queryKey, queryFn, enabled: !!macAddress, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>,
     TError,
     TData
@@ -779,12 +786,12 @@ export const useStreamDeckControllerToggleDevice = <
   TData = Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>,
   TError = unknown,
 >(
-  deviceId: string,
+  macAddress: string,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>, TError, TData>>
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getStreamDeckControllerToggleDeviceQueryOptions(deviceId, options)
+  const queryOptions = getStreamDeckControllerToggleDeviceQueryOptions(macAddress, options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 

@@ -84,13 +84,13 @@
         }
       }
     },
-    "/api/devices/{id}": {
+    "/api/devices/{macAddress}": {
       "get": {
         "operationId": "device-details",
         "summary": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "macAddress",
             "required": true,
             "in": "path",
             "schema": {
@@ -112,13 +112,13 @@
         }
       }
     },
-    "/api/devices/{id}/display-name": {
+    "/api/devices/{macAddress}/display-name": {
       "put": {
         "operationId": "set-display-name",
         "summary": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "macAddress",
             "required": true,
             "in": "path",
             "schema": {
@@ -143,13 +143,13 @@
         }
       }
     },
-    "/api/devices/{id}/toggle": {
+    "/api/devices/{macAddress}/toggle": {
       "put": {
         "operationId": "toggle-device",
         "summary": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "macAddress",
             "required": true,
             "in": "path",
             "schema": {
@@ -164,13 +164,13 @@
         }
       }
     },
-    "/api/devices/{id}/power-state": {
+    "/api/devices/{macAddress}/power-state": {
       "put": {
         "operationId": "device-set-power-state",
         "summary": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "macAddress",
             "required": true,
             "in": "path",
             "schema": {
@@ -195,13 +195,13 @@
         }
       }
     },
-    "/api/devices/{id}/transition-to-color": {
+    "/api/devices/{macAddress}/transition-to-color": {
       "put": {
         "operationId": "transition-to-color",
         "summary": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "macAddress",
             "required": true,
             "in": "path",
             "schema": {
@@ -226,13 +226,13 @@
         }
       }
     },
-    "/api/devices/{id}/settings": {
+    "/api/devices/{macAddress}/settings": {
       "get": {
         "operationId": "current-device-settings",
         "summary": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "macAddress",
             "required": true,
             "in": "path",
             "schema": {
@@ -258,7 +258,7 @@
         "summary": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "macAddress",
             "required": true,
             "in": "path",
             "schema": {
@@ -352,12 +352,12 @@
         "tags": ["location"]
       }
     },
-    "/api/stream-deck/toggle/{deviceId}": {
+    "/api/stream-deck/toggle/{macAddress}": {
       "get": {
         "operationId": "StreamDeckController_toggleDevice",
         "parameters": [
           {
-            "name": "deviceId",
+            "name": "macAddress",
             "required": true,
             "in": "path",
             "schema": {
@@ -444,14 +444,15 @@
       "DeviceResponseDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
+          "macAddress": {
+            "type": "string",
+            "description": "The unique id for the device is its mac address."
           },
           "displayName": {
             "type": "string"
           }
         },
-        "required": ["id", "displayName"]
+        "required": ["macAddress", "displayName"]
       },
       "DeviceListResponseDto": {
         "type": "object",
@@ -501,8 +502,9 @@
       "DeviceDetailsResponseDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
+          "macAddress": {
+            "type": "string",
+            "description": "The unique id for the device is its mac address."
           },
           "displayName": {
             "type": "string"
@@ -518,7 +520,7 @@
             "type": "string"
           }
         },
-        "required": ["id", "displayName", "details", "state", "lastSeen"]
+        "required": ["macAddress", "displayName", "details", "state", "lastSeen"]
       },
       "DeviceDisplayNameRequestDto": {
         "type": "object",

@@ -26,33 +26,33 @@ export class DeviceController {
     description: 'Detailed information for the device with the given id.',
     type: DeviceDetailsResponseDto,
   })
-  @Get('/:id')
-  async getDevice(@Param('id') id: string): Promise<DeviceDetailsResponseDto> {
-    return this.deviceService.getDevice(id)
+  @Get('/:macAddress')
+  async getDevice(@Param('macAddress') macAddress: string): Promise<DeviceDetailsResponseDto> {
+    return this.deviceService.getDevice(macAddress)
   }
 
   @ApiOperation({ operationId: 'set-display-name' })
-  @Put('/:id/display-name')
-  async setDisplayName(@Param('id') id: string, @Body() displayName: DeviceDisplayNameRequestDto) {
-    return this.deviceService.setDisplayName(id, displayName)
+  @Put('/:macAddress/display-name')
+  async setDisplayName(@Param('macAddress') macAddress: string, @Body() displayName: DeviceDisplayNameRequestDto) {
+    return this.deviceService.setDisplayName(macAddress, displayName)
   }
 
   @ApiOperation({ operationId: 'toggle-device' })
-  @Put('/:id/toggle')
-  async toggleDevice(@Param('id') id: string) {
-    return this.deviceService.toggle(id)
+  @Put('/:macAddress/toggle')
+  async toggleDevice(@Param('macAddress') macAddress: string) {
+    return this.deviceService.toggle(macAddress)
   }
 
   @ApiOperation({ operationId: 'device-set-power-state' })
-  @Put('/:id/power-state')
-  async powerState(@Param('id') id: string, @Body() targetPowerState: DevicePowerStateRequestDto) {
-    return this.deviceService.setPowerState(id, targetPowerState)
+  @Put('/:macAddress/power-state')
+  async powerState(@Param('macAddress') macAddress: string, @Body() targetPowerState: DevicePowerStateRequestDto) {
+    return this.deviceService.setPowerState(macAddress, targetPowerState)
   }
 
   @Throttle({ default: { limit: 1, ttl: 1_100 } })
   @ApiOperation({ operationId: 'transition-to-color' })
-  @Put('/:id/transition-to-color')
-  async transitionToColor(@Param('id') id: string, @Body() color: TransitionToColorRequestDto) {
-    return this.deviceService.transitionToColor(id, color)
+  @Put('/:macAddress/transition-to-color')
+  async transitionToColor(@Param('macAddress') macAddress: string, @Body() color: TransitionToColorRequestDto) {
+    return this.deviceService.transitionToColor(macAddress, color)
   }
 }

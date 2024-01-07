@@ -47,7 +47,7 @@ export function UpdatableDisplayName({ deviceId }: UpdatableDisplayNameProps) {
 
   const onSubmit = (data: DisplayNameFormFields) => {
     const displayName = data.displayName.trim()
-    mutate({ id: deviceId, data: { displayName } })
+    mutate({ macAddress: deviceId, data: { displayName } })
     setIsEditing(false)
   }
 

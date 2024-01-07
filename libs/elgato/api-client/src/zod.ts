@@ -34,18 +34,18 @@ export const addManualDeviceParams = zod.object({
 export const deviceListResponse = zod.object({
   devices: zod.array(
     zod.object({
-      id: zod.string(),
+      macAddress: zod.string(),
       displayName: zod.string(),
     }),
   ),
 })
 
 export const deviceDetailsParams = zod.object({
-  id: zod.string(),
+  macAddress: zod.string(),
 })
 
 export const deviceDetailsResponse = zod.object({
-  id: zod.string(),
+  macAddress: zod.string(),
   displayName: zod.string(),
   details: zod.object({
     productName: zod.string(),
@@ -62,7 +62,7 @@ export const deviceDetailsResponse = zod.object({
 })
 
 export const setDisplayNameParams = zod.object({
-  id: zod.string(),
+  macAddress: zod.string(),
 })
 
 export const setDisplayNameBody = zod.object({
@@ -70,11 +70,11 @@ export const setDisplayNameBody = zod.object({
 })
 
 export const toggleDeviceParams = zod.object({
-  id: zod.string(),
+  macAddress: zod.string(),
 })
 
 export const deviceSetPowerStateParams = zod.object({
-  id: zod.string(),
+  macAddress: zod.string(),
 })
 
 export const deviceSetPowerStateBody = zod.object({
@@ -85,7 +85,7 @@ export const deviceSetPowerStateBody = zod.object({
 })
 
 export const transitionToColorParams = zod.object({
-  id: zod.string(),
+  macAddress: zod.string(),
 })
 
 export const transitionToColorBody = zod.object({
@@ -95,7 +95,7 @@ export const transitionToColorBody = zod.object({
 })
 
 export const currentDeviceSettingsParams = zod.object({
-  id: zod.string(),
+  macAddress: zod.string(),
 })
 
 export const currentDeviceSettingsResponse = zod.object({
@@ -104,7 +104,7 @@ export const currentDeviceSettingsResponse = zod.object({
 })
 
 export const updateDeviceSettingsParams = zod.object({
-  id: zod.string(),
+  macAddress: zod.string(),
 })
 
 export const updateDeviceSettingsBody = zod.object({
@@ -147,5 +147,5 @@ export const getLocationDataResponse = zod.object({
 })
 
 export const streamDeckControllerToggleDeviceParams = zod.object({
-  deviceId: zod.string(),
+  macAddress: zod.string(),
 })

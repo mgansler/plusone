@@ -13,7 +13,7 @@ type DeviceSettingsProps = {
 }
 
 export function DeviceSettings({ device }: DeviceSettingsProps) {
-  const { refetch } = useValidatedDeviceSettings(device.id, { query: { enabled: false } })
+  const { refetch } = useValidatedDeviceSettings(device.macAddress, { query: { enabled: false } })
   const { mutate } = useUpdateDeviceSettings()
 
   const { handleSubmit, register } = useForm<Fields>({
@@ -31,7 +31,7 @@ export function DeviceSettings({ device }: DeviceSettingsProps) {
   })
 
   const onSubmit = (data: Fields) => {
-    mutate({ id: device.id, data })
+    mutate({ macAddress: device.macAddress, data })
   }
 
   return (

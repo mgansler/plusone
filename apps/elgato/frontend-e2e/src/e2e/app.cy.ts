@@ -3,7 +3,7 @@ describe('elgato-frontend', () => {
 
   it('should render landing page', () => {
     cy.intercept('GET', '/api/devices', { fixture: 'devices.json' }).as('devices')
-    cy.intercept('GET', '/api/devices/de:vi:ce:id', { fixture: 'device-details.json' }).as('deviceDetails')
+    cy.intercept('GET', '/api/devices/ma:ca:dd:re:ss', { fixture: 'device-details.json' }).as('deviceDetails')
 
     cy.findByRole('heading', { name: 'Elgato Control' }).should('be.visible')
     cy.wait('@devices')
@@ -12,7 +12,7 @@ describe('elgato-frontend', () => {
 
   it('should handle a stuck device', () => {
     cy.intercept('GET', '/api/devices', { fixture: 'devices.json' }).as('devices')
-    cy.intercept('GET', '/api/devices/de:vi:ce:id', { statusCode: 500 }).as('deviceDetails')
+    cy.intercept('GET', '/api/devices/ma:ca:dd:re:ss', { statusCode: 500 }).as('deviceDetails')
 
     cy.wait('@devices')
     cy.wait('@deviceDetails')

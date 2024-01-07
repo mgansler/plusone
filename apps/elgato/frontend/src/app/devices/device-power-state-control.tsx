@@ -4,12 +4,12 @@ import { useDeviceSetPowerState, useToggleDevice, useValidatedDeviceDetails } fr
 import { PowerControl } from '@plusone/elgato-components'
 
 type DevicePowerStateProps = {
-  deviceId: string
+  macAddress: string
 }
 
-export function DevicePowerStateControl({ deviceId }: DevicePowerStateProps) {
+export function DevicePowerStateControl({ macAddress }: DevicePowerStateProps) {
   const queryClient = useQueryClient()
-  const { data, isLoading, queryKey, error } = useValidatedDeviceDetails(deviceId)
+  const { data, isLoading, queryKey, error } = useValidatedDeviceDetails(macAddress)
   const mutation = {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey })
@@ -18,8 +18,8 @@ export function DevicePowerStateControl({ deviceId }: DevicePowerStateProps) {
   const { mutate: toggleDevice } = useToggleDevice({ mutation })
   const { mutate: setDevicePowerState } = useDeviceSetPowerState({ mutation })
 
-  const toggle = () => toggleDevice({ id: deviceId })
-  const turnOff = () => setDevicePowerState({ id: deviceId, data: { on: false } })
+  const toggle = () => toggleDevice({ macAddress })
+  const turnOff = () => setDevicePowerState({ macAddress, data: { on: false } })
 
   if (isLoading) {
     return null
