@@ -13,10 +13,10 @@ import { DevicePowerStateControl } from './device-power-state-control'
 import { GetStreamDeckUrl } from './get-stream-deck-url'
 
 export function DeviceDetails() {
-  const { deviceId } = deviceDetailsRoute.useParams()
+  const { macAddress } = deviceDetailsRoute.useParams()
 
   const queryClient = useQueryClient()
-  const { data: deviceDetails, queryKey } = useValidatedDeviceDetails(deviceId)
+  const { data: deviceDetails, queryKey } = useValidatedDeviceDetails(macAddress)
   const { mutate } = useTransitionToColor({
     mutation: { onSuccess: () => queryClient.invalidateQueries({ queryKey }) },
   })
@@ -28,12 +28,12 @@ export function DeviceDetails() {
     const hue = Math.round(h)
     const saturation = Math.round(s * 100)
     const brightness = Math.round(l * 100)
-    transitionToColor({ macAddress: deviceId, data: { hue, saturation, brightness } })
+    transitionToColor({ macAddress, data: { hue, saturation, brightness } })
   }
 
   return (
     <div className={'flex flex-col gap-1 p-1'}>
-      <UpdatableDisplayName deviceId={deviceId} />
+      <UpdatableDisplayName deviceId={macAddress} />
 
       {deviceDetails?.details.deviceType === DeviceType.LightStrip && (
         <LightColorPicker
@@ -43,8 +43,8 @@ export function DeviceDetails() {
           setColor={setStripColor}
         />
       )}
-      <DevicePowerStateControl deviceId={deviceId} />
-      <GetStreamDeckUrl deviceId={deviceId} />
+      <DevicePowerStateControl macAddress={macAddress} />
+      <GetStreamDeckUrl macAddress={macAddress} />
     </div>
   )
 }

@@ -352,12 +352,12 @@
         "tags": ["location"]
       }
     },
-    "/api/stream-deck/toggle/{deviceId}": {
+    "/api/stream-deck/toggle/{macAddress}": {
       "get": {
         "operationId": "StreamDeckController_toggleDevice",
         "parameters": [
           {
-            "name": "deviceId",
+            "name": "macAddress",
             "required": true,
             "in": "path",
             "schema": {

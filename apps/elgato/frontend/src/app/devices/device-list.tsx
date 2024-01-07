@@ -14,9 +14,9 @@ type DeviceListItemProps = {
 function DeviceListItem({ device }: DeviceListItemProps) {
   return (
     <div className={'aspect-square flex flex-col justify-center items-center border-2 rounded md:w-48'}>
-      <DevicePowerStateControl deviceId={device.macAddress} />
+      <DevicePowerStateControl macAddress={device.macAddress} />
       <p>{device.displayName}</p>
-      <Link to={deviceDetailsRoute.to} params={{ deviceId: device.macAddress }}>
+      <Link to={deviceDetailsRoute.to} params={{ macAddress: device.macAddress }}>
         Details
       </Link>
     </div>

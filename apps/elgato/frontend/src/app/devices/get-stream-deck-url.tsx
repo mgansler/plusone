@@ -1,11 +1,11 @@
 type GetStreamDeckUrlProps = {
-  deviceId: string
+  macAddress: string
 }
 
-export function GetStreamDeckUrl({ deviceId }: GetStreamDeckUrlProps) {
+export function GetStreamDeckUrl({ macAddress }: GetStreamDeckUrlProps) {
   const copyToClipboard = async () => {
     const origin = window.origin
-    await window.navigator.clipboard.writeText(`${origin}/api/stream-deck/toggle/${deviceId}`)
+    await window.navigator.clipboard.writeText(`${origin}/api/stream-deck/toggle/${macAddress}`)
   }
 
   return <button onClick={copyToClipboard}>Copy to Clipboard</button>

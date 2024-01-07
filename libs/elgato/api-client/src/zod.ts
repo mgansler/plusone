@@ -147,5 +147,5 @@ export const getLocationDataResponse = zod.object({
 })
 
 export const streamDeckControllerToggleDeviceParams = zod.object({
-  deviceId: zod.string(),
+  macAddress: zod.string(),
 })

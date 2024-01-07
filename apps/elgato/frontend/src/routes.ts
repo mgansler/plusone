@@ -16,7 +16,7 @@ export const indexRoute = new Route({
 
 export const deviceDetailsRoute = new Route({
   getParentRoute: () => indexRoute,
-  path: '/devices/$deviceId',
+  path: '/devices/$macAddress',
   component: DeviceDetails,
 })
 

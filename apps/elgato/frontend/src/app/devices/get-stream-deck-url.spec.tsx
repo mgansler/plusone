@@ -17,10 +17,10 @@ describe('GetStreamDeckUrl', () => {
       origin: 'http://localhost:1234',
     })
 
-    render(<GetStreamDeckUrl deviceId={'AA:BB:CC:DD:EE:FF'} />)
+    render(<GetStreamDeckUrl macAddress={'ma:ca:dd:re:ss'} />)
 
     await userAction.click(screen.getByRole('button', { name: 'Copy to Clipboard' }))
 
-    expect(copySpy).toHaveBeenCalledWith('http://localhost:1234/api/stream-deck/toggle/AA:BB:CC:DD:EE:FF')
+    expect(copySpy).toHaveBeenCalledWith('http://localhost:1234/api/stream-deck/toggle/ma:ca:dd:re:ss')
   })
 })
