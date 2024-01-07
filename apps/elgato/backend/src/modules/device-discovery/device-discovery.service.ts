@@ -66,20 +66,28 @@ export class DeviceDiscoveryService implements OnModuleInit {
   }
 
   async addManualDevice(address: string) {
+    const port = 9123
     const accessoryInfo = await this.elgatoService.getDeviceAccessoryInfo({
       address,
-      port: 9123,
+      port,
       type: DeviceType.Unknown,
     })
 
-    await this.prismaService.device.create({
-      data: {
+    await this.prismaService.device.upsert({
+      where: { macAddress: accessoryInfo.macAddress },
+      create: {
         macAddress: accessoryInfo.macAddress,
+        address,
+        port,
         displayName: accessoryInfo.displayName,
         lastSeen: new Date(),
         type: mapProductNameToDeviceType(accessoryInfo.productName),
-        address: address,
-        port: 9123,
+      },
+      update: {
+        address,
+        port,
+        displayName: accessoryInfo.displayName,
+        lastSeen: new Date(),
       },
     })
   }

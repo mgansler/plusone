@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios'
 import { SetupServer, setupServer } from 'msw/node'
 
-import { getAccessoryInfoResponse } from '../../stubs/accessory-info-response.stub'
+import { getAccessoryInfoResponseStub } from '../../stubs/accessory-info-response.stub'
 import { getDevice } from '../../stubs/device.stub'
 import {
   doesNotResolve,
@@ -65,7 +65,7 @@ describe('ElgatoService', () => {
       { type: DeviceType.RingLight, displayName: 'My Ring Light Device', productName: 'Elgato Ring Light' },
       { type: DeviceType.LightStrip, displayName: 'My Light Strip Device', productName: 'Elgato Light Strip' },
     ])('should return the device accessory info for a $type', async ({ type, displayName, productName }) => {
-      const expected: ElgatoAccessoryInfoResponseDto = getAccessoryInfoResponse({ displayName, productName })
+      const expected: ElgatoAccessoryInfoResponseDto = getAccessoryInfoResponseStub({ displayName, productName })
       const actual = await elgatoService.getDeviceAccessoryInfo(getDevice(type))
 
       expect(actual).toStrictEqual(expected)

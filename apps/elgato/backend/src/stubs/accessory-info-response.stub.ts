@@ -1,6 +1,6 @@
 import { ElgatoAccessoryInfoResponseDto } from '../modules/elgato/dto/elgato-accessory-info-response.dto'
 
-export function getAccessoryInfoResponse(
+export function getAccessoryInfoResponseStub(
   accessoryInfo: Partial<ElgatoAccessoryInfoResponseDto>,
 ): ElgatoAccessoryInfoResponseDto {
   return {
@@ -15,7 +15,7 @@ export function getAccessoryInfoResponse(
     firmwareVersion: '0.0.1',
     hardwareBoardType: 70,
     hardwareRevision: 1,
-    macAddress: 'AA:BB:CC:DD:EE:FF',
+    macAddress: 'ma:ca:dd:re:ss',
     productName: 'Elgato Light Strip',
     serialNumber: 'EW00K1A00001',
     ...accessoryInfo,

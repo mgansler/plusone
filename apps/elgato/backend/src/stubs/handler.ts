@@ -2,13 +2,13 @@ import { http, HttpResponse } from 'msw'
 
 import { DeviceType } from '../modules/device/enum/device-type'
 
-import { getAccessoryInfoResponse } from './accessory-info-response.stub'
+import { getAccessoryInfoResponseStub } from './accessory-info-response.stub'
 
 export function getAccessoryInfo(deviceType: DeviceType) {
   return deviceType === DeviceType.LightStrip
     ? http.get('http://my-lightstrip-device:9123/elgato/accessory-info', () => {
         return HttpResponse.json(
-          getAccessoryInfoResponse({
+          getAccessoryInfoResponseStub({
             productName: 'Elgato Light Strip',
             displayName: 'My Light Strip Device',
           }),
@@ -16,7 +16,7 @@ export function getAccessoryInfo(deviceType: DeviceType) {
       })
     : http.get('http://my-ringlight-device:9123/elgato/accessory-info', () => {
         return HttpResponse.json(
-          getAccessoryInfoResponse({
+          getAccessoryInfoResponseStub({
             productName: 'Elgato Ring Light',
             displayName: 'My Ring Light Device',
           }),
