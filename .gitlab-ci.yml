@@ -129,6 +129,10 @@ package:
     - .distributed
     - .dind
   needs:
+    - format-check
+    - lint
+    - test
+    - component-test
     - e2e
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
