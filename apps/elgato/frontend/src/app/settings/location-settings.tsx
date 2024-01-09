@@ -55,23 +55,30 @@ export function LocationSettings() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label>
-        Name
-        <input type={'text'} {...register('name')} />
-      </label>
-      <button type={'button'} onClick={getGeoCoordinates} disabled={lookupInProgress}>
-        get current coordinates
-      </button>
-      <label>
-        Longitude
-        <input {...register('longitude')} type={'number'} disabled={!lookupFailed} />
-      </label>
-      <label>
-        Latitude
-        <input {...register('latitude')} type={'number'} disabled={!lookupFailed} />
-      </label>
-      <button type={'submit'}>Save</button>
+    <form className={' max-w-xl'} onSubmit={handleSubmit(onSubmit)}>
+      <fieldset className={'border border-solid border-gray-300 flex flex-col'}>
+        <legend>Location</legend>
+
+        <label className={'grid grid-cols-[2fr_1fr_3fr]'}>
+          Name
+          <input className={'max-w-40'} type={'text'} {...register('name')} />
+          <button type={'button'} onClick={getGeoCoordinates} disabled={lookupInProgress}>
+            get current coordinates
+          </button>
+        </label>
+
+        <label className={'grid grid-cols-[2fr_1fr_3fr]'}>
+          Longitude
+          <input className={'max-w-40'} type={'number'} {...register('longitude')} disabled={!lookupFailed} />
+        </label>
+
+        <label className={'grid grid-cols-[2fr_1fr_3fr]'}>
+          Latitude
+          <input className={'max-w-40'} type={'number'} {...register('latitude')} disabled={!lookupFailed} />
+        </label>
+
+        <button type={'submit'}>Save</button>
+      </fieldset>
     </form>
   )
 }
