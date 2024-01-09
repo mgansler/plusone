@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing'
 
 import { Device, DiscoveredDevice, PrismaModule, PrismaService } from '@plusone/elgato-persistence'
 
-import { getAccessoryInfoResponse } from '../../stubs/accessory-info-response.stub'
+import { getAccessoryInfoResponseStub } from '../../stubs/accessory-info-response.stub'
 import { DeviceType } from '../device/enum/device-type'
 import { ElgatoModule } from '../elgato/elgato.module'
 import { ElgatoService } from '../elgato/elgato.service'
@@ -83,7 +83,7 @@ describe('DeviceDiscoveryService', () => {
   describe('addDiscoveredDevice', () => {
     it('should not fail on adding a already controlled device', async () => {
       jest.spyOn(prismaService.discoveredDevice, 'findUniqueOrThrow').mockResolvedValue(discoveredDevice)
-      jest.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockResolvedValue(getAccessoryInfoResponse({}))
+      jest.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockResolvedValue(getAccessoryInfoResponseStub({}))
       const deviceUpsertSpy = jest.spyOn(prismaService.device, 'upsert').mockResolvedValue(device)
       const discoveredDeviceUpdateSpy = jest
         .spyOn(prismaService.discoveredDevice, 'update')
@@ -124,12 +124,28 @@ describe('DeviceDiscoveryService', () => {
 
   describe('addManualDevice', () => {
     it('should add a device manually', async () => {
-      jest.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockResolvedValue(getAccessoryInfoResponse({}))
-      const deviceCreateSpy = jest.spyOn(prismaService.device, 'create').mockResolvedValue(device)
+      jest.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockResolvedValue(getAccessoryInfoResponseStub({}))
+      const deviceUpsertSpy = jest.spyOn(prismaService.device, 'upsert').mockResolvedValue(device)
 
       await deviceDiscoveryService.addManualDevice('127.0.0.1')
 
-      expect(deviceCreateSpy).toHaveBeenCalled()
+      expect(deviceUpsertSpy).toHaveBeenCalledWith({
+        where: { macAddress: 'ma:ca:dd:re:ss' },
+        create: {
+          macAddress: 'ma:ca:dd:re:ss',
+          address: '127.0.0.1',
+          port: 9123,
+          displayName: 'My Generic Display Name',
+          lastSeen: new Date(),
+          type: DeviceType.LightStrip,
+        },
+        update: {
+          address: '127.0.0.1',
+          port: 9123,
+          displayName: 'My Generic Display Name',
+          lastSeen: new Date(),
+        },
+      })
     })
 
     it('should not add a device when accessory info cannot be retrieved', async () => {

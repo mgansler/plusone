@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 
 import type { DeviceDetailsResponse } from '@plusone/elgato-api-client'
-import { useUpdateDeviceSettings, useValidatedDeviceSettings } from '@plusone/elgato-api-client'
+import { useUpdateDeviceSettings, useValidatedDeviceList, useValidatedDeviceSettings } from '@plusone/elgato-api-client'
 
 type Fields = {
   sunrise: boolean
@@ -35,18 +35,33 @@ export function DeviceSettings({ device }: DeviceSettingsProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {device.displayName}
-      <label>
-        Sunrise
-        <input type={'checkbox'} {...register('sunrise')} />
-      </label>
-      <label>
-        Sunset
-        <input type={'checkbox'} {...register('sunset')} />
-      </label>
+    <form className={'m-2'} onSubmit={handleSubmit(onSubmit)}>
+      <fieldset className={'border border-solid border-gray-300 flex flex-col'}>
+        <legend>{device.displayName}</legend>
 
-      <input type={'submit'} />
+        <label>
+          Sunrise
+          <input type={'checkbox'} {...register('sunrise')} />
+        </label>
+
+        <label>
+          Sunset
+          <input type={'checkbox'} {...register('sunset')} />
+        </label>
+
+        <input type={'submit'} />
+      </fieldset>
     </form>
+  )
+}
+
+export function DevicesSettings() {
+  const { data: { devices } = {} } = useValidatedDeviceList()
+
+  return (
+    <fieldset className={'max-w-xl border border-solid border-gray-300 flex flex-col'}>
+      <legend>Devices</legend>
+      {devices?.map((device) => <DeviceSettings key={device.macAddress} device={device} />)}
+    </fieldset>
   )
 }
