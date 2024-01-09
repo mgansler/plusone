@@ -173,6 +173,7 @@ deploy-on-nas:
     - elgato
   script:
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t deploy --parallel=1 --configuration=ci --exclude='*,!tag:nas'
+  retry: 2 # DNS sometimes fails but we can safely retry
 
 deploy-on-server:
   stage: deploy
