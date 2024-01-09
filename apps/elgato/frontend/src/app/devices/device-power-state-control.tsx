@@ -9,7 +9,9 @@ type DevicePowerStateProps = {
 
 export function DevicePowerStateControl({ macAddress }: DevicePowerStateProps) {
   const queryClient = useQueryClient()
-  const { data, isLoading, queryKey, error } = useValidatedDeviceDetails(macAddress)
+  const { data, isLoading, queryKey, error } = useValidatedDeviceDetails(macAddress, {
+    query: { refetchInterval: 10_000 },
+  })
   const mutation = {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey })

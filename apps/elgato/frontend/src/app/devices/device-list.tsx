@@ -24,7 +24,7 @@ function DeviceListItem({ device }: DeviceListItemProps) {
 }
 
 export function DeviceList() {
-  const { data } = useValidatedDeviceList()
+  const { data } = useValidatedDeviceList({ query: { refetchInterval: 10_000 } })
 
   return (
     <>
