@@ -5246,10 +5246,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@tanstack/history@1.5.7":
-  version "1.5.7"
-  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.5.7.tgz#acf66f026282cbdbf1d68144f626bdc99ed55034"
-  integrity sha512-YBlDjkWN3Gmjx2nszA5YitRQ2LcV+A3nBmXX+GPWPILc3bef3YIms19KBvlf2SyGQY0nDwTi5wTzSP8x+NUtjQ==
+"@tanstack/history@1.5.8":
+  version "1.5.8"
+  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.5.8.tgz#ba2793522767726e5f9c9abd05d2e31212843327"
+  integrity sha512-ngGSez7BGrOoTvXDqU/L+GFO245bnLtVFTeRVwtsj6LuFm8hHioRpnLDUAISjzBuKFxjOA+yAftXo1Nui2icPg==
 
 "@tanstack/query-core@5.17.15":
   version "5.17.15"
@@ -5275,13 +5275,13 @@
   dependencies:
     "@tanstack/query-core" "5.17.15"
 
-"@tanstack/react-router@1.5.7":
-  version "1.5.7"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.5.7.tgz#b72e8c5c84f1108c9852ba2974f201d59e950662"
-  integrity sha512-czlQ0I8Go7ZME5RcezS38rpnYEiS2y3LVMRMQNPogLoA1fgAOpEiQrC6826Dj+1N5R+/xWNChnoMfN8eLStzbw==
+"@tanstack/react-router@1.5.8":
+  version "1.5.8"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.5.8.tgz#673d1880f102d57e5ecc5de742211a684df65571"
+  integrity sha512-qPtOZJKFL1hqUDYHGsXTfhskMNdfoFj7hJXJBxnrqUxM7tpILueTjATraEKqiW4+lzPlfVlWnLiT0ZW0JjgaZQ==
   dependencies:
     "@babel/runtime" "^7.16.7"
-    "@tanstack/history" "1.5.7"
+    "@tanstack/history" "1.5.8"
     "@tanstack/react-store" "^0.2.1"
     "@tanstack/store" "^0.1.3"
     tiny-invariant "^1.3.1"
@@ -17086,10 +17086,25 @@ react-router-dom@6.21.2:
     "@remix-run/router" "1.14.2"
     react-router "6.21.2"
 
+react-router-dom@6.21.3:
+  version "6.21.3"
+  resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.21.3.tgz#ef3a7956a3699c7b82c21fcb3dbc63c313ed8c5d"
+  integrity sha512-kNzubk7n4YHSrErzjLK72j0B5i969GsuCGazRl3G6j1zqZBLjuSlYBdVdkDOgzGdPIffUOc9nmgiadTEVoq91g==
+  dependencies:
+    "@remix-run/router" "1.14.2"
+    react-router "6.21.3"
+
 react-router@6.21.2:
   version "6.21.2"
   resolved "https://registry.npmjs.org/react-router/-/react-router-6.21.2.tgz#8820906c609ae7e4e8f926cc8eb5ce161428b956"
   integrity sha512-jJcgiwDsnaHIeC+IN7atO0XiSRCrOsQAHHbChtJxmgqG2IaYQXSnhqGb5vk2CU/wBQA12Zt+TkbuJjIn65gzbA==
+  dependencies:
+    "@remix-run/router" "1.14.2"
+
+react-router@6.21.3:
+  version "6.21.3"
+  resolved "https://registry.npmjs.org/react-router/-/react-router-6.21.3.tgz#8086cea922c2bfebbb49c6594967418f1f167d70"
+  integrity sha512-a0H638ZXULv1OdkmiK6s6itNhoy33ywxmUFT/xtSoVyf9VnC7n7+VT4LjVzdIHSaF5TIh9ylUgxMXksHTgGrKg==
   dependencies:
     "@remix-run/router" "1.14.2"
 
