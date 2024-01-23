@@ -16,7 +16,7 @@
     "prisma-migrate": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "yarn prisma migrate dev --schema libs/elgato/persistence/src/lib/schema.prisma"
+        "command": "pnpm prisma migrate dev --schema libs/elgato/persistence/src/lib/schema.prisma"
       }
     },
     "prisma-push": {

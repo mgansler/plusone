@@ -9,9 +9,11 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
+        "generatePackageJson": true,
+        "target": "node",
+        "compiler": "tsc",
         "outputPath": "dist/apps/feeds/backend",
         "main": "apps/feeds/backend/src/main.ts",
-        "generatePackageJson": true,
         "tsConfig": "apps/feeds/backend/tsconfig.app.json",
         "webpackConfig": "apps/feeds/backend/webpack.config.js",
         "assets": [
@@ -31,9 +33,7 @@
             "glob": "libquery_engine-linux-musl*",
             "output": ""
           }
-        ],
-        "target": "node",
-        "compiler": "tsc"
+        ]
       },
       "configurations": {
         "production": {

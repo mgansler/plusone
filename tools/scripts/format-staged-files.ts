@@ -4,8 +4,8 @@ import { execSync } from 'child_process'
 const stagedFiles: string[] = execSync('git diff --name-only --cached').toString().split(/\n/).filter(Boolean)
 
 // Format files
-execSync(`yarn nx format --files ${[...stagedFiles, 'tsconfig.base.json', 'workspace.json', 'nx.json'].join(',')}`)
-execSync(`yarn nx affected --target format`)
+execSync(`pnpm nx format --files ${[...stagedFiles, 'tsconfig.base.json', 'workspace.json', 'nx.json'].join(',')}`)
+execSync(`pnpm nx affected --target format`)
 
 // Get unstaged files after commit
 const unstagedFiles: string[] = execSync('git diff --name-only').toString().split(/\n/).filter(Boolean)

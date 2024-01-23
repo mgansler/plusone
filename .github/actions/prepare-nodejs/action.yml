@@ -4,11 +4,14 @@ description: Installs node dependencies and sets up cache
 runs:
   using: composite
   steps:
+    - uses: pnpm/action-setup@v2
+      with:
+        version: 8
+
     - uses: actions/setup-node@v4.0.1
       with:
         node-version: '20'
-        cache: 'yarn'
 
     - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      run: pnpm install
       shell: bash

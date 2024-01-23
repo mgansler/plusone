@@ -7,7 +7,7 @@
     "generate-api-client": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "yarn orval --config libs/feeds/api-client/orval.config.ts"
+        "command": "pnpm orval --config libs/feeds/api-client/orval.config.ts"
       }
     },
     "lint": {
