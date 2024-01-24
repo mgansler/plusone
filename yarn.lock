@@ -5118,15 +5118,16 @@
     source-map-support "^0.5.21"
     tslib "^2.5.0"
 
-"@swc/cli@0.1.65":
-  version "0.1.65"
-  resolved "https://registry.npmjs.org/@swc/cli/-/cli-0.1.65.tgz#bb51ce6f088a78ac99a07507c15a8d74c9336ecb"
-  integrity sha512-4NcgsvJVHhA7trDnMmkGLLvWMHu2kSy+qHx6QwRhhJhdiYdNUrhdp+ERxen73sYtaeEOYeLJcWrQ60nzKi6rpg==
+"@swc/cli@0.2.2":
+  version "0.2.2"
+  resolved "https://registry.npmjs.org/@swc/cli/-/cli-0.2.2.tgz#023c6632f698fb963d9b0bc021972a31bde49e89"
+  integrity sha512-yILBfiDq8OJMdU6w8sJmi1nokYQjFAuGDXo5WI9cupF28kyc9Ws5cgUb78Cj86OHb2YdSW/T6DE2wKKwj3CAcA==
   dependencies:
     "@mole-inc/bin-wrapper" "^8.0.1"
     commander "^7.1.0"
     fast-glob "^3.2.5"
     minimatch "^9.0.3"
+    piscina "^4.3.0"
     semver "^7.3.8"
     slash "3.0.0"
     source-map "^0.7.3"
@@ -11350,10 +11351,10 @@ handle-thing@^2.0.0:
   resolved "https://registry.npmjs.org/handle-thing/-/handle-thing-2.0.1.tgz#857f79ce359580c340d43081cc648970d0bb234e"
   integrity sha512-9Qn4yBxelxoh2Ow62nP+Ka/kMnOXRi8BXnRaUwezLNhqelnN49xKz4F/dPP8OYLxLxq6JDtZb2i9XznUQbNPTg==
 
-happy-dom@13.2.1:
-  version "13.2.1"
-  resolved "https://registry.npmjs.org/happy-dom/-/happy-dom-13.2.1.tgz#16362e4a9681b2d4e724571a2a3077e7acd75201"
-  integrity sha512-AwSV0OPsLxOu1nsKsw+1aakYGiCgLcYed/BPLMGe4lOxAZY14UWGAw8nB7SSnHRltBPwcM6Rf+5hcMXcU7qxaQ==
+happy-dom@13.3.1:
+  version "13.3.1"
+  resolved "https://registry.npmjs.org/happy-dom/-/happy-dom-13.3.1.tgz#5098bb8f2db3e7ef5e7d023c7ddc7e956dff0d78"
+  integrity sha512-KIlztn+nRWstprUyI3Wzy1UJrg72uOaoo4SaBLNrV6xrn2Rq86eQruKOL7ZyDhkfou3nEZX6rgRYtvsqwMInvQ==
   dependencies:
     entities "^4.5.0"
     webidl-conversions "^7.0.0"
@@ -15228,6 +15229,14 @@ next-contentlayer@^0.3.4:
     "@contentlayer/core" "0.3.4"
     "@contentlayer/utils" "0.3.4"
 
+nice-napi@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/nice-napi/-/nice-napi-1.0.2.tgz#dc0ab5a1eac20ce548802fc5686eaa6bc654927b"
+  integrity sha512-px/KnJAJZf5RuBGcfD+Sp2pAKq0ytz8j+1NehvgIGFkvtvFrDM3T8E4x/JJODXK9WZow8RRGrbA9QQ3hs+pDhA==
+  dependencies:
+    node-addon-api "^3.0.0"
+    node-gyp-build "^4.2.2"
+
 nimma@0.2.2:
   version "0.2.2"
   resolved "https://registry.npmjs.org/nimma/-/nimma-0.2.2.tgz#48d00f837d17b4baa23beec22ac1380f152f15ef"
@@ -15260,6 +15269,11 @@ node-abort-controller@^3.0.1:
   version "3.1.1"
   resolved "https://registry.npmjs.org/node-abort-controller/-/node-abort-controller-3.1.1.tgz#a94377e964a9a37ac3976d848cb5c765833b8548"
   integrity sha512-AGK2yQKIjRuqnc6VkX2Xj5d+QW8xZ87pa1UK6yA6ouUyuxfHuMP6umE5QK7UmTeOAymo+Zx1Fxiuw9rVx8taHQ==
+
+node-addon-api@^3.0.0:
+  version "3.2.1"
+  resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-3.2.1.tgz#81325e0a2117789c0128dab65e7e38f07ceba161"
+  integrity sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==
 
 node-addon-api@^5.0.0:
   version "5.1.0"
@@ -15303,6 +15317,11 @@ node-forge@^1:
   version "1.3.1"
   resolved "https://registry.npmjs.org/node-forge/-/node-forge-1.3.1.tgz#be8da2af243b2417d5f646a770663a92b7e9ded3"
   integrity sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==
+
+node-gyp-build@^4.2.2:
+  version "4.8.0"
+  resolved "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-4.8.0.tgz#3fee9c1731df4581a3f9ead74664369ff00d26dd"
+  integrity sha512-u6fs2AEUljNho3EYTJNBfImO5QTo/J/1Etd+NVdCj7qWKUSN/bSLkZwhDv7I+w/MSC6qJ4cknepkAYykDdK8og==
 
 node-int64@^0.4.0:
   version "0.4.0"
@@ -16208,6 +16227,13 @@ pirates@^4.0.1, pirates@^4.0.4, pirates@^4.0.5:
   version "4.0.6"
   resolved "https://registry.npmjs.org/pirates/-/pirates-4.0.6.tgz#3018ae32ecfcff6c29ba2267cbf21166ac1f36b9"
   integrity sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==
+
+piscina@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.npmjs.org/piscina/-/piscina-4.3.0.tgz#fd219f507d410c61dbfb9bd4155c1f19eddb8535"
+  integrity sha512-vTQszGZj78p0BHFNO/cSvpzPUYa4tLXRe30aIYyQjqRS3fK/kPqdxvkTfGXQlEpWOI+mOOkda0iEY6NaanLWJA==
+  optionalDependencies:
+    nice-napi "^1.0.2"
 
 pkg-dir@^4.2.0:
   version "4.2.0"
