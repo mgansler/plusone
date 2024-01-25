@@ -7,7 +7,7 @@
   },
   "scripts": {
     "cleanup": "./tools/scripts/cleanup-repo.sh",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "private": true,
   "dependencies": {
@@ -152,7 +152,7 @@
     "graphql": "16.8.1",
     "happy-dom": "13.3.1",
     "html-webpack-plugin": "5.6.0",
-    "husky": "9.0.1",
+    "husky": "9.0.2",
     "jest": "29.7.0",
     "jest-environment-jsdom": "29.7.0",
     "jest-environment-node": "29.7.0",
