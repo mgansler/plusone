@@ -5,7 +5,7 @@ import { Form, useActionData } from '@remix-run/react'
 type Point = { row: number; col: number; value: number }
 type Coords = Omit<Point, 'value'>
 
-function isPointInBasin(basin: Coords[], { row, col }: Coords): boolean {
+function isPointInBasin(basin: Array<Coords>, { row, col }: Coords): boolean {
   let found = false
   if (basin.findIndex((p) => p.col === col && p.row === row) >= 0) {
     found = true
@@ -13,11 +13,11 @@ function isPointInBasin(basin: Coords[], { row, col }: Coords): boolean {
   return found
 }
 
-function findBasin(map: number[][], { row, col }: Coords): Coords[] {
+function findBasin(map: Array<Array<number>>, { row, col }: Coords): Array<Coords> {
   const columnCount = map[0].length
   const rowCount = map.length
 
-  const basin: Coords[] = [{ row, col }]
+  const basin: Array<Coords> = [{ row, col }]
   let basinSize = 1
 
   do {
@@ -62,7 +62,7 @@ export const action: ActionFunction = async ({ request }) => {
   const columnCount = heightmap[0].length
   const rowCount = heightmap.length
 
-  const lowPoints: Point[] = []
+  const lowPoints: Array<Point> = []
 
   heightmap.forEach((row, rowIndex) => {
     row.forEach((value, columnIndex) => {

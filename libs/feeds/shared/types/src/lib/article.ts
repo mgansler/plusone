@@ -1,4 +1,4 @@
-export interface Article {
+export type Article = {
   content: string
   date: Date
   guid: string
@@ -7,13 +7,13 @@ export interface Article {
   title: string
 }
 
-export interface ArticleResponse {
+export type ArticleResponse = {
   article: Article
   cursor: number
   starred: boolean
   unread: boolean
 }
 
-export interface ToggleUnreadRequest {
+export type ToggleUnreadRequest = {
   unread: boolean
 }

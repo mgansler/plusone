@@ -2,7 +2,7 @@ import { createTheme, StyledEngineProvider, ThemeProvider, useMediaQuery } from 
 import type { ReactNode } from 'react'
 import React, { useMemo } from 'react'
 
-export interface DarkModeThemeProviderProps {
+export type DarkModeThemeProviderProps = {
   children: ReactNode
 }
 

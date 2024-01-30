@@ -9,7 +9,7 @@ import { isKeyCombo } from '../utils/keyboard'
 import { Article, useReadArticle } from './article'
 
 type ArticleListProps = {
-  articles: ArticleResponseDto[]
+  articles: Array<ArticleResponseDto>
   fetchNextPage: ReturnType<typeof useFindArticlesInfinite>['fetchNextPage']
 }
 

@@ -18,7 +18,7 @@ type CheckedBoard = [
   [boolean, boolean, boolean, boolean, boolean],
 ]
 
-function parseDrawnNumbers(drawn: string): number[] {
+function parseDrawnNumbers(drawn: string): Array<number> {
   return drawn.split(',').map(Number)
 }
 
@@ -54,14 +54,14 @@ function hasBoardWon(board: CheckedBoard): boolean {
   return false
 }
 
-function winningBoardSum(board: Board, sequence: number[]): number {
+function winningBoardSum(board: Board, sequence: Array<number>): number {
   const boardNumbers = board.flat()
   return boardNumbers.reduce((previousValue, currentValue) => {
     return previousValue + (sequence.indexOf(currentValue) >= 0 ? 0 : currentValue)
   }, 0)
 }
 
-function drawsToWin(board: Board, drawn: number[]): number {
+function drawsToWin(board: Board, drawn: Array<number>): number {
   let checkedBoard: CheckedBoard = [
     [false, false, false, false, false],
     [false, false, false, false, false],

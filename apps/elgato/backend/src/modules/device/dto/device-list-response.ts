@@ -4,5 +4,5 @@ import { DeviceResponseDto } from './device-response'
 
 export class DeviceListResponseDto {
   @ApiProperty({ type: [DeviceResponseDto] })
-  devices: DeviceResponseDto[]
+  devices: Array<DeviceResponseDto>
 }

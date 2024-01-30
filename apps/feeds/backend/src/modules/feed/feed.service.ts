@@ -141,8 +141,8 @@ export class FeedService {
     }
   }
 
-  async import(feedInputDtos: FeedInputDto[], userId: User['id']) {
-    const urisWithoutArticles: string[] = []
+  async import(feedInputDtos: Array<FeedInputDto>, userId: User['id']) {
+    const urisWithoutArticles: Array<string> = []
 
     for (const feedInput of feedInputDtos) {
       const articles = await this.fetchService.fetchFeedItems(feedInput.feedUrl)
@@ -162,11 +162,11 @@ export class FeedService {
     }
   }
 
-  async findAll(): Promise<Feed[]> {
+  async findAll(): Promise<Array<Feed>> {
     return this.prismaService.feed.findMany()
   }
 
-  async findAllFor(user: TokenPayload): Promise<UserFeedResponse[]> {
+  async findAllFor(user: TokenPayload): Promise<Array<UserFeedResponse>> {
     return this.prismaService.$transaction(async (tx) => {
       const userFeeds = await tx.userFeed.findMany({
         include: { tags: true, feed: true },
@@ -174,7 +174,7 @@ export class FeedService {
         orderBy: { title: 'asc' },
       })
 
-      const userFeedResponses: UserFeedResponse[] = []
+      const userFeedResponses: Array<UserFeedResponse> = []
 
       for await (const { feed, order, ...rest } of userFeeds) {
         const unreadCount = await tx.userArticle.count({

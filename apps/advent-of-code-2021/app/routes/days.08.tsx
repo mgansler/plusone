@@ -4,9 +4,9 @@ import { Form, useActionData } from '@remix-run/react'
 
 type Segment = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g'
 type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-type Mapping = Record<Digit, Segment[]>
+type Mapping = Record<Digit, Array<Segment>>
 
-function includesAll(pattern: Segment[], other: Segment[]) {
+function includesAll(pattern: Array<Segment>, other: Array<Segment>) {
   let result = true
   for (const otherElement of other) {
     if (!pattern.includes(otherElement)) {
@@ -16,8 +16,8 @@ function includesAll(pattern: Segment[], other: Segment[]) {
   return result
 }
 
-function decodeDigits(patterns: Segment[]): Mapping {
-  const sortedPatterns = patterns.map((p) => p.split('').sort() as Segment[])
+function decodeDigits(patterns: Array<Segment>): Mapping {
+  const sortedPatterns = patterns.map((p) => p.split('').sort() as Array<Segment>)
 
   const lengthOfFive = sortedPatterns.filter((p) => p.length === 5)
   const lengthOfSix = sortedPatterns.filter((p) => p.length === 6)
@@ -69,7 +69,7 @@ function decodeDigits(patterns: Segment[]): Mapping {
   return mapping
 }
 
-function mapToDigit(segment: Segment[], mapping: Mapping): string {
+function mapToDigit(segment: Array<Segment>, mapping: Mapping): string {
   let digit = ''
   Object.entries(mapping).forEach(([key, mappedSegment]) => {
     if (segment.length === mappedSegment.length && includesAll(segment, mappedSegment)) {
@@ -80,11 +80,11 @@ function mapToDigit(segment: Segment[], mapping: Mapping): string {
   return digit
 }
 
-function readOutputValue(segments: string[], mapping: Mapping): number {
+function readOutputValue(segments: Array<string>, mapping: Mapping): number {
   const outputSegments = segments.map((s) => s.split('').sort())
   let value = ''
   for (const segment of outputSegments) {
-    value += mapToDigit(segment as Segment[], mapping)
+    value += mapToDigit(segment as Array<Segment>, mapping)
   }
   return Number(value)
 }
@@ -108,13 +108,15 @@ export const action: ActionFunction = async ({ request }) => {
 
   // Part 1
   const numberOfDigits = input.reduce((previousValue, { outputValue }) => {
-    const unique: number[] = outputValue.map((value) => ([2, 3, 4, 7].includes(value.length) ? 1 : 0))
+    const unique: Array<number> = outputValue.map((value) => ([2, 3, 4, 7].includes(value.length) ? 1 : 0))
     return previousValue + unique.reduce((sum, cur) => sum + cur, 0)
   }, 0)
 
   // Part 2
   const outputValuesSum = input.reduce((previousValue, { signalPatterns, outputValue }) => {
-    return previousValue + readOutputValue(outputValue as Segment[], decodeDigits(signalPatterns as Segment[]))
+    return (
+      previousValue + readOutputValue(outputValue as Array<Segment>, decodeDigits(signalPatterns as Array<Segment>))
+    )
   }, 0)
 
   return json({

@@ -6,14 +6,14 @@ import { createContext, useContext, useMemo, useRef } from 'react'
 import { LoginCard } from '@plusone/components'
 import { useLocalStorage } from '@plusone/hooks'
 
-interface Context {
+type Context = {
   octokit: Octokit
   logout: () => void
 }
 
 const OctokitContext = createContext<Context | undefined>(undefined)
 
-interface TokenInputProps {
+type TokenInputProps = {
   setToken: (value: string) => void
 }
 

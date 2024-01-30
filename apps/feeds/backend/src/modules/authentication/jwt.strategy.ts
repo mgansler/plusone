@@ -12,7 +12,7 @@ export type TokenPayload = {
   id: User['id']
   username: User['username']
   isAdmin: User['isAdmin']
-  roles: string[]
+  roles: Array<string>
 }
 
 @Injectable()

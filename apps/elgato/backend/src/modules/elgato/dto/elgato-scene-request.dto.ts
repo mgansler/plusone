@@ -55,7 +55,7 @@ export class LightStateWithScene {
 }
 
 function splitTransition(data: LightStateWithScene): LightStateWithScene {
-  const scene: SceneElement[] = []
+  const scene: Array<SceneElement> = []
   for (const [index, element] of data.scene.entries()) {
     if (element.transitionMs <= 60_000) {
       scene.push(element)
@@ -103,7 +103,7 @@ function splitTransition(data: LightStateWithScene): LightStateWithScene {
 }
 
 function splitDuration(data: LightStateWithScene): LightStateWithScene {
-  const scene: SceneElement[] = []
+  const scene: Array<SceneElement> = []
   for (const element of data.scene) {
     if (element.durationMs <= 60_000) {
       scene.push(element as SceneElement)

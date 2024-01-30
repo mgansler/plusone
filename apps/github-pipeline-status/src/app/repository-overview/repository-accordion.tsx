@@ -14,7 +14,7 @@ import { PullRequestRow } from './pull-request-row'
 import type { UserFilter } from './repository-overview'
 import { useClassNames } from './repository-overview.styles'
 
-interface DefaultBranchStateProps {
+type DefaultBranchStateProps = {
   className: HTMLDivElement['className']
   defaultBranchRef?: DefaultBranchRefFieldsFragment
 }
@@ -36,7 +36,7 @@ function DefaultBranchState({ className, defaultBranchRef }: DefaultBranchStateP
   )
 }
 
-interface RepositoryAccordionProps {
+type RepositoryAccordionProps = {
   userFilter: UserFilter
   repository: RepositoryFieldsFragment
 }

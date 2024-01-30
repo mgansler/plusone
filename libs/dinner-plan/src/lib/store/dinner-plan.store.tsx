@@ -11,14 +11,14 @@ const defaultState: DinnerPlanState = {
   dishes: [],
 }
 
-interface DinnerPlanStoreContext {
+type DinnerPlanStoreContext = {
   state: DinnerPlanState
   dispatch: (action: DinnerPlanActions) => void
 }
 
 const Context = createContext<DinnerPlanStoreContext | undefined>(undefined)
 
-interface DinnerPlanStoreProps {
+type DinnerPlanStoreProps = {
   children: ReactNode
 }
 

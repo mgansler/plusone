@@ -6,7 +6,7 @@ import { EnablePullRequestAutoMergeDocument } from '@plusone/github-schema'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
-interface EnableAutoMergeProps {
+type EnableAutoMergeProps = {
   pullRequestId: PullRequest['id']
 }
 

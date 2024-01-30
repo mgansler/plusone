@@ -1,4 +1,4 @@
-interface Modifiers {
+type Modifiers = {
   shiftKey?: KeyboardEvent['shiftKey']
   altKey?: KeyboardEvent['altKey']
   metaKey?: KeyboardEvent['metaKey']

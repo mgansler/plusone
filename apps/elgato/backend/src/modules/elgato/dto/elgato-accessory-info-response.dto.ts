@@ -37,7 +37,7 @@ export class ElgatoAccessoryInfoResponseDto {
   displayName: string
 
   @ApiProperty({ type: [String] })
-  features: string[]
+  features: Array<string>
 
   @ApiProperty({ type: () => WifiInfo })
   'wifi-info': WifiInfo

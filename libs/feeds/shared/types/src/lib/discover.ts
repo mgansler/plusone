@@ -1,6 +1,6 @@
 import type { Output } from 'rss-parser'
 
-export interface DiscoverResponse {
+export type DiscoverResponse = {
   url: string
   title: string
   feedUrl: string

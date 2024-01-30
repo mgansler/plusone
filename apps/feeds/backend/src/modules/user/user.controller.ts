@@ -20,7 +20,7 @@ export class UserController {
   @ApiOperation({ operationId: 'get-users' })
   @ApiOkResponse({ description: 'List of all users.', type: [UserResponseDto] })
   @Get('')
-  getAll(): Promise<UserResponseDto[]> {
+  getAll(): Promise<Array<UserResponseDto>> {
     return this.userService.getAll()
   }
 

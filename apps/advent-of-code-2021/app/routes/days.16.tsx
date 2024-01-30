@@ -2,7 +2,7 @@ import type { ActionFunction } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 
-function applyOperator(typeId: number, values: number[]): number {
+function applyOperator(typeId: number, values: Array<number>): number {
   switch (typeId) {
     case 0:
       return values.reduce((sum, cur) => sum + cur, 0)
@@ -26,7 +26,7 @@ function applyOperator(typeId: number, values: number[]): number {
 // I trust the input, this will return
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-function readBytes(byteInput: string): [string[], string] {
+function readBytes(byteInput: string): [Array<string>, string] {
   const bytes = []
   let isLast = false
   for (let i = 0; i < byteInput.length && !isLast; i = i + 5) {
@@ -49,7 +49,7 @@ function parsePacket(packet: string): [number, string, number] {
     return [version, rest, value]
   }
 
-  const values: number[] = []
+  const values: Array<number> = []
 
   if (lengthTypeId === 0) {
     // 15 bits representing the number of bits in the sub-packets.

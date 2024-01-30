@@ -7,14 +7,14 @@ type Point = {
   y: number
 }
 
-type Paper = boolean[][]
+type Paper = Array<Array<boolean>>
 
 type Instruction = {
   axis: 'x' | 'y'
   index: number
 }
 
-function initDots(dimX: number, dimY: number, dotCoors: Point[]): Paper {
+function initDots(dimX: number, dimY: number, dotCoors: Array<Point>): Paper {
   const paper: Paper = []
   for (let y = 0; y < dimY; y++) {
     paper.push(Array(dimX).fill(false))
@@ -38,6 +38,7 @@ function parseInstructions(instructions: string) {
 }
 
 function foldX(paper: Paper, index: number): Paper {
+  // eslint-disable-next-line @typescript-eslint/prefer-for-of
   for (let y = 0; y < paper.length; y++) {
     for (let x = 0; x < index; x++) {
       paper[y][x] = paper[y][x] || paper[y][paper[y].length - x - 1]

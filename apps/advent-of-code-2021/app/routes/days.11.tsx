@@ -4,8 +4,8 @@ import { Form, useActionData } from '@remix-run/react'
 
 const STEPS = 100
 
-type Flashed = boolean[][]
-type Energy = number[][]
+type Flashed = Array<Array<boolean>>
+type Energy = Array<Array<number>>
 
 function resetFlashed(): Flashed {
   const flashed = Array(10)

@@ -4,37 +4,37 @@ import { Form, useActionData } from '@remix-run/react'
 
 type Opening = '[' | '{' | '(' | '<'
 type Closing = ']' | '}' | ')' | '>'
-const opening: Opening[] = ['[', '{', '(', '<']
-const closing: Closing[] = [']', '}', ')', '>']
+const opening: Array<Opening> = ['[', '{', '(', '<']
+const closing: Array<Closing> = [']', '}', ')', '>']
 type Token = Opening | Closing
 
 const syntaxErrorPoints: Record<Closing, number> = { ')': 3, '>': 25137, ']': 57, '}': 1197 }
 const closingCharacterPoints: Record<Closing, number> = { ')': 1, '>': 4, ']': 2, '}': 3 }
 
-function findFirstIllegalCharacter(line: Token[]): Closing | void {
-  const openingCharacters: Opening[] = []
-  for (let i = 0; i < line.length; i++) {
-    if (opening.includes(line[i] as Opening)) {
-      openingCharacters.push(line[i] as Opening)
+function findFirstIllegalCharacter(line: Array<Token>): Closing | void {
+  const openingCharacters: Array<Opening> = []
+  for (const token of line) {
+    if (opening.includes(token as Opening)) {
+      openingCharacters.push(token as Opening)
     } else {
       const lastOpeningChar = openingCharacters[openingCharacters.length - 1]
-      if (closing[opening.indexOf(lastOpeningChar)] === line[i]) {
+      if (closing[opening.indexOf(lastOpeningChar)] === token) {
         openingCharacters.pop()
       } else {
-        return line[i] as Closing
+        return token as Closing
       }
     }
   }
 }
 
-function getClosingCharacters(line: Token[]): Closing[] {
-  const openingCharacters: Opening[] = []
-  for (let i = 0; i < line.length; i++) {
-    if (opening.includes(line[i] as Opening)) {
-      openingCharacters.push(line[i] as Opening)
+function getClosingCharacters(line: Array<Token>): Array<Closing> {
+  const openingCharacters: Array<Opening> = []
+  for (const token of line) {
+    if (opening.includes(token as Opening)) {
+      openingCharacters.push(token as Opening)
     } else {
       const lastOpeningChar = openingCharacters[openingCharacters.length - 1]
-      if (closing[opening.indexOf(lastOpeningChar)] === line[i]) {
+      if (closing[opening.indexOf(lastOpeningChar)] === token) {
         openingCharacters.pop()
       } else {
         return []
@@ -44,7 +44,7 @@ function getClosingCharacters(line: Token[]): Closing[] {
   return openingCharacters.map((o) => closing[opening.indexOf(o)]).reverse()
 }
 
-function calculateCompletionPoints(line: Closing[]): number {
+function calculateCompletionPoints(line: Array<Closing>): number {
   return line.reduce((acc, cur) => {
     return acc * 5 + closingCharacterPoints[cur]
   }, 0)
@@ -62,9 +62,9 @@ export const action: ActionFunction = async ({ request }) => {
   const lines = rawInput
     .split(separator)
     .filter((line) => line.length)
-    .map((line) => line.split('')) as Token[][]
+    .map((line) => line.split('')) as Array<Array<Token>>
 
-  const illegalCharacters = lines.map(findFirstIllegalCharacter).filter(Boolean) as Closing[]
+  const illegalCharacters = lines.map(findFirstIllegalCharacter).filter(Boolean) as Array<Closing>
   const closingCharacterPoints = lines
     .map(getClosingCharacters)
     .filter((chars) => chars.length > 0)

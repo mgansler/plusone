@@ -123,7 +123,7 @@ export class ArticleController {
   @ApiOperation({ operationId: 'recently-read-articles' })
   @ApiOkResponse({ description: 'List of recently read articles', type: [ArticleResponseDto] })
   @Get('recentlyRead')
-  recentlyReadArticles(@Req() { user }): Promise<ArticleResponseDto[]> {
+  recentlyReadArticles(@Req() { user }): Promise<Array<ArticleResponseDto>> {
     return this.articleService.findRecentlyReadArticles(user.id)
   }
 }

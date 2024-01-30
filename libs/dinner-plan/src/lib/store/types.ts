@@ -6,7 +6,7 @@ export type Dish = string
 
 export type DinnerPlanState = {
   plan: Record<string, Dish>
-  dishes: Dish[]
+  dishes: Array<Dish>
 }
 
 export type DinnerPlanActions = AddDish | PlanDish | RemoveDish
