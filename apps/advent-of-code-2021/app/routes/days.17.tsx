@@ -67,7 +67,7 @@ export const action: ActionFunction = async ({ request }) => {
   const y1 = Number(y2s)
   const y2 = Number(y1s)
 
-  const hits: Velocity[] = []
+  const hits: Array<Velocity> = []
   for (let x = 1; x <= x2; x++) {
     for (let y = -y2; y >= y2; y--) {
       const hit = hitsTarget({ x, y }, { x: 0, y: 0 }, { min: { x: x1, y: y1 }, max: { x: x2, y: y2 } })

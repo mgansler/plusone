@@ -45,7 +45,7 @@ export class ArticleToggleUnreadDto implements ToggleUnreadRequest {
 
 export class PaginatedArticleResponseDto implements PaginatedArticles {
   @ApiProperty({ type: [ArticleResponseDto] })
-  content: ArticleResponseDto[]
+  content: Array<ArticleResponseDto>
 
   @ApiProperty()
   pageSize: number

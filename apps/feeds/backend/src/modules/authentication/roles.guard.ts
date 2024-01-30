@@ -8,14 +8,14 @@ export enum Role {
 
 const ROLES_KEY = 'roles'
 
-export const Roles = (...roles: string[]) => SetMetadata(ROLES_KEY, roles)
+export const Roles = (...roles: Array<string>) => SetMetadata(ROLES_KEY, roles)
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const roles = this.reflector.get<string[]>(ROLES_KEY, context.getHandler())
+    const roles = this.reflector.get<Array<string>>(ROLES_KEY, context.getHandler())
 
     if (!roles) {
       return true
@@ -25,7 +25,7 @@ export class RolesGuard implements CanActivate {
     return this.matchRoles(roles, user.roles)
   }
 
-  private matchRoles(requiredRoles: string[], userRoles: string[]): boolean {
+  private matchRoles(requiredRoles: Array<string>, userRoles: Array<string>): boolean {
     return requiredRoles.every((role) => userRoles.includes(role))
   }
 }

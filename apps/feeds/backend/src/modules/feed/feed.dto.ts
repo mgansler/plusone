@@ -117,7 +117,7 @@ export class UserFeedResponseDto implements UserFeedResponse {
   unreadCount: number
 
   @ApiProperty({ type: [TagResponseDto] })
-  tags: TagResponseDto[]
+  tags: Array<TagResponseDto>
 }
 
 export class TagFeedInputDto {

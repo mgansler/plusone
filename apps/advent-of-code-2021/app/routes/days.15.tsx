@@ -2,8 +2,8 @@ import type { ActionFunction } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 
-type Visited = boolean[][]
-type Map = number[][]
+type Visited = Array<Array<boolean>>
+type Map = Array<Array<number>>
 type Point = {
   x: number
   y: number
@@ -11,23 +11,23 @@ type Point = {
 
 function initVisited(map: Map): Visited {
   const visited: Visited = []
-  for (let row = 0; row < map.length; row++) {
+  map.forEach((_) => {
     visited.push(Array(map.length).fill(false))
-  }
+  })
   return visited
 }
 
 function initDistanceMap(map: Map): Map {
   const distanceMap: Map = []
-  for (let row = 0; row < map.length; row++) {
+  map.forEach((_) => {
     distanceMap.push(Array(map.length).fill(Infinity))
-  }
+  })
   distanceMap[0][0] = 0
   return distanceMap
 }
 
-function getNeighbours({ x, y }: Point, visited: Visited): Point[] {
-  const neighbours: Point[] = []
+function getNeighbours({ x, y }: Point, visited: Visited): Array<Point> {
+  const neighbours: Array<Point> = []
   if (x > 0) {
     neighbours.push({ x: x - 1, y })
   }

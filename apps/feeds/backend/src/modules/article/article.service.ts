@@ -95,7 +95,7 @@ export class ArticleService {
     return this.getArticlePage(pagination, where, orderBy)
   }
 
-  async findRecentlyReadArticles(userId: User['id']): Promise<ArticleResponseDto[]> {
+  async findRecentlyReadArticles(userId: User['id']): Promise<Array<ArticleResponseDto>> {
     const recentlyRead = await this.prismaService.recentlyRead.findMany({
       include: {
         article: {

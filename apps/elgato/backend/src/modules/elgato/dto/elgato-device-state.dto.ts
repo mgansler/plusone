@@ -24,5 +24,5 @@ export class ElgatoDeviceStateDto {
   numberOfLights: number
 
   @ApiProperty({ type: () => [LightStateWithColor] })
-  lights: LightStateWithColor[]
+  lights: Array<LightStateWithColor>
 }

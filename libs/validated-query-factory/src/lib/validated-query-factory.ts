@@ -8,7 +8,7 @@ type ValidatedUseQueryReturnType<
   data: z.infer<ValidationSchema> | undefined
 }
 
-type FetchWrapper<WrappedFunction extends (...args: unknown[]) => Promise<unknown>> = (
+type FetchWrapper<WrappedFunction extends (...args: Array<unknown>) => Promise<unknown>> = (
   ...args: Parameters<WrappedFunction>
 ) => ReturnType<WrappedFunction>
 
@@ -19,12 +19,12 @@ export class ValidatedClientBuilder<TSchema extends ZodType<unknown, unknown, un
     this.schema = schema
   }
 
-  withFetchWrapper<TFetchWrapper extends (...args: unknown[]) => Promise<unknown>>(fetchWrapper: TFetchWrapper) {
+  withFetchWrapper<TFetchWrapper extends (...args: Array<unknown>) => Promise<unknown>>(fetchWrapper: TFetchWrapper) {
     return new FlexibleBuilder(this.schema, fetchWrapper)
   }
 }
 
-class FlexibleBuilder<TSchema extends ZodType<unknown, unknown, unknown>, TRequiredArgs extends unknown[]> {
+class FlexibleBuilder<TSchema extends ZodType<unknown, unknown, unknown>, TRequiredArgs extends Array<unknown>> {
   constructor(
     private readonly schema: TSchema,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

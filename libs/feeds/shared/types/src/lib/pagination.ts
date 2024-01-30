@@ -1,16 +1,16 @@
 import type { ArticleResponse } from './article'
 
-export interface Pagination {
+export type Pagination = {
   cursor: string
 }
 
-export interface Paginated<ContentType> {
+export type Paginated<ContentType> = {
   totalCount: number
   lastCursor?: number
   pageSize: number
-  content: ContentType[]
+  content: Array<ContentType>
 }
 
-export interface PaginatedArticles extends Paginated<ArticleResponse> {
+export type PaginatedArticles = {
   unreadCount: number
-}
+} & Paginated<ArticleResponse>

@@ -6,7 +6,7 @@ import { ApprovePullRequestDocument } from '@plusone/github-schema'
 
 import { useOctokit } from '../octokit-provider/octokit-provider'
 
-interface ApproveButtonProps {
+type ApproveButtonProps = {
   pullRequestId: PullRequest['id']
 }
 

@@ -2,7 +2,7 @@ import type { ActionFunction } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 
-function countPathsPartOne(edges: Record<string, string[]>, node: string, visited = new Set<string>()): number {
+function countPathsPartOne(edges: Record<string, Array<string>>, node: string, visited = new Set<string>()): number {
   // we have been there already and cannot visit again => invalid path
   if (node === node.toLowerCase() && visited.has(node)) {
     return 0
@@ -23,7 +23,7 @@ function countPathsPartOne(edges: Record<string, string[]>, node: string, visite
 }
 
 function countPathsPartTwo(
-  edges: Record<string, string[]>,
+  edges: Record<string, Array<string>>,
   node: string,
   visited = new Set<string>(),
   usedJoker = false,
@@ -76,7 +76,7 @@ export const action: ActionFunction = async ({ request }) => {
         [end]: [...(acc[end] || []), start],
       }
     },
-    {} as Record<string, string[]>,
+    {} as Record<string, Array<string>>,
   )
 
   return json({

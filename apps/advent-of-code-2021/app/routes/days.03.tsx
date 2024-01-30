@@ -2,42 +2,42 @@ import type { ActionFunction } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 
-function foo(x: number[][], position: number) {
-  const ones: number[][] = []
-  const zeros: number[][] = []
+function splitOnesAndZeros(input: Array<Array<number>>, position: number) {
+  const ones: Array<Array<number>> = []
+  const zeros: Array<Array<number>> = []
 
-  for (let i = 0; i < x.length; i++) {
-    if (x[i][position] === 0) {
-      zeros.push(x[i])
+  for (const item of input) {
+    if (item[position] === 0) {
+      zeros.push(item)
     } else {
-      ones.push(x[i])
+      ones.push(item)
     }
   }
 
   return { ones, zeros }
 }
 
-function findMostCommon(x: number[][], position: number): number[] {
+function findMostCommon(x: Array<Array<number>>, position: number): Array<number> {
   if (position >= x[0].length || x.length === 1) {
     return x[0]
   }
 
-  const { ones, zeros } = foo(x, position)
+  const { ones, zeros } = splitOnesAndZeros(x, position)
 
   return findMostCommon(zeros.length > ones.length ? zeros : ones, position + 1)
 }
 
-function findLeastCommon(x: number[][], position: number): number[] {
+function findLeastCommon(x: Array<Array<number>>, position: number): Array<number> {
   if (position >= x[0].length || x.length === 1) {
     return x[0]
   }
 
-  const { ones, zeros } = foo(x, position)
+  const { ones, zeros } = splitOnesAndZeros(x, position)
 
   return findLeastCommon(zeros.length <= ones.length ? zeros : ones, position + 1)
 }
 
-function binToInt(bin: number[]): number {
+function binToInt(bin: Array<number>): number {
   return bin.reduce(
     (previousValue, currentValue, currentIndex) => previousValue + currentValue * 2 ** (bin.length - currentIndex - 1),
     0,
@@ -71,7 +71,7 @@ export const action: ActionFunction = async ({ request }) => {
       .reduce((previousValue, currentValue) => {
         return previousValue.map((value, index) => value + currentValue[index])
       }, Array(numberDigits).fill(0))
-      .map((x) => (x > 0 ? 1 : 0)) as number[]
+      .map((x) => (x > 0 ? 1 : 0)) as Array<number>
   ).reduce((previousValue, currentValue, currentIndex) => {
     return previousValue + currentValue * 2 ** (numberDigits - 1 - currentIndex)
   }, 0)

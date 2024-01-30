@@ -8,7 +8,7 @@ import { isKeyCombo } from '../utils/keyboard'
 import { Article, useReadArticle } from './article'
 
 type ArticleListProps = {
-  articles: ArticleResponseDto[]
+  articles: Array<ArticleResponseDto>
 }
 
 export function RecentlyReadArticleList({ articles }: ArticleListProps) {

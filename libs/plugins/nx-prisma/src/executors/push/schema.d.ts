@@ -1,3 +1,3 @@
-export interface FormatExecutorSchema {
+export type FormatExecutorSchema = {
   schema: string
 }

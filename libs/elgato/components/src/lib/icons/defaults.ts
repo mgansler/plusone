@@ -4,7 +4,7 @@ export const defaults = {
   size: 24,
 }
 
-export interface IconProps {
+export type IconProps = {
   size?: number
   variant?: 'outline' | 'solid'
 }

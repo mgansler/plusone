@@ -36,7 +36,7 @@ const useStyles = makeStyles<Theme>((theme) =>
 
 const PAGE_SIZE = 20
 
-interface UseFetchRepositoryDataProps {
+type UseFetchRepositoryDataProps = {
   organizationName: string
   queryString: string
 }
@@ -73,7 +73,7 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
   return { data, isLoading, pages, prevPage, nextPage }
 }
 
-interface RepositoryOverviewProps {
+type RepositoryOverviewProps = {
   toolbarRef: MutableRefObject<HTMLDivElement>
 }
 
@@ -119,7 +119,7 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
     .filter((repo) => showArchivedRepositories || !(repo as RepositoryFieldsFragment).isArchived)
     .filter(
       (repo) => !showOnlyOpenPRs || (repo as RepositoryFieldsFragment).pullRequests.totalCount > 0,
-    ) as RepositoryFieldsFragment[]
+    ) as Array<RepositoryFieldsFragment>
 
   return (
     <React.Fragment>

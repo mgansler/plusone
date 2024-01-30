@@ -13,7 +13,7 @@ type Line = {
 }
 
 const ventsMap = (() => {
-  const map: number[][] = []
+  const map: Array<Array<number>> = []
   const row = Array(DIMENSION).fill(0)
   for (let x = 0; x < DIMENSION; x++) {
     map[x] = [...row]

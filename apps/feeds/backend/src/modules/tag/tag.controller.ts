@@ -25,7 +25,7 @@ export class TagController {
   @ApiOperation({ operationId: 'get-tags' })
   @ApiOkResponse({ description: 'Get all tags for the user', type: [TagResponseDto] })
   @Get()
-  async getAll(@Req() { user }): Promise<TagResponseDto[]> {
+  async getAll(@Req() { user }): Promise<Array<TagResponseDto>> {
     return await this.tagService.getAll(user.id)
   }
 

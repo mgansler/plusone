@@ -67,7 +67,7 @@ const useClassNames = makeStyles(() =>
 
 type TagGroupProps = {
   name: string
-  feeds: UserFeedResponseDto[]
+  feeds: Array<UserFeedResponseDto>
 }
 
 function TagGroup({ name, feeds }: TagGroupProps) {

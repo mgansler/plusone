@@ -17,7 +17,7 @@ import { CheckConclusion } from './check-conclusion'
 import { EnableAutoMerge } from './enable-auto-merge'
 import { useClassNames } from './repository-overview.styles'
 
-const getLastReviewStatePerAuthor = (reviews: PullRequestReview[]): Record<string, PullRequestReviewState> =>
+const getLastReviewStatePerAuthor = (reviews: Array<PullRequestReview>): Record<string, PullRequestReviewState> =>
   reviews
     .filter(({ state }) => state !== PullRequestReviewState.Commented)
     .map((review) => ({
@@ -48,9 +48,9 @@ const ReviewStateIconMap: Record<PullRequestReviewState, JSX.Element> = {
   PENDING: undefined,
 }
 
-interface CanBeMergedProps {
+type CanBeMergedProps = {
   className: HTMLDivElement['className']
-  commits: PullRequestCommit[]
+  commits: Array<PullRequestCommit>
   mergeable: MergeableState
   autoMergeRequest: AutoMergeRequestFieldsFragment
   pullRequestId: PullRequest['id']
@@ -96,13 +96,13 @@ function CanBeMerged({
   )
 }
 
-interface PullRequestProps {
+type PullRequestProps = {
   pr: PullRequestsFieldsFragment
 }
 
 export function PullRequestRow({ pr }: PullRequestProps) {
   const classNames = useClassNames()
-  const lastReviewStatePerAuthor = getLastReviewStatePerAuthor(pr.reviews.nodes as PullRequestReview[])
+  const lastReviewStatePerAuthor = getLastReviewStatePerAuthor(pr.reviews.nodes as Array<PullRequestReview>)
 
   return (
     <div className={classNames.row}>
@@ -132,7 +132,7 @@ export function PullRequestRow({ pr }: PullRequestProps) {
 
       <CanBeMerged
         className={classNames.workflowColumn}
-        commits={pr.commits.nodes as PullRequestCommit[]}
+        commits={pr.commits.nodes as Array<PullRequestCommit>}
         mergeable={pr.mergeable}
         autoMergeRequest={pr.autoMergeRequest}
         pullRequestId={pr.id}

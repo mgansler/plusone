@@ -29,7 +29,7 @@ const CheckConclusionIconMap: Record<CheckConclusionState | 'RUNNING', JSX.Eleme
   ),
 }
 
-interface CheckConclusionProps {
+type CheckConclusionProps = {
   checkSuite?: CheckSuite
 }
 

@@ -31,7 +31,7 @@ export class SchedulingService {
     this.logger.log(`Saved/updated ${totalSavedArticles} articles`)
   }
 
-  private async saveNewArticles(items: Item[], feed: Feed): Promise<number> {
+  private async saveNewArticles(items: Array<Item>, feed: Feed): Promise<number> {
     let savedArticles = 0
     for (const item of items.reverse()) {
       try {

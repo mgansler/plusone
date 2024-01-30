@@ -17,7 +17,7 @@ const useClassNames = makeStyles((theme) =>
   }),
 )
 
-export interface DayProps {
+export type DayProps = {
   dayOfWeek: number
   isCurrentWeek?: boolean
 }
