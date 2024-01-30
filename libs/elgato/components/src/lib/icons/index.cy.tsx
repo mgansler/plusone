@@ -2,10 +2,12 @@ import { Lightbulb } from './lightbulb'
 import { TrashBin } from './trash-bin'
 
 describe('Icons', () => {
-  ;[
+  const components = [
     { component: <Lightbulb variant={'outline'} />, name: 'lightbulb' },
     { component: <TrashBin variant={'outline'} />, name: 'trash-bin' },
-  ].forEach(({ component, name }) => {
+  ]
+
+  components.forEach(({ component, name }) => {
     it(`should have default size (${name})`, () => {
       cy.mount(component)
       cy.get('svg').should('have.css', 'height').and('eq', '24px')
