@@ -2546,10 +2546,10 @@
     auto-bind "~4.0.0"
     tslib "~2.5.0"
 
-"@graphql-codegen/typescript-react-query@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.npmjs.org/@graphql-codegen/typescript-react-query/-/typescript-react-query-6.0.0.tgz#e6649bc01cc848a819f8373a96ce4f5b7461b52b"
-  integrity sha512-FYGAMYd/Cf77hcToQNo3O9BNZUcrINmjNFuwtX48kgoLXd0Zu0yjLZPCv6sTlOX6YUJrYPf0kDGQDGLH/Q9P6w==
+"@graphql-codegen/typescript-react-query@6.1.0":
+  version "6.1.0"
+  resolved "https://registry.npmjs.org/@graphql-codegen/typescript-react-query/-/typescript-react-query-6.1.0.tgz#5e5b15013c8818c6f03246d73095dcca57393805"
+  integrity sha512-SpaQ13fOZmog/xjgKnb7/G1CZSK54wopEbPBSav0IHN99iHaA4lJi6xJJoWrlDutOPgB26KAfGEXTD+lTm9esg==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^3.0.0"
     "@graphql-codegen/visitor-plugin-common" "2.13.1"
@@ -5381,10 +5381,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@tanstack/history@1.15.10":
-  version "1.15.10"
-  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.15.10.tgz#81a8372b261d79c6ab43d2a7809f9e203f8efdee"
-  integrity sha512-RC6lE0JdMFkuto+ZNUfMT4dIztgqUcq9MAkLNRUFVJy6ek0RPJwQHi5XtI252GB1sV2LRnTW9KnlcK5HPKfnJA==
+"@tanstack/history@1.15.13":
+  version "1.15.13"
+  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.15.13.tgz#544878665989e6ce07872378961fc6717d342682"
+  integrity sha512-ToaeMtK5S4YaxCywAlYexc7KPFN0esjyTZ4vXzJhXEWAkro9iHgh7m/4ozPJb7oTo65WkHWX0W9GjcZbInSD8w==
 
 "@tanstack/query-core@5.18.1":
   version "5.18.1"
@@ -5410,12 +5410,12 @@
   dependencies:
     "@tanstack/query-core" "5.18.1"
 
-"@tanstack/react-router@1.15.10":
-  version "1.15.10"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.15.10.tgz#b841d950fadef8f175d31641f9a8a9fbc6f78312"
-  integrity sha512-72bSadA3zPmk0zEPbutHslPBYwYk2ksLZZuvVwpY7R4IYfKub+GTPmK+DwfsEVoXApDnDsMSvDwQ28KkAIf/JQ==
+"@tanstack/react-router@1.15.16":
+  version "1.15.16"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.15.16.tgz#bfff0f52e710284a6823710332e865f2c04acb12"
+  integrity sha512-q5zywMF41xVq4GgxQxW9JvIDCXsiKedizUtM4Ys9vLlVlMuctCJSVhs6gzKJ7y+nQWiBGS9AsxhwvoiW2/mYzA==
   dependencies:
-    "@tanstack/history" "1.15.10"
+    "@tanstack/history" "1.15.13"
     "@tanstack/react-store" "^0.2.1"
     tiny-invariant "^1.3.1"
     tiny-warning "^1.0.3"
@@ -6010,10 +6010,10 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/react@18.2.51":
-  version "18.2.51"
-  resolved "https://registry.npmjs.org/@types/react/-/react-18.2.51.tgz#01ede6dfc712796257a3443bf8d613149e5c322a"
-  integrity sha512-XeoMaU4CzyjdRr3c4IQQtiH7Rpo18V07rYZUucEZQwOUEtGgTXv7e6igQiQ+xnV6MbMe1qjEmKdgMNnfppnXfg==
+"@types/react@18.2.52":
+  version "18.2.52"
+  resolved "https://registry.npmjs.org/@types/react/-/react-18.2.52.tgz#83ca0c62bd1ff31464dac4cf1937e55c78f77aa2"
+  integrity sha512-E/YjWh3tH+qsLKaUzgpZb5AY0ChVa+ZJzF7ogehVILrFpdQk6nC/WXOv0bfFEABbXbgNxLBGU7IIZByPKb6eBw==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -15268,10 +15268,10 @@ neo-async@^2.6.2:
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-nestjs-prisma@0.22.0:
-  version "0.22.0"
-  resolved "https://registry.npmjs.org/nestjs-prisma/-/nestjs-prisma-0.22.0.tgz#322b7163eeac203101f0ed01d3131774874652eb"
-  integrity sha512-vseCukdWYijWxQBIdtC1XVSwMNZLZMjJen0ostsaRWaQ7yF8ny2Xruu0mA1d/t16uPOMUVUkSZro6JikOEkcuw==
+nestjs-prisma@0.23.0:
+  version "0.23.0"
+  resolved "https://registry.npmjs.org/nestjs-prisma/-/nestjs-prisma-0.23.0.tgz#432bbb6e616619f7b9e3d7106c205d49b85e5657"
+  integrity sha512-0pIMDasayP+vMFSztcs85zu4WSPTKM85F8vIrqn7GsUBboEcKhI8eCeVghhNyKDGzEBaNAYNJlo2MAWdNuN7Tw==
   dependencies:
     "@angular-devkit/core" "^13.3.0"
     "@angular-devkit/schematics" "^13.3.0"
