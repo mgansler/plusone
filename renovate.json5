@@ -7,5 +7,9 @@
       matchPackageNames: ['node'],
       allowedVersions: '20.10.0',
     },
+    {
+      matchPackagePatterns: ['@mui/styles'],
+      allowedVersions: '!/5\\.15\\.8/',
+    },
   ],
 }
