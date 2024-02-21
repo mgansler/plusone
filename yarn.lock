@@ -4668,46 +4668,46 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
-"@prisma/client@5.10.1":
-  version "5.10.1"
-  resolved "https://registry.npmjs.org/@prisma/client/-/client-5.10.1.tgz#8768a4f9de1249bfff959dc33a9e4c0eb7708325"
-  integrity sha512-4R8Vp6sSwVJSnOxw8WU1WSLqE/G3WJy1xA05XvW87cINoB1hEY7endw5Ppy6TrIBCCtHQim2lqfHkbPvv+i7bQ==
+"@prisma/client@5.10.2":
+  version "5.10.2"
+  resolved "https://registry.npmjs.org/@prisma/client/-/client-5.10.2.tgz#e087b40a4de8e3171eb9cbf0a873465cd2068e17"
+  integrity sha512-ef49hzB2yJZCvM5gFHMxSFL9KYrIP9udpT5rYo0CsHD4P9IKj473MbhU1gjKKftiwWBTIyrt9jukprzZXazyag==
 
-"@prisma/debug@5.10.1":
-  version "5.10.1"
-  resolved "https://registry.npmjs.org/@prisma/debug/-/debug-5.10.1.tgz#7db21beda4780edfe0789d1111fb68a52a2c5b7a"
-  integrity sha512-Ipo9y/lCMzedXMtEBe4YCdvVVivSy6MdG7aYTM15t86g4CRzwdlEsw8Czxnw20w9Qgzdx0MX2iLsCCIG4JoHbA==
+"@prisma/debug@5.10.2":
+  version "5.10.2"
+  resolved "https://registry.npmjs.org/@prisma/debug/-/debug-5.10.2.tgz#74be81d8969978f4d53c1b4e76d61f04bfbc3951"
+  integrity sha512-bkBOmH9dpEBbMKFJj8V+Zp8IZHIBjy3fSyhLhxj4FmKGb/UBSt9doyfA6k1UeUREsMJft7xgPYBbHSOYBr8XCA==
 
 "@prisma/engines-version@5.10.0-34.5a9203d0590c951969e85a7d07215503f4672eb9":
   version "5.10.0-34.5a9203d0590c951969e85a7d07215503f4672eb9"
   resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-5.10.0-34.5a9203d0590c951969e85a7d07215503f4672eb9.tgz#1502335d4d72d2014cb25b8ad8a740a3a13400ea"
   integrity sha512-uCy/++3Jx/O3ufM+qv2H1L4tOemTNqcP/gyEVOlZqTpBvYJUe0tWtW0y3o2Ueq04mll4aM5X3f6ugQftOSLdFQ==
 
-"@prisma/engines@5.10.1":
-  version "5.10.1"
-  resolved "https://registry.npmjs.org/@prisma/engines/-/engines-5.10.1.tgz#0b3e7db89f3ca2c71010ca2e46cf295fce9ee1ea"
-  integrity sha512-75oJa900Pw+GAXjPJmKZqsD7bgSgQbpeGLxCwchrbgPIM70y3h0FbjIsiSAjuhwIGUCCNWzctUNv67rvSmoQAQ==
+"@prisma/engines@5.10.2":
+  version "5.10.2"
+  resolved "https://registry.npmjs.org/@prisma/engines/-/engines-5.10.2.tgz#a4851d90f76ad6d22e783d5fd2e2e8c0640f1e81"
+  integrity sha512-HkSJvix6PW8YqEEt3zHfCYYJY69CXsNdhU+wna+4Y7EZ+AwzeupMnUThmvaDA7uqswiHkgm5/SZ6/4CStjaGmw==
   dependencies:
-    "@prisma/debug" "5.10.1"
+    "@prisma/debug" "5.10.2"
     "@prisma/engines-version" "5.10.0-34.5a9203d0590c951969e85a7d07215503f4672eb9"
-    "@prisma/fetch-engine" "5.10.1"
-    "@prisma/get-platform" "5.10.1"
+    "@prisma/fetch-engine" "5.10.2"
+    "@prisma/get-platform" "5.10.2"
 
-"@prisma/fetch-engine@5.10.1":
-  version "5.10.1"
-  resolved "https://registry.npmjs.org/@prisma/fetch-engine/-/fetch-engine-5.10.1.tgz#142b68ab3340f4f2d231ea6b276884707d063327"
-  integrity sha512-xg3I3RM/qENykZNGBna+14gBkkZL2TVkyX3OX2GWI8MV23Meq5jYdqvlgBrZne25ZxiulctSEA2D6Y5fq1eLog==
+"@prisma/fetch-engine@5.10.2":
+  version "5.10.2"
+  resolved "https://registry.npmjs.org/@prisma/fetch-engine/-/fetch-engine-5.10.2.tgz#a061f6727d395c7033b55f9c6e92f8741a70d5c5"
+  integrity sha512-dSmXcqSt6DpTmMaLQ9K8ZKzVAMH3qwGCmYEZr/uVnzVhxRJ1EbT/w2MMwIdBNq1zT69Rvh0h75WMIi0mrIw7Hg==
   dependencies:
-    "@prisma/debug" "5.10.1"
+    "@prisma/debug" "5.10.2"
     "@prisma/engines-version" "5.10.0-34.5a9203d0590c951969e85a7d07215503f4672eb9"
-    "@prisma/get-platform" "5.10.1"
+    "@prisma/get-platform" "5.10.2"
 
-"@prisma/get-platform@5.10.1":
-  version "5.10.1"
-  resolved "https://registry.npmjs.org/@prisma/get-platform/-/get-platform-5.10.1.tgz#94cb00b3bd3bcd7ff86cde3e36ff018a1fb3d1c3"
-  integrity sha512-0rE8lSE3y+Ua3LaOcXlWADz21+kGkf9NWmGNuh8n9I6uaCq90LQxM002l4NSYg6ELtiJXyDgJ4nRhM0x0OXjDQ==
+"@prisma/get-platform@5.10.2":
+  version "5.10.2"
+  resolved "https://registry.npmjs.org/@prisma/get-platform/-/get-platform-5.10.2.tgz#7af97b1d82e5574a474e3fbf6eaf04f4156bc535"
+  integrity sha512-nqXP6vHiY2PIsebBAuDeWiUYg8h8mfjBckHh6Jezuwej0QJNnjDiOq30uesmg+JXxGk99nqyG3B7wpcOODzXvg==
   dependencies:
-    "@prisma/debug" "5.10.1"
+    "@prisma/debug" "5.10.2"
 
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
@@ -4762,10 +4762,10 @@
   resolved "https://registry.npmjs.org/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@remix-run/dev@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.npmjs.org/@remix-run/dev/-/dev-2.7.1.tgz#ec53d25d0228246656ac0c6e70738b295c533b87"
-  integrity sha512-G/jtzIvVE+bHHMLS8Iu99sljKFUO51/HTcYE3GoLRDKGrgbZaJHnLvsHiknMLIzqsBBGam1iM+Wf12qHdOy1Dw==
+"@remix-run/dev@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.npmjs.org/@remix-run/dev/-/dev-2.7.2.tgz#1e73cb25ed54c86f535bfa31599ace0a8e46c85a"
+  integrity sha512-ejxzcQY5DFl1CNG5+5+y0UeklOqkRBO43lAPnSC8ITLigjZY6UZsBENlex/Y+xJzjIUtaRBxc7mVaWa62FDQOg==
   dependencies:
     "@babel/core" "^7.21.8"
     "@babel/generator" "^7.21.5"
@@ -4777,9 +4777,9 @@
     "@babel/types" "^7.22.5"
     "@mdx-js/mdx" "^2.3.0"
     "@npmcli/package-json" "^4.0.1"
-    "@remix-run/node" "2.7.1"
+    "@remix-run/node" "2.7.2"
     "@remix-run/router" "1.15.1"
-    "@remix-run/server-runtime" "2.7.1"
+    "@remix-run/server-runtime" "2.7.2"
     "@types/mdx" "^2.0.5"
     "@vanilla-extract/integration" "^6.2.0"
     arg "^5.0.1"
@@ -4821,10 +4821,10 @@
     tsconfig-paths "^4.0.0"
     ws "^7.4.5"
 
-"@remix-run/eslint-config@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.npmjs.org/@remix-run/eslint-config/-/eslint-config-2.7.1.tgz#6532b0e070c49ffd22046ccad109438e8321fb98"
-  integrity sha512-LYNg75f6i6R0Zmqsb7edt4EorGQnsO0tFvAUS/23wacn3txt6sCsxsVVdFCiIn9ZTf5NPAuoF22mv1am6MvRJA==
+"@remix-run/eslint-config@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.npmjs.org/@remix-run/eslint-config/-/eslint-config-2.7.2.tgz#b08d666b0c468e5c3fb37ee683aa2cb67c6563ff"
+  integrity sha512-fAXNlRQQ4DJ0g6GCkUM3sWji18+4i/+FtMA1roSfB9s/+8NEpdZLYJbLo/NGlZUHDC7dXAmTZ3kUZcCCBdOAKw==
   dependencies:
     "@babel/core" "^7.21.8"
     "@babel/eslint-parser" "^7.21.8"
@@ -4843,19 +4843,19 @@
     eslint-plugin-react-hooks "^4.6.0"
     eslint-plugin-testing-library "^5.10.2"
 
-"@remix-run/express@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.npmjs.org/@remix-run/express/-/express-2.7.1.tgz#b17fcad8baaabc5706f5d3fc2946fe2300f91be1"
-  integrity sha512-/keVtsa2Jvh5c1DKHiWmWtpC1khJ0tf4OBxkJPZhOhcnX8+UxY0600PhBWs9MXzFGV3H4t4WzGGnxRzE7GEEwA==
+"@remix-run/express@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.npmjs.org/@remix-run/express/-/express-2.7.2.tgz#a8d5c3d6131fa7919be2a2f5abc98fadcb2813ad"
+  integrity sha512-wknBXniMr7sUvu0D+iOkxK1IenSM0nfZJai1RgNP0Qs12jrKQA5I1dZuiJdKFfLnhvJLbl/BJ6q40TJ4kqNTPg==
   dependencies:
-    "@remix-run/node" "2.7.1"
+    "@remix-run/node" "2.7.2"
 
-"@remix-run/node@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.npmjs.org/@remix-run/node/-/node-2.7.1.tgz#1672374715de280e5f5e924d1f6dd5fef0804a42"
-  integrity sha512-eFVTEErotfATcxCJuC/bQqIDz0C8TWm0EcjnmlHdEICBMcDKIuzqup6jpEYptAmGwHlbJUicPnD6cjmu+UP91A==
+"@remix-run/node@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.npmjs.org/@remix-run/node/-/node-2.7.2.tgz#5efbc3c2015d0d36fea265afa9be413eb35e2c32"
+  integrity sha512-smIWI9kNGDnY361WlDOTwxPfUw/KHcS7PCLjHlM/omx3ETD1Y2dc4Rt82LSJt0qsPSPA72ZOww08NoX+YGBvyQ==
   dependencies:
-    "@remix-run/server-runtime" "2.7.1"
+    "@remix-run/server-runtime" "2.7.2"
     "@remix-run/web-fetch" "^4.4.2"
     "@remix-run/web-file" "^3.1.0"
     "@remix-run/web-stream" "^1.1.0"
@@ -4864,13 +4864,13 @@
     source-map-support "^0.5.21"
     stream-slice "^0.1.2"
 
-"@remix-run/react@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.npmjs.org/@remix-run/react/-/react-2.7.1.tgz#81a1afb5778193d326855c78b8e24986c0b7d635"
-  integrity sha512-8PfkvSMtdW3JUBo7I0VMcnDZLqRtYKxXCZ9qXNJogJjy0dfaywEoAREfhGyIdwSLAQJ4TFKGz5jyt9L1/EYU3g==
+"@remix-run/react@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.npmjs.org/@remix-run/react/-/react-2.7.2.tgz#b722a597d04b2e0493bb906f79636a2b66d5971b"
+  integrity sha512-Q/gsxJVEYYvkYM/immVFP4rBnGSzEFNJLRt6plO5knAy6NV1NNptsEnvh4GoTVQdTKdVw7wkJW26/YpnHzHiDA==
   dependencies:
     "@remix-run/router" "1.15.1"
-    "@remix-run/server-runtime" "2.7.1"
+    "@remix-run/server-runtime" "2.7.2"
     react-router "6.22.1"
     react-router-dom "6.22.1"
 
@@ -4879,13 +4879,13 @@
   resolved "https://registry.npmjs.org/@remix-run/router/-/router-1.15.1.tgz#221fd31a65186b9bc027b74573485fb3226dff7f"
   integrity sha512-zcU0gM3z+3iqj8UX45AmWY810l3oUmXM7uH4dt5xtzvMhRtYVhKGOmgOd1877dOPPepfCjUv57w+syamWIYe7w==
 
-"@remix-run/serve@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.npmjs.org/@remix-run/serve/-/serve-2.7.1.tgz#a63439673c8be20992adf1e324f9daad65fab7b0"
-  integrity sha512-DSkh48bGEsTplKI/LN1OaPcPc53OnbuOcTA/Zu2V3xTzT7E1YHalWlKbbuX04v2GlnNarNTQx6jrjEDAxnzu+w==
+"@remix-run/serve@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.npmjs.org/@remix-run/serve/-/serve-2.7.2.tgz#7e40e5cf87994bb6cd60156f9ad8b56e5d9b51eb"
+  integrity sha512-5kR6fuD2MEWqd8DogyHP3fiSjGv56ZBWKntwMeEKh7kuyDhHPX+BAU2UsYvLOTB1VH9Ktg5mNM8l9gMMY6l/Jg==
   dependencies:
-    "@remix-run/express" "2.7.1"
-    "@remix-run/node" "2.7.1"
+    "@remix-run/express" "2.7.2"
+    "@remix-run/node" "2.7.2"
     chokidar "^3.5.3"
     compression "^1.7.4"
     express "^4.17.1"
@@ -4893,10 +4893,10 @@
     morgan "^1.10.0"
     source-map-support "^0.5.21"
 
-"@remix-run/server-runtime@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.npmjs.org/@remix-run/server-runtime/-/server-runtime-2.7.1.tgz#edacb62bba66361c7f602ecefe70bb00573a24da"
-  integrity sha512-idmg8Tf9w5fZ+Dgq2aRjZDKlLaZt+rB0yAw+Ht5yzI6MLeKI4SKHsdnGlEY/EeFcbbrXhArrrSjf+mKLJfJ8qw==
+"@remix-run/server-runtime@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.npmjs.org/@remix-run/server-runtime/-/server-runtime-2.7.2.tgz#74effc46b181e5110b27fd9ba5888eb78d11a4ba"
+  integrity sha512-PGD1SPJttlYI3Nwe8ABk53gHCueWfZ2NOsKx7utD/lKRPFW2BqADpokzQXSzy4WTpk4drAmlagobGVIVH66Tmg==
   dependencies:
     "@remix-run/router" "1.15.1"
     "@types/cookie" "^0.6.0"
@@ -13290,10 +13290,10 @@ jiti@^1.17.1, jiti@^1.18.2, jiti@^1.19.1:
   resolved "https://registry.npmjs.org/jiti/-/jiti-1.21.0.tgz#7c97f8fe045724e136a397f7340475244156105d"
   integrity sha512-gFqAIbuKyyso/3G2qhiO2OM6shY6EPP/R0+mkDbyspxKazh8BXDC5FiFsUjlczgdNz/vfra0da2y+aHrusLG/Q==
 
-joi@17.12.1:
-  version "17.12.1"
-  resolved "https://registry.npmjs.org/joi/-/joi-17.12.1.tgz#3347ecf4cd3301962d42191c021b165eef1f395b"
-  integrity sha512-vtxmq+Lsc5SlfqotnfVjlViWfOL9nt/avKNbKYizwf6gsCfq9NYY/ceYRMFD8XDdrjJ9abJyScWmhmIiy+XRtQ==
+joi@17.12.2:
+  version "17.12.2"
+  resolved "https://registry.npmjs.org/joi/-/joi-17.12.2.tgz#283a664dabb80c7e52943c557aab82faea09f521"
+  integrity sha512-RonXAIzCiHLc8ss3Ibuz45u28GOsWE1UpfDXLbN/9NKbL4tCJf8TWYVKsoYuuh+sAUt7fsSNpA+r2+TBA6Wjmw==
   dependencies:
     "@hapi/hoek" "^9.3.0"
     "@hapi/topo" "^5.1.0"
@@ -16984,12 +16984,12 @@ pretty-ms@^7.0.1:
   dependencies:
     parse-ms "^2.1.0"
 
-prisma@5.10.1:
-  version "5.10.1"
-  resolved "https://registry.npmjs.org/prisma/-/prisma-5.10.1.tgz#3ea67daed6eb916c844c1a21b391436e67e8f2b0"
-  integrity sha512-2VLQ8dMXZGd5qS6XIDyAzK2W4xdPJDt/E3IBcjByn64Fnp33llqq/HBxx0EroZO7ezKiw1gS3BOrkpyzPfeFhA==
+prisma@5.10.2:
+  version "5.10.2"
+  resolved "https://registry.npmjs.org/prisma/-/prisma-5.10.2.tgz#aa63085c49dc74cdb5c3816e8dd1fb4d74a2aadd"
+  integrity sha512-hqb/JMz9/kymRE25pMWCxkdyhbnIWrq+h7S6WysJpdnCvhstbJSNP/S6mScEcqiB8Qv2F+0R3yG+osRaWqZacQ==
   dependencies:
-    "@prisma/engines" "5.10.1"
+    "@prisma/engines" "5.10.2"
 
 proc-log@^3.0.0:
   version "3.0.0"
