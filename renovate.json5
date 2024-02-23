@@ -7,10 +7,5 @@
       matchPackageNames: ['node'],
       allowedVersions: '20.10.0',
     },
-    {
-      // Nx fails to open/start this cypress version
-      matchPackageNames: ['cypress'],
-      allowedVersions: '!/13\\.6\\.5/',
-    },
   ],
 }
