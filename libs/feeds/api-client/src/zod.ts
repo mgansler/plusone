@@ -174,7 +174,7 @@ export const healthControllerGetHealthStatusResponse = zod.object({
     .record(
       zod.string(),
       zod.object({
-        status: zod.string().optional(),
+        status: zod.string(),
       }),
     )
     .nullish(),
@@ -182,7 +182,7 @@ export const healthControllerGetHealthStatusResponse = zod.object({
     .record(
       zod.string(),
       zod.object({
-        status: zod.string().optional(),
+        status: zod.string(),
       }),
     )
     .nullish(),
@@ -190,7 +190,7 @@ export const healthControllerGetHealthStatusResponse = zod.object({
     .record(
       zod.string(),
       zod.object({
-        status: zod.string().optional(),
+        status: zod.string(),
       }),
     )
     .optional(),
