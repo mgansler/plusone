@@ -18,7 +18,9 @@
             }
           }
         },
-        "tags": ["discovery"]
+        "tags": [
+          "discovery"
+        ]
       }
     },
     "/api/discovery/add-by-id/{deviceId}": {
@@ -40,7 +42,9 @@
             "description": ""
           }
         },
-        "tags": ["discovery"]
+        "tags": [
+          "discovery"
+        ]
       }
     },
     "/api/discovery/add-by-address/{address}": {
@@ -62,7 +66,9 @@
             "description": ""
           }
         },
-        "tags": ["discovery"]
+        "tags": [
+          "discovery"
+        ]
       }
     },
     "/api/devices": {
@@ -311,7 +317,9 @@
             "description": ""
           }
         },
-        "tags": ["location"]
+        "tags": [
+          "location"
+        ]
       },
       "get": {
         "operationId": "current-location",
@@ -329,7 +337,9 @@
             }
           }
         },
-        "tags": ["location"]
+        "tags": [
+          "location"
+        ]
       }
     },
     "/api/location/location-data": {
@@ -349,7 +359,9 @@
             }
           }
         },
-        "tags": ["location"]
+        "tags": [
+          "location"
+        ]
       }
     },
     "/api/stream-deck/toggle/{macAddress}": {
@@ -385,7 +397,11 @@
     "schemas": {
       "DeviceType": {
         "type": "string",
-        "enum": ["RingLight", "LightStrip", "Unknown"]
+        "enum": [
+          "RingLight",
+          "LightStrip",
+          "Unknown"
+        ]
       },
       "DiscoveredDeviceResponseDto": {
         "type": "object",
@@ -427,7 +443,18 @@
             "type": "boolean"
           }
         },
-        "required": ["id", "name", "fqdn", "host", "ipv4", "port", "displayName", "productName", "type", "isControlled"]
+        "required": [
+          "id",
+          "name",
+          "fqdn",
+          "host",
+          "ipv4",
+          "port",
+          "displayName",
+          "productName",
+          "type",
+          "isControlled"
+        ]
       },
       "DiscoveredDevicesResponseDto": {
         "type": "object",
@@ -439,7 +466,9 @@
             }
           }
         },
-        "required": ["devices"]
+        "required": [
+          "devices"
+        ]
       },
       "DeviceResponseDto": {
         "type": "object",
@@ -452,7 +481,10 @@
             "type": "string"
           }
         },
-        "required": ["macAddress", "displayName"]
+        "required": [
+          "macAddress",
+          "displayName"
+        ]
       },
       "DeviceListResponseDto": {
         "type": "object",
@@ -464,7 +496,9 @@
             }
           }
         },
-        "required": ["devices"]
+        "required": [
+          "devices"
+        ]
       },
       "ElgatoDeviceDetailsResponseDto": {
         "type": "object",
@@ -479,7 +513,11 @@
             "type": "string"
           }
         },
-        "required": ["productName", "deviceType", "displayName"]
+        "required": [
+          "productName",
+          "deviceType",
+          "displayName"
+        ]
       },
       "DeviceState": {
         "type": "object",
@@ -497,7 +535,9 @@
             "type": "number"
           }
         },
-        "required": ["on"]
+        "required": [
+          "on"
+        ]
       },
       "DeviceDetailsResponseDto": {
         "type": "object",
@@ -520,7 +560,13 @@
             "type": "string"
           }
         },
-        "required": ["macAddress", "displayName", "details", "state", "lastSeen"]
+        "required": [
+          "macAddress",
+          "displayName",
+          "details",
+          "state",
+          "lastSeen"
+        ]
       },
       "DeviceDisplayNameRequestDto": {
         "type": "object",
@@ -529,7 +575,9 @@
             "type": "string"
           }
         },
-        "required": ["displayName"]
+        "required": [
+          "displayName"
+        ]
       },
       "DevicePowerStateRequestDto": {
         "type": "object",
@@ -547,7 +595,9 @@
             "type": "number"
           }
         },
-        "required": ["on"]
+        "required": [
+          "on"
+        ]
       },
       "TransitionToColorRequestDto": {
         "type": "object",
@@ -562,7 +612,11 @@
             "type": "number"
           }
         },
-        "required": ["hue", "saturation", "brightness"]
+        "required": [
+          "hue",
+          "saturation",
+          "brightness"
+        ]
       },
       "DeviceSettingsResponseDto": {
         "type": "object",
@@ -574,7 +628,10 @@
             "type": "boolean"
           }
         },
-        "required": ["sunrise", "sunset"]
+        "required": [
+          "sunrise",
+          "sunset"
+        ]
       },
       "DeviceSettingsRequestDto": {
         "type": "object",
@@ -600,7 +657,11 @@
             "type": "string"
           }
         },
-        "required": ["longitude", "latitude", "name"]
+        "required": [
+          "longitude",
+          "latitude",
+          "name"
+        ]
       },
       "LocationResponseDto": {
         "type": "object",
@@ -615,7 +676,11 @@
             "type": "string"
           }
         },
-        "required": ["longitude", "latitude", "name"]
+        "required": [
+          "longitude",
+          "latitude",
+          "name"
+        ]
       },
       "LocationDataResponseDto": {
         "type": "object",

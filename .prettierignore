@@ -7,3 +7,7 @@ build/
 /.nx/cache
 
 **/migration.sql
+
+# Do not format generated API specs
+apps/elgato/backend/openapi-elgato.json
+apps/feeds/backend/openapi-feeds.json

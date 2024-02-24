@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
 import { AxiosError } from 'axios'
 import * as cheerio from 'cheerio'
-import * as Parser from 'rss-parser'
+import Parser from 'rss-parser'
 import { catchError, firstValueFrom } from 'rxjs'
 
 import { DiscoverFeedRequest } from '@plusone/feeds/shared/types'

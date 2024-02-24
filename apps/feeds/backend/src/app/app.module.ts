@@ -29,7 +29,7 @@ import { LoggerMiddleware } from './logger.middleware'
         JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
         JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
         JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
-        DATABASE_URL: Joi.string().required(),
+        FEEDS_DATABASE_URL: Joi.string().required(),
         [PAGE_SIZE]: Joi.number().default(20),
         RECENTLY_READ_COUNT: Joi.number().default(20),
       }),

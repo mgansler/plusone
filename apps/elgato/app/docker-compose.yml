@@ -8,7 +8,7 @@ services:
     restart: always
     environment:
       TZ: 'Europe/Berlin'
-      DATABASE_URL: 'file:/usr/elgato/sqlite/elgato.db'
+      ELGATO_DATABASE_URL: 'file:/usr/elgato/sqlite/elgato.db'
     volumes:
       - sqlite:/usr/elgato/sqlite/
     labels:

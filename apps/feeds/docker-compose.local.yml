@@ -16,7 +16,7 @@ services:
       JWT_ACCESS_TOKEN_EXPIRATION_TIME: 3600s
       JWT_REFRESH_TOKEN_SECRET: local_refresh_secret
       JWT_REFRESH_TOKEN_EXPIRATION_TIME: 604800s
-      DATABASE_URL: postgres://postgres:local_db_password@database/feeds
+      FEEDS_DATABASE_URL: postgres://postgres:local_db_password@database/feeds
       ADMIN_USER: root
       ADMIN_PASSWORD: local_admin_password
 
