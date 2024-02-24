@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common'
-import * as Parser from 'rss-parser'
-import { Item } from 'rss-parser'
+import Parser, { Item } from 'rss-parser'
 
 import { UpdateFeedRequest } from '@plusone/feeds/shared/types'
 

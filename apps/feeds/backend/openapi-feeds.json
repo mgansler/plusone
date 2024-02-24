@@ -30,7 +30,9 @@
             "description": "All articles have been marked as read."
           }
         },
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "security": [
           {
             "bearer": []
@@ -75,7 +77,9 @@
             }
           }
         },
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "security": [
           {
             "bearer": []
@@ -114,7 +118,9 @@
             "description": ""
           }
         },
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "security": [
           {
             "bearer": []
@@ -194,7 +200,9 @@
             }
           }
         },
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "security": [
           {
             "bearer": []
@@ -222,7 +230,9 @@
             }
           }
         },
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "security": [
           {
             "bearer": []
@@ -258,7 +268,9 @@
             }
           }
         },
-        "tags": ["authentication"]
+        "tags": [
+          "authentication"
+        ]
       }
     },
     "/api/authentication/logout": {
@@ -271,7 +283,9 @@
             "description": ""
           }
         },
-        "tags": ["authentication"],
+        "tags": [
+          "authentication"
+        ],
         "security": [
           {
             "bearer": []
@@ -306,7 +320,9 @@
             }
           }
         },
-        "tags": ["authentication"]
+        "tags": [
+          "authentication"
+        ]
       }
     },
     "/api/authentication/profile": {
@@ -326,7 +342,9 @@
             }
           }
         },
-        "tags": ["authentication"],
+        "tags": [
+          "authentication"
+        ],
         "security": [
           {
             "bearer": []
@@ -351,7 +369,9 @@
             }
           }
         },
-        "tags": ["authentication"],
+        "tags": [
+          "authentication"
+        ],
         "security": [
           {
             "bearer": []
@@ -376,7 +396,9 @@
             }
           }
         },
-        "tags": ["boot-info"]
+        "tags": [
+          "boot-info"
+        ]
       }
     },
     "/api/feed/discover": {
@@ -406,7 +428,9 @@
             }
           }
         },
-        "tags": ["feed"],
+        "tags": [
+          "feed"
+        ],
         "security": [
           {
             "bearer": []
@@ -442,7 +466,9 @@
             }
           }
         },
-        "tags": ["feed"],
+        "tags": [
+          "feed"
+        ],
         "security": [
           {
             "bearer": []
@@ -468,7 +494,9 @@
             }
           }
         },
-        "tags": ["feed"],
+        "tags": [
+          "feed"
+        ],
         "security": [
           {
             "bearer": []
@@ -500,7 +528,9 @@
             "description": ""
           }
         },
-        "tags": ["feed"],
+        "tags": [
+          "feed"
+        ],
         "security": [
           {
             "bearer": []
@@ -528,7 +558,9 @@
             }
           }
         },
-        "tags": ["feed"],
+        "tags": [
+          "feed"
+        ],
         "security": [
           {
             "bearer": []
@@ -563,7 +595,9 @@
             }
           }
         },
-        "tags": ["feed"],
+        "tags": [
+          "feed"
+        ],
         "security": [
           {
             "bearer": []
@@ -599,7 +633,9 @@
             "description": ""
           }
         },
-        "tags": ["feed"],
+        "tags": [
+          "feed"
+        ],
         "security": [
           {
             "bearer": []
@@ -637,7 +673,9 @@
             }
           }
         },
-        "tags": ["feed"],
+        "tags": [
+          "feed"
+        ],
         "security": [
           {
             "bearer": []
@@ -674,7 +712,9 @@
             "description": ""
           }
         },
-        "tags": ["feed"],
+        "tags": [
+          "feed"
+        ],
         "security": [
           {
             "bearer": []
@@ -711,7 +751,9 @@
             "description": ""
           }
         },
-        "tags": ["feed"],
+        "tags": [
+          "feed"
+        ],
         "security": [
           {
             "bearer": []
@@ -739,7 +781,9 @@
             }
           }
         },
-        "tags": ["tag"],
+        "tags": [
+          "tag"
+        ],
         "security": [
           {
             "bearer": []
@@ -773,7 +817,9 @@
             }
           }
         },
-        "tags": ["tag"],
+        "tags": [
+          "tag"
+        ],
         "security": [
           {
             "bearer": []
@@ -801,7 +847,9 @@
             "description": ""
           }
         },
-        "tags": ["tag"],
+        "tags": [
+          "tag"
+        ],
         "security": [
           {
             "bearer": []
@@ -834,7 +882,9 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": ["status"],
+                        "required": [
+                          "status"
+                        ],
                         "properties": {
                           "status": {
                             "type": "string"
@@ -849,7 +899,9 @@
                       "example": {},
                       "additionalProperties": {
                         "type": "object",
-                        "required": ["status"],
+                        "required": [
+                          "status"
+                        ],
                         "properties": {
                           "status": {
                             "type": "string"
@@ -868,7 +920,9 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": ["status"],
+                        "required": [
+                          "status"
+                        ],
                         "properties": {
                           "status": {
                             "type": "string"
@@ -902,7 +956,9 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": ["status"],
+                        "required": [
+                          "status"
+                        ],
                         "properties": {
                           "status": {
                             "type": "string"
@@ -922,7 +978,9 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": ["status"],
+                        "required": [
+                          "status"
+                        ],
                         "properties": {
                           "status": {
                             "type": "string"
@@ -945,7 +1003,9 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": ["status"],
+                        "required": [
+                          "status"
+                        ],
                         "properties": {
                           "status": {
                             "type": "string"
@@ -960,7 +1020,9 @@
             }
           }
         },
-        "tags": ["health"]
+        "tags": [
+          "health"
+        ]
       }
     },
     "/api/scheduling/now": {
@@ -973,7 +1035,9 @@
             "description": "Fetching all feeds has been triggered."
           }
         },
-        "tags": ["scheduling"],
+        "tags": [
+          "scheduling"
+        ],
         "security": [
           {
             "bearer": []
@@ -1001,7 +1065,9 @@
             }
           }
         },
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "security": [
           {
             "bearer": []
@@ -1027,7 +1093,9 @@
             "description": "User has been deleted"
           }
         },
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "security": [
           {
             "bearer": []
@@ -1045,13 +1113,6 @@
   "tags": [],
   "servers": [],
   "components": {
-    "securitySchemes": {
-      "bearer": {
-        "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "type": "http"
-      }
-    },
     "schemas": {
       "ArticleToggleUnreadDto": {
         "type": "object",
@@ -1060,7 +1121,9 @@
             "type": "boolean"
           }
         },
-        "required": ["unread"]
+        "required": [
+          "unread"
+        ]
       },
       "ArticleDto": {
         "type": "object",
@@ -1085,7 +1148,14 @@
             "type": "string"
           }
         },
-        "required": ["content", "date", "guid", "id", "link", "title"]
+        "required": [
+          "content",
+          "date",
+          "guid",
+          "id",
+          "link",
+          "title"
+        ]
       },
       "ArticleResponseDto": {
         "type": "object",
@@ -1103,7 +1173,12 @@
             "type": "boolean"
           }
         },
-        "required": ["article", "cursor", "starred", "unread"]
+        "required": [
+          "article",
+          "cursor",
+          "starred",
+          "unread"
+        ]
       },
       "StarArticleDto": {
         "type": "object",
@@ -1112,11 +1187,16 @@
             "type": "boolean"
           }
         },
-        "required": ["starred"]
+        "required": [
+          "starred"
+        ]
       },
       "Sort": {
         "type": "string",
-        "enum": ["desc", "asc"]
+        "enum": [
+          "desc",
+          "asc"
+        ]
       },
       "PaginatedArticleResponseDto": {
         "type": "object",
@@ -1140,7 +1220,12 @@
             "type": "number"
           }
         },
-        "required": ["content", "pageSize", "totalCount", "unreadCount"]
+        "required": [
+          "content",
+          "pageSize",
+          "totalCount",
+          "unreadCount"
+        ]
       },
       "UserLoginDto": {
         "type": "object",
@@ -1152,7 +1237,10 @@
             "type": "string"
           }
         },
-        "required": ["username", "password"]
+        "required": [
+          "username",
+          "password"
+        ]
       },
       "LoginResponseDto": {
         "type": "object",
@@ -1164,7 +1252,10 @@
             "type": "string"
           }
         },
-        "required": ["access_token", "refresh_token"]
+        "required": [
+          "access_token",
+          "refresh_token"
+        ]
       },
       "UserRegistrationDto": {
         "type": "object",
@@ -1176,7 +1267,10 @@
             "type": "string"
           }
         },
-        "required": ["username", "password"]
+        "required": [
+          "username",
+          "password"
+        ]
       },
       "UserResponseDto": {
         "type": "object",
@@ -1194,7 +1288,11 @@
             "type": "string"
           }
         },
-        "required": ["id", "isAdmin", "username"]
+        "required": [
+          "id",
+          "isAdmin",
+          "username"
+        ]
       },
       "BootInfoDto": {
         "type": "object",
@@ -1207,7 +1305,10 @@
             "type": "number"
           }
         },
-        "required": ["appVersion", "pageSize"]
+        "required": [
+          "appVersion",
+          "pageSize"
+        ]
       },
       "DiscoverResponseDto": {
         "type": "object",
@@ -1222,7 +1323,11 @@
             "type": "string"
           }
         },
-        "required": ["feedUrl", "title", "url"]
+        "required": [
+          "feedUrl",
+          "title",
+          "url"
+        ]
       },
       "FeedInputDto": {
         "type": "object",
@@ -1237,7 +1342,10 @@
             "type": "string"
           }
         },
-        "required": ["title", "feedUrl"]
+        "required": [
+          "title",
+          "feedUrl"
+        ]
       },
       "FeedResponseDto": {
         "type": "object",
@@ -1255,7 +1363,11 @@
             "type": "string"
           }
         },
-        "required": ["feedUrl", "id", "originalTitle"]
+        "required": [
+          "feedUrl",
+          "id",
+          "originalTitle"
+        ]
       },
       "TagResponseDto": {
         "type": "object",
@@ -1267,7 +1379,10 @@
             "type": "string"
           }
         },
-        "required": ["id", "name"]
+        "required": [
+          "id",
+          "name"
+        ]
       },
       "UserFeedResponseDto": {
         "type": "object",
@@ -1337,7 +1452,13 @@
             "$ref": "#/components/schemas/Sort"
           }
         },
-        "required": ["id", "title", "expandContent", "includeRead", "order"]
+        "required": [
+          "id",
+          "title",
+          "expandContent",
+          "includeRead",
+          "order"
+        ]
       },
       "UpdateFeedSettingsInputDto": {
         "type": "object",
@@ -1355,7 +1476,11 @@
             "type": "string"
           }
         },
-        "required": ["expandContent", "includeRead", "order"]
+        "required": [
+          "expandContent",
+          "includeRead",
+          "order"
+        ]
       },
       "TagFeedInputDto": {
         "type": "object",
@@ -1364,7 +1489,9 @@
             "type": "string"
           }
         },
-        "required": ["tagId"]
+        "required": [
+          "tagId"
+        ]
       },
       "TagInputDto": {
         "type": "object",
@@ -1373,7 +1500,9 @@
             "type": "string"
           }
         },
-        "required": ["name"]
+        "required": [
+          "name"
+        ]
       }
     }
   }

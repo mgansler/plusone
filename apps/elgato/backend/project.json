@@ -20,6 +20,9 @@
         "webpackConfig": "apps/elgato/backend/webpack.config.js"
       },
       "configurations": {
+        "api-spec": {
+          "main": "apps/elgato/backend/src/generate-openapi-spec.ts"
+        },
         "development": {},
         "production": {
           "assets": [
@@ -56,6 +59,10 @@
         "buildTarget": "elgato-backend:build"
       },
       "configurations": {
+        "api-spec": {
+          "buildTarget": "elgato-backend:build:api-spec",
+          "watch": false
+        },
         "development": {
           "buildTarget": "elgato-backend:build:development"
         },
@@ -73,6 +80,12 @@
           "dependencies": true
         }
       ]
+    },
+    "generate-api-spec": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nx run elgato-backend:serve:api-spec"
+      }
     },
     "lint": {
       "executor": "@nx/eslint:lint",

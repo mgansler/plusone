@@ -36,6 +36,9 @@
         "compiler": "tsc"
       },
       "configurations": {
+        "api-spec": {
+          "main": "apps/feeds/backend/src/generate-openapi-spec.ts"
+        },
         "production": {
           "optimization": true,
           "extractLicenses": true,
@@ -60,6 +63,12 @@
       "options": {
         "buildTarget": "feeds-backend:build"
       },
+      "configurations": {
+        "api-spec": {
+          "buildTarget": "feeds-backend:build:api-spec",
+          "watch": false
+        }
+      },
       "dependsOn": [
         {
           "target": "docker"
@@ -79,6 +88,17 @@
       "options": {
         "command": "docker compose -f apps/feeds/docker-compose.database.yml up -d"
       }
+    },
+    "generate-api-spec": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nx run feeds-backend:serve:api-spec"
+      },
+      "dependsOn": [
+        {
+          "target": "docker"
+        }
+      ]
     },
     "lint": {
       "executor": "@nx/eslint:lint",
