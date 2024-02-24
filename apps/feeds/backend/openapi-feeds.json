@@ -834,14 +834,13 @@
                       },
                       "additionalProperties": {
                         "type": "object",
+                        "required": ["status"],
                         "properties": {
                           "status": {
                             "type": "string"
                           }
                         },
-                        "additionalProperties": {
-                          "type": "string"
-                        }
+                        "additionalProperties": true
                       },
                       "nullable": true
                     },
@@ -850,14 +849,13 @@
                       "example": {},
                       "additionalProperties": {
                         "type": "object",
+                        "required": ["status"],
                         "properties": {
                           "status": {
                             "type": "string"
                           }
                         },
-                        "additionalProperties": {
-                          "type": "string"
-                        }
+                        "additionalProperties": true
                       },
                       "nullable": true
                     },
@@ -870,14 +868,13 @@
                       },
                       "additionalProperties": {
                         "type": "object",
+                        "required": ["status"],
                         "properties": {
                           "status": {
                             "type": "string"
                           }
                         },
-                        "additionalProperties": {
-                          "type": "string"
-                        }
+                        "additionalProperties": true
                       }
                     }
                   }
@@ -905,14 +902,13 @@
                       },
                       "additionalProperties": {
                         "type": "object",
+                        "required": ["status"],
                         "properties": {
                           "status": {
                             "type": "string"
                           }
                         },
-                        "additionalProperties": {
-                          "type": "string"
-                        }
+                        "additionalProperties": true
                       },
                       "nullable": true
                     },
@@ -926,14 +922,13 @@
                       },
                       "additionalProperties": {
                         "type": "object",
+                        "required": ["status"],
                         "properties": {
                           "status": {
                             "type": "string"
                           }
                         },
-                        "additionalProperties": {
-                          "type": "string"
-                        }
+                        "additionalProperties": true
                       },
                       "nullable": true
                     },
@@ -950,14 +945,13 @@
                       },
                       "additionalProperties": {
                         "type": "object",
+                        "required": ["status"],
                         "properties": {
                           "status": {
                             "type": "string"
                           }
                         },
-                        "additionalProperties": {
-                          "type": "string"
-                        }
+                        "additionalProperties": true
                       }
                     }
                   }

@@ -19,22 +19,22 @@ import type {
 import { customAxiosInstance } from './custom-axios'
 export type HealthControllerGetHealthStatus503Info = {
   [key: string]: {
-    status?: string
-    [key: string]: string
+    status: string
+    [key: string]: any
   }
 } | null
 
 export type HealthControllerGetHealthStatus503Error = {
   [key: string]: {
-    status?: string
-    [key: string]: string
+    status: string
+    [key: string]: any
   }
 } | null
 
 export type HealthControllerGetHealthStatus503Details = {
   [key: string]: {
-    status?: string
-    [key: string]: string
+    status: string
+    [key: string]: any
   }
 }
 
@@ -47,22 +47,22 @@ export type HealthControllerGetHealthStatus503 = {
 
 export type HealthControllerGetHealthStatus200Info = {
   [key: string]: {
-    status?: string
-    [key: string]: string
+    status: string
+    [key: string]: any
   }
 } | null
 
 export type HealthControllerGetHealthStatus200Error = {
   [key: string]: {
-    status?: string
-    [key: string]: string
+    status: string
+    [key: string]: any
   }
 } | null
 
 export type HealthControllerGetHealthStatus200Details = {
   [key: string]: {
-    status?: string
-    [key: string]: string
+    status: string
+    [key: string]: any
   }
 }
 
