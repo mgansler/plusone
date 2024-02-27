@@ -96,7 +96,7 @@ component-test:
     - !reference [.distributed, before_script]
     - sh tools/scripts/install-cypress-dependencies.sh
   script:
-    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t component-test --parallel=1 --configuration=ci
+    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t component-test --parallel=1 --configuration=ci --browser chrome
   after_script:
     - yarn jrm ./reports/component-test.xml "./reports/component-test/*.xml"
   artifacts:
@@ -122,7 +122,7 @@ e2e:
     - !reference [.dind, before_script]
     - sh tools/scripts/install-cypress-dependencies.sh
   script:
-    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t e2e --parallel=1 --configuration=ci
+    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t e2e --parallel=1 --configuration=ci --browser chrome
   after_script:
     - yarn jrm ./reports/e2e.xml "./reports/e2e/*.xml"
   artifacts:
