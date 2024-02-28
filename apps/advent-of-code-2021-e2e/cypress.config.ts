@@ -7,7 +7,7 @@ export default defineConfig({
     mochaFile: '../../reports/e2e/advent-of-code-2021-[hash].xml',
   },
   e2e: {
-    ...nxE2EPreset(__dirname),
+    ...nxE2EPreset(__filename, { cypressDir: 'src', bundler: 'vite' }),
     experimentalRunAllSpecs: true,
     retries: 3,
   },

@@ -7,7 +7,7 @@ export default defineConfig({
     mochaFile: '../../reports/e2e/github-pipeline-status-[hash].xml',
   },
   e2e: {
-    ...nxE2EPreset(__dirname),
+    ...nxE2EPreset(__filename, { cypressDir: 'src', bundler: 'vite' }),
     experimentalRunAllSpecs: true,
   },
 })
