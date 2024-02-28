@@ -2,8 +2,8 @@ import Chainable = Cypress.Chainable
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace Cypress {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  type Chainable<Subject> = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/consistent-type-definitions
+  interface Chainable<Subject> {
     findDropzoneByName(name: string): Chainable<Element>
 
     drag(text: string, target: string): void
