@@ -5,6 +5,7 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
+        "no-restricted-properties": "off",
         "testing-library/await-async-queries": "off",
         "testing-library/prefer-screen-queries": "off"
       }
