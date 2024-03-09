@@ -14,6 +14,9 @@ import { LocationService } from '../location/location.service'
 export class SunriseSunsetService implements OnModuleInit {
   private logger = new Logger(SunriseSunsetService.name)
 
+  private static START_SUNRISE_JOB_NAME = 'start-sunrise'
+  private static STOP_SUNRISE_JOB_NAME = 'stop-sunrise'
+
   constructor(
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly elgatoService: ElgatoService,
@@ -34,44 +37,59 @@ export class SunriseSunsetService implements OnModuleInit {
 
       const sunriseSequenceTotalDuration = getTotalDurationInMs(sunrise)
 
-      // Only create a job if dawn is after now
+      // Add a startSunriseJob if dawn is in the future
       if (sunriseSunsetTimes.dawn > new Date()) {
-        // Clear existing jobs/timeouts from yesterday or after service restart
-        if (this.schedulerRegistry.doesExist('cron', 'sunrise')) {
-          this.logger.debug('Clearing cron job: sunrise')
-          this.schedulerRegistry.deleteCronJob('sunrise')
-        }
-        if (this.schedulerRegistry.doesExist('timeout', 'sunrise')) {
-          this.logger.debug('Clearing timeout: sunrise')
-          clearTimeout(this.schedulerRegistry.getTimeout('sunrise'))
-        }
+        this.overwriteCronJob(
+          SunriseSunsetService.START_SUNRISE_JOB_NAME,
+          CronJob.from({
+            cronTime: sunriseSunsetTimes.dawn,
+            start: true,
+            onTick: () => {
+              this.logger.log(
+                `Starting sunrise for ${devices.length}: [${devices.map((device) => device.displayName).join(', ')}]`,
+              )
+              devices.forEach((device) => this.elgatoService.setLightStripScene(device, sunrise))
+            },
+          }),
+        )
+        this.logger.log(
+          `Added ${SunriseSunsetService.START_SUNRISE_JOB_NAME} cronjob for ${sunriseSunsetTimes.dawn.toLocaleTimeString()}`,
+        )
+      }
 
-        const sunriseJob = new CronJob(sunriseSunsetTimes.dawn, () => {
-          this.logger.log(
-            `Starting sunrise for ${devices.length}: [${devices.map((device) => device.displayName).join(', ')}]`,
-          )
-          devices.forEach((device) => this.elgatoService.setLightStripScene(device, sunrise))
+      // The last scene (brightness: 0) has a duration of 60s. Turn the device off during that duration.
+      const stopTime = new Date(sunriseSunsetTimes.dawn.getTime() + sunriseSequenceTotalDuration - 30_000)
 
-          const turnOffCallback = () => {
-            this.logger.log(
-              `Turning off ${devices.length} devices after sunrise: [${devices.map((d) => d.displayName).join(', ')}]`,
-            )
-            devices.forEach((device) => this.elgatoService.setDevicePowerState(device, DevicePowerState.off))
-          }
-
-          // The last scene (brightness: 0) has a duration of 60s. Turn the device off during that duration.
-          this.schedulerRegistry.addTimeout(
-            'sunrise',
-            setTimeout(turnOffCallback, sunriseSequenceTotalDuration - 30_000),
-          )
-        })
-
-        this.schedulerRegistry.addCronJob('sunrise', sunriseJob)
-        this.logger.log(`Added sunrise cronjob for ${sunriseSunsetTimes.dawn.toLocaleTimeString()}`)
-        sunriseJob.start()
+      // Add a stopSunriseJob if dawn + sequenceLength is in the future
+      if (stopTime > new Date()) {
+        this.overwriteCronJob(
+          SunriseSunsetService.STOP_SUNRISE_JOB_NAME,
+          CronJob.from({
+            cronTime: stopTime,
+            start: true,
+            onTick: () => {
+              this.logger.log(
+                `Turning off ${devices.length} devices after sunrise: [${devices.map((d) => d.displayName).join(', ')}]`,
+              )
+              devices.forEach((device) => this.elgatoService.setDevicePowerState(device, DevicePowerState.off))
+            },
+          }),
+        )
+        this.logger.log(
+          `Added ${SunriseSunsetService.STOP_SUNRISE_JOB_NAME} cronjob for ${stopTime.toLocaleTimeString()}`,
+        )
       }
     } catch (e) {
       this.logger.error(e)
     }
+  }
+
+  private overwriteCronJob(name: string, job: CronJob) {
+    if (this.schedulerRegistry.doesExist('cron', name)) {
+      this.logger.debug(`Clearing cron job: ${name}`)
+      this.schedulerRegistry.deleteCronJob(name)
+    }
+
+    this.schedulerRegistry.addCronJob(name, job)
   }
 }
