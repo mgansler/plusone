@@ -82,7 +82,13 @@
       "options": {
         "buildTarget": "elgato-backend:build:api-spec",
         "watch": false
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        }
+      ]
     },
     "lint": {
       "executor": "@nx/eslint:lint",
