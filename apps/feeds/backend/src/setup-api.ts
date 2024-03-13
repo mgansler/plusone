@@ -18,7 +18,7 @@ export function setupApi(app: INestApplication): OpenAPIObject {
 }
 
 export function writeApiSpec(document: OpenAPIObject) {
-  const outputPath = resolve(process.cwd(), 'apps/feeds/backend', 'openapi-feeds.json')
+  const outputPath = resolve(process.cwd(), 'apps/feeds/backend', 'feeds-internal.json')
   writeFileSync(outputPath, JSON.stringify(document, undefined, 2), { encoding: 'utf-8' })
   Logger.log('OpenAPI spec has been written.')
 }

@@ -146,6 +146,9 @@ export const getLocationDataResponse = zod.object({
   utcOffset: zod.number(),
 })
 
-export const streamDeckControllerToggleDeviceParams = zod.object({
+/**
+ * @summary Toggles devices on and off.
+ */
+export const toggleDevicePowerStateParams = zod.object({
   macAddress: zod.string(),
 })

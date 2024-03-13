@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core'
 
 import { AppModule } from './app/app.module'
 import { PrismaExceptionFilter } from './app/prisma-exception.filter'
-import { GLOBAL_PREFIX, setupApi, writeApiSpec } from './setup-api'
+import { GLOBAL_PREFIX, setupApiSpec } from './setup-api-spec'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -11,10 +11,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe())
   app.useGlobalFilters(new PrismaExceptionFilter())
 
-  const document = setupApi(app)
-  if (process.env.NODE_ENV === 'development') {
-    writeApiSpec(document)
-  }
+  setupApiSpec(app, process.env.NODE_ENV === 'development')
 
   const port = process.env.PORT || 3001
   await app.listen(port)

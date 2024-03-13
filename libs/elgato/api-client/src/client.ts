@@ -746,52 +746,49 @@ export const useGetLocationData = <TData = Awaited<ReturnType<typeof getLocation
   return query
 }
 
-export const streamDeckControllerToggleDevice = (macAddress: string, signal?: AbortSignal) => {
-  return customAxiosInstance<void>({ url: `/api/stream-deck/toggle/${macAddress}`, method: 'GET', signal })
+/**
+ * @summary Toggles devices on and off.
+ */
+export const toggleDevicePowerState = (macAddress: string, signal?: AbortSignal) => {
+  return customAxiosInstance<void>({ url: `/api/public/stream-deck/toggle/${macAddress}`, method: 'GET', signal })
 }
 
-export const getStreamDeckControllerToggleDeviceQueryKey = (macAddress: string) => {
-  return [`/api/stream-deck/toggle/${macAddress}`] as const
+export const getToggleDevicePowerStateQueryKey = (macAddress: string) => {
+  return [`/api/public/stream-deck/toggle/${macAddress}`] as const
 }
 
-export const getStreamDeckControllerToggleDeviceQueryOptions = <
-  TData = Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>,
+export const getToggleDevicePowerStateQueryOptions = <
+  TData = Awaited<ReturnType<typeof toggleDevicePowerState>>,
   TError = unknown,
 >(
   macAddress: string,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>, TError, TData>>
-  },
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof toggleDevicePowerState>>, TError, TData>> },
 ) => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getStreamDeckControllerToggleDeviceQueryKey(macAddress)
+  const queryKey = queryOptions?.queryKey ?? getToggleDevicePowerStateQueryKey(macAddress)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>> = ({ signal }) =>
-    streamDeckControllerToggleDevice(macAddress, signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof toggleDevicePowerState>>> = ({ signal }) =>
+    toggleDevicePowerState(macAddress, signal)
 
   return { queryKey, queryFn, enabled: !!macAddress, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>,
+    Awaited<ReturnType<typeof toggleDevicePowerState>>,
     TError,
     TData
   > & { queryKey: QueryKey }
 }
 
-export type StreamDeckControllerToggleDeviceQueryResult = NonNullable<
-  Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>
->
-export type StreamDeckControllerToggleDeviceQueryError = unknown
+export type ToggleDevicePowerStateQueryResult = NonNullable<Awaited<ReturnType<typeof toggleDevicePowerState>>>
+export type ToggleDevicePowerStateQueryError = unknown
 
-export const useStreamDeckControllerToggleDevice = <
-  TData = Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>,
-  TError = unknown,
->(
+/**
+ * @summary Toggles devices on and off.
+ */
+export const useToggleDevicePowerState = <TData = Awaited<ReturnType<typeof toggleDevicePowerState>>, TError = unknown>(
   macAddress: string,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>, TError, TData>>
-  },
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof toggleDevicePowerState>>, TError, TData>> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getStreamDeckControllerToggleDeviceQueryOptions(macAddress, options)
+  const queryOptions = getToggleDevicePowerStateQueryOptions(macAddress, options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 

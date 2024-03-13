@@ -8,4 +8,4 @@ import { StreamDeckController } from './stream-deck.controller'
   imports: [DeviceModule],
   controllers: [StreamDeckController],
 })
-export class StreamDeckModule {}
+export class PublicApiModule {}

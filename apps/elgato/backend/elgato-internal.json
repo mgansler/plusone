@@ -364,9 +364,10 @@
         ]
       }
     },
-    "/api/stream-deck/toggle/{macAddress}": {
+    "/api/public/stream-deck/toggle/{macAddress}": {
       "get": {
-        "operationId": "StreamDeckController_toggleDevice",
+        "operationId": "toggle-device-power-state",
+        "summary": "Toggles devices on and off.",
         "parameters": [
           {
             "name": "macAddress",
@@ -381,7 +382,11 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "public",
+          "stream-deck"
+        ]
       }
     }
   },
