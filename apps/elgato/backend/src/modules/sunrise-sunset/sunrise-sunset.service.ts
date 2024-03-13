@@ -38,7 +38,7 @@ export class SunriseSunsetService implements OnModuleInit {
       const sunriseSequenceTotalDuration = getTotalDurationInMs(sunrise)
 
       // Add a startSunriseJob if dawn is in the future
-      if (sunriseSunsetTimes.dawn > new Date()) {
+      if (sunriseSunsetTimes.dawn > new Date() && devices.length > 0) {
         this.overwriteCronJob(
           SunriseSunsetService.START_SUNRISE_JOB_NAME,
           CronJob.from({
@@ -61,7 +61,7 @@ export class SunriseSunsetService implements OnModuleInit {
       const stopTime = new Date(sunriseSunsetTimes.dawn.getTime() + sunriseSequenceTotalDuration - 30_000)
 
       // Add a stopSunriseJob if dawn + sequenceLength is in the future
-      if (stopTime > new Date()) {
+      if (stopTime > new Date() && devices.length > 0) {
         this.overwriteCronJob(
           SunriseSunsetService.STOP_SUNRISE_JOB_NAME,
           CronJob.from({
