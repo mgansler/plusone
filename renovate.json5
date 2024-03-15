@@ -1,7 +1,7 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: ['config:base', ':pinAllExceptPeerDependencies', 'group:allNonMajor'],
-  automerge: false,
+  automerge: true,
   packageRules: [
     {
       matchPackageNames: ['node'],
