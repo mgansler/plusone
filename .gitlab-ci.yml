@@ -44,6 +44,9 @@ migrations-check:
       when: always
     - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME !~ /^renovate\/.*$/
       when: manual
+  before_script:
+    - !reference [.distributed, before_script]
+    - apt-get update && apt-get install -y jq
   script:
     - echo Based of nx version $(git show ${NX_BASE}:package.json|jq -r '.devDependencies.nx')
     - time npx nx migrate latest --from nx@$(git show ${NX_BASE}:package.json|jq -r '.devDependencies.nx')

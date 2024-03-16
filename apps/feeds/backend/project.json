@@ -93,12 +93,7 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "nx run feeds-backend:serve:api-spec"
-      },
-      "dependsOn": [
-        {
-          "target": "docker"
-        }
-      ]
+      }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
