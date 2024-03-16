@@ -1,11 +1,11 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: ['config:base', ':pinAllExceptPeerDependencies', 'group:allNonMajor'],
-  automerge: true,
+  automerge: false,
   packageRules: [
     {
       matchPackageNames: ['node'],
-      allowedVersions: '20.10.0',
+      allowedVersions: '20.x',
     },
   ],
 }
