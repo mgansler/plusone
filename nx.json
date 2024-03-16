@@ -1,7 +1,4 @@
 {
-  "affected": {
-    "defaultBase": "main"
-  },
   "targetDependencies": {
     "test": [
       {
@@ -110,5 +107,7 @@
   "workspaceLayout": {
     "projectNameAndRootFormat": "as-provided"
   },
-  "parallel": 1
+  "parallel": 1,
+  "defaultBase": "main",
+  "useInferencePlugins": false
 }
