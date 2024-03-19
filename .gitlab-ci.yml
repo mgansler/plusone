@@ -42,8 +42,6 @@ migrations-check:
   rules:
     - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^renovate\/.*$/
       when: always
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME !~ /^renovate\/.*$/
-      when: manual
   before_script:
     - !reference [.distributed, before_script]
     - apt-get update && apt-get install -y jq
