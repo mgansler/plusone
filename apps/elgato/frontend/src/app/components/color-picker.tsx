@@ -1,13 +1,13 @@
 import { convert } from 'colvertize'
 
 type LightStripProps = {
-  hue: number
-  saturation: number
-  brightness: number
+  hue?: number
+  saturation?: number
+  brightness?: number
   setColor: (color: string) => void
 }
 
-export function LightColorPicker({ hue, saturation, brightness, setColor }: LightStripProps) {
+export function LightColorPicker({ hue = 0, saturation = 0, brightness = 0, setColor }: LightStripProps) {
   const color = convert({ h: hue, s: saturation / 100, l: brightness / 100 }, 'css-hex')
 
   return (

@@ -1,0 +1,69 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/public/apple-shortcuts/{hash}": {
+      "post": {
+        "operationId": "triggerAppleShortcutsCommand",
+        "summary": "Trigger a predefined command via apple shortcuts.",
+        "parameters": [
+          {
+            "name": "hash",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Command has been executed"
+          },
+          "404": {
+            "description": "The provided command doesn't exist"
+          }
+        },
+        "tags": [
+          "public",
+          "apple-shortcuts"
+        ]
+      }
+    },
+    "/api/public/stream-deck/toggle/{macAddress}": {
+      "get": {
+        "operationId": "toggle-device-power-state",
+        "summary": "Toggles devices on and off.",
+        "parameters": [
+          {
+            "name": "macAddress",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "public",
+          "stream-deck"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Elgato Public API",
+    "description": "",
+    "version": "0.1",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {}
+  }
+}

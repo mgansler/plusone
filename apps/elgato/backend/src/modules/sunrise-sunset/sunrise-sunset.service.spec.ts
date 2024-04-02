@@ -13,6 +13,7 @@ import { SunriseSunsetService } from './sunrise-sunset.service'
 describe('SunriseSunsetService', () => {
   let sunriseSunsetService: SunriseSunsetService
   let schedulerRegistry: SchedulerRegistry
+  let prismaService: PrismaService
 
   let setLightStripScene: jest.Mock
   let setDevicePowerState: jest.Mock
@@ -43,7 +44,6 @@ describe('SunriseSunsetService', () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         SchedulerRegistry,
-
         {
           provide: ElgatoService,
           useValue: {
@@ -73,6 +73,8 @@ describe('SunriseSunsetService', () => {
 
     sunriseSunsetService = moduleRef.get<SunriseSunsetService>(SunriseSunsetService)
     schedulerRegistry = moduleRef.get<SchedulerRegistry>(SchedulerRegistry)
+    prismaService = moduleRef.get<PrismaService>(PrismaService)
+
     addCronJobSpy = jest.spyOn(schedulerRegistry, 'addCronJob')
   })
 
@@ -145,6 +147,14 @@ describe('SunriseSunsetService', () => {
       expect(deleteCronJobSpy).toHaveBeenCalledTimes(2)
       expect(deleteCronJobSpy).toHaveBeenNthCalledWith(1, 'start-sunrise')
       expect(deleteCronJobSpy).toHaveBeenNthCalledWith(2, 'stop-sunrise')
+    })
+
+    it('should not add cronjobs if no devices are configured', async () => {
+      jest.spyOn(prismaService.device, 'findMany').mockResolvedValue([])
+
+      await sunriseSunsetService.setSunriseTimings()
+
+      expect(addCronJobSpy).toHaveBeenCalledTimes(0)
     })
   })
 })

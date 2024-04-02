@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Logger, Param, Patch } from '@nestjs/common'
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger'
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { DeviceSettingsService } from './device-settings.service'
 import { DeviceSettingsRequestDto } from './dto/device-settings-request.dto'
 import { DeviceSettingsResponseDto } from './dto/device-settings-response.dto'
 
+@ApiTags('internal', 'device-settings')
 @Controller('/devices/:macAddress/settings')
 export class DeviceSettingsController {
   private logger = new Logger(DeviceSettingsController.name)

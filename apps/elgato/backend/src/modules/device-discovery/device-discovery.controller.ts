@@ -6,7 +6,7 @@ import { mapProductNameToDeviceType } from '../../shared/map-product-name-to-dev
 import { DeviceDiscoveryService } from './device-discovery.service'
 import { DiscoveredDevicesResponseDto } from './dto/discovered-devices-response.dto'
 
-@ApiTags('discovery')
+@ApiTags('internal', 'discovery')
 @Controller('/discovery')
 export class DeviceDiscoveryController {
   constructor(private readonly deviceDiscoveryService: DeviceDiscoveryService) {}

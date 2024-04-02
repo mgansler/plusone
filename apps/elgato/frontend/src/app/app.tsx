@@ -1,6 +1,6 @@
 import { Link, Outlet } from '@tanstack/react-router'
 
-import { discoveryRoute, settingsRoute } from '../routes'
+import { commandsRoute, discoveryRoute, settingsRoute } from '../routes'
 
 export function App() {
   return (
@@ -9,6 +9,7 @@ export function App() {
 
       <Outlet />
 
+      <Link to={commandsRoute.to}>Commands</Link>
       <Link to={discoveryRoute.to}>Discovery</Link>
       <Link to={settingsRoute.to}>Settings</Link>
     </div>

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Put } from '@nestjs/common'
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger'
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Throttle } from '@nestjs/throttler'
 
 import { DeviceService } from './device.service'
@@ -9,6 +9,7 @@ import { DeviceListResponseDto } from './dto/device-list-response'
 import { DevicePowerStateRequestDto } from './dto/device-power-state-request.dto'
 import { TransitionToColorRequestDto } from './dto/transition-to-color-request.dto'
 
+@ApiTags('internal', 'devices')
 @Controller('/devices')
 export class DeviceController {
   constructor(private readonly deviceService: DeviceService) {}

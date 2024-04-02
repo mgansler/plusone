@@ -59,10 +59,6 @@
         "buildTarget": "elgato-backend:build"
       },
       "configurations": {
-        "api-spec": {
-          "buildTarget": "elgato-backend:build:api-spec",
-          "watch": false
-        },
         "development": {
           "buildTarget": "elgato-backend:build:development"
         },
@@ -82,10 +78,17 @@
       ]
     },
     "generate-api-spec": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/js:node",
       "options": {
-        "command": "nx run elgato-backend:serve:api-spec"
-      }
+        "buildTarget": "elgato-backend:build:api-spec",
+        "watch": false
+      },
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        }
+      ]
     },
     "lint": {
       "executor": "@nx/eslint:lint",

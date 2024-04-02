@@ -23,6 +23,7 @@ export function LocationSettings() {
         return (await refetch()).data as LocationResponseDto
       } catch (e) {
         console.error('Could not get current location')
+        return {} as LocationResponseDto
       }
     },
   })

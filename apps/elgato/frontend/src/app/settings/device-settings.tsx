@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 
-import type { DeviceDetailsResponse } from '@plusone/elgato-api-client'
+import type { DeviceResponseDto } from '@plusone/elgato-api-client'
 import { useUpdateDeviceSettings, useValidatedDeviceList, useValidatedDeviceSettings } from '@plusone/elgato-api-client'
 
 type Fields = {
@@ -9,7 +9,7 @@ type Fields = {
 }
 
 type DeviceSettingsProps = {
-  device: DeviceDetailsResponse
+  device: DeviceResponseDto
 }
 
 export function DeviceSettings({ device }: DeviceSettingsProps) {
