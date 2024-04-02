@@ -13,7 +13,7 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
   },
-  cacheDir: '../../../node_modules/.vite/feeds-web',
+  cacheDir: '../../../node_modules/.vite/apps/feeds/web',
 
   server: {
     port: 4200,
@@ -51,9 +51,6 @@ export default defineConfig({
       provider: 'v8',
     },
     globals: true,
-    cache: {
-      dir: '../../../node_modules/.vitest',
-    },
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },

@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  cacheDir: '../../../node_modules/.vite/elgato-components',
+  cacheDir: '../../../node_modules/.vite/libs/elgato/components',
 
   plugins: [react(), nxViteTsPaths()],
 
@@ -18,7 +18,6 @@ export default defineConfig({
     // reporters: ['default', 'junit'],
     // outputFile: '../../../reports/test/elgato-components.xml',
     globals: true,
-    cache: { dir: '../../../node_modules/.vitest' },
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     setupFiles: ['./setupTests.ts'],
