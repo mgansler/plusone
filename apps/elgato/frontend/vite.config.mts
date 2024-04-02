@@ -12,7 +12,7 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
   },
-  cacheDir: '../../../node_modules/.vite/elgato-frontend',
+  cacheDir: '../../../node_modules/.vite/apps/elgato/frontend',
 
   server: {
     port: 4200,
@@ -40,9 +40,6 @@ export default defineConfig({
       provider: 'v8',
     },
     globals: true,
-    cache: {
-      dir: '../../../node_modules/.vitest',
-    },
     environment: 'happy-dom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },

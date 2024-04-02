@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  cacheDir: '../../node_modules/.vite/vitest',
+  cacheDir: '../../node_modules/.vite/libs/dom-utils',
 
   plugins: [react(), nxViteTsPaths()],
 
@@ -17,7 +17,6 @@ export default defineConfig({
     reporters: ['default', 'junit'],
     outputFile: '../../reports/test/dom-utils.xml',
     globals: true,
-    cache: { dir: '../../node_modules/.vitest' },
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     setupFiles: ['./setupTests.ts'],

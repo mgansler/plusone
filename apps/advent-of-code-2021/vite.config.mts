@@ -12,7 +12,7 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
   },
-  cacheDir: '../../node_modules/.vite/advent-of-code-2021',
+  cacheDir: '../../node_modules/.vite/apps/advent-of-code-2021',
 
   server: {
     fs: {
@@ -36,9 +36,6 @@ export default defineConfig({
       provider: 'v8',
     },
     globals: true,
-    cache: {
-      dir: '../../node_modules/.vitest',
-    },
     environment: 'jsdom',
     include: ['app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },
