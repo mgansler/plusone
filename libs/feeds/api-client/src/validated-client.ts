@@ -1,12 +1,8 @@
-import { ValidatedClientBuilder } from '@plusone/validated-query-factory'
+import { buildValidatedUseQueryWrapper } from '@plusone/validated-query-factory'
 
-import { bootInfo, getFeedSettings, useBootInfo, useGetFeedSettings } from './client'
+import { useBootInfo, useGetFeedSettings } from './client'
 import { bootInfoResponse, getFeedSettingsResponse } from './zod'
 
-export const useValidatedBootInfo = new ValidatedClientBuilder(bootInfoResponse)
-  .withFetchWrapper(bootInfo)
-  .withUseQueryWrapper(useBootInfo)
+export const useValidatedBootInfo = buildValidatedUseQueryWrapper(useBootInfo, bootInfoResponse)
 
-export const useValidatedGetFeedSettings = new ValidatedClientBuilder(getFeedSettingsResponse)
-  .withFetchWrapper(getFeedSettings)
-  .withUseQueryWrapper(useGetFeedSettings)
+export const useValidatedGetFeedSettings = buildValidatedUseQueryWrapper(useGetFeedSettings, getFeedSettingsResponse)

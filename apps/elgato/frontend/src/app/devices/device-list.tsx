@@ -1,6 +1,6 @@
 import { Link, Outlet } from '@tanstack/react-router'
 
-import type { DeviceListResponse } from '@plusone/elgato-api-client'
+import type { DeviceListResponseDto } from '@plusone/elgato-api-client'
 import { useValidatedDeviceList } from '@plusone/elgato-api-client'
 
 import { deviceDetailsRoute } from '../../routes'
@@ -8,7 +8,7 @@ import { deviceDetailsRoute } from '../../routes'
 import { DevicePowerStateControl } from './device-power-state-control'
 
 type DeviceListItemProps = {
-  device: DeviceListResponse['devices'][0]
+  device: DeviceListResponseDto['devices'][0]
 }
 
 function DeviceListItem({ device }: DeviceListItemProps) {

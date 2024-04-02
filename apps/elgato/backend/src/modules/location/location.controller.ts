@@ -6,7 +6,7 @@ import { LocationResponseDto } from './dto/location-response.dto'
 import { LocationUpdateRequestDto } from './dto/location-update-request.dto'
 import { LocationService } from './location.service'
 
-@ApiTags('location')
+@ApiTags('internal', 'location')
 @Controller('/location')
 export class LocationController {
   constructor(private readonly locationService: LocationService) {}

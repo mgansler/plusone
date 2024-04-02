@@ -49,3 +49,25 @@ model Location {
   longitude Float
   latitude  Float
 }
+
+model CommandAction {
+  id         Int    @id @default(autoincrement())
+  macAddress String
+
+  command   Command @relation(fields: [commandId], references: [id], onDelete: Cascade)
+  commandId Int
+
+  on          Boolean
+  powerOnly   Boolean
+  brightness  Int?
+  hue         Int?
+  saturation  Int?
+  temperature Int?
+}
+
+model Command {
+  id      Int             @id @default(autoincrement())
+  name    String          @unique
+  hash    String          @unique
+  actions CommandAction[]
+}

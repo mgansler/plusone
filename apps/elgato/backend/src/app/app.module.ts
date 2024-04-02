@@ -9,7 +9,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { DeviceDiscoveryModule } from '../modules/device-discovery/device-discovery.module'
 import { DeviceModule } from '../modules/device/device.module'
 import { LocationModule } from '../modules/location/location.module'
-import { StreamDeckModule } from '../modules/stream-deck/stream-deck.module'
+import { PublicApiModule } from '../modules/public-api/public-api.module'
 import { SunriseSunsetModule } from '../modules/sunrise-sunset/sunrise-sunset.module'
 
 import { LoggerMiddleware } from './logger.middleware'
@@ -20,7 +20,7 @@ import { LoggerMiddleware } from './logger.middleware'
     DeviceDiscoveryModule,
     DeviceModule,
     LocationModule,
-    StreamDeckModule,
+    PublicApiModule,
     SunriseSunsetModule,
     // @nestjs modules
     ScheduleModule.forRoot(),

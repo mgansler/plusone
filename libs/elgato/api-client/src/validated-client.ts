@@ -1,18 +1,12 @@
-import type { z } from 'zod'
-
-import { ValidatedClientBuilder } from '@plusone/validated-query-factory'
+import { buildValidatedUseQueryWrapper } from '@plusone/validated-query-factory'
 
 import {
-  currentDeviceSettings,
-  currentLocation,
-  deviceDetails,
-  deviceList,
-  discoveredDevices,
   useCurrentDeviceSettings,
   useCurrentLocation,
   useDeviceDetails,
   useDeviceList,
   useDiscoveredDevices,
+  useGetCommands,
 } from './client'
 import {
   currentDeviceSettingsResponse,
@@ -20,27 +14,21 @@ import {
   deviceDetailsResponse,
   deviceListResponse,
   discoveredDevicesResponse,
+  getCommandsResponse,
 } from './zod'
 
-export type DiscoveredDevicesResponse = z.infer<typeof discoveredDevicesResponse>
-export const useValidatedDiscoveredDevicesList = new ValidatedClientBuilder(discoveredDevicesResponse)
-  .withFetchWrapper(discoveredDevices)
-  .withUseQueryWrapper(useDiscoveredDevices)
+export const useValidatedDiscoveredDevicesList = buildValidatedUseQueryWrapper(
+  useDiscoveredDevices,
+  discoveredDevicesResponse,
+)
+export const useValidatedDeviceList = buildValidatedUseQueryWrapper(useDeviceList, deviceListResponse)
+export const useValidatedDeviceDetails = buildValidatedUseQueryWrapper(useDeviceDetails, deviceDetailsResponse)
 
-export type DeviceListResponse = z.infer<typeof deviceListResponse>
-export const useValidatedDeviceList = new ValidatedClientBuilder(deviceListResponse)
-  .withFetchWrapper(deviceList)
-  .withUseQueryWrapper(useDeviceList)
+export const useValidatedDeviceSettings = buildValidatedUseQueryWrapper(
+  useCurrentDeviceSettings,
+  currentDeviceSettingsResponse,
+)
 
-export type DeviceDetailsResponse = z.infer<typeof deviceDetailsResponse>
-export const useValidatedDeviceDetails = new ValidatedClientBuilder(deviceDetailsResponse)
-  .withFetchWrapper(deviceDetails)
-  .withUseQueryWrapper(useDeviceDetails)
+export const useValidatedCurrentLocation = buildValidatedUseQueryWrapper(useCurrentLocation, currentLocationResponse)
 
-export const useValidatedDeviceSettings = new ValidatedClientBuilder(currentDeviceSettingsResponse)
-  .withFetchWrapper(currentDeviceSettings)
-  .withUseQueryWrapper(useCurrentDeviceSettings)
-
-export const useValidatedCurrentLocation = new ValidatedClientBuilder(currentLocationResponse)
-  .withFetchWrapper(currentLocation)
-  .withUseQueryWrapper(useCurrentLocation)
+export const useValidatedCommandsList = buildValidatedUseQueryWrapper(useGetCommands, getCommandsResponse)

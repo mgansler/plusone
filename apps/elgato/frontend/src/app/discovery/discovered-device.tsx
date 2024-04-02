@@ -1,10 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import type { DiscoveredDevicesResponse } from '@plusone/elgato-api-client'
+import type { DiscoveredDevicesResponseDto } from '@plusone/elgato-api-client'
 import { getDiscoveredDevicesQueryKey, useAddDiscoveredDevice } from '@plusone/elgato-api-client'
 
 type DiscoveredDeviceProps = {
-  device: DiscoveredDevicesResponse['devices'][0]
+  device: DiscoveredDevicesResponseDto['devices'][0]
 }
 
 export function DiscoveredDevice({ device }: DiscoveredDeviceProps) {

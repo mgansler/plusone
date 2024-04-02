@@ -3,10 +3,9 @@ import * as process from 'process'
 import { NestFactory } from '@nestjs/core'
 
 import { AppModule } from './app/app.module'
-import { setupApi, writeApiSpec } from './setup-api'
+import { setupApiSpec } from './setup-api-spec'
 
 NestFactory.create(AppModule).then((app) => {
-  const document = setupApi(app)
-  writeApiSpec(document)
+  setupApiSpec(app, true)
   process.exit(0)
 })

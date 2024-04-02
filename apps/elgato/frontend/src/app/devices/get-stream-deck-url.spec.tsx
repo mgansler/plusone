@@ -21,6 +21,6 @@ describe('GetStreamDeckUrl', () => {
 
     await userAction.click(screen.getByRole('button', { name: 'Copy to Clipboard' }))
 
-    expect(copySpy).toHaveBeenCalledWith('http://localhost:1234/api/stream-deck/toggle/ma:ca:dd:re:ss')
+    expect(copySpy).toHaveBeenCalledWith('http://localhost:1234/api/public/stream-deck/toggle/ma:ca:dd:re:ss')
   })
 })

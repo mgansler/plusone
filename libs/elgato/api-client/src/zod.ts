@@ -54,9 +54,9 @@ export const deviceDetailsResponse = zod.object({
   }),
   state: zod.object({
     on: zod.boolean(),
-    hue: zod.number().optional(),
-    saturation: zod.number().optional(),
-    brightness: zod.number().optional(),
+    hue: zod.number().nullish(),
+    saturation: zod.number().nullish(),
+    brightness: zod.number().nullish(),
   }),
   lastSeen: zod.string().datetime(),
 })
@@ -79,9 +79,9 @@ export const deviceSetPowerStateParams = zod.object({
 
 export const deviceSetPowerStateBody = zod.object({
   on: zod.boolean(),
-  hue: zod.number().optional(),
-  saturation: zod.number().optional(),
-  brightness: zod.number().optional(),
+  hue: zod.number().nullish(),
+  saturation: zod.number().nullish(),
+  brightness: zod.number().nullish(),
 })
 
 export const transitionToColorParams = zod.object({
@@ -146,6 +146,92 @@ export const getLocationDataResponse = zod.object({
   utcOffset: zod.number(),
 })
 
-export const streamDeckControllerToggleDeviceParams = zod.object({
+/**
+ * @summary Trigger a predefined command via apple shortcuts.
+ */
+export const triggerAppleShortcutsCommandParams = zod.object({
+  hash: zod.string(),
+})
+
+/**
+ * @summary Toggles devices on and off.
+ */
+export const toggleDevicePowerStateParams = zod.object({
   macAddress: zod.string(),
+})
+
+export const createCommandBody = zod.object({
+  name: zod.string(),
+  actions: zod.array(
+    zod.object({
+      on: zod.boolean(),
+      hue: zod.number().nullish(),
+      saturation: zod.number().nullish(),
+      brightness: zod.number().nullish(),
+      powerOnly: zod.boolean(),
+      macAddress: zod.string(),
+    }),
+  ),
+})
+
+export const getCommandsResponse = zod.object({
+  commands: zod.array(
+    zod.object({
+      name: zod.string(),
+      actions: zod.array(
+        zod.object({
+          on: zod.boolean(),
+          hue: zod.number().nullish(),
+          saturation: zod.number().nullish(),
+          brightness: zod.number().nullish(),
+          powerOnly: zod.boolean(),
+          macAddress: zod.string(),
+        }),
+      ),
+      id: zod.number(),
+      hash: zod.string(),
+    }),
+  ),
+})
+
+export const getCommandParams = zod.object({
+  commandId: zod.number(),
+})
+
+export const getCommandResponse = zod.object({
+  name: zod.string(),
+  actions: zod.array(
+    zod.object({
+      on: zod.boolean(),
+      hue: zod.number().nullish(),
+      saturation: zod.number().nullish(),
+      brightness: zod.number().nullish(),
+      powerOnly: zod.boolean(),
+      macAddress: zod.string(),
+    }),
+  ),
+  id: zod.number(),
+  hash: zod.string(),
+})
+
+export const updateCommandParams = zod.object({
+  commandId: zod.number(),
+})
+
+export const updateCommandBody = zod.object({
+  name: zod.string(),
+  actions: zod.array(
+    zod.object({
+      on: zod.boolean(),
+      hue: zod.number().nullish(),
+      saturation: zod.number().nullish(),
+      brightness: zod.number().nullish(),
+      powerOnly: zod.boolean(),
+      macAddress: zod.string(),
+    }),
+  ),
+})
+
+export const deleteCommandParams = zod.object({
+  commandId: zod.number(),
 })

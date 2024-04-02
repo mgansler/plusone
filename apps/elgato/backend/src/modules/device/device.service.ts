@@ -1,6 +1,5 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
-import Bonjour from 'bonjour-service'
 
 import { PrismaService } from '@plusone/elgato-persistence'
 
@@ -23,7 +22,6 @@ import { DevicePowerState } from './enum/device-power-state'
 @Injectable()
 export class DeviceService implements OnModuleInit {
   private logger = new Logger(DeviceService.name)
-  private bonjour = new Bonjour()
 
   constructor(
     private readonly prismaService: PrismaService,

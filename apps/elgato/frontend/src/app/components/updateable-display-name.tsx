@@ -51,7 +51,7 @@ export function UpdatableDisplayName({ deviceId }: UpdatableDisplayNameProps) {
     setIsEditing(false)
   }
 
-  if (isLoading) {
+  if (isLoading || typeof deviceDetails === 'undefined') {
     return null
   }
 

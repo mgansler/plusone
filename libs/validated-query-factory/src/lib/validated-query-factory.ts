@@ -1,71 +1,22 @@
-import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
-import type { z, ZodType } from 'zod'
+import type { z, ZodSchema, ZodType, ZodTypeDef } from 'zod'
 
 type ValidatedUseQueryReturnType<
   OriginalUseQueryReturnType extends { data: unknown },
-  ValidationSchema extends ZodType<unknown, unknown, unknown>,
+  ValidationSchema extends ZodType<unknown, ZodTypeDef, unknown>,
 > = Omit<OriginalUseQueryReturnType, 'data'> & {
   data: z.infer<ValidationSchema> | undefined
 }
 
-type FetchWrapper<WrappedFunction extends (...args: Array<unknown>) => Promise<unknown>> = (
-  ...args: Parameters<WrappedFunction>
-) => ReturnType<WrappedFunction>
-
-export class ValidatedClientBuilder<TSchema extends ZodType<unknown, unknown, unknown>> {
-  private readonly schema: TSchema
-
-  constructor(schema: TSchema) {
-    this.schema = schema
-  }
-
-  withFetchWrapper<TFetchWrapper extends (...args: Array<unknown>) => Promise<unknown>>(fetchWrapper: TFetchWrapper) {
-    return new FlexibleBuilder(this.schema, fetchWrapper)
-  }
-}
-
-class FlexibleBuilder<TSchema extends ZodType<unknown, unknown, unknown>, TRequiredArgs extends Array<unknown>> {
-  constructor(
-    private readonly schema: TSchema,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    private readonly fetchWrapper: FetchWrapper<TRequiredArgs>,
-  ) {}
-
-  withUseQueryWrapper<
-    TUseQueryWrapper extends (
-      ...args: [
-        ...args: Parameters<typeof this.fetchWrapper>,
-        options:
-          | {
-              query?: UseQueryOptions
-            }
-          | undefined,
-      ]
-    ) => UseQueryResult,
-  >(useQueryWrapper: TUseQueryWrapper) {
-    return (
-      ...args: [
-        ...args: Parameters<TUseQueryWrapper>,
-        options?: {
-          query?: UseQueryOptions<
-            Awaited<ReturnType<typeof this.fetchWrapper>>,
-            unknown,
-            Awaited<ReturnType<typeof this.fetchWrapper>>
-          >
-        },
-      ]
-    ): ValidatedUseQueryReturnType<ReturnType<TUseQueryWrapper>, typeof this.schema> => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const { data, ...rest } = useQueryWrapper(...args)
-
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      return {
-        ...rest,
-        data: rest.isSuccess ? this.schema.parse(data) : undefined,
-      }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function buildValidatedUseQueryWrapper<S extends ZodSchema, T extends (...args: Array<any>) => any>(
+  useQueryWrapper: T,
+  schema: S,
+) {
+  return (...args: Parameters<typeof useQueryWrapper>): ValidatedUseQueryReturnType<ReturnType<T>, S> => {
+    const { data, ...rest } = useQueryWrapper(...args)
+    return {
+      ...rest,
+      data: rest.isSuccess ? schema.parse(data) : undefined,
     }
   }
 }

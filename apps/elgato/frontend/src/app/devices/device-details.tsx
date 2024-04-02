@@ -37,9 +37,9 @@ export function DeviceDetails() {
 
       {deviceDetails?.details.deviceType === DeviceType.LightStrip && (
         <LightColorPicker
-          hue={deviceDetails.state.hue}
-          saturation={deviceDetails.state.saturation}
-          brightness={deviceDetails.state.brightness}
+          hue={deviceDetails.state.hue ?? 0}
+          saturation={deviceDetails.state.saturation ?? 0}
+          brightness={deviceDetails.state.brightness ?? 0}
           setColor={setStripColor}
         />
       )}

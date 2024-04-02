@@ -56,9 +56,6 @@ api-client-check:
   stage: test
   extends:
     - .distributed
-    - .dind
-  variables:
-    FEEDS_DATABASE_URL: postgres://postgres:local_db_password@docker:5434/feeds
   script:
     - time npx nx run-many --target generate-api-spec --all
     - time npx nx run-many --target generate-api-client --all

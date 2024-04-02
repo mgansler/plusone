@@ -15,6 +15,34 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
+export interface ActionRequestDto {
+  /** @nullable */
+  brightness?: number | null
+  /** @nullable */
+  hue?: number | null
+  macAddress: string
+  on: boolean
+  powerOnly: boolean
+  /** @nullable */
+  saturation?: number | null
+}
+
+export interface CommandResponseDto {
+  actions: ActionRequestDto[]
+  hash: string
+  id: number
+  name: string
+}
+
+export interface CommandsListResponseDto {
+  commands: CommandResponseDto[]
+}
+
+export interface CommandRequestDto {
+  actions: ActionRequestDto[]
+  name: string
+}
+
 export interface LocationDataResponseDto {
   dawn: string
   /** Time between sunrise and sunset in seconds. */
@@ -62,10 +90,13 @@ export interface TransitionToColorRequestDto {
 }
 
 export interface DevicePowerStateRequestDto {
-  brightness?: number
-  hue?: number
+  /** @nullable */
+  brightness?: number | null
+  /** @nullable */
+  hue?: number | null
   on: boolean
-  saturation?: number
+  /** @nullable */
+  saturation?: number | null
 }
 
 export interface DeviceDisplayNameRequestDto {
@@ -73,10 +104,13 @@ export interface DeviceDisplayNameRequestDto {
 }
 
 export interface DeviceState {
-  brightness?: number
-  hue?: number
+  /** @nullable */
+  brightness?: number | null
+  /** @nullable */
+  hue?: number | null
   on: boolean
-  saturation?: number
+  /** @nullable */
+  saturation?: number | null
 }
 
 export interface DeviceDetailsResponseDto {
@@ -772,56 +806,326 @@ export const useGetLocationData = <TData = Awaited<ReturnType<typeof getLocation
   return query
 }
 
-export const streamDeckControllerToggleDevice = (macAddress: string, signal?: AbortSignal) => {
-  return customAxiosInstance<void>({ url: `/api/stream-deck/toggle/${macAddress}`, method: 'GET', signal })
+/**
+ * @summary Trigger a predefined command via apple shortcuts.
+ */
+export const triggerAppleShortcutsCommand = (hash: string) => {
+  return customAxiosInstance<void>({ url: `/api/public/apple-shortcuts/${hash}`, method: 'POST' })
 }
 
-export const getStreamDeckControllerToggleDeviceQueryKey = (macAddress: string) => {
-  return [`/api/stream-deck/toggle/${macAddress}`] as const
+export const getTriggerAppleShortcutsCommandMutationOptions = <TError = void, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>,
+    TError,
+    { hash: string },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>,
+  TError,
+  { hash: string },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>, { hash: string }> = (
+    props,
+  ) => {
+    const { hash } = props ?? {}
+
+    return triggerAppleShortcutsCommand(hash)
+  }
+
+  return { mutationFn, ...mutationOptions }
 }
 
-export const getStreamDeckControllerToggleDeviceQueryOptions = <
-  TData = Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>,
+export type TriggerAppleShortcutsCommandMutationResult = NonNullable<
+  Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>
+>
+
+export type TriggerAppleShortcutsCommandMutationError = void
+
+/**
+ * @summary Trigger a predefined command via apple shortcuts.
+ */
+export const useTriggerAppleShortcutsCommand = <TError = void, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>,
+    TError,
+    { hash: string },
+    TContext
+  >
+}): UseMutationResult<Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>, TError, { hash: string }, TContext> => {
+  const mutationOptions = getTriggerAppleShortcutsCommandMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
+/**
+ * @summary Toggles devices on and off.
+ */
+export const toggleDevicePowerState = (macAddress: string, signal?: AbortSignal) => {
+  return customAxiosInstance<void>({ url: `/api/public/stream-deck/toggle/${macAddress}`, method: 'GET', signal })
+}
+
+export const getToggleDevicePowerStateQueryKey = (macAddress: string) => {
+  return [`/api/public/stream-deck/toggle/${macAddress}`] as const
+}
+
+export const getToggleDevicePowerStateQueryOptions = <
+  TData = Awaited<ReturnType<typeof toggleDevicePowerState>>,
   TError = unknown,
 >(
   macAddress: string,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>, TError, TData>>
-  },
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof toggleDevicePowerState>>, TError, TData>> },
 ) => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getStreamDeckControllerToggleDeviceQueryKey(macAddress)
+  const queryKey = queryOptions?.queryKey ?? getToggleDevicePowerStateQueryKey(macAddress)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>> = ({ signal }) =>
-    streamDeckControllerToggleDevice(macAddress, signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof toggleDevicePowerState>>> = ({ signal }) =>
+    toggleDevicePowerState(macAddress, signal)
 
   return { queryKey, queryFn, enabled: !!macAddress, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>,
+    Awaited<ReturnType<typeof toggleDevicePowerState>>,
     TError,
     TData
   > & { queryKey: QueryKey }
 }
 
-export type StreamDeckControllerToggleDeviceQueryResult = NonNullable<
-  Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>
->
-export type StreamDeckControllerToggleDeviceQueryError = unknown
+export type ToggleDevicePowerStateQueryResult = NonNullable<Awaited<ReturnType<typeof toggleDevicePowerState>>>
+export type ToggleDevicePowerStateQueryError = unknown
 
-export const useStreamDeckControllerToggleDevice = <
-  TData = Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>,
-  TError = unknown,
->(
+/**
+ * @summary Toggles devices on and off.
+ */
+export const useToggleDevicePowerState = <TData = Awaited<ReturnType<typeof toggleDevicePowerState>>, TError = unknown>(
   macAddress: string,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof streamDeckControllerToggleDevice>>, TError, TData>>
-  },
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof toggleDevicePowerState>>, TError, TData>> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getStreamDeckControllerToggleDeviceQueryOptions(macAddress, options)
+  const queryOptions = getToggleDevicePowerStateQueryOptions(macAddress, options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
   query.queryKey = queryOptions.queryKey
 
   return query
+}
+
+export const createCommand = (commandRequestDto: CommandRequestDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/commands`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: commandRequestDto,
+  })
+}
+
+export const getCreateCommandMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createCommand>>,
+    TError,
+    { data: CommandRequestDto },
+    TContext
+  >
+}): UseMutationOptions<Awaited<ReturnType<typeof createCommand>>, TError, { data: CommandRequestDto }, TContext> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof createCommand>>, { data: CommandRequestDto }> = (
+    props,
+  ) => {
+    const { data } = props ?? {}
+
+    return createCommand(data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type CreateCommandMutationResult = NonNullable<Awaited<ReturnType<typeof createCommand>>>
+export type CreateCommandMutationBody = CommandRequestDto
+export type CreateCommandMutationError = unknown
+
+export const useCreateCommand = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createCommand>>,
+    TError,
+    { data: CommandRequestDto },
+    TContext
+  >
+}): UseMutationResult<Awaited<ReturnType<typeof createCommand>>, TError, { data: CommandRequestDto }, TContext> => {
+  const mutationOptions = getCreateCommandMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
+export const getCommands = (signal?: AbortSignal) => {
+  return customAxiosInstance<CommandsListResponseDto>({ url: `/api/commands`, method: 'GET', signal })
+}
+
+export const getGetCommandsQueryKey = () => {
+  return [`/api/commands`] as const
+}
+
+export const getGetCommandsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getCommands>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCommands>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetCommandsQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCommands>>> = ({ signal }) => getCommands(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getCommands>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey }
+}
+
+export type GetCommandsQueryResult = NonNullable<Awaited<ReturnType<typeof getCommands>>>
+export type GetCommandsQueryError = unknown
+
+export const useGetCommands = <TData = Awaited<ReturnType<typeof getCommands>>, TError = unknown>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCommands>>, TError, TData>>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getGetCommandsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const getCommand = (commandId: number, signal?: AbortSignal) => {
+  return customAxiosInstance<CommandResponseDto>({ url: `/api/commands/${commandId}`, method: 'GET', signal })
+}
+
+export const getGetCommandQueryKey = (commandId: number) => {
+  return [`/api/commands/${commandId}`] as const
+}
+
+export const getGetCommandQueryOptions = <TData = Awaited<ReturnType<typeof getCommand>>, TError = unknown>(
+  commandId: number,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCommand>>, TError, TData>> },
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetCommandQueryKey(commandId)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCommand>>> = ({ signal }) => getCommand(commandId, signal)
+
+  return { queryKey, queryFn, enabled: !!commandId, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getCommand>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey }
+}
+
+export type GetCommandQueryResult = NonNullable<Awaited<ReturnType<typeof getCommand>>>
+export type GetCommandQueryError = unknown
+
+export const useGetCommand = <TData = Awaited<ReturnType<typeof getCommand>>, TError = unknown>(
+  commandId: number,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCommand>>, TError, TData>> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getGetCommandQueryOptions(commandId, options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const updateCommand = (commandId: number, commandRequestDto: CommandRequestDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/commands/${commandId}`,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    data: commandRequestDto,
+  })
+}
+
+export const getUpdateCommandMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateCommand>>,
+    TError,
+    { commandId: number; data: CommandRequestDto },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateCommand>>,
+  TError,
+  { commandId: number; data: CommandRequestDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateCommand>>,
+    { commandId: number; data: CommandRequestDto }
+  > = (props) => {
+    const { commandId, data } = props ?? {}
+
+    return updateCommand(commandId, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type UpdateCommandMutationResult = NonNullable<Awaited<ReturnType<typeof updateCommand>>>
+export type UpdateCommandMutationBody = CommandRequestDto
+export type UpdateCommandMutationError = unknown
+
+export const useUpdateCommand = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateCommand>>,
+    TError,
+    { commandId: number; data: CommandRequestDto },
+    TContext
+  >
+}): UseMutationResult<
+  Awaited<ReturnType<typeof updateCommand>>,
+  TError,
+  { commandId: number; data: CommandRequestDto },
+  TContext
+> => {
+  const mutationOptions = getUpdateCommandMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
+export const deleteCommand = (commandId: number) => {
+  return customAxiosInstance<void>({ url: `/api/commands/${commandId}`, method: 'DELETE' })
+}
+
+export const getDeleteCommandMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteCommand>>, TError, { commandId: number }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof deleteCommand>>, TError, { commandId: number }, TContext> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCommand>>, { commandId: number }> = (props) => {
+    const { commandId } = props ?? {}
+
+    return deleteCommand(commandId)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type DeleteCommandMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCommand>>>
+
+export type DeleteCommandMutationError = unknown
+
+export const useDeleteCommand = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteCommand>>, TError, { commandId: number }, TContext>
+}): UseMutationResult<Awaited<ReturnType<typeof deleteCommand>>, TError, { commandId: number }, TContext> => {
+  const mutationOptions = getDeleteCommandMutationOptions(options)
+
+  return useMutation(mutationOptions)
 }
