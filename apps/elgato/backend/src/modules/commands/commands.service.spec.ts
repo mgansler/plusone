@@ -28,7 +28,12 @@ describe('CommandsService', () => {
           provide: PrismaService,
           useValue: {
             command: {
+              create: jest.fn(),
+              delete: jest.fn(),
+              findMany: jest.fn(),
+              findUnique: jest.fn(),
               findUniqueOrThrow: jest.fn(),
+              update: jest.fn(),
             },
           },
         },
@@ -49,12 +54,111 @@ describe('CommandsService', () => {
     jest.clearAllMocks()
   })
 
+  describe('createCommand', () => {
+    it('should create a command', async () => {
+      const createSpy = jest.spyOn(prismaService.command, 'create').mockResolvedValue({
+        id: 1,
+        name: 'new-name',
+        hash: 'fa15dcda61725e1a07c0afc636beca67',
+      })
+
+      const actual = await commandsService.createCommand({ name: 'new-name', actions: [] })
+
+      expect(actual).toEqual({
+        id: 1,
+        name: 'new-name',
+        hash: 'fa15dcda61725e1a07c0afc636beca67',
+      })
+      expect(createSpy).toHaveBeenCalledWith({
+        data: {
+          name: 'new-name',
+          hash: 'fa15dcda61725e1a07c0afc636beca67',
+          actions: {
+            createMany: { data: [] },
+          },
+        },
+        include: {
+          actions: true,
+        },
+      })
+    })
+  })
+
+  describe('getCommands', () => {
+    it('should return a list of commands', async () => {
+      const findManySpy = jest.spyOn(prismaService.command, 'findMany').mockResolvedValue([])
+
+      const actual = await commandsService.getCommands()
+
+      expect(actual).toEqual({ commands: [] })
+      expect(findManySpy).toHaveBeenCalledWith({ include: { actions: true } })
+    })
+  })
+
+  describe('getCommand', () => {
+    it('should return a list of commands', async () => {
+      const findUniqueSpy = jest.spyOn(prismaService.command, 'findUnique').mockResolvedValue({
+        id: 1,
+        name: 'my-test-command',
+        hash: 'md5-hash-of-name',
+      })
+
+      const actual = await commandsService.getCommand(1)
+
+      expect(actual).toEqual({ hash: 'md5-hash-of-name', id: 1, name: 'my-test-command' })
+      expect(findUniqueSpy).toHaveBeenCalledWith({ where: { id: 1 }, include: { actions: true } })
+    })
+  })
+
+  describe('updateCommand', () => {
+    it('should update a given command', async () => {
+      const updateSpy = jest.spyOn(prismaService.command, 'update').mockResolvedValue({
+        id: 1,
+        name: 'new-name',
+        hash: 'fa15dcda61725e1a07c0afc636beca67',
+      })
+
+      const actual = await commandsService.updateCommand(1, { name: 'new-name', actions: [] })
+
+      expect(actual).toEqual({
+        id: 1,
+        name: 'new-name',
+        hash: 'fa15dcda61725e1a07c0afc636beca67',
+      })
+      expect(updateSpy).toHaveBeenCalledWith({
+        where: { id: 1 },
+        data: {
+          name: 'new-name',
+          hash: 'fa15dcda61725e1a07c0afc636beca67',
+          actions: {
+            deleteMany: { commandId: 1 },
+            createMany: { data: [] },
+          },
+        },
+        include: {
+          actions: true,
+        },
+      })
+    })
+  })
+
+  describe('deleteCommand', () => {
+    it('should delete a command with the given id', async () => {
+      const deleteSpy = jest.spyOn(prismaService.command, 'delete')
+
+      await commandsService.deleteCommand(1)
+
+      expect(deleteSpy).toHaveBeenCalledWith({ where: { id: 1 } })
+    })
+  })
+
   describe('executeCommand', () => {
     it('should turn on devices when powerOnly is true', async () => {
       // @ts-expect-error actions are a relation and not included in the inferred type
       jest.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
         id: 1,
         name: 'my-test-command',
+        hash: 'md5-hash-of-name',
         actions: [
           {
             macAddress: 'de:vi:ce',
@@ -81,6 +185,7 @@ describe('CommandsService', () => {
       jest.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
         id: 1,
         name: 'my-test-command',
+        hash: 'md5-hash-of-name',
         actions: [
           {
             macAddress: 'de:vi:ce',
@@ -106,6 +211,7 @@ describe('CommandsService', () => {
       jest.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
         id: 1,
         name: 'my-test-command',
+        hash: 'md5-hash-of-name',
         actions: [
           {
             macAddress: 'de:vi:ce',
@@ -131,6 +237,7 @@ describe('CommandsService', () => {
       jest.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
         id: 1,
         name: 'my-test-command',
+        hash: 'md5-hash-of-name',
         actions: [
           {
             macAddress: 'de:vi:c1',

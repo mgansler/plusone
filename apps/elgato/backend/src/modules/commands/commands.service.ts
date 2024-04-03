@@ -19,23 +19,19 @@ export class CommandsService {
   ) {}
 
   async createCommand(request: CommandRequestDto): Promise<CommandResponseDto> {
-    return this.prismaService.$transaction(async (tx) => {
-      const command = await tx.command.create({
-        data: { name: request.name, hash: createHash('md5').update(request.name).digest('hex') },
-      })
-
-      for (const action of request.actions) {
-        await tx.command.update({
-          where: { id: command.id },
-          data: {
-            actions: {
-              create: this.actionToPrismaInput(action),
-            },
+    return this.prismaService.command.create({
+      data: {
+        name: request.name,
+        hash: createHash('md5').update(request.name).digest('hex'),
+        actions: {
+          createMany: {
+            data: request.actions.map(this.actionToPrismaInput),
           },
-        })
-      }
-
-      return tx.command.findUnique({ where: { id: command.id }, include: { actions: true } })
+        },
+      },
+      include: {
+        actions: true,
+      },
     })
   }
 
@@ -54,29 +50,23 @@ export class CommandsService {
   }
 
   async updateCommand(commandId: number, commandRequest: CommandRequestDto): Promise<CommandResponseDto> {
-    return this.prismaService.$transaction(async (tx) => {
-      await tx.command.update({
-        where: { id: commandId },
-        data: {
-          name: commandRequest.name,
-          hash: createHash('md5').update(commandRequest.name).digest('hex'),
-        },
-      })
-
-      await tx.commandAction.deleteMany({ where: { commandId } })
-
-      for (const action of commandRequest.actions) {
-        await tx.command.update({
-          where: { id: commandId },
-          data: {
-            actions: {
-              create: this.actionToPrismaInput(action),
-            },
+    return this.prismaService.command.update({
+      where: { id: commandId },
+      data: {
+        name: commandRequest.name,
+        hash: createHash('md5').update(commandRequest.name).digest('hex'),
+        actions: {
+          deleteMany: {
+            commandId,
           },
-        })
-      }
-
-      return tx.command.findUnique({ where: { id: commandId }, include: { actions: true } })
+          createMany: {
+            data: commandRequest.actions.map(this.actionToPrismaInput),
+          },
+        },
+      },
+      include: {
+        actions: true,
+      },
     })
   }
 
