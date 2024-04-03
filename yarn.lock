@@ -5020,16 +5020,16 @@
   resolved "https://registry.npmjs.org/@octokit/auth-token/-/auth-token-5.0.0.tgz#16dfaf98154a28d44aa7f83229a08a0e01cc1aa3"
   integrity sha512-JpQdKWTuu79A6YDaOfl9/HFvdhEwlRSTE/MFLGl8eU+XK6jIuqhxEftJNDpQjem1J7GLcs+4sapP1JXNPTDP/A==
 
-"@octokit/core@6.1.0":
-  version "6.1.0"
-  resolved "https://registry.npmjs.org/@octokit/core/-/core-6.1.0.tgz#c33ab8aa695cc5ab20807ad54e5028a3204fd201"
-  integrity sha512-3EvHBZUMeGtiWebCdyutlSDuVEWjjmXsvkmWfgCEMlmvFYrqzXVKTTH3jIXZFKhj0CjFAEMsJvETbEOzJnbphg==
+"@octokit/core@6.1.1":
+  version "6.1.1"
+  resolved "https://registry.npmjs.org/@octokit/core/-/core-6.1.1.tgz#c1c18a2cc755358b3c76d3520704e9d9836bee0d"
+  integrity sha512-uVypPdnZV7YoEa69Ky2kTSw3neFLGT0PZ54OwUMDph7w6TmhF0ZnoVcvb/kYnjDHCFo2mfoeRDYifLKhLNasUg==
   dependencies:
     "@octokit/auth-token" "^5.0.0"
     "@octokit/graphql" "^8.0.0"
     "@octokit/request" "^9.0.0"
     "@octokit/request-error" "^6.0.1"
-    "@octokit/types" "^12.0.0"
+    "@octokit/types" "^13.0.0"
     before-after-hook "^3.0.2"
     universal-user-agent "^7.0.0"
 
@@ -5055,6 +5055,11 @@
   resolved "https://registry.npmjs.org/@octokit/openapi-types/-/openapi-types-19.1.0.tgz#75ec7e64743870fc73e1ab4bc6ec252ecdd624dc"
   integrity sha512-6G+ywGClliGQwRsjvqVYpklIfa7oRPA0vyhPQG/1Feh+B+wU0vGH1JiJ5T25d3g1JZYBHzR2qefLi9x8Gt+cpw==
 
+"@octokit/openapi-types@^21.0.0":
+  version "21.0.0"
+  resolved "https://registry.npmjs.org/@octokit/openapi-types/-/openapi-types-21.0.0.tgz#95bb24b6f427d82092c7e6792d686df92d0a1fd4"
+  integrity sha512-B6/NBvsNQT5UWYWSFcUT55XTMZBHyflNke7Ryvhs3dLe3I2TTPwpGPMib70YS1Ha5Iccc5CtXTLU7lHstC5e3Q==
+
 "@octokit/request-error@^6.0.1":
   version "6.0.1"
   resolved "https://registry.npmjs.org/@octokit/request-error/-/request-error-6.0.1.tgz#165debcaab268a107b1d4ac0f7732bc96eabd409"
@@ -5078,6 +5083,13 @@
   integrity sha512-nJ8X2HRr234q3w/FcovDlA+ttUU4m1eJAourvfUUtwAWeqL8AsyRqfnLvVnYn3NFbUnsmzQCzLNdFerPwdmcDQ==
   dependencies:
     "@octokit/openapi-types" "^19.0.2"
+
+"@octokit/types@^13.0.0":
+  version "13.0.0"
+  resolved "https://registry.npmjs.org/@octokit/types/-/types-13.0.0.tgz#6828279d1c0af76753a16d64b96e594aa0a135d0"
+  integrity sha512-jSOgEoFZvjg78txlb7cuRTAEvyyQkIEB4Nujg5ZN7E1xaICsr8A0X045Nwb1wUWNrBUHBHZNtcsDIhk8d8ipCw==
+  dependencies:
+    "@octokit/openapi-types" "^21.0.0"
 
 "@oozcitak/dom@1.15.10":
   version "1.15.10"
