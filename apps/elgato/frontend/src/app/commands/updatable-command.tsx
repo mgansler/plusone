@@ -15,9 +15,9 @@ type UpdatableCommandFields = {
     macAddress: string
     on: boolean
     powerOnly: boolean
-    hue?: number
-    saturation?: number
-    brightness?: number
+    hue?: string
+    saturation?: string
+    brightness?: string
   }>
 }
 
@@ -52,7 +52,6 @@ export function UpdatableCommand({ commandId }: UpdatableCommandProps) {
       }
       try {
         const { data } = await refetch()
-        console.log({ data })
         return data as UpdatableCommandFields
       } catch (e) {
         return {
@@ -69,9 +68,9 @@ export function UpdatableCommand({ commandId }: UpdatableCommandProps) {
       ...formContent,
       actions: formContent.actions.map((action) => ({
         ...action,
-        hue: (action.hue as unknown as string) === '' ? undefined : Number(action.hue),
-        brightness: (action.brightness as unknown as string) === '' ? undefined : Number(action.brightness),
-        saturation: (action.saturation as unknown as string) === '' ? undefined : Number(action.saturation),
+        hue: action.hue === '' ? undefined : Number(action.hue),
+        brightness: action.brightness === '' ? undefined : Number(action.brightness),
+        saturation: action.saturation === '' ? undefined : Number(action.saturation),
       })),
     }
 
@@ -145,7 +144,7 @@ export function UpdatableCommand({ commandId }: UpdatableCommandProps) {
       })}
 
       <button type={'button'} onClick={() => append(actionDefaults)}>
-        Add action
+        Add Action
       </button>
 
       <input type={'submit'} />
