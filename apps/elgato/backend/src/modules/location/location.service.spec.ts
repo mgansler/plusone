@@ -6,12 +6,21 @@ import { PrismaService } from '@plusone/elgato-persistence'
 
 import { LocationService } from './location.service'
 
-describe('CommandsService', () => {
+describe('LocationService', () => {
   let locationService: LocationService
   let prismaService: PrismaService
   let httpService: HttpService
 
   let httpGetSpy: jest.SpyInstance
+
+  beforeAll(() => {
+    jest.useFakeTimers()
+    jest.setSystemTime(new Date(1970, 0, 1, 1, 0, 0, 0))
+  })
+
+  afterAll(() => {
+    jest.useRealTimers()
+  })
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -80,15 +89,15 @@ describe('CommandsService', () => {
         name: 'Stuttgart',
         latitude: 48.77,
         longitude: 9.16,
-        dawn: new Date(2024, 3, 4, 6, 57, 33),
+        dawn: new Date(1970, 0, 1, 6, 57, 33),
         dayLength: 41295,
-        dusk: new Date(2024, 3, 4, 19, 28, 39),
-        firstLight: new Date(2024, 3, 4, 5, 44, 0),
-        goldenHour: new Date(2024, 3, 4, 18, 15, 6),
-        lastLight: new Date(2024, 3, 4, 20, 42, 13),
-        solarNoon: new Date(2024, 3, 4, 13, 13, 6),
-        sunrise: new Date(2024, 3, 4, 7, 28, 58),
-        sunset: new Date(2024, 3, 4, 18, 57, 14),
+        dusk: new Date(1970, 0, 1, 19, 28, 39),
+        firstLight: new Date(1970, 0, 1, 5, 44, 0),
+        goldenHour: new Date(1970, 0, 1, 18, 15, 6),
+        lastLight: new Date(1970, 0, 1, 20, 42, 13),
+        solarNoon: new Date(1970, 0, 1, 13, 13, 6),
+        sunrise: new Date(1970, 0, 1, 7, 28, 58),
+        sunset: new Date(1970, 0, 1, 18, 57, 14),
         timeZone: 'Europe/Berlin',
         utcOffset: 120,
       })
