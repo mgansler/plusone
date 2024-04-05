@@ -139,9 +139,9 @@ export class DeviceService implements OnModuleInit {
 
     const d = await this.prismaService.device.findUniqueOrThrow({ where: { macAddress } })
     await this.elgatoService.setLightStripScene(d, scene)
-    new Promise((resolve) => setTimeout(resolve, 1_100)).then(() => {
+    setTimeout(() => {
       this.elgatoService.setLightStripColor(d, color)
-    })
+    }, 1_100)
   }
 
   @Cron(CronExpression.EVERY_10_MINUTES, { name: 'check-devices' })
