@@ -1,7 +1,8 @@
+import { createHash } from 'node:crypto'
+
 import { Injectable, Logger } from '@nestjs/common'
 
 import { Prisma, PrismaService } from '@plusone/elgato-persistence'
-import { createHash } from 'node:crypto'
 
 import { DeviceService } from '../device/device.service'
 
