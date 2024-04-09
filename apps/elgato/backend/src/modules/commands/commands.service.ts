@@ -1,8 +1,7 @@
-import { createHash } from 'node:crypto'
-
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 
 import { Prisma, PrismaService } from '@plusone/elgato-persistence'
+import { createHash } from 'node:crypto'
 
 import { DeviceService } from '../device/device.service'
 
@@ -13,6 +12,8 @@ import { CommandsListResponseDto } from './dto/commands-list-response.dto'
 
 @Injectable()
 export class CommandsService {
+  private logger = new Logger(CommandsService.name)
+
   constructor(
     private readonly deviceService: DeviceService,
     private readonly prismaService: PrismaService,
@@ -90,6 +91,8 @@ export class CommandsService {
         },
       },
     })
+
+    this.logger.log(`Command ${command.name} has been triggered.`)
 
     for (const { macAddress, on, powerOnly, ...state } of command.actions) {
       // TODO: determine if a certain color/temperature should be set or just on/off
