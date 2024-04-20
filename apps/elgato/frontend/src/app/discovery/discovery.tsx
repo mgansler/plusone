@@ -2,8 +2,6 @@ import { Link } from '@tanstack/react-router'
 
 import { useValidatedDiscoveredDevicesList } from '@plusone/elgato-api-client'
 
-import { discoveryRoute } from '../../routes'
-
 import { DiscoveredDevice } from './discovered-device'
 import { ManualDevice } from './manual-device'
 
@@ -13,9 +11,7 @@ export function Discovery() {
   return (
     <div>
       <h2>Discovery</h2>
-      <Link from={discoveryRoute.fullPath} to={'..'}>
-        Back
-      </Link>
+      <Link to={'../'}>Back</Link>
 
       {discoveredDevices?.devices.map((device) => <DiscoveredDevice key={device.id} device={device} />)}
 
