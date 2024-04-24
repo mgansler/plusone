@@ -121,7 +121,7 @@ export default function () {
         <div>
           Solution (Part 2)
           <br />
-          {result.folded.map((row, index) => (
+          {result.folded.map((row: Array<boolean>, index: number) => (
             <span key={index}>
               {row.map((dot) => (dot ? '\u26ab' : '\u26aa'))}
               <br />
