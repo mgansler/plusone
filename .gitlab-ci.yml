@@ -22,7 +22,6 @@ stages:
     - yarn install --frozen-lockfile
     - NX_HEAD=$CI_COMMIT_SHA
     - NX_BASE=${CI_MERGE_REQUEST_DIFF_BASE_SHA:-$CI_COMMIT_BEFORE_SHA}
-  retry: 2
 
 .dind:
   services:
@@ -81,6 +80,7 @@ test:
   stage: test
   extends:
     - .distributed
+  retry: 2
   script:
     - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t test --parallel=8 --configuration=ci
   after_script:
@@ -97,6 +97,7 @@ component-test:
   stage: test
   extends:
     - .distributed
+  retry: 2
   before_script:
     - !reference [.distributed, before_script]
     - sh tools/scripts/install-cypress-dependencies.sh
@@ -117,6 +118,7 @@ e2e:
   extends:
     - .distributed
     - .dind
+  retry: 2
   needs:
     - format-check
     - lint

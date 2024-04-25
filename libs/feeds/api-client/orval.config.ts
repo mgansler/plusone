@@ -27,6 +27,17 @@ module.exports = defineConfig({
     output: {
       client: 'zod',
       target: './src/zod.ts',
+      override: {
+        zod: {
+          strict: {
+            body: true,
+            header: true,
+            param: true,
+            query: true,
+            response: true,
+          },
+        },
+      },
     },
     hooks: {
       afterAllFilesWrite: 'nx format --files libs/feeds/api-client/src/zod.ts',
