@@ -20,5 +20,9 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     setupFiles: ['./setupTests.ts'],
+    coverage: {
+      reportsDirectory: '../../coverage/github-hooks/',
+      provider: 'v8',
+    },
   },
 })

@@ -36,7 +36,7 @@ export default defineConfig({
     reporters: ['default', 'junit'],
     outputFile: '../../reports/test/suite.xml',
     coverage: {
-      reportsDirectory: '../../coverage/vitest',
+      reportsDirectory: '../../coverage/apps/suite',
       provider: 'v8',
     },
     globals: true,
