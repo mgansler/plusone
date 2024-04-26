@@ -11,7 +11,7 @@ export function Discovery() {
   return (
     <div>
       <h2>Discovery</h2>
-      <Link to={'../'}>Back</Link>
+      <Link to={'..'}>Back</Link>
 
       {discoveredDevices?.devices.map((device) => <DiscoveredDevice key={device.id} device={device} />)}
 
