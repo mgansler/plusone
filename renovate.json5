@@ -12,5 +12,10 @@
       matchPackageNames: ['@octokit/core'],
       allowedVersions: '!/6\\.1\\.2/',
     },
+    {
+      // https://github.com/swc-project/swc/issues/8898
+      matchPackageNames: ['@swc/core'],
+      allowedVersions: '!/1\\.5\\.[012]/',
+    },
   ],
 }
