@@ -21,5 +21,10 @@
       matchPackageNames: ['@swc/core'],
       allowedVersions: '!/1\\.5\\.[012]/',
     },
+    {
+      // https://github.com/TanStack/router/issues/1567
+      matchPackageNames: ['@tanstack/react-router'],
+      allowedVersions: '!/1\\.31\\.23/',
+    },
   ],
 }
