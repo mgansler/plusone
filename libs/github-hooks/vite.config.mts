@@ -21,7 +21,7 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     setupFiles: ['./setupTests.ts'],
     coverage: {
-      reportsDirectory: '../../coverage/github-hooks/',
+      reportsDirectory: '../../coverage/libs/github-hooks/',
       provider: 'v8',
     },
   },

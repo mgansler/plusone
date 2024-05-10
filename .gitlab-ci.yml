@@ -144,6 +144,7 @@ build:
   stage: build
   extends:
     - .distributed
+  retry: 2 # sometimes the prisma.io binaries are not properly generated
   needs:
     - format-check
     - lint
