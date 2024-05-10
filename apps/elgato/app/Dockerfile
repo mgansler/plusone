@@ -1,4 +1,4 @@
-FROM node:20.13.0-alpine
+FROM node:20.13.1-alpine
 RUN apk add --no-cache avahi avahi-tools tzdata
 
 
