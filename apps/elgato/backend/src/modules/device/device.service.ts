@@ -14,6 +14,7 @@ import { ElgatoService } from '../elgato/elgato.service'
 
 import { DeviceDetailsResponseDto } from './dto/device-details-response.dto'
 import { DeviceDisplayNameRequestDto } from './dto/device-display-name-request.dto'
+import { DeviceResponseDto } from './dto/device-response'
 import { DeviceState } from './dto/device-state'
 import { ElgatoDeviceDetailsResponseDto } from './dto/elgato-device-details-response.dto'
 import { TransitionToColorRequestDto } from './dto/transition-to-color-request.dto'
@@ -33,8 +34,8 @@ export class DeviceService implements OnModuleInit {
     this.logger.log(`Known devices: ${knownDevices}`)
   }
 
-  async getAllDevices() {
-    return this.prismaService.device.findMany()
+  async getAllDevices(): Promise<Array<DeviceResponseDto>> {
+    return this.prismaService.device.findMany({ select: { macAddress: true, displayName: true } })
   }
 
   async getDevice(macAddress: string): Promise<DeviceDetailsResponseDto> {
@@ -146,7 +147,7 @@ export class DeviceService implements OnModuleInit {
 
   @Cron(CronExpression.EVERY_10_MINUTES, { name: 'check-devices' })
   private async checkKnownDevices() {
-    const devices = await this.getAllDevices()
+    const devices = await this.prismaService.device.findMany()
     for (const device of devices) {
       const lastSeenMinutes = Math.floor((Date.now() - device.lastSeen.valueOf()) / 60 / 1_000)
 

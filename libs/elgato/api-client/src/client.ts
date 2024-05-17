@@ -15,6 +15,33 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
+export interface ActionResponseDto {
+  /** @nullable */
+  brightness?: number | null
+  commandId: number
+  /** @nullable */
+  hue?: number | null
+  id: number
+  macAddress: string
+  on: boolean
+  powerOnly: boolean
+  /** @nullable */
+  saturation?: number | null
+  /** @nullable */
+  temperature?: number | null
+}
+
+export interface CommandResponseDto {
+  actions: ActionResponseDto[]
+  hash: string
+  id: number
+  name: string
+}
+
+export interface CommandsListResponseDto {
+  commands: CommandResponseDto[]
+}
+
 export interface ActionRequestDto {
   /** @nullable */
   brightness?: number | null
@@ -25,17 +52,8 @@ export interface ActionRequestDto {
   powerOnly: boolean
   /** @nullable */
   saturation?: number | null
-}
-
-export interface CommandResponseDto {
-  actions: ActionRequestDto[]
-  hash: string
-  id: number
-  name: string
-}
-
-export interface CommandsListResponseDto {
-  commands: CommandResponseDto[]
+  /** @nullable */
+  temperature?: number | null
 }
 
 export interface CommandRequestDto {
@@ -97,6 +115,8 @@ export interface DevicePowerStateRequestDto {
   on: boolean
   /** @nullable */
   saturation?: number | null
+  /** @nullable */
+  temperature?: number | null
 }
 
 export interface DeviceDisplayNameRequestDto {
@@ -111,6 +131,8 @@ export interface DeviceState {
   on: boolean
   /** @nullable */
   saturation?: number | null
+  /** @nullable */
+  temperature?: number | null
 }
 
 export interface DeviceDetailsResponseDto {
@@ -155,6 +177,7 @@ export interface DiscoveredDeviceResponseDto {
   id: string
   ipv4: string
   isControlled: boolean
+  macAddress: string
   name: string
   port: number
   productName: string

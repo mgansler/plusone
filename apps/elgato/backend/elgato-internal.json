@@ -617,6 +617,9 @@
             "description": "The mac address of the device.",
             "example": "aa:bb:cc:dd:ee:ff"
           },
+          "macAddress": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
@@ -651,6 +654,7 @@
         },
         "required": [
           "id",
+          "macAddress",
           "name",
           "fqdn",
           "host",
@@ -742,6 +746,10 @@
           "brightness": {
             "type": "number",
             "nullable": true
+          },
+          "temperature": {
+            "type": "number",
+            "nullable": true
           }
         },
         "required": [
@@ -803,6 +811,10 @@
             "nullable": true
           },
           "brightness": {
+            "type": "number",
+            "nullable": true
+          },
+          "temperature": {
             "type": "number",
             "nullable": true
           }
@@ -984,6 +996,10 @@
             "type": "number",
             "nullable": true
           },
+          "temperature": {
+            "type": "number",
+            "nullable": true
+          },
           "powerOnly": {
             "type": "boolean"
           },
@@ -1015,6 +1031,49 @@
           "actions"
         ]
       },
+      "ActionResponseDto": {
+        "type": "object",
+        "properties": {
+          "on": {
+            "type": "boolean"
+          },
+          "hue": {
+            "type": "number",
+            "nullable": true
+          },
+          "saturation": {
+            "type": "number",
+            "nullable": true
+          },
+          "brightness": {
+            "type": "number",
+            "nullable": true
+          },
+          "temperature": {
+            "type": "number",
+            "nullable": true
+          },
+          "powerOnly": {
+            "type": "boolean"
+          },
+          "macAddress": {
+            "type": "string"
+          },
+          "id": {
+            "type": "number"
+          },
+          "commandId": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "on",
+          "powerOnly",
+          "macAddress",
+          "id",
+          "commandId"
+        ]
+      },
       "CommandResponseDto": {
         "type": "object",
         "properties": {
@@ -1024,7 +1083,7 @@
           "actions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ActionRequestDto"
+              "$ref": "#/components/schemas/ActionResponseDto"
             }
           },
           "id": {

@@ -7,6 +7,9 @@ export class DiscoveredDeviceResponseDto {
   id: string
 
   @ApiProperty()
+  macAddress: string
+
+  @ApiProperty()
   name: string
 
   @ApiProperty()

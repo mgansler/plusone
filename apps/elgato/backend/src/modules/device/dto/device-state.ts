@@ -12,4 +12,7 @@ export class DeviceState {
 
   @ApiProperty({ required: false, nullable: true })
   brightness?: number
+
+  @ApiProperty({ required: false, nullable: true })
+  temperature?: number
 }

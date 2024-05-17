@@ -12,6 +12,7 @@ export const discoveredDevicesResponse = zod
       zod
         .object({
           id: zod.string(),
+          macAddress: zod.string(),
           name: zod.string(),
           fqdn: zod.string(),
           host: zod.string(),
@@ -75,6 +76,7 @@ export const deviceDetailsResponse = zod
         hue: zod.number().nullish(),
         saturation: zod.number().nullish(),
         brightness: zod.number().nullish(),
+        temperature: zod.number().nullish(),
       })
       .strict(),
     lastSeen: zod.string().datetime(),
@@ -111,6 +113,7 @@ export const deviceSetPowerStateBody = zod
     hue: zod.number().nullish(),
     saturation: zod.number().nullish(),
     brightness: zod.number().nullish(),
+    temperature: zod.number().nullish(),
   })
   .strict()
 
@@ -224,6 +227,7 @@ export const createCommandBody = zod
           hue: zod.number().nullish(),
           saturation: zod.number().nullish(),
           brightness: zod.number().nullish(),
+          temperature: zod.number().nullish(),
           powerOnly: zod.boolean(),
           macAddress: zod.string(),
         })
@@ -245,8 +249,11 @@ export const getCommandsResponse = zod
                 hue: zod.number().nullish(),
                 saturation: zod.number().nullish(),
                 brightness: zod.number().nullish(),
+                temperature: zod.number().nullish(),
                 powerOnly: zod.boolean(),
                 macAddress: zod.string(),
+                id: zod.number(),
+                commandId: zod.number(),
               })
               .strict(),
           ),
@@ -274,8 +281,11 @@ export const getCommandResponse = zod
           hue: zod.number().nullish(),
           saturation: zod.number().nullish(),
           brightness: zod.number().nullish(),
+          temperature: zod.number().nullish(),
           powerOnly: zod.boolean(),
           macAddress: zod.string(),
+          id: zod.number(),
+          commandId: zod.number(),
         })
         .strict(),
     ),
@@ -300,6 +310,7 @@ export const updateCommandBody = zod
           hue: zod.number().nullish(),
           saturation: zod.number().nullish(),
           brightness: zod.number().nullish(),
+          temperature: zod.number().nullish(),
           powerOnly: zod.boolean(),
           macAddress: zod.string(),
         })
