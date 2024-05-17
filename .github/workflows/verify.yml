@@ -15,7 +15,7 @@ jobs:
         include:
           - target: build
             configuration: production
-            parallel: 4
+            parallel: 1
           - target: component-test
             parallel: 1
           - target: lint
