@@ -17,14 +17,9 @@
       allowedVersions: '!/6\\.1\\.2/',
     },
     {
-      // https://github.com/swc-project/swc/issues/8898
-      matchPackageNames: ['@swc/core'],
-      allowedVersions: '!/1\\.5\\.[012]/',
-    },
-    {
-      // https://github.com/TanStack/router/issues/1567
-      matchPackageNames: ['@tanstack/react-router'],
-      allowedVersions: '!/1\\.31\\.23/',
+      // Linting fails
+      matchPackageNames: ['@nx/*', 'nx'],
+      allowedVersions: '!/19\\.0\\.6/',
     },
   ],
 }
