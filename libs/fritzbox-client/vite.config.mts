@@ -47,7 +47,8 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     exclude: ['src/**/stubs/**/*'],
 
-    reporters: ['default'],
+    reporters: ['default', 'junit'],
+    outputFile: '../../reports/test/fritzbox-client.xml',
     coverage: {
       reportsDirectory: '../../coverage/libs/fritzbox-client',
       provider: 'v8',
