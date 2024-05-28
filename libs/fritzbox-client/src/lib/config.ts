@@ -3,3 +3,8 @@ export type FritzBoxConfig = {
   username: string
   password: string
 }
+
+export type ServiceConfig = {
+  host: FritzBoxConfig['host']
+  port: number
+}

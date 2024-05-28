@@ -7,24 +7,24 @@ import axios from 'axios'
 import { xmlBuilder, xmlParser } from '../avm/shared'
 import type { FritzBoxConfig } from '../config'
 
-import { Device } from './device'
 import { tr064DescSchema } from './schema'
+import { Service } from './service'
+
+type AuthParameters = {
+  Nonce: string
+  Realm: string
+}
 
 export class Tr064 {
+  public authParams: AuthParameters | undefined
+
   private constructor(
     private readonly config: FritzBoxConfig,
-    private readonly device: Device,
+    private services: Array<Service> = [],
     private readonly axiosInstance: AxiosInstance,
   ) {}
 
   static async init(config: FritzBoxConfig): Promise<Tr064> {
-    const tr64DescXMLResponse = await axios.get(`http://${config.host}:49000/tr64desc.xml`)
-
-    const tr064Desc = tr064DescSchema.parse(xmlParser.parse(tr64DescXMLResponse.data))
-
-    const device = new Device(config, tr064Desc.root.device)
-    await device.parseServices()
-
     const securityPortResponse = await axios.post(
       `http://${config.host}:49000/upnp/control/deviceinfo`,
       xmlBuilder.build({
@@ -51,6 +51,13 @@ export class Tr064 {
       throw new Error('Failed to retrieve security port.')
     }
 
+    const tr64DescXMLResponse = await axios.get(`https://${config.host}:${newSecurityPort}/tr64desc.xml`, {
+      httpsAgent: new Agent({
+        rejectUnauthorized: false,
+      }),
+    })
+    const tr064Desc = tr064DescSchema.parse(xmlParser.parse(tr64DescXMLResponse.data))
+
     const axiosInstance = axios.create({
       baseURL: `https://${config.host}:${newSecurityPort}`,
       httpsAgent: new Agent({
@@ -58,11 +65,27 @@ export class Tr064 {
       }),
     })
 
-    return new Tr064(config, device, axiosInstance)
+    const services: Array<Service> = []
+    for (const serviceDescription of tr064Desc.root.device.serviceList.service) {
+      const service = new Service({ host: config.host, port: newSecurityPort }, serviceDescription)
+      await service.parseActions()
+      services.push(service)
+    }
+
+    return new Tr064(config, services, axiosInstance)
   }
 
-  async makeCall(serviceType: string, actionName: string, inArgs: Record<string, string> = {}) {
-    const service = this.device?.findServiceByType(serviceType)
+  public findServiceByType(serviceType: string): Service | undefined {
+    return this.services.find((service) => service.isOfServiceType(serviceType))
+  }
+
+  public async callAction(
+    serviceType: string,
+    actionName: string,
+    inArgs: Record<string, string | number> = {},
+    isRetry = false,
+  ): Promise<Record<string, string | number>> {
+    const service = this.findServiceByType(serviceType)
     if (!service) {
       throw new Error(`No service of type '${serviceType}' found.`)
     }
@@ -70,43 +93,75 @@ export class Tr064 {
     const action = service.findAction(actionName)
 
     if (!action) {
-      throw new Error(`No action named '${actionName}' found.`)
+      throw new Error(`Action named '${actionName}' does not exist in service '${serviceType}'.`)
     }
 
-    try {
+    action.forEach((arg) => {
+      if (arg.direction === 'in' && !Object.keys(inArgs).includes(arg.name)) {
+        throw new Error(`Missing required inArg '${arg.name}'.`)
+      }
+    })
+
+    const headers = {
+      'Content-Type': 'text/xml; charset=utf-8',
+      SOAPAction: `${serviceType}#${actionName}`,
+    }
+
+    if (!this.authParams) {
       const resp = await this.axiosInstance.post(
-        service.controlUrl(),
-        this.constructInitialSoapEnvelope(serviceType, actionName),
-        {
-          headers: {
-            'Content-Type': 'text/xml; charset=utf-8',
-            SOAPAction: `${serviceType}#${actionName}`,
-          },
-        },
+        service.controlUrl,
+        this.constructInitialSoapEnvelope(serviceType, actionName, inArgs),
+        { headers },
       )
       const parsedData = xmlParser.parse(resp.data)
       const challenge = parsedData['s:Envelope']['s:Header']['h:Challenge']
 
-      if (challenge) {
-        const nonce = challenge['Nonce']
-        const realm = challenge['Realm']
-
-        const respWithAuth = await this.axiosInstance.post(
-          service.controlUrl(),
-          this.constructSoapEnvelope(serviceType, actionName, { nonce, realm }, inArgs),
-          {
-            headers: {
-              'Content-Type': 'text/xml; charset=utf-8',
-              SOAPAction: `${serviceType}#${actionName}`,
-            },
-          },
-        )
-
-        return xmlParser.parse(respWithAuth.data)
+      if (!challenge) {
+        throw new Error('Initial response contained no challenge, something went wrong.')
       }
-    } catch (e) {
-      console.log(e)
+
+      this.authParams = { Nonce: challenge['Nonce'], Realm: challenge['Realm'] }
     }
+
+    const respWithAuth = await this.axiosInstance.post(
+      service.controlUrl,
+      this.constructSoapEnvelope(serviceType, actionName, this.authParams, inArgs),
+      { headers },
+    )
+
+    const parsedResponse = xmlParser.parse(respWithAuth.data)
+    const challenge = parsedResponse['s:Envelope']['s:Header']['h:Challenge']
+    if (challenge && challenge['Status'] === 'Unauthenticated') {
+      if (isRetry) {
+        this.authParams = undefined
+        throw new Error('Re-Authentication failed.')
+      }
+      this.authParams = { Nonce: challenge['Nonce'], Realm: challenge['Realm'] }
+      return this.callAction(serviceType, actionName, inArgs, true)
+    }
+
+    const actionResponse = parsedResponse['s:Envelope']['s:Body'][`u:${actionName}Response`]
+    return action.reduce(
+      (outVars, variable) => {
+        return variable.direction !== 'out'
+          ? outVars
+          : {
+              ...outVars,
+              [variable.name]: actionResponse[variable.name],
+            }
+      },
+      {} as Record<string, string | number>,
+    )
+  }
+
+  /**
+   * The returned callUrl may be in the format `https://[2001:db8::1]/xxx` which would be a valid ipv6 url.
+   * Unfortunately, axios tries to resolve `[2001:db8::1]` as a hostname: https://github.com/axios/axios/issues/5333.
+   * Therefor we use the hostname from the config.
+   */
+  public async callUrlFromActionResponse(callUrl: string) {
+    const url = new URL(callUrl)
+    return this.axiosInstance.get(url.pathname + url.search)
   }
 
   private calcAuthDigest(realm: string, nonce: string): string {
@@ -114,12 +169,13 @@ export class Tr064 {
     return createHash('md5').update(`${secret}:${nonce}`).digest('hex')
   }
 
-  private constructInitialSoapEnvelope(serviceType: string, actionName: string): string {
+  private constructInitialSoapEnvelope(
+    serviceType: string,
+    actionName: string,
+    inArgs: Record<string, string | number>,
+  ): string {
     return xmlBuilder.build({
-      '?xml': {
-        '@@version': '1.0',
-        '@@encoding': 'utf8',
-      },
+      '?xml': { '@@version': '1.0', '@@encoding': 'utf8' },
       's:Envelope': {
         '@@s:encodingStyle': 'http://schemas.xmlsoap.org/soap/encoding/',
         '@@xmlns:s': 'http://schemas.xmlsoap.org/soap/envelope/',
@@ -131,7 +187,7 @@ export class Tr064 {
           },
         },
         's:Body': {
-          [`u:${actionName}`]: { '@@xmlns:u': serviceType },
+          [`u:${actionName}`]: { '@@xmlns:u': serviceType, ...inArgs },
         },
       },
     })
@@ -140,17 +196,11 @@ export class Tr064 {
   private constructSoapEnvelope(
     serviceType: string,
     actionName: string,
-    auth: {
-      nonce: string
-      realm: string
-    },
-    inArgs: Record<string, string> = {},
+    authParams: AuthParameters,
+    inArgs: Record<string, string | number>,
   ): string {
     return xmlBuilder.build({
-      '?xml': {
-        '@@version': '1.0',
-        '@@encoding': 'utf8',
-      },
+      '?xml': { '@@version': '1.0', '@@encoding': 'utf8' },
       's:Envelope': {
         '@@s:encodingStyle': 'http://schemas.xmlsoap.org/soap/encoding/',
         '@@xmlns:s': 'http://schemas.xmlsoap.org/soap/envelope/',
@@ -159,9 +209,9 @@ export class Tr064 {
             '@@xmlns:h': 'http://soap-authentication.org/digest/2001/10/',
             '@@s:mustUnderstand': '1',
             UserID: this.config.username,
-            Nonce: auth.nonce,
-            Auth: this.calcAuthDigest(auth.realm, auth.nonce),
-            Realm: auth.realm,
+            Nonce: authParams.Nonce,
+            Auth: this.calcAuthDigest(authParams.Realm, authParams.Nonce),
+            Realm: authParams.Realm,
           },
         },
         's:Body': {

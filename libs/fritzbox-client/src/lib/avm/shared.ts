@@ -12,7 +12,7 @@ export const dateTransformSchema = z
     return new Date(year + 2000, month - 1, day, hour, minute)
   })
 
-export const xmlParser = new XMLParser()
+export const xmlParser = new XMLParser({ ignoreAttributes: false })
 export const xmlBuilder = new XMLBuilder({
   ignoreAttributes: false,
   attributeNamePrefix: '@@',

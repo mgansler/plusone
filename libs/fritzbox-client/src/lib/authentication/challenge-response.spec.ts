@@ -1,4 +1,4 @@
-import { calculateMD5Response, calculatePBKDF2Response } from './challenge-reponse'
+import { calculateMD5Response, calculatePBKDF2Response } from './challenge-response'
 
 describe('challenge-response', () => {
   it('should calculate MD5 hash correctly', () => {

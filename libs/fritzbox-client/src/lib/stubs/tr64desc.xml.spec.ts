@@ -1,8 +1,8 @@
 import { http, HttpResponse } from 'msw'
 
-import { xmlBuilder } from '../shared'
+import { xmlBuilder } from '../avm/shared'
 
-export const tr64descXmlSpec = http.get('http://fritz-test.box:49000/tr64desc.xml', () => {
+export const tr64descXmlSpec = http.get('https://fritz-test.box:49443/tr64desc.xml', () => {
   return HttpResponse.xml(
     xmlBuilder.build({
       '?xml': { '@@version': '1.0' },

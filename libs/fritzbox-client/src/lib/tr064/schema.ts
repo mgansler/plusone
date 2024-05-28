@@ -62,6 +62,8 @@ export const argumentSchema = z.object({
   relatedStateVariable: z.string(),
 })
 
+export type ActionArgument = z.infer<typeof argumentSchema>
+
 export const actionSchema = z.object({
   name: z.string(),
   argumentList: z

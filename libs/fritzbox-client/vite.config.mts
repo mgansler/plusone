@@ -45,12 +45,13 @@ export default defineConfig({
     environment: 'node',
     globalSetup: './vitest.global-setup.ts',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    exclude: ['src/**/stubs/*'],
+    exclude: ['src/**/stubs/**/*'],
 
     reporters: ['default'],
     coverage: {
       reportsDirectory: '../../coverage/libs/fritzbox-client',
       provider: 'v8',
+      exclude: ['vite.config.mts', 'vitest.global-setup.ts', 'src/index.ts'],
     },
   },
 })

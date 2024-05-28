@@ -1,8 +1,8 @@
 import { http, HttpResponse } from 'msw'
 
-import { xmlBuilder } from '../shared'
+import { xmlBuilder } from '../avm/shared'
 
-export const x_contactSCPDXmlSpec = http.get('http://fritz-test.box:49000/x_contactSCPD.xml', () => {
+export const x_contactSCPDXmlSpec = http.get('https://fritz-test.box:49443/x_contactSCPD.xml', () => {
   return HttpResponse.xml(
     xmlBuilder.build({
       '?xml': {

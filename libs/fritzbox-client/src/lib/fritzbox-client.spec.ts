@@ -1,7 +1,5 @@
 import { http, HttpResponse } from 'msw'
-import type { SetupServer } from 'msw/node'
 import { setupServer } from 'msw/node'
-import { afterEach, expect } from 'vitest'
 
 import { OnTelService } from './avm/ontel'
 import { TamService } from './avm/tam'
@@ -10,8 +8,16 @@ import { FritzboxClient } from './fritzbox-client'
 import { Tr064 } from './tr064/tr064'
 
 describe('fritzboxClient', () => {
-  let server: SetupServer
+  const server = setupServer()
   let fritzboxClient: FritzboxClient
+
+  beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+  })
+
+  afterAll(() => {
+    server.close()
+  })
 
   beforeEach(async () => {
     // @ts-expect-error incomplete mock
@@ -20,14 +26,13 @@ describe('fritzboxClient', () => {
   })
 
   afterEach(() => {
-    server.close()
     vi.restoreAllMocks()
   })
 
   describe('authentication', () => {
     it('should login via old method', async () => {
-      server = setupServer(
-        http.get('http://fritz-test.box/login_sid.lua', ({ request }) => {
+      server.use(
+        http.get('https://fritz-test.box/login_sid.lua', ({ request }) => {
           const url = new URL(request.url)
           if (
             url.searchParams.get('username') === 'foo' &&
@@ -38,7 +43,6 @@ describe('fritzboxClient', () => {
           return HttpResponse.xml(buildXmlResponse('0000000000000000', 'a1b2c3d4', 0))
         }),
       )
-      server.listen({ onUnhandledRequest: 'error' })
 
       await fritzboxClient.login()
 
@@ -47,11 +51,11 @@ describe('fritzboxClient', () => {
     })
 
     it('should login via new method', async () => {
-      server = setupServer(
-        http.get('http://fritz-test.box/login_sid.lua', () =>
+      server.use(
+        http.get('https://fritz-test.box/login_sid.lua', () =>
           HttpResponse.xml(buildXmlResponse('0000000000000000', '2$60000$a1a1a1a1$6000$b2b2b2b2', 0)),
         ),
-        http.post('http://fritz-test.box/login_sid.lua', async ({ request }) => {
+        http.post('https://fritz-test.box/login_sid.lua', async ({ request }) => {
           const formData = await request.formData()
 
           if (
@@ -64,16 +68,42 @@ describe('fritzboxClient', () => {
           return HttpResponse.xml(buildXmlResponse('0000000000000000', '2$60000$a1a1a1a1$6000$b2b2b2b2', 0))
         }),
       )
-      server.listen({ onUnhandledRequest: 'error' })
 
       await fritzboxClient.login()
 
       // @ts-expect-error sid is private
       expect(fritzboxClient.sid).toBe('0000000000000001')
     })
+
+    it('should throw an error for invalid credentials', async () => {
+      server.use(
+        http.get('https://fritz-test.box/login_sid.lua', () =>
+          HttpResponse.xml(buildXmlResponse('0000000000000000', '2$60000$a1a1a1a1$6000$b2b2b2b2', 0)),
+        ),
+        http.post('https://fritz-test.box/login_sid.lua', async () => {
+          return HttpResponse.xml(buildXmlResponse('0000000000000000', '2$60000$a1a1a1a1$6000$b2b2b2b2', 0))
+        }),
+      )
+
+      await expect(fritzboxClient.login()).rejects.toThrowErrorMatchingInlineSnapshot(
+        `[Error: Could not get SID, check your credentials.]`,
+      )
+    })
+
+    it('should throw an error when the client is blocked', async () => {
+      server.use(
+        http.get('https://fritz-test.box/login_sid.lua', () =>
+          HttpResponse.xml(buildXmlResponse('0000000000000000', '2$60000$a1a1a1a1$6000$b2b2b2b2', 1)),
+        ),
+      )
+
+      await expect(fritzboxClient.login()).rejects.toThrowErrorMatchingInlineSnapshot(
+        `[Error: You are blocked for 1 seconds, slow down!]`,
+      )
+    })
   })
 
-  describe('service', () => {
+  describe('services', () => {
     it.each([
       { name: 'tam', type: TamService },
       { name: 'onTel', type: OnTelService },
@@ -84,5 +114,5 @@ describe('fritzboxClient', () => {
 })
 
 function buildXmlResponse(sid: string, challenge: string, blockTime: number) {
-  return `<SessionInfo><SID>${sid}</SID><Challenge>${challenge}</Challenge><BlockTime>${blockTime}</BlockTime></BlockTime></SessionInfo>`
+  return `<SessionInfo><SID>${sid}</SID><Challenge>${challenge}</Challenge><BlockTime>${blockTime}</BlockTime></SessionInfo>`
 }

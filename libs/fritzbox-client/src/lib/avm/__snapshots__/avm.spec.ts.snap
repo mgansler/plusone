@@ -1,0 +1,308 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AvmServices > X_AVM-DE_OnTel > getCallList > should retrieve the call list 1`] = `
+{
+  "Called": "SIP: 123456789",
+  "Caller": 987654321,
+  "Count": "",
+  "Date": 2000-12-23T23:00:00.000Z,
+  "Device": "FRITZ!Fon C5",
+  "Duration": "0:05",
+  "Id": 2,
+  "Name": "Somebody I know",
+  "Numbertype": "sip",
+  "Path": "",
+  "Port": 10,
+  "Type": 1,
+}
+`;
+
+exports[`AvmServices > X_AVM-DE_OnTel > getCallList > should retrieve the call list 2`] = `
+{
+  "Called": "SIP: 123456789",
+  "Caller": 987654321,
+  "Count": "",
+  "Date": 2000-12-22T23:00:00.000Z,
+  "Device": "",
+  "Duration": "0:00",
+  "Id": 1,
+  "Name": "",
+  "Numbertype": "sip",
+  "Path": "",
+  "Port": -1,
+  "Type": 2,
+}
+`;
+
+exports[`AvmServices > X_AVM-DE_OnTel > getCallList > should return a call list with a single entry 1`] = `
+{
+  "Called": "SIP: 123456789",
+  "Caller": 987654321,
+  "Count": "",
+  "Date": 2000-12-23T23:00:00.000Z,
+  "Device": "FRITZ!Fon C5",
+  "Duration": "0:05",
+  "Id": 1,
+  "Name": "Somebody I know",
+  "Numbertype": "sip",
+  "Path": "",
+  "Port": 10,
+  "Type": 1,
+}
+`;
+
+exports[`AvmServices > X_AVM-DE_OnTel > getPhonebook > should get the phonebook 1`] = `
+[
+  {
+    "category": 0,
+    "person": {
+      "realName": "Alarmclock 1",
+    },
+    "telephony": {
+      "numbers": [
+        {
+          "prio": "1",
+          "type": "",
+          "value": "**41",
+        },
+      ],
+      "services": "",
+    },
+    "uniqueid": 5,
+  },
+  {
+    "category": 0,
+    "person": {
+      "realName": "Alarmclock 2",
+    },
+    "telephony": {
+      "numbers": [
+        {
+          "prio": "1",
+          "type": "",
+          "value": "**42",
+        },
+      ],
+      "services": "",
+    },
+    "uniqueid": 6,
+  },
+  {
+    "category": 0,
+    "person": {
+      "realName": "Alarmclock 3",
+    },
+    "telephony": {
+      "numbers": [
+        {
+          "prio": "0",
+          "type": "",
+          "value": "**43",
+        },
+      ],
+      "services": "",
+    },
+    "uniqueid": 7,
+  },
+  {
+    "category": 0,
+    "person": {
+      "realName": "All internal",
+    },
+    "telephony": {
+      "numbers": [
+        {
+          "prio": "1",
+          "type": "intern",
+          "value": "**9",
+        },
+      ],
+      "services": "",
+    },
+    "uniqueid": 3,
+  },
+  {
+    "category": 0,
+    "person": {
+      "realName": "Answering Machine",
+    },
+    "telephony": {
+      "numbers": [
+        {
+          "prio": "1",
+          "type": "intern",
+          "value": "**600",
+        },
+        {
+          "prio": "0",
+          "type": "memo",
+          "value": "**605",
+        },
+      ],
+      "services": "",
+    },
+    "uniqueid": 11,
+  },
+  {
+    "category": 0,
+    "person": {
+      "realName": "AVM voice clip (HD)",
+    },
+    "telephony": {
+      "numbers": [
+        {
+          "prio": "1",
+          "type": "work",
+          "value": "550@hd-telefonie.avm.de",
+        },
+      ],
+      "services": "",
+    },
+    "uniqueid": 0,
+  },
+  {
+    "category": 0,
+    "person": {
+      "realName": "DECT all",
+    },
+    "telephony": {
+      "numbers": [
+        {
+          "prio": "1",
+          "type": "",
+          "value": "**50",
+        },
+      ],
+      "services": "",
+    },
+    "uniqueid": 4,
+  },
+  {
+    "category": 0,
+    "person": {
+      "realName": "FRITZ!Fon C5",
+    },
+    "telephony": {
+      "numbers": [
+        {
+          "prio": "1",
+          "type": "intern",
+          "value": "**610",
+        },
+      ],
+      "services": "",
+    },
+    "uniqueid": 12,
+  },
+  {
+    "category": 1,
+    "person": {
+      "realName": "Some important person",
+    },
+    "telephony": {
+      "numbers": [
+        {
+          "prio": "1",
+          "type": "home",
+          "value": 123456789,
+        },
+      ],
+      "services": "",
+    },
+    "uniqueid": 13,
+  },
+  {
+    "category": 0,
+    "person": {
+      "realName": "A not so important person",
+    },
+    "telephony": {
+      "numbers": [
+        {
+          "prio": "1",
+          "type": "work",
+          "value": 987654321,
+        },
+      ],
+      "services": "",
+    },
+    "uniqueid": 14,
+  },
+  {
+    "category": 0,
+    "person": {
+      "realName": "Telephone",
+    },
+    "telephony": {
+      "numbers": [
+        {
+          "prio": "1",
+          "type": "intern",
+          "value": "**1",
+        },
+      ],
+      "services": "",
+    },
+    "uniqueid": 8,
+  },
+  {
+    "category": 0,
+    "person": {
+      "realName": "Telephone",
+    },
+    "telephony": {
+      "numbers": [
+        {
+          "prio": "1",
+          "type": "intern",
+          "value": "**2",
+        },
+      ],
+      "services": "",
+    },
+    "uniqueid": 9,
+  },
+]
+`;
+
+exports[`AvmServices > X_AVM-DE_TAM > should retrieve the message list with one entry 1`] = `
+{
+  "Called": 123456789,
+  "Date": 2000-12-22T23:00:00.000Z,
+  "Duration": "0:01",
+  "Index": 0,
+  "Name": "Somebody I know",
+  "New": false,
+  "Path": "/download.lua?path=/data/tam/rec/rec.0.000",
+  "Tam": 0,
+  "inBook": true,
+}
+`;
+
+exports[`AvmServices > X_AVM-DE_TAM > should retrieve the message list with two entries 1`] = `
+{
+  "Called": 123456789,
+  "Date": 2000-12-23T23:00:00.000Z,
+  "Duration": "0:01",
+  "Index": 1,
+  "Name": "",
+  "New": true,
+  "Path": "/download.lua?path=/data/tam/rec/rec.0.001",
+  "Tam": 0,
+  "inBook": false,
+}
+`;
+
+exports[`AvmServices > X_AVM-DE_TAM > should retrieve the message list with two entries 2`] = `
+{
+  "Called": 123456789,
+  "Date": 2000-12-22T23:00:00.000Z,
+  "Duration": "0:01",
+  "Index": 0,
+  "Name": "Somebody I know",
+  "New": false,
+  "Path": "/download.lua?path=/data/tam/rec/rec.0.000",
+  "Tam": 0,
+  "inBook": true,
+}
+`;
