@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import { xmlBuilder } from '../avm/shared'
+import { xmlBuilder } from '../services/shared'
 
 export const deviceinfoXml = http.post('http://fritz-test.box:49000/upnp/control/deviceinfo', () => {
   return HttpResponse.xml(

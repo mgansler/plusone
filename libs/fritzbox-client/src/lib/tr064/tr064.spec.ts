@@ -2,10 +2,12 @@ import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { beforeEach, expect } from 'vitest'
 
-import { xmlBuilder } from '../avm/shared'
+import { xmlBuilder } from '../services/shared'
 import { reauthenticateFailXmlSpec, reauthenticateXmlSpec } from '../stubs/custom/reauthenticate.xml.spec'
 import { deviceinfoXml, deviceinfoXmlBrokenSecurityPort } from '../stubs/deviceinfo.xml.spec'
+import { hostsXmlSpec } from '../stubs/hosts.xml.spec'
 import { tr64descXmlSpec } from '../stubs/tr64desc.xml.spec'
+import { wancommonifconfigSCPDXmlSpec } from '../stubs/wancommonifconfigSCPD.xml.spec'
 import { x_contactSCPDXmlSpec } from '../stubs/x_contactSCPD.xml.spec'
 import { x_tamSCPDXmlSpec } from '../stubs/x_tamSCPD.xml.spec'
 
@@ -25,7 +27,14 @@ describe('tr064', () => {
 
   describe('successful init', () => {
     beforeEach(async () => {
-      server.use(tr64descXmlSpec, deviceinfoXml, x_contactSCPDXmlSpec, x_tamSCPDXmlSpec)
+      server.use(
+        tr64descXmlSpec,
+        deviceinfoXml,
+        hostsXmlSpec,
+        wancommonifconfigSCPDXmlSpec,
+        x_contactSCPDXmlSpec,
+        x_tamSCPDXmlSpec,
+      )
 
       tr064 = await Tr064.init({ host: 'fritz-test.box', username: 'admin', password: 'gurkensalat' })
     })

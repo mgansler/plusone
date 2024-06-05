@@ -4,10 +4,10 @@ import { Agent } from 'node:https'
 import type { AxiosInstance } from 'axios'
 import axios from 'axios'
 
-import { xmlBuilder, xmlParser } from '../avm/shared'
 import type { FritzBoxConfig } from '../config'
+import { xmlBuilder, xmlParser } from '../services/shared'
 
-import { tr064DescSchema } from './schema'
+import { type ActionArgument, tr064DescSchema } from './schema'
 import { Service } from './service'
 
 type AuthParameters = {
@@ -66,7 +66,13 @@ export class Tr064 {
     })
 
     const services: Array<Service> = []
-    for (const serviceDescription of tr064Desc.root.device.serviceList.service) {
+
+    const mergedServiceDescriptions = [...tr064Desc.root.device.serviceList.service]
+    for (const device of tr064Desc.root.device.deviceList.device) {
+      mergedServiceDescriptions.push(...device.serviceList.service)
+    }
+
+    for (const serviceDescription of mergedServiceDescriptions) {
       const service = new Service({ host: config.host, port: newSecurityPort }, serviceDescription)
       await service.parseActions()
       services.push(service)
@@ -79,24 +85,25 @@ export class Tr064 {
     return this.services.find((service) => service.isOfServiceType(serviceType))
   }
 
-  public async callAction(
+  public async callAction<OutVars extends Record<string, string | number>>(
     serviceType: string,
     actionName: string,
     inArgs: Record<string, string | number> = {},
+    requiresAuth = true,
     isRetry = false,
-  ): Promise<Record<string, string | number>> {
+  ): Promise<OutVars> {
     const service = this.findServiceByType(serviceType)
     if (!service) {
       throw new Error(`No service of type '${serviceType}' found.`)
     }
 
-    const action = service.findAction(actionName)
+    const actionVars = service.findAction(actionName)
 
-    if (!action) {
+    if (!actionVars) {
       throw new Error(`Action named '${actionName}' does not exist in service '${serviceType}'.`)
     }
 
-    action.forEach((arg) => {
+    actionVars.forEach((arg) => {
       if (arg.direction === 'in' && !Object.keys(inArgs).includes(arg.name)) {
         throw new Error(`Missing required inArg '${arg.name}'.`)
       }
@@ -107,15 +114,28 @@ export class Tr064 {
       SOAPAction: `${serviceType}#${actionName}`,
     }
 
+    if (!requiresAuth) {
+      const noAuthRequiredSoapResponse = await this.axiosInstance.post(
+        service.controlUrl,
+        this.constructNoAuthRequiredSoapEnvelope(serviceType, actionName, inArgs),
+        { headers },
+      )
+
+      return this.extractOutVarsFromBody<OutVars>(
+        actionVars,
+        xmlParser.parse(noAuthRequiredSoapResponse.data)['s:Envelope']['s:Body'][`u:${actionName}Response`],
+      )
+    }
+
     if (!this.authParams) {
-      const resp = await this.axiosInstance.post(
+      const initChallengeSoapResponse = await this.axiosInstance.post(
         service.controlUrl,
         this.constructInitialSoapEnvelope(serviceType, actionName, inArgs),
         { headers },
       )
-      const parsedData = xmlParser.parse(resp.data)
-      const challenge = parsedData['s:Envelope']['s:Header']['h:Challenge']
+      const parsedData = xmlParser.parse(initChallengeSoapResponse.data)
 
+      const challenge = parsedData['s:Envelope']['s:Header']['h:Challenge']
       if (!challenge) {
         throw new Error('Initial response contained no challenge, something went wrong.')
       }
@@ -123,13 +143,13 @@ export class Tr064 {
       this.authParams = { Nonce: challenge['Nonce'], Realm: challenge['Realm'] }
     }
 
-    const respWithAuth = await this.axiosInstance.post(
+    const authenticatedSoapResponse = await this.axiosInstance.post(
       service.controlUrl,
       this.constructSoapEnvelope(serviceType, actionName, this.authParams, inArgs),
       { headers },
     )
 
-    const parsedResponse = xmlParser.parse(respWithAuth.data)
+    const parsedResponse = xmlParser.parse(authenticatedSoapResponse.data)
     const challenge = parsedResponse['s:Envelope']['s:Header']['h:Challenge']
     if (challenge && challenge['Status'] === 'Unauthenticated') {
       if (isRetry) {
@@ -137,20 +157,12 @@ export class Tr064 {
         throw new Error('Re-Authentication failed.')
       }
       this.authParams = { Nonce: challenge['Nonce'], Realm: challenge['Realm'] }
-      return this.callAction(serviceType, actionName, inArgs, true)
+      return this.callAction(serviceType, actionName, inArgs, requiresAuth, true)
     }
 
-    const actionResponse = parsedResponse['s:Envelope']['s:Body'][`u:${actionName}Response`]
-    return action.reduce(
-      (outVars, variable) => {
-        return variable.direction !== 'out'
-          ? outVars
-          : {
-              ...outVars,
-              [variable.name]: actionResponse[variable.name],
-            }
-      },
-      {} as Record<string, string | number>,
+    return this.extractOutVarsFromBody<OutVars>(
+      actionVars,
+      parsedResponse['s:Envelope']['s:Body'][`u:${actionName}Response`],
     )
   }
 
@@ -167,6 +179,23 @@ export class Tr064 {
   private calcAuthDigest(realm: string, nonce: string): string {
     const secret = createHash('md5').update(`${this.config.username}:${realm}:${this.config.password}`).digest('hex')
     return createHash('md5').update(`${secret}:${nonce}`).digest('hex')
+  }
+
+  private constructNoAuthRequiredSoapEnvelope(
+    serviceType: string,
+    actionName: string,
+    inArgs: Record<string, string | number>,
+  ): string {
+    return xmlBuilder.build({
+      '?xml': { '@@version': '1.0', '@@encoding': 'utf8' },
+      's:Envelope': {
+        '@@s:encodingStyle': 'http://schemas.xmlsoap.org/soap/encoding/',
+        '@@xmlns:s': 'http://schemas.xmlsoap.org/soap/envelope/',
+        's:Body': {
+          [`u:${actionName}`]: { '@@xmlns:u': serviceType, ...inArgs },
+        },
+      },
+    })
   }
 
   private constructInitialSoapEnvelope(
@@ -219,5 +248,19 @@ export class Tr064 {
         },
       },
     })
+  }
+
+  private extractOutVarsFromBody<OutVars extends Record<string, string | number>>(
+    actionVars: Array<ActionArgument>,
+    soapBody: Record<string, string | number>,
+  ): OutVars {
+    return actionVars.reduce((outVars, variable) => {
+      return variable.direction !== 'out'
+        ? outVars
+        : {
+            ...outVars,
+            [variable.name]: soapBody[variable.name],
+          }
+    }, {} as OutVars)
   }
 }

@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import { xmlBuilder } from '../avm/shared'
+import { xmlBuilder } from '../services/shared'
 
 export const tr64descXmlSpec = http.get('https://fritz-test.box:49443/tr64desc.xml', () => {
   return HttpResponse.xml(
@@ -231,27 +231,27 @@ export const tr64descXmlSpec = http.get('https://fritz-test.box:49443/tr64desc.x
                 UPC: 'AVM TR-064',
                 serviceList: {
                   service: [
-                    {
-                      serviceType: 'urn:dslforum-org:service:WLANConfiguration:1',
-                      serviceId: 'urn:WLANConfiguration-com:serviceId:WLANConfiguration1',
-                      controlURL: '/upnp/control/wlanconfig1',
-                      eventSubURL: '/upnp/control/wlanconfig1',
-                      SCPDURL: '/wlanconfigSCPD.xml',
-                    },
-                    {
-                      serviceType: 'urn:dslforum-org:service:WLANConfiguration:2',
-                      serviceId: 'urn:WLANConfiguration-com:serviceId:WLANConfiguration2',
-                      controlURL: '/upnp/control/wlanconfig2',
-                      eventSubURL: '/upnp/control/wlanconfig2',
-                      SCPDURL: '/wlanconfigSCPD.xml',
-                    },
-                    {
-                      serviceType: 'urn:dslforum-org:service:WLANConfiguration:3',
-                      serviceId: 'urn:WLANConfiguration-com:serviceId:WLANConfiguration3',
-                      controlURL: '/upnp/control/wlanconfig3',
-                      eventSubURL: '/upnp/control/wlanconfig3',
-                      SCPDURL: '/wlanconfigSCPD.xml',
-                    },
+                    // {
+                    //   serviceType: 'urn:dslforum-org:service:WLANConfiguration:1',
+                    //   serviceId: 'urn:WLANConfiguration-com:serviceId:WLANConfiguration1',
+                    //   controlURL: '/upnp/control/wlanconfig1',
+                    //   eventSubURL: '/upnp/control/wlanconfig1',
+                    //   SCPDURL: '/wlanconfigSCPD.xml',
+                    // },
+                    // {
+                    //   serviceType: 'urn:dslforum-org:service:WLANConfiguration:2',
+                    //   serviceId: 'urn:WLANConfiguration-com:serviceId:WLANConfiguration2',
+                    //   controlURL: '/upnp/control/wlanconfig2',
+                    //   eventSubURL: '/upnp/control/wlanconfig2',
+                    //   SCPDURL: '/wlanconfigSCPD.xml',
+                    // },
+                    // {
+                    //   serviceType: 'urn:dslforum-org:service:WLANConfiguration:3',
+                    //   serviceId: 'urn:WLANConfiguration-com:serviceId:WLANConfiguration3',
+                    //   controlURL: '/upnp/control/wlanconfig3',
+                    //   eventSubURL: '/upnp/control/wlanconfig3',
+                    //   SCPDURL: '/wlanconfigSCPD.xml',
+                    // },
                     {
                       serviceType: 'urn:dslforum-org:service:Hosts:1',
                       serviceId: 'urn:LanDeviceHosts-com:serviceId:Hosts1',
@@ -259,20 +259,20 @@ export const tr64descXmlSpec = http.get('https://fritz-test.box:49443/tr64desc.x
                       eventSubURL: '/upnp/control/hosts',
                       SCPDURL: '/hostsSCPD.xml',
                     },
-                    {
-                      serviceType: 'urn:dslforum-org:service:LANEthernetInterfaceConfig:1',
-                      serviceId: 'urn:LANEthernetIfCfg-com:serviceId:LANEthernetInterfaceConfig1',
-                      controlURL: '/upnp/control/lanethernetifcfg',
-                      eventSubURL: '/upnp/control/lanethernetifcfg',
-                      SCPDURL: '/ethifconfigSCPD.xml',
-                    },
-                    {
-                      serviceType: 'urn:dslforum-org:service:LANHostConfigManagement:1',
-                      serviceId: 'urn:LANHCfgMgm-com:serviceId:LANHostConfigManagement1',
-                      controlURL: '/upnp/control/lanhostconfigmgm',
-                      eventSubURL: '/upnp/control/lanhostconfigmgm',
-                      SCPDURL: '/lanhostconfigmgmSCPD.xml',
-                    },
+                    // {
+                    //   serviceType: 'urn:dslforum-org:service:LANEthernetInterfaceConfig:1',
+                    //   serviceId: 'urn:LANEthernetIfCfg-com:serviceId:LANEthernetInterfaceConfig1',
+                    //   controlURL: '/upnp/control/lanethernetifcfg',
+                    //   eventSubURL: '/upnp/control/lanethernetifcfg',
+                    //   SCPDURL: '/ethifconfigSCPD.xml',
+                    // },
+                    // {
+                    //   serviceType: 'urn:dslforum-org:service:LANHostConfigManagement:1',
+                    //   serviceId: 'urn:LANHCfgMgm-com:serviceId:LANHostConfigManagement1',
+                    //   controlURL: '/upnp/control/lanhostconfigmgm',
+                    //   eventSubURL: '/upnp/control/lanhostconfigmgm',
+                    //   SCPDURL: '/lanhostconfigmgmSCPD.xml',
+                    // },
                   ],
                 },
               },
@@ -296,13 +296,13 @@ export const tr64descXmlSpec = http.get('https://fritz-test.box:49443/tr64desc.x
                       eventSubURL: '/upnp/control/wancommonifconfig1',
                       SCPDURL: '/wancommonifconfigSCPD.xml',
                     },
-                    {
-                      serviceType: 'urn:dslforum-org:service:WANDSLInterfaceConfig:1',
-                      serviceId: 'urn:WANDSLIfConfig-com:serviceId:WANDSLInterfaceConfig1',
-                      controlURL: '/upnp/control/wandslifconfig1',
-                      eventSubURL: '/upnp/control/wandslifconfig1',
-                      SCPDURL: '/wandslifconfigSCPD.xml',
-                    },
+                    // {
+                    //   serviceType: 'urn:dslforum-org:service:WANDSLInterfaceConfig:1',
+                    //   serviceId: 'urn:WANDSLIfConfig-com:serviceId:WANDSLInterfaceConfig1',
+                    //   controlURL: '/upnp/control/wandslifconfig1',
+                    //   eventSubURL: '/upnp/control/wandslifconfig1',
+                    //   SCPDURL: '/wandslifconfigSCPD.xml',
+                    // },
                   ],
                 },
                 deviceList: {

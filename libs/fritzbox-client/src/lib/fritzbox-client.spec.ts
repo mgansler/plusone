@@ -1,10 +1,10 @@
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { OnTelService } from './avm/ontel'
-import { TamService } from './avm/tam'
 import type { AvmServices } from './fritzbox-client'
 import { FritzboxClient } from './fritzbox-client'
+import { OnTelService } from './services/ontel'
+import { TamService } from './services/tam'
 import { Tr064 } from './tr064/tr064'
 
 describe('fritzboxClient', () => {

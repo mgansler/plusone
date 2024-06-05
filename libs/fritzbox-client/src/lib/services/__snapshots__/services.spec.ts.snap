@@ -1,6 +1,91 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AvmServices > X_AVM-DE_OnTel > getCallList > should retrieve the call list 1`] = `
+exports[`Services > Hosts > should return a generic host entry 1`] = `
+{
+  "NewActive": 1,
+  "NewAddressSource": "DHCP",
+  "NewHostName": "fritz.box",
+  "NewIPAddress": "192.168.178.1",
+  "NewInterfaceType": "Ethernet",
+  "NewLeaseTimeRemaining": 0,
+  "NewMACAddress": "MA:CA:DD:RE:SS:00",
+}
+`;
+
+exports[`Services > Hosts > should return a specific host entry by ip 1`] = `
+{
+  "NewActive": 1,
+  "NewHostName": "fritz.box",
+  "NewInterfaceType": "",
+  "NewMACAddress": "MA:CA:DD:RE:SS:00",
+  "NewX_AVM-DE_Disallow": 0,
+  "NewX_AVM-DE_FriendlyName": "fritz.box",
+  "NewX_AVM-DE_FriendlyNameIsWriteable": 0,
+  "NewX_AVM-DE_Guest": 0,
+  "NewX_AVM-DE_InfoURL": "",
+  "NewX_AVM-DE_IsMeshable": 1,
+  "NewX_AVM-DE_MACAddressList": "MA:CA:DD:RE:SS:00,MA:CA:DD:RE:SS:01",
+  "NewX_AVM-DE_Model": "",
+  "NewX_AVM-DE_Port": 0,
+  "NewX_AVM-DE_Priority": 0,
+  "NewX_AVM-DE_RequestClient": 0,
+  "NewX_AVM-DE_Speed": 0,
+  "NewX_AVM-DE_URL": "http://192.168.178.1",
+  "NewX_AVM-DE_UpdateAvailable": 0,
+  "NewX_AVM-DE_UpdateSuccessful": "unknown",
+  "NewX_AVM-DE_VPN": 0,
+  "NewX_AVM-DE_WANAccess": "granted",
+}
+`;
+
+exports[`Services > Hosts > should return the number of known hosts 1`] = `
+{
+  "NewHostNumberOfEntries": 42,
+}
+`;
+
+exports[`Services > WanCommonInterfaceConfig > should get the active provider 1`] = `
+{
+  "NewX_AVM-DE_Provider": "Vodafone",
+}
+`;
+
+exports[`Services > WanCommonInterfaceConfig > should get the online monitor 1`] = `
+{
+  "NewSyncGroupMode": "CABLE",
+  "NewSyncGroupName": "sync_cable",
+  "NewTotalNumberSyncGroups": 2,
+  "Newds_current_bps": "1711,2287,14023,2291,892,27713,27713,896,10582,2333,25519,15651,5088,6102,4115,2051,3267,1415,9443,3255",
+  "Newmax_ds": 857938957,
+  "Newmax_us": 279624825,
+  "Newmc_current_bps": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+  "Newprio_default_bps": "763,767,691,332,719,857,2044,1102,859,693,652,651,633,2135,1700,469,771,825,519,719",
+  "Newprio_high_bps": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+  "Newprio_low_bps": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+  "Newprio_realtime_bps": "396,15174,20835,6281,6281,1478,6587,16180,9765,778,7097,20764,5322,6607,3596,4360,5676,1107,161,4966",
+  "Newus_current_bps": "1159,15941,21526,6613,7000,2335,8631,17282,10624,1471,7749,21415,5955,8742,5296,4829,6447,1932,680,5685",
+}
+`;
+
+exports[`Services > WanCommonInterfaceConfig > should get the total bytes received 1`] = `
+{
+  "bytes": 2267246611,
+  "gigaBytes": 2.11,
+  "kiloBytes": 2214108.02,
+  "megaBytes": 2162.21,
+}
+`;
+
+exports[`Services > WanCommonInterfaceConfig > should get the total bytes sent 1`] = `
+{
+  "bytes": 2156315275,
+  "gigaBytes": 2.01,
+  "kiloBytes": 2105776.64,
+  "megaBytes": 2056.42,
+}
+`;
+
+exports[`Services > X_AVM-DE_OnTel > getCallList > should retrieve the call list 1`] = `
 {
   "Called": "SIP: 123456789",
   "Caller": 987654321,
@@ -17,7 +102,7 @@ exports[`AvmServices > X_AVM-DE_OnTel > getCallList > should retrieve the call l
 }
 `;
 
-exports[`AvmServices > X_AVM-DE_OnTel > getCallList > should retrieve the call list 2`] = `
+exports[`Services > X_AVM-DE_OnTel > getCallList > should retrieve the call list 2`] = `
 {
   "Called": "SIP: 123456789",
   "Caller": 987654321,
@@ -34,7 +119,7 @@ exports[`AvmServices > X_AVM-DE_OnTel > getCallList > should retrieve the call l
 }
 `;
 
-exports[`AvmServices > X_AVM-DE_OnTel > getCallList > should return a call list with a single entry 1`] = `
+exports[`Services > X_AVM-DE_OnTel > getCallList > should return a call list with a single entry 1`] = `
 {
   "Called": "SIP: 123456789",
   "Caller": 987654321,
@@ -51,7 +136,7 @@ exports[`AvmServices > X_AVM-DE_OnTel > getCallList > should return a call list 
 }
 `;
 
-exports[`AvmServices > X_AVM-DE_OnTel > getPhonebook > should get the phonebook 1`] = `
+exports[`Services > X_AVM-DE_OnTel > getPhonebook > should get the phonebook 1`] = `
 [
   {
     "category": 0,
@@ -265,7 +350,7 @@ exports[`AvmServices > X_AVM-DE_OnTel > getPhonebook > should get the phonebook 
 ]
 `;
 
-exports[`AvmServices > X_AVM-DE_TAM > should retrieve the message list with one entry 1`] = `
+exports[`Services > X_AVM-DE_TAM > should retrieve the message list with one entry 1`] = `
 {
   "Called": 123456789,
   "Date": 2000-12-22T23:00:00.000Z,
@@ -279,7 +364,7 @@ exports[`AvmServices > X_AVM-DE_TAM > should retrieve the message list with one 
 }
 `;
 
-exports[`AvmServices > X_AVM-DE_TAM > should retrieve the message list with two entries 1`] = `
+exports[`Services > X_AVM-DE_TAM > should retrieve the message list with two entries 1`] = `
 {
   "Called": 123456789,
   "Date": 2000-12-23T23:00:00.000Z,
@@ -293,7 +378,7 @@ exports[`AvmServices > X_AVM-DE_TAM > should retrieve the message list with two 
 }
 `;
 
-exports[`AvmServices > X_AVM-DE_TAM > should retrieve the message list with two entries 2`] = `
+exports[`Services > X_AVM-DE_TAM > should retrieve the message list with two entries 2`] = `
 {
   "Called": 123456789,
   "Date": 2000-12-22T23:00:00.000Z,

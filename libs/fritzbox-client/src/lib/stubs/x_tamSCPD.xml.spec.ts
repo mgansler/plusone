@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import { xmlBuilder } from '../avm/shared'
+import { xmlBuilder } from '../services/shared'
 
 export const x_tamSCPDXmlSpec = http.get('https://fritz-test.box:49443/x_tamSCPD.xml', () => {
   return HttpResponse.xml(

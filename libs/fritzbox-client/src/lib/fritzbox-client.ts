@@ -3,14 +3,18 @@ import { Agent } from 'node:https'
 import axios, { type AxiosInstance } from 'axios'
 
 import { calculateMD5Response, calculatePBKDF2Response } from './authentication/challenge-response'
-import { OnTelService } from './avm/ontel'
-import { TamService } from './avm/tam'
 import type { FritzBoxConfig } from './config'
+import { HostsService } from './services/hosts'
+import { OnTelService } from './services/ontel'
+import { TamService } from './services/tam'
+import { WanCommonInterfaceConfigService } from './services/wan-common-interface-config'
 import { Tr064 } from './tr064/tr064'
 
 export type AvmServices = {
+  hosts: HostsService
   onTel: OnTelService
   tam: TamService
+  wanCommonInterfaceConfig: WanCommonInterfaceConfigService
 }
 
 export class FritzboxClient {
@@ -31,7 +35,12 @@ export class FritzboxClient {
 
   static async init(config: FritzBoxConfig): Promise<FritzboxClient> {
     const tr064 = await Tr064.init(config)
-    return new FritzboxClient(config, { onTel: new OnTelService(tr064), tam: new TamService(tr064) })
+    return new FritzboxClient(config, {
+      hosts: new HostsService(tr064),
+      onTel: new OnTelService(tr064),
+      tam: new TamService(tr064),
+      wanCommonInterfaceConfig: new WanCommonInterfaceConfigService(tr064),
+    })
   }
 
   async login() {

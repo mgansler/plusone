@@ -21,7 +21,9 @@ export const deviceSchema = z.object({
   modelURL: z.string(),
   UDN: z.string(),
   serviceList: z.object({
-    service: z.array(serviceSchema),
+    service: serviceSchema
+      .or(z.array(serviceSchema))
+      .transform((services) => (Array.isArray(services) ? services : [services])),
   }),
 })
 
@@ -49,7 +51,9 @@ export const tr064DescSchema = z.object({
         }),
       }),
       deviceList: z.object({
-        device: z.array(deviceSchema),
+        device: deviceSchema
+          .or(z.array(deviceSchema))
+          .transform((devices) => (Array.isArray(devices) ? devices : [devices])),
       }),
       presentationURL: z.string().url(),
     }),

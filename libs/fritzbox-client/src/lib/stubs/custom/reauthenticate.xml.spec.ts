@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import { xmlBuilder } from '../../avm/shared'
+import { xmlBuilder } from '../../services/shared'
 import { authChallengeResponseSpec } from '../auth-challenge-response.spec'
 
 export const reauthenticateXmlSpec = http.post(

@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import { xmlBuilder } from '../../avm/shared'
+import { xmlBuilder } from '../../services/shared'
 
 export const singleArgumentListArgumentXmlSpec = http.get(
   'https://fritz-test.box:49443/single-argumentList.argument',

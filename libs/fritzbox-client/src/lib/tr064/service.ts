@@ -3,8 +3,8 @@ import { Agent } from 'node:https'
 import axios from 'axios'
 import type { z } from 'zod'
 
-import { xmlParser } from '../avm/shared'
 import type { ServiceConfig } from '../config'
+import { xmlParser } from '../services/shared'
 
 import type { ActionArgument, serviceSchema } from './schema'
 import { scdpResponseSchema } from './schema'
@@ -18,11 +18,11 @@ export class Service {
   ) {}
 
   async parseActions() {
-    const resp = await axios.get(`https://${this.config.host}:${this.config.port}${this.service.SCPDURL}`, {
+    const response = await axios.get(`https://${this.config.host}:${this.config.port}${this.service.SCPDURL}`, {
       httpsAgent: new Agent({ rejectUnauthorized: false }),
     })
 
-    const raw = xmlParser.parse(resp.data)
+    const raw = xmlParser.parse(response.data)
 
     const parsed = scdpResponseSchema.parse(raw)
 
