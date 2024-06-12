@@ -34,6 +34,14 @@ stages:
     - !reference [.distributed, before_script]
     - sh tools/scripts/install-docker-debian.sh
 
+audit:
+  stage: test
+  extends:
+    - .distributed
+  script:
+    - yarn audit
+  allow_failure: true
+
 migrations-check:
   stage: test
   extends:
