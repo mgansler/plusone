@@ -4,15 +4,15 @@ export class DeviceState {
   @ApiProperty()
   on: boolean
 
-  @ApiProperty({ required: false, nullable: true })
-  hue?: number
+  @ApiProperty({ type: Number, required: false, nullable: true })
+  hue?: number | null
 
-  @ApiProperty({ required: false, nullable: true })
-  saturation?: number
+  @ApiProperty({ type: Number, required: false, nullable: true })
+  saturation?: number | null
 
-  @ApiProperty({ required: false, nullable: true })
-  brightness?: number
+  @ApiProperty({ type: Number, required: false, nullable: true })
+  brightness?: number | null
 
-  @ApiProperty({ required: false, nullable: true })
-  temperature?: number
+  @ApiProperty({ type: Number, required: false, nullable: true })
+  temperature?: number | null
 }

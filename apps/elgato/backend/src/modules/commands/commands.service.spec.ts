@@ -97,7 +97,7 @@ describe('CommandsService', () => {
 
   describe('getCommand', () => {
     it('should return a list of commands', async () => {
-      const findUniqueSpy = jest.spyOn(prismaService.command, 'findUnique').mockResolvedValue({
+      const findUniqueSpy = jest.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
         id: 1,
         name: 'my-test-command',
         hash: 'md5-hash-of-name',

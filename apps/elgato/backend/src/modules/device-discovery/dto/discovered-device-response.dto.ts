@@ -18,8 +18,8 @@ export class DiscoveredDeviceResponseDto {
   @ApiProperty()
   host: string
 
-  @ApiProperty({ example: '192.168.0.50' })
-  ipv4: string
+  @ApiProperty({ type: String, required: false, nullable: true, example: '192.168.0.50' })
+  ipv4?: string | null
 
   @ApiProperty({ example: 9123 })
   port: number

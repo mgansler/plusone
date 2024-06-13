@@ -39,6 +39,12 @@ export class DeviceDiscoveryService implements OnModuleInit {
       where: { id, isControlled: false },
     })
 
+    if (discoveredDevice.ipv4 === null) {
+      throw new Error(
+        `IPv4 address for device ${discoveredDevice.displayName} (${discoveredDevice.macAddress}) is unknown but required.`,
+      )
+    }
+
     try {
       await this.elgatoService.getDeviceAccessoryInfo({
         address: discoveredDevice.ipv4,
@@ -106,7 +112,7 @@ export class DeviceDiscoveryService implements OnModuleInit {
       try {
         // We need the mac address because it will become our id for controlled devices
         const accessoryInfo = await this.elgatoService.getDeviceAccessoryInfo({
-          address: service.referer.family === 'IPv4' ? service.referer.address : service.host.replace('.local', ''),
+          address: service.referer?.family === 'IPv4' ? service.referer.address : service.host.replace('.local', ''),
           type: DeviceType.Unknown,
           port: service.port,
         })
@@ -121,7 +127,7 @@ export class DeviceDiscoveryService implements OnModuleInit {
           host: service.host,
           fqdn: service.fqdn,
           port: service.port,
-          ipv4: service.referer.family === 'IPv4' ? service.referer.address : null,
+          ipv4: service.referer?.family === 'IPv4' ? service.referer.address : null,
           displayName: accessoryInfo.displayName,
           productName: accessoryInfo.productName,
           isControlled,

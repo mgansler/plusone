@@ -11,6 +11,6 @@ export class DeviceDetailsResponseDto extends DeviceResponseDto {
   @ApiProperty({ type: () => DeviceState })
   state: DeviceState
 
-  @ApiProperty()
-  lastSeen: Date
+  @ApiProperty({ type: Date, nullable: true })
+  lastSeen: Date | null
 }

@@ -9,11 +9,11 @@ export class LocationDataResponseDto extends LocationUpdateRequestDto {
   @ApiProperty()
   sunset: Date
 
-  @ApiProperty()
-  firstLight: Date
+  @ApiProperty({ type: Date, nullable: true })
+  firstLight: Date | null
 
-  @ApiProperty()
-  lastLight: Date
+  @ApiProperty({ type: Date, nullable: true })
+  lastLight: Date | null
 
   @ApiProperty()
   dawn: Date

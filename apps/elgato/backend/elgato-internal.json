@@ -631,6 +631,7 @@
           },
           "ipv4": {
             "type": "string",
+            "nullable": true,
             "example": "192.168.0.50"
           },
           "port": {
@@ -658,7 +659,6 @@
           "name",
           "fqdn",
           "host",
-          "ipv4",
           "port",
           "displayName",
           "productName",
@@ -774,7 +774,8 @@
           },
           "lastSeen": {
             "format": "date-time",
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         },
         "required": [
@@ -928,11 +929,13 @@
           },
           "firstLight": {
             "format": "date-time",
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "lastLight": {
             "format": "date-time",
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "dawn": {
             "format": "date-time",

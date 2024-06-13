@@ -149,7 +149,9 @@ export class DeviceService implements OnModuleInit {
   private async checkKnownDevices() {
     const devices = await this.prismaService.device.findMany()
     for (const device of devices) {
-      const lastSeenMinutes = Math.floor((Date.now() - device.lastSeen.valueOf()) / 60 / 1_000)
+      const lastSeenMinutes = Math.floor(
+        (Date.now() - (device.lastSeen ?? new Date(2000, 0, 1)).valueOf()) / 60 / 1_000,
+      )
 
       try {
         if (lastSeenMinutes > 11) {
@@ -171,9 +173,9 @@ export class DeviceService implements OnModuleInit {
   }
 
   private getCurrentColor(state: LightStateWithColor | LightStateWithScene): {
-    hue: number
-    saturation: number
-    brightness: number
+    hue?: number
+    saturation?: number
+    brightness?: number
   } {
     const isLightStateWithScene = (state: LightStateWithColor | LightStateWithScene): state is LightStateWithScene => {
       return Array.isArray((state as LightStateWithScene).scene)

@@ -5,6 +5,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { Prisma, PrismaService } from '@plusone/elgato-persistence'
 
 import { DeviceService } from '../device/device.service'
+import { TransitionToColorRequestDto } from '../device/dto/transition-to-color-request.dto'
 
 import { ActionRequestDto } from './dto/action-request.dto'
 import { CommandRequestDto } from './dto/command-request.dto'
@@ -48,7 +49,10 @@ export class CommandsService {
   }
 
   async getCommand(commandId: number): Promise<CommandResponseDto> {
-    return this.prismaService.command.findUnique({ where: { id: commandId }, include: { actions: true } })
+    return this.prismaService.command.findUniqueOrThrow({
+      where: { id: commandId },
+      include: { actions: true },
+    })
   }
 
   async updateCommand(commandId: number, commandRequest: CommandRequestDto): Promise<CommandResponseDto> {
@@ -101,7 +105,7 @@ export class CommandsService {
         if (powerOnly || state.hue === null || state.brightness === null || state.saturation === null) {
           await this.deviceService.setPowerState(macAddress, { on })
         } else {
-          await this.deviceService.transitionToColor(macAddress, state)
+          await this.deviceService.transitionToColor(macAddress, state as TransitionToColorRequestDto)
         }
       } else {
         await this.deviceService.setPowerState(macAddress, { on })

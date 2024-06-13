@@ -16,7 +16,7 @@ export const discoveredDevicesResponse = zod
           name: zod.string(),
           fqdn: zod.string(),
           host: zod.string(),
-          ipv4: zod.string(),
+          ipv4: zod.string().nullish(),
           port: zod.number(),
           displayName: zod.string(),
           productName: zod.string(),
@@ -79,7 +79,7 @@ export const deviceDetailsResponse = zod
         temperature: zod.number().nullish(),
       })
       .strict(),
-    lastSeen: zod.string().datetime(),
+    lastSeen: zod.string().datetime().nullable(),
   })
   .strict()
 
@@ -187,8 +187,8 @@ export const getLocationDataResponse = zod
     name: zod.string(),
     sunrise: zod.string().datetime(),
     sunset: zod.string().datetime(),
-    firstLight: zod.string().datetime(),
-    lastLight: zod.string().datetime(),
+    firstLight: zod.string().datetime().nullable(),
+    lastLight: zod.string().datetime().nullable(),
     dawn: zod.string().datetime(),
     dusk: zod.string().datetime(),
     solarNoon: zod.string().datetime(),

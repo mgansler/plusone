@@ -4,8 +4,8 @@ import { ApiProperty } from '@nestjs/swagger'
  * {
  *   sunrise: '7:28:58 AM',
  *   sunset: '6:57:14 PM',
- *   first_light: '5:44:00 AM',
- *   last_light: '8:42:13 PM',
+ *   first_light: null,
+ *   last_light: null,
  *   dawn: '6:57:33 AM',
  *   dusk: '7:28:39 PM',
  *   solar_noon: '1:13:06 PM',
@@ -23,10 +23,10 @@ class SunriseSunsetResults {
   sunset: string
 
   @ApiProperty()
-  first_light: string
+  first_light: string | null
 
   @ApiProperty()
-  last_light: string
+  last_light: string | null
 
   @ApiProperty()
   dawn: string

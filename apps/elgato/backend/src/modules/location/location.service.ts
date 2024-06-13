@@ -8,6 +8,7 @@ import { PrismaService } from '@plusone/elgato-persistence'
 import { LocationDataResponseDto } from './dto/location-data-response.dto'
 import { LocationUpdateRequestDto } from './dto/location-update-request.dto'
 import { SunriseSunsetResponseDto } from './dto/sunrise-sunset-response.dto'
+import { locationDataResponseSchema } from './location-data-schema'
 
 @Injectable()
 export class LocationService {
@@ -44,50 +45,17 @@ export class LocationService {
         )
         .pipe(
           catchError((error: AxiosError) => {
-            this.logger.error(error.response.data)
+            this.logger.error(error.response?.data)
             throw `Could not connect to 'https://api.sunrisesunset.io'`
           }),
         ),
     )
 
+    const validatedSunriseSunsetData = locationDataResponseSchema.parse(sunriseSunsetData.data)
+
     return {
       ...location,
-      ...this.parseSunriseSunsetResult(sunriseSunsetData.data.results),
+      ...validatedSunriseSunsetData.results,
     }
-  }
-
-  private parseSunriseSunsetResult(result: SunriseSunsetResponseDto['results']) {
-    return {
-      sunrise: this.parseTimeEntry(result.sunrise),
-      sunset: this.parseTimeEntry(result.sunset),
-      firstLight: this.parseTimeEntry(result.first_light),
-      lastLight: this.parseTimeEntry(result.last_light),
-      dawn: this.parseTimeEntry(result.dawn),
-      dusk: this.parseTimeEntry(result.dusk),
-      solarNoon: this.parseTimeEntry(result.solar_noon),
-      goldenHour: this.parseTimeEntry(result.golden_hour),
-      dayLength: this.parseDayLength(result.day_length),
-      timeZone: result.timezone,
-      utcOffset: result.utc_offset,
-    }
-  }
-
-  private parseTimeEntry(input: string): Date {
-    const [time, AM_PM] = input.split(' ')
-    const [hours, minutes, seconds] = time.split(':').map(Number)
-
-    const normalizedHours = hours + (AM_PM === 'PM' ? 12 : 0)
-
-    const date = new Date()
-
-    date.setHours(normalizedHours, minutes, seconds, 0)
-
-    return date
-  }
-
-  private parseDayLength(input: string): number {
-    const [hours, minutes, seconds] = input.split(':').map(Number)
-
-    return hours * 3600 + minutes * 60 + seconds
   }
 }

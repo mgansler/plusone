@@ -66,9 +66,11 @@ export interface LocationDataResponseDto {
   /** Time between sunrise and sunset in seconds. */
   dayLength: number
   dusk: string
-  firstLight: string
+  /** @nullable */
+  firstLight: string | null
   goldenHour: string
-  lastLight: string
+  /** @nullable */
+  lastLight: string | null
   latitude: number
   longitude: number
   name: string
@@ -138,7 +140,8 @@ export interface DeviceState {
 export interface DeviceDetailsResponseDto {
   details: ElgatoDeviceDetailsResponseDto
   displayName: string
-  lastSeen: string
+  /** @nullable */
+  lastSeen: string | null
   /** The unique id for the device is its mac address. */
   macAddress: string
   state: DeviceState
@@ -175,7 +178,8 @@ export interface DiscoveredDeviceResponseDto {
   host: string
   /** The mac address of the device. */
   id: string
-  ipv4: string
+  /** @nullable */
+  ipv4?: string | null
   isControlled: boolean
   macAddress: string
   name: string
