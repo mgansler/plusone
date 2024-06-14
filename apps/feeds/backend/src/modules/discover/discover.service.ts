@@ -5,8 +5,6 @@ import * as cheerio from 'cheerio'
 import Parser from 'rss-parser'
 import { catchError, firstValueFrom } from 'rxjs'
 
-import { DiscoverFeedRequest } from '@plusone/feeds/shared/types'
-
 import { discoveredFeedSchema, DiscoverFeed } from './discover.schema'
 
 @Injectable()
@@ -16,7 +14,7 @@ export class DiscoverService {
 
   constructor(private readonly httpService: HttpService) {}
 
-  async discoverFeedForWebsite(requestedUri: DiscoverFeedRequest): Promise<DiscoverFeed | null> {
+  async discoverFeedForWebsite(requestedUri: string): Promise<DiscoverFeed | null> {
     this.logger.log('Starting feed discovery for: ' + requestedUri)
 
     try {

@@ -1,9 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsBoolean } from 'class-validator'
 
-import { Article, ArticleResponse, PaginatedArticles, ToggleUnreadRequest } from '@plusone/feeds/shared/types'
-
-class ArticleDto implements Article {
+class ArticleDto {
   @ApiProperty({ type: String, nullable: true })
   content: string | null
 
@@ -23,7 +21,7 @@ class ArticleDto implements Article {
   title: string | null
 }
 
-export class ArticleResponseDto implements ArticleResponse {
+export class ArticleResponseDto {
   @ApiProperty()
   article: ArticleDto
 
@@ -37,13 +35,13 @@ export class ArticleResponseDto implements ArticleResponse {
   unread: boolean
 }
 
-export class ArticleToggleUnreadDto implements ToggleUnreadRequest {
+export class ArticleToggleUnreadDto {
   @ApiProperty()
   @IsBoolean()
   unread: boolean
 }
 
-export class PaginatedArticleResponseDto implements PaginatedArticles {
+export class PaginatedArticleResponseDto {
   @ApiProperty({ type: [ArticleResponseDto] })
   content: Array<ArticleResponseDto>
 

@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
 
 import { Feed, Prisma, PrismaService, User } from '@plusone/feeds-persistence'
-import { Sort, UserFeedResponse } from '@plusone/feeds/shared/types'
 
+import { Sort } from '../../app/shared'
 import { ArticleService } from '../article/article.service'
 import { TokenPayload } from '../authentication/jwt.strategy'
 import { DiscoverService } from '../discover/discover.service'
@@ -14,6 +14,7 @@ import {
   FeedInputDto,
   FeedSettingsResponseDto,
   UpdateFeedSettingsInputDto,
+  UserFeedResponseDto,
 } from './feed.dto'
 
 @Injectable()
@@ -38,7 +39,7 @@ export class FeedService {
     return { title: discoveredFeed.title ?? null, feedUrl: discoveredFeed.feedUrl ?? null, url }
   }
 
-  async create(feedInputDto: FeedInputDto, userId: User['id']): Promise<UserFeedResponse> {
+  async create(feedInputDto: FeedInputDto, userId: User['id']): Promise<UserFeedResponseDto> {
     let originalTitle: string
     try {
       if (typeof feedInputDto.url !== 'undefined') {
@@ -171,7 +172,7 @@ export class FeedService {
     return this.prismaService.feed.findMany()
   }
 
-  async findAllFor(user: TokenPayload): Promise<Array<UserFeedResponse>> {
+  async findAllFor(user: TokenPayload): Promise<Array<UserFeedResponseDto>> {
     return this.prismaService.$transaction(async (tx) => {
       const userFeeds = await tx.userFeed.findMany({
         include: { tags: true, feed: true },
@@ -179,7 +180,7 @@ export class FeedService {
         orderBy: { title: 'asc' },
       })
 
-      const userFeedResponses: Array<UserFeedResponse> = []
+      const userFeedResponses: Array<UserFeedResponseDto> = []
 
       for await (const { feed, order, ...rest } of userFeeds) {
         const unreadCount = await tx.userArticle.count({

@@ -4,8 +4,12 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
-import { Sort } from '@plusone/feeds/shared/types'
-import { getGetUserFeedsQueryKey, useUpdateFeedSettings, useValidatedGetFeedSettings } from '@plusone/feeds/api-client'
+import {
+  getGetUserFeedsQueryKey,
+  Sort,
+  useUpdateFeedSettings,
+  useValidatedGetFeedSettings,
+} from '@plusone/feeds/api-client'
 import type { UpdateFeedSettingsMutationBody } from '@plusone/feeds/api-client'
 
 type FeedSettingsForm = UpdateFeedSettingsMutationBody
@@ -48,8 +52,8 @@ export function FeedSettings() {
         <TextField label={'Feed Title'} {...register('title')} />
 
         <TextField label={'Order'} select={true} defaultValue={currentSettings?.order} {...register('order')}>
-          <MenuItem value={Sort.OldestFirst}>Oldest First</MenuItem>
-          <MenuItem value={Sort.NewestFirst}>Newest First</MenuItem>
+          <MenuItem value={Sort.asc}>Oldest First</MenuItem>
+          <MenuItem value={Sort.desc}>Newest First</MenuItem>
         </TextField>
 
         <FormControlLabel

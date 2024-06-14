@@ -1,7 +1,7 @@
 import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import { createContext, useContext, useState } from 'react'
 
-import { Sort } from '@plusone/feeds/shared/types'
+import { Sort } from '@plusone/feeds/api-client'
 
 type FeedSettingsContextValue = {
   sort: Sort
@@ -19,7 +19,7 @@ type FeedSettingsContextProviderProps = {
 }
 
 export function FeedSettingsContextProvider({ children }: FeedSettingsContextProviderProps) {
-  const [sort, setSort] = useState<Sort>(Sort.NewestFirst)
+  const [sort, setSort] = useState<Sort>(Sort.desc)
   const [includeRead, setIncludeRead] = useState<boolean>(false)
   const [expandContent, setExpandContent] = useState<boolean>(true)
 

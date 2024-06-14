@@ -3,11 +3,11 @@ import { ConfigService } from '@nestjs/config'
 import { Item } from 'rss-parser'
 
 import { Article, Feed, Prisma, PrismaService, User } from '@plusone/feeds-persistence'
-import { PaginatedArticles, Pagination, Sort } from '@plusone/feeds/shared/types'
 
 import { PAGE_SIZE } from '../../app/consts'
+import { Pagination, Sort } from '../../app/shared'
 
-import { ArticleResponseDto, StarArticleDto } from './article.dto'
+import { ArticleResponseDto, PaginatedArticleResponseDto, StarArticleDto } from './article.dto'
 import { getArticleBuilderFunction } from './transformation/transformation'
 
 type ArticleFindParams = Pagination & {
@@ -78,7 +78,7 @@ export class ArticleService {
   async find(
     userId: User['id'],
     { cursor, sort, searchTerm, feedId, includeRead, starred }: ArticleFindParams,
-  ): Promise<PaginatedArticles> {
+  ): Promise<PaginatedArticleResponseDto> {
     this.logger.debug(`User is searching for '${searchTerm}', limited by '${feedId}', sorted: '${sort}'.`)
 
     const pagination = this.normalizePagination(cursor)
@@ -218,7 +218,7 @@ export class ArticleService {
     pagination: PrismaPagination,
     where: Prisma.UserArticleFindManyArgs['where'],
     orderBy?: Prisma.UserArticleFindManyArgs['orderBy'],
-  ): Promise<PaginatedArticles> {
+  ): Promise<PaginatedArticleResponseDto> {
     const [totalCount, content, unreadCount] = await this.prismaService.$transaction([
       this.prismaService.userArticle.count({ where }),
       this.prismaService.userArticle.findMany({

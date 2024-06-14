@@ -1,7 +1,7 @@
 import { ArrowDownward, ArrowUpward, ExpandLess, ExpandMore } from '@mui/icons-material'
 import { Button, Checkbox, FormControlLabel } from '@mui/material'
 
-import { Sort } from '@plusone/feeds/shared/types'
+import { Sort } from '@plusone/feeds/api-client'
 
 import { useFeedSettingsContext } from '../context/feed-settings'
 
@@ -11,10 +11,10 @@ export function FeedSettingsBar() {
   return (
     <div style={{ display: 'flex' }}>
       <Button
-        startIcon={sort === Sort.NewestFirst ? <ArrowUpward /> : <ArrowDownward />}
-        onClick={() => setSort((cur) => (cur === Sort.NewestFirst ? Sort.OldestFirst : Sort.NewestFirst))}
+        startIcon={sort === Sort.desc ? <ArrowUpward /> : <ArrowDownward />}
+        onClick={() => setSort((cur) => (cur === Sort.desc ? Sort.asc : Sort.desc))}
       >
-        {sort === Sort.NewestFirst ? 'newest first' : 'oldest first'}
+        {sort === Sort.desc ? 'newest first' : 'oldest first'}
       </Button>
 
       <FormControlLabel

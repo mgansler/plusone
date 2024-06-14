@@ -1,9 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsNotEmpty } from 'class-validator'
 
-import { LoginResponse, UserResponse } from '@plusone/feeds/shared/types'
-
-export class LoginResponseDto implements LoginResponse {
+export class LoginResponseDto {
   @ApiProperty()
   access_token: string
 
@@ -31,7 +29,7 @@ export class UserRegistrationDto {
   password: string
 }
 
-export class UserResponseDto implements UserResponse {
+export class UserResponseDto {
   @ApiPropertyOptional({ type: String })
   email?: string | null
 

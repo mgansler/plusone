@@ -4,9 +4,8 @@ import { JwtService } from '@nestjs/jwt'
 import { compare, hash } from 'bcrypt'
 
 import { Prisma, PrismaService, User } from '@plusone/feeds-persistence'
-import { LoginResponse } from '@plusone/feeds/shared/types'
 
-import { UserRegistrationDto } from './authentication.dto'
+import { LoginResponseDto, UserRegistrationDto } from './authentication.dto'
 import { TokenPayload } from './jwt.strategy'
 import { Role } from './roles.guard'
 
@@ -24,7 +23,7 @@ export class AuthenticationService implements OnModuleInit {
     await this.createRootUser()
   }
 
-  async login(user: User): Promise<LoginResponse> {
+  async login(user: User): Promise<LoginResponseDto> {
     const payload: TokenPayload = {
       username: user.username,
       isAdmin: user.isAdmin,

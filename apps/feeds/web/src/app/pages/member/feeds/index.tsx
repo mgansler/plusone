@@ -18,8 +18,7 @@ import { useMemo, useState } from 'react'
 import { Link, Outlet, useMatch, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import type { UserFeedResponseDto } from '@plusone/feeds/api-client'
-import { useGetUserFeeds } from '@plusone/feeds/api-client'
-import { Sort } from '@plusone/feeds/shared/types'
+import { Sort, useGetUserFeeds } from '@plusone/feeds/api-client'
 
 import { useFeedSettingsContext } from '../../../context/feed-settings'
 
@@ -34,7 +33,7 @@ function FeedEntry({ feed }: FeedEntryProps) {
   const { setIncludeRead, setSort, setExpandContent } = useFeedSettingsContext()
 
   const handleGoToFeed = () => {
-    setSort(feed.order === 'desc' ? Sort.NewestFirst : Sort.OldestFirst)
+    setSort(feed.order === 'desc' ? Sort.desc : Sort.asc)
     setIncludeRead(feed.includeRead)
     setExpandContent(feed.expandContent)
     navigate({ pathname: feed.feedId, search: searchParams.toString() })
@@ -123,7 +122,7 @@ export function FeedList() {
   }, [data])
 
   const goToAll = () => {
-    setSort(Sort.NewestFirst)
+    setSort(Sort.desc)
     setIncludeRead(false)
     navigate({ pathname: 'all', search: searchParams.toString() })
   }

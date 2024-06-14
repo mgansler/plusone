@@ -4,13 +4,13 @@ import type { ReactNode } from 'react'
 import { createContext, useContext, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import type { LoginResponse, UserResponse } from '@plusone/feeds/shared/types'
 import { AUTHENTICATION_LOCAL_STORAGE_KEY, useLogout, useProfile } from '@plusone/feeds/api-client'
+import type { LoginResponseDto, UserResponseDto } from '@plusone/feeds/api-client'
 
 type UserContextValue = {
-  userInfo?: UserResponse
+  userInfo?: UserResponseDto
   isLoggedIn: boolean
-  login: (auth: LoginResponse) => void
+  login: (auth: LoginResponseDto) => void
   logout: () => void
 }
 
@@ -50,7 +50,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
   const { refetch: logoutAddServer } = useLogout({ query: { enabled: false } })
   const isLoggedIn = profile !== undefined
 
-  const login = async (auth: LoginResponse) => {
+  const login = async (auth: LoginResponseDto) => {
     localStorage.setItem(AUTHENTICATION_LOCAL_STORAGE_KEY, JSON.stringify(auth))
     try {
       const response = await fetchProfile()

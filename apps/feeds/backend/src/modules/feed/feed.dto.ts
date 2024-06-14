@@ -1,18 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUrl, ValidateIf } from 'class-validator'
 
-import {
-  DiscoverResponse,
-  FeedInput,
-  FeedResponse,
-  Sort,
-  UpdateFeedSettingsInput,
-  UserFeedResponse,
-} from '@plusone/feeds/shared/types'
-
+import { Sort } from '../../app/shared'
 import { TagResponseDto } from '../tag/tag.dto'
 
-export class DiscoverResponseDto implements DiscoverResponse {
+export class DiscoverResponseDto {
   @ApiProperty({ type: String, nullable: true })
   feedUrl: string | null
 
@@ -23,13 +15,13 @@ export class DiscoverResponseDto implements DiscoverResponse {
   url: string
 }
 
-export class FeedDiscoverDto implements Pick<FeedInput, 'url'> {
+export class FeedDiscoverDto {
   @ApiProperty()
   @IsUrl({ require_tld: false })
   url: string
 }
 
-export class FeedInputDto implements FeedInput {
+export class FeedInputDto {
   @ApiProperty({ required: false })
   @ValidateIf((o) => typeof o.url !== 'undefined')
   @IsUrl({ require_tld: false })
@@ -60,7 +52,7 @@ export class FeedSettingsResponseDto {
   order: Sort
 }
 
-export class UpdateFeedSettingsInputDto implements UpdateFeedSettingsInput {
+export class UpdateFeedSettingsInputDto {
   @ApiProperty()
   expandContent: boolean
 
@@ -74,7 +66,7 @@ export class UpdateFeedSettingsInputDto implements UpdateFeedSettingsInput {
   title?: string
 }
 
-export class FeedResponseDto implements FeedResponse {
+export class FeedResponseDto {
   @ApiProperty()
   feedUrl: string
 
@@ -88,7 +80,7 @@ export class FeedResponseDto implements FeedResponse {
   title?: string
 }
 
-export class UserFeedResponseDto implements UserFeedResponse {
+export class UserFeedResponseDto {
   @ApiProperty()
   feedUrl: string
 

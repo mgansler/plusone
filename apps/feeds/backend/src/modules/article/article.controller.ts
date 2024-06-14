@@ -2,8 +2,8 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query, R
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { Feed } from '@plusone/feeds-persistence'
-import { Pagination, Sort } from '@plusone/feeds/shared/types'
 
+import { Pagination, Sort } from '../../app/shared'
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
 
 import { ArticleResponseDto, ArticleToggleUnreadDto, PaginatedArticleResponseDto, StarArticleDto } from './article.dto'
