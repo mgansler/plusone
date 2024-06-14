@@ -16,10 +16,5 @@
       matchPackageNames: ['@octokit/core'],
       allowedVersions: '!/6\\.1\\.2/',
     },
-    {
-      // Linting fails
-      matchPackagePrefixes: ['@nx', 'nx'],
-      allowedVersions: '!/19\\.0\\.6/',
-    },
   ],
 }

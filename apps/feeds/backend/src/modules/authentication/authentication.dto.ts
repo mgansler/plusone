@@ -32,8 +32,8 @@ export class UserRegistrationDto {
 }
 
 export class UserResponseDto implements UserResponse {
-  @ApiPropertyOptional()
-  email?: string
+  @ApiPropertyOptional({ type: String })
+  email?: string | null
 
   @ApiProperty()
   id: string

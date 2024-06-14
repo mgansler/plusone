@@ -7,6 +7,8 @@ import { catchError, firstValueFrom } from 'rxjs'
 
 import { DiscoverFeedRequest } from '@plusone/feeds/shared/types'
 
+import { discoveredFeedSchema, DiscoverFeed } from './discover.schema'
+
 @Injectable()
 export class DiscoverService {
   private parser = new Parser()
@@ -14,14 +16,14 @@ export class DiscoverService {
 
   constructor(private readonly httpService: HttpService) {}
 
-  async discoverFeedForWebsite(requestedUri: DiscoverFeedRequest): Promise<Parser.Output<unknown> | null> {
+  async discoverFeedForWebsite(requestedUri: DiscoverFeedRequest): Promise<DiscoverFeed | null> {
     this.logger.log('Starting feed discovery for: ' + requestedUri)
 
     try {
       const website = await firstValueFrom(
         this.httpService.get(requestedUri, { timeout: 5_000 }).pipe(
           catchError((error: AxiosError) => {
-            this.logger.error(error.response.data)
+            this.logger.error(error.response?.data)
             throw `Could not connect to ${requestedUri}`
           }),
         ),
@@ -31,21 +33,23 @@ export class DiscoverService {
       const linkElements = $("link[type*='rss']").get()
       for (const el of linkElements) {
         const href = el.attribs['href']
-        let url = href
+        let feedUrl = href
         if (!href.startsWith('http')) {
-          url = requestedUri + href
+          feedUrl = requestedUri + href
         }
-        const feed = await this.parser.parseURL(url)
-        if (feed) {
-          this.logger.log(`Feed discovered: ${feed.title} - ${url}`)
-          return { ...feed, feedUrl: feed.feedUrl ?? url }
+        const discoveredFeed = discoveredFeedSchema.parse(await this.parser.parseURL(feedUrl))
+        if (discoveredFeed) {
+          this.logger.log(`Feed discovered: ${discoveredFeed.title} - ${feedUrl}`)
+          return { ...discoveredFeed, feedUrl: discoveredFeed.feedUrl ?? feedUrl }
         } else {
           this.logger.warn(`No feed discovered for ${requestedUri}`)
         }
       }
     } catch (e) {
       this.logger.error(e)
-      return null
     }
+
+    // We either returned a discovered feed already
+    return null
   }
 }

@@ -1,6 +1,7 @@
 import type { OnModuleDestroy, OnModuleInit } from '@nestjs/common'
 import { Injectable, Logger } from '@nestjs/common'
 
+import type { Prisma } from './client'
 import { PrismaClient } from './client'
 
 @Injectable()
@@ -8,7 +9,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   private logger = new Logger(PrismaService.name)
 
   constructor() {
-    const log = []
+    const log: Array<Prisma.LogLevel> = []
     if (process.env['PRINT_PRISMA_QUERIES'] === 'y') {
       log.push('query')
     }

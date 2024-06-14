@@ -1,10 +1,7 @@
-import type { Output } from 'rss-parser'
-
 export type DiscoverResponse = {
   url: string
-  title: string
-  feedUrl: string
+  title: string | null
+  feedUrl: string | null
 }
 
-export type DiscoverFeedResponse = Output<unknown>
 export type DiscoverFeedRequest = string

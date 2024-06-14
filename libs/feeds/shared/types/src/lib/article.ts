@@ -1,10 +1,10 @@
 export type Article = {
-  content: string
+  content: string | null
   date: Date
   guid: string
   id: string
-  link: string
-  title: string
+  link: string | null
+  title: string | null
 }
 
 export type ArticleResponse = {

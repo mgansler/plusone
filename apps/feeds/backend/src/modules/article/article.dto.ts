@@ -4,8 +4,8 @@ import { IsBoolean } from 'class-validator'
 import { Article, ArticleResponse, PaginatedArticles, ToggleUnreadRequest } from '@plusone/feeds/shared/types'
 
 class ArticleDto implements Article {
-  @ApiProperty()
-  content: string
+  @ApiProperty({ type: String, nullable: true })
+  content: string | null
 
   @ApiProperty()
   date: Date
@@ -16,11 +16,11 @@ class ArticleDto implements Article {
   @ApiProperty()
   id: string
 
-  @ApiProperty()
-  link: string
+  @ApiProperty({ type: String, nullable: true })
+  link: string | null
 
-  @ApiProperty()
-  title: string
+  @ApiProperty({ type: String, nullable: true })
+  title: string | null
 }
 
 export class ArticleResponseDto implements ArticleResponse {

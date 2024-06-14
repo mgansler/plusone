@@ -45,7 +45,7 @@ export class TagService {
   }
 
   async getFeedTags(feedId: Feed['id'], userId: User['id']) {
-    const feed = await this.prismaService.userFeed.findUnique({
+    const feed = await this.prismaService.userFeed.findUniqueOrThrow({
       select: { tags: true },
       where: { userId_feedId: { userId, feedId } },
     })

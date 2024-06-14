@@ -17,7 +17,8 @@ export class BootInfoController {
   getBootInfo(): BootInfoDto {
     return {
       appVersion: APP_VERSION,
-      pageSize: this.configService.get(PAGE_SIZE),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      pageSize: this.configService.get(PAGE_SIZE)!, // Default is set via app.module.ts
     }
   }
 }

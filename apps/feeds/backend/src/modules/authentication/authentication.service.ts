@@ -68,18 +68,17 @@ export class AuthenticationService implements OnModuleInit {
     }
   }
 
-  async validateUsernamePassword(username: string, password: string): Promise<Omit<User, 'password'> | null> {
-    const user = await this.prismaService.user.findUnique({ where: { username } })
-    if (user && (await compare(password, user.password))) {
-      user.password = undefined
-      return user
+  async validateUsernamePassword(username: string, enteredPassword: string): Promise<Omit<User, 'password'> | null> {
+    const { password, ...rest } = await this.prismaService.user.findUniqueOrThrow({ where: { username } })
+    if (await compare(enteredPassword, password)) {
+      return rest
     }
 
     return null
   }
 
-  async validateRefreshToken(refreshToken: string, userId: string): Promise<User> {
-    const user = await this.prismaService.user.findUnique({ where: { id: userId } })
+  async validateRefreshToken(refreshToken: string, userId: string): Promise<User | undefined> {
+    const user = await this.prismaService.user.findUniqueOrThrow({ where: { id: userId } })
 
     if (user.refreshToken) {
       const refreshTokenIsValid = await compare(refreshToken, user.refreshToken)
@@ -111,7 +110,14 @@ export class AuthenticationService implements OnModuleInit {
     const username = process.env.ADMIN_USER
     const password = process.env.ADMIN_PASSWORD
 
-    if (!(await this.prismaService.user.findUnique({ where: { username } }))) {
+    if (typeof username === 'undefined' || typeof password === 'undefined') {
+      this.logger.warn('ADMIN_USER or ADMIN_PASSWORD is not set, cannot create the admin user.')
+      return
+    }
+
+    if (await this.prismaService.user.findUnique({ where: { username } })) {
+      this.logger.log('Admin user already exists, skipping creation.')
+    } else {
       this.logger.log(`Admin user does not exist, creating account '${username}'`)
       await this.prismaService.user.create({
         data: {
@@ -120,8 +126,6 @@ export class AuthenticationService implements OnModuleInit {
           isAdmin: true,
         },
       })
-    } else {
-      this.logger.log('Admin user already exists, skipping creation.')
     }
   }
 }

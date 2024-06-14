@@ -190,8 +190,10 @@ export interface FeedInputDto {
 }
 
 export interface DiscoverResponseDto {
-  feedUrl: string
-  title: string
+  /** @nullable */
+  feedUrl: string | null
+  /** @nullable */
+  title: string | null
   url: string
 }
 
@@ -244,12 +246,15 @@ export interface StarArticleDto {
 }
 
 export interface ArticleDto {
-  content: string
+  /** @nullable */
+  content: string | null
   date: string
   guid: string
   id: string
-  link: string
-  title: string
+  /** @nullable */
+  link: string | null
+  /** @nullable */
+  title: string | null
 }
 
 export interface ArticleResponseDto {

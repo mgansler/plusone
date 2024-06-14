@@ -1129,7 +1129,8 @@
         "type": "object",
         "properties": {
           "content": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "date": {
             "format": "date-time",
@@ -1142,10 +1143,12 @@
             "type": "string"
           },
           "link": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         },
         "required": [
@@ -1314,10 +1317,12 @@
         "type": "object",
         "properties": {
           "feedUrl": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "url": {
             "type": "string"

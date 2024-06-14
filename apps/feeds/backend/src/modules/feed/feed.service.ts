@@ -8,7 +8,13 @@ import { TokenPayload } from '../authentication/jwt.strategy'
 import { DiscoverService } from '../discover/discover.service'
 import { FetchService } from '../fetch/fetch.service'
 
-import { FeedDiscoverDto, FeedInputDto, FeedSettingsResponseDto, UpdateFeedSettingsInputDto } from './feed.dto'
+import {
+  DiscoverResponseDto,
+  FeedDiscoverDto,
+  FeedInputDto,
+  FeedSettingsResponseDto,
+  UpdateFeedSettingsInputDto,
+} from './feed.dto'
 
 @Injectable()
 export class FeedService {
@@ -21,7 +27,7 @@ export class FeedService {
     private readonly articleService: ArticleService,
   ) {}
 
-  async discover({ url }: FeedDiscoverDto) {
+  async discover({ url }: FeedDiscoverDto): Promise<DiscoverResponseDto> {
     const discoveredFeed = await this.discoverService.discoverFeedForWebsite(url)
 
     if (!discoveredFeed) {
@@ -29,16 +35,16 @@ export class FeedService {
       throw new HttpException('Could not find a feed', HttpStatus.NOT_FOUND)
     }
 
-    return { title: discoveredFeed.title, feedUrl: discoveredFeed.feedUrl, url }
+    return { title: discoveredFeed.title ?? null, feedUrl: discoveredFeed.feedUrl ?? null, url }
   }
 
   async create(feedInputDto: FeedInputDto, userId: User['id']): Promise<UserFeedResponse> {
     let originalTitle: string
     try {
       if (typeof feedInputDto.url !== 'undefined') {
-        originalTitle = (await this.discover({ url: feedInputDto.url })).title
+        originalTitle = (await this.discover({ url: feedInputDto.url })).title ?? ''
       } else {
-        originalTitle = feedInputDto.title
+        originalTitle = feedInputDto.title ?? ''
       }
     } catch (e) {
       if (typeof feedInputDto.title === 'undefined' || feedInputDto.title.length < 1) {
@@ -76,7 +82,7 @@ export class FeedService {
           },
         })
 
-        const userFeed = await tx.userFeed.findUnique({
+        const userFeed = await tx.userFeed.findUniqueOrThrow({
           include: { tags: true },
           where: { userId_feedId: { userId, feedId: feed.id } },
         })
@@ -121,7 +127,6 @@ export class FeedService {
         const unreadCount = await tx.userArticle.count({ where: { userId, article: { feedId: feed.id } } })
 
         return {
-          id: feed.id,
           feedUrl: feed.feedUrl,
           originalTitle: feed.originalTitle,
           ...userFeed,
@@ -198,7 +203,7 @@ export class FeedService {
   }
 
   async getFeedSettings(user: TokenPayload, feedId: Feed['id']): Promise<FeedSettingsResponseDto> {
-    const entry = await this.prismaService.userFeed.findUnique({
+    const entry = await this.prismaService.userFeed.findUniqueOrThrow({
       select: { feedId: true, title: true, expandContent: true, order: true, includeRead: true },
       where: { userId_feedId: { userId: user.id, feedId } },
     })

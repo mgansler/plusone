@@ -13,11 +13,11 @@ import {
 import { TagResponseDto } from '../tag/tag.dto'
 
 export class DiscoverResponseDto implements DiscoverResponse {
-  @ApiProperty()
-  feedUrl: string
+  @ApiProperty({ type: String, nullable: true })
+  feedUrl: string | null
 
-  @ApiProperty()
-  title: string
+  @ApiProperty({ type: String, nullable: true })
+  title: string | null
 
   @ApiProperty()
   url: string

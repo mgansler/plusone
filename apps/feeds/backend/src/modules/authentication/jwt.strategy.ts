@@ -47,6 +47,10 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-ref
   }
 
   async validate(request: Request, payload: { id: string }) {
+    if (typeof request.headers.authorization === 'undefined') {
+      throw new Error('Authorization header is not set, cannot validate refresh token.')
+    }
+
     const refreshToken = request.headers.authorization.split(' ')[1]
     return this.authenticationService.validateRefreshToken(refreshToken, payload.id)
   }

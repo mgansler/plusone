@@ -24,7 +24,7 @@ type MarkArticlesReadParams = {
 }
 
 type PrismaPagination = {
-  cursor: { cursor: number }
+  cursor: { cursor: number } | undefined
   skip: number
   take: number
 }
@@ -191,11 +191,12 @@ export class ArticleService {
     return {
       cursor: isFirstRequest ? undefined : { cursor: Number(cursor) },
       skip: isFirstRequest ? 0 : 1,
-      take: this.configService.get(PAGE_SIZE),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      take: this.configService.get(PAGE_SIZE)!, // Default is set in app.module.ts
     }
   }
 
-  private normalizeSearch(term?: string): Prisma.UserArticleFindManyArgs['where']['article']['title'] {
+  private normalizeSearch(term?: string): Prisma.StringNullableFilter<'Article'> | string | null | undefined {
     if (typeof term === 'undefined') {
       return undefined
     }
@@ -233,7 +234,8 @@ export class ArticleService {
       content,
       totalCount,
       lastCursor: content[content.length - 1]?.cursor,
-      pageSize: this.configService.get(PAGE_SIZE),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      pageSize: this.configService.get(PAGE_SIZE)!, // Default is set in app.module.ts
       unreadCount,
     }
   }

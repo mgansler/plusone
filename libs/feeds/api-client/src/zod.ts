@@ -29,12 +29,12 @@ export const toggleUnreadResponse = zod
   .object({
     article: zod
       .object({
-        content: zod.string(),
+        content: zod.string().nullable(),
         date: zod.string().datetime(),
         guid: zod.string(),
         id: zod.string(),
-        link: zod.string(),
-        title: zod.string(),
+        link: zod.string().nullable(),
+        title: zod.string().nullable(),
       })
       .strict(),
     cursor: zod.number(),
@@ -73,12 +73,12 @@ export const findArticlesResponse = zod
         .object({
           article: zod
             .object({
-              content: zod.string(),
+              content: zod.string().nullable(),
               date: zod.string().datetime(),
               guid: zod.string(),
               id: zod.string(),
-              link: zod.string(),
-              title: zod.string(),
+              link: zod.string().nullable(),
+              title: zod.string().nullable(),
             })
             .strict(),
           cursor: zod.number(),
@@ -98,12 +98,12 @@ export const recentlyReadArticlesResponseItem = zod
   .object({
     article: zod
       .object({
-        content: zod.string(),
+        content: zod.string().nullable(),
         date: zod.string().datetime(),
         guid: zod.string(),
         id: zod.string(),
-        link: zod.string(),
-        title: zod.string(),
+        link: zod.string().nullable(),
+        title: zod.string().nullable(),
       })
       .strict(),
     cursor: zod.number(),
@@ -160,8 +160,8 @@ export const discoverFeedQueryParams = zod
 
 export const discoverFeedResponse = zod
   .object({
-    feedUrl: zod.string(),
-    title: zod.string(),
+    feedUrl: zod.string().nullable(),
+    title: zod.string().nullable(),
     url: zod.string(),
   })
   .strict()
