@@ -17,13 +17,6 @@
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/packages/cypress-graphql"],
-      "options": {
-        "jestConfig": "libs/packages/cypress-graphql/jest.config.ts"
-      }
     }
   },
   "tags": []

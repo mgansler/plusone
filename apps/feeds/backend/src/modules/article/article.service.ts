@@ -4,6 +4,7 @@ import { Item } from 'rss-parser'
 
 import { Article, Feed, Prisma, PrismaService, User } from '@plusone/feeds-persistence'
 
+import { Config } from '../../app/config'
 import { PAGE_SIZE } from '../../app/consts'
 import { Pagination, Sort } from '../../app/shared'
 
@@ -35,7 +36,7 @@ export class ArticleService {
 
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService<Config, true>,
   ) {}
 
   async create(item: Item, feed: Feed) {
@@ -191,8 +192,7 @@ export class ArticleService {
     return {
       cursor: isFirstRequest ? undefined : { cursor: Number(cursor) },
       skip: isFirstRequest ? 0 : 1,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      take: this.configService.get(PAGE_SIZE)!, // Default is set in app.module.ts
+      take: this.configService.get(PAGE_SIZE),
     }
   }
 
@@ -234,8 +234,7 @@ export class ArticleService {
       content,
       totalCount,
       lastCursor: content[content.length - 1]?.cursor,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      pageSize: this.configService.get(PAGE_SIZE)!, // Default is set in app.module.ts
+      pageSize: this.configService.get(PAGE_SIZE),
       unreadCount,
     }
   }

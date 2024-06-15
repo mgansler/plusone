@@ -39,12 +39,12 @@
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "feeds-web:build",
-        "hmr": true,
         "proxyConfig": "apps/feeds/web/proxy.conf.json"
       },
       "configurations": {
         "development": {
-          "buildTarget": "feeds-web:build:development"
+          "buildTarget": "feeds-web:build:development",
+          "hmr": true
         },
         "production": {
           "buildTarget": "feeds-web:build:production",

@@ -3,7 +3,6 @@ import { join } from 'path'
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { ServeStaticModule } from '@nestjs/serve-static'
-import * as Joi from 'joi'
 
 import { ArticleModule } from '../modules/article/article.module'
 import { AuthenticationModule } from '../modules/authentication/authentication.module'
@@ -14,7 +13,7 @@ import { SchedulingModule } from '../modules/scheduling/scheduling.module'
 import { TagModule } from '../modules/tag/tag.module'
 import { UserModule } from '../modules/user/user.module'
 
-import { PAGE_SIZE } from './consts'
+import { configSchema } from './config'
 import { LoggerMiddleware } from './logger.middleware'
 
 @Module({
@@ -24,15 +23,7 @@ import { LoggerMiddleware } from './logger.middleware'
     BootInfoModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      validationSchema: Joi.object({
-        JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),
-        JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
-        JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
-        JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
-        FEEDS_DATABASE_URL: Joi.string().required(),
-        [PAGE_SIZE]: Joi.number().default(20),
-        RECENTLY_READ_COUNT: Joi.number().default(20),
-      }),
+      validate: configSchema.parse,
       envFilePath: ['.local.env'],
     }),
     FeedModule,

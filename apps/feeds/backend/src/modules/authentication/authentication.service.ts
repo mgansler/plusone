@@ -5,6 +5,8 @@ import { compare, hash } from 'bcrypt'
 
 import { Prisma, PrismaService, User } from '@plusone/feeds-persistence'
 
+import { Config } from '../../app/config'
+
 import { LoginResponseDto, UserRegistrationDto } from './authentication.dto'
 import { TokenPayload } from './jwt.strategy'
 import { Role } from './roles.guard'
@@ -16,7 +18,7 @@ export class AuthenticationService implements OnModuleInit {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService<Config, true>,
   ) {}
 
   async onModuleInit(): Promise<void> {
@@ -106,13 +108,8 @@ export class AuthenticationService implements OnModuleInit {
   }
 
   private async createRootUser() {
-    const username = process.env.ADMIN_USER
-    const password = process.env.ADMIN_PASSWORD
-
-    if (typeof username === 'undefined' || typeof password === 'undefined') {
-      this.logger.warn('ADMIN_USER or ADMIN_PASSWORD is not set, cannot create the admin user.')
-      return
-    }
+    const username = this.configService.get('ADMIN_USER')
+    const password = this.configService.get('ADMIN_PASSWORD')
 
     if (await this.prismaService.user.findUnique({ where: { username } })) {
       this.logger.log('Admin user already exists, skipping creation.')

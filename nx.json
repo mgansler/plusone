@@ -27,11 +27,11 @@
     },
     "@nx/react": {
       "application": {
+        "babel": true,
         "style": "none",
         "linter": "eslint",
         "bundler": "vite",
-        "strict": true,
-        "babel": true
+        "strict": true
       },
       "component": {
         "style": "none"
@@ -72,7 +72,8 @@
   "targetDefaults": {
     "build": {
       "inputs": ["production", "^production"],
-      "cache": true
+      "cache": true,
+      "dependsOn": ["^build"]
     },
     "e2e": {
       "inputs": ["default", "^production"],

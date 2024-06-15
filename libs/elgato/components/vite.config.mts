@@ -18,7 +18,7 @@ export default defineConfig({
     // reporters: ['default', 'junit'],
     // outputFile: '../../../reports/test/elgato-components.xml',
     globals: true,
-    environment: 'jsdom',
+    environment: 'happy-dom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     setupFiles: ['./setupTests.ts'],
     coverage: {

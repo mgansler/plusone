@@ -40,7 +40,7 @@ export default defineConfig({
       provider: 'v8',
     },
     globals: true,
-    environment: 'jsdom',
+    environment: 'happy-dom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     setupFiles: ['./setupTests.ts'],
   },

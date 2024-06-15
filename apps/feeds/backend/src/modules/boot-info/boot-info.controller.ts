@@ -2,6 +2,7 @@ import { Controller, Get } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 
+import { Config } from '../../app/config'
 import { APP_VERSION, PAGE_SIZE } from '../../app/consts'
 
 import { BootInfoDto } from './boot-info.dto'
@@ -9,7 +10,7 @@ import { BootInfoDto } from './boot-info.dto'
 @ApiTags('boot-info')
 @Controller('boot-info')
 export class BootInfoController {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService<Config, true>) {}
 
   @ApiOperation({ operationId: 'boot-info' })
   @ApiOkResponse({ description: 'Configuration for the application', type: BootInfoDto })
@@ -17,8 +18,7 @@ export class BootInfoController {
   getBootInfo(): BootInfoDto {
     return {
       appVersion: APP_VERSION,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      pageSize: this.configService.get(PAGE_SIZE)!, // Default is set via app.module.ts
+      pageSize: this.configService.get(PAGE_SIZE),
     }
   }
 }
