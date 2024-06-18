@@ -8,6 +8,7 @@ generates:
     plugins:
       - typescript
       - typescript-operations
-      - typescript-react-query
+      - typescript-react-query:
+          reactQueryVersion: 5
     config:
       skipTypename: false

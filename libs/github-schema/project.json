@@ -7,7 +7,7 @@
     "download": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "curl https://docs.github.com/public/schema.docs.graphql -o libs/github-schema/src/schema.graphql"
+        "command": "curl https://docs.github.com/public/fpt/schema.docs.graphql -o libs/github-schema/src/schema.graphql"
       }
     },
     "generate-github-client": {
