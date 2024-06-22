@@ -1,8 +1,7 @@
 import { Portal } from '@mui/base'
 import type { Theme } from '@mui/material'
 import { FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import { createStyles, makeStyles } from '@mui/styles'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import type { MutableRefObject } from 'react'
 import React, { useEffect, useState } from 'react'
@@ -47,7 +46,7 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
   const { pages, onSuccess, nextPage, prevPage, goToPage, getPageRequest } = useGitHubPagination(PAGE_SIZE)
 
   const octokit = useOctokit()
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<RepositoryOverviewQuery>({
     queryKey: ['repositories', organizationName, queryString, pages.currentPage],
     queryFn: async () =>
       octokit.graphql<RepositoryOverviewQuery>(RepositoryOverviewDocument, {

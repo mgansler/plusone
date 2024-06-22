@@ -17,11 +17,13 @@ import { CheckConclusion } from './check-conclusion'
 import { EnableAutoMerge } from './enable-auto-merge'
 import { useClassNames } from './repository-overview.styles'
 
-const getLastReviewStatePerAuthor = (reviews: Array<PullRequestReview>): Record<string, PullRequestReviewState> =>
-  reviews
+const UNKNOWN_USER = 'unknown user'
+
+const getLastReviewStatePerAuthor = (reviews: Array<PullRequestReview>): Record<string, PullRequestReviewState> => {
+  return reviews
     .filter(({ state }) => state !== PullRequestReviewState.Commented)
     .map((review) => ({
-      author: (review.author as User).name ?? review.author.login,
+      author: (review.author as User).name ?? (review.author as User).login ?? UNKNOWN_USER,
       state: review.state,
     }))
     .reduce(
@@ -31,8 +33,9 @@ const getLastReviewStatePerAuthor = (reviews: Array<PullRequestReview>): Record<
       }),
       {},
     )
+}
 
-const ReviewStateIconMap: Record<PullRequestReviewState, JSX.Element> = {
+const ReviewStateIconMap: Record<PullRequestReviewState, React.JSX.Element | undefined> = {
   APPROVED: (
     <Tooltip title={'Pull request approved'}>
       <Check />
@@ -52,7 +55,7 @@ type CanBeMergedProps = {
   className: HTMLDivElement['className']
   commits: Array<PullRequestCommit>
   mergeable: MergeableState
-  autoMergeRequest: AutoMergeRequestFieldsFragment
+  autoMergeRequest?: AutoMergeRequestFieldsFragment | null
   pullRequestId: PullRequest['id']
   pullRequestUrl: PullRequest['url']
 }
@@ -65,7 +68,7 @@ function CanBeMerged({
   pullRequestId,
   pullRequestUrl,
 }: CanBeMergedProps) {
-  const checkSuites = commits.flatMap((node) => node.commit.checkSuites.nodes)
+  const checkSuites = commits.flatMap((node) => node.commit.checkSuites?.nodes)
   const checkSuite = checkSuites[checkSuites.length - 1]
 
   return mergeable === MergeableState.Conflicting ? (
@@ -102,7 +105,7 @@ type PullRequestProps = {
 
 export function PullRequestRow({ pr }: PullRequestProps) {
   const classNames = useClassNames()
-  const lastReviewStatePerAuthor = getLastReviewStatePerAuthor(pr.reviews.nodes as Array<PullRequestReview>)
+  const lastReviewStatePerAuthor = getLastReviewStatePerAuthor(pr.reviews?.nodes as Array<PullRequestReview>)
 
   return (
     <div className={classNames.row}>
@@ -126,7 +129,7 @@ export function PullRequestRow({ pr }: PullRequestProps) {
         arrow={true}
       >
         <Typography className={classNames.titleColumn} variant={'caption'} color={pr.isDraft ? 'textSecondary' : ''}>
-          {pr.title} by {(pr.author as User).name ?? pr.author.login}
+          {pr.title} by {(pr.author as User).name ?? (pr.author as User).login ?? UNKNOWN_USER}
         </Typography>
       </Tooltip>
 

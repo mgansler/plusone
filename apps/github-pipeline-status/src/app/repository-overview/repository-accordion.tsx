@@ -20,13 +20,20 @@ type DefaultBranchStateProps = {
 }
 
 function DefaultBranchState({ className, defaultBranchRef }: DefaultBranchStateProps) {
-  if (!defaultBranchRef) {
+  if (
+    typeof defaultBranchRef === 'undefined' ||
+    defaultBranchRef.target?.__typename !== 'Commit' ||
+    !Array.isArray(defaultBranchRef.target.checkSuites?.nodes)
+  ) {
     return null
   }
 
-  const checkSuite = (defaultBranchRef.target as Commit).checkSuites.nodes[
-    (defaultBranchRef.target as Commit).checkSuites.nodes.length - 1
-  ]
+  const commit = defaultBranchRef.target as Commit
+  if (!commit.checkSuites || !commit.checkSuites.nodes) {
+    return null
+  }
+
+  const checkSuite = commit.checkSuites.nodes[commit.checkSuites.nodes.length - 1]
 
   return (
     <div className={className}>
@@ -54,14 +61,14 @@ export function RepositoryAccordion({
 
   const filteredPullRequests = useMemo(
     () =>
-      pullRequests.filter((node) => {
+      (pullRequests as Array<PullRequest>).filter((node) => {
         switch (userFilter) {
           case 'all':
             return true
           case 'dependabot':
-            return node.author.login === 'dependabot'
+            return node?.author?.login === 'dependabot'
           case 'user':
-            return node.author.login !== 'dependabot'
+            return node?.author?.login !== 'dependabot'
           default:
             return false
         }
@@ -99,7 +106,9 @@ export function RepositoryAccordion({
           <Typography>{name}</Typography>
         </div>
 
-        <DefaultBranchState className={classNames.workflowColumn} defaultBranchRef={defaultBranchRef} />
+        {defaultBranchRef ? (
+          <DefaultBranchState className={classNames.workflowColumn} defaultBranchRef={defaultBranchRef} />
+        ) : null}
 
         <div className={classNames.pullRequestsOrReviewsColumn}>
           {pullRequestCount > 0 && (
@@ -119,7 +128,7 @@ export function RepositoryAccordion({
         </div>
       </AccordionSummary>
       <AccordionDetails className={classNames.accordionDetails}>
-        {filteredPullRequests.map((pr: PullRequest) => (
+        {filteredPullRequests.map((pr) => (
           <PullRequestRow key={pr.id} pr={pr} />
         ))}
       </AccordionDetails>

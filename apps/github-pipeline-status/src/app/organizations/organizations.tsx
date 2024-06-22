@@ -1,7 +1,6 @@
 import type { Theme } from '@mui/material'
 import { FormControl, InputLabel, LinearProgress, MenuItem, Paper, Select, Toolbar } from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import { createStyles, makeStyles } from '@mui/styles'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import type { MutableRefObject, RefObject } from 'react'
 import { useEffect, useRef } from 'react'
@@ -24,7 +23,7 @@ const useFetchOrganizations = () => {
   const { pages, onSuccess, getPageRequest } = useGitHubPagination(PAGE_SIZE)
 
   const octokit = useOctokit()
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<OrganizationsQuery>({
     queryKey: ['organizations', pages.currentPage],
     queryFn: async () =>
       octokit.graphql<OrganizationsQuery>(OrganizationsDocument, { first: PAGE_SIZE, after: getPageRequest() }),
@@ -76,11 +75,13 @@ export function Organizations() {
             onChange={(event) => navigate(`/organization/${event.target.value}`)}
           >
             {organizationName === '' && <MenuItem value={''} />}
-            {data.viewer.organizations.nodes!.map((organization) => (
-              <MenuItem key={organization!.id} value={organization!.login}>
-                {organization!.name}
-              </MenuItem>
-            ))}
+            {data.viewer.organizations.nodes?.map((organization) =>
+              organization === null ? null : (
+                <MenuItem key={organization.id} value={organization.login}>
+                  {organization.name}
+                </MenuItem>
+              ),
+            )}
           </Select>
         </FormControl>
       </Toolbar>

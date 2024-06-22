@@ -1,7 +1,6 @@
 import type { Theme } from '@mui/material'
 import { AppBar, CssBaseline, Toolbar, Typography } from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import { createStyles, makeStyles } from '@mui/styles'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 

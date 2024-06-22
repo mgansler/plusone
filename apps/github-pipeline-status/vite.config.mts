@@ -13,6 +13,14 @@ export default defineConfig({
     commonjsOptions: {
       transformMixedEsModules: true,
     },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          octokit: ['@octokit/core', '@plusone/github-schema'],
+          mui: ['@mui/material', '@mui/styles', '@mui/icons-material'],
+        },
+      },
+    },
   },
   cacheDir: '../../../node_modules/.vite/apps/github-pipeline-status',
 

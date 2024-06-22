@@ -4,7 +4,7 @@ import React from 'react'
 
 import type { CheckConclusionState, CheckSuite } from '@plusone/github-schema'
 
-const CheckConclusionIconMap: Record<CheckConclusionState | 'RUNNING', JSX.Element> = {
+const CheckConclusionIconMap: Record<CheckConclusionState | 'RUNNING', React.JSX.Element | undefined> = {
   ACTION_REQUIRED: undefined,
   CANCELLED: undefined,
   FAILURE: (
@@ -30,7 +30,7 @@ const CheckConclusionIconMap: Record<CheckConclusionState | 'RUNNING', JSX.Eleme
 }
 
 type CheckConclusionProps = {
-  checkSuite?: CheckSuite
+  checkSuite?: CheckSuite | null
 }
 
 export function CheckConclusion({ checkSuite }: CheckConclusionProps) {
@@ -40,7 +40,7 @@ export function CheckConclusion({ checkSuite }: CheckConclusionProps) {
 
   return (
     <IconButton
-      href={checkSuite.resourcePath ? 'https://github.com' + checkSuite.resourcePath : undefined}
+      href={checkSuite.resourcePath ? 'https://github.com' + checkSuite.resourcePath : ''}
       target={'_blank'}
       rel={'noreferrer'}
       onClick={(e) => e.stopPropagation()}
