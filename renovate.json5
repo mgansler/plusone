@@ -11,10 +11,5 @@
       matchPackageNames: ['eslint'],
       allowedVersions: '8.x',
     },
-    {
-      // Eslint throws error with 6.1.2
-      matchPackageNames: ['@octokit/core'],
-      allowedVersions: '!/6\\.1\\.2/',
-    },
   ],
 }

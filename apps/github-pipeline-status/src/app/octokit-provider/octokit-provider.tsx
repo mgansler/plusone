@@ -1,4 +1,5 @@
 import { Button, TextField, Typography } from '@mui/material'
+// eslint-disable-next-line import/no-unresolved
 import { Octokit } from '@octokit/core'
 import type { ReactNode } from 'react'
 import { createContext, useContext, useMemo, useRef } from 'react'
