@@ -58,15 +58,15 @@
     rxjs "7.8.1"
     source-map "0.7.4"
 
-"@angular-devkit/core@17.1.2":
-  version "17.1.2"
-  resolved "https://registry.npmjs.org/@angular-devkit/core/-/core-17.1.2.tgz#bf2c3475e9ff853dc53d8dc8ce9bbf8b2f1193f8"
-  integrity sha512-ku+/W/HMCBacSWFppenr9y6Lx8mDuTuQvn1IkTyBLiJOpWnzgVbx9kHDeaDchGa1PwLlJUBBrv27t3qgJOIDPw==
+"@angular-devkit/core@17.3.8":
+  version "17.3.8"
+  resolved "https://registry.npmjs.org/@angular-devkit/core/-/core-17.3.8.tgz#8679cacf84cf79764f027811020e235ab32016d2"
+  integrity sha512-Q8q0voCGudbdCgJ7lXdnyaxKHbNQBARH68zPQV72WT8NWy+Gw/tys870i6L58NWbBaCJEUcIj/kb6KoakSRu+Q==
   dependencies:
     ajv "8.12.0"
     ajv-formats "2.1.1"
-    jsonc-parser "3.2.0"
-    picomatch "3.0.1"
+    jsonc-parser "3.2.1"
+    picomatch "4.0.1"
     rxjs "7.8.1"
     source-map "0.7.4"
 
@@ -92,14 +92,14 @@
     ora "5.4.1"
     rxjs "7.8.1"
 
-"@angular-devkit/schematics@17.1.2":
-  version "17.1.2"
-  resolved "https://registry.npmjs.org/@angular-devkit/schematics/-/schematics-17.1.2.tgz#ca77a86ed44ab227614aff6e1f7ce4f3cd0c6ded"
-  integrity sha512-8S9RuM8olFN/gwN+mjbuF1CwHX61f0i59EGXz9tXLnKRUTjsRR+8vVMTAmX0dvVAT5fJTG/T69X+HX7FeumdqA==
+"@angular-devkit/schematics@17.3.8":
+  version "17.3.8"
+  resolved "https://registry.npmjs.org/@angular-devkit/schematics/-/schematics-17.3.8.tgz#f853eb21682aadfb6667e090b5b509fc95ce8442"
+  integrity sha512-QRVEYpIfgkprNHc916JlPuNbLzOgrm9DZalHasnLUz4P6g7pR21olb8YCyM2OTJjombNhya9ZpckcADU5Qyvlg==
   dependencies:
-    "@angular-devkit/core" "17.1.2"
-    jsonc-parser "3.2.0"
-    magic-string "0.30.5"
+    "@angular-devkit/core" "17.3.8"
+    jsonc-parser "3.2.1"
+    magic-string "0.30.8"
     ora "5.4.1"
     rxjs "7.8.1"
 
@@ -3644,24 +3644,24 @@
     change-case-all "1.0.15"
     tslib "~2.6.0"
 
-"@graphql-codegen/typescript-document-nodes@4.0.8":
-  version "4.0.8"
-  resolved "https://registry.npmjs.org/@graphql-codegen/typescript-document-nodes/-/typescript-document-nodes-4.0.8.tgz#f918f92968b7a1de73be6497e5f4ff26889c8c06"
-  integrity sha512-HjuuzXvl1kKc0zdxgXsKzPEgwICncNu+5ZUNx37t8Rh9Byk7ZH9SPFyMXRSUek21WPP1BX8giC3JzemrsR2UMw==
+"@graphql-codegen/typescript-document-nodes@4.0.9":
+  version "4.0.9"
+  resolved "https://registry.npmjs.org/@graphql-codegen/typescript-document-nodes/-/typescript-document-nodes-4.0.9.tgz#c3cb8b247021a73777eae0497b855a742a959429"
+  integrity sha512-Zf269Ua2KQeeo/cNYdEsWo0T1/ua6eMJKzgXGE+vaXOe3dj+LCsM+TZdwBUGwqmoAAAaDRFkZ3B8kx1W5owMfA==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^5.0.4"
-    "@graphql-codegen/visitor-plugin-common" "5.3.0"
+    "@graphql-codegen/visitor-plugin-common" "5.3.1"
     auto-bind "~4.0.0"
     tslib "~2.6.0"
 
-"@graphql-codegen/typescript-operations@4.2.2":
-  version "4.2.2"
-  resolved "https://registry.npmjs.org/@graphql-codegen/typescript-operations/-/typescript-operations-4.2.2.tgz#0f4bb51804e139f2088b71aff7258175ae099d07"
-  integrity sha512-8FJHIAubM4r9ElLuuDAKhdOjainSwRHEmGIrtEgEwHARKhMk1Ttj6bpOQDisYlbDl4ZTHWEJCdNa9o9rgcl+9g==
+"@graphql-codegen/typescript-operations@4.2.3":
+  version "4.2.3"
+  resolved "https://registry.npmjs.org/@graphql-codegen/typescript-operations/-/typescript-operations-4.2.3.tgz#794e279f54f88f2df56eee6d045d16766ec06008"
+  integrity sha512-6z7avSSOr03l5SyKbeDs7MzRyGwnQFSCqQm8Om5wIuoIgXVu2gXRmcJAY/I7SLdAy9xbF4Sho7XNqieFM2CAFQ==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^5.0.4"
-    "@graphql-codegen/typescript" "^4.0.8"
-    "@graphql-codegen/visitor-plugin-common" "5.3.0"
+    "@graphql-codegen/typescript" "^4.0.9"
+    "@graphql-codegen/visitor-plugin-common" "5.3.1"
     auto-bind "~4.0.0"
     tslib "~2.6.0"
 
@@ -3687,14 +3687,14 @@
     change-case-all "1.0.15"
     tslib "~2.6.0"
 
-"@graphql-codegen/typescript@4.0.8", "@graphql-codegen/typescript@^4.0.8":
-  version "4.0.8"
-  resolved "https://registry.npmjs.org/@graphql-codegen/typescript/-/typescript-4.0.8.tgz#ff0d5a0a86a002ac356e23e26b7079c6087e8ec5"
-  integrity sha512-kYS3SjGNnC9vgFS8N3vaxzRFkdXX2umMi1SOpHjMFCPjMe8NR0uNdW4nP9T0YEq+DvWgj+XojjpFy2oyz9q12w==
+"@graphql-codegen/typescript@4.0.9", "@graphql-codegen/typescript@^4.0.9":
+  version "4.0.9"
+  resolved "https://registry.npmjs.org/@graphql-codegen/typescript/-/typescript-4.0.9.tgz#25b7999b665d86a6459f90dd22c7ddec12495fdd"
+  integrity sha512-0O35DMR4d/ctuHL1Zo6mRUUzp0BoszKfeWsa6sCm/g70+S98+hEfTwZNDkQHylLxapiyjssF9uw/F+sXqejqLw==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^5.0.4"
     "@graphql-codegen/schema-ast" "^4.0.2"
-    "@graphql-codegen/visitor-plugin-common" "5.3.0"
+    "@graphql-codegen/visitor-plugin-common" "5.3.1"
     auto-bind "~4.0.0"
     tslib "~2.6.0"
 
@@ -3741,10 +3741,10 @@
     parse-filepath "^1.0.2"
     tslib "~2.6.0"
 
-"@graphql-codegen/visitor-plugin-common@5.3.0":
-  version "5.3.0"
-  resolved "https://registry.npmjs.org/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-5.3.0.tgz#c9e23e53d06630dbe724e9194c0884b4bb5aae41"
-  integrity sha512-+kUk7gRD/72Wfkjd7D96Lonh9k4lFw9d3O1+I07Jyja4QN9H42kdFEO0hM/b4Q9lLkI1yJ66Oym7lWz2Ikj3aw==
+"@graphql-codegen/visitor-plugin-common@5.3.1":
+  version "5.3.1"
+  resolved "https://registry.npmjs.org/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-5.3.1.tgz#d3fb5f6336cbef58e2960471422da3f3caff7f17"
+  integrity sha512-MktoBdNZhSmugiDjmFl1z6rEUUaqyxtFJYWnDilE7onkPgyw//O0M+TuPBJPBWdyV6J2ond0Hdqtq+rkghgSIQ==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^5.0.4"
     "@graphql-tools/optimize" "^2.0.0"
@@ -4817,15 +4817,15 @@
     cron "3.1.7"
     uuid "9.0.1"
 
-"@nestjs/schematics@10.1.1":
-  version "10.1.1"
-  resolved "https://registry.npmjs.org/@nestjs/schematics/-/schematics-10.1.1.tgz#a67fb178a7ad6025ccc3314910b077ac454fcdf3"
-  integrity sha512-o4lfCnEeIkfJhGBbLZxTuVWcGuqDCFwg5OrvpgRUBM7vI/vONvKKiB5riVNpO+JqXoH0I42NNeDb0m4V5RREig==
+"@nestjs/schematics@10.1.2":
+  version "10.1.2"
+  resolved "https://registry.npmjs.org/@nestjs/schematics/-/schematics-10.1.2.tgz#690e675687ab5b4d63b59e888e20ebdf7231edbc"
+  integrity sha512-S0bMtZM5U4mAiqkhRyZkXgjmOHBS5P/lp/vEydgMR4F7csOShc3jFeKVs1Eghd9xCFezGKy3SHy7hFT6dpPhWQ==
   dependencies:
-    "@angular-devkit/core" "17.1.2"
-    "@angular-devkit/schematics" "17.1.2"
+    "@angular-devkit/core" "17.3.8"
+    "@angular-devkit/schematics" "17.3.8"
     comment-json "4.2.3"
-    jsonc-parser "3.2.1"
+    jsonc-parser "3.3.1"
     pluralize "8.0.0"
 
 "@nestjs/schematics@^9.1.0":
@@ -6520,10 +6520,10 @@
   dependencies:
     "@tanstack/query-core" "5.49.1"
 
-"@tanstack/react-router@1.43.4":
-  version "1.43.4"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.43.4.tgz#a2581b289ef090a20ad0c7cf145750de7c507d28"
-  integrity sha512-6N1s6vzhgd5Ala/2Fyr1DYx01D/KnoswpJuTaU+ZjCzm355UU3mkB371Ep1vfjSAylCSIKjLb0y/v/sV3DpD3Q==
+"@tanstack/react-router@1.43.6":
+  version "1.43.6"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.43.6.tgz#f9471fa145ab0d0f77c82bbc345f045999121a83"
+  integrity sha512-Y0b/yb98PohajwtcrjGmA5uvCRmYQZRG6KXd3kh/HyEe3k2Ncn2IbRZTf8WRMddwECZEyTmn7lM6NB6aOdXfyw==
   dependencies:
     "@tanstack/history" "1.41.0"
     "@tanstack/react-store" "^0.2.1"
@@ -14644,6 +14644,11 @@ jsonc-parser@3.2.1:
   resolved "https://registry.npmjs.org/jsonc-parser/-/jsonc-parser-3.2.1.tgz#031904571ccf929d7670ee8c547545081cb37f1a"
   integrity sha512-AilxAyFOAcK5wA1+LeaySVBrHsGQvUFCDWXKpZjzaL0PqW+xfBOttn8GNtWKFWqneyMZj41MWF9Kl6iPWLwgOA==
 
+jsonc-parser@3.3.1:
+  version "3.3.1"
+  resolved "https://registry.npmjs.org/jsonc-parser/-/jsonc-parser-3.3.1.tgz#f2a524b4f7fd11e3d791e559977ad60b98b798b4"
+  integrity sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==
+
 jsonc-parser@~2.2.1:
   version "2.2.1"
   resolved "https://registry.npmjs.org/jsonc-parser/-/jsonc-parser-2.2.1.tgz#db73cd59d78cce28723199466b2a03d1be1df2bc"
@@ -15366,7 +15371,14 @@ magic-string@0.30.0:
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.4.13"
 
-magic-string@0.30.5, magic-string@^0.30.5:
+magic-string@0.30.8:
+  version "0.30.8"
+  resolved "https://registry.npmjs.org/magic-string/-/magic-string-0.30.8.tgz#14e8624246d2bedba70d5462aa99ac9681844613"
+  integrity sha512-ISQTe55T2ao7XtlAStud6qwYPZjE4GK1S/BeVPus4jrq6JuOnQ00YKQC581RWhR122W7msZV263KzVeLoqidyQ==
+  dependencies:
+    "@jridgewell/sourcemap-codec" "^1.4.15"
+
+magic-string@^0.30.5:
   version "0.30.5"
   resolved "https://registry.npmjs.org/magic-string/-/magic-string-0.30.5.tgz#1994d980bd1c8835dc6e78db7cbd4ae4f24746f9"
   integrity sha512-7xlpfBaQaP/T6Vh8MO/EqXSW5En6INHEvEXQiuff7Gku0PWjU3uf6w/j9o7O+SpB5fOAkrI5HeoNgwjEO0pFsA==
@@ -17247,10 +17259,10 @@ picocolors@^1.0.1:
   resolved "https://registry.npmjs.org/picocolors/-/picocolors-1.0.1.tgz#a8ad579b571952f0e5d25892de5445bcfe25aaa1"
   integrity sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==
 
-picomatch@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/picomatch/-/picomatch-3.0.1.tgz#817033161def55ec9638567a2f3bbc876b3e7516"
-  integrity sha512-I3EurrIQMlRc9IaAZnqRR044Phh2DXY+55o7uJ0V+hYZAcQYSuFWsc9q5PvyDHUSCe1Qxn/iBz+78s86zWnGag==
+picomatch@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.npmjs.org/picomatch/-/picomatch-4.0.1.tgz#68c26c8837399e5819edce48590412ea07f17a07"
+  integrity sha512-xUXwsxNjwTQ8K3GnT4pCJm+xq3RUPQbmkYJTP5aFIfNIvbcc/4MUxgBaaRSZJ6yGJZiGSyYlM6MzwTsRk8SYCg==
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2, picomatch@^2.2.3, picomatch@^2.3.1:
   version "2.3.1"
@@ -18002,10 +18014,10 @@ react-error-boundary@4.0.13:
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-react-hook-form@7.52.0:
-  version "7.52.0"
-  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.52.0.tgz#e52b33043e283719586b9dd80f6d51b68dd3999c"
-  integrity sha512-mJX506Xc6mirzLsmXUJyqlAI3Kj9Ph2RhplYhUVffeOQSnubK2uVqBFOBJmvKikvbFV91pxVXmDiR+QMF19x6A==
+react-hook-form@7.52.1:
+  version "7.52.1"
+  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.52.1.tgz#ec2c96437b977f8b89ae2d541a70736c66284852"
+  integrity sha512-uNKIhaoICJ5KQALYZ4TOaOLElyM+xipord+Ha3crEFhTntdLvWZqVY49Wqd/0GiVCA/f9NjemLeiNPjG7Hpurg==
 
 react-icons@5.2.1:
   version "5.2.1"
