@@ -2,11 +2,11 @@ import { Device } from '@plusone/elgato-persistence'
 
 import { DeviceType } from '../modules/device/enum/device-type'
 
-export function getDevice(type: DeviceType): Device {
+export function getDevice(type: DeviceType, lastSeen: Date = new Date()): Device {
   return {
     macAddress: 'aa:bb:cc:dd:ee:ff',
     displayName: `My ${type === DeviceType.LightStrip ? 'Light Strip' : 'Ring Light'}`,
-    lastSeen: new Date(),
+    lastSeen,
     type: type,
     address: `my-${type}-device`,
     port: 9123,

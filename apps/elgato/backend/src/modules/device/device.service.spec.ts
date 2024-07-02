@@ -16,7 +16,7 @@ describe('DeviceService', () => {
   let elgatoService: ElgatoService
 
   const lastSeen = new Date()
-  const deviceStub = getDevice(DeviceType.LightStrip)
+  const deviceStub = getDevice(DeviceType.LightStrip, lastSeen)
 
   beforeAll(() => {
     jest.useFakeTimers()
