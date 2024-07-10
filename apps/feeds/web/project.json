@@ -39,7 +39,8 @@
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "feeds-web:build",
-        "proxyConfig": "apps/feeds/web/proxy.conf.json"
+        "proxyConfig": "apps/feeds/web/proxy.conf.json",
+        "port": 4102
       },
       "configurations": {
         "development": {

@@ -14,7 +14,7 @@ async function bootstrap() {
 
   setupApiSpec(app, process.env.NODE_ENV === 'development')
 
-  const port = process.env.PORT || 3001
+  const port = process.env.PORT || 3101
   await app.listen(port)
   Logger.log(`🚀 Application is running on: http://localhost:${port}/${GLOBAL_PREFIX}`)
 }
