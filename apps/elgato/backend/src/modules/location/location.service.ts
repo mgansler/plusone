@@ -51,11 +51,15 @@ export class LocationService {
         ),
     )
 
-    const validatedSunriseSunsetData = locationDataResponseSchema.parse(sunriseSunsetData.data)
-
-    return {
-      ...location,
-      ...validatedSunriseSunsetData.results,
+    try {
+      const validatedSunriseSunsetData = locationDataResponseSchema.parse(sunriseSunsetData.data)
+      return {
+        ...location,
+        ...validatedSunriseSunsetData.results,
+      }
+    } catch (e) {
+      this.logger.error(e)
+      throw new Error('Could not validate location data.')
     }
   }
 }

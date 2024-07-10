@@ -35,9 +35,7 @@ describe('LocationService', () => {
         },
         {
           provide: HttpService,
-          useValue: {
-            get: jest.fn(),
-          },
+          useValue: new HttpService(),
         },
         LocationService,
       ],
@@ -104,5 +102,15 @@ describe('LocationService', () => {
         utcOffset: 120,
       })
     })
+  })
+
+  it('should make an actual call', async () => {
+    jest.spyOn(prismaService.location, 'findFirstOrThrow').mockResolvedValue({
+      name: 'Stuttgart',
+      latitude: 48.77,
+      longitude: 9.16,
+    })
+
+    await expect(locationService.getLocationData()).resolves.not.toThrow()
   })
 })
