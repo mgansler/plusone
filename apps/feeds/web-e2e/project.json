@@ -25,7 +25,13 @@
           "devServerTarget": "",
           "watch": true
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "docker",
+          "dependencies": true
+        }
+      ]
     },
     "serve-all": {
       "executor": "nx:run-commands",
@@ -46,13 +52,7 @@
             "nx run feeds-backend:serve:production --watch"
           ]
         }
-      },
-      "dependsOn": [
-        {
-          "target": "docker",
-          "dependencies": true
-        }
-      ]
+      }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
