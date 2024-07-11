@@ -2,7 +2,7 @@ import { fetchWeatherApi } from 'openmeteo'
 
 describe('weather', () => {
   // eslint-disable-next-line no-restricted-properties
-  it.skip('should make a call', async () => {
+  it('should make a call', async () => {
     const params = {
       latitude: 48.75,
       longitude: 9.13,

@@ -1,7 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query'
 
 import { useDeviceSetPowerState, useToggleDevice, useValidatedDeviceDetails } from '@plusone/elgato-api-client'
-import { PowerControl } from '@plusone/elgato-components'
+
+import { PowerControl } from '../components/power-control'
 
 type DevicePowerStateProps = {
   macAddress: string
