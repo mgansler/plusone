@@ -1,0 +1,69 @@
+{
+  "name": "stgtrails-web",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/stgtrails/stgtrails-web/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/stgtrails/stgtrails-web"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "stgtrails-web:build",
+        "proxyConfig": "apps/stgtrails/stgtrails-web/proxy.conf.json",
+        "port": 4104
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "stgtrails-web:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "stgtrails-web:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "stgtrails-web:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "stgtrails-web:build:development"
+        },
+        "production": {
+          "buildTarget": "stgtrails-web:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../coverage/apps/stgtrails/stgtrails-web"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

@@ -10,7 +10,7 @@ services:
     volumes:
       - sqlite:/usr/elgato/sqlite/
     labels:
-      - 'traefik.http.services.elgato-app.loadbalancer.server.port=3001'
+      - 'traefik.http.services.elgato-app.loadbalancer.server.port=3101'
       - 'traefik.http.routers.elgato-app.rule=Host(`elgato.ludwigstrasse.dynv6.net`) || Headers(`X-ELGATO-LIGHTS`, `X-ELGATO-LIGHTS`)'
       - 'traefik.http.routers.elgato-app.tls=true'
       - 'traefik.http.routers.elgato-app.tls.certresolver=letsencrypt'

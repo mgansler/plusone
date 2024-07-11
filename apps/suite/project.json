@@ -24,7 +24,8 @@
       "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "suite:build"
+        "buildTarget": "suite:build",
+        "port": 4105
       },
       "configurations": {
         "development": {

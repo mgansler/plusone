@@ -4,7 +4,7 @@ RUN apk add --no-cache avahi avahi-tools tzdata
 
 WORKDIR /usr/elgato
 CMD ["npm", "start"]
-EXPOSE 3000/tcp
+EXPOSE 3101/tcp
 
 # Install dependencies. When these don't update we can use a cached version if available
 COPY ./dist/apps/elgato/backend/package.json .

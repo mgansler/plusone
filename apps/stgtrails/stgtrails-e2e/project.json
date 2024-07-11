@@ -1,0 +1,45 @@
+{
+  "name": "stgtrails-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/stgtrails/stgtrails-e2e/src",
+  "projectType": "application",
+  "tags": [],
+  "implicitDependencies": ["stgtrails-web"],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/stgtrails/stgtrails-e2e/cypress.config.ts",
+        "testingType": "e2e",
+        "devServerTarget": "stgtrails-e2e:serve-all"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "stgtrails-e2e:serve-all:production"
+        },
+        "watch": {
+          "watch": true
+        }
+      }
+    },
+    "serve-all": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx run stgtrails-web:serve --watch", "nx run stgtrails-backend:serve --watch"],
+        "parallel": true,
+        "readyWhen": "Application is running on"
+      },
+      "configurations": {
+        "production": {
+          "commands": [
+            "nx run stgtrails-web:serve:production --watch",
+            "nx run stgtrails-backend:serve:production --watch"
+          ]
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

@@ -25,7 +25,8 @@
       "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "advent-of-code-2021:build"
+        "buildTarget": "advent-of-code-2021:build",
+        "port": 4100
       },
       "configurations": {
         "development": {

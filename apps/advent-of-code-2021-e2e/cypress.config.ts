@@ -8,6 +8,7 @@ export default defineConfig({
   },
   e2e: {
     ...nxE2EPreset(__filename, { cypressDir: 'src', bundler: 'vite' }),
+    baseUrl: 'http://localhost:4100',
     experimentalRunAllSpecs: true,
     retries: 3,
   },

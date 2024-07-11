@@ -24,7 +24,8 @@
       "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "github-pipeline-status:build"
+        "buildTarget": "github-pipeline-status:build",
+        "port": 4103
       },
       "configurations": {
         "development": {
