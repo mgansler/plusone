@@ -1,0 +1,20 @@
+services:
+  app:
+    image: ${DOCKER_IMAGE_NAME}
+    container_name: stgtrails-app
+    network_mode: host
+    restart: always
+    environment:
+      TZ: 'Europe/Berlin'
+      STGTRAILS_DATABASE_URL: 'file:/usr/stgtrails/sqlite/stgtrails.db'
+    volumes:
+      - sqlite:/usr/stgtrails/sqlite/
+    labels:
+      - 'traefik.http.services.stgtrails-app.loadbalancer.server.port=3104'
+      - 'traefik.http.routers.stgtrails-app.rule=Host(`stgtrails.martingansler.de`)'
+      - 'traefik.http.routers.stgtrails-app.tls=true'
+      - 'traefik.http.routers.stgtrails-app.tls.certresolver=letsencrypt'
+
+volumes:
+  sqlite:
+    driver: local

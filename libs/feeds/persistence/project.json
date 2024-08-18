@@ -3,6 +3,7 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/feeds/persistence/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "prisma-format": {
       "executor": "@mgansler/nx-prisma:format"
@@ -32,6 +33,5 @@
       "outputs": ["{options.outputFile}"]
     }
   },
-  "tags": [],
   "implicitDependencies": ["plugins-nx-prisma"]
 }

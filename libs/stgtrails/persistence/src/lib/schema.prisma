@@ -1,0 +1,53 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("STGTRAILS_DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "client"
+  binaryTargets = ["linux-musl", "native", "linux-musl-arm64-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
+}
+
+model TrailArea {
+  id        Int    @id @default(autoincrement())
+  name      String @unique
+  latitude  Float
+  longitude Float
+
+  trails  Trail[]
+  weather WeatherData[]
+}
+
+model Trail {
+  id               Int         @id @default(autoincrement())
+  name             String
+  alternativeNames TrailName[]
+
+  trailArea   TrailArea @relation(fields: [trailAreaId], references: [id])
+  trailAreaId Int
+}
+
+model TrailName {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  trail   Trail @relation(fields: [trailId], references: [id])
+  trailId Int
+}
+
+model WeatherData {
+  id                  Int      @id @default(autoincrement())
+  time                DateTime
+  temperature2m       Float
+  rain                Float
+  soilMoisture0To1cm  Float
+  soilMoisture1To3cm  Float
+  soilMoisture3To9cm  Float
+  soilMoisture9To27cm Float
+
+  trailArea   TrailArea @relation(fields: [trailAreaId], references: [id])
+  trailAreaId Int
+
+  @@unique([trailAreaId, time])
+}

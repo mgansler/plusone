@@ -29,6 +29,13 @@ module.exports = defineConfig({
       target: './src/zod.ts',
       override: {
         zod: {
+          generate: {
+            body: false,
+            header: false,
+            param: false,
+            query: false,
+            response: true,
+          },
           strict: {
             body: true,
             header: true,

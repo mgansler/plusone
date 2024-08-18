@@ -1,0 +1,19 @@
+{
+  "name": "stgtrails-api-client",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/stgtrails/api-client/src",
+  "projectType": "library",
+  "targets": {
+    "generate-api-client": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn orval --config libs/stgtrails/api-client/orval.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": []
+}

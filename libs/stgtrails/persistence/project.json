@@ -1,0 +1,42 @@
+{
+  "name": "stgtrails-persistence",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/stgtrails/persistence/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "prisma-format": {
+      "executor": "@mgansler/nx-prisma:format"
+    },
+    "prisma-generate": {
+      "executor": "@mgansler/nx-prisma:generate"
+    },
+    "prisma-deploy": {
+      "executor": "@mgansler/nx-prisma:deploy"
+    },
+    "prisma-migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn prisma migrate dev --schema libs/stgtrails/persistence/src/lib/schema.prisma"
+      }
+    },
+    "prisma-push": {
+      "executor": "@mgansler/nx-prisma:push",
+      "dependsOn": [
+        {
+          "target": "prisma-generate"
+        }
+      ]
+    },
+    "prisma-seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn ts-node libs/stgtrails/persistence/src/seed.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "implicitDependencies": ["plugins-nx-prisma"]
+}

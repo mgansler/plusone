@@ -28,18 +28,6 @@ export const discoveredDevicesResponse = zod
   })
   .strict()
 
-export const addDiscoveredDeviceParams = zod
-  .object({
-    deviceId: zod.string(),
-  })
-  .strict()
-
-export const addManualDeviceParams = zod
-  .object({
-    address: zod.string(),
-  })
-  .strict()
-
 export const deviceListResponse = zod
   .object({
     devices: zod.array(
@@ -50,12 +38,6 @@ export const deviceListResponse = zod
         })
         .strict(),
     ),
-  })
-  .strict()
-
-export const deviceDetailsParams = zod
-  .object({
-    macAddress: zod.string(),
   })
   .strict()
 
@@ -83,60 +65,6 @@ export const deviceDetailsResponse = zod
   })
   .strict()
 
-export const setDisplayNameParams = zod
-  .object({
-    macAddress: zod.string(),
-  })
-  .strict()
-
-export const setDisplayNameBody = zod
-  .object({
-    displayName: zod.string(),
-  })
-  .strict()
-
-export const toggleDeviceParams = zod
-  .object({
-    macAddress: zod.string(),
-  })
-  .strict()
-
-export const deviceSetPowerStateParams = zod
-  .object({
-    macAddress: zod.string(),
-  })
-  .strict()
-
-export const deviceSetPowerStateBody = zod
-  .object({
-    on: zod.boolean(),
-    hue: zod.number().nullish(),
-    saturation: zod.number().nullish(),
-    brightness: zod.number().nullish(),
-    temperature: zod.number().nullish(),
-  })
-  .strict()
-
-export const transitionToColorParams = zod
-  .object({
-    macAddress: zod.string(),
-  })
-  .strict()
-
-export const transitionToColorBody = zod
-  .object({
-    hue: zod.number(),
-    saturation: zod.number(),
-    brightness: zod.number(),
-  })
-  .strict()
-
-export const currentDeviceSettingsParams = zod
-  .object({
-    macAddress: zod.string(),
-  })
-  .strict()
-
 export const currentDeviceSettingsResponse = zod
   .object({
     sunrise: zod.boolean(),
@@ -144,31 +72,10 @@ export const currentDeviceSettingsResponse = zod
   })
   .strict()
 
-export const updateDeviceSettingsParams = zod
-  .object({
-    macAddress: zod.string(),
-  })
-  .strict()
-
-export const updateDeviceSettingsBody = zod
-  .object({
-    sunrise: zod.boolean().optional(),
-    sunset: zod.boolean().optional(),
-  })
-  .strict()
-
 export const updateDeviceSettingsResponse = zod
   .object({
     sunrise: zod.boolean(),
     sunset: zod.boolean(),
-  })
-  .strict()
-
-export const updateLocationBody = zod
-  .object({
-    longitude: zod.number(),
-    latitude: zod.number(),
-    name: zod.string(),
   })
   .strict()
 
@@ -196,43 +103,6 @@ export const getLocationDataResponse = zod
     dayLength: zod.number(),
     timeZone: zod.string(),
     utcOffset: zod.number(),
-  })
-  .strict()
-
-/**
- * @summary Trigger a predefined command via apple shortcuts.
- */
-export const triggerAppleShortcutsCommandParams = zod
-  .object({
-    hash: zod.string(),
-  })
-  .strict()
-
-/**
- * @summary Toggles devices on and off.
- */
-export const toggleDevicePowerStateParams = zod
-  .object({
-    macAddress: zod.string(),
-  })
-  .strict()
-
-export const createCommandBody = zod
-  .object({
-    name: zod.string(),
-    actions: zod.array(
-      zod
-        .object({
-          on: zod.boolean(),
-          hue: zod.number().nullish(),
-          saturation: zod.number().nullish(),
-          brightness: zod.number().nullish(),
-          temperature: zod.number().nullish(),
-          powerOnly: zod.boolean(),
-          macAddress: zod.string(),
-        })
-        .strict(),
-    ),
   })
   .strict()
 
@@ -265,12 +135,6 @@ export const getCommandsResponse = zod
   })
   .strict()
 
-export const getCommandParams = zod
-  .object({
-    commandId: zod.number(),
-  })
-  .strict()
-
 export const getCommandResponse = zod
   .object({
     name: zod.string(),
@@ -291,36 +155,5 @@ export const getCommandResponse = zod
     ),
     id: zod.number(),
     hash: zod.string(),
-  })
-  .strict()
-
-export const updateCommandParams = zod
-  .object({
-    commandId: zod.number(),
-  })
-  .strict()
-
-export const updateCommandBody = zod
-  .object({
-    name: zod.string(),
-    actions: zod.array(
-      zod
-        .object({
-          on: zod.boolean(),
-          hue: zod.number().nullish(),
-          saturation: zod.number().nullish(),
-          brightness: zod.number().nullish(),
-          temperature: zod.number().nullish(),
-          powerOnly: zod.boolean(),
-          macAddress: zod.string(),
-        })
-        .strict(),
-    ),
-  })
-  .strict()
-
-export const deleteCommandParams = zod
-  .object({
-    commandId: zod.number(),
   })
   .strict()
