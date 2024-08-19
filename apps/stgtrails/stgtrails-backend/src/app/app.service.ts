@@ -66,7 +66,7 @@ export class AppService implements OnModuleInit {
 
     const sharedParams = {
       past_days: 3,
-      forecast_days: 2,
+      forecast_days: 3,
       hourly: hourlyWeatherVariables,
       timezone: 'Europe/Berlin',
     }

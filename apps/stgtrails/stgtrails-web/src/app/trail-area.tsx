@@ -34,10 +34,10 @@ export function TrailArea({ trailAreaId }: TrailAreaProps) {
       return ts.toLocaleString()
     }),
     datasets: [
-      { label: 'rain', data: weather.map((v) => v.rain), backgroundColor: 'blue' },
-      { label: 'soilMoisture0To1cm', data: weather.map((v) => v.soilMoisture0To1cm), backgroundColor: 'red' },
+      { label: 'Rain', data: weather.map((v) => v.rain), backgroundColor: 'blue' },
+      { label: 'Soil Moisture 0 to 1cm', data: weather.map((v) => v.soilMoisture0To1cm), backgroundColor: 'red' },
       {
-        label: 'moistureThreshold',
+        label: 'Moisture Threshold (0.3)',
         data: weather.map(() => 0.3),
         backgroundColor: 'purple',
         borderColor: 'purple',
