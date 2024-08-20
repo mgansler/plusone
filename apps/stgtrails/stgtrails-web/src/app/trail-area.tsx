@@ -1,10 +1,12 @@
 import type { ChartData, ChartType } from 'chart.js'
 import {
+  BarController,
   BarElement,
   CategoryScale,
   Chart as ChartJS,
   Legend,
   LinearScale,
+  LineController,
   LineElement,
   PointElement,
   Title,
@@ -15,7 +17,18 @@ import { Chart } from 'react-chartjs-2'
 
 import { useValidatedTrailsForTrailArea, useValidatedWeatherDataForTrailArea } from '@plusone/stgtrails-api-client'
 
-const items = [CategoryScale, LinearScale, Title, Legend, Tooltip, PointElement, LineElement, BarElement]
+const items = [
+  BarController,
+  BarElement,
+  CategoryScale,
+  Legend,
+  LineController,
+  LineElement,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+]
 ChartJS.register(items)
 
 type TrailAreaProps = {
