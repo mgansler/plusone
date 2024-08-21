@@ -9,8 +9,6 @@ describe('getHourlyWeatherVariables', () => {
       'soil_moisture_1_to_3cm',
       'soil_moisture_3_to_9cm',
       'soil_moisture_9_to_27cm',
-      // 'vapour_pressure_deficit',
-      // 'showers',
     ])
   })
 })

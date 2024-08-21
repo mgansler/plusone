@@ -37,7 +37,7 @@ type TrailAreaProps = {
 
 const nowPlugin: Plugin = {
   id: 'now',
-  beforeDraw(chart: ChartJS<ChartType>) {
+  afterDraw(chart: ChartJS<ChartType>) {
     const ctx = chart.ctx
 
     const now = new Date()

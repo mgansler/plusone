@@ -7,8 +7,6 @@ const weatherVariables = {
   soilMoisture1To3cm: 'soil_moisture_1_to_3cm',
   soilMoisture3To9cm: 'soil_moisture_3_to_9cm',
   soilMoisture9To27cm: 'soil_moisture_9_to_27cm',
-  // vapourPressureDeficit: 'vapour_pressure_deficit',
-  // showers: 'showers',
 }
 
 export const hourlyWeatherVariables = Object.values(weatherVariables)

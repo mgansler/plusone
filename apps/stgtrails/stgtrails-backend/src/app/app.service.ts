@@ -59,16 +59,16 @@ export class AppService implements OnModuleInit {
     return this.prismaService.trail.findMany({ where: { trailAreaId } })
   }
 
-  @Cron(CronExpression.EVERY_3_HOURS)
+  @Cron(CronExpression.EVERY_30_MINUTES)
   private async updateWeatherForecast() {
     const trailAreas = await this.prismaService.trailArea.findMany()
     this.logger.log(`Fetching weather data for ${trailAreas.length} trail areas.`)
 
     const sharedParams = {
-      past_days: 3,
+      past_days: 1,
       forecast_days: 3,
       hourly: hourlyWeatherVariables,
-      timezone: 'Europe/Berlin',
+      timezone: 'UTC',
     }
 
     for (const trailArea of trailAreas) {
@@ -93,8 +93,6 @@ export class AppService implements OnModuleInit {
               soilMoisture1To3cm: weatherData.soilMoisture1To3cm[currentIndex],
               soilMoisture3To9cm: weatherData.soilMoisture3To9cm[currentIndex],
               soilMoisture9To27cm: weatherData.soilMoisture9To27cm[currentIndex],
-              // vapourPressureDeficit: weatherData.vapourPressureDeficit[currentIndex],
-              // showers: weatherData.showers[currentIndex],
             },
           ]
         },
