@@ -8,5 +8,4 @@ COPY ./dist/apps/stgtrails/stgtrails-backend/yarn.lock .
 RUN yarn install --frozen-lockfile
 
 COPY ./dist/apps/stgtrails/stgtrails-backend .
-COPY ./dist/apps/stgtrails/stgtrails-web/ web
 RUN sed -i 's#file:./stgtrails.db#file:/usr/stgtrails/sqlite/stgtrails.db#' schema.prisma

@@ -4,38 +4,48 @@
   "sourceRoot": "apps/stgtrails/stgtrails-e2e/src",
   "projectType": "application",
   "tags": [],
-  "implicitDependencies": ["stgtrails-web"],
+  "implicitDependencies": ["stgtrails-backend", "stgtrails-web", "stgtrails-persistence"],
   "targets": {
     "e2e": {
       "executor": "@nx/cypress:cypress",
       "options": {
         "cypressConfig": "apps/stgtrails/stgtrails-e2e/cypress.config.ts",
         "testingType": "e2e",
-        "devServerTarget": "stgtrails-e2e:serve-all"
+        "devServerTarget": "stgtrails-backend:serve:production"
       },
       "configurations": {
         "production": {
-          "devServerTarget": "stgtrails-e2e:serve-all:production"
+          "devServerTarget": "stgtrails-backend:serve:production"
         },
         "watch": {
           "watch": true
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "setup-db",
+          "projects": ["stgtrails-e2e"]
+        },
+        {
+          "target": "build",
+          "projects": ["stgtrails-web"]
+        }
+      ]
     },
-    "serve-all": {
+    "setup-db": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["nx run stgtrails-web:serve --watch", "nx run stgtrails-backend:serve --watch"],
-        "parallel": true,
-        "readyWhen": "Application is running on"
-      },
-      "configurations": {
-        "production": {
-          "commands": [
-            "nx run stgtrails-web:serve:production --watch",
-            "nx run stgtrails-backend:serve:production --watch"
-          ]
-        }
+        "env": {
+          "STGTRAILS_DATABASE_URL": "file:stgtrails-e2e.db"
+        },
+        "commands": [
+          "prisma generate --schema libs/stgtrails/persistence/src/lib/schema.prisma",
+          "prisma migrate deploy --schema libs/stgtrails/persistence/src/lib/schema.prisma",
+          "ts-node libs/stgtrails/persistence/src/seed.ts",
+          "mkdir -p dist/apps/stgtrails",
+          "mv libs/stgtrails/persistence/src/lib/stgtrails-e2e.db* dist/apps/stgtrails"
+        ],
+        "parallel": false
       }
     },
     "lint": {

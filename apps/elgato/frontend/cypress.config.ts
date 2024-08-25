@@ -6,8 +6,6 @@ export default defineConfig({
   reporterOptions: {
     mochaFile: '../../../reports/component-test/elgato-frontend-[hash].xml',
   },
-  component: nxComponentTestingPreset(__filename, {
-    bundler: 'vite',
-  }) as Cypress.ConfigOptions['component'],
+  component: nxComponentTestingPreset(__filename, { bundler: 'vite' }),
   experimentalMemoryManagement: true,
 })

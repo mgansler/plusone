@@ -41,6 +41,11 @@
               "input": "libs/stgtrails/persistence/src/lib/client",
               "glob": "libquery_engine-linux-musl*",
               "output": ""
+            },
+            {
+              "input": "dist/apps/stgtrails/stgtrails-web",
+              "glob": "**",
+              "output": "web"
             }
           ]
         }
