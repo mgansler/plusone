@@ -55,11 +55,20 @@ const nowPlugin: Plugin = {
 
 export function TrailArea({ trailAreaId }: TrailAreaProps) {
   const { data: trails } = useValidatedTrailsForTrailArea(trailAreaId)
-  const { data: weather } = useValidatedWeatherDataForTrailArea(trailAreaId)
+  const { data: weather } = useValidatedWeatherDataForTrailArea(trailAreaId, { query: { refetchInterval: 30_000 } })
 
   if (!weather) {
     return null
   }
+
+  const now = Date.now()
+  const rainPast24h = weather.reduce((previousValue, currentValue) => {
+    const currentTs = new Date(currentValue.time)
+    if (currentTs.valueOf() <= now && currentTs.valueOf() >= now - 24 * 60 * 60 * 1_000) {
+      return previousValue + currentValue.rain
+    }
+    return previousValue
+  }, 0)
 
   const chartData: ChartData = {
     labels: weather.map((v) => {
@@ -90,6 +99,7 @@ export function TrailArea({ trailAreaId }: TrailAreaProps) {
   return (
     <div>
       <ul>{trails?.map((trail) => <li key={trail.id}>{trail.name}</li>)}</ul>
+      <div>The total amount of rain over the past 24h was {rainPast24h.toFixed(1)}l.</div>
       <div style={{ maxHeight: 600 }}>
         <Chart
           type={'bar'}
