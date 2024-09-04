@@ -15,6 +15,7 @@ import { LoggerMiddleware } from './logger.middleware'
     ScheduleModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, 'web'),
+      renderPath: new RegExp(/^(?!\/api\/).*/),
     }),
     PrismaModule,
   ],

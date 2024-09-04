@@ -1,9 +1,8 @@
 {
-  "name": "stgtrails-backend",
+  "name": "feeds-backend",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/stgtrails/stgtrails-backend/src",
+  "sourceRoot": "apps/feeds/feeds-backend/src",
   "projectType": "application",
-  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
@@ -13,39 +12,39 @@
         "generatePackageJson": true,
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/stgtrails/stgtrails-backend",
-        "main": "apps/stgtrails/stgtrails-backend/src/main.ts",
-        "tsConfig": "apps/stgtrails/stgtrails-backend/tsconfig.app.json",
-        "assets": ["apps/stgtrails/stgtrails-backend/src/assets"],
-        "webpackConfig": "apps/stgtrails/stgtrails-backend/webpack.config.js"
+        "outputPath": "dist/apps/feeds/feeds-backend",
+        "main": "apps/feeds/feeds-backend/src/main.ts",
+        "tsConfig": "apps/feeds/feeds-backend/tsconfig.app.json",
+        "webpackConfig": "apps/feeds/feeds-backend/webpack.config.js",
+        "assets": ["apps/feeds/feeds-backend/src/assets"]
       },
       "configurations": {
         "api-spec": {
-          "main": "apps/stgtrails/stgtrails-backend/src/generate-openapi-spec.ts"
+          "main": "apps/feeds/feeds-backend/src/generate-openapi-spec.ts"
         },
-        "development": {},
         "production": {
           "optimization": true,
           "extractLicenses": true,
+          "inspect": false,
           "assets": [
-            "apps/stgtrails/stgtrails-backend/src/assets",
+            "apps/feeds/feeds-backend/src/assets",
             {
-              "input": "libs/stgtrails/persistence/src/lib/client",
+              "input": "libs/feeds/persistence/src/lib/client",
               "glob": "schema.prisma",
               "output": ""
             },
             {
-              "input": "libs/stgtrails/persistence/src/lib/",
+              "input": "libs/feeds/persistence/src/lib/",
               "glob": "migrations",
               "output": "migrations"
             },
             {
-              "input": "libs/stgtrails/persistence/src/lib/client",
+              "input": "libs/feeds/persistence/src/lib/client",
               "glob": "libquery_engine-linux-musl*",
               "output": ""
             },
             {
-              "input": "dist/apps/stgtrails/stgtrails-web",
+              "input": "dist/apps/feeds/feeds-web",
               "glob": "**",
               "output": "web"
             }
@@ -56,24 +55,28 @@
         {
           "target": "prisma-generate",
           "dependencies": true
+        },
+        {
+          "target": "build",
+          "projects": ["feeds-web"]
         }
       ]
     },
     "serve": {
       "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "stgtrails-backend:build"
+        "buildTarget": "feeds-backend:build"
       },
       "configurations": {
-        "development": {
-          "buildTarget": "stgtrails-backend:build:development"
-        },
-        "production": {
-          "buildTarget": "stgtrails-backend:build:production"
+        "api-spec": {
+          "buildTarget": "feeds-backend:build:api-spec",
+          "watch": false
         }
       },
       "dependsOn": [
+        {
+          "target": "docker"
+        },
         {
           "target": "prisma-generate",
           "dependencies": true
@@ -84,10 +87,16 @@
         }
       ]
     },
+    "docker": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose -f apps/feeds/docker-compose.database.yml up -d"
+      }
+    },
     "generate-api-spec": {
       "executor": "@nx/js:node",
       "options": {
-        "buildTarget": "stgtrails-backend:build:api-spec",
+        "buildTarget": "feeds-backend:build:api-spec",
         "watch": false
       },
       "dependsOn": [
@@ -98,14 +107,14 @@
       ]
     },
     "lint": {
-      "executor": "@nx/eslint:lint"
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": ["{workspaceRoot}/coverage/apps/feeds/feeds-backend"],
       "options": {
-        "jestConfig": "apps/stgtrails/stgtrails-backend/jest.config.ts",
-        "codeCoverage": true
+        "jestConfig": "apps/feeds/feeds-backend/jest.config.ts"
       },
       "dependsOn": [
         {
@@ -114,5 +123,7 @@
         }
       ]
     }
-  }
+  },
+  "tags": [],
+  "implicitDependencies": ["feeds-web"]
 }

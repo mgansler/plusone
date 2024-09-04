@@ -1,0 +1,33 @@
+{
+  "name": "elgato-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/elgato/elgato-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/elgato/elgato-e2e/cypress.config.ts",
+        "devServerTarget": "elgato-web:serve:development",
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "elgato-web:serve:production"
+        },
+        "ci": {
+          "devServerTarget": "elgato-web:serve-static"
+        },
+        "watch": {
+          "watch": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["elgato-web"]
+}

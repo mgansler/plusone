@@ -1,7 +1,7 @@
 {
-  "name": "stgtrails-backend",
+  "name": "elgato-backend",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/stgtrails/stgtrails-backend/src",
+  "sourceRoot": "apps/elgato/elgato-backend/src",
   "projectType": "application",
   "tags": [],
   "targets": {
@@ -13,39 +13,39 @@
         "generatePackageJson": true,
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/stgtrails/stgtrails-backend",
-        "main": "apps/stgtrails/stgtrails-backend/src/main.ts",
-        "tsConfig": "apps/stgtrails/stgtrails-backend/tsconfig.app.json",
-        "assets": ["apps/stgtrails/stgtrails-backend/src/assets"],
-        "webpackConfig": "apps/stgtrails/stgtrails-backend/webpack.config.js"
+        "outputPath": "dist/apps/elgato/elgato-backend",
+        "main": "apps/elgato/elgato-backend/src/main.ts",
+        "tsConfig": "apps/elgato/elgato-backend/tsconfig.app.json",
+        "assets": ["apps/elgato/elgato-backend/src/assets"],
+        "webpackConfig": "apps/elgato/elgato-backend/webpack.config.js"
       },
       "configurations": {
         "api-spec": {
-          "main": "apps/stgtrails/stgtrails-backend/src/generate-openapi-spec.ts"
+          "main": "apps/elgato/elgato-backend/src/generate-openapi-spec.ts"
         },
         "development": {},
         "production": {
           "optimization": true,
           "extractLicenses": true,
           "assets": [
-            "apps/stgtrails/stgtrails-backend/src/assets",
+            "apps/elgato/elgato-backend/src/assets",
             {
-              "input": "libs/stgtrails/persistence/src/lib/client",
+              "input": "libs/elgato/persistence/src/lib/client",
               "glob": "schema.prisma",
               "output": ""
             },
             {
-              "input": "libs/stgtrails/persistence/src/lib/",
+              "input": "libs/elgato/persistence/src/lib/",
               "glob": "migrations",
               "output": "migrations"
             },
             {
-              "input": "libs/stgtrails/persistence/src/lib/client",
+              "input": "libs/elgato/persistence/src/lib/client",
               "glob": "libquery_engine-linux-musl*",
               "output": ""
             },
             {
-              "input": "dist/apps/stgtrails/stgtrails-web",
+              "input": "dist/apps/elgato/elgato-web",
               "glob": "**",
               "output": "web"
             }
@@ -56,6 +56,10 @@
         {
           "target": "prisma-generate",
           "dependencies": true
+        },
+        {
+          "target": "build",
+          "projects": ["elgato-web"]
         }
       ]
     },
@@ -63,14 +67,14 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "stgtrails-backend:build"
+        "buildTarget": "elgato-backend:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "stgtrails-backend:build:development"
+          "buildTarget": "elgato-backend:build:development"
         },
         "production": {
-          "buildTarget": "stgtrails-backend:build:production"
+          "buildTarget": "elgato-backend:build:production"
         }
       },
       "dependsOn": [
@@ -87,7 +91,7 @@
     "generate-api-spec": {
       "executor": "@nx/js:node",
       "options": {
-        "buildTarget": "stgtrails-backend:build:api-spec",
+        "buildTarget": "elgato-backend:build:api-spec",
         "watch": false
       },
       "dependsOn": [
@@ -98,13 +102,14 @@
       ]
     },
     "lint": {
-      "executor": "@nx/eslint:lint"
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/stgtrails/stgtrails-backend/jest.config.ts",
+        "jestConfig": "apps/elgato/elgato-backend/jest.config.ts",
         "codeCoverage": true
       },
       "dependsOn": [

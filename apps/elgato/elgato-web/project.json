@@ -1,0 +1,91 @@
+{
+  "name": "elgato-web",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/elgato/elgato-web/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/elgato/elgato-web"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "host": "0.0.0.0",
+        "port": 4101,
+        "buildTarget": "elgato-web:build",
+        "proxyConfig": "apps/elgato/elgato-web/proxy.conf.json"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "elgato-web:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "elgato-web:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "elgato-web:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "elgato-web:build:development"
+        },
+        "production": {
+          "buildTarget": "elgato-web:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../../coverage/apps/elgato/elgato-web"
+      }
+    },
+    "component-test": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/elgato/elgato-web/cypress.config.ts",
+        "testingType": "component",
+        "skipServe": true
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "elgato-web:build"
+      }
+    }
+  },
+  "tags": []
+}
