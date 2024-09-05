@@ -6,7 +6,7 @@ describe('feeds', () => {
   it('should discover and add a feed', () => {
     cy.loginFreshUser()
 
-    cy.findByText('Feed 00').should('not.exist')
+    cy.findByText('Feed Discover').should('not.exist')
 
     cy.findByRole('link', { name: 'add feed' }).click()
 
@@ -22,7 +22,7 @@ describe('feeds', () => {
   it('should allow adding a feed manually and mark all articles as read', () => {
     cy.loginFreshUser()
 
-    cy.findByText('xkcd.com').should('not.exist')
+    cy.findByText('Feed Manual').should('not.exist')
 
     cy.findByRole('link', { name: 'add feed' }).click()
 

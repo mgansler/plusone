@@ -13,6 +13,8 @@ declare namespace Cypress {
     addFeedExistingToDefaultUser(): void
 
     addFeedPaginationToDefaultUser(): void
+
+    addFeed(title: 'discover' | 'existing' | 'manual' | 'multiple-01' | 'multiple-02' | 'pagination'): void
   }
 }
 
@@ -107,4 +109,16 @@ Cypress.Commands.add('addFeedPaginationToDefaultUser', () => {
       failOnStatusCode: false,
     })
   })
+})
+
+Cypress.Commands.add('addFeed', (title) => {
+  cy.findByText(title).should('not.exist')
+  cy.findByRole('link', { name: 'add feed' }).click()
+
+  cy.findByRole('textbox', { name: 'url' }).type(`http://localhost:3334/feeds/${title}.html`)
+  cy.findByRole('textbox', { name: 'title' }).type(title)
+  cy.findByRole('textbox', { name: 'feed-url' }).type(`http://localhost:3334/feeds/${title}.xml`)
+  cy.findByRole('button', { name: /save/i }).click()
+
+  cy.findByRole('button', { name: title, timeout: 20_000 }).should('be.visible')
 })

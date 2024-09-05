@@ -11,7 +11,7 @@ import {
 } from '@nestjs/swagger'
 
 import { JwtAccessTokenGuard } from '../authentication/jwt.strategy'
-import { Role, Roles, RolesGuard } from '../authentication/roles.guard'
+import { RolesGuard } from '../authentication/roles.guard'
 import { TagResponseDto } from '../tag/tag.dto'
 import { TagService } from '../tag/tag.service'
 
@@ -37,14 +37,6 @@ export class FeedController {
     private readonly tagService: TagService,
   ) {}
 
-  @ApiOperation({ operationId: 'discover-feed' })
-  @ApiQuery({ name: 'url', description: 'URL of the website where a feed should be discovered.', type: String })
-  @ApiOkResponse({ description: 'Metadata for feed that has been discovered.', type: DiscoverResponseDto })
-  @Post('discover')
-  discover(@Query() feedDiscoverDto: FeedDiscoverDto): Promise<DiscoverResponseDto> {
-    return this.feedService.discover(feedDiscoverDto)
-  }
-
   @ApiOperation({ operationId: 'add-feed' })
   @ApiBody({ description: 'Required information to create a feed.', type: FeedInputDto })
   @ApiCreatedResponse({ description: 'Metadata of the feed that has been created.', type: FeedResponseDto })
@@ -53,26 +45,26 @@ export class FeedController {
     return this.feedService.create(feedInputDto, user.id)
   }
 
-  @ApiOperation({ operationId: 'import-feeds' })
-  @ApiBody({ description: 'Required information to create a feed.', type: [FeedInputDto] })
-  @Post('import')
-  async import(@Body() feedInputs: Array<FeedInputDto>, @Req() { user }) {
-    await this.feedService.import(feedInputs, user.id)
-  }
-
-  @Roles(Role.Admin)
-  @ApiOperation({ operationId: 'get-feeds' })
-  @ApiOkResponse({ description: 'Metadata of all feeds.', type: [FeedResponseDto] })
-  @Get('all')
-  getAll(): Promise<Array<FeedResponseDto>> {
-    return this.feedService.findAll()
-  }
-
   @ApiOperation({ operationId: 'get-user-feeds' })
   @ApiOkResponse({ description: 'Metadata of all feeds.', type: [UserFeedResponseDto] })
   @Get()
   async getAllForUser(@Req() { user }): Promise<Array<UserFeedResponseDto>> {
     return this.feedService.findAllFor(user)
+  }
+
+  @ApiOperation({ operationId: 'discover-feed' })
+  @ApiQuery({ name: 'url', description: 'URL of the website where a feed should be discovered.', type: String })
+  @ApiOkResponse({ description: 'Metadata for feed that has been discovered.', type: DiscoverResponseDto })
+  @Post('discover')
+  discover(@Query() feedDiscoverDto: FeedDiscoverDto): Promise<DiscoverResponseDto> {
+    return this.feedService.discover(feedDiscoverDto)
+  }
+
+  @ApiOperation({ operationId: 'import-feeds' })
+  @ApiBody({ description: 'Required information to create a feed.', type: [FeedInputDto] })
+  @Post('import')
+  async import(@Body() feedInputs: Array<FeedInputDto>, @Req() { user }) {
+    await this.feedService.import(feedInputs, user.id)
   }
 
   @ApiOperation({ operationId: 'get-feed-settings' })

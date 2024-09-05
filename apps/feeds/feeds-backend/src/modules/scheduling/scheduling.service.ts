@@ -23,8 +23,7 @@ export class SchedulingService {
   async handleCron() {
     this.logger.log('Fetching new articles...')
     let totalSavedArticles = 0
-    const feeds = await this.feedService.findAll()
-    for (const feed of feeds) {
+    for (const feed of await this.feedService.findFeedsToFetch()) {
       const items = await this.fetchService.fetchFeedItems(feed.feedUrl)
       totalSavedArticles += await this.saveNewArticles(items, feed)
     }

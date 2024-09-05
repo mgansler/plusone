@@ -148,6 +148,7 @@ export interface TagFeedInputDto {
 }
 
 export interface UpdateFeedSettingsInputDto {
+  disabled: boolean
   expandContent: boolean
   includeRead: boolean
   order: Sort
@@ -155,11 +156,20 @@ export interface UpdateFeedSettingsInputDto {
 }
 
 export interface FeedSettingsResponseDto {
+  disabled: boolean
   expandContent: boolean
   id: string
   includeRead: boolean
   order: Sort
   title: string
+}
+
+export interface DiscoverResponseDto {
+  /** @nullable */
+  feedUrl: string | null
+  /** @nullable */
+  title: string | null
+  url: string
 }
 
 export interface TagResponseDto {
@@ -168,6 +178,7 @@ export interface TagResponseDto {
 }
 
 export interface UserFeedResponseDto {
+  disabled: boolean
   expandContent: boolean
   feedId: string
   feedUrl: string
@@ -191,14 +202,6 @@ export interface FeedInputDto {
   feedUrl: string
   title: string
   url?: string
-}
-
-export interface DiscoverResponseDto {
-  /** @nullable */
-  feedUrl: string | null
-  /** @nullable */
-  title: string | null
-  url: string
 }
 
 export interface BootInfoDto {
@@ -1375,48 +1378,6 @@ export function useBootInfo<TData = Awaited<ReturnType<typeof bootInfo>>, TError
   return query
 }
 
-export const discoverFeed = (params: DiscoverFeedParams) => {
-  return customAxiosInstance<DiscoverResponseDto>({ url: `/api/feed/discover`, method: 'POST', params })
-}
-
-export const getDiscoverFeedMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof discoverFeed>>,
-    TError,
-    { params: DiscoverFeedParams },
-    TContext
-  >
-}): UseMutationOptions<Awaited<ReturnType<typeof discoverFeed>>, TError, { params: DiscoverFeedParams }, TContext> => {
-  const { mutation: mutationOptions } = options ?? {}
-
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof discoverFeed>>, { params: DiscoverFeedParams }> = (
-    props,
-  ) => {
-    const { params } = props ?? {}
-
-    return discoverFeed(params)
-  }
-
-  return { mutationFn, ...mutationOptions }
-}
-
-export type DiscoverFeedMutationResult = NonNullable<Awaited<ReturnType<typeof discoverFeed>>>
-
-export type DiscoverFeedMutationError = unknown
-
-export const useDiscoverFeed = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof discoverFeed>>,
-    TError,
-    { params: DiscoverFeedParams },
-    TContext
-  >
-}): UseMutationResult<Awaited<ReturnType<typeof discoverFeed>>, TError, { params: DiscoverFeedParams }, TContext> => {
-  const mutationOptions = getDiscoverFeedMutationOptions(options)
-
-  return useMutation(mutationOptions)
-}
-
 export const addFeed = (feedInputDto: FeedInputDto) => {
   return customAxiosInstance<FeedResponseDto>({
     url: `/api/feed`,
@@ -1564,6 +1525,48 @@ export function useGetUserFeeds<TData = Awaited<ReturnType<typeof getUserFeeds>>
   return query
 }
 
+export const discoverFeed = (params: DiscoverFeedParams) => {
+  return customAxiosInstance<DiscoverResponseDto>({ url: `/api/feed/discover`, method: 'POST', params })
+}
+
+export const getDiscoverFeedMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof discoverFeed>>,
+    TError,
+    { params: DiscoverFeedParams },
+    TContext
+  >
+}): UseMutationOptions<Awaited<ReturnType<typeof discoverFeed>>, TError, { params: DiscoverFeedParams }, TContext> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof discoverFeed>>, { params: DiscoverFeedParams }> = (
+    props,
+  ) => {
+    const { params } = props ?? {}
+
+    return discoverFeed(params)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type DiscoverFeedMutationResult = NonNullable<Awaited<ReturnType<typeof discoverFeed>>>
+
+export type DiscoverFeedMutationError = unknown
+
+export const useDiscoverFeed = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof discoverFeed>>,
+    TError,
+    { params: DiscoverFeedParams },
+    TContext
+  >
+}): UseMutationResult<Awaited<ReturnType<typeof discoverFeed>>, TError, { params: DiscoverFeedParams }, TContext> => {
+  const mutationOptions = getDiscoverFeedMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
 export const importFeeds = (feedInputDto: FeedInputDto[]) => {
   return customAxiosInstance<void>({
     url: `/api/feed/import`,
@@ -1597,115 +1600,6 @@ export const useImportFeeds = <TError = unknown, TContext = unknown>(options?: {
   const mutationOptions = getImportFeedsMutationOptions(options)
 
   return useMutation(mutationOptions)
-}
-
-export const getFeeds = (signal?: AbortSignal) => {
-  return customAxiosInstance<FeedResponseDto[]>({ url: `/api/feed/all`, method: 'GET', signal })
-}
-
-export const getGetFeedsQueryKey = () => {
-  return [`/api/feed/all`] as const
-}
-
-export const getGetFeedsInfiniteQueryOptions = <
-  TData = InfiniteData<Awaited<ReturnType<typeof getFeeds>>>,
-  TError = unknown,
->(options?: {
-  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getGetFeedsQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFeeds>>> = ({ signal }) => getFeeds(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
-    Awaited<ReturnType<typeof getFeeds>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey }
-}
-
-export type GetFeedsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getFeeds>>>
-export type GetFeedsInfiniteQueryError = unknown
-
-export function useGetFeedsInfinite<
-  TData = InfiniteData<Awaited<ReturnType<typeof getFeeds>>>,
-  TError = unknown,
->(options: {
-  query: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>> &
-    Pick<DefinedInitialDataOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>, 'initialData'>
-}): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useGetFeedsInfinite<
-  TData = InfiniteData<Awaited<ReturnType<typeof getFeeds>>>,
-  TError = unknown,
->(options?: {
-  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>> &
-    Pick<UndefinedInitialDataOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>, 'initialData'>
-}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useGetFeedsInfinite<
-  TData = InfiniteData<Awaited<ReturnType<typeof getFeeds>>>,
-  TError = unknown,
->(options?: {
-  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>>
-}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
-
-export function useGetFeedsInfinite<
-  TData = InfiniteData<Awaited<ReturnType<typeof getFeeds>>>,
-  TError = unknown,
->(options?: {
-  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>>
-}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetFeedsInfiniteQueryOptions(options)
-
-  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
-
-  query.queryKey = queryOptions.queryKey
-
-  return query
-}
-
-export const getGetFeedsQueryOptions = <TData = Awaited<ReturnType<typeof getFeeds>>, TError = unknown>(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getGetFeedsQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFeeds>>> = ({ signal }) => getFeeds(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getFeeds>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey }
-}
-
-export type GetFeedsQueryResult = NonNullable<Awaited<ReturnType<typeof getFeeds>>>
-export type GetFeedsQueryError = unknown
-
-export function useGetFeeds<TData = Awaited<ReturnType<typeof getFeeds>>, TError = unknown>(options: {
-  query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>> &
-    Pick<DefinedInitialDataOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>, 'initialData'>
-}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useGetFeeds<TData = Awaited<ReturnType<typeof getFeeds>>, TError = unknown>(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>> &
-    Pick<UndefinedInitialDataOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>, 'initialData'>
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useGetFeeds<TData = Awaited<ReturnType<typeof getFeeds>>, TError = unknown>(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>>
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey }
-
-export function useGetFeeds<TData = Awaited<ReturnType<typeof getFeeds>>, TError = unknown>(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFeeds>>, TError, TData>>
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetFeedsQueryOptions(options)
-
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
-
-  query.queryKey = queryOptions.queryKey
-
-  return query
 }
 
 export const getFeedSettings = (id: string, signal?: AbortSignal) => {

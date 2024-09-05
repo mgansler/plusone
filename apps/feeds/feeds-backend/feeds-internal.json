@@ -428,43 +428,6 @@
         ]
       }
     },
-    "/api/feed/discover": {
-      "post": {
-        "operationId": "discover-feed",
-        "summary": "",
-        "parameters": [
-          {
-            "name": "url",
-            "required": true,
-            "in": "query",
-            "description": "URL of the website where a feed should be discovered.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Metadata for feed that has been discovered.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DiscoverResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "feed"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
     "/api/feed": {
       "post": {
         "operationId": "add-feed",
@@ -531,6 +494,43 @@
         ]
       }
     },
+    "/api/feed/discover": {
+      "post": {
+        "operationId": "discover-feed",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "url",
+            "required": true,
+            "in": "query",
+            "description": "URL of the website where a feed should be discovered.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Metadata for feed that has been discovered.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoverResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "feed"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/feed/import": {
       "post": {
         "operationId": "import-feeds",
@@ -553,36 +553,6 @@
         "responses": {
           "201": {
             "description": ""
-          }
-        },
-        "tags": [
-          "feed"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/api/feed/all": {
-      "get": {
-        "operationId": "get-feeds",
-        "summary": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Metadata of all feeds.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/FeedResponseDto"
-                  }
-                }
-              }
-            }
           }
         },
         "tags": [
@@ -1360,27 +1330,6 @@
           "pageSize"
         ]
       },
-      "DiscoverResponseDto": {
-        "type": "object",
-        "properties": {
-          "feedUrl": {
-            "type": "string",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "url": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "feedUrl",
-          "title",
-          "url"
-        ]
-      },
       "FeedInputDto": {
         "type": "object",
         "properties": {
@@ -1457,6 +1406,9 @@
           "includeRead": {
             "type": "boolean"
           },
+          "disabled": {
+            "type": "boolean"
+          },
           "order": {
             "$ref": "#/components/schemas/Sort"
           },
@@ -1479,10 +1431,32 @@
           "feedId",
           "originalTitle",
           "includeRead",
+          "disabled",
           "order",
           "expandContent",
           "unreadCount",
           "tags"
+        ]
+      },
+      "DiscoverResponseDto": {
+        "type": "object",
+        "properties": {
+          "feedUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "feedUrl",
+          "title",
+          "url"
         ]
       },
       "FeedSettingsResponseDto": {
@@ -1500,6 +1474,9 @@
           "includeRead": {
             "type": "boolean"
           },
+          "disabled": {
+            "type": "boolean"
+          },
           "order": {
             "$ref": "#/components/schemas/Sort"
           }
@@ -1509,6 +1486,7 @@
           "title",
           "expandContent",
           "includeRead",
+          "disabled",
           "order"
         ]
       },
@@ -1521,6 +1499,9 @@
           "includeRead": {
             "type": "boolean"
           },
+          "disabled": {
+            "type": "boolean"
+          },
           "order": {
             "$ref": "#/components/schemas/Sort"
           },
@@ -1531,6 +1512,7 @@
         "required": [
           "expandContent",
           "includeRead",
+          "disabled",
           "order"
         ]
       },

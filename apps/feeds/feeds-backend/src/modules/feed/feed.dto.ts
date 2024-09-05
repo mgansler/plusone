@@ -48,6 +48,9 @@ export class FeedSettingsResponseDto {
   @ApiProperty()
   includeRead: boolean
 
+  @ApiProperty()
+  disabled: boolean
+
   @ApiProperty({ enum: Sort, enumName: 'Sort' })
   order: Sort
 }
@@ -58,6 +61,9 @@ export class UpdateFeedSettingsInputDto {
 
   @ApiProperty()
   includeRead: boolean
+
+  @ApiProperty()
+  disabled: boolean
 
   @ApiProperty({ enum: Sort, enumName: 'Sort' })
   order: Sort
@@ -98,6 +104,9 @@ export class UserFeedResponseDto {
 
   @ApiProperty()
   includeRead: boolean
+
+  @ApiProperty()
+  disabled: boolean
 
   @ApiProperty({ enum: Sort, enumName: 'Sort' })
   order: Sort

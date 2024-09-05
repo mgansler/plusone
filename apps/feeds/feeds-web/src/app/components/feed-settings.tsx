@@ -1,6 +1,5 @@
 import { Button, Checkbox, FormControlLabel, MenuItem, Stack, TextField, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
-import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
@@ -16,14 +15,8 @@ type FeedSettingsForm = UpdateFeedSettingsMutationBody
 
 export function FeedSettings() {
   const { feedId } = useParams()
-  const { reset, register, handleSubmit } = useForm<FeedSettingsForm>()
 
-  const { data: currentSettings, isFetching } = useValidatedGetFeedSettings(feedId)
-  useEffect(() => {
-    if (currentSettings) {
-      reset(currentSettings)
-    }
-  }, [currentSettings, reset])
+  const { data: currentSettings, isFetching, refetch } = useValidatedGetFeedSettings(feedId)
 
   const queryClient = useQueryClient()
   const { mutateAsync } = useUpdateFeedSettings({
@@ -31,6 +24,22 @@ export function FeedSettings() {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: getGetUserFeedsQueryKey() })
       },
+    },
+  })
+
+  const { register, handleSubmit } = useForm<FeedSettingsForm>({
+    defaultValues: async () => {
+      try {
+        const response = await refetch()
+        return response.data as FeedSettingsForm
+      } catch (e) {
+        return {
+          disabled: false,
+          expandContent: false,
+          includeRead: true,
+          order: Sort.desc,
+        }
+      }
     },
   })
 
@@ -64,6 +73,11 @@ export function FeedSettings() {
         <FormControlLabel
           control={<Checkbox defaultChecked={currentSettings?.expandContent} {...register('expandContent')} />}
           label={'Expand Content'}
+        />
+
+        <FormControlLabel
+          control={<Checkbox defaultChecked={currentSettings?.disabled} {...register('disabled')} />}
+          label={'Disabled'}
         />
 
         <Button type={'submit'}>Save</Button>

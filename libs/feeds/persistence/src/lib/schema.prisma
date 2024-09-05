@@ -74,6 +74,7 @@ model UserFeed {
   includeRead   Boolean   @default(true)
   expandContent Boolean   @default(false)
   tags          UserTag[]
+  disabled      Boolean   @default(false)
 
   @@unique([userId, feedId])
 }

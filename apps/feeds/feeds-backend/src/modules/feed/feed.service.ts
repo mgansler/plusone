@@ -168,8 +168,16 @@ export class FeedService {
     }
   }
 
-  async findAll(): Promise<Array<Feed>> {
-    return this.prismaService.feed.findMany()
+  async findFeedsToFetch(): Promise<Array<Feed>> {
+    return this.prismaService.feed.findMany({
+      where: {
+        UserFeed: {
+          some: {
+            disabled: false,
+          },
+        },
+      },
+    })
   }
 
   async findAllFor(user: TokenPayload): Promise<Array<UserFeedResponseDto>> {
@@ -205,7 +213,7 @@ export class FeedService {
 
   async getFeedSettings(user: TokenPayload, feedId: Feed['id']): Promise<FeedSettingsResponseDto> {
     const entry = await this.prismaService.userFeed.findUniqueOrThrow({
-      select: { feedId: true, title: true, expandContent: true, order: true, includeRead: true },
+      select: { feedId: true, title: true, expandContent: true, order: true, includeRead: true, disabled: true },
       where: { userId_feedId: { userId: user.id, feedId } },
     })
 
@@ -214,6 +222,7 @@ export class FeedService {
       title: entry.title,
       expandContent: entry.expandContent,
       includeRead: entry.includeRead,
+      disabled: entry.disabled,
       order: entry.order === 'ASC' ? Sort.OldestFirst : Sort.NewestFirst,
     }
   }
@@ -221,7 +230,7 @@ export class FeedService {
   async updateFeedSettings(
     user: TokenPayload,
     feedId: Feed['id'],
-    { order, includeRead, expandContent, title }: UpdateFeedSettingsInputDto,
+    { order, includeRead, expandContent, title, disabled }: UpdateFeedSettingsInputDto,
   ) {
     await this.prismaService.userFeed.update({
       data: {
@@ -229,6 +238,7 @@ export class FeedService {
         order: order === Sort.NewestFirst ? 'DESC' : 'ASC',
         includeRead,
         title,
+        disabled,
       },
       where: { userId_feedId: { userId: user.id, feedId } },
     })

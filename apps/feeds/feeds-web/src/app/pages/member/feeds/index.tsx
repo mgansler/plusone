@@ -45,10 +45,10 @@ function FeedEntry({ feed }: FeedEntryProps) {
     <ListItem>
       <ListItemButton aria-label={feed.title} selected={feedId === feed.feedId} onClick={handleGoToFeed}>
         <Badge max={999} color={'primary'} badgeContent={feed.unreadCount}>
-          <ListItemText>{feed.title}</ListItemText>
+          <ListItemText style={{ textDecoration: feed.disabled ? 'line-through' : 'none' }}>{feed.title}</ListItemText>
         </Badge>
       </ListItemButton>
-      <IconButton onClick={handleGoToFeedSettings}>
+      <IconButton onClick={handleGoToFeedSettings} role={'button'} aria-label={'Settings'}>
         <Settings />
       </IconButton>
     </ListItem>
@@ -89,7 +89,7 @@ function TagGroup({ name, feeds }: TagGroupProps) {
       </ListItem>
 
       <Collapse in={isOpen}>
-        <List dense={true}>
+        <List dense={true} aria-label={`${name} feed list`}>
           {feeds.map((feed) => (
             <FeedEntry key={feed.id} feed={feed} />
           ))}

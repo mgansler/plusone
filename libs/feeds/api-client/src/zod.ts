@@ -104,14 +104,6 @@ export const bootInfoResponse = zod
   })
   .strict()
 
-export const discoverFeedResponse = zod
-  .object({
-    feedUrl: zod.string().nullable(),
-    title: zod.string().nullable(),
-    url: zod.string(),
-  })
-  .strict()
-
 export const getUserFeedsResponseItem = zod
   .object({
     feedUrl: zod.string(),
@@ -120,6 +112,7 @@ export const getUserFeedsResponseItem = zod
     originalTitle: zod.string(),
     title: zod.string().optional(),
     includeRead: zod.boolean(),
+    disabled: zod.boolean(),
     order: zod.enum(['desc', 'asc']),
     expandContent: zod.boolean(),
     unreadCount: zod.number(),
@@ -135,15 +128,13 @@ export const getUserFeedsResponseItem = zod
   .strict()
 export const getUserFeedsResponse = zod.array(getUserFeedsResponseItem)
 
-export const getFeedsResponseItem = zod
+export const discoverFeedResponse = zod
   .object({
-    feedUrl: zod.string(),
-    id: zod.string(),
-    originalTitle: zod.string(),
-    title: zod.string().optional(),
+    feedUrl: zod.string().nullable(),
+    title: zod.string().nullable(),
+    url: zod.string(),
   })
   .strict()
-export const getFeedsResponse = zod.array(getFeedsResponseItem)
 
 export const getFeedSettingsResponse = zod
   .object({
@@ -151,6 +142,7 @@ export const getFeedSettingsResponse = zod
     title: zod.string(),
     expandContent: zod.boolean(),
     includeRead: zod.boolean(),
+    disabled: zod.boolean(),
     order: zod.enum(['desc', 'asc']),
   })
   .strict()
