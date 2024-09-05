@@ -129,6 +129,14 @@
             "schema": {
               "type": "number"
             }
+          },
+          {
+            "name": "hours",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
           }
         ],
         "responses": {

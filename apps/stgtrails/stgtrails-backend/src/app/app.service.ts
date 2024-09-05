@@ -22,7 +22,7 @@ export class AppService implements OnModuleInit {
     await this.updateWeatherForecast()
   }
 
-  public async getWeatherData(trailAreaId: number): Promise<Array<WeatherDataResponseDto>> {
+  public async getWeatherData(trailAreaId: number, hours): Promise<Array<WeatherDataResponseDto>> {
     return this.prismaService.weatherData
       .findMany({
         select: {
@@ -38,7 +38,7 @@ export class AppService implements OnModuleInit {
         orderBy: {
           time: 'desc',
         },
-        take: 96,
+        take: hours,
       })
       .then((data) => data.reverse())
   }

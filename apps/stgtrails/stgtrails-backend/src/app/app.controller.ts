@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common'
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger'
+import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common'
+import { ApiOkResponse, ApiOperation, ApiQuery } from '@nestjs/swagger'
 
 import { AppService } from './app.service'
 import { TrailAreaCreateDto } from './dto/trail-area-create.dto'
@@ -41,11 +41,13 @@ export class AppController {
   }
 
   @ApiOperation({ operationId: 'getWeatherDataForTrailArea' })
+  @ApiQuery({ name: 'hours', type: Number, required: false })
   @ApiOkResponse({ type: [WeatherDataResponseDto] })
   @Get(':trailAreaId/weather')
   async getWeatherData(
     @Param('trailAreaId', ParseIntPipe) trailAreaId: number,
+    @Query('hours', new DefaultValuePipe(96), ParseIntPipe) hours: number,
   ): Promise<Array<WeatherDataResponseDto>> {
-    return this.appService.getWeatherData(trailAreaId)
+    return this.appService.getWeatherData(trailAreaId, hours)
   }
 }

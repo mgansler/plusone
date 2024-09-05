@@ -1,4 +1,4 @@
-import type { ChartData, ChartType } from 'chart.js'
+import type { ChartData, ChartOptions, ChartType } from 'chart.js'
 import {
   BarController,
   BarElement,
@@ -17,31 +17,13 @@ import { Chart } from 'react-chartjs-2'
 
 import { useValidatedTrailsForTrailArea, useValidatedWeatherDataForTrailArea } from '@plusone/stgtrails-api-client'
 
-const items = [
-  BarController,
-  BarElement,
-  CategoryScale,
-  Legend,
-  LineController,
-  LineElement,
-  LinearScale,
-  PointElement,
-  Title,
-  Tooltip,
-]
-ChartJS.register(items)
-
-type TrailAreaProps = {
-  trailAreaId: number
-}
-
-const nowPlugin: Plugin = {
-  id: 'now',
-  afterDraw(chart: ChartJS<ChartType>) {
+const nowPlugin: Plugin<ChartType, { hours: number }> = {
+  id: 'nowPlugin',
+  afterDraw(chart: ChartJS<ChartType>, _, options) {
     const ctx = chart.ctx
 
     const now = new Date()
-    const xValue = chart.scales.x.getPixelForValue(now.getUTCHours() + 24 + now.getMinutes() / 60)
+    const xValue = chart.scales.x.getPixelForValue(now.getUTCHours() + options.hours - 72 + now.getMinutes() / 60)
     ctx.save()
     ctx.strokeStyle = 'blue'
     ctx.lineWidth = 2
@@ -53,9 +35,34 @@ const nowPlugin: Plugin = {
   },
 }
 
-export function TrailArea({ trailAreaId }: TrailAreaProps) {
+ChartJS.register(
+  BarController,
+  BarElement,
+  CategoryScale,
+  Legend,
+  LineController,
+  LineElement,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+  nowPlugin,
+)
+
+type TrailAreaProps = {
+  trailAreaId: number
+  hours: number
+}
+
+export function TrailArea({ trailAreaId, hours }: TrailAreaProps) {
   const { data: trails } = useValidatedTrailsForTrailArea(trailAreaId)
-  const { data: weather } = useValidatedWeatherDataForTrailArea(trailAreaId, { query: { refetchInterval: 30_000 } })
+  const { data: weather } = useValidatedWeatherDataForTrailArea(
+    trailAreaId,
+    { hours },
+    {
+      query: { refetchInterval: 30_000 },
+    },
+  )
 
   if (!weather) {
     return null
@@ -96,19 +103,17 @@ export function TrailArea({ trailAreaId }: TrailAreaProps) {
     ],
   }
 
+  const options: ChartOptions & { plugins: { nowPlugin: { hours: number } } } = {
+    responsive: true,
+    plugins: { nowPlugin: { hours } },
+  }
+
   return (
     <div>
       <ul>{trails?.map((trail) => <li key={trail.id}>{trail.name}</li>)}</ul>
       <div>The total amount of rain over the past 24h was {rainPast24h.toFixed(1)}l.</div>
-      <div style={{ maxHeight: 600 }}>
-        <Chart
-          type={'bar'}
-          data={chartData}
-          plugins={[nowPlugin]}
-          options={{
-            responsive: true,
-          }}
-        />
+      <div style={{ maxHeight: 800 }}>
+        <Chart type={'bar'} data={chartData} plugins={[nowPlugin]} options={options} />
       </div>
     </div>
   )

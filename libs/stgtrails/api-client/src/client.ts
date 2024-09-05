@@ -18,6 +18,10 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
+export type GetWeatherDataForTrailAreaParams = {
+  hours?: number
+}
+
 export interface WeatherDataResponseDto {
   rain: number
   soilMoisture0To1cm: number
@@ -275,16 +279,24 @@ export function useGetTrailsOfArea<TData = Awaited<ReturnType<typeof getTrailsOf
   return query
 }
 
-export const getWeatherDataForTrailArea = (trailAreaId: number, signal?: AbortSignal) => {
+export const getWeatherDataForTrailArea = (
+  trailAreaId: number,
+  params?: GetWeatherDataForTrailAreaParams,
+  signal?: AbortSignal,
+) => {
   return customAxiosInstance<WeatherDataResponseDto[]>({
     url: `/api/trailAreas/${trailAreaId}/weather`,
     method: 'GET',
+    params,
     signal,
   })
 }
 
-export const getGetWeatherDataForTrailAreaQueryKey = (trailAreaId: number) => {
-  return [`/api/trailAreas/${trailAreaId}/weather`] as const
+export const getGetWeatherDataForTrailAreaQueryKey = (
+  trailAreaId: number,
+  params?: GetWeatherDataForTrailAreaParams,
+) => {
+  return [`/api/trailAreas/${trailAreaId}/weather`, ...(params ? [params] : [])] as const
 }
 
 export const getGetWeatherDataForTrailAreaQueryOptions = <
@@ -292,14 +304,15 @@ export const getGetWeatherDataForTrailAreaQueryOptions = <
   TError = unknown,
 >(
   trailAreaId: number,
+  params?: GetWeatherDataForTrailAreaParams,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getWeatherDataForTrailArea>>, TError, TData>> },
 ) => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getGetWeatherDataForTrailAreaQueryKey(trailAreaId)
+  const queryKey = queryOptions?.queryKey ?? getGetWeatherDataForTrailAreaQueryKey(trailAreaId, params)
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getWeatherDataForTrailArea>>> = ({ signal }) =>
-    getWeatherDataForTrailArea(trailAreaId, signal)
+    getWeatherDataForTrailArea(trailAreaId, params, signal)
 
   return { queryKey, queryFn, enabled: !!trailAreaId, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof getWeatherDataForTrailArea>>,
@@ -316,6 +329,7 @@ export function useGetWeatherDataForTrailArea<
   TError = unknown,
 >(
   trailAreaId: number,
+  params: undefined | GetWeatherDataForTrailAreaParams,
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getWeatherDataForTrailArea>>, TError, TData>> &
       Pick<
@@ -329,6 +343,7 @@ export function useGetWeatherDataForTrailArea<
   TError = unknown,
 >(
   trailAreaId: number,
+  params?: GetWeatherDataForTrailAreaParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getWeatherDataForTrailArea>>, TError, TData>> &
       Pick<
@@ -342,6 +357,7 @@ export function useGetWeatherDataForTrailArea<
   TError = unknown,
 >(
   trailAreaId: number,
+  params?: GetWeatherDataForTrailAreaParams,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getWeatherDataForTrailArea>>, TError, TData>> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -350,9 +366,10 @@ export function useGetWeatherDataForTrailArea<
   TError = unknown,
 >(
   trailAreaId: number,
+  params?: GetWeatherDataForTrailAreaParams,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getWeatherDataForTrailArea>>, TError, TData>> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetWeatherDataForTrailAreaQueryOptions(trailAreaId, options)
+  const queryOptions = getGetWeatherDataForTrailAreaQueryOptions(trailAreaId, params, options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
