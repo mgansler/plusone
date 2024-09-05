@@ -1,7 +1,7 @@
-import { useHealthControllerGetHealthStatus } from '@plusone/feeds/api-client'
+import { useGetHealthStatus } from '@plusone/feeds/api-client'
 
 export function Health() {
-  const { data, isLoading } = useHealthControllerGetHealthStatus({ query: { refetchInterval: 30_000 } })
+  const { data, isLoading } = useGetHealthStatus({ query: { refetchInterval: 30_000 } })
 
   const status = isLoading ? 'loading...' : data?.status
 

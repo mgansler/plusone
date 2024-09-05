@@ -4,6 +4,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { ServeStaticModule } from '@nestjs/serve-static'
 
+import { AdminModule } from '../modules/admin/admin.module'
 import { ArticleModule } from '../modules/article/article.module'
 import { AuthenticationModule } from '../modules/authentication/authentication.module'
 import { BootInfoModule } from '../modules/boot-info/boot-info.module'
@@ -18,6 +19,7 @@ import { LoggerMiddleware } from './logger.middleware'
 
 @Module({
   imports: [
+    AdminModule,
     ArticleModule,
     AuthenticationModule,
     BootInfoModule,

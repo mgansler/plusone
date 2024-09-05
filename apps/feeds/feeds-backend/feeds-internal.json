@@ -1,6 +1,33 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    "/api/admin/stats": {
+      "get": {
+        "operationId": "getAdminStats",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Statistic about the current data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminStatsResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "admin"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/article/mark-articles-read": {
       "post": {
         "operationId": "mark-articles-read",
@@ -859,7 +886,8 @@
     },
     "/api/health": {
       "get": {
-        "operationId": "HealthController_getHealthStatus",
+        "operationId": "getHealthStatus",
+        "summary": "",
         "parameters": [],
         "responses": {
           "200": {
@@ -1114,6 +1142,25 @@
   "servers": [],
   "components": {
     "schemas": {
+      "AdminStatsResponseDto": {
+        "type": "object",
+        "properties": {
+          "feedCount": {
+            "type": "number"
+          },
+          "articleCount": {
+            "type": "number"
+          },
+          "userCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "feedCount",
+          "articleCount",
+          "userCount"
+        ]
+      },
       "ArticleToggleUnreadDto": {
         "type": "object",
         "properties": {

@@ -1,19 +1,19 @@
 import { Link, Outlet } from 'react-router-dom'
 
-import { useGetFeeds, useGetUsers } from '@plusone/feeds/api-client'
+import { useGetAdminStats } from '@plusone/feeds/api-client'
 
 import { Health } from '../../components/health'
 
 export function Admin() {
-  const { data: feeds } = useGetFeeds()
-  const { data: users } = useGetUsers()
+  const { data: adminStats } = useGetAdminStats()
 
   return (
     <div>
       <h3>Admin Area</h3>
       <Health />
-      <div>total feeds: {feeds?.length}</div>
-      <Link to={'users'}>total users: {users?.length}</Link>
+      <div>total feeds: {adminStats?.feedCount}</div>
+      <div>total articles: {adminStats?.articleCount}</div>
+      <Link to={'users'}>total users: {adminStats?.userCount}</Link>
       <Outlet />
     </div>
   )

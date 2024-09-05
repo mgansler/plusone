@@ -6,6 +6,14 @@
  */
 import { z as zod } from 'zod'
 
+export const getAdminStatsResponse = zod
+  .object({
+    feedCount: zod.number(),
+    articleCount: zod.number(),
+    userCount: zod.number(),
+  })
+  .strict()
+
 export const toggleUnreadResponse = zod
   .object({
     article: zod
@@ -163,7 +171,7 @@ export const getTagsResponseItem = zod
   .strict()
 export const getTagsResponse = zod.array(getTagsResponseItem)
 
-export const healthControllerGetHealthStatusResponse = zod
+export const getHealthStatusResponse = zod
   .object({
     status: zod.string().optional(),
     info: zod

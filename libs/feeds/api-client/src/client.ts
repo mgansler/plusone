@@ -25,7 +25,7 @@ import { customAxiosInstance } from './custom-axios'
 /**
  * @nullable
  */
-export type HealthControllerGetHealthStatus503Info = {
+export type GetHealthStatus503Info = {
   [key: string]: {
     status: string
     [key: string]: unknown
@@ -35,33 +35,33 @@ export type HealthControllerGetHealthStatus503Info = {
 /**
  * @nullable
  */
-export type HealthControllerGetHealthStatus503Error = {
+export type GetHealthStatus503Error = {
   [key: string]: {
     status: string
     [key: string]: unknown
   }
 } | null
 
-export type HealthControllerGetHealthStatus503Details = {
+export type GetHealthStatus503Details = {
   [key: string]: {
     status: string
     [key: string]: unknown
   }
 }
 
-export type HealthControllerGetHealthStatus503 = {
-  details?: HealthControllerGetHealthStatus503Details
+export type GetHealthStatus503 = {
+  details?: GetHealthStatus503Details
   /** @nullable */
-  error?: HealthControllerGetHealthStatus503Error
+  error?: GetHealthStatus503Error
   /** @nullable */
-  info?: HealthControllerGetHealthStatus503Info
+  info?: GetHealthStatus503Info
   status?: string
 }
 
 /**
  * @nullable
  */
-export type HealthControllerGetHealthStatus200Info = {
+export type GetHealthStatus200Info = {
   [key: string]: {
     status: string
     [key: string]: unknown
@@ -71,26 +71,26 @@ export type HealthControllerGetHealthStatus200Info = {
 /**
  * @nullable
  */
-export type HealthControllerGetHealthStatus200Error = {
+export type GetHealthStatus200Error = {
   [key: string]: {
     status: string
     [key: string]: unknown
   }
 } | null
 
-export type HealthControllerGetHealthStatus200Details = {
+export type GetHealthStatus200Details = {
   [key: string]: {
     status: string
     [key: string]: unknown
   }
 }
 
-export type HealthControllerGetHealthStatus200 = {
-  details?: HealthControllerGetHealthStatus200Details
+export type GetHealthStatus200 = {
+  details?: GetHealthStatus200Details
   /** @nullable */
-  error?: HealthControllerGetHealthStatus200Error
+  error?: GetHealthStatus200Error
   /** @nullable */
-  info?: HealthControllerGetHealthStatus200Info
+  info?: GetHealthStatus200Info
   status?: string
 }
 
@@ -229,14 +229,6 @@ export interface UserLoginDto {
   username: string
 }
 
-export interface PaginatedArticleResponseDto {
-  content: ArticleResponseDto[]
-  lastCursor?: number
-  pageSize: number
-  totalCount: number
-  unreadCount: number
-}
-
 export type Sort = (typeof Sort)[keyof typeof Sort]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -268,8 +260,134 @@ export interface ArticleResponseDto {
   unread: boolean
 }
 
+export interface PaginatedArticleResponseDto {
+  content: ArticleResponseDto[]
+  lastCursor?: number
+  pageSize: number
+  totalCount: number
+  unreadCount: number
+}
+
 export interface ArticleToggleUnreadDto {
   unread: boolean
+}
+
+export interface AdminStatsResponseDto {
+  articleCount: number
+  feedCount: number
+  userCount: number
+}
+
+export const getAdminStats = (signal?: AbortSignal) => {
+  return customAxiosInstance<AdminStatsResponseDto>({ url: `/api/admin/stats`, method: 'GET', signal })
+}
+
+export const getGetAdminStatsQueryKey = () => {
+  return [`/api/admin/stats`] as const
+}
+
+export const getGetAdminStatsInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getAdminStats>>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetAdminStatsQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminStats>>> = ({ signal }) => getAdminStats(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getAdminStats>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey }
+}
+
+export type GetAdminStatsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminStats>>>
+export type GetAdminStatsInfiniteQueryError = unknown
+
+export function useGetAdminStatsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getAdminStats>>>,
+  TError = unknown,
+>(options: {
+  query: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>> &
+    Pick<DefinedInitialDataOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>, 'initialData'>
+}): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useGetAdminStatsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getAdminStats>>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>> &
+    Pick<UndefinedInitialDataOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>, 'initialData'>
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useGetAdminStatsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getAdminStats>>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>>
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
+
+export function useGetAdminStatsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getAdminStats>>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>>
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetAdminStatsInfiniteQueryOptions(options)
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const getGetAdminStatsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAdminStats>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetAdminStatsQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminStats>>> = ({ signal }) => getAdminStats(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getAdminStats>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey }
+}
+
+export type GetAdminStatsQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminStats>>>
+export type GetAdminStatsQueryError = unknown
+
+export function useGetAdminStats<TData = Awaited<ReturnType<typeof getAdminStats>>, TError = unknown>(options: {
+  query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>> &
+    Pick<DefinedInitialDataOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>, 'initialData'>
+}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useGetAdminStats<TData = Awaited<ReturnType<typeof getAdminStats>>, TError = unknown>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>> &
+    Pick<UndefinedInitialDataOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>, 'initialData'>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useGetAdminStats<TData = Awaited<ReturnType<typeof getAdminStats>>, TError = unknown>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+export function useGetAdminStats<TData = Awaited<ReturnType<typeof getAdminStats>>, TError = unknown>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetAdminStatsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
 }
 
 export const markArticlesRead = (params?: MarkArticlesReadParams) => {
@@ -2175,73 +2293,64 @@ export const useRemoveTag = <TError = unknown, TContext = unknown>(options?: {
   return useMutation(mutationOptions)
 }
 
-export const healthControllerGetHealthStatus = (signal?: AbortSignal) => {
-  return customAxiosInstance<HealthControllerGetHealthStatus200>({ url: `/api/health`, method: 'GET', signal })
+export const getHealthStatus = (signal?: AbortSignal) => {
+  return customAxiosInstance<GetHealthStatus200>({ url: `/api/health`, method: 'GET', signal })
 }
 
-export const getHealthControllerGetHealthStatusQueryKey = () => {
+export const getGetHealthStatusQueryKey = () => {
   return [`/api/health`] as const
 }
 
-export const getHealthControllerGetHealthStatusInfiniteQueryOptions = <
-  TData = InfiniteData<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>>,
-  TError = HealthControllerGetHealthStatus503,
+export const getGetHealthStatusInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getHealthStatus>>>,
+  TError = GetHealthStatus503,
 >(options?: {
-  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>>
+  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
 }) => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getHealthControllerGetHealthStatusQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getGetHealthStatusQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>> = ({ signal }) =>
-    healthControllerGetHealthStatus(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getHealthStatus>>> = ({ signal }) => getHealthStatus(signal)
 
   return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
-    Awaited<ReturnType<typeof healthControllerGetHealthStatus>>,
+    Awaited<ReturnType<typeof getHealthStatus>>,
     TError,
     TData
   > & { queryKey: QueryKey }
 }
 
-export type HealthControllerGetHealthStatusInfiniteQueryResult = NonNullable<
-  Awaited<ReturnType<typeof healthControllerGetHealthStatus>>
->
-export type HealthControllerGetHealthStatusInfiniteQueryError = HealthControllerGetHealthStatus503
+export type GetHealthStatusInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getHealthStatus>>>
+export type GetHealthStatusInfiniteQueryError = GetHealthStatus503
 
-export function useHealthControllerGetHealthStatusInfinite<
-  TData = InfiniteData<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>>,
-  TError = HealthControllerGetHealthStatus503,
+export function useGetHealthStatusInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getHealthStatus>>>,
+  TError = GetHealthStatus503,
 >(options: {
-  query: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>> &
-    Pick<
-      DefinedInitialDataOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>,
-      'initialData'
-    >
+  query: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> &
+    Pick<DefinedInitialDataOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>, 'initialData'>
 }): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useHealthControllerGetHealthStatusInfinite<
-  TData = InfiniteData<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>>,
-  TError = HealthControllerGetHealthStatus503,
+export function useGetHealthStatusInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getHealthStatus>>>,
+  TError = GetHealthStatus503,
 >(options?: {
-  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>> &
-    Pick<
-      UndefinedInitialDataOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>,
-      'initialData'
-    >
+  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> &
+    Pick<UndefinedInitialDataOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>, 'initialData'>
 }): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useHealthControllerGetHealthStatusInfinite<
-  TData = InfiniteData<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>>,
-  TError = HealthControllerGetHealthStatus503,
+export function useGetHealthStatusInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getHealthStatus>>>,
+  TError = GetHealthStatus503,
 >(options?: {
-  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>>
+  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
 }): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
 
-export function useHealthControllerGetHealthStatusInfinite<
-  TData = InfiniteData<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>>,
-  TError = HealthControllerGetHealthStatus503,
+export function useGetHealthStatusInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getHealthStatus>>>,
+  TError = GetHealthStatus503,
 >(options?: {
-  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>>
+  query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
 }): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getHealthControllerGetHealthStatusInfiniteQueryOptions(options)
+  const queryOptions = getGetHealthStatusInfiniteQueryOptions(options)
 
   const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -2250,65 +2359,56 @@ export function useHealthControllerGetHealthStatusInfinite<
   return query
 }
 
-export const getHealthControllerGetHealthStatusQueryOptions = <
-  TData = Awaited<ReturnType<typeof healthControllerGetHealthStatus>>,
-  TError = HealthControllerGetHealthStatus503,
+export const getGetHealthStatusQueryOptions = <
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
 >(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>>
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
 }) => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getHealthControllerGetHealthStatusQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getGetHealthStatusQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>> = ({ signal }) =>
-    healthControllerGetHealthStatus(signal)
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getHealthStatus>>> = ({ signal }) => getHealthStatus(signal)
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof healthControllerGetHealthStatus>>,
+    Awaited<ReturnType<typeof getHealthStatus>>,
     TError,
     TData
   > & { queryKey: QueryKey }
 }
 
-export type HealthControllerGetHealthStatusQueryResult = NonNullable<
-  Awaited<ReturnType<typeof healthControllerGetHealthStatus>>
->
-export type HealthControllerGetHealthStatusQueryError = HealthControllerGetHealthStatus503
+export type GetHealthStatusQueryResult = NonNullable<Awaited<ReturnType<typeof getHealthStatus>>>
+export type GetHealthStatusQueryError = GetHealthStatus503
 
-export function useHealthControllerGetHealthStatus<
-  TData = Awaited<ReturnType<typeof healthControllerGetHealthStatus>>,
-  TError = HealthControllerGetHealthStatus503,
+export function useGetHealthStatus<
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
 >(options: {
-  query: Partial<UseQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>> &
-    Pick<
-      DefinedInitialDataOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>,
-      'initialData'
-    >
+  query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> &
+    Pick<DefinedInitialDataOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>, 'initialData'>
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useHealthControllerGetHealthStatus<
-  TData = Awaited<ReturnType<typeof healthControllerGetHealthStatus>>,
-  TError = HealthControllerGetHealthStatus503,
+export function useGetHealthStatus<
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
 >(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>> &
-    Pick<
-      UndefinedInitialDataOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>,
-      'initialData'
-    >
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> &
+    Pick<UndefinedInitialDataOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>, 'initialData'>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useHealthControllerGetHealthStatus<
-  TData = Awaited<ReturnType<typeof healthControllerGetHealthStatus>>,
-  TError = HealthControllerGetHealthStatus503,
+export function useGetHealthStatus<
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
 >(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>>
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
-export function useHealthControllerGetHealthStatus<
-  TData = Awaited<ReturnType<typeof healthControllerGetHealthStatus>>,
-  TError = HealthControllerGetHealthStatus503,
+export function useGetHealthStatus<
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
 >(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof healthControllerGetHealthStatus>>, TError, TData>>
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getHealthControllerGetHealthStatusQueryOptions(options)
+  const queryOptions = getGetHealthStatusQueryOptions(options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
