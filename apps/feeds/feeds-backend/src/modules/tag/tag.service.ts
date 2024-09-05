@@ -24,8 +24,8 @@ export class TagService {
       })
     } catch (e) {
       if (e.code === 'P2002') {
-        this.logger.warn(`This tag already exists: ${tagInput.name}`)
-        throw new HttpException('You are already have this tag', HttpStatus.CONFLICT)
+        this.logger.warn(`This tag already exists: ${tagInput.name}.`)
+        throw new HttpException('You already have this tag', HttpStatus.CONFLICT)
       }
       this.logger.error(e)
       throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR)
@@ -38,7 +38,7 @@ export class TagService {
       if (tag.userId !== userId) {
         throw new HttpException('This tag does not belong to you.', HttpStatus.FORBIDDEN)
       }
-      return await tx.userTag.delete({
+      return tx.userTag.delete({
         where: { id },
       })
     })

@@ -138,7 +138,7 @@ export class FeedService {
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
-          this.logger.warn(`User is already subscribed to feed: ${feedInputDto.title}`)
+          this.logger.warn(`User is already subscribed to feed: ${feedInputDto.title}.`)
           throw new HttpException('You are already subscribed to this feed', HttpStatus.CONFLICT)
         }
       }

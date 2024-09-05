@@ -11,7 +11,11 @@ export class FetchService {
       const feed = await this.parser.parseURL(uri)
       return feed.items
     } catch (e) {
-      this.logger.error(`${e} (${uri})`)
+      if (e.code === 'ECONNREFUSED') {
+        this.logger.warn(`Failed to connect to ${uri}.`)
+      } else {
+        this.logger.warn(`${e} (${uri})`)
+      }
       return []
     }
   }
