@@ -5,10 +5,14 @@ import { NextFunction, Request, Response } from 'express'
 export class LoggerMiddleware implements NestMiddleware {
   private logger = new Logger()
 
+  private static WEATHER_API_ENDPOINT = /\/api\/trailAreas\/\d+\/weather.*/
+
   use(req: Request, res: Response, next: NextFunction) {
     res.on('close', () => {
       const { statusCode } = res
-      this.logger.log(req.originalUrl, `${req.method} ${statusCode}`)
+      if (!req.originalUrl.match(LoggerMiddleware.WEATHER_API_ENDPOINT)) {
+        this.logger.log(req.originalUrl, `${req.method} ${statusCode}`)
+      }
     })
 
     next()

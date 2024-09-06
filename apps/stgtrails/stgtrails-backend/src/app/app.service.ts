@@ -1,6 +1,5 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
-import { fetchWeatherApi } from 'openmeteo'
 
 import { Prisma, PrismaService } from '@plusone/stgtrails-persistence'
 
@@ -8,7 +7,7 @@ import { TrailAreaCreateDto } from './dto/trail-area-create.dto'
 import { TrailAreaResponseDto } from './dto/trail-area-response.dto'
 import { TrailCreateDto } from './dto/trail-create.dto'
 import { WeatherDataResponseDto } from './dto/weather-data-response.dto'
-import { hourlyWeatherVariables, parseWeatherApiResponse } from './weather-api-utils'
+import { WeatherApiService } from './weather-api.service'
 
 import WeatherDataCreateManyInput = Prisma.WeatherDataCreateManyInput
 
@@ -16,31 +15,37 @@ import WeatherDataCreateManyInput = Prisma.WeatherDataCreateManyInput
 export class AppService implements OnModuleInit {
   private logger = new Logger(AppService.name)
 
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly weatherApiService: WeatherApiService,
+  ) {}
 
   async onModuleInit() {
     await this.updateWeatherForecast()
   }
 
-  public async getWeatherData(trailAreaId: number, hours): Promise<Array<WeatherDataResponseDto>> {
-    return this.prismaService.weatherData
-      .findMany({
-        select: {
-          time: true,
-          rain: true,
-          temperature2m: true,
-          soilMoisture0To1cm: true,
-          soilMoisture1To3cm: true,
-          soilMoisture3To9cm: true,
-          soilMoisture9To27cm: true,
-        },
-        where: { trailAreaId },
-        orderBy: {
-          time: 'desc',
-        },
-        take: hours,
-      })
-      .then((data) => data.reverse())
+  public async getWeatherData(trailAreaId: number, hours: number): Promise<Array<WeatherDataResponseDto>> {
+    return (
+      this.prismaService.weatherData
+        .findMany({
+          select: {
+            time: true,
+            rain: true,
+            temperature2m: true,
+            soilMoisture0To1cm: true,
+            soilMoisture1To3cm: true,
+            soilMoisture3To9cm: true,
+            soilMoisture9To27cm: true,
+          },
+          where: { trailAreaId },
+          take: hours,
+          orderBy: {
+            time: 'desc',
+          },
+        })
+        // We take the last entries from the database and reverse the order so that
+        .then((data) => data.reverse())
+    )
   }
 
   public async createTrailArea(trailAreaCreateDto: TrailAreaCreateDto) {
@@ -64,22 +69,11 @@ export class AppService implements OnModuleInit {
     const trailAreas = await this.prismaService.trailArea.findMany()
     this.logger.log(`Fetching weather data for ${trailAreas.length} trail areas.`)
 
-    const sharedParams = {
-      past_days: 1,
-      forecast_days: 3,
-      hourly: hourlyWeatherVariables,
-      timezone: 'UTC',
-    }
-
     for (const trailArea of trailAreas) {
-      const params = {
-        ...sharedParams,
+      const weatherData = await this.weatherApiService.fetchWeatherData({
         latitude: trailArea.latitude,
         longitude: trailArea.longitude,
-      }
-
-      const responses = await fetchWeatherApi('https://api.open-meteo.com/v1/forecast', params)
-      const weatherData = parseWeatherApiResponse(responses[0])
+      })
 
       const transformedData: Array<WeatherDataCreateManyInput> = weatherData.time.reduce(
         (previousValue, currentValue, currentIndex) => {

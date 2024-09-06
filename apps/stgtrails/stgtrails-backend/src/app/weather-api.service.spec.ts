@@ -1,8 +1,9 @@
-import { hourlyWeatherVariables } from './weather-api-utils'
+import { WeatherApiService } from './weather-api.service'
 
 describe('getHourlyWeatherVariables', () => {
   it('should return expected list of variables', () => {
-    expect(hourlyWeatherVariables).toEqual([
+    // @ts-expect-error private field
+    expect(WeatherApiService.HOURLY_WEATHER_VARIABLES).toEqual([
       'temperature_2m',
       'rain',
       'soil_moisture_0_to_1cm',

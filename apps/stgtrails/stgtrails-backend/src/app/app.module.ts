@@ -9,6 +9,7 @@ import { PrismaModule } from '@plusone/stgtrails-persistence'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { LoggerMiddleware } from './logger.middleware'
+import { WeatherApiService } from './weather-api.service'
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { LoggerMiddleware } from './logger.middleware'
     PrismaModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, WeatherApiService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
