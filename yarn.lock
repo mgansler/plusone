@@ -7489,10 +7489,10 @@
   dependencies:
     "@tanstack/query-core" "5.55.4"
 
-"@tanstack/react-router@1.57.9":
-  version "1.57.9"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.57.9.tgz#34f9f27e01e89f3242469c3b25eff248f81a99aa"
-  integrity sha512-lwPAGPlRIZI2+gUcJuXjUAk6KhcHxJed0QssBAY0m7bmZl1f24EGSPsVeDlGYC0m2rH09w3lZ03JQxgzcQ5rcA==
+"@tanstack/react-router@1.57.10":
+  version "1.57.10"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.57.10.tgz#40b9eee273ddcadcb6dc2b1e2e6b6242c5500aa5"
+  integrity sha512-5azQ3bVVUTRT25B5PwkVZF47Z0BJEEhCa/0vFWAM7Sje/zwC8hcl8pL5MhDU0daAWlP8mi0640y4ESNPeEA2WQ==
   dependencies:
     "@tanstack/history" "1.57.6"
     "@tanstack/react-store" "^0.5.5"
@@ -13203,10 +13203,10 @@ express@4.19.2, express@^4.17.3, express@^4.19.2:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-express@4.20.0:
-  version "4.20.0"
-  resolved "https://registry.npmjs.org/express/-/express-4.20.0.tgz#f1d08e591fcec770c07be4767af8eb9bcfd67c48"
-  integrity sha512-pLdae7I6QqShF5PnNTCVn4hI91Dx0Grkn2+IAsMTgMIKuQVte2dN9PeGSSAME2FR8anOhVA62QDIUaWVfEXVLw==
+express@4.21.0:
+  version "4.21.0"
+  resolved "https://registry.npmjs.org/express/-/express-4.21.0.tgz#d57cb706d49623d4ac27833f1cbc466b668eb915"
+  integrity sha512-VqcNGcj/Id5ZT1LZ/cfihi3ttTn+NJmkli2eZADigjq29qTlWi/hAQ43t/VLPq8+UX06FCEx3ByOYet6ZFblng==
   dependencies:
     accepts "~1.3.8"
     array-flatten "1.1.1"
@@ -13220,7 +13220,7 @@ express@4.20.0:
     encodeurl "~2.0.0"
     escape-html "~1.0.3"
     etag "~1.8.1"
-    finalhandler "1.2.0"
+    finalhandler "1.3.1"
     fresh "0.5.2"
     http-errors "2.0.0"
     merge-descriptors "1.0.3"
@@ -13229,11 +13229,11 @@ express@4.20.0:
     parseurl "~1.3.3"
     path-to-regexp "0.1.10"
     proxy-addr "~2.0.7"
-    qs "6.11.0"
+    qs "6.13.0"
     range-parser "~1.2.1"
     safe-buffer "5.2.1"
     send "0.19.0"
-    serve-static "1.16.0"
+    serve-static "1.16.2"
     setprototypeof "1.2.0"
     statuses "2.0.1"
     type-is "~1.6.18"
@@ -13497,6 +13497,19 @@ finalhandler@1.2.0:
   dependencies:
     debug "2.6.9"
     encodeurl "~1.0.2"
+    escape-html "~1.0.3"
+    on-finished "2.4.1"
+    parseurl "~1.3.3"
+    statuses "2.0.1"
+    unpipe "~1.0.0"
+
+finalhandler@1.3.1:
+  version "1.3.1"
+  resolved "https://registry.npmjs.org/finalhandler/-/finalhandler-1.3.1.tgz#0c575f1d1d324ddd1da35ad7ece3df7d19088019"
+  integrity sha512-6BN9trH7bp3qvnrRyzsBz+g3lZxTNZTbVO2EV1CS0WIcDbawYVdYvGflME/9QP0h0pYlCDBCTjYa9nZzMDpyxQ==
+  dependencies:
+    debug "2.6.9"
+    encodeurl "~2.0.0"
     escape-html "~1.0.3"
     on-finished "2.4.1"
     parseurl "~1.3.3"
@@ -14199,10 +14212,10 @@ handle-thing@^2.0.0:
   resolved "https://registry.npmjs.org/handle-thing/-/handle-thing-2.0.1.tgz#857f79ce359580c340d43081cc648970d0bb234e"
   integrity sha512-9Qn4yBxelxoh2Ow62nP+Ka/kMnOXRi8BXnRaUwezLNhqelnN49xKz4F/dPP8OYLxLxq6JDtZb2i9XznUQbNPTg==
 
-happy-dom@15.7.3:
-  version "15.7.3"
-  resolved "https://registry.npmjs.org/happy-dom/-/happy-dom-15.7.3.tgz#aa1bd91de7ad5fac1ed907558d567c88a8570a8b"
-  integrity sha512-w3RUaYNXFJX5LiNVhOJLK4GqCB1bFj1FvELtpon3HrN8gUpS09V0Vvm4/BBRRj7mLUE1+ch8PKv1JxEp/0IHjA==
+happy-dom@15.7.4:
+  version "15.7.4"
+  resolved "https://registry.npmjs.org/happy-dom/-/happy-dom-15.7.4.tgz#05aade59c1d307336001b7004c76dfc6a829f220"
+  integrity sha512-r1vadDYGMtsHAAsqhDuk4IpPvr6N8MGKy5ntBo7tSdim+pWDxus2PNqOcOt8LuDZ4t3KJHE+gCuzupcx/GKnyQ==
   dependencies:
     entities "^4.5.0"
     webidl-conversions "^7.0.0"
@@ -14650,10 +14663,10 @@ human-signals@^5.0.0:
   resolved "https://registry.npmjs.org/human-signals/-/human-signals-5.0.0.tgz#42665a284f9ae0dade3ba41ebc37eb4b852f3a28"
   integrity sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==
 
-husky@9.1.5:
-  version "9.1.5"
-  resolved "https://registry.npmjs.org/husky/-/husky-9.1.5.tgz#2b6edede53ee1adbbd3a3da490628a23f5243b83"
-  integrity sha512-rowAVRUBfI0b4+niA4SJMhfQwc107VLkBUgEYYAOQAbqDCnra1nYh83hF/MDmhYs9t9n1E3DuKOrs2LYNC+0Ag==
+husky@9.1.6:
+  version "9.1.6"
+  resolved "https://registry.npmjs.org/husky/-/husky-9.1.6.tgz#e23aa996b6203ab33534bdc82306b0cf2cb07d6c"
+  integrity sha512-sqbjZKK7kf44hfdE94EoX8MZNk0n7HeW37O4YrVGCF4wzgQjp+akPAkfUK5LZ6KuR/6sqeAVuXHji+RzQgOn5A==
 
 hyperdyperid@^1.2.0:
   version "1.2.0"
@@ -20515,15 +20528,15 @@ serve-static@1.15.0:
     parseurl "~1.3.3"
     send "0.18.0"
 
-serve-static@1.16.0:
-  version "1.16.0"
-  resolved "https://registry.npmjs.org/serve-static/-/serve-static-1.16.0.tgz#2bf4ed49f8af311b519c46f272bf6ac3baf38a92"
-  integrity sha512-pDLK8zwl2eKaYrs8mrPZBJua4hMplRWJ1tIFksVC3FtBEBnl8dxgeHtsaMS8DhS9i4fLObaon6ABoc4/hQGdPA==
+serve-static@1.16.2:
+  version "1.16.2"
+  resolved "https://registry.npmjs.org/serve-static/-/serve-static-1.16.2.tgz#b6a5343da47f6bdd2673848bf45754941e803296"
+  integrity sha512-VqpjJZKadQB/PEbEwvFdO43Ax5dFBZ2UECszz8bQ7pi7wt//PWe1P6MN7eCnjsatYtBT6EuiClbjSWP2WrIoTw==
   dependencies:
-    encodeurl "~1.0.2"
+    encodeurl "~2.0.0"
     escape-html "~1.0.3"
     parseurl "~1.3.3"
-    send "0.18.0"
+    send "0.19.0"
 
 set-blocking@^2.0.0:
   version "2.0.0"
@@ -21542,10 +21555,10 @@ tailwind-merge@2.3.0:
   dependencies:
     "@babel/runtime" "^7.24.1"
 
-tailwindcss@3.4.10:
-  version "3.4.10"
-  resolved "https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.4.10.tgz#70442d9aeb78758d1f911af29af8255ecdb8ffef"
-  integrity sha512-KWZkVPm7yJRhdu4SRSl9d4AK2wM3a50UsvgHZO7xY77NQr2V+fIrEuoDGQcbvswWvFGbS2f6e+jC/6WJm1Dl0w==
+tailwindcss@3.4.11:
+  version "3.4.11"
+  resolved "https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.4.11.tgz#4d6df41acc05a1d0291b1319490db8df375ab709"
+  integrity sha512-qhEuBcLemjSJk5ajccN9xJFtM/h0AVCPaA6C92jNP+M2J8kX+eMJHI7R2HFKUvvAsMpcfLILMCFYSeDwpMmlUg==
   dependencies:
     "@alloc/quick-lru" "^5.2.0"
     arg "^5.0.2"
