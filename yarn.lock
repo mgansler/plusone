@@ -6407,10 +6407,10 @@
   dependencies:
     "@prisma/debug" "5.19.1"
 
-"@remix-run/dev@2.12.0":
-  version "2.12.0"
-  resolved "https://registry.npmjs.org/@remix-run/dev/-/dev-2.12.0.tgz#f3710a87e437d23a5cffd74c431cecd4f31aa318"
-  integrity sha512-/87YQORdlJg5YChd7nVBM/hRXHZA4GfUjhKbZyNrh03bazCQBF+6EsXbzpJ6cCFOpZgecsN0Xv648Qw0VuJjwg==
+"@remix-run/dev@2.12.1":
+  version "2.12.1"
+  resolved "https://registry.npmjs.org/@remix-run/dev/-/dev-2.12.1.tgz#f8b790e514b8a48fed4facb5f8328d234ce69375"
+  integrity sha512-XjvpQZDvPL5L2NPUL9suwn0eo/WCHSewivpEEm2G1Ke06xL7LenIc8HzwkgsJqDrfvxePAFPj+RCcrygQvtMzA==
   dependencies:
     "@babel/core" "^7.21.8"
     "@babel/generator" "^7.21.5"
@@ -6422,9 +6422,9 @@
     "@babel/types" "^7.22.5"
     "@mdx-js/mdx" "^2.3.0"
     "@npmcli/package-json" "^4.0.1"
-    "@remix-run/node" "2.12.0"
+    "@remix-run/node" "2.12.1"
     "@remix-run/router" "1.19.2"
-    "@remix-run/server-runtime" "2.12.0"
+    "@remix-run/server-runtime" "2.12.1"
     "@types/mdx" "^2.0.5"
     "@vanilla-extract/integration" "^6.2.0"
     arg "^5.0.1"
@@ -6466,10 +6466,10 @@
     tsconfig-paths "^4.0.0"
     ws "^7.4.5"
 
-"@remix-run/eslint-config@2.12.0":
-  version "2.12.0"
-  resolved "https://registry.npmjs.org/@remix-run/eslint-config/-/eslint-config-2.12.0.tgz#21e7a0dc2af4875324f60fcd96dec5482f81fcf4"
-  integrity sha512-9MfVRuto/8EOYFf4zdg765x5TQ1l03CG7ZsLBLI22fn/OoJtOp5gGXeHaWMiFo+nLHlP27wEH2y9j7NshxdcMA==
+"@remix-run/eslint-config@2.12.1":
+  version "2.12.1"
+  resolved "https://registry.npmjs.org/@remix-run/eslint-config/-/eslint-config-2.12.1.tgz#c275223f442ddc4240db1293a7fceb4c69e5e2a1"
+  integrity sha512-R/1zoLdI7ld8J2+LmFbb0BQAkcdjPYHX8wO7b3zEmoLDBdv2B6nHPBDigIHHzP8XROIlUaZJ5/cpqX8Y9U2O+Q==
   dependencies:
     "@babel/core" "^7.21.8"
     "@babel/eslint-parser" "^7.21.8"
@@ -6488,19 +6488,19 @@
     eslint-plugin-react-hooks "^4.6.0"
     eslint-plugin-testing-library "^5.10.2"
 
-"@remix-run/express@2.12.0":
-  version "2.12.0"
-  resolved "https://registry.npmjs.org/@remix-run/express/-/express-2.12.0.tgz#04fa982403a125a22cfb7384ac6f3c4345d1d35f"
-  integrity sha512-8RmF0TITWxEW20HU5YPreuN0H8rPeShPCQUoMKN1b5zfcQ3E/tD5VWwwXicguQS8ffloc+ejhtQjnWA3drlsgw==
+"@remix-run/express@2.12.1":
+  version "2.12.1"
+  resolved "https://registry.npmjs.org/@remix-run/express/-/express-2.12.1.tgz#1ae570bda67b567408316aa118ff7fa3e03b88e4"
+  integrity sha512-CW5coZXxk8251Tr0Fh9jmhda5Xt/BWfnUyD7jxth30irpWAEQcsaBu4pSDKuRvnJ8j2o7087EBnUn7oCB4ofNg==
   dependencies:
-    "@remix-run/node" "2.12.0"
+    "@remix-run/node" "2.12.1"
 
-"@remix-run/node@2.12.0":
-  version "2.12.0"
-  resolved "https://registry.npmjs.org/@remix-run/node/-/node-2.12.0.tgz#f971872e783c7f5f097139461317c59e46415b0a"
-  integrity sha512-83Jaoc6gpSuD4e6rCk7N5ZHAXNmDw4fJC+kPeDCsd6+wLtTLSi7u9Zo9/Q7moLZ3oyH+aR+LGdkxLULYv+Q6Og==
+"@remix-run/node@2.12.1":
+  version "2.12.1"
+  resolved "https://registry.npmjs.org/@remix-run/node/-/node-2.12.1.tgz#ab9ec3319682f935427a70d916f4621ee8162d64"
+  integrity sha512-d+IHvEEU3qziporgpEyKFvKdmNaDu+a/9pIxBkNKVWdKx2JR0VRFIaUxxpxISWtkJcoNuERhW2xYa6YvtFp4ig==
   dependencies:
-    "@remix-run/server-runtime" "2.12.0"
+    "@remix-run/server-runtime" "2.12.1"
     "@remix-run/web-fetch" "^4.4.2"
     "@web3-storage/multipart-parser" "^1.0.0"
     cookie-signature "^1.1.0"
@@ -6508,13 +6508,13 @@
     stream-slice "^0.1.2"
     undici "^6.11.1"
 
-"@remix-run/react@2.12.0":
-  version "2.12.0"
-  resolved "https://registry.npmjs.org/@remix-run/react/-/react-2.12.0.tgz#79df95c78f6998d2d50c8876cec126aebb2caf7c"
-  integrity sha512-Y109tI37Icr0BSU8sWSo8jDPkXaErJ/e1h0fkPvq6LZ0DrlcmHWBxzWJKID431I/KJvhVvBgVCuDamZTRVOZ5Q==
+"@remix-run/react@2.12.1":
+  version "2.12.1"
+  resolved "https://registry.npmjs.org/@remix-run/react/-/react-2.12.1.tgz#6672956d9ebe5b60fdb5dadbf92f3f92dafe2dac"
+  integrity sha512-+AFR6oCcAndlUZvr42dNrY2zprhf5Yo5Wl7TBocO3YPmwLkdrzJz+e8Sezk25qgHBB9cCTigt+yyliXmsZ1mpg==
   dependencies:
     "@remix-run/router" "1.19.2"
-    "@remix-run/server-runtime" "2.12.0"
+    "@remix-run/server-runtime" "2.12.1"
     react-router "6.26.2"
     react-router-dom "6.26.2"
     turbo-stream "2.4.0"
@@ -6524,13 +6524,13 @@
   resolved "https://registry.npmjs.org/@remix-run/router/-/router-1.19.2.tgz#0c896535473291cb41f152c180bedd5680a3b273"
   integrity sha512-baiMx18+IMuD1yyvOGaHM9QrVUPGGG0jC+z+IPHnRJWUAUvaKuWKyE8gjDj2rzv3sz9zOGoRSPgeBVHRhZnBlA==
 
-"@remix-run/serve@2.12.0":
-  version "2.12.0"
-  resolved "https://registry.npmjs.org/@remix-run/serve/-/serve-2.12.0.tgz#c0e1531eb0c65ed6587ad37f3ec28d2cd9c33148"
-  integrity sha512-QRWn2prUQXrygiXPl93QCk/xxmnSPMJ/vRZtI6FDYjznyWnroNmyF9MBbg7q/6NbgPfuKBc5QoQzvm1IP1W2pw==
+"@remix-run/serve@2.12.1":
+  version "2.12.1"
+  resolved "https://registry.npmjs.org/@remix-run/serve/-/serve-2.12.1.tgz#a9d2800516ee541308c123eeba5d7304e158d5da"
+  integrity sha512-J9BL5t2Alz45G/17vjD7YRuiRM+V4rJi63Kj+bmewuKWNXDEyij2LqgZJpkoHpkNsQFGiaBMNGc8bPd8RRmrxA==
   dependencies:
-    "@remix-run/express" "2.12.0"
-    "@remix-run/node" "2.12.0"
+    "@remix-run/express" "2.12.1"
+    "@remix-run/node" "2.12.1"
     chokidar "^3.5.3"
     compression "^1.7.4"
     express "^4.19.2"
@@ -6538,10 +6538,10 @@
     morgan "^1.10.0"
     source-map-support "^0.5.21"
 
-"@remix-run/server-runtime@2.12.0":
-  version "2.12.0"
-  resolved "https://registry.npmjs.org/@remix-run/server-runtime/-/server-runtime-2.12.0.tgz#92a7d6c94e44e79a32db7ea13a91d41f547bb88a"
-  integrity sha512-o9ukOr3XKmyY8UufTrDdkgD3fiy+z+f4qEzvCQnvC0+EasCyN9hb1Vbui6Koo/5HKvahC4Ga8RcWyvhykKrG3g==
+"@remix-run/server-runtime@2.12.1":
+  version "2.12.1"
+  resolved "https://registry.npmjs.org/@remix-run/server-runtime/-/server-runtime-2.12.1.tgz#01868158da541697cd65d43f9916718580dedc61"
+  integrity sha512-iuj9ju34f0LztPpd5dVuTXgt4x/MJeRsBiLuEx02nDSMGoNCAIx2LdeNYvE+XXdsf1Ht2NMlpRU+HBPCz3QLZg==
   dependencies:
     "@remix-run/router" "1.19.2"
     "@types/cookie" "^0.6.0"
@@ -7911,10 +7911,10 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/react@18.3.7":
-  version "18.3.7"
-  resolved "https://registry.npmjs.org/@types/react/-/react-18.3.7.tgz#6decbfbb01f8d82d56ff5403394121940faa6569"
-  integrity sha512-KUnDCJF5+AiZd8owLIeVHqmW9yM4sqmDVf2JRJiBMFkGvkoZ4/WyV2lL4zVsoinmRS/W3FeEdZLEWFRofnT2FQ==
+"@types/react@18.3.8":
+  version "18.3.8"
+  resolved "https://registry.npmjs.org/@types/react/-/react-18.3.8.tgz#1672ab19993f8aca7c7dc844c07d5d9e467d5a79"
+  integrity sha512-syBUrW3/XpnW4WJ41Pft+I+aPoDVbrBVQGEnbD7NijDGlVC+8gV/XKRY+7vMDlfPpbwYt0l1vd/Sj8bJGMbs9Q==
   dependencies:
     "@types/prop-types" "*"
     csstype "^3.0.2"
