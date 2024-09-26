@@ -1,8 +1,8 @@
 describe('stgtrails-web-e2e', () => {
   beforeEach(() => cy.visit('/'))
 
-  it('should render a canvas', () => {
-    cy.get('canvas').should('be.visible')
+  it('should render a svg', () => {
+    cy.get('svg').should('be.visible')
   })
 
   it('should have a drop down with trail areas', () => {

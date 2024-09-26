@@ -27,6 +27,7 @@
       "options": {
         "buildTarget": "stgtrails-web:build",
         "proxyConfig": "apps/stgtrails/stgtrails-web/proxy.conf.json",
+        "host": "0.0.0.0",
         "port": 4104
       },
       "configurations": {
@@ -70,6 +71,20 @@
       "outputs": ["{options.reportsDirectory}"],
       "options": {
         "reportsDirectory": "../../../coverage/apps/stgtrails/stgtrails-web"
+      }
+    },
+    "component-test": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/stgtrails/stgtrails-web/cypress.config.ts",
+        "testingType": "component",
+        "devServerTarget": "stgtrails-web:build",
+        "skipServe": true
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
       }
     }
   }
