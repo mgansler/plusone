@@ -54,3 +54,39 @@ export const getWeatherDataForTrailAreaResponseItem = zod
   })
   .strict()
 export const getWeatherDataForTrailAreaResponse = zod.array(getWeatherDataForTrailAreaResponseItem)
+
+export const getHealthStatusResponse = zod
+  .object({
+    status: zod.string().optional(),
+    info: zod
+      .record(
+        zod.string(),
+        zod
+          .object({
+            status: zod.string(),
+          })
+          .strict(),
+      )
+      .nullish(),
+    error: zod
+      .record(
+        zod.string(),
+        zod
+          .object({
+            status: zod.string(),
+          })
+          .strict(),
+      )
+      .nullish(),
+    details: zod
+      .record(
+        zod.string(),
+        zod
+          .object({
+            status: zod.string(),
+          })
+          .strict(),
+      )
+      .optional(),
+  })
+  .strict()

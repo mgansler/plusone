@@ -8,6 +8,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 
 import { DeviceDiscoveryModule } from '../modules/device-discovery/device-discovery.module'
 import { DeviceModule } from '../modules/device/device.module'
+import { HealthModule } from '../modules/health/health.module'
 import { LocationModule } from '../modules/location/location.module'
 import { PublicApiModule } from '../modules/public-api/public-api.module'
 import { SunriseSunsetModule } from '../modules/sunrise-sunset/sunrise-sunset.module'
@@ -19,6 +20,7 @@ import { LoggerMiddleware } from './logger.middleware'
     // custom modules
     DeviceDiscoveryModule,
     DeviceModule,
+    HealthModule,
     LocationModule,
     PublicApiModule,
     SunriseSunsetModule,

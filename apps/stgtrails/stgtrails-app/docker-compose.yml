@@ -3,7 +3,7 @@ services:
     image: ${DOCKER_IMAGE_NAME}
     container_name: stgtrails-app
     network_mode: host
-    restart: always
+    restart: on-failure
     environment:
       TZ: 'Europe/Berlin'
       STGTRAILS_DATABASE_URL: 'file:/usr/stgtrails/sqlite/stgtrails.db'

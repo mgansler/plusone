@@ -18,6 +18,78 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query'
 import { customAxiosInstance } from './custom-axios'
+/**
+ * @nullable
+ */
+export type GetHealthStatus503Info = {
+  [key: string]: {
+    status: string
+    [key: string]: unknown
+  }
+} | null
+
+/**
+ * @nullable
+ */
+export type GetHealthStatus503Error = {
+  [key: string]: {
+    status: string
+    [key: string]: unknown
+  }
+} | null
+
+export type GetHealthStatus503Details = {
+  [key: string]: {
+    status: string
+    [key: string]: unknown
+  }
+}
+
+export type GetHealthStatus503 = {
+  details?: GetHealthStatus503Details
+  /** @nullable */
+  error?: GetHealthStatus503Error
+  /** @nullable */
+  info?: GetHealthStatus503Info
+  status?: string
+}
+
+/**
+ * @nullable
+ */
+export type GetHealthStatus200Info = {
+  [key: string]: {
+    status: string
+    [key: string]: unknown
+  }
+} | null
+
+/**
+ * @nullable
+ */
+export type GetHealthStatus200Error = {
+  [key: string]: {
+    status: string
+    [key: string]: unknown
+  }
+} | null
+
+export type GetHealthStatus200Details = {
+  [key: string]: {
+    status: string
+    [key: string]: unknown
+  }
+}
+
+export type GetHealthStatus200 = {
+  details?: GetHealthStatus200Details
+  /** @nullable */
+  error?: GetHealthStatus200Error
+  /** @nullable */
+  info?: GetHealthStatus200Info
+  status?: string
+}
+
 export type GetWeatherDataForTrailAreaParams = {
   hours?: number
 }
@@ -370,6 +442,72 @@ export function useGetWeatherDataForTrailArea<
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getWeatherDataForTrailArea>>, TError, TData>> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getGetWeatherDataForTrailAreaQueryOptions(trailAreaId, params, options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const getHealthStatus = (signal?: AbortSignal) => {
+  return customAxiosInstance<GetHealthStatus200>({ url: `/api/health`, method: 'GET', signal })
+}
+
+export const getGetHealthStatusQueryKey = () => {
+  return [`/api/health`] as const
+}
+
+export const getGetHealthStatusQueryOptions = <
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetHealthStatusQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getHealthStatus>>> = ({ signal }) => getHealthStatus(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getHealthStatus>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey }
+}
+
+export type GetHealthStatusQueryResult = NonNullable<Awaited<ReturnType<typeof getHealthStatus>>>
+export type GetHealthStatusQueryError = GetHealthStatus503
+
+export function useGetHealthStatus<
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
+>(options: {
+  query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> &
+    Pick<DefinedInitialDataOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>, 'initialData'>
+}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useGetHealthStatus<
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> &
+    Pick<UndefinedInitialDataOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>, 'initialData'>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useGetHealthStatus<
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+export function useGetHealthStatus<
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetHealthStatusQueryOptions(options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 

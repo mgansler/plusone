@@ -79,6 +79,42 @@ export const updateDeviceSettingsResponse = zod
   })
   .strict()
 
+export const getHealthStatusResponse = zod
+  .object({
+    status: zod.string().optional(),
+    info: zod
+      .record(
+        zod.string(),
+        zod
+          .object({
+            status: zod.string(),
+          })
+          .strict(),
+      )
+      .nullish(),
+    error: zod
+      .record(
+        zod.string(),
+        zod
+          .object({
+            status: zod.string(),
+          })
+          .strict(),
+      )
+      .nullish(),
+    details: zod
+      .record(
+        zod.string(),
+        zod
+          .object({
+            status: zod.string(),
+          })
+          .strict(),
+      )
+      .optional(),
+  })
+  .strict()
+
 export const currentLocationResponse = zod
   .object({
     longitude: zod.number(),

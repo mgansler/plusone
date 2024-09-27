@@ -22,6 +22,8 @@ type WeatherDiagramSvgProps = {
   hours: number
 }
 
+const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
 export function WeatherDiagramSvg({ weather, hours }: WeatherDiagramSvgProps) {
   const portalRef = useRef<HTMLDivElement | null>(null)
   const [portalElement, setPortalElement] = useState<HTMLElement | null>(null)
@@ -30,6 +32,8 @@ export function WeatherDiagramSvg({ weather, hours }: WeatherDiagramSvgProps) {
       setPortalElement(portalRef.current)
     }
   }, [])
+
+  const xForCurrentTimestamp = getXForTimestamp(Date.now(), weather)
 
   return (
     <>
@@ -61,15 +65,15 @@ export function WeatherDiagramSvg({ weather, hours }: WeatherDiagramSvgProps) {
           <line stroke={'red'} x1={0} x2={CHART_WIDTH} y1={(CHART_HEIGHT * 2) / 3} y2={(CHART_HEIGHT * 2) / 3} />
 
           {/* vertical line representing "now" */}
-          <text y={40} x={getXForTimestamp(Date.now(), weather) + 5}>
+          <text x={xForCurrentTimestamp + 5} y={54}>
             Now
           </text>
           <line
             stroke={'blue'}
             strokeDasharray={'5,5'}
-            x1={getXForTimestamp(Date.now(), weather)}
-            x2={getXForTimestamp(Date.now(), weather)}
-            y1={0}
+            x1={xForCurrentTimestamp}
+            x2={xForCurrentTimestamp}
+            y1={44}
             y2={CHART_HEIGHT}
           />
 
@@ -77,18 +81,17 @@ export function WeatherDiagramSvg({ weather, hours }: WeatherDiagramSvgProps) {
           {weather
             .filter((w) => new Date(w.time).getUTCHours() === 0)
             .map((w) => {
+              const date = new Date(w.time)
+              const x = getXForTimestamp(new Date(w.time).valueOf(), weather)
               return (
                 <Fragment key={w.time}>
-                  <text y={20} x={getXForTimestamp(new Date(w.time).valueOf(), weather) + 5}>
-                    {new Date(w.time).toLocaleDateString()}
+                  <text x={x + 5} y={20}>
+                    {date.toLocaleDateString()}
                   </text>
-                  <line
-                    stroke={'black'}
-                    x1={getXForTimestamp(new Date(w.time).valueOf(), weather)}
-                    x2={getXForTimestamp(new Date(w.time).valueOf(), weather)}
-                    y1={0}
-                    y2={CHART_HEIGHT}
-                  />
+                  <text x={x + 5} y={36}>
+                    {weekdays[date.getDay()]}
+                  </text>
+                  <line stroke={'black'} x1={x} x2={x} y1={0} y2={CHART_HEIGHT} />
                 </Fragment>
               )
             })}

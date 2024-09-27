@@ -54,6 +54,11 @@ describe('WeatherDiagramSvg', () => {
       cy.get('rect').eq(2).should('have.attr', 'height', 300).and('have.attr', 'y', 300)
       // 15mm of rain should be capped at full height of the diagram
       cy.get('rect').eq(3).should('have.attr', 'height', 600).and('have.attr', 'y', 0)
+
+      cy.get('text').should('have.length', 5)
+      cy.get('text').eq(0).should('have.text', 'Now')
+      cy.get('text').eq(2).should('have.text', 'Monday')
+      cy.get('text').eq(4).should('have.text', 'Tuesday')
     })
   })
 })

@@ -1,7 +1,7 @@
 services:
   feeds-app:
     image: ${DOCKER_IMAGE_NAME}
-    restart: always
+    restart: on-failure
     depends_on:
       - database
     environment:

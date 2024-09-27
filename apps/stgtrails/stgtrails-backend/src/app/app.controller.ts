@@ -1,5 +1,5 @@
 import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common'
-import { ApiOkResponse, ApiOperation, ApiQuery } from '@nestjs/swagger'
+import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { AppService } from './app.service'
 import { TrailAreaCreateDto } from './dto/trail-area-create.dto'
@@ -9,6 +9,7 @@ import { TrailResponseDto } from './dto/trail-response.dto'
 import { WeatherDataResponseDto } from './dto/weather-data-response.dto'
 
 @Controller('trailAreas')
+@ApiTags('trailAreas')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 

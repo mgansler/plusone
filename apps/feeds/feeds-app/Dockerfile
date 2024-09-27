@@ -1,7 +1,11 @@
 FROM node:20.17.0-alpine
-WORKDIR /usr/src/app
+RUN apk add --no-cache curl
+
+WORKDIR /usr/feeds
 CMD ["npm", "start"]
 EXPOSE 3333/tcp
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 CMD curl -f http://localhost:3333/api/health || exit 1
 
 COPY ./dist/apps/feeds/feeds-backend/package.json .
 COPY ./dist/apps/feeds/feeds-backend/yarn.lock .

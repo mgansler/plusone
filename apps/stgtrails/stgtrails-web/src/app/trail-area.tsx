@@ -25,6 +25,10 @@ export function TrailArea({ trailAreaId, hours }: TrailAreaProps) {
     return null
   }
 
+  if (weather.length === 0) {
+    return <div>Sorry, there is currently no weather data available, check again later.</div>
+  }
+
   const now = Date.now()
   const rainPast24h = weather.reduce((previousValue, currentValue) => {
     const currentTs = new Date(currentValue.time)

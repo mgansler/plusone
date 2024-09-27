@@ -1,7 +1,11 @@
 FROM node:20.17.0-alpine
-WORKDIR /usr/src/app
+RUN apk add --no-cache curl
+
+WORKDIR /usr/stgtrails
 CMD ["npm", "start"]
 EXPOSE 3104/tcp
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 CMD curl -f http://localhost:3104/api/health || exit 1
 
 COPY ./dist/apps/stgtrails/stgtrails-backend/package.json .
 COPY ./dist/apps/stgtrails/stgtrails-backend/yarn.lock .
