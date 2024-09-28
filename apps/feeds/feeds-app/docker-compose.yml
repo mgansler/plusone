@@ -1,5 +1,5 @@
 services:
-  feeds-app:
+  app:
     image: ${DOCKER_IMAGE_NAME}
     restart: on-failure
     depends_on:
@@ -20,7 +20,7 @@ services:
 
   database:
     restart: always
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     networks:
       - default
     environment:

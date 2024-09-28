@@ -33,14 +33,14 @@
     "deploy": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["docker compose -f apps/feeds/docker-compose.deploy.yml up -d --remove-orphans"],
+        "commands": ["docker compose -f apps/feeds/feeds-app/docker-compose.yml up -d --remove-orphans"],
         "parallel": false
       },
       "configurations": {
         "ci": {
           "commands": [
-            "DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds-app/${CI_COMMIT_REF_SLUG} docker compose -f apps/feeds/docker-compose.deploy.yml pull",
-            "DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds-app/${CI_COMMIT_REF_SLUG} docker compose -f apps/feeds/docker-compose.deploy.yml up -d --remove-orphans"
+            "DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds-app/${CI_COMMIT_REF_SLUG} docker compose -f apps/feeds/feeds-app/docker-compose.yml pull",
+            "DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/feeds-app/${CI_COMMIT_REF_SLUG} docker compose -f apps/feeds/feeds-app/docker-compose.yml up -d --remove-orphans"
           ]
         }
       }
