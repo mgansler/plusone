@@ -5,6 +5,7 @@ import { Prisma, PrismaService } from '@plusone/stgtrails-persistence'
 
 import { TrailAreaCreateDto } from './dto/trail-area-create.dto'
 import { TrailAreaResponseDto } from './dto/trail-area-response.dto'
+import { TrailAreaUpdateDto } from './dto/trail-area-update.dto'
 import { TrailCreateDto } from './dto/trail-create.dto'
 import { WeatherDataResponseDto } from './dto/weather-data-response.dto'
 import { WeatherApiService } from './weather-api.service'
@@ -54,6 +55,13 @@ export class AppService implements OnModuleInit {
 
   public async getTrailAreas(): Promise<Array<TrailAreaResponseDto>> {
     return this.prismaService.trailArea.findMany()
+  }
+
+  public async updateTrailArea(trailAreaId: number, trail: TrailAreaUpdateDto) {
+    return this.prismaService.trailArea.update({
+      where: { id: trailAreaId },
+      data: trail,
+    })
   }
 
   public async createTrail(trailAreaId: number, trail: TrailCreateDto) {

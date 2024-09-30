@@ -56,6 +56,47 @@
         ]
       }
     },
+    "/api/trailAreas/{trailAreaId}": {
+      "put": {
+        "operationId": "updateTrailArea",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "trailAreaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrailAreaUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrailAreaResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "trailAreas"
+        ]
+      }
+    },
     "/api/trailAreas/{trailAreaId}/trails": {
       "post": {
         "operationId": "createTrail",
@@ -362,6 +403,9 @@
           },
           "longitude": {
             "type": "number"
+          },
+          "threshold": {
+            "type": "number"
           }
         },
         "required": [
@@ -384,13 +428,40 @@
           },
           "longitude": {
             "type": "number"
+          },
+          "threshold": {
+            "type": "number"
           }
         },
         "required": [
           "id",
           "name",
           "latitude",
-          "longitude"
+          "longitude",
+          "threshold"
+        ]
+      },
+      "TrailAreaUpdateDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          },
+          "threshold": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "latitude",
+          "longitude",
+          "threshold"
         ]
       },
       "TrailCreateDto": {

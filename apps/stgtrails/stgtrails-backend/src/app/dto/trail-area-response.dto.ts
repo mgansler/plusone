@@ -12,4 +12,7 @@ export class TrailAreaResponseDto {
 
   @ApiProperty()
   longitude: number
+
+  @ApiProperty()
+  threshold: number
 }

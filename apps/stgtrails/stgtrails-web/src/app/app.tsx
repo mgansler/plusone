@@ -5,15 +5,24 @@ import { useValidatedTrailAreas } from '@plusone/stgtrails-api-client'
 import { TrailArea } from './trail-area'
 
 export function App() {
-  const { data } = useValidatedTrailAreas({ query: {} })
+  const { data: trailAreas } = useValidatedTrailAreas({ query: {} })
   const [trailAreaId, setTrailAreaId] = useState<number | undefined>(undefined)
   const [hours, setHours] = useState<number>(96)
 
   useEffect(() => {
-    if (data && data.length > 0 && typeof trailAreaId !== 'number') {
-      setTrailAreaId(data[0].id)
+    if (trailAreas && trailAreas.length > 0 && typeof trailAreaId !== 'number') {
+      setTrailAreaId(trailAreas[0].id)
     }
-  }, [data, trailAreaId])
+  }, [trailAreas, trailAreaId])
+
+  if (!trailAreas) {
+    return (
+      <>
+        <h1>Welcome stgtrails-web</h1>
+        <div>Please wait until the data is loaded.</div>
+      </>
+    )
+  }
 
   return (
     <div>
@@ -21,7 +30,7 @@ export function App() {
       <label>
         Trail Area
         <select onChange={(event) => setTrailAreaId(Number(event.currentTarget.value))}>
-          {data?.map((trailArea) => (
+          {trailAreas?.map((trailArea) => (
             <option key={trailArea.id} value={trailArea.id}>
               {trailArea.name}
             </option>
@@ -40,7 +49,14 @@ export function App() {
         </select>
       </label>
 
-      {typeof trailAreaId === 'number' ? <TrailArea trailAreaId={trailAreaId} hours={hours} key={hours} /> : null}
+      {typeof trailAreaId === 'number' ? (
+        <TrailArea
+          trailAreaId={trailAreaId}
+          threshold={trailAreas.find((trailArea) => trailArea.id === trailAreaId)?.threshold}
+          hours={hours}
+          key={hours}
+        />
+      ) : null}
     </div>
   )
 }

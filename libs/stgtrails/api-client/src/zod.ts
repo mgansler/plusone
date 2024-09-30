@@ -12,6 +12,7 @@ export const createTrailAreaResponse = zod
     name: zod.string(),
     latitude: zod.number(),
     longitude: zod.number(),
+    threshold: zod.number(),
   })
   .strict()
 
@@ -21,9 +22,20 @@ export const getTrailAreasResponseItem = zod
     name: zod.string(),
     latitude: zod.number(),
     longitude: zod.number(),
+    threshold: zod.number(),
   })
   .strict()
 export const getTrailAreasResponse = zod.array(getTrailAreasResponseItem)
+
+export const updateTrailAreaResponse = zod
+  .object({
+    id: zod.number(),
+    name: zod.string(),
+    latitude: zod.number(),
+    longitude: zod.number(),
+    threshold: zod.number(),
+  })
+  .strict()
 
 export const createTrailResponse = zod
   .object({

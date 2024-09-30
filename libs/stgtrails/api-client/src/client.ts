@@ -114,17 +114,26 @@ export interface TrailCreateDto {
   name: string
 }
 
+export interface TrailAreaUpdateDto {
+  latitude: number
+  longitude: number
+  name: string
+  threshold: number
+}
+
 export interface TrailAreaResponseDto {
   id: number
   latitude: number
   longitude: number
   name: string
+  threshold: number
 }
 
 export interface TrailAreaCreateDto {
   latitude: number
   longitude: number
   name: string
+  threshold?: number
 }
 
 export const createTrailArea = (trailAreaCreateDto: TrailAreaCreateDto) => {
@@ -226,6 +235,64 @@ export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas
   query.queryKey = queryOptions.queryKey
 
   return query
+}
+
+export const updateTrailArea = (trailAreaId: number, trailAreaUpdateDto: TrailAreaUpdateDto) => {
+  return customAxiosInstance<TrailAreaResponseDto>({
+    url: `/api/trailAreas/${trailAreaId}`,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    data: trailAreaUpdateDto,
+  })
+}
+
+export const getUpdateTrailAreaMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateTrailArea>>,
+    TError,
+    { trailAreaId: number; data: TrailAreaUpdateDto },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateTrailArea>>,
+  TError,
+  { trailAreaId: number; data: TrailAreaUpdateDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateTrailArea>>,
+    { trailAreaId: number; data: TrailAreaUpdateDto }
+  > = (props) => {
+    const { trailAreaId, data } = props ?? {}
+
+    return updateTrailArea(trailAreaId, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type UpdateTrailAreaMutationResult = NonNullable<Awaited<ReturnType<typeof updateTrailArea>>>
+export type UpdateTrailAreaMutationBody = TrailAreaUpdateDto
+export type UpdateTrailAreaMutationError = unknown
+
+export const useUpdateTrailArea = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateTrailArea>>,
+    TError,
+    { trailAreaId: number; data: TrailAreaUpdateDto },
+    TContext
+  >
+}): UseMutationResult<
+  Awaited<ReturnType<typeof updateTrailArea>>,
+  TError,
+  { trailAreaId: number; data: TrailAreaUpdateDto },
+  TContext
+> => {
+  const mutationOptions = getUpdateTrailAreaMutationOptions(options)
+
+  return useMutation(mutationOptions)
 }
 
 export const createTrail = (trailAreaId: number, trailCreateDto: TrailCreateDto) => {

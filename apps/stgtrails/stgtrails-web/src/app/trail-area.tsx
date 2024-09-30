@@ -7,10 +7,11 @@ import { WeatherDiagramSvg } from './weather-diagram-svg'
 
 type TrailAreaProps = {
   trailAreaId: number
+  threshold?: number
   hours: number
 }
 
-export function TrailArea({ trailAreaId, hours }: TrailAreaProps) {
+export function TrailArea({ trailAreaId, threshold = 0.3, hours }: TrailAreaProps) {
   const { data: trails } = useValidatedTrailsForTrailArea(trailAreaId)
   const { data: weather } = useValidatedWeatherDataForTrailArea(
     trailAreaId,
@@ -45,7 +46,7 @@ export function TrailArea({ trailAreaId, hours }: TrailAreaProps) {
       {legacy ? (
         <WeatherDiagramLegacy hours={hours} weather={weather} />
       ) : (
-        <WeatherDiagramSvg hours={hours} weather={weather} />
+        <WeatherDiagramSvg threshold={threshold} weather={weather} />
       )}
     </>
   )

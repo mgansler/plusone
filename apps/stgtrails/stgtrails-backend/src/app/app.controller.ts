@@ -1,9 +1,10 @@
-import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common'
+import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { AppService } from './app.service'
 import { TrailAreaCreateDto } from './dto/trail-area-create.dto'
 import { TrailAreaResponseDto } from './dto/trail-area-response.dto'
+import { TrailAreaUpdateDto } from './dto/trail-area-update.dto'
 import { TrailCreateDto } from './dto/trail-create.dto'
 import { TrailResponseDto } from './dto/trail-response.dto'
 import { WeatherDataResponseDto } from './dto/weather-data-response.dto'
@@ -25,6 +26,13 @@ export class AppController {
   @Get()
   async getTrailAreas() {
     return this.appService.getTrailAreas()
+  }
+
+  @ApiOperation({ operationId: 'updateTrailArea' })
+  @ApiOkResponse({ type: TrailAreaResponseDto })
+  @Put(':trailAreaId')
+  async updateTrailArea(@Param('trailAreaId', ParseIntPipe) trailAreaId: number, @Body() trail: TrailAreaUpdateDto) {
+    return this.appService.updateTrailArea(trailAreaId, trail)
   }
 
   @ApiOperation({ operationId: 'createTrail' })

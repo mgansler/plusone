@@ -19,12 +19,12 @@ function getXForTimestamp(ts: number, weather: Array<WeatherDataResponseDto>): n
 
 type WeatherDiagramSvgProps = {
   weather: Array<WeatherDataResponseDto>
-  hours: number
+  threshold: number
 }
 
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
-export function WeatherDiagramSvg({ weather, hours }: WeatherDiagramSvgProps) {
+export function WeatherDiagramSvg({ weather, threshold }: WeatherDiagramSvgProps) {
   const portalRef = useRef<HTMLDivElement | null>(null)
   const [portalElement, setPortalElement] = useState<HTMLElement | null>(null)
   useEffect(() => {
@@ -34,6 +34,7 @@ export function WeatherDiagramSvg({ weather, hours }: WeatherDiagramSvgProps) {
   }, [])
 
   const xForCurrentTimestamp = getXForTimestamp(Date.now(), weather)
+  const yForThreshold = CHART_HEIGHT * (1 - threshold)
 
   return (
     <>
@@ -62,7 +63,7 @@ export function WeatherDiagramSvg({ weather, hours }: WeatherDiagramSvgProps) {
           ))}
 
           {/* horizontal line for threshold */}
-          <line stroke={'red'} x1={0} x2={CHART_WIDTH} y1={(CHART_HEIGHT * 2) / 3} y2={(CHART_HEIGHT * 2) / 3} />
+          <line stroke={'red'} x1={0} x2={CHART_WIDTH} y1={yForThreshold} y2={yForThreshold} />
 
           {/* vertical line representing "now" */}
           <text x={xForCurrentTimestamp + 5} y={54}>

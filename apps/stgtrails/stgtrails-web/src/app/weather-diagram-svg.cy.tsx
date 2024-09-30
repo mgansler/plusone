@@ -1,41 +1,40 @@
+import type { WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
+
 import { WeatherDiagramSvg } from './weather-diagram-svg'
+
+const weatherData: Array<WeatherDataResponseDto> = [
+  {
+    time: '2024-01-01T00:00:00.000Z',
+    rain: 10,
+    soilMoisture0To1cm: 0.5,
+    soilMoisture1To3cm: 0,
+    soilMoisture3To9cm: 0,
+    soilMoisture9To27cm: 0,
+    temperature2m: 0,
+  },
+  {
+    time: '2024-01-02T00:00:00.000Z',
+    rain: 5,
+    soilMoisture0To1cm: 0.4,
+    soilMoisture1To3cm: 0,
+    soilMoisture3To9cm: 0,
+    soilMoisture9To27cm: 0,
+    temperature2m: 0,
+  },
+  {
+    time: '2024-01-02T23:00:00.000Z',
+    rain: 15,
+    soilMoisture0To1cm: 0.3,
+    soilMoisture1To3cm: 0,
+    soilMoisture3To9cm: 0,
+    soilMoisture9To27cm: 0,
+    temperature2m: 0,
+  },
+]
 
 describe('WeatherDiagramSvg', () => {
   it('should render a svg', () => {
-    cy.mount(
-      <WeatherDiagramSvg
-        weather={[
-          {
-            time: '2024-01-01T00:00:00.000Z',
-            rain: 10,
-            soilMoisture0To1cm: 0.5,
-            soilMoisture1To3cm: 0,
-            soilMoisture3To9cm: 0,
-            soilMoisture9To27cm: 0,
-            temperature2m: 0,
-          },
-          {
-            time: '2024-01-02T00:00:00.000Z',
-            rain: 5,
-            soilMoisture0To1cm: 0.4,
-            soilMoisture1To3cm: 0,
-            soilMoisture3To9cm: 0,
-            soilMoisture9To27cm: 0,
-            temperature2m: 0,
-          },
-          {
-            time: '2024-01-02T23:00:00.000Z',
-            rain: 15,
-            soilMoisture0To1cm: 0.3,
-            soilMoisture1To3cm: 0,
-            soilMoisture3To9cm: 0,
-            soilMoisture9To27cm: 0,
-            temperature2m: 0,
-          },
-        ]}
-        hours={2}
-      />,
-    )
+    cy.mount(<WeatherDiagramSvg weather={weatherData} threshold={0.33} />)
 
     cy.get('svg').within(() => {
       cy.get('rect').should('have.length', 4)
@@ -59,6 +58,14 @@ describe('WeatherDiagramSvg', () => {
       cy.get('text').eq(0).should('have.text', 'Now')
       cy.get('text').eq(2).should('have.text', 'Monday')
       cy.get('text').eq(4).should('have.text', 'Tuesday')
+    })
+  })
+
+  it('should render the provided threshold', () => {
+    cy.mount(<WeatherDiagramSvg weather={weatherData} threshold={0.5} />)
+
+    cy.get('svg').within(() => {
+      cy.get('line').eq(0).should('have.attr', 'stroke', 'red').and('have.attr', 'y1', 300).and('have.attr', 'y2', 300)
     })
   })
 })

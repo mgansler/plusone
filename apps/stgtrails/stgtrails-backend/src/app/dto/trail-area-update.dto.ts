@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class TrailAreaCreateDto {
+export class TrailAreaUpdateDto {
   @ApiProperty()
   name: string
 
@@ -10,6 +10,6 @@ export class TrailAreaCreateDto {
   @ApiProperty()
   longitude: number
 
-  @ApiProperty({ required: false })
-  threshold?: number
+  @ApiProperty()
+  threshold: number
 }
