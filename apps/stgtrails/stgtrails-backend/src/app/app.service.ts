@@ -25,7 +25,11 @@ export class AppService implements OnModuleInit {
     await this.updateWeatherForecast()
   }
 
-  public async getWeatherData(trailAreaId: number, hours: number): Promise<Array<WeatherDataResponseDto>> {
+  public async getWeatherData(
+    trailAreaId: number,
+    hours: number,
+    utcOffsetHours: number,
+  ): Promise<Array<WeatherDataResponseDto>> {
     return (
       this.prismaService.weatherData
         .findMany({
@@ -40,11 +44,14 @@ export class AppService implements OnModuleInit {
           },
           where: { trailAreaId },
           take: hours,
+          // We fetch weather data for UTC but the client may want to retrieve data aligned to the local time zone.
+          // Only works when we are east of utc (positive offset).
+          skip: Math.max(0, utcOffsetHours),
           orderBy: {
             time: 'desc',
           },
         })
-        // We take the last entries from the database and reverse the order so that
+        // We take the last entries from the database and reverse the order so that the client receives the data in natural order.
         .then((data) => data.reverse())
     )
   }
@@ -75,7 +82,7 @@ export class AppService implements OnModuleInit {
   @Cron(CronExpression.EVERY_30_MINUTES)
   private async updateWeatherForecast() {
     const trailAreas = await this.prismaService.trailArea.findMany()
-    this.logger.log(`Fetching weather data for ${trailAreas.length} trail areas.`)
+    this.logger.log(`Updating weather data for ${trailAreas.length} trail areas.`)
 
     for (const trailArea of trailAreas) {
       const weatherData = await this.weatherApiService.fetchWeatherData({
@@ -100,8 +107,6 @@ export class AppService implements OnModuleInit {
         },
         [],
       )
-
-      this.logger.log(`Adding ${transformedData.length} rows for trail area '${trailArea.name}'.`)
 
       await this.prismaService.$transaction(
         transformedData.map((weatherData) =>

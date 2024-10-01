@@ -80,7 +80,7 @@ export function WeatherDiagramSvg({ weather, threshold }: WeatherDiagramSvgProps
 
           {/* vertical lines for days */}
           {weather
-            .filter((w) => new Date(w.time).getUTCHours() === 0)
+            .filter((w) => new Date(w.time).getHours() === 0)
             .map((w) => {
               const date = new Date(w.time)
               const x = getXForTimestamp(new Date(w.time).valueOf(), weather)

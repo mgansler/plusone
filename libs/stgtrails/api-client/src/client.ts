@@ -92,6 +92,7 @@ export type GetHealthStatus200 = {
 
 export type GetWeatherDataForTrailAreaParams = {
   hours?: number
+  utcOffsetHours?: number
 }
 
 export interface WeatherDataResponseDto {

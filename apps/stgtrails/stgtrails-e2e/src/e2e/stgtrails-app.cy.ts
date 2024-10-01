@@ -28,11 +28,11 @@ describe('stgtrails-web-e2e', () => {
   it('should habe a drop down to select past days', () => {
     cy.findByRole('combobox', { name: 'Past days' }).should('be.visible')
 
-    cy.intercept('GET', '/api/trailAreas/1/weather?hours=192').as('getPast5Days')
+    cy.intercept('GET', '/api/trailAreas/1/weather?hours=192&utcOffsetHours=0').as('getPast5Days')
     cy.findByRole('combobox', { name: 'Past days' }).select('5 days')
     cy.wait('@getPast5Days')
 
-    cy.intercept('GET', '/api/trailAreas/1/weather?hours=240').as('getPast7Days')
+    cy.intercept('GET', '/api/trailAreas/1/weather?hours=240&utcOffsetHours=0').as('getPast7Days')
     cy.findByRole('combobox', { name: 'Past days' }).select('7 days')
     cy.wait('@getPast7Days')
   })

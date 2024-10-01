@@ -2,6 +2,7 @@ import { useValidatedTrailsForTrailArea, useValidatedWeatherDataForTrailArea } f
 
 import { rootRoute } from '../routes'
 
+import { getUtcOffsetHours } from './get-utc-offset-hours'
 import { WeatherDiagramLegacy } from './weather-diagram-legacy'
 import { WeatherDiagramSvg } from './weather-diagram-svg'
 
@@ -15,7 +16,7 @@ export function TrailArea({ trailAreaId, threshold = 0.3, hours }: TrailAreaProp
   const { data: trails } = useValidatedTrailsForTrailArea(trailAreaId)
   const { data: weather } = useValidatedWeatherDataForTrailArea(
     trailAreaId,
-    { hours },
+    { hours, utcOffsetHours: getUtcOffsetHours() },
     {
       query: { refetchInterval: 30_000 },
     },

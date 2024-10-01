@@ -190,6 +190,14 @@
             "schema": {
               "type": "number"
             }
+          },
+          {
+            "name": "utcOffsetHours",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
           }
         ],
         "responses": {

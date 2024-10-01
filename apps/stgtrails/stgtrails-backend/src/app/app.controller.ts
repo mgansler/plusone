@@ -51,12 +51,14 @@ export class AppController {
 
   @ApiOperation({ operationId: 'getWeatherDataForTrailArea' })
   @ApiQuery({ name: 'hours', type: Number, required: false })
+  @ApiQuery({ name: 'utcOffsetHours', type: Number, required: false })
   @ApiOkResponse({ type: [WeatherDataResponseDto] })
   @Get(':trailAreaId/weather')
   async getWeatherData(
     @Param('trailAreaId', ParseIntPipe) trailAreaId: number,
     @Query('hours', new DefaultValuePipe(96), ParseIntPipe) hours: number,
+    @Query('utcOffsetHours', new DefaultValuePipe(0), ParseIntPipe) utcOffsetHours: number,
   ): Promise<Array<WeatherDataResponseDto>> {
-    return this.appService.getWeatherData(trailAreaId, hours)
+    return this.appService.getWeatherData(trailAreaId, hours, utcOffsetHours)
   }
 }
