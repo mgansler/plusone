@@ -9,9 +9,10 @@ services:
       - sqlite:/usr/stgtrails/sqlite/
     labels:
       - 'traefik.http.services.stgtrails-app.loadbalancer.server.port=3104'
-      - 'traefik.http.routers.stgtrails-app.rule=Host(`stgtrails.martingansler.de`, `stgtrails.de`)'
+      - 'traefik.http.routers.stgtrails-app.rule=HostRegexp(`^stgtrails(\.martingansler)?\.de)`)'
       - 'traefik.http.routers.stgtrails-app.tls=true'
       - 'traefik.http.routers.stgtrails-app.tls.certresolver=letsencrypt'
+      - 'traefik.http.routers.stgtrails-app.ruleSyntax=v3'
 
 volumes:
   sqlite:
