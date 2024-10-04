@@ -1,4 +1,4 @@
-FROM node:20.17.0-alpine
+FROM node:22.9.0-alpine
 RUN apk add --no-cache curl
 
 WORKDIR /usr/feeds
