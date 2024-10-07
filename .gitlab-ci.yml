@@ -4,9 +4,9 @@ variables:
   GIT_DEPTH: 0
 
 stages:
+  - static
   - test
   - build
-  - package
   - deploy
 
 .distributed:
@@ -35,53 +35,39 @@ stages:
     - sh tools/scripts/install-docker-debian.sh
 
 audit:
-  stage: test
+  stage: static
   extends:
     - .distributed
   script:
     - yarn audit
   allow_failure: true
 
-migrations-check:
+migrations-and-api-client-check:
   stage: test
   extends:
     - .distributed
-  rules:
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^renovate\/.*$/
-      when: always
   before_script:
     - !reference [.distributed, before_script]
     - apt-get update && apt-get install -y jq
   script:
+    # Check if we need to run migrations for Nx
     - echo Based of nx version $(git show ${NX_BASE}:package.json|jq -r '.devDependencies.nx')
     - time npx nx migrate latest --from nx@$(git show ${NX_BASE}:package.json|jq -r '.devDependencies.nx')
     - if [[ -f migration.json ]] ; then echo "Cancelling this update because it has migrations" ; cat migrations.json ; exit 1 ; fi
-  after_script:
-    - git status
-
-api-client-check:
-  stage: test
-  extends:
-    - .distributed
-  script:
+    - echo "Migration check complete"
+    # Check if API specification and client are up to date
     - time npx nx run-many --target generate-api-spec --all
     - time npx nx run-many --target generate-api-client --all
     - git diff --quiet # This will have a non-zero exit code when a file is modified
   after_script:
     - git status
 
-format-check:
-  stage: test
+lint-and-format:
+  stage: static
   extends:
     - .distributed
   script:
     - time npx nx format:check --base=$NX_BASE --head=$NX_HEAD
-
-lint:
-  stage: test
-  extends:
-    - .distributed
-  script:
     - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t lint --parallel=8
 
 test:
@@ -128,8 +114,7 @@ e2e:
     - .dind
   retry: 2
   needs:
-    - format-check
-    - lint
+    - lint-and-format
     - test
   variables:
     FEEDS_DATABASE_URL: postgres://postgres:local_db_password@docker:5434/feeds
@@ -154,8 +139,7 @@ build:
     - .distributed
   retry: 2 # sometimes the prisma.io binaries are not properly generated
   needs:
-    - format-check
-    - lint
+    - lint-and-format
     - test
     - component-test
   rules:
@@ -169,13 +153,12 @@ build:
     - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t build --parallel=8
 
 package:
-  stage: package
+  stage: build
   extends:
     - .distributed
     - .dind
   needs:
-    - format-check
-    - lint
+    - lint-and-format
     - test
     - component-test
     - e2e
