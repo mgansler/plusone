@@ -13,7 +13,7 @@ export default async function runExecutor(
     return { success: false }
   }
 
-  const schemaPath = join(context.workspace.projects[context.projectName].sourceRoot, options.schema)
+  const schemaPath = join(context.projectsConfigurations.projects[context.projectName].sourceRoot, options.schema)
   const args: Array<string> = ['prisma', 'db', 'push', '--schema', schemaPath]
   const prismaPush = spawn('yarn', args)
 
