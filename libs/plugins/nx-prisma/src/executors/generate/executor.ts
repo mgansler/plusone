@@ -13,7 +13,7 @@ export default async function runExecutor(
     return { success: false }
   }
 
-  const schemaPath = resolve(context.workspace.projects[context.projectName].sourceRoot, options.schema)
+  const schemaPath = resolve(context.projectsConfigurations.projects[context.projectName].sourceRoot, options.schema)
   const args = ['prisma', 'generate', '--schema', schemaPath]
   const prismaGenerate = spawn('yarn', args)
 
