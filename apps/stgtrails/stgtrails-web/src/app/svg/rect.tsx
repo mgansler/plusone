@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom'
 import type { SvgTooltipProps, TooltipState } from './shared'
 import { getTooltipInnerStyles, getTooltipOuterStyles } from './shared'
 
-export function Rect({ text, portal, ...props }: SvgTooltipProps & SVGProps<SVGRectElement>) {
+export function Rect({ text, timestamp, portal, ...props }: SvgTooltipProps & SVGProps<SVGRectElement>) {
   const [tooltipState, setTooltipState] = useState<TooltipState>({ visible: false, x: 0, y: 0 })
 
   return (
@@ -19,7 +19,11 @@ export function Rect({ text, portal, ...props }: SvgTooltipProps & SVGProps<SVGR
       {tooltipState.visible &&
         createPortal(
           <div style={getTooltipOuterStyles(tooltipState)}>
-            <div style={getTooltipInnerStyles()}>{text}</div>
+            <div style={getTooltipInnerStyles()}>
+              {text}
+              <br />
+              {timestamp.toLocaleTimeString()}
+            </div>
           </div>,
           portal,
         )}

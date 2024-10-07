@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react'
 
 export type SvgTooltipProps = {
   text: string
+  timestamp: Date
   portal: HTMLElement
 }
 
@@ -24,6 +25,7 @@ export function getTooltipOuterStyles(tooltipState: TooltipState): CSSProperties
 
 export function getTooltipInnerStyles(): CSSProperties {
   return {
+    backgroundColor: 'rgba(255,255,255,0.6)',
     backdropFilter: 'blur(2px)',
   }
 }

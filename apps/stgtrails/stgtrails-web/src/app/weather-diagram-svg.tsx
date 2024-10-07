@@ -53,6 +53,7 @@ export function WeatherDiagramSvg({ weather, threshold }: WeatherDiagramSvgProps
             <Rect
               key={i}
               text={w.rain.toFixed(2) + ' l/m\xB2'}
+              timestamp={new Date(w.time)}
               x={getXForTimestamp(new Date(weather[i].time).valueOf(), weather)}
               y={CHART_HEIGHT - (Math.min(10, w.rain) * CHART_HEIGHT) / 10}
               width={5}
@@ -111,6 +112,7 @@ export function WeatherDiagramSvg({ weather, threshold }: WeatherDiagramSvgProps
             <Circle
               key={i}
               text={w.soilMoisture0To1cm.toFixed(2) + ' %'}
+              timestamp={new Date(w.time)}
               cx={getXForTimestamp(new Date(weather[i].time).valueOf(), weather)}
               cy={CHART_HEIGHT - w.soilMoisture0To1cm * CHART_HEIGHT}
               r={3}
