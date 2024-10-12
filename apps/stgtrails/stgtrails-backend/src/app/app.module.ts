@@ -10,10 +10,15 @@ import { SunriseSunsetApiService } from '@plusone/nestjs-services/sunrise-sunset
 import { WeatherApiService } from '@plusone/nestjs-services/weather-api'
 import { PrismaModule } from '@plusone/stgtrails-persistence'
 
-import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { HealthController } from './health.controller'
 import { LoggerMiddleware } from './logger.middleware'
+import { SunriseSunsetController } from './sunrise-sunset.controller'
+import { SunriseSunsetService } from './sunrise-sunset.service'
+import { TrailAreaController } from './trail-area.controller'
+import { TrailAreaService } from './trail-area.service'
+import { WeatherController } from './weather.controller'
+import { WeatherService } from './weather.service'
 
 @Module({
   imports: [
@@ -26,8 +31,15 @@ import { LoggerMiddleware } from './logger.middleware'
     TerminusModule,
     PrismaModule,
   ],
-  controllers: [AppController, HealthController],
-  providers: [AppService, SunriseSunsetApiService, WeatherApiService],
+  controllers: [HealthController, SunriseSunsetController, TrailAreaController, WeatherController],
+  providers: [
+    AppService,
+    SunriseSunsetApiService,
+    SunriseSunsetService,
+    TrailAreaService,
+    WeatherApiService,
+    WeatherService,
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

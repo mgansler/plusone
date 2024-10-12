@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common'
+import { Logger, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 
 import { AppModule } from './app/app.module'
@@ -6,6 +6,8 @@ import { GLOBAL_PREFIX, setupApi, writeApiSpec } from './setup-api'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+
+  app.useGlobalPipes(new ValidationPipe())
 
   const document = setupApi(app)
   if (process.env.NODE_ENV === 'development') {

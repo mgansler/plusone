@@ -28,14 +28,14 @@ describe('stgtrails-web-e2e', () => {
   it('should have a drop down to select past days', () => {
     cy.findByRole('combobox', { name: 'Past days' }).should('be.visible')
 
-    cy.intercept('GET', '/api/trailAreas/1/weather?hours=192&utcOffsetHours=0').as('getWeatherPast5Days')
-    cy.intercept('GET', '/api/trailAreas/1/sunriseSunset?days=8').as('getSunriseSunsetPast5Days')
+    cy.intercept('GET', '/api/weather?trailAreaId=1&hours=192&utcOffsetHours=0').as('getWeatherPast5Days')
+    cy.intercept('GET', '/api/sunrise-sunset?trailAreaId=1&days=8').as('getSunriseSunsetPast5Days')
     cy.findByRole('combobox', { name: 'Past days' }).select('5 days')
     cy.wait('@getWeatherPast5Days')
     cy.wait('@getSunriseSunsetPast5Days')
 
-    cy.intercept('GET', '/api/trailAreas/1/weather?hours=240&utcOffsetHours=0').as('getWeatherPast7Days')
-    cy.intercept('GET', '/api/trailAreas/1/sunriseSunset?days=10').as('getSunriseSunsetPast7Days')
+    cy.intercept('GET', '/api/weather?trailAreaId=1&hours=240&utcOffsetHours=0').as('getWeatherPast7Days')
+    cy.intercept('GET', '/api/sunrise-sunset?trailAreaId=1&days=10').as('getSunriseSunsetPast7Days')
     cy.findByRole('combobox', { name: 'Past days' }).select('7 days')
     cy.wait('@getWeatherPast7Days')
     cy.wait('@getSunriseSunsetPast7Days')

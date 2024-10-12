@@ -18,10 +18,9 @@ type TrailAreaProps = {
 
 export function TrailArea({ trailAreaId, threshold = 0.3, hours }: TrailAreaProps) {
   const { data: trails } = useValidatedTrailsForTrailArea(trailAreaId)
-  const { data: sunriseSunset } = useValidatedSunriseSunsetDataForTrailArea(trailAreaId, { days: hours / 24 })
+  const { data: sunriseSunset } = useValidatedSunriseSunsetDataForTrailArea({ trailAreaId, days: hours / 24 })
   const { data: weather } = useValidatedWeatherDataForTrailArea(
-    trailAreaId,
-    { hours, utcOffsetHours: getUtcOffsetHours() },
+    { trailAreaId, hours, utcOffsetHours: getUtcOffsetHours() },
     {
       query: { refetchInterval: 30_000 },
     },

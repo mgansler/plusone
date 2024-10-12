@@ -1,21 +1,20 @@
 import { HttpService } from '@nestjs/axios'
 import { Test } from '@nestjs/testing'
 
-import { SunriseSunsetApiService } from '@plusone/nestjs-services/sunrise-sunset-api'
 import { WeatherApiService } from '@plusone/nestjs-services/weather-api'
 import { PrismaService } from '@plusone/stgtrails-persistence'
 
-import { AppService } from './app.service'
+import { WeatherService } from './weather.service'
 
-describe('AppService', () => {
-  let appService: AppService
+describe('WeatherService', () => {
+  let weatherService: WeatherService
   let prismaService: PrismaService
   let weatherApiService: WeatherApiService
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        AppService,
+        WeatherService,
         {
           provide: PrismaService,
           useValue: {
@@ -32,7 +31,6 @@ describe('AppService', () => {
           provide: HttpService,
           useValue: new HttpService(),
         },
-        SunriseSunsetApiService,
         {
           provide: WeatherApiService,
           useValue: {
@@ -50,15 +48,14 @@ describe('AppService', () => {
       ],
     }).compile()
 
-    appService = moduleRef.get<AppService>(AppService)
+    weatherService = moduleRef.get<WeatherService>(WeatherService)
     prismaService = moduleRef.get<PrismaService>(PrismaService)
     weatherApiService = moduleRef.get<WeatherApiService>(WeatherApiService)
   })
 
   describe('updateWeatherForecast', () => {
     it('should update weather data', async () => {
-      // @ts-expect-error private method
-      await appService.updateWeatherForecast()
+      await weatherService.updateWeatherForecast()
 
       expect(weatherApiService.fetchWeatherData).toHaveBeenCalledWith({ latitude: 1, longitude: 2 })
       expect(prismaService.weatherData.upsert).toHaveBeenCalledTimes(3)

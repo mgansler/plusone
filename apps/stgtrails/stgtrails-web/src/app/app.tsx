@@ -5,7 +5,7 @@ import { useValidatedTrailAreas } from '@plusone/stgtrails-api-client'
 import { TrailArea } from './trail-area'
 
 export function App() {
-  const { data: trailAreas } = useValidatedTrailAreas({ query: {} })
+  const { data: trailAreas } = useValidatedTrailAreas()
   const [trailAreaId, setTrailAreaId] = useState<number | undefined>(undefined)
   const [hours, setHours] = useState<number>(96)
 

@@ -48,7 +48,7 @@ export class WeatherApiService {
         (previousValue, currentValue: keyof typeof WeatherApiService.WEATHER_VARIABLES, currentIndex) => {
           return {
             ...previousValue,
-            [currentValue]: hourly.variables(currentIndex)!.valuesArray(),
+            [currentValue]: hourly.variables(currentIndex)?.valuesArray(),
           }
         },
         {} as Record<keyof typeof WeatherApiService.WEATHER_VARIABLES, Float32Array>,

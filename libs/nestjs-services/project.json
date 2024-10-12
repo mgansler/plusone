@@ -10,7 +10,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": ["{workspaceRoot}/coverage/libs/{projectRoot}"],
       "options": {
         "jestConfig": "libs/nestjs-services/jest.config.ts",
         "codeCoverage": true

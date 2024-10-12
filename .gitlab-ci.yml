@@ -43,7 +43,7 @@ audit:
   allow_failure: true
 
 migrations-and-api-client-check:
-  stage: test
+  stage: static
   extends:
     - .distributed
   before_script:

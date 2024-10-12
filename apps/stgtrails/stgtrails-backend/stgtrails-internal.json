@@ -1,345 +1,6 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api/trailAreas": {
-      "post": {
-        "operationId": "createTrailArea",
-        "summary": "",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TrailAreaCreateDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TrailAreaResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "trailAreas"
-        ]
-      },
-      "get": {
-        "operationId": "getTrailAreas",
-        "summary": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TrailAreaResponseDto"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "trailAreas"
-        ]
-      }
-    },
-    "/api/trailAreas/{trailAreaId}": {
-      "put": {
-        "operationId": "updateTrailArea",
-        "summary": "",
-        "parameters": [
-          {
-            "name": "trailAreaId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TrailAreaUpdateDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TrailAreaResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "trailAreas"
-        ]
-      },
-      "delete": {
-        "operationId": "deleteTrailArea",
-        "summary": "",
-        "parameters": [
-          {
-            "name": "trailAreaId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "trailAreas"
-        ]
-      }
-    },
-    "/api/trailAreas/{trailAreaId}/trails": {
-      "post": {
-        "operationId": "createTrail",
-        "summary": "",
-        "parameters": [
-          {
-            "name": "trailAreaId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TrailCreateDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TrailResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "trailAreas"
-        ]
-      },
-      "get": {
-        "operationId": "getTrailsOfArea",
-        "summary": "",
-        "parameters": [
-          {
-            "name": "trailAreaId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TrailResponseDto"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "trailAreas"
-        ]
-      }
-    },
-    "/api/trailAreas/trails/{trailId}": {
-      "put": {
-        "operationId": "updateTrail",
-        "summary": "",
-        "parameters": [
-          {
-            "name": "trailId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TrailUpdateDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "trailAreas"
-        ]
-      },
-      "delete": {
-        "operationId": "deleteTrail",
-        "summary": "",
-        "parameters": [
-          {
-            "name": "trailId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "trailAreas"
-        ]
-      }
-    },
-    "/api/trailAreas/{trailAreaId}/sunriseSunset": {
-      "get": {
-        "operationId": "getSunriseSunsetForTrailArea",
-        "summary": "",
-        "parameters": [
-          {
-            "name": "trailAreaId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "days",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SunriseSunsetResponseDto"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "trailAreas"
-        ]
-      }
-    },
-    "/api/trailAreas/{trailAreaId}/weather": {
-      "get": {
-        "operationId": "getWeatherDataForTrailArea",
-        "summary": "",
-        "parameters": [
-          {
-            "name": "trailAreaId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "hours",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "utcOffsetHours",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherDataResponseDto"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "trailAreas"
-        ]
-      }
-    },
     "/api/health": {
       "get": {
         "operationId": "getHealthStatus",
@@ -508,6 +169,345 @@
           "health"
         ]
       }
+    },
+    "/api/sunrise-sunset": {
+      "get": {
+        "operationId": "getSunriseSunsetForTrailArea",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "trailAreaId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "days",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SunriseSunsetResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "sunrise-sunset"
+        ]
+      }
+    },
+    "/api/trailAreas": {
+      "post": {
+        "operationId": "createTrailArea",
+        "summary": "",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrailAreaCreateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrailAreaResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "trail-area"
+        ]
+      },
+      "get": {
+        "operationId": "getTrailAreas",
+        "summary": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TrailAreaResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "trail-area"
+        ]
+      }
+    },
+    "/api/trailAreas/{trailAreaId}": {
+      "put": {
+        "operationId": "updateTrailArea",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "trailAreaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrailAreaUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrailAreaResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "trail-area"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteTrailArea",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "trailAreaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trail-area"
+        ]
+      }
+    },
+    "/api/trailAreas/{trailAreaId}/trails": {
+      "post": {
+        "operationId": "createTrail",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "trailAreaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrailCreateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrailResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "trail-area"
+        ]
+      },
+      "get": {
+        "operationId": "getTrailsOfArea",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "trailAreaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TrailResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "trail-area"
+        ]
+      }
+    },
+    "/api/trailAreas/trails/{trailId}": {
+      "put": {
+        "operationId": "updateTrail",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "trailId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrailUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trail-area"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteTrail",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "trailId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "trail-area"
+        ]
+      }
+    },
+    "/api/weather": {
+      "get": {
+        "operationId": "getWeatherDataForTrailArea",
+        "summary": "",
+        "parameters": [
+          {
+            "name": "trailAreaId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "hours",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "utcOffsetHours",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherDataResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "weather"
+        ]
+      }
     }
   },
   "info": {
@@ -520,6 +520,27 @@
   "servers": [],
   "components": {
     "schemas": {
+      "SunriseSunsetResponseDto": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "sunrise": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "sunset": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "date",
+          "sunrise",
+          "sunset"
+        ]
+      },
       "TrailAreaCreateDto": {
         "type": "object",
         "properties": {
@@ -527,13 +548,19 @@
             "type": "string"
           },
           "latitude": {
-            "type": "number"
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90
           },
           "longitude": {
-            "type": "number"
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180
           },
           "threshold": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
           }
         },
         "required": [
@@ -576,13 +603,19 @@
             "type": "string"
           },
           "latitude": {
-            "type": "number"
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90
           },
           "longitude": {
-            "type": "number"
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180
           },
           "threshold": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
           }
         },
         "required": [
@@ -631,27 +664,6 @@
         },
         "required": [
           "name"
-        ]
-      },
-      "SunriseSunsetResponseDto": {
-        "type": "object",
-        "properties": {
-          "date": {
-            "type": "string"
-          },
-          "sunrise": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "sunset": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "date",
-          "sunrise",
-          "sunset"
         ]
       },
       "WeatherDataResponseDto": {

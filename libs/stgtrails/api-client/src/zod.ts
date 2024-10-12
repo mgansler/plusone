@@ -6,6 +6,51 @@
  */
 import { z as zod } from 'zod'
 
+export const getHealthStatusResponse = zod
+  .object({
+    status: zod.string().optional(),
+    info: zod
+      .record(
+        zod.string(),
+        zod
+          .object({
+            status: zod.string(),
+          })
+          .strict(),
+      )
+      .nullish(),
+    error: zod
+      .record(
+        zod.string(),
+        zod
+          .object({
+            status: zod.string(),
+          })
+          .strict(),
+      )
+      .nullish(),
+    details: zod
+      .record(
+        zod.string(),
+        zod
+          .object({
+            status: zod.string(),
+          })
+          .strict(),
+      )
+      .optional(),
+  })
+  .strict()
+
+export const getSunriseSunsetForTrailAreaResponseItem = zod
+  .object({
+    date: zod.string(),
+    sunrise: zod.string().datetime(),
+    sunset: zod.string().datetime(),
+  })
+  .strict()
+export const getSunriseSunsetForTrailAreaResponse = zod.array(getSunriseSunsetForTrailAreaResponseItem)
+
 export const createTrailAreaResponse = zod
   .object({
     id: zod.number(),
@@ -54,15 +99,6 @@ export const getTrailsOfAreaResponseItem = zod
   .strict()
 export const getTrailsOfAreaResponse = zod.array(getTrailsOfAreaResponseItem)
 
-export const getSunriseSunsetForTrailAreaResponseItem = zod
-  .object({
-    date: zod.string(),
-    sunrise: zod.string().datetime(),
-    sunset: zod.string().datetime(),
-  })
-  .strict()
-export const getSunriseSunsetForTrailAreaResponse = zod.array(getSunriseSunsetForTrailAreaResponseItem)
-
 export const getWeatherDataForTrailAreaResponseItem = zod
   .object({
     time: zod.string().datetime(),
@@ -75,39 +111,3 @@ export const getWeatherDataForTrailAreaResponseItem = zod
   })
   .strict()
 export const getWeatherDataForTrailAreaResponse = zod.array(getWeatherDataForTrailAreaResponseItem)
-
-export const getHealthStatusResponse = zod
-  .object({
-    status: zod.string().optional(),
-    info: zod
-      .record(
-        zod.string(),
-        zod
-          .object({
-            status: zod.string(),
-          })
-          .strict(),
-      )
-      .nullish(),
-    error: zod
-      .record(
-        zod.string(),
-        zod
-          .object({
-            status: zod.string(),
-          })
-          .strict(),
-      )
-      .nullish(),
-    details: zod
-      .record(
-        zod.string(),
-        zod
-          .object({
-            status: zod.string(),
-          })
-          .strict(),
-      )
-      .optional(),
-  })
-  .strict()
