@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 
-import type { WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
+import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
 import { Circle, Rect } from './svg'
 
@@ -17,14 +17,24 @@ function getXForTimestamp(ts: number, weather: Array<WeatherDataResponseDto>): n
   return (CHART_WIDTH / end) * now
 }
 
+function getSunsetString(date: Date, sunriseSunsetData: Array<SunriseSunsetResponseDto>): string {
+  const sunriseSunsetForDay = sunriseSunsetData.find(
+    (sunriseSunsetResponse) =>
+      sunriseSunsetResponse.date ===
+      `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`,
+  )
+  return sunriseSunsetForDay ? `, Sunset at ${new Date(sunriseSunsetForDay.sunset).toLocaleTimeString()}` : ''
+}
+
 type WeatherDiagramSvgProps = {
   weather: Array<WeatherDataResponseDto>
+  sunriseSunset: Array<SunriseSunsetResponseDto>
   threshold: number
 }
 
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
-export function WeatherDiagramSvg({ weather, threshold }: WeatherDiagramSvgProps) {
+export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: WeatherDiagramSvgProps) {
   const portalRef = useRef<HTMLDivElement | null>(null)
   const [portalElement, setPortalElement] = useState<HTMLElement | null>(null)
   useEffect(() => {
@@ -92,6 +102,7 @@ export function WeatherDiagramSvg({ weather, threshold }: WeatherDiagramSvgProps
                   </text>
                   <text x={x + 5} y={36}>
                     {weekdays[date.getDay()]}
+                    {getSunsetString(date, sunriseSunset)}
                   </text>
                   <line stroke={'black'} x1={x} x2={x} y1={0} y2={CHART_HEIGHT} />
                 </Fragment>

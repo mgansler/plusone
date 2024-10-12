@@ -1,11 +1,10 @@
 export default {
-  displayName: 'elgato-backend',
-  preset: '../../../jest.preset.js',
+  displayName: 'nestjs-services',
+  preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../coverage/apps/elgato/backend',
-  coveragePathIgnorePatterns: ['src/stubs/*'],
+  coverageDirectory: '../../coverage/nestjs-services',
 }

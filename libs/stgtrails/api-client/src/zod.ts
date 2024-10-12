@@ -54,6 +54,15 @@ export const getTrailsOfAreaResponseItem = zod
   .strict()
 export const getTrailsOfAreaResponse = zod.array(getTrailsOfAreaResponseItem)
 
+export const getSunriseSunsetForTrailAreaResponseItem = zod
+  .object({
+    date: zod.string(),
+    sunrise: zod.string().datetime(),
+    sunset: zod.string().datetime(),
+  })
+  .strict()
+export const getSunriseSunsetForTrailAreaResponse = zod.array(getSunriseSunsetForTrailAreaResponseItem)
+
 export const getWeatherDataForTrailAreaResponseItem = zod
   .object({
     time: zod.string().datetime(),

@@ -16,8 +16,21 @@ model TrailArea {
   longitude Float
   threshold Float  @default(0.33)
 
-  trails  Trail[]
-  weather WeatherData[]
+  trails        Trail[]
+  weather       WeatherData[]
+  sunriseSunset SunriseSunset[]
+}
+
+model SunriseSunset {
+  id      Int      @id @default(autoincrement())
+  date    String
+  sunrise DateTime
+  sunset  DateTime
+
+  trailArea   TrailArea @relation(fields: [trailAreaId], references: [id])
+  trailAreaId Int
+
+  @@unique([trailAreaId, date])
 }
 
 model Trail {

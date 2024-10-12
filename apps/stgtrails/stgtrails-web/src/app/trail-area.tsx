@@ -1,4 +1,8 @@
-import { useValidatedTrailsForTrailArea, useValidatedWeatherDataForTrailArea } from '@plusone/stgtrails-api-client'
+import {
+  useValidatedSunriseSunsetDataForTrailArea,
+  useValidatedTrailsForTrailArea,
+  useValidatedWeatherDataForTrailArea,
+} from '@plusone/stgtrails-api-client'
 
 import { rootRoute } from '../routes'
 
@@ -14,6 +18,7 @@ type TrailAreaProps = {
 
 export function TrailArea({ trailAreaId, threshold = 0.3, hours }: TrailAreaProps) {
   const { data: trails } = useValidatedTrailsForTrailArea(trailAreaId)
+  const { data: sunriseSunset } = useValidatedSunriseSunsetDataForTrailArea(trailAreaId, { days: hours / 24 })
   const { data: weather } = useValidatedWeatherDataForTrailArea(
     trailAreaId,
     { hours, utcOffsetHours: getUtcOffsetHours() },
@@ -23,7 +28,7 @@ export function TrailArea({ trailAreaId, threshold = 0.3, hours }: TrailAreaProp
   )
   const { legacy } = rootRoute.useSearch()
 
-  if (!weather) {
+  if (!weather || !sunriseSunset) {
     return null
   }
 
@@ -47,7 +52,7 @@ export function TrailArea({ trailAreaId, threshold = 0.3, hours }: TrailAreaProp
       {legacy ? (
         <WeatherDiagramLegacy hours={hours} weather={weather} />
       ) : (
-        <WeatherDiagramSvg threshold={threshold} weather={weather} />
+        <WeatherDiagramSvg threshold={threshold} weather={weather} sunriseSunset={sunriseSunset} />
       )}
     </>
   )

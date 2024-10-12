@@ -1,12 +1,14 @@
-import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common'
+import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { AppService } from './app.service'
+import { SunriseSunsetResponseDto } from './dto/sunrise-sunset-response.dto'
 import { TrailAreaCreateDto } from './dto/trail-area-create.dto'
 import { TrailAreaResponseDto } from './dto/trail-area-response.dto'
 import { TrailAreaUpdateDto } from './dto/trail-area-update.dto'
 import { TrailCreateDto } from './dto/trail-create.dto'
 import { TrailResponseDto } from './dto/trail-response.dto'
+import { TrailUpdateDto } from './dto/trail-update.dto'
 import { WeatherDataResponseDto } from './dto/weather-data-response.dto'
 
 @Controller('trailAreas')
@@ -31,8 +33,17 @@ export class AppController {
   @ApiOperation({ operationId: 'updateTrailArea' })
   @ApiOkResponse({ type: TrailAreaResponseDto })
   @Put(':trailAreaId')
-  async updateTrailArea(@Param('trailAreaId', ParseIntPipe) trailAreaId: number, @Body() trail: TrailAreaUpdateDto) {
-    return this.appService.updateTrailArea(trailAreaId, trail)
+  async updateTrailArea(
+    @Param('trailAreaId', ParseIntPipe) trailAreaId: number,
+    @Body() trailArea: TrailAreaUpdateDto,
+  ) {
+    return this.appService.updateTrailArea(trailAreaId, trailArea)
+  }
+
+  @ApiOperation({ operationId: 'deleteTrailArea' })
+  @Delete(':trailAreaId')
+  async deleteTrailArea(@Param('trailAreaId', ParseIntPipe) trailAreaId: number) {
+    return this.appService.deleteTrailArea(trailAreaId)
   }
 
   @ApiOperation({ operationId: 'createTrail' })
@@ -47,6 +58,29 @@ export class AppController {
   @Get(':trailAreaId/trails')
   async getTrailsOfArea(@Param('trailAreaId', ParseIntPipe) trailAreaId: number) {
     return this.appService.getTrailsOfArea(trailAreaId)
+  }
+
+  @ApiOperation({ operationId: 'updateTrail' })
+  @Put('trails/:trailId')
+  async updateTrail(@Param('trailId', ParseIntPipe) trailId: number, @Body() trail: TrailUpdateDto) {
+    return this.appService.updateTrail(trailId, trail)
+  }
+
+  @ApiOperation({ operationId: 'deleteTrail' })
+  @Delete('trails/:trailId')
+  async deleteTrail(@Param('trailId', ParseIntPipe) trailId: number) {
+    return this.appService.deleteTrail(trailId)
+  }
+
+  @ApiOperation({ operationId: 'getSunriseSunsetForTrailArea' })
+  @ApiQuery({ name: 'days', type: Number, required: false })
+  @ApiOkResponse({ type: [SunriseSunsetResponseDto] })
+  @Get(':trailAreaId/sunriseSunset')
+  async getSunriseSunsetForArea(
+    @Param('trailAreaId', ParseIntPipe) trailAreaId: number,
+    @Query('days', new DefaultValuePipe(4), ParseIntPipe) hours: number,
+  ) {
+    return this.appService.getSunriseSunsetOfArea(trailAreaId, hours)
   }
 
   @ApiOperation({ operationId: 'getWeatherDataForTrailArea' })

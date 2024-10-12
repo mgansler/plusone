@@ -1,4 +1,4 @@
-import type { WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
+import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
 import { WeatherDiagramSvg } from './weather-diagram-svg'
 
@@ -32,9 +32,22 @@ const weatherData: Array<WeatherDataResponseDto> = [
   },
 ]
 
+const sunriseSunsetData: Array<SunriseSunsetResponseDto> = [
+  {
+    date: '2024-01-01',
+    sunrise: '2024-01-01T06:00:00.000Z',
+    sunset: '2024-01-01T18:00:00.000Z',
+  },
+  {
+    date: '2024-01-02',
+    sunrise: '2024-01-01T05:50:00.000Z',
+    sunset: '2024-01-01T18:10:00.000Z',
+  },
+]
+
 describe('WeatherDiagramSvg', () => {
   it('should render a svg', () => {
-    cy.mount(<WeatherDiagramSvg weather={weatherData} threshold={0.33} />)
+    cy.mount(<WeatherDiagramSvg weather={weatherData} sunriseSunset={sunriseSunsetData} threshold={0.33} />)
 
     cy.get('svg').within(() => {
       cy.get('rect').should('have.length', 4)
@@ -56,13 +69,14 @@ describe('WeatherDiagramSvg', () => {
 
       cy.get('text').should('have.length', 5)
       cy.get('text').eq(0).should('have.text', 'Now')
-      cy.get('text').eq(2).should('have.text', 'Monday')
-      cy.get('text').eq(4).should('have.text', 'Tuesday')
+      // Depending on the locale of the browser used in testing we get 18:00:00 or 6:00:00 PM
+      cy.get('text').eq(2).should('include.text', 'Monday, Sunset at').and('include.text', ':00:00')
+      cy.get('text').eq(4).should('include.text', 'Tuesday, Sunset at').and('include.text', ':10:00')
     })
   })
 
   it('should render the provided threshold', () => {
-    cy.mount(<WeatherDiagramSvg weather={weatherData} threshold={0.5} />)
+    cy.mount(<WeatherDiagramSvg weather={weatherData} sunriseSunset={sunriseSunsetData} threshold={0.5} />)
 
     cy.get('svg').within(() => {
       cy.get('line').eq(0).should('have.attr', 'stroke', 'red').and('have.attr', 'y1', 300).and('have.attr', 'y2', 300)

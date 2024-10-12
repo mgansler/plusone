@@ -95,6 +95,10 @@ export type GetWeatherDataForTrailAreaParams = {
   utcOffsetHours?: number
 }
 
+export type GetSunriseSunsetForTrailAreaParams = {
+  days?: number
+}
+
 export interface WeatherDataResponseDto {
   rain: number
   soilMoisture0To1cm: number
@@ -103,6 +107,16 @@ export interface WeatherDataResponseDto {
   soilMoisture9To27cm: number
   temperature2m: number
   time: string
+}
+
+export interface SunriseSunsetResponseDto {
+  date: string
+  sunrise: string
+  sunset: string
+}
+
+export interface TrailUpdateDto {
+  name: string
 }
 
 export interface TrailResponseDto {
@@ -296,6 +310,38 @@ export const useUpdateTrailArea = <TError = unknown, TContext = unknown>(options
   return useMutation(mutationOptions)
 }
 
+export const deleteTrailArea = (trailAreaId: number) => {
+  return customAxiosInstance<void>({ url: `/api/trailAreas/${trailAreaId}`, method: 'DELETE' })
+}
+
+export const getDeleteTrailAreaMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteTrailArea>>, TError, { trailAreaId: number }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof deleteTrailArea>>, TError, { trailAreaId: number }, TContext> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteTrailArea>>, { trailAreaId: number }> = (
+    props,
+  ) => {
+    const { trailAreaId } = props ?? {}
+
+    return deleteTrailArea(trailAreaId)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type DeleteTrailAreaMutationResult = NonNullable<Awaited<ReturnType<typeof deleteTrailArea>>>
+
+export type DeleteTrailAreaMutationError = unknown
+
+export const useDeleteTrailArea = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteTrailArea>>, TError, { trailAreaId: number }, TContext>
+}): UseMutationResult<Awaited<ReturnType<typeof deleteTrailArea>>, TError, { trailAreaId: number }, TContext> => {
+  const mutationOptions = getDeleteTrailAreaMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
 export const createTrail = (trailAreaId: number, trailCreateDto: TrailCreateDto) => {
   return customAxiosInstance<TrailResponseDto>({
     url: `/api/trailAreas/${trailAreaId}/trails`,
@@ -411,6 +457,201 @@ export function useGetTrailsOfArea<TData = Awaited<ReturnType<typeof getTrailsOf
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailsOfArea>>, TError, TData>> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getGetTrailsOfAreaQueryOptions(trailAreaId, options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const updateTrail = (trailId: number, trailUpdateDto: TrailUpdateDto) => {
+  return customAxiosInstance<void>({
+    url: `/api/trailAreas/trails/${trailId}`,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    data: trailUpdateDto,
+  })
+}
+
+export const getUpdateTrailMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateTrail>>,
+    TError,
+    { trailId: number; data: TrailUpdateDto },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateTrail>>,
+  TError,
+  { trailId: number; data: TrailUpdateDto },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateTrail>>,
+    { trailId: number; data: TrailUpdateDto }
+  > = (props) => {
+    const { trailId, data } = props ?? {}
+
+    return updateTrail(trailId, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type UpdateTrailMutationResult = NonNullable<Awaited<ReturnType<typeof updateTrail>>>
+export type UpdateTrailMutationBody = TrailUpdateDto
+export type UpdateTrailMutationError = unknown
+
+export const useUpdateTrail = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateTrail>>,
+    TError,
+    { trailId: number; data: TrailUpdateDto },
+    TContext
+  >
+}): UseMutationResult<
+  Awaited<ReturnType<typeof updateTrail>>,
+  TError,
+  { trailId: number; data: TrailUpdateDto },
+  TContext
+> => {
+  const mutationOptions = getUpdateTrailMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
+export const deleteTrail = (trailId: number) => {
+  return customAxiosInstance<void>({ url: `/api/trailAreas/trails/${trailId}`, method: 'DELETE' })
+}
+
+export const getDeleteTrailMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteTrail>>, TError, { trailId: number }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof deleteTrail>>, TError, { trailId: number }, TContext> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteTrail>>, { trailId: number }> = (props) => {
+    const { trailId } = props ?? {}
+
+    return deleteTrail(trailId)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type DeleteTrailMutationResult = NonNullable<Awaited<ReturnType<typeof deleteTrail>>>
+
+export type DeleteTrailMutationError = unknown
+
+export const useDeleteTrail = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteTrail>>, TError, { trailId: number }, TContext>
+}): UseMutationResult<Awaited<ReturnType<typeof deleteTrail>>, TError, { trailId: number }, TContext> => {
+  const mutationOptions = getDeleteTrailMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
+export const getSunriseSunsetForTrailArea = (
+  trailAreaId: number,
+  params?: GetSunriseSunsetForTrailAreaParams,
+  signal?: AbortSignal,
+) => {
+  return customAxiosInstance<SunriseSunsetResponseDto[]>({
+    url: `/api/trailAreas/${trailAreaId}/sunriseSunset`,
+    method: 'GET',
+    params,
+    signal,
+  })
+}
+
+export const getGetSunriseSunsetForTrailAreaQueryKey = (
+  trailAreaId: number,
+  params?: GetSunriseSunsetForTrailAreaParams,
+) => {
+  return [`/api/trailAreas/${trailAreaId}/sunriseSunset`, ...(params ? [params] : [])] as const
+}
+
+export const getGetSunriseSunsetForTrailAreaQueryOptions = <
+  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+  TError = unknown,
+>(
+  trailAreaId: number,
+  params?: GetSunriseSunsetForTrailAreaParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>>
+  },
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetSunriseSunsetForTrailAreaQueryKey(trailAreaId, params)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>> = ({ signal }) =>
+    getSunriseSunsetForTrailArea(trailAreaId, params, signal)
+
+  return { queryKey, queryFn, enabled: !!trailAreaId, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey }
+}
+
+export type GetSunriseSunsetForTrailAreaQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>
+>
+export type GetSunriseSunsetForTrailAreaQueryError = unknown
+
+export function useGetSunriseSunsetForTrailArea<
+  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+  TError = unknown,
+>(
+  trailAreaId: number,
+  params: undefined | GetSunriseSunsetForTrailAreaParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>,
+        'initialData'
+      >
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useGetSunriseSunsetForTrailArea<
+  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+  TError = unknown,
+>(
+  trailAreaId: number,
+  params?: GetSunriseSunsetForTrailAreaParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>,
+        'initialData'
+      >
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useGetSunriseSunsetForTrailArea<
+  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+  TError = unknown,
+>(
+  trailAreaId: number,
+  params?: GetSunriseSunsetForTrailAreaParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>>
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+export function useGetSunriseSunsetForTrailArea<
+  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+  TError = unknown,
+>(
+  trailAreaId: number,
+  params?: GetSunriseSunsetForTrailAreaParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>>
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetSunriseSunsetForTrailAreaQueryOptions(trailAreaId, params, options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 

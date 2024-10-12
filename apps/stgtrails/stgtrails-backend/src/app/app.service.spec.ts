@@ -1,9 +1,11 @@
+import { HttpService } from '@nestjs/axios'
 import { Test } from '@nestjs/testing'
 
+import { SunriseSunsetApiService } from '@plusone/nestjs-services/sunrise-sunset-api'
+import { WeatherApiService } from '@plusone/nestjs-services/weather-api'
 import { PrismaService } from '@plusone/stgtrails-persistence'
 
 import { AppService } from './app.service'
-import { WeatherApiService } from './weather-api.service'
 
 describe('AppService', () => {
   let appService: AppService
@@ -26,6 +28,11 @@ describe('AppService', () => {
             $transaction: jest.fn(),
           },
         },
+        {
+          provide: HttpService,
+          useValue: new HttpService(),
+        },
+        SunriseSunsetApiService,
         {
           provide: WeatherApiService,
           useValue: {
