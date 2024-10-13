@@ -3,6 +3,8 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/advent-of-code-2021-e2e/src",
   "projectType": "application",
+  "tags": [],
+  "implicitDependencies": ["advent-of-code-2021"],
   "targets": {
     "e2e": {
       "executor": "@nx/cypress:cypress",
@@ -24,7 +26,5 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
     }
-  },
-  "tags": [],
-  "implicitDependencies": ["advent-of-code-2021"]
+  }
 }

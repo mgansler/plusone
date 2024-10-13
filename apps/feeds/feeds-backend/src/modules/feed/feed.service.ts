@@ -47,6 +47,7 @@ export class FeedService {
       } else {
         originalTitle = feedInputDto.title ?? ''
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       if (typeof feedInputDto.title === 'undefined' || feedInputDto.title.length < 1) {
         throw new HttpException('Feed discovery failed, you MUST provide a title.', HttpStatus.BAD_REQUEST)

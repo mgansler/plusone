@@ -3,6 +3,8 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/suite/src",
   "projectType": "application",
+  "tags": [],
+  "implicitDependencies": ["dinner-plan"],
   "targets": {
     "build": {
       "executor": "@nx/vite:build",
@@ -100,7 +102,5 @@
         }
       }
     }
-  },
-  "tags": [],
-  "implicitDependencies": ["dinner-plan"]
+  }
 }

@@ -3,7 +3,7 @@ import AxiosStatic from 'axios'
 
 export async function customAxiosInstance<T>(config: AxiosRequestConfig): Promise<T> {
   const axios = AxiosStatic.create()
-  // eslint-disable-next-line import/no-named-as-default-member
+
   const source = AxiosStatic.CancelToken.source()
   const promise = axios({
     ...config,

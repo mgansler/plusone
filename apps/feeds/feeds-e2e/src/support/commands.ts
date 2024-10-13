@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/consistent-type-definitions
@@ -49,7 +51,7 @@ Cypress.Commands.add('loginFreshUser', () => {
   cy.findByRole('textbox', { name: /username/i }).type(username)
   cy.findByLabelText(/password/i).type('random_password')
   cy.findByRole('button', { name: 'register' }).click()
-  // eslint-disable-next-line cypress/no-unnecessary-waiting,testing-library/await-async-utils
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
   cy.location('pathname', { timeout: 10_000 }).should('eq', '/login').wait(500)
   cy.findByRole('textbox', { name: /username/i }).type(username)
   cy.findByLabelText(/password/i).type('random_password')

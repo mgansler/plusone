@@ -22,6 +22,7 @@ export function DeviceSettings({ device }: DeviceSettingsProps) {
         const response = await refetch()
         return response.data as Fields
       } catch (e) {
+        console.error('Could not current device settings', e)
         return {
           sunrise: false,
           sunset: false,

@@ -4,6 +4,7 @@
   "sourceRoot": "libs/stgtrails/persistence/src",
   "projectType": "library",
   "tags": [],
+  "implicitDependencies": ["plugins-nx-prisma"],
   "targets": {
     "prisma-format": {
       "executor": "@mgansler/nx-prisma:format"
@@ -37,6 +38,5 @@
     "lint": {
       "executor": "@nx/eslint:lint"
     }
-  },
-  "implicitDependencies": ["plugins-nx-prisma"]
+  }
 }

@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'stgtrails-backend',
   preset: '../../../jest.preset.js',

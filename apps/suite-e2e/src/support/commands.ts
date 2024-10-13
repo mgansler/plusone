@@ -1,3 +1,4 @@
+/// <reference types="cypress" />
 import Chainable = Cypress.Chainable
 
 // eslint-disable-next-line @typescript-eslint/no-namespace

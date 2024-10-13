@@ -51,6 +51,7 @@ export class DeviceDiscoveryService implements OnModuleInit {
         port: discoveredDevice.port,
         type: DeviceType.Unknown,
       })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       throw new HttpException('Could not reach device.', HttpStatus.NOT_FOUND)
     }
@@ -143,6 +144,7 @@ export class DeviceDiscoveryService implements OnModuleInit {
         if (currentDeviceCount !== updatedDeviceCount) {
           this.logger.log(`Discovered a new device: ${accessoryInfo.displayName}.`)
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (e) {
         this.logger.warn(
           `There was a new device (${service.name}: ${service.host}), but it didn't respond when getting accessoryInfo.`,

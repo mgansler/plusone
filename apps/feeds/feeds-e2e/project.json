@@ -3,6 +3,8 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/feeds/feeds-e2e/src",
   "projectType": "application",
+  "tags": [],
+  "implicitDependencies": ["feeds-web", "feeds-backend"],
   "targets": {
     "e2e": {
       "executor": "@nx/cypress:cypress",
@@ -58,7 +60,5 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
     }
-  },
-  "tags": [],
-  "implicitDependencies": ["feeds-web", "feeds-backend"]
+  }
 }

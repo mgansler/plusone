@@ -38,7 +38,6 @@ function parseInstructions(instructions: string) {
 }
 
 function foldX(paper: Paper, index: number): Paper {
-  // eslint-disable-next-line @typescript-eslint/prefer-for-of
   for (let y = 0; y < paper.length; y++) {
     for (let x = 0; x < index; x++) {
       paper[y][x] = paper[y][x] || paper[y][paper[y].length - x - 1]

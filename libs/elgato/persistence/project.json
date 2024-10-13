@@ -3,6 +3,8 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/elgato/persistence/src",
   "projectType": "library",
+  "tags": [],
+  "implicitDependencies": ["plugins-nx-prisma"],
   "targets": {
     "prisma-format": {
       "executor": "@mgansler/nx-prisma:format"
@@ -31,7 +33,5 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
     }
-  },
-  "tags": [],
-  "implicitDependencies": ["plugins-nx-prisma"]
+  }
 }

@@ -3,6 +3,7 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/feeds/feeds-web/src",
   "projectType": "application",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/vite:build",
@@ -65,6 +66,5 @@
         "reportsDirectory": "../../../coverage/apps/feeds/feeds-web"
       }
     }
-  },
-  "tags": []
+  }
 }

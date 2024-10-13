@@ -38,6 +38,7 @@ export function UpdatableDisplayName({ deviceId }: UpdatableDisplayNameProps) {
           displayName,
         }
       } catch (e) {
+        console.error('Could not get current device name', e)
         return {
           displayName: '',
         }

@@ -37,5 +37,5 @@ export function DevicePowerStateControl({ macAddress }: DevicePowerStateProps) {
     )
   }
 
-  return <PowerControl state={data!.state.on ? 'on' : 'off'} onClick={toggle} />
+  return <PowerControl state={data?.state.on ? 'on' : 'off'} onClick={toggle} />
 }

@@ -9,24 +9,24 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { getGetUserFeedsQueryKey, useAddFeed, useDiscoverFeed, useImportFeeds } from '@plusone/feeds/api-client'
 
-type DiscoverFeedForm = {
+type DiscoverFeedFormFields = {
   url: string
 }
 
-type NewFeedForm = {
+type NewFeedFormFields = {
   title: string
   feedUrl: string
 }
 
 type DiscoverFeedFormProps = {
-  resetAddFeed: UseFormReset<NewFeedForm>
+  resetAddFeed: UseFormReset<NewFeedFormFields>
 }
 
 function DiscoverFeedForm({ resetAddFeed }: DiscoverFeedFormProps) {
-  const { handleSubmit, register } = useForm<DiscoverFeedForm>()
+  const { handleSubmit, register } = useForm<DiscoverFeedFormFields>()
   const { mutateAsync: discover } = useDiscoverFeed()
 
-  const onDiscoverFeedSubmit = async (data: DiscoverFeedForm) => {
+  const onDiscoverFeedSubmit = async (data: DiscoverFeedFormFields) => {
     const discoverResp = await discover({ params: data })
     resetAddFeed(discoverResp)
   }
@@ -43,7 +43,7 @@ function DiscoverFeedForm({ resetAddFeed }: DiscoverFeedFormProps) {
 }
 
 type AddFeedFormProps = {
-  methods: UseFormReturn<NewFeedForm>
+  methods: UseFormReturn<NewFeedFormFields>
 }
 
 function AddFeedForm({ methods: { register, handleSubmit } }: AddFeedFormProps) {
@@ -57,7 +57,7 @@ function AddFeedForm({ methods: { register, handleSubmit } }: AddFeedFormProps) 
     },
   })
 
-  const onAddFeedSubmit = async (data: NewFeedForm) => {
+  const onAddFeedSubmit = async (data: NewFeedFormFields) => {
     await mutateAsync({ data })
     navigate('../feeds')
   }
@@ -74,7 +74,7 @@ function AddFeedForm({ methods: { register, handleSubmit } }: AddFeedFormProps) 
   )
 }
 
-type ImportFormForm = {
+type ImportFormFields = {
   feeds: string
 }
 
@@ -82,12 +82,12 @@ function ImportForm() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  const { register, handleSubmit } = useForm<ImportFormForm>()
+  const { register, handleSubmit } = useForm<ImportFormFields>()
   const { mutateAsync } = useImportFeeds({
     mutation: { onSuccess: () => queryClient.invalidateQueries({ queryKey: getGetUserFeedsQueryKey() }) },
   })
 
-  const onSubmit = async (data: ImportFormForm) => {
+  const onSubmit = async (data: ImportFormFields) => {
     const feeds = JSON.parse('[' + data.feeds + ']')
     await mutateAsync({ data: feeds })
     navigate('../feeds')
@@ -108,6 +108,7 @@ function ImportForm() {
                 JSON.parse('[' + value + ']')
                 return true
               } catch (e) {
+                console.debug('Failed to parse current value', e)
                 return false
               }
             },
@@ -129,7 +130,7 @@ function NewFeedFallback({ error, resetErrorBoundary }: FallbackProps) {
 }
 
 export function NewFeed() {
-  const addFeedMethods = useForm<NewFeedForm>()
+  const addFeedMethods = useForm<NewFeedFormFields>()
 
   return (
     <ErrorBoundary FallbackComponent={NewFeedFallback} onReset={() => addFeedMethods.reset()}>

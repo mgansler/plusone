@@ -4,6 +4,7 @@
   "sourceRoot": "libs/feeds/persistence/src",
   "projectType": "library",
   "tags": [],
+  "implicitDependencies": ["plugins-nx-prisma"],
   "targets": {
     "prisma-format": {
       "executor": "@mgansler/nx-prisma:format"
@@ -32,6 +33,5 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
     }
-  },
-  "implicitDependencies": ["plugins-nx-prisma"]
+  }
 }

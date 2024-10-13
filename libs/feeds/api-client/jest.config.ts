@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'feeds-api-client',
   preset: '../../../jest.preset.js',

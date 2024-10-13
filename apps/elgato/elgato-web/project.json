@@ -3,6 +3,7 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/elgato/elgato-web/src",
   "projectType": "application",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/vite:build",
@@ -86,6 +87,5 @@
         "buildTarget": "elgato-web:build"
       }
     }
-  },
-  "tags": []
+  }
 }

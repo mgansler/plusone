@@ -33,6 +33,7 @@ export function FeedSettings() {
         const response = await refetch()
         return response.data as FeedSettingsForm
       } catch (e) {
+        console.error('Could not get current feed settings', e)
         return {
           disabled: false,
           expandContent: false,

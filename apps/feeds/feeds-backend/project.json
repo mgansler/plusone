@@ -3,6 +3,8 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/feeds/feeds-backend/src",
   "projectType": "application",
+  "tags": [],
+  "implicitDependencies": ["feeds-web"],
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
@@ -123,7 +125,5 @@
         }
       ]
     }
-  },
-  "tags": [],
-  "implicitDependencies": ["feeds-web"]
+  }
 }

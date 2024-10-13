@@ -1,4 +1,4 @@
-import Parser = require('rss-parser')
+import * as Parser from 'rss-parser'
 
 import { Prisma } from '@plusone/feeds-persistence'
 

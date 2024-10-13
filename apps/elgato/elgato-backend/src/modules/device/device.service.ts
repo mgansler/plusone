@@ -164,6 +164,7 @@ export class DeviceService implements OnModuleInit {
             },
           })
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (e) {
         this.logger.warn(
           `Could not reach ${device.displayName} for ${lastSeenMinutes} minutes, trying again in 10 minutes.`,

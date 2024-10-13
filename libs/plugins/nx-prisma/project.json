@@ -3,6 +3,7 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/plugins/nx-prisma/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "build_": {
       "executor": "@nx/js:tsc",
@@ -48,6 +49,5 @@
         "jestConfig": "libs/plugins/nx-prisma/jest.config.ts"
       }
     }
-  },
-  "tags": []
+  }
 }

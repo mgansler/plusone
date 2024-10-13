@@ -54,6 +54,7 @@ export function UpdatableCommand({ commandId }: UpdatableCommandProps) {
         const { data } = await refetch()
         return data as UpdatableCommandFields
       } catch (e) {
+        console.error('Could not get current command', e)
         return {
           name: '',
           actions: [],
