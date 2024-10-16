@@ -77,8 +77,7 @@ export async function customAxiosInstance<T>(config: AxiosRequestConfig): Promis
     cancelToken: source.token,
   }).then<T>(({ data }) => data)
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error false positive `Property cancel does not exist on type Promise<T>`
   promise.cancel = () => {
     source.cancel('Query was cancelled')
   }

@@ -6,13 +6,11 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { TerminusModule } from '@nestjs/terminus'
 
-import { SunriseSunsetApiService } from '@plusone/nestjs-services/sunrise-sunset-api'
-import { WeatherApiService } from '@plusone/nestjs-services/weather-api'
+import { RequestLoggerMiddleware, SunriseSunsetApiService, WeatherApiService } from '@plusone/nestjs-services'
 import { PrismaModule } from '@plusone/stgtrails-persistence'
 
 import { AppService } from './app.service'
 import { HealthController } from './health.controller'
-import { LoggerMiddleware } from './logger.middleware'
 import { SunriseSunsetController } from './sunrise-sunset.controller'
 import { SunriseSunsetService } from './sunrise-sunset.service'
 import { TrailAreaController } from './trail-area.controller'
@@ -43,6 +41,10 @@ import { WeatherService } from './weather.service'
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*')
+    consumer
+      .apply(RequestLoggerMiddleware)
+      // excludes are matched without global prefix
+      .exclude('/health', '/sunrise-sunset(.*)', '/weather')
+      .forRoutes('*')
   }
 }

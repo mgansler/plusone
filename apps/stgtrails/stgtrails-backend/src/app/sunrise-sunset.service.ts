@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 
-import { SunriseSunsetApiService } from '@plusone/nestjs-services/sunrise-sunset-api'
+import { SunriseSunsetApiService } from '@plusone/nestjs-services'
 import { PrismaService, TrailArea } from '@plusone/stgtrails-persistence'
 
 @Injectable()

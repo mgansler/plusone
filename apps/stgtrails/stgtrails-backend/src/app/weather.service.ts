@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 
-import { WeatherApiService } from '@plusone/nestjs-services/weather-api'
+import { WeatherApiService } from '@plusone/nestjs-services'
 import { Prisma, PrismaService, TrailArea } from '@plusone/stgtrails-persistence'
 
 import { WeatherDataResponseDto } from './dto/weather-data-response.dto'

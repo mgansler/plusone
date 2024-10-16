@@ -29,8 +29,6 @@ describe.skip('Elgato Scene', () => {
 
     console.log(await resp.text())
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     console.log((await resp.json()).lights[0].scene)
   })
 })

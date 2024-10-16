@@ -4,6 +4,8 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { ServeStaticModule } from '@nestjs/serve-static'
 
+import { RequestLoggerMiddleware } from '@plusone/nestjs-services'
+
 import { AdminModule } from '../modules/admin/admin.module'
 import { ArticleModule } from '../modules/article/article.module'
 import { AuthenticationModule } from '../modules/authentication/authentication.module'
@@ -15,7 +17,6 @@ import { TagModule } from '../modules/tag/tag.module'
 import { UserModule } from '../modules/user/user.module'
 
 import { configSchema } from './config'
-import { LoggerMiddleware } from './logger.middleware'
 
 @Module({
   imports: [
@@ -41,6 +42,10 @@ import { LoggerMiddleware } from './logger.middleware'
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*')
+    consumer
+      .apply(RequestLoggerMiddleware)
+      // excludes are matched without global prefix
+      .exclude('/health')
+      .forRoutes('*')
   }
 }

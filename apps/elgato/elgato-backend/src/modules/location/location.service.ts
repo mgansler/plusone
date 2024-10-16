@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 
 import { PrismaService } from '@plusone/elgato-persistence'
-import { SunriseSunsetApiService } from '@plusone/nestjs-services/sunrise-sunset-api'
+import { SunriseSunsetApiService } from '@plusone/nestjs-services'
 
 import { LocationDataResponseDto } from './dto/location-data-response.dto'
 import { LocationUpdateRequestDto } from './dto/location-update-request.dto'

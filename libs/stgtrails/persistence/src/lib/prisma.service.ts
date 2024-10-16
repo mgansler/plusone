@@ -19,11 +19,8 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   async onModuleInit() {
     await this.$connect()
     // https://github.com/prisma/prisma/issues/5026
-    // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // // @ts-ignore
-    // this.$on('query', async (e) => {
-    //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //   // @ts-ignore
+    // // @ts-expect-error false positive: we push 'query' into the options in the constructor
+    // this.$on('query', (e: Prisma.QueryEvent) => {
     //   this.logger.debug(`${e.query} ${e.params}`)
     // })
   }

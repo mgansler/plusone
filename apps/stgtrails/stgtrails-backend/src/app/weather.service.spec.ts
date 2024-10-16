@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios'
 import { Test } from '@nestjs/testing'
 
-import { WeatherApiService } from '@plusone/nestjs-services/weather-api'
+import { WeatherApiService } from '@plusone/nestjs-services'
 import { PrismaService } from '@plusone/stgtrails-persistence'
 
 import { WeatherService } from './weather.service'
