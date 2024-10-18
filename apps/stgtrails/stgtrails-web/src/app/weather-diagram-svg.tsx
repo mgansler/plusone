@@ -17,6 +17,10 @@ function getXForTimestamp(ts: number, weather: Array<WeatherDataResponseDto>): n
   return (CHART_WIDTH / end) * now
 }
 
+function scaleRain(rain: number): number {
+  return Math.min(1, Math.log10(rain + 1) * 1.1)
+}
+
 function getSunsetString(date: Date, sunriseSunsetData: Array<SunriseSunsetResponseDto>): string {
   const sunriseSunsetForDay = sunriseSunsetData.find(
     (sunriseSunsetResponse) =>
@@ -58,16 +62,16 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
           {/* frame */}
           <rect x={0} y={0} width={CHART_WIDTH} height={CHART_HEIGHT} stroke={'black'} fill={'none'} />
 
-          {/* amount of rain per hour (capped at 10mm/sqm) */}
+          {/* amount of rain per hour */}
           {weather.map((w, i) => (
             <Rect
               key={i}
               text={w.rain.toFixed(2) + ' l/m\xB2'}
               timestamp={new Date(w.time)}
               x={getXForTimestamp(new Date(weather[i].time).valueOf(), weather)}
-              y={CHART_HEIGHT - (Math.min(10, w.rain) * CHART_HEIGHT) / 10}
+              y={CHART_HEIGHT - CHART_HEIGHT * scaleRain(w.rain)}
               width={5}
-              height={(Math.min(10, w.rain) * CHART_HEIGHT) / 10}
+              height={CHART_HEIGHT * scaleRain(w.rain)}
               fill={'lightblue'}
               portal={portalElement}
             />

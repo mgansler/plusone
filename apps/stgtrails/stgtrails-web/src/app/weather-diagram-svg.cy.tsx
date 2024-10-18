@@ -5,7 +5,7 @@ import { WeatherDiagramSvg } from './weather-diagram-svg'
 const weatherData: Array<WeatherDataResponseDto> = [
   {
     time: '2024-01-01T00:00:00.000Z',
-    rain: 10,
+    rain: 1,
     soilMoisture0To1cm: 0.5,
     soilMoisture1To3cm: 0,
     soilMoisture3To9cm: 0,
@@ -60,10 +60,20 @@ describe('WeatherDiagramSvg', () => {
         .and('have.attr', 'width', 980)
         .and('have.attr', 'height', 600)
 
-      // 10mm of rain should be a full height
-      cy.get('rect').eq(1).should('have.attr', 'height', 600).and('have.attr', 'y', 0)
-      // 5mm of rain should be a bar of half height
-      cy.get('rect').eq(2).should('have.attr', 'height', 300).and('have.attr', 'y', 300)
+      // 1mm of rain should be around 1/3
+      cy.get('rect')
+        .eq(1)
+        .should(($rect) => {
+          expect(Number($rect.attr('height'))).greaterThan(198)
+          expect(Number($rect.attr('height'))).lessThan(199)
+        })
+      // 5mm of rain should be around 5/6
+      cy.get('rect')
+        .eq(2)
+        .should(($rect) => {
+          expect(Number($rect.attr('height'))).greaterThan(513)
+          expect(Number($rect.attr('height'))).lessThan(514)
+        })
       // 15mm of rain should be capped at full height of the diagram
       cy.get('rect').eq(3).should('have.attr', 'height', 600).and('have.attr', 'y', 0)
 
