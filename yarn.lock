@@ -6725,34 +6725,34 @@
   resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.61.1.tgz#ab284ebad15bdcf639a6ffbf4fb6e436b4315989"
   integrity sha512-2CqERleeqO3hkhJmyJm37tiL3LYgeOpmo8szqdjgtnnG0z7ZpvzkZz6HkfOr9Ca/ha7mhAiouSvLYuLkM37AMg==
 
-"@tanstack/query-core@5.59.16":
-  version "5.59.16"
-  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.59.16.tgz#aa4616e8a9c12afeef4cfbf3ed0f55f404d66e67"
-  integrity sha512-crHn+G3ltqb5JG0oUv6q+PMz1m1YkjpASrXTU+sYWW9pLk0t2GybUHNRqYPZWhxgjPaVGC4yp92gSFEJgYEsPw==
+"@tanstack/query-core@5.59.17":
+  version "5.59.17"
+  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.59.17.tgz#bda3bb678be48e2f6ee692abd1cfc2db3d455e4b"
+  integrity sha512-jWdDiif8kaqnRGHNXAa9CnudtxY5v9DUxXhodgqX2Rwzj+1UwStDHEbBd9IA5C7VYAaJ2s+BxFR6PUBs8ERorA==
 
-"@tanstack/query-devtools@5.58.0":
-  version "5.58.0"
-  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.58.0.tgz#5c68ce90562e154004de4372bc0a28fcd94cdf31"
-  integrity sha512-iFdQEFXaYYxqgrv63ots+65FGI+tNp5ZS5PdMU1DWisxk3fez5HG3FyVlbUva+RdYS5hSLbxZ9aw3yEs97GNTw==
+"@tanstack/query-devtools@5.59.19":
+  version "5.59.19"
+  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.59.19.tgz#ef82f09a88b585450168640578eb43824da75037"
+  integrity sha512-Gw+3zsADpqiYgx/6MMr9bP1+x2LR8vOuGjo5Un/89qwwP3z7WAHPWFagLFDYkLq68NX7ekUpW/EOYlUMugMXGA==
 
-"@tanstack/react-query-devtools@5.59.16":
-  version "5.59.16"
-  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.59.16.tgz#f058e3ba146b97a4763b886074581d66cc1e5cf7"
-  integrity sha512-Dejo39QBXmDqXZ3vdrk7vHDvs7TvL573/AX2NveMBmRAufAPYuE3oWSKP/gGqkDfEqyr4CmldOj+v9cKskUchQ==
+"@tanstack/react-query-devtools@5.59.19":
+  version "5.59.19"
+  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.59.19.tgz#446bc0e0aa83321a5635f82368ba2580aa6deb29"
+  integrity sha512-mYFWTHLtJr2HdyYPZPzzvQ2ksCsSL6L04fCtusPFD3waskXrtmvWvyuDIGeEGdVAYS0Urwxw/0sYvcTVQZH+zQ==
   dependencies:
-    "@tanstack/query-devtools" "5.58.0"
+    "@tanstack/query-devtools" "5.59.19"
 
-"@tanstack/react-query@5.59.16":
-  version "5.59.16"
-  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.59.16.tgz#1e701c6e6681965c04aa426df9da54b8edc6db1b"
-  integrity sha512-MuyWheG47h6ERd4PKQ6V8gDyBu3ThNG22e1fRVwvq6ap3EqsFhyuxCAwhNP/03m/mLg+DAb0upgbPaX6VB+CkQ==
+"@tanstack/react-query@5.59.19":
+  version "5.59.19"
+  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.59.19.tgz#309ae0d75844e331ea72762bfe0e11fb829a69d3"
+  integrity sha512-xLRfyFyQOFcLltKCds0LijfC6/HQJrrTTnZB8ciyn74LIkVAm++vZJ6eUVG20RmJtdP8REdy7vSOYW4M3//XLA==
   dependencies:
-    "@tanstack/query-core" "5.59.16"
+    "@tanstack/query-core" "5.59.17"
 
-"@tanstack/react-router@1.78.2":
-  version "1.78.2"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.78.2.tgz#0e9e313f90c63b62ac705b2dae8d37bc42d42096"
-  integrity sha512-gEVaVUZuQy97TeKA2lFpYIREOb6G8AXe/dWCGlXS/TW57b3Re5qDRzeOfR7pKi4XpDCJIWl/UC9of925a9O7dA==
+"@tanstack/react-router@1.78.3":
+  version "1.78.3"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.78.3.tgz#1b2f0261e115c45ba552a77d2d9d51f89e78f73b"
+  integrity sha512-e4Mws3QTLDs++EyP3HwYKz+yZP3LyO5LonqEXngHYM8UjF2lvn6BnNR4vCmFNZfMFXpafR7jHSh7VOdBwnCngA==
   dependencies:
     "@tanstack/history" "1.61.1"
     "@tanstack/react-store" "^0.5.6"
@@ -7261,10 +7261,10 @@
   dependencies:
     undici-types "~5.26.4"
 
-"@types/node@22.8.6":
-  version "22.8.6"
-  resolved "https://registry.npmjs.org/@types/node/-/node-22.8.6.tgz#e8a0c0871623283d8b3ef7d7b9b1bfdfd3028e22"
-  integrity sha512-tosuJYKrIqjQIlVCM4PEGxOmyg3FCPa/fViuJChnGeEIhjA46oy8FMVoF9su1/v8PNs2a8Q0iFNyOx0uOF91nw==
+"@types/node@22.8.7":
+  version "22.8.7"
+  resolved "https://registry.npmjs.org/@types/node/-/node-22.8.7.tgz#04ab7a073d95b4a6ee899f235d43f3c320a976f4"
+  integrity sha512-LidcG+2UeYIWcMuMUpBKOnryBWG/rnmOHQR5apjn8myTQcx3rinFRn7DcIFhMnS0PPFSC6OafdIKEad0lj6U0Q==
   dependencies:
     undici-types "~6.19.8"
 
@@ -13155,10 +13155,10 @@ handle-thing@^2.0.0:
   resolved "https://registry.npmjs.org/handle-thing/-/handle-thing-2.0.1.tgz#857f79ce359580c340d43081cc648970d0bb234e"
   integrity sha512-9Qn4yBxelxoh2Ow62nP+Ka/kMnOXRi8BXnRaUwezLNhqelnN49xKz4F/dPP8OYLxLxq6JDtZb2i9XznUQbNPTg==
 
-happy-dom@15.8.0:
-  version "15.8.0"
-  resolved "https://registry.npmjs.org/happy-dom/-/happy-dom-15.8.0.tgz#3c461abbf1bb67fa1191686d639aef6f6f88f258"
-  integrity sha512-LwBvPvR4MQ1xfrf4gbWRJzeL2xQqWiEiHvZF5uA1AwlCCgjH9ht0fGVXciRGQCghdHAIXw1zGX1mJ6a3O0fpeA==
+happy-dom@15.8.3:
+  version "15.8.3"
+  resolved "https://registry.npmjs.org/happy-dom/-/happy-dom-15.8.3.tgz#ee3b6b680f478f36b646113aae6fffe7cc59ff38"
+  integrity sha512-YR9nUWN/T2bH7pPLEYMhTp4DQExPH+mC4KulJDgimCb+FY3Er0Vp6SOOcBXrNfMTri3lAk9uSZqUTG2hgZOYwg==
   dependencies:
     entities "^4.5.0"
     webidl-conversions "^7.0.0"
