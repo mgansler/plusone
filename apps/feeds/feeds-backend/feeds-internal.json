@@ -4,7 +4,6 @@
     "/api/admin/stats": {
       "get": {
         "operationId": "getAdminStats",
-        "summary": "",
         "parameters": [],
         "responses": {
           "200": {
@@ -18,20 +17,20 @@
             }
           }
         },
-        "tags": [
-          "admin"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
         ]
       }
     },
     "/api/article/mark-articles-read": {
       "post": {
         "operationId": "mark-articles-read",
-        "summary": "",
         "parameters": [
           {
             "name": "s",
@@ -57,20 +56,20 @@
             "description": "All articles have been marked as read."
           }
         },
-        "tags": [
-          "article"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "article"
         ]
       }
     },
     "/api/article/{articleId}": {
       "post": {
         "operationId": "toggle-unread",
-        "summary": "",
         "parameters": [
           {
             "name": "articleId",
@@ -104,20 +103,20 @@
             }
           }
         },
-        "tags": [
-          "article"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "article"
         ]
       }
     },
     "/api/article/{articleId}/star": {
       "put": {
         "operationId": "star-article",
-        "summary": "",
         "parameters": [
           {
             "name": "articleId",
@@ -145,20 +144,20 @@
             "description": ""
           }
         },
-        "tags": [
-          "article"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "article"
         ]
       }
     },
     "/api/article/find": {
       "get": {
         "operationId": "find-articles",
-        "summary": "",
         "parameters": [
           {
             "name": "s",
@@ -227,20 +226,20 @@
             }
           }
         },
-        "tags": [
-          "article"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "article"
         ]
       }
     },
     "/api/article/recentlyRead": {
       "get": {
         "operationId": "recently-read-articles",
-        "summary": "",
         "parameters": [],
         "responses": {
           "200": {
@@ -257,20 +256,20 @@
             }
           }
         },
-        "tags": [
-          "article"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "article"
         ]
       }
     },
     "/api/authentication/login": {
       "post": {
         "operationId": "login",
-        "summary": "",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -295,6 +294,7 @@
             }
           }
         },
+        "summary": "",
         "tags": [
           "authentication"
         ]
@@ -303,27 +303,26 @@
     "/api/authentication/logout": {
       "get": {
         "operationId": "logout",
-        "summary": "",
         "parameters": [],
         "responses": {
           "200": {
             "description": ""
           }
         },
-        "tags": [
-          "authentication"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "authentication"
         ]
       }
     },
     "/api/authentication/register": {
       "post": {
         "operationId": "register",
-        "summary": "",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -347,6 +346,7 @@
             }
           }
         },
+        "summary": "",
         "tags": [
           "authentication"
         ]
@@ -355,7 +355,6 @@
     "/api/authentication/profile": {
       "get": {
         "operationId": "profile",
-        "summary": "",
         "parameters": [],
         "responses": {
           "200": {
@@ -369,20 +368,20 @@
             }
           }
         },
-        "tags": [
-          "authentication"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "authentication"
         ]
       }
     },
     "/api/authentication/refresh": {
       "get": {
         "operationId": "refresh",
-        "summary": "",
         "parameters": [],
         "responses": {
           "200": {
@@ -396,20 +395,20 @@
             }
           }
         },
-        "tags": [
-          "authentication"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "authentication"
         ]
       }
     },
     "/api/boot-info": {
       "get": {
         "operationId": "boot-info",
-        "summary": "",
         "parameters": [],
         "responses": {
           "200": {
@@ -423,6 +422,7 @@
             }
           }
         },
+        "summary": "",
         "tags": [
           "boot-info"
         ]
@@ -431,7 +431,6 @@
     "/api/feed": {
       "post": {
         "operationId": "add-feed",
-        "summary": "",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -456,18 +455,18 @@
             }
           }
         },
-        "tags": [
-          "feed"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "feed"
         ]
       },
       "get": {
         "operationId": "get-user-feeds",
-        "summary": "",
         "parameters": [],
         "responses": {
           "200": {
@@ -484,20 +483,20 @@
             }
           }
         },
-        "tags": [
-          "feed"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "feed"
         ]
       }
     },
     "/api/feed/discover": {
       "post": {
         "operationId": "discover-feed",
-        "summary": "",
         "parameters": [
           {
             "name": "url",
@@ -521,20 +520,20 @@
             }
           }
         },
-        "tags": [
-          "feed"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "feed"
         ]
       }
     },
     "/api/feed/import": {
       "post": {
         "operationId": "import-feeds",
-        "summary": "",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -555,20 +554,20 @@
             "description": ""
           }
         },
-        "tags": [
-          "feed"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "feed"
         ]
       }
     },
     "/api/feed/{id}/settings": {
       "get": {
         "operationId": "get-feed-settings",
-        "summary": "",
         "parameters": [
           {
             "name": "id",
@@ -592,18 +591,18 @@
             }
           }
         },
-        "tags": [
-          "feed"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "feed"
         ]
       },
       "put": {
         "operationId": "update-feed-settings",
-        "summary": "",
         "parameters": [
           {
             "name": "id",
@@ -630,20 +629,20 @@
             "description": ""
           }
         },
-        "tags": [
-          "feed"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "feed"
         ]
       }
     },
     "/api/feed/{id}/tags": {
       "get": {
         "operationId": "get-feed-tags",
-        "summary": "",
         "parameters": [
           {
             "name": "id",
@@ -670,18 +669,18 @@
             }
           }
         },
-        "tags": [
-          "feed"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "feed"
         ]
       },
       "post": {
         "operationId": "tag-feed",
-        "summary": "",
         "parameters": [
           {
             "name": "id",
@@ -709,18 +708,18 @@
             "description": ""
           }
         },
-        "tags": [
-          "feed"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "feed"
         ]
       },
       "delete": {
         "operationId": "untag-feed",
-        "summary": "",
         "parameters": [
           {
             "name": "id",
@@ -748,20 +747,20 @@
             "description": ""
           }
         },
-        "tags": [
-          "feed"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "feed"
         ]
       }
     },
     "/api/tag": {
       "get": {
         "operationId": "get-tags",
-        "summary": "",
         "parameters": [],
         "responses": {
           "200": {
@@ -778,18 +777,18 @@
             }
           }
         },
-        "tags": [
-          "tag"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "tag"
         ]
       },
       "post": {
         "operationId": "add-tag",
-        "summary": "",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -814,20 +813,20 @@
             }
           }
         },
-        "tags": [
-          "tag"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "tag"
         ]
       }
     },
     "/api/tag/{id}": {
       "delete": {
         "operationId": "remove-tag",
-        "summary": "",
         "parameters": [
           {
             "name": "id",
@@ -844,20 +843,20 @@
             "description": ""
           }
         },
-        "tags": [
-          "tag"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "tag"
         ]
       }
     },
     "/api/health": {
       "get": {
         "operationId": "getHealthStatus",
-        "summary": "",
         "parameters": [],
         "responses": {
           "200": {
@@ -1018,6 +1017,7 @@
             }
           }
         },
+        "summary": "",
         "tags": [
           "health"
         ]
@@ -1026,27 +1026,26 @@
     "/api/scheduling/now": {
       "post": {
         "operationId": "force-fetching",
-        "summary": "",
         "parameters": [],
         "responses": {
           "201": {
             "description": "Fetching all feeds has been triggered."
           }
         },
-        "tags": [
-          "scheduling"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "scheduling"
         ]
       }
     },
     "/api/user": {
       "get": {
         "operationId": "get-users",
-        "summary": "",
         "parameters": [],
         "responses": {
           "200": {
@@ -1063,20 +1062,20 @@
             }
           }
         },
-        "tags": [
-          "user"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "user"
         ]
       }
     },
     "/api/user/{userId}": {
       "delete": {
         "operationId": "delete-user",
-        "summary": "",
         "parameters": [
           {
             "name": "userId",
@@ -1091,13 +1090,14 @@
             "description": "User has been deleted"
           }
         },
-        "tags": [
-          "user"
-        ],
         "security": [
           {
             "bearer": []
           }
+        ],
+        "summary": "",
+        "tags": [
+          "user"
         ]
       }
     }
@@ -1410,7 +1410,11 @@
             "type": "boolean"
           },
           "order": {
-            "$ref": "#/components/schemas/Sort"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Sort"
+              }
+            ]
           },
           "expandContent": {
             "type": "boolean"
@@ -1478,7 +1482,11 @@
             "type": "boolean"
           },
           "order": {
-            "$ref": "#/components/schemas/Sort"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Sort"
+              }
+            ]
           }
         },
         "required": [
@@ -1503,7 +1511,11 @@
             "type": "boolean"
           },
           "order": {
-            "$ref": "#/components/schemas/Sort"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Sort"
+              }
+            ]
           },
           "title": {
             "type": "string"

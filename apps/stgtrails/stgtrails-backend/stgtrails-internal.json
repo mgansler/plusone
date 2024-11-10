@@ -4,7 +4,6 @@
     "/api/health": {
       "get": {
         "operationId": "getHealthStatus",
-        "summary": "",
         "parameters": [],
         "responses": {
           "200": {
@@ -165,6 +164,7 @@
             }
           }
         },
+        "summary": "",
         "tags": [
           "health"
         ]
@@ -173,7 +173,6 @@
     "/api/sunrise-sunset": {
       "get": {
         "operationId": "getSunriseSunsetForTrailArea",
-        "summary": "",
         "parameters": [
           {
             "name": "trailAreaId",
@@ -207,6 +206,7 @@
             }
           }
         },
+        "summary": "",
         "tags": [
           "sunrise-sunset"
         ]
@@ -215,7 +215,6 @@
     "/api/trailAreas": {
       "post": {
         "operationId": "createTrailArea",
-        "summary": "",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -239,13 +238,13 @@
             }
           }
         },
+        "summary": "",
         "tags": [
           "trail-area"
         ]
       },
       "get": {
         "operationId": "getTrailAreas",
-        "summary": "",
         "parameters": [],
         "responses": {
           "200": {
@@ -262,6 +261,7 @@
             }
           }
         },
+        "summary": "",
         "tags": [
           "trail-area"
         ]
@@ -270,7 +270,6 @@
     "/api/trailAreas/{trailAreaId}": {
       "put": {
         "operationId": "updateTrailArea",
-        "summary": "",
         "parameters": [
           {
             "name": "trailAreaId",
@@ -303,13 +302,13 @@
             }
           }
         },
+        "summary": "",
         "tags": [
           "trail-area"
         ]
       },
       "delete": {
         "operationId": "deleteTrailArea",
-        "summary": "",
         "parameters": [
           {
             "name": "trailAreaId",
@@ -325,6 +324,7 @@
             "description": ""
           }
         },
+        "summary": "",
         "tags": [
           "trail-area"
         ]
@@ -333,7 +333,6 @@
     "/api/trailAreas/{trailAreaId}/trails": {
       "post": {
         "operationId": "createTrail",
-        "summary": "",
         "parameters": [
           {
             "name": "trailAreaId",
@@ -366,13 +365,13 @@
             }
           }
         },
+        "summary": "",
         "tags": [
           "trail-area"
         ]
       },
       "get": {
         "operationId": "getTrailsOfArea",
-        "summary": "",
         "parameters": [
           {
             "name": "trailAreaId",
@@ -398,6 +397,7 @@
             }
           }
         },
+        "summary": "",
         "tags": [
           "trail-area"
         ]
@@ -406,7 +406,6 @@
     "/api/trailAreas/trails/{trailId}": {
       "put": {
         "operationId": "updateTrail",
-        "summary": "",
         "parameters": [
           {
             "name": "trailId",
@@ -432,13 +431,13 @@
             "description": ""
           }
         },
+        "summary": "",
         "tags": [
           "trail-area"
         ]
       },
       "delete": {
         "operationId": "deleteTrail",
-        "summary": "",
         "parameters": [
           {
             "name": "trailId",
@@ -454,6 +453,7 @@
             "description": ""
           }
         },
+        "summary": "",
         "tags": [
           "trail-area"
         ]
@@ -462,7 +462,6 @@
     "/api/weather": {
       "get": {
         "operationId": "getWeatherDataForTrailArea",
-        "summary": "",
         "parameters": [
           {
             "name": "trailAreaId",
@@ -504,6 +503,7 @@
             }
           }
         },
+        "summary": "",
         "tags": [
           "weather"
         ]

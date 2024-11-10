@@ -4,7 +4,6 @@
     "/api/public/apple-shortcuts/{hash}": {
       "post": {
         "operationId": "triggerAppleShortcutsCommand",
-        "summary": "Trigger a predefined command via apple shortcuts.",
         "parameters": [
           {
             "name": "hash",
@@ -23,6 +22,7 @@
             "description": "The provided command doesn't exist"
           }
         },
+        "summary": "Trigger a predefined command via apple shortcuts.",
         "tags": [
           "public",
           "apple-shortcuts"
@@ -32,7 +32,6 @@
     "/api/public/stream-deck/toggle/{macAddress}": {
       "get": {
         "operationId": "toggle-device-power-state",
-        "summary": "Toggles devices on and off.",
         "parameters": [
           {
             "name": "macAddress",
@@ -48,6 +47,7 @@
             "description": ""
           }
         },
+        "summary": "Toggles devices on and off.",
         "tags": [
           "public",
           "stream-deck"
