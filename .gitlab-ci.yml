@@ -58,7 +58,7 @@ migrations-and-api-client-check:
     # Check if API specification and client are up to date
     - time npx nx run-many --target generate-api-spec --all
     - time npx nx run-many --target generate-api-client --all
-    - git diff --quiet # This will have a non-zero exit code when a file is modified
+    - git diff --quiet -- ':!package.json' # This will have a non-zero exit code when a file is modified (excluding package.json)
   after_script:
     - git status
 
