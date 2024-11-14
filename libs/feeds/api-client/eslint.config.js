@@ -17,5 +17,5 @@ module.exports = [
     // Override or add rules here
     rules: {},
   },
-  { ignores: ['libs/feeds/api-client/src/client.ts'] },
+  { ignores: ['libs/feeds/api-client/src/gen/client.ts'] },
 ]

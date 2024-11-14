@@ -5,7 +5,7 @@ module.exports = defineConfig({
     input: { target: '../../../apps/stgtrails/stgtrails-backend/stgtrails-internal.json' },
     output: {
       client: 'react-query',
-      target: './src/client.ts',
+      target: './src/gen/client.ts',
       override: {
         mutator: {
           path: './src/custom-axios.ts',
@@ -21,7 +21,7 @@ module.exports = defineConfig({
     input: { target: '../../../apps/stgtrails/stgtrails-backend/stgtrails-internal.json' },
     output: {
       client: 'zod',
-      target: './src/zod.ts',
+      target: './src/gen/zod.ts',
       override: {
         zod: {
           generate: {

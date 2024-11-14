@@ -17,7 +17,7 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query'
-import { customAxiosInstance } from './custom-axios'
+import { customAxiosInstance } from '../custom-axios'
 /**
  * @nullable
  */

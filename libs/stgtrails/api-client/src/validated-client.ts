@@ -5,13 +5,13 @@ import {
   useGetTrailAreas,
   useGetTrailsOfArea,
   useGetWeatherDataForTrailArea,
-} from './client'
+} from './gen/client'
 import {
   getSunriseSunsetForTrailAreaResponse,
   getTrailAreasResponse,
   getTrailsOfAreaResponse,
   getWeatherDataForTrailAreaResponse,
-} from './zod'
+} from './gen/zod'
 
 export const useValidatedTrailAreas = buildValidatedUseQueryWrapper(useGetTrailAreas, getTrailAreasResponse)
 

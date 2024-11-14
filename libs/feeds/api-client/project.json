@@ -9,7 +9,17 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "yarn orval --config libs/feeds/api-client/orval.config.ts"
-      }
+      },
+      "cache": true,
+      "inputs": [
+        {
+          "externalDependencies": ["orval"]
+        },
+        "{projectRoot}/src/**/*",
+        "!{projectRoot}/src/gen/*",
+        "{workspaceRoot}/apps/feeds/feeds-backend/feeds-internal.json"
+      ],
+      "outputs": ["{projectRoot}/src/gen/*"]
     },
     "lint": {
       "executor": "@nx/eslint:lint",

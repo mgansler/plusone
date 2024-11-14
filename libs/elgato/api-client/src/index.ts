@@ -1,2 +1,2 @@
-export * from './client'
+export * from './gen/client'
 export * from './validated-client'

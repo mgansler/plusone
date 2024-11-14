@@ -1,7 +1,7 @@
 import { buildValidatedUseQueryWrapper } from '@plusone/validated-query-factory'
 
-import { useBootInfo, useGetFeedSettings } from './client'
-import { bootInfoResponse, getFeedSettingsResponse } from './zod'
+import { useBootInfo, useGetFeedSettings } from './gen/client'
+import { bootInfoResponse, getFeedSettingsResponse } from './gen/zod'
 
 export const useValidatedBootInfo = buildValidatedUseQueryWrapper(useBootInfo, bootInfoResponse)
 
