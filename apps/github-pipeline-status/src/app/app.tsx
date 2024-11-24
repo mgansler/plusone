@@ -3,11 +3,13 @@ import { AppBar, CssBaseline, Toolbar, Typography } from '@mui/material'
 import { createStyles, makeStyles } from '@mui/styles'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
+import { Route, Routes } from 'react-router-dom'
 
 import { DarkModeThemeProvider } from '@plusone/dark-mode-theme-provider'
 
 import { OctokitProvider } from './octokit-provider/octokit-provider'
 import { Organizations } from './organizations/organizations'
+import { OrganizationsBootstrap } from './organizations/organizations-bootstrap'
 import { UserInfo } from './user-info/user-info'
 
 const useClassNames = makeStyles<Theme>((theme) =>
@@ -42,6 +44,10 @@ export function AppWithProviders() {
       </AppBar>
 
       <main className={classNames.main}>
+        <Routes>
+          <Route path={''} element={<OrganizationsBootstrap />} />
+          <Route path={'/organization/:organizationName'} element={<Organizations />} />
+        </Routes>
         <Organizations />
       </main>
     </React.Fragment>

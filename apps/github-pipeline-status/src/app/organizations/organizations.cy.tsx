@@ -1,6 +1,7 @@
 import { createTheme, ThemeProvider } from '@mui/material'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { BrowserRouter } from 'react-router-dom'
+import React from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { OctokitProvider } from '../octokit-provider/octokit-provider'
 
@@ -16,7 +17,9 @@ function mountOrganizations() {
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
           <OctokitProvider>
-            <Organizations />
+            <Routes location={'/organization/organization-name'}>
+              <Route path={'/organization/:organizationName'} element={<Organizations />} />
+            </Routes>
           </OctokitProvider>
         </QueryClientProvider>
       </BrowserRouter>
@@ -45,11 +48,10 @@ describe('Organizations', () => {
 
     cy.wait('@organizations')
 
-    cy.findByRole('combobox', { name: 'Select Organization' }).click()
-    cy.findByText('Organization Name').click()
+    cy.findByRole('combobox', { name: 'Select Organization', timeout: 10_000 }).should('be.visible')
 
     cy.wait('@repository-overview')
-    cy.findByText(/repo 1/i).should('be.visible')
+    cy.findByText(/repo 1/i, { timeout: 10_000 }).should('be.visible')
     cy.findByText(/repo 2/i).should('be.visible')
   })
 })

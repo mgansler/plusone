@@ -35,13 +35,16 @@ export const useGitHubPagination = (pageSize: number): GitHubPagination => {
     }))
   }
 
-  const onSuccess = (pageInfo: PageInfo, elementCount: number) => {
-    setPages((prevState) => ({
-      ...prevState,
-      totalPages: Math.floor(elementCount / pageSize) + 1,
-      [pages.currentPage]: pageInfo,
-    }))
-  }
+  const onSuccess = useCallback(
+    (pageInfo: PageInfo, elementCount: number) => {
+      setPages((prevState) => ({
+        ...prevState,
+        totalPages: Math.floor(elementCount / pageSize) + 1,
+        [pages.currentPage]: pageInfo,
+      }))
+    },
+    [pageSize, pages.currentPage],
+  )
 
   const getPageRequest = () => (pages[pages.currentPage - 1] ? pages[pages.currentPage - 1].endCursor : null)
 

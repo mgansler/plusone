@@ -1,43 +1,13 @@
 import type { Theme } from '@mui/material'
 import { FormControl, InputLabel, LinearProgress, MenuItem, Paper, Select, Toolbar } from '@mui/material'
 import { createStyles, makeStyles } from '@mui/styles'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import type { MutableRefObject, RefObject } from 'react'
-import { useEffect, useRef } from 'react'
-import { Route, Routes, useMatch, useNavigate } from 'react-router-dom'
+import { useRef } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
-import { OrganizationsDocument } from '@plusone/github-schema'
-import type { OrganizationsQuery } from '@plusone/github-schema'
-import { useGitHubPagination } from '@plusone/github-hooks'
-
-import { useOctokit } from '../octokit-provider/octokit-provider'
 import { RepositoryOverview } from '../repository-overview/repository-overview'
 
-const useOrganizationName = (): string => {
-  const match = useMatch('/organization/:organizationName')
-  return match?.params.organizationName || ''
-}
-
-const PAGE_SIZE = 100
-const useFetchOrganizations = () => {
-  const { pages, onSuccess, getPageRequest } = useGitHubPagination(PAGE_SIZE)
-
-  const octokit = useOctokit()
-  const { data, isLoading } = useQuery<OrganizationsQuery>({
-    queryKey: ['organizations', pages.currentPage],
-    queryFn: async () =>
-      octokit.graphql<OrganizationsQuery>(OrganizationsDocument, { first: PAGE_SIZE, after: getPageRequest() }),
-    placeholderData: keepPreviousData,
-  })
-
-  useEffect(() => {
-    if (!isLoading && data) {
-      onSuccess(data.viewer.organizations.pageInfo, data.viewer.organizations.totalCount)
-    }
-  }, [data, isLoading, onSuccess])
-
-  return { data, isLoading }
-}
+import { useFetchOrganizations } from './organizations-bootstrap'
 
 const useStyles = makeStyles<Theme>((theme) =>
   createStyles({
@@ -54,7 +24,7 @@ export function Organizations() {
   const classNames = useStyles()
 
   const navigate = useNavigate()
-  const organizationName = useOrganizationName()
+  const { organizationName } = useParams()
 
   const { data, isLoading } = useFetchOrganizations()
 
@@ -62,6 +32,9 @@ export function Organizations() {
 
   if (isLoading || data === undefined) {
     return <LinearProgress />
+  }
+  if (organizationName === undefined) {
+    return null
   }
 
   return (
@@ -86,13 +59,7 @@ export function Organizations() {
         </FormControl>
       </Toolbar>
 
-      <Routes>
-        <Route path={'/'} element={null} />
-        <Route
-          path={'/organization/:organizationName'}
-          element={<RepositoryOverview toolbarRef={toolbar as MutableRefObject<HTMLDivElement>} />}
-        />
-      </Routes>
+      <RepositoryOverview toolbarRef={toolbar as MutableRefObject<HTMLDivElement>} />
     </Paper>
   )
 }
