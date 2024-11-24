@@ -29,12 +29,22 @@ describe('github-pipeline-status', () => {
 
   it('should be able to select an organization', () => {
     cy.findByLabelText(/select organization/i).click()
-    cy.findByText(/test org 1/i).click()
+    cy.findByRole('option', { name: /test org 2/i }).should('be.visible')
+    cy.findByRole('option', { name: /test org 1/i })
+      .should('be.visible')
+      .click()
+
+    // test org 1 should now be selected
     cy.findByText(/test org 1/i).should('be.visible')
     cy.findByText(/test org 2/i).should('not.exist')
 
     cy.findByLabelText(/select organization/i).click()
-    cy.findByText(/test org 2/i).click()
+    cy.findByRole('option', { name: /test org 1/i }).should('be.visible')
+    cy.findByRole('option', { name: /test org 2/i })
+      .should('be.visible')
+      .click()
+
+    // test org 2 should now be selected
     cy.findByText(/test org 1/i).should('not.exist')
     cy.findByText(/test org 2/i).should('be.visible')
   })
