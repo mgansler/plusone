@@ -4,10 +4,7 @@ import {
   useValidatedWeatherDataForTrailArea,
 } from '@plusone/stgtrails-api-client'
 
-import { rootRoute } from '../routes'
-
 import { getUtcOffsetHours } from './get-utc-offset-hours'
-import { WeatherDiagramLegacy } from './weather-diagram-legacy'
 import { WeatherDiagramSvg } from './weather-diagram-svg'
 
 type TrailAreaProps = {
@@ -25,8 +22,6 @@ export function TrailArea({ trailAreaId, threshold = 0.3, hours }: TrailAreaProp
       query: { refetchInterval: 30_000 },
     },
   )
-  const { legacy } = rootRoute.useSearch()
-
   if (!weather || !sunriseSunset) {
     return null
   }
@@ -48,11 +43,8 @@ export function TrailArea({ trailAreaId, threshold = 0.3, hours }: TrailAreaProp
     <>
       <ul>{trails?.map((trail) => <li key={trail.id}>{trail.name}</li>)}</ul>
       <div>The total amount of rain over the past 24h was {rainPast24h.toFixed(1)}l.</div>
-      {legacy ? (
-        <WeatherDiagramLegacy hours={hours} weather={weather} />
-      ) : (
-        <WeatherDiagramSvg threshold={threshold} weather={weather} sunriseSunset={sunriseSunset} />
-      )}
+
+      <WeatherDiagramSvg threshold={threshold as number} weather={weather} sunriseSunset={sunriseSunset} />
     </>
   )
 }
