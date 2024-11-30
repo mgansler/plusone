@@ -33,6 +33,8 @@ export class WeatherService {
             soilMoisture1To3cm: true,
             soilMoisture3To9cm: true,
             soilMoisture9To27cm: true,
+            soilTemperature0cm: true,
+            soilTemperature6cm: true,
           },
           where: { trailAreaId },
           take: hours,
@@ -40,7 +42,7 @@ export class WeatherService {
           // Only works when we are east of utc (positive offset).
           skip: Math.max(0, utcOffsetHours),
           orderBy: {
-            time: 'desc',
+            time: Prisma.SortOrder.desc,
           },
         })
         // We take the last entries from the database and reverse the order so that the client receives the data in natural order.
@@ -73,6 +75,8 @@ export class WeatherService {
               soilMoisture1To3cm: weatherData.soilMoisture1To3cm[currentIndex],
               soilMoisture3To9cm: weatherData.soilMoisture3To9cm[currentIndex],
               soilMoisture9To27cm: weatherData.soilMoisture9To27cm[currentIndex],
+              soilTemperature0cm: weatherData.soilTemperature0cm[currentIndex],
+              soilTemperature6cm: weatherData.soilTemperature6cm[currentIndex],
             },
           ]
         },

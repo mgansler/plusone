@@ -16,12 +16,14 @@ export class WeatherApiService {
     soilMoisture1To3cm: 'soil_moisture_1_to_3cm',
     soilMoisture3To9cm: 'soil_moisture_3_to_9cm',
     soilMoisture9To27cm: 'soil_moisture_9_to_27cm',
+    soilTemperature0cm: 'soil_temperature_0cm',
+    soilTemperature6cm: 'soil_temperature_6cm',
   }
   private static HOURLY_WEATHER_VARIABLES = Object.values(WeatherApiService.WEATHER_VARIABLES)
 
   public async fetchWeatherData(
     params: FetchWeatherDataParams,
-  ): Promise<Record<keyof typeof WeatherApiService.WEATHER_VARIABLES, Float32Array> & { time: Array<Date> }> {
+  ): Promise<Record<keyof typeof WeatherApiService.WEATHER_VARIABLES, Float32Array<never>> & { time: Array<Date> }> {
     const responses = await fetchWeatherApi('https://api.open-meteo.com/v1/forecast', {
       past_days: 1,
       forecast_days: 3,
@@ -51,7 +53,7 @@ export class WeatherApiService {
             [currentValue]: hourly.variables(currentIndex)?.valuesArray(),
           }
         },
-        {} as Record<keyof typeof WeatherApiService.WEATHER_VARIABLES, Float32Array>,
+        {} as Record<keyof typeof WeatherApiService.WEATHER_VARIABLES, Float32Array<never>>,
       ),
     }
   }

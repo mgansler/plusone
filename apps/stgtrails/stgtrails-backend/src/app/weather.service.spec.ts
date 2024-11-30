@@ -42,6 +42,8 @@ describe('WeatherService', () => {
               soilMoisture1To3cm: [0.3, 0.35, 0.4],
               soilMoisture3To9cm: [0.4, 0.45, 0.5],
               soilMoisture9To27cm: [0.5, 0.55, 0.6],
+              soilTemperature0cm: [-0.1, -0.2, -0.3],
+              soilTemperature6cm: [-1.0, -1.1, -1.2],
             }),
           },
         },

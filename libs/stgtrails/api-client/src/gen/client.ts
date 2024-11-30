@@ -108,6 +108,8 @@ export interface WeatherDataResponseDto {
   soilMoisture1To3cm: number
   soilMoisture3To9cm: number
   soilMoisture9To27cm: number
+  soilTemperature0cm: number
+  soilTemperature6cm: number
   temperature2m: number
   time: string
 }

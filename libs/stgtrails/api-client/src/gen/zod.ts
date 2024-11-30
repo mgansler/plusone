@@ -108,6 +108,8 @@ export const getWeatherDataForTrailAreaResponseItem = zod
     soilMoisture1To3cm: zod.number(),
     soilMoisture3To9cm: zod.number(),
     soilMoisture9To27cm: zod.number(),
+    soilTemperature0cm: zod.number(),
+    soilTemperature6cm: zod.number(),
   })
   .strict()
 export const getWeatherDataForTrailAreaResponse = zod.array(getWeatherDataForTrailAreaResponseItem)

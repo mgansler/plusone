@@ -109,7 +109,7 @@ export class ArticleService {
         },
       },
       where: { userId },
-      orderBy: { cursor: 'desc' },
+      orderBy: { cursor: Prisma.SortOrder.desc },
     })
 
     return recentlyRead.map(({ article: { UserArticle, ...article } }) => ({
@@ -132,7 +132,7 @@ export class ArticleService {
           await tx.recentlyRead.findMany({
             select: { cursor: true },
             where: { userId },
-            orderBy: { cursor: 'desc' },
+            orderBy: { cursor: Prisma.SortOrder.desc },
             take: Math.max(this.configService.get('RECENTLY_READ_COUNT') - 1, 1),
           })
         ).map((e) => e.cursor)
@@ -209,7 +209,7 @@ export class ArticleService {
   }: Pick<ArticleFindParams, 'includeRead' | 'sort'>): Prisma.UserArticleFindManyArgs['orderBy'] {
     // When read articles are supposed to be included we don't sort for the unread property.
     // Otherwise, read articles will show up after all unread articles.
-    const orderBy: Prisma.UserArticleFindManyArgs['orderBy'] = includeRead ? [] : [{ unread: 'desc' }]
+    const orderBy: Prisma.UserArticleFindManyArgs['orderBy'] = includeRead ? [] : [{ unread: Prisma.SortOrder.desc }]
     orderBy.push({ cursor: sort })
     return orderBy
   }

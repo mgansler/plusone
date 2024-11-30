@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 
 import { SunriseSunsetApiService } from '@plusone/nestjs-services'
-import { PrismaService, TrailArea } from '@plusone/stgtrails-persistence'
+import { Prisma, PrismaService, TrailArea } from '@plusone/stgtrails-persistence'
 
 @Injectable()
 export class SunriseSunsetService {
@@ -19,7 +19,7 @@ export class SunriseSunsetService {
       where: { trailAreaId },
       take: days + 1, // timezones are weird, make sure to create an overlap
       orderBy: {
-        date: 'desc',
+        date: Prisma.SortOrder.desc,
       },
     })
   }

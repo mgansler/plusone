@@ -186,7 +186,7 @@ export class FeedService {
       const userFeeds = await tx.userFeed.findMany({
         include: { tags: true, feed: true },
         where: { userId: user.id },
-        orderBy: { title: 'asc' },
+        orderBy: { title: Prisma.SortOrder.asc },
       })
 
       const userFeedResponses: Array<UserFeedResponseDto> = []

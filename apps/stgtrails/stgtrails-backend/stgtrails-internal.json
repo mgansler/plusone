@@ -690,6 +690,12 @@
           },
           "soilMoisture9To27cm": {
             "type": "number"
+          },
+          "soilTemperature0cm": {
+            "type": "number"
+          },
+          "soilTemperature6cm": {
+            "type": "number"
           }
         },
         "required": [
@@ -699,7 +705,9 @@
           "soilMoisture0To1cm",
           "soilMoisture1To3cm",
           "soilMoisture3To9cm",
-          "soilMoisture9To27cm"
+          "soilMoisture9To27cm",
+          "soilTemperature0cm",
+          "soilTemperature6cm"
         ]
       }
     }
