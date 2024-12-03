@@ -6404,10 +6404,10 @@
   dependencies:
     defer-to-connect "^2.0.1"
 
-"@tanstack/history@1.81.9":
-  version "1.81.9"
-  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.81.9.tgz#5b0beea542eb3ba0211966fcff829df23976227f"
-  integrity sha512-9MPknhhnvZKifK4jSvva6NDqYQwsNaptrRzO4ejk6yCLyi4koVG4u3C4VCeClYZY5etLEQbO8wXU9knEFZpMeg==
+"@tanstack/history@1.85.3":
+  version "1.85.3"
+  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.85.3.tgz#c137958805e761659f97a2af9825a98a90d95a04"
+  integrity sha512-62z1qXIILvjdkQyMTVPFQedHOc6kQgunz9GHV9jSy2z1ixsDqyI9GxNj3AWx8Ucmhjwd5/P+v3XN10bsb+FzRA==
 
 "@tanstack/query-core@5.62.1":
   version "5.62.1"
@@ -6433,12 +6433,12 @@
   dependencies:
     "@tanstack/query-core" "5.62.1"
 
-"@tanstack/react-router@1.85.0":
-  version "1.85.0"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.85.0.tgz#18d6eac047ae06e38d54eb5c7338d96bc5160be9"
-  integrity sha512-97v99aupSRajxM3jESPhJ4cq/Jxy1cdN4SYizS6eQu3106QCaOz6nciQGbcRJvwAhWyElKWhs9NYHYK4hc4PVA==
+"@tanstack/react-router@1.85.3":
+  version "1.85.3"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.85.3.tgz#3cb1fc3fa7a6efdd0e1ee5e2ca98b86e9e9c7baf"
+  integrity sha512-QgX3fuc0W941TE6PDM2YmMdF2WrDFIv7DN3ATuCiezUF4Fn5xvB0QUy9Uabdn/FQWugbnplG/REGCHtzem59uQ==
   dependencies:
-    "@tanstack/history" "1.81.9"
+    "@tanstack/history" "1.85.3"
     "@tanstack/react-store" "^0.6.1"
     jsesc "^3.0.2"
     tiny-invariant "^1.3.3"
@@ -10844,6 +10844,11 @@ dotenv@16.4.5, dotenv@^16.4.4, dotenv@~16.4.5:
   version "16.4.5"
   resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.4.5.tgz#cdd3b3b604cb327e286b4762e13502f717cb099f"
   integrity sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==
+
+dotenv@16.4.6:
+  version "16.4.6"
+  resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.4.6.tgz#fc88e8a664087abf3e19d61e21f7feee1849bbb1"
+  integrity sha512-JhcR/+KIjkkjiU8yEpaB/USlzVi3i5whwOjpIRNGi9svKEXZSe+Qp6IWAjFjv+2GViAoDRCUv/QLNziQxsLqDg==
 
 dotenv@^16.0.0:
   version "16.3.1"
@@ -18225,12 +18230,12 @@ react-router-dom@6.28.0:
     "@remix-run/router" "1.21.0"
     react-router "6.28.0"
 
-react-router-dom@7.0.1:
-  version "7.0.1"
-  resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-7.0.1.tgz#b1438100800313e1b4c48da0c5fdb498f81c7f96"
-  integrity sha512-duBzwAAiIabhFPZfDjcYpJ+f08TMbPMETgq254GWne2NW1ZwRHhZLj7tpSp8KGb7JvZzlLcjGUnqLxpZQVEPng==
+react-router-dom@7.0.2:
+  version "7.0.2"
+  resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-7.0.2.tgz#cbd7ce2db7112f1bc3e9eee3657ad32d7515a913"
+  integrity sha512-VJOQ+CDWFDGaWdrG12Nl+d7yHtLaurNgAQZVgaIy7/Xd+DojgmYLosFfZdGz1wpxmjJIAkAMVTKWcvkx1oggAw==
   dependencies:
-    react-router "7.0.1"
+    react-router "7.0.2"
 
 react-router@6.28.0:
   version "6.28.0"
@@ -18239,10 +18244,10 @@ react-router@6.28.0:
   dependencies:
     "@remix-run/router" "1.21.0"
 
-react-router@7.0.1:
-  version "7.0.1"
-  resolved "https://registry.npmjs.org/react-router/-/react-router-7.0.1.tgz#a171e35a5c6463f76b23353c4ce57b53c8b7b1b9"
-  integrity sha512-WVAhv9oWCNsja5AkK6KLpXJDSJCQizOIyOd4vvB/+eHGbYx5vkhcmcmwWjQ9yqkRClogi+xjEg9fNEOd5EX/tw==
+react-router@7.0.2:
+  version "7.0.2"
+  resolved "https://registry.npmjs.org/react-router/-/react-router-7.0.2.tgz#2820e107cb8cec8acc5db15a17470c056ea86022"
+  integrity sha512-m5AcPfTRUcjwmhBzOJGEl6Y7+Crqyju0+TgTQxoS4SO+BkWbhOrcfZNq6wSWdl2BBbJbsAoBUb8ZacOFT+/JlA==
   dependencies:
     "@types/cookie" "^0.6.0"
     cookie "^1.0.1"
