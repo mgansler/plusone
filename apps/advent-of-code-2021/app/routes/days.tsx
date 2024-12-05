@@ -1,5 +1,4 @@
-import { Outlet, useMatches } from '@remix-run/react'
-import { matchPath } from 'react-router-dom'
+import { matchPath, Outlet, useMatches } from '@remix-run/react'
 
 export default function () {
   const matches = useMatches()
