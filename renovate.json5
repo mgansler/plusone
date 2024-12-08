@@ -7,5 +7,12 @@
       matchPackageNames: ['node'],
       allowedVersions: '22.x',
     },
+    {
+      matchPackageNames: [
+        '@cypress/webpack-dev-server/webpack-dev-server/express/path-to-regexp',
+        '@nx/react/express/path-to-regexp',
+      ],
+      allowedVersions: '0.1.x',
+    },
   ],
 }
