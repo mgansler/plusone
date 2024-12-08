@@ -30,6 +30,10 @@ function getSunsetString(date: Date, sunriseSunsetData: Array<SunriseSunsetRespo
   return sunriseSunsetForDay ? `, Sunset at ${new Date(sunriseSunsetForDay.sunset).toLocaleTimeString()}` : ''
 }
 
+function getYForTemperature(temp: number): number {
+  return CHART_HEIGHT / 3 - temp * 3
+}
+
 type WeatherDiagramSvgProps = {
   weather: Array<WeatherDataResponseDto>
   sunriseSunset: Array<SunriseSunsetResponseDto>
@@ -48,7 +52,10 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
   }, [])
 
   const xForCurrentTimestamp = getXForTimestamp(Date.now(), weather)
-  const yForThreshold = CHART_HEIGHT * (1 - threshold)
+  const yForTemperatureThreshold = CHART_HEIGHT / 3
+  const yForMoistureThreshold = CHART_HEIGHT * (1 - threshold)
+
+  const mightBeFreezing = Math.min(...weather.map((w) => w.soilTemperature0cm)) < 5
 
   return (
     <>
@@ -77,8 +84,17 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
             />
           ))}
 
-          {/* horizontal line for threshold */}
-          <line stroke={'red'} x1={0} x2={CHART_WIDTH} y1={yForThreshold} y2={yForThreshold} />
+          {mightBeFreezing && (
+            <line
+              stroke={'orange'}
+              x1={0}
+              x2={CHART_WIDTH}
+              y1={yForTemperatureThreshold}
+              y2={yForTemperatureThreshold}
+            />
+          )}
+          {/* horizontal line moisture for threshold */}
+          <line stroke={'red'} x1={0} x2={CHART_WIDTH} y1={yForMoistureThreshold} y2={yForMoistureThreshold} />
 
           {/* vertical line representing "now" */}
           <text x={xForCurrentTimestamp + 5} y={54}>
@@ -126,7 +142,7 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
           {weather.map((w, i) => (
             <Circle
               key={i}
-              text={w.soilMoisture0To1cm.toFixed(2) + ' %'}
+              text={`Soil Moisture: ${w.soilMoisture0To1cm.toFixed(2)}%`}
               timestamp={new Date(w.time)}
               cx={getXForTimestamp(new Date(weather[i].time).valueOf(), weather)}
               cy={CHART_HEIGHT - w.soilMoisture0To1cm * CHART_HEIGHT}
@@ -135,6 +151,32 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
               portal={portalElement}
             />
           ))}
+
+          {/* soil temperature*/}
+          {mightBeFreezing && (
+            <polyline
+              stroke={'orange'}
+              fill={'none'}
+              points={weather
+                .map((w, i) => {
+                  return `${getXForTimestamp(new Date(weather[i].time).valueOf(), weather)} ${getYForTemperature(w.soilTemperature0cm)}`
+                })
+                .join(' ')}
+            />
+          )}
+          {mightBeFreezing &&
+            weather.map((w, i) => (
+              <Circle
+                key={i}
+                text={`Soil Temperature: ${w.soilTemperature0cm.toFixed(1)}˚C`}
+                timestamp={new Date(w.time)}
+                cx={getXForTimestamp(new Date(weather[i].time).valueOf(), weather)}
+                cy={getYForTemperature(w.soilTemperature0cm)}
+                r={3}
+                fill={'orange'}
+                portal={portalElement}
+              />
+            ))}
         </svg>
       )}
     </>
