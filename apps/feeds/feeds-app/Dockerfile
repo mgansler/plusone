@@ -1,5 +1,5 @@
 FROM node:22.12.0-alpine
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl openssl
 
 WORKDIR /usr/feeds
 CMD ["npm", "start"]
