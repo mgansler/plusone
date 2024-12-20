@@ -63,8 +63,8 @@ export function RecentlyReadArticleList({ articles }: ArticleListProps) {
     }
   }, [selectedArticle])
 
-  const containerRef = useRef<HTMLDivElement>()
-  const scrollTargetRef = useRef<HTMLDivElement>()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const scrollTargetRef = useRef<HTMLDivElement>(null)
 
   return (
     <Stack style={{ maxHeight: '100%', overflow: 'scroll' }} gap={1} ref={containerRef}>

@@ -18,7 +18,7 @@ type TokenInputProps = {
 }
 
 function TokenInput({ setToken }: TokenInputProps) {
-  const inputRef = useRef<HTMLInputElement>()
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleSubmit = () => {
     if (inputRef.current) {

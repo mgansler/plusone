@@ -1,4 +1,3 @@
-import { mount } from 'cypress/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 
 import { DinnerPlanStore } from '../store/dinner-plan.store'
@@ -18,7 +17,7 @@ describe('Day', () => {
 
   testCases.forEach(({ day, dayOfWeek }) =>
     it(`should render '${day}' for given dayOfWeek='${dayOfWeek}'`, () => {
-      mount(
+      cy.mount(
         <DinnerPlanStore>
           <MemoryRouter initialEntries={['/2021/01']}>
             <Routes>

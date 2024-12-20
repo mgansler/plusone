@@ -28,7 +28,7 @@ export function Organizations() {
 
   const { data, isLoading } = useFetchOrganizations()
 
-  const toolbar = useRef<HTMLDivElement>()
+  const toolbar = useRef<HTMLDivElement | null>(null)
 
   if (isLoading || data === undefined) {
     return <LinearProgress />

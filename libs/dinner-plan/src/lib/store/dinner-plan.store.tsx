@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useReducer } from 'react'
 import { useLocalStorage } from '@plusone/hooks'
 
 import { dinnerPlanReducer } from './reducer'
-import type { DinnerPlanActions, DinnerPlanReducer, DinnerPlanState, Dish } from './types'
+import type { DinnerPlanActions, DinnerPlanState, Dish } from './types'
 
 const defaultState: DinnerPlanState = {
   plan: {},
@@ -25,7 +25,7 @@ type DinnerPlanStoreProps = {
 export function DinnerPlanStore({ children }: DinnerPlanStoreProps) {
   const [initialState = defaultState, storeState] = useLocalStorage<DinnerPlanState>({ key: 'dinner-plan' })
 
-  const [state, dispatch] = useReducer<DinnerPlanReducer>(dinnerPlanReducer, initialState)
+  const [state, dispatch] = useReducer(dinnerPlanReducer, initialState)
 
   useEffect(() => storeState(state), [state, storeState])
 
