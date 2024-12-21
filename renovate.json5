@@ -8,6 +8,11 @@
       allowedVersions: '22.x',
     },
     {
+      // e2e tests fail when run together
+      matchPackageNames: ['nx', '@nx'],
+      allowedVersions: '!/20\\.3\\.0/',
+    },
+    {
       matchPackageNames: [
         '@cypress/webpack-dev-server/webpack-dev-server/express/path-to-regexp',
         '@nx/react/express/path-to-regexp',
