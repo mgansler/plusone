@@ -31,7 +31,7 @@ stages:
     DOCKER_TLS_CERTDIR: ''
     DOCKER_DRIVER: overlay2
   before_script:
-    - !reference [.distributed, before_script]
+    - !reference [ .distributed, before_script ]
     - sh tools/scripts/install-docker-debian.sh
 
 audit:
@@ -42,19 +42,30 @@ audit:
     - yarn audit
   allow_failure: true
 
-migrations-and-api-client-check:
+migrations-check:
   stage: static
   extends:
     - .distributed
   before_script:
-    - !reference [.distributed, before_script]
+    - !reference [ .distributed, before_script ]
     - apt-get update && apt-get install -y jq
   script:
     # Check if we need to run migrations for Nx
     - echo Based of nx version $(git show ${NX_BASE}:package.json|jq -r '.devDependencies.nx')
     - time npx nx migrate latest --from nx@$(git show ${NX_BASE}:package.json|jq -r '.devDependencies.nx')
     - if [[ -f migrations.json ]] ; then echo "Cancelling this update because it has migrations" ; cat migrations.json ; exit 1 ; fi
-    - echo "Migration check complete"
+  after_script:
+    - git status
+  allow_failure: true
+
+api-client-check:
+  stage: static
+  extends:
+    - .distributed
+  before_script:
+    - !reference [ .distributed, before_script ]
+    - apt-get update && apt-get install -y jq
+  script:
     # Check if API specification and client are up to date
     - time npx nx run-many --target generate-api-spec --all
     - time npx nx run-many --target generate-api-client --all
@@ -93,7 +104,7 @@ component-test:
     - .distributed
   retry: 2
   before_script:
-    - !reference [.distributed, before_script]
+    - !reference [ .distributed, before_script ]
     - sh tools/scripts/install-cypress-dependencies.sh
   script:
     - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t component-test --parallel=1 --configuration=ci --browser chrome
@@ -119,7 +130,7 @@ e2e:
   variables:
     FEEDS_DATABASE_URL: postgres://postgres:local_db_password@docker:5434/feeds
   before_script:
-    - !reference [.dind, before_script]
+    - !reference [ .dind, before_script ]
     - sh tools/scripts/install-cypress-dependencies.sh
   script:
     - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t e2e --parallel=1 --configuration=ci --browser chrome
