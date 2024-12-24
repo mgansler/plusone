@@ -53,7 +53,7 @@ migrations-and-api-client-check:
     # Check if we need to run migrations for Nx
     - echo Based of nx version $(git show ${NX_BASE}:package.json|jq -r '.devDependencies.nx')
     - time npx nx migrate latest --from nx@$(git show ${NX_BASE}:package.json|jq -r '.devDependencies.nx')
-    - if [[ -f migration.json ]] ; then echo "Cancelling this update because it has migrations" ; cat migrations.json ; exit 1 ; fi
+    - if [[ -f migrations.json ]] ; then echo "Cancelling this update because it has migrations" ; cat migrations.json ; exit 1 ; fi
     - echo "Migration check complete"
     # Check if API specification and client are up to date
     - time npx nx run-many --target generate-api-spec --all

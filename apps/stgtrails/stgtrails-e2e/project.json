@@ -27,10 +27,6 @@
         {
           "target": "setup-db",
           "projects": ["stgtrails-e2e"]
-        },
-        {
-          "target": "build",
-          "projects": ["stgtrails-web"]
         }
       ]
     },
@@ -47,7 +43,13 @@
           "mkdir -p dist/apps/stgtrails",
           "mv libs/stgtrails/persistence/src/lib/stgtrails-e2e.db* dist/apps/stgtrails"
         ],
-        "parallel": false
+        "parallel": false,
+        "dependsOn": [
+          {
+            "target": "build",
+            "projects": ["stgtrails-web"]
+          }
+        ]
       }
     },
     "lint": {

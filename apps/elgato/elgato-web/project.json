@@ -54,7 +54,8 @@
         "production": {
           "buildTarget": "elgato-web:build:production"
         }
-      }
+      },
+      "dependsOn": ["build"]
     },
     "test": {
       "executor": "@nx/vite:test",
