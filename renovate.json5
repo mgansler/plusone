@@ -1,6 +1,6 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
-  extends: ['config:base', ':pinAllExceptPeerDependencies', 'group:allNonMajor'],
+  extends: ['config:recommended', ':pinAllExceptPeerDependencies', 'group:allNonMajor'],
   automerge: false,
   packageRules: [
     {
@@ -8,8 +8,8 @@
       allowedVersions: '22.x',
     },
     {
-      matchPackagePrefixes: ['@nx', 'nx'],
       allowedVersions: '!/20\\.3\\.0/',
+      matchPackageNames: ['@nx{/,}**', 'nx{/,}**'],
     },
     {
       matchPackageNames: [
