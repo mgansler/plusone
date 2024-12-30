@@ -1,26 +1,22 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: [
-    "config:recommended",
-    ":pinAllExceptPeerDependencies",
-    "group:allNonMajor",
-  ],
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: ['config:recommended', ':pinAllExceptPeerDependencies', 'group:allNonMajor'],
   automerge: false,
   packageRules: [
     {
-      matchPackageNames: ["node"],
-      allowedVersions: "22.x",
+      matchPackageNames: ['node'],
+      allowedVersions: '22.x',
     },
     {
-      allowedVersions: "!/20\\.3\\.0/",
-      matchPackageNames: ["@nx{/,}**", "nx{/,}**"],
+      allowedVersions: '!/20\\.3\\.0/',
+      matchPackageNames: ['@nx{/,}**', 'nx{/,}**'],
     },
     {
       matchPackageNames: [
-        "@cypress/webpack-dev-server/webpack-dev-server/express/path-to-regexp",
-        "@nx/react/express/path-to-regexp",
+        '@cypress/webpack-dev-server/webpack-dev-server/express/path-to-regexp',
+        '@nx/react/express/path-to-regexp',
       ],
-      allowedVersions: "0.1.x",
+      allowedVersions: '0.1.x',
     },
   ],
 }
