@@ -2,6 +2,7 @@
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: ['config:recommended', ':pinAllExceptPeerDependencies', 'group:allNonMajor'],
   automerge: false,
+  osvVulnerabilityAlerts: true,
   packageRules: [
     {
       matchPackageNames: ['node'],
