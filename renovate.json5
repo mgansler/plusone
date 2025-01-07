@@ -9,7 +9,7 @@
       allowedVersions: '22.x',
     },
     {
-      allowedVersions: '!/20\\.3\\.0/',
+      allowedVersions: '!/20\\.3\\.[0-9]/',
       matchPackageNames: ['@nx{/,}**', 'nx{/,}**'],
     },
     {
