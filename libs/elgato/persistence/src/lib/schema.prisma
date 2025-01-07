@@ -24,11 +24,17 @@ model DiscoveredDevice {
   isControlled Boolean @default(false)
 }
 
+enum DeviceType {
+  RingLight
+  LightStrip
+  Unknown
+}
+
 model Device {
-  macAddress  String    @id
+  macAddress  String     @id
   displayName String
   lastSeen    DateTime?
-  type        String // See enum DeviceType, unfortunately, sqlite doesn't support enums
+  type        DeviceType
   address     String
   port        Int
 

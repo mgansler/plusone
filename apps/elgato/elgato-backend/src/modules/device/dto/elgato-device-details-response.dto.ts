@@ -7,7 +7,7 @@ export class ElgatoDeviceDetailsResponseDto {
   productName: string
 
   @ApiProperty({ enum: DeviceType, enumName: 'DeviceType' })
-  deviceType: DeviceType
+  deviceType: keyof typeof DeviceType
 
   @ApiProperty()
   displayName: string

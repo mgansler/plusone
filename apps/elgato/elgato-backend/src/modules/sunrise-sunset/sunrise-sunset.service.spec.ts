@@ -71,9 +71,9 @@ describe('SunriseSunsetService', () => {
       ],
     }).compile()
 
-    sunriseSunsetService = moduleRef.get<SunriseSunsetService>(SunriseSunsetService)
-    schedulerRegistry = moduleRef.get<SchedulerRegistry>(SchedulerRegistry)
-    prismaService = moduleRef.get<PrismaService>(PrismaService)
+    sunriseSunsetService = moduleRef.get<SunriseSunsetService, SunriseSunsetService>(SunriseSunsetService)
+    schedulerRegistry = moduleRef.get<SchedulerRegistry, SchedulerRegistry>(SchedulerRegistry)
+    prismaService = moduleRef.get<PrismaService, PrismaService>(PrismaService)
 
     addCronJobSpy = jest.spyOn(schedulerRegistry, 'addCronJob')
   })

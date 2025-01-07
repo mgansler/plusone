@@ -35,7 +35,7 @@ describe('DeviceDiscoveryService', () => {
     port: 9123,
     sunrise: false,
     sunset: false,
-    type: DeviceType.RingLight.toString(),
+    type: DeviceType.RingLight,
   }
 
   const fakeTime = new Date(1970, 0, 1, 1, 0, 0, 0)
@@ -55,9 +55,9 @@ describe('DeviceDiscoveryService', () => {
       providers: [DeviceDiscoveryService],
     }).compile()
 
-    prismaService = moduleRef.get<PrismaService>(PrismaService)
-    elgatoService = moduleRef.get<ElgatoService>(ElgatoService)
-    deviceDiscoveryService = moduleRef.get<DeviceDiscoveryService>(DeviceDiscoveryService)
+    prismaService = moduleRef.get<PrismaService, PrismaService>(PrismaService)
+    elgatoService = moduleRef.get<ElgatoService, ElgatoService>(ElgatoService)
+    deviceDiscoveryService = moduleRef.get<DeviceDiscoveryService, DeviceDiscoveryService>(DeviceDiscoveryService)
   })
 
   afterEach(() => {

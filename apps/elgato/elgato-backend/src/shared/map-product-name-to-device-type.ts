@@ -1,6 +1,6 @@
 import { DeviceType } from '../modules/device/enum/device-type'
 
-export function mapProductNameToDeviceType(productName: string): DeviceType {
+export function mapProductNameToDeviceType(productName: string): keyof typeof DeviceType {
   switch (productName) {
     case 'Elgato Ring Light':
       return DeviceType.RingLight

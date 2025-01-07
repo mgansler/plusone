@@ -41,9 +41,9 @@ describe('CommandsService', () => {
       ],
     }).compile()
 
-    commandsService = moduleRef.get<CommandsService>(CommandsService)
-    deviceService = moduleRef.get<DeviceService>(DeviceService)
-    prismaService = moduleRef.get<PrismaService>(PrismaService)
+    commandsService = moduleRef.get<CommandsService, CommandsService>(CommandsService)
+    deviceService = moduleRef.get<DeviceService, DeviceService>(DeviceService)
+    prismaService = moduleRef.get<PrismaService, PrismaService>(PrismaService)
 
     // default spy for asserting no calls
     setPowerStateSpy = jest.spyOn(deviceService, 'setPowerState')

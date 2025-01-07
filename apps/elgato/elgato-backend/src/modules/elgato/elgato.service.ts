@@ -21,7 +21,7 @@ const httpAgent = new http.Agent({ family: 4 })
 type DeviceAddress = {
   address: string
   port: number
-  type: string // DeviceType
+  type: keyof typeof DeviceType
 }
 
 @Injectable()

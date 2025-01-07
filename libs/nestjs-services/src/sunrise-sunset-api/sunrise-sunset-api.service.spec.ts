@@ -32,8 +32,8 @@ describe('SunriseSunsetApiService', () => {
       ],
     }).compile()
 
-    sunriseSunsetApiService = moduleRef.get<SunriseSunsetApiService>(SunriseSunsetApiService)
-    httpService = moduleRef.get<HttpService>(HttpService)
+    sunriseSunsetApiService = moduleRef.get<SunriseSunsetApiService, SunriseSunsetApiService>(SunriseSunsetApiService)
+    httpService = moduleRef.get<HttpService, HttpService>(HttpService)
 
     httpGetSpy = jest.spyOn(httpService, 'get')
   })

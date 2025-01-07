@@ -54,9 +54,9 @@ describe('DeviceService', () => {
       ],
     }).compile()
 
-    deviceService = moduleRef.get<DeviceService>(DeviceService)
-    prismaService = moduleRef.get<PrismaService>(PrismaService)
-    elgatoService = moduleRef.get<ElgatoService>(ElgatoService)
+    deviceService = moduleRef.get<DeviceService, DeviceService>(DeviceService)
+    prismaService = moduleRef.get<PrismaService, PrismaService>(PrismaService)
+    elgatoService = moduleRef.get<ElgatoService, ElgatoService>(ElgatoService)
 
     jest.spyOn(prismaService.device, 'findUniqueOrThrow').mockResolvedValue(deviceStub)
   })

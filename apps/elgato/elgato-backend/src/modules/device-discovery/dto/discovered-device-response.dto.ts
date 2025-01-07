@@ -31,7 +31,7 @@ export class DiscoveredDeviceResponseDto {
   productName: string
 
   @ApiProperty({ enum: DeviceType, enumName: 'DeviceType' })
-  type: DeviceType
+  type: keyof typeof DeviceType
 
   @ApiProperty()
   isControlled: boolean

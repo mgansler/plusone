@@ -2,7 +2,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { CronJob } from 'cron'
 
-import { PrismaService } from '@plusone/elgato-persistence'
+import { Device, PrismaService } from '@plusone/elgato-persistence'
 
 import { DevicePowerState } from '../device/enum/device-power-state'
 import { ElgatoService } from '../elgato/elgato.service'
@@ -71,7 +71,7 @@ export class SunriseSunsetService implements OnModuleInit {
               this.logger.log(
                 `Turning off ${devices.length} devices after sunrise: [${devices.map((d) => d.displayName).join(', ')}]`,
               )
-              devices.forEach((device) => this.elgatoService.setDevicePowerState(device, DevicePowerState.off))
+              devices.forEach((device: Device) => this.elgatoService.setDevicePowerState(device, DevicePowerState.off))
             },
           }),
         )

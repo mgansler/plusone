@@ -4,7 +4,7 @@ import { DeviceType } from '../modules/device/enum/device-type'
 
 import { getAccessoryInfoResponseStub } from './accessory-info-response.stub'
 
-export function getAccessoryInfo(deviceType: DeviceType) {
+export function getAccessoryInfo(deviceType: keyof typeof DeviceType) {
   return deviceType === DeviceType.LightStrip
     ? http.get('http://my-lightstrip-device:9123/elgato/accessory-info', () => {
         return HttpResponse.json(
@@ -24,7 +24,7 @@ export function getAccessoryInfo(deviceType: DeviceType) {
       })
 }
 
-export function getLights(deviceType: DeviceType) {
+export function getLights(deviceType: keyof typeof DeviceType) {
   return deviceType === DeviceType.LightStrip
     ? http.get('http://my-lightstrip-device:9123/elgato/lights', () => {
         return HttpResponse.json({
@@ -60,7 +60,7 @@ export function getStuckDevice() {
   })
 }
 
-export function putState(deviceType: DeviceType) {
+export function putState(deviceType: keyof typeof DeviceType) {
   return deviceType === DeviceType.LightStrip
     ? http.put('http://my-lightstrip-device:9123/elgato/lights', () => {
         return HttpResponse.json({

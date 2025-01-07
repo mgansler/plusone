@@ -1,5 +1,3 @@
-export enum DeviceType {
-  RingLight = 'RingLight',
-  LightStrip = 'LightStrip',
-  Unknown = 'Unknown',
-}
+import { $Enums } from '@plusone/elgato-persistence'
+
+export const DeviceType = $Enums.DeviceType

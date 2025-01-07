@@ -50,9 +50,9 @@ describe('WeatherService', () => {
       ],
     }).compile()
 
-    weatherService = moduleRef.get<WeatherService>(WeatherService)
-    prismaService = moduleRef.get<PrismaService>(PrismaService)
-    weatherApiService = moduleRef.get<WeatherApiService>(WeatherApiService)
+    weatherService = moduleRef.get<WeatherService, WeatherService>(WeatherService)
+    prismaService = moduleRef.get<PrismaService, PrismaService>(PrismaService)
+    weatherApiService = moduleRef.get<WeatherApiService, WeatherApiService>(WeatherApiService)
   })
 
   describe('updateWeatherForecast', () => {
