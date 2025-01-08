@@ -1,4 +1,5 @@
 import { Button, Stack } from '@mui/material'
+import type { InfiniteData } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 import React from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
@@ -9,6 +10,7 @@ import {
   useFindArticlesInfinite,
   useMarkArticlesRead,
 } from '@plusone/feeds/api-client'
+import type { PaginatedArticleResponseDto } from '@plusone/feeds/api-client'
 
 import { ArticleList } from '../../../components/article-list'
 import { FeedSettingsBar } from '../../../components/feed-settings-bar'
@@ -30,7 +32,8 @@ export function Articles() {
     { f, s: search, sort, r: includeRead, starred },
     {
       query: {
-        getNextPageParam: (lastPage) => (lastPage.content.length < lastPage.pageSize ? undefined : lastPage.lastCursor),
+        getNextPageParam: (lastPage: PaginatedArticleResponseDto) =>
+          lastPage.content.length < lastPage.pageSize ? undefined : lastPage.lastCursor,
       },
     },
   )
@@ -51,7 +54,10 @@ export function Articles() {
     return null
   }
 
-  const articles = data.pages.reduce((prev, cur) => [...prev, ...cur.content], [])
+  const articles = (data as unknown as InfiniteData<PaginatedArticleResponseDto>).pages.reduce(
+    (prev, cur) => [...prev, ...cur.content],
+    [],
+  )
 
   return (
     <>

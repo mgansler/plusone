@@ -1,4 +1,4 @@
-FROM node:22.12.0-alpine
+FROM node:22.13.0-alpine
 RUN apk add --no-cache curl openssl
 
 WORKDIR /usr/stgtrails
