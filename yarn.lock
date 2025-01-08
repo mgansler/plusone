@@ -4051,7 +4051,14 @@
   resolved "https://registry.npmjs.org/@open-draft/until/-/until-2.1.0.tgz#0acf32f470af2ceaf47f095cdecd40d68666efda"
   integrity sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==
 
-"@openmeteo/sdk@1.18.0", "@openmeteo/sdk@^1.11.4":
+"@openmeteo/sdk@1.18.6":
+  version "1.18.6"
+  resolved "https://registry.npmjs.org/@openmeteo/sdk/-/sdk-1.18.6.tgz#7785b696d58526f11664fe345921a4aa0f965458"
+  integrity sha512-oeRClpD1V4u+iNVtjUQFjYncc2ZCTA7OXk+yVIVdf3SHDfWk3IuXpJPCkXTOUaahbcBiER0acJndx9oRHY6u2A==
+  dependencies:
+    flatbuffers "^24.3.25"
+
+"@openmeteo/sdk@^1.11.4":
   version "1.18.0"
   resolved "https://registry.npmjs.org/@openmeteo/sdk/-/sdk-1.18.0.tgz#8cdb848f838b97f8fd18004f72a5ccec2605848d"
   integrity sha512-rcx3dY4kC3KHndHi4gETJi3QpETf/GriaktoG47YVEMbZ0lXm8G9Ki8qWasXWogSP15F6REET4Z+E/aPw86Crw==
@@ -5886,10 +5893,10 @@
   resolved "https://registry.npmjs.org/@types/react-transition-group/-/react-transition-group-4.4.12.tgz#b5d76568485b02a307238270bfe96cb51ee2a044"
   integrity sha512-8TV6R3h2j7a91c+1DXdJi3Syo69zzIZbz7Lg5tORM5LEJG7X/E6a1V3drRyBRZq7/utz7A+c4OgYLiLcYGHG6w==
 
-"@types/react@19.0.3":
-  version "19.0.3"
-  resolved "https://registry.npmjs.org/@types/react/-/react-19.0.3.tgz#7867240defc1a3686f151644ac886a7e8e0868f4"
-  integrity sha512-UavfHguIjnnuq9O67uXfgy/h3SRJbidAYvNjLceB+2RIKVRBzVsh0QO+Pw6BCSQqFS9xwzKfwstXx0m6AbAREA==
+"@types/react@19.0.4":
+  version "19.0.4"
+  resolved "https://registry.npmjs.org/@types/react/-/react-19.0.4.tgz#ad1270e090118ac3c5f0928a29fe0ddf164881df"
+  integrity sha512-3O4QisJDYr1uTUMZHA2YswiQZRq+Pd8D+GdVFYikTutYsTz+QZgWkAPnP7rx9txoI6EXKcPiluMqWPFV3tT9Wg==
   dependencies:
     csstype "^3.0.2"
 
@@ -19112,7 +19119,12 @@ typescript@5.4.2:
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.4.2.tgz#0ae9cebcfae970718474fe0da2c090cad6577372"
   integrity sha512-+2/g0Fds1ERlP6JsakQQDXjZdZMM+rqpamFZJEKh4kwTIn3iDkgKtby0CeNd5ATNZ4Ry1ax15TMx0W2V+miizQ==
 
-typescript@5.7.2, typescript@^5.6.3:
+typescript@5.7.3:
+  version "5.7.3"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-5.7.3.tgz#919b44a7dbb8583a9b856d162be24a54bf80073e"
+  integrity sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==
+
+typescript@^5.6.3:
   version "5.7.2"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.7.2.tgz#3169cf8c4c8a828cde53ba9ecb3d2b1d5dd67be6"
   integrity sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==
