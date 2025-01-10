@@ -2841,33 +2841,33 @@
     unist-util-visit "^4.0.0"
     vfile "^5.0.0"
 
-"@microsoft/api-extractor-model@7.30.1":
-  version "7.30.1"
-  resolved "https://registry.npmjs.org/@microsoft/api-extractor-model/-/api-extractor-model-7.30.1.tgz#719e2ab8afe8fe3a5dd65aaa8783dbba90f7c802"
-  integrity sha512-CTS2PlASJHxVY8hqHORVb1HdECWOEMcMnM6/kDkPr0RZapAFSIHhg9D4jxuE8g+OWYHtPc10LCpmde5pylTRlA==
+"@microsoft/api-extractor-model@7.30.2":
+  version "7.30.2"
+  resolved "https://registry.npmjs.org/@microsoft/api-extractor-model/-/api-extractor-model-7.30.2.tgz#9c0b2446f6bbcdd0159e16b0e8f8694d645ce257"
+  integrity sha512-3/t2F+WhkJgBzSNwlkTIL0tBgUoBqDqL66pT+nh2mPbM0NIDGVGtpqbGWPgHIzn/mn7kGS/Ep8D8po58e8UUIw==
   dependencies:
     "@microsoft/tsdoc" "~0.15.1"
     "@microsoft/tsdoc-config" "~0.17.1"
-    "@rushstack/node-core-library" "5.10.1"
+    "@rushstack/node-core-library" "5.10.2"
 
-"@microsoft/api-extractor@^7.48.1":
-  version "7.48.1"
-  resolved "https://registry.npmjs.org/@microsoft/api-extractor/-/api-extractor-7.48.1.tgz#792197cfc5113cd2efc04524c065d682ef58d2ba"
-  integrity sha512-HN9Osa1WxqLM66RaqB5nPAadx+nTIQmY/XtkFdaJvusjG8Tus++QqZtD7KPZDSkhEMGHsYeSyeU8qUzCDUXPjg==
+"@microsoft/api-extractor@^7.49.1":
+  version "7.49.1"
+  resolved "https://registry.npmjs.org/@microsoft/api-extractor/-/api-extractor-7.49.1.tgz#e525cadfa09a9d376fd05e8b9415f6bc6260f01a"
+  integrity sha512-jRTR/XbQF2kb+dYn8hfYSicOGA99+Fo00GrsdMwdfE3eIgLtKdH6Qa2M3wZV9S2XmbgCaGX1OdPtYctbfu5jQg==
   dependencies:
-    "@microsoft/api-extractor-model" "7.30.1"
+    "@microsoft/api-extractor-model" "7.30.2"
     "@microsoft/tsdoc" "~0.15.1"
     "@microsoft/tsdoc-config" "~0.17.1"
-    "@rushstack/node-core-library" "5.10.1"
+    "@rushstack/node-core-library" "5.10.2"
     "@rushstack/rig-package" "0.5.3"
-    "@rushstack/terminal" "0.14.4"
-    "@rushstack/ts-command-line" "4.23.2"
+    "@rushstack/terminal" "0.14.5"
+    "@rushstack/ts-command-line" "4.23.3"
     lodash "~4.17.15"
     minimatch "~3.0.3"
     resolve "~1.22.1"
     semver "~7.5.4"
     source-map "~0.6.1"
-    typescript "5.4.2"
+    typescript "5.7.2"
 
 "@microsoft/tsdoc-config@~0.17.1":
   version "0.17.1"
@@ -4065,24 +4065,24 @@
   dependencies:
     flatbuffers "^24.3.25"
 
-"@orval/angular@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@orval/angular/-/angular-7.4.0.tgz#cf6ad3e83313b0fa62f67fa753b54334f87ef39b"
-  integrity sha512-qQdG5ixqdDR/O7c+yJAMm0Zp9bTJM5mOfDqTD5NlWB+6dKWxSDhLLGxKzU4iaivDb2w7QdPDxwMmlIxuQEbc7w==
+"@orval/angular@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@orval/angular/-/angular-7.4.1.tgz#b13424579bc65719db3e2789c6ae23c243a6a723"
+  integrity sha512-ypqJk/WJ9tnMQv17ZRoB73xZrNTskaR1FXc1j5FyC19dQgmBgCtyJrJsXDSRVj747KA9qtdHpS0sIzofwOTx/A==
   dependencies:
-    "@orval/core" "7.4.0"
+    "@orval/core" "7.4.1"
 
-"@orval/axios@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@orval/axios/-/axios-7.4.0.tgz#4dc789b873dd935adf18b2051b2e93b5e1d06aeb"
-  integrity sha512-LofzRdg2BWjQVPFTK/nNRWcbv8O5tQO+60dDRLzSXdPDw3vYjmgUWlQ2Ugm30c3hxXXy6SqRn+Qbnwc3tz40aQ==
+"@orval/axios@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@orval/axios/-/axios-7.4.1.tgz#b6cfbe92383044020b144511b9774075c7d35bed"
+  integrity sha512-Izg99898tPutkvFUSDD9LROEul1Gh88yxgSHSDFuWZcImkdjeg30Sc6b/EXytjn5I/De/PtQPgEIFPCEsZ9O4A==
   dependencies:
-    "@orval/core" "7.4.0"
+    "@orval/core" "7.4.1"
 
-"@orval/core@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@orval/core/-/core-7.4.0.tgz#66749988a02efff5e482574b8e602858e72aa0bf"
-  integrity sha512-DvjiIYP/JU5xBwxnEmqRgu+rzwsz28Sk9HmoBAWGBn1lyOF0H8zstIITgWsOgpjwkOflZXt7oFUdaHP12NE42g==
+"@orval/core@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@orval/core/-/core-7.4.1.tgz#8008f49871dcc4553cec03bd2ff4533efe0e7a1e"
+  integrity sha512-puqyqfA7uolvd/cSy11Siq7UqrgzLAWeVUMxhsuql5KFn3Vi+5n3XUztzbtW0kuTb27vX8kcpnlOMQMf8Jf1Og==
   dependencies:
     "@apidevtools/swagger-parser" "^10.1.0"
     "@ibm-cloud/openapi-ruleset" "^1.26.0"
@@ -4105,55 +4105,55 @@
     openapi3-ts "4.4.0"
     swagger2openapi "^7.0.8"
 
-"@orval/fetch@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-7.4.0.tgz#d526646537a3293828a0f53be85399a6602172ba"
-  integrity sha512-ssBkCDNdmZKNJGviCR1zOtxZ6qvnGCPW4A26xfOlTMd5/StcIPvtA8a5Wx/P+J+OUI4bBv5N73A5lXqda1Qxgw==
+"@orval/fetch@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-7.4.1.tgz#09184ef5cce24a4bdb2693b3c650a6f6bc8de977"
+  integrity sha512-EVirxs0ii0rt/Lsl5IO7ADAKdEWNnHB7GinbdvtfugZ8rENzNzOQLyBm5QP70kJM70FVLBxWGpeH6Jnqz0Fv8g==
   dependencies:
-    "@orval/core" "7.4.0"
+    "@orval/core" "7.4.1"
 
-"@orval/hono@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@orval/hono/-/hono-7.4.0.tgz#f6701317eb216faac7fbdf5960951da97fbfa041"
-  integrity sha512-g+KDHwNbENBhWl1XBKkn6wUlgyP4cQFRhNK2abVaBq5LO0elkLpFZ8yJ0XHJufvjlGrk0SxH3xvzF1wgdDoiZg==
+"@orval/hono@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@orval/hono/-/hono-7.4.1.tgz#1d7e00257a866c6d847a67649d6c42d5ed0ca036"
+  integrity sha512-qzoOl2KvbxpBZKZB19+vn5iOZIwGcbdYY+/qNmSlJQ3jA7bbHNbn26ZfItDlAh3WFH+fTvme58ezRNP7HVc0rw==
   dependencies:
-    "@orval/core" "7.4.0"
-    "@orval/zod" "7.4.0"
+    "@orval/core" "7.4.1"
+    "@orval/zod" "7.4.1"
     lodash.uniq "^4.5.0"
 
-"@orval/mock@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@orval/mock/-/mock-7.4.0.tgz#3007e883f32b8aab89a0e02692fb8b2e8a324293"
-  integrity sha512-v/Qs2e49BWSdIbTsBaPGDy+5GzxqvqbYWVIFJMQtq3NfLVhPwD0vfR493rIQ/ivRPhRv+NOkqSptaAjtZGD4eQ==
+"@orval/mock@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@orval/mock/-/mock-7.4.1.tgz#e2dcc88f69b0dec02e1ea8cf523aebc08a4a9910"
+  integrity sha512-ywKwcQaLIyZXKE6kHmdF3M3HGtlOKaZZ6+ciSEV1vbKMBr7ahFyv0m2pitUiwHyJ3ameKarMArX0hk31klZbtA==
   dependencies:
-    "@orval/core" "7.4.0"
+    "@orval/core" "7.4.1"
     lodash.get "^4.4.2"
     lodash.omit "^4.5.0"
     openapi3-ts "^4.2.2"
 
-"@orval/query@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@orval/query/-/query-7.4.0.tgz#6b35459c765a8cb64c5ee0cac72b286bf5d0bcdb"
-  integrity sha512-jYFDK1tKUGlSETslu+L8o6lOpxYd6LLvH8oh96xl7i3TsaBYWsdKcWScLs9ZirYSSUER3EYvtKnnc7zeit6g6g==
+"@orval/query@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@orval/query/-/query-7.4.1.tgz#58c529fb5f196ed15441cecf775eeff3b6cc6ce8"
+  integrity sha512-zlkrdiK+Bas7xOYM36cfZKGGoslKqh1B9mKaGQKadkCj9+54PzI9CxIxtCGZWJhLXB8kqPxaenNxyYoV/JW02A==
   dependencies:
-    "@orval/core" "7.4.0"
-    "@orval/fetch" "7.4.0"
+    "@orval/core" "7.4.1"
+    "@orval/fetch" "7.4.1"
     lodash.omitby "^4.6.0"
 
-"@orval/swr@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@orval/swr/-/swr-7.4.0.tgz#09a53b70adfa40821f1d1ead26af753f9550c631"
-  integrity sha512-KrWYwXsbwRzTP69+uZyH0SXjRBhZlG6kG6BZu2FaKRgFbVegt+ig/amUf7JCEPS3AtFHZ4z5aq+EPJTsVeIyVQ==
+"@orval/swr@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@orval/swr/-/swr-7.4.1.tgz#fd2fa34bfd5539a7c22ae5e56a13e366b3687dea"
+  integrity sha512-OnmSjDiS4xZUrkJhbmEQjdY95gfRHdp9uU5q9fGM4Qg1VVaR/KcOG7FRNk4WHcQmCmi4KDvwbboE/KJjsDsF7Q==
   dependencies:
-    "@orval/core" "7.4.0"
-    "@orval/fetch" "7.4.0"
+    "@orval/core" "7.4.1"
+    "@orval/fetch" "7.4.1"
 
-"@orval/zod@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@orval/zod/-/zod-7.4.0.tgz#38b862afce2749330818991d02d25d179d069182"
-  integrity sha512-PUvPdzqQUL6BX35oJPskQj2Cj4WxsQPQP1aTrqiOewEtLeLUCJiU3LNBg1Zj3k9Gf8NY92mNs53pqFDNBnp6eA==
+"@orval/zod@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@orval/zod/-/zod-7.4.1.tgz#fa99bf22b9e832737341eb92757ac0a0fa7cbb69"
+  integrity sha512-TqFidfTx9OtjTeA48P43/Vw1OaWuEkhURsMQGy8hn8w8/AKIAN7j0e/m8eoMLV/C3BN1ErfLDC1lkQ52q7u6SQ==
   dependencies:
-    "@orval/core" "7.4.0"
+    "@orval/core" "7.4.1"
     lodash.uniq "^4.5.0"
 
 "@oxc-resolver/binding-darwin-arm64@1.12.0":
@@ -4741,10 +4741,10 @@
   resolved "https://registry.npmjs.org/@rtsao/scc/-/scc-1.1.0.tgz#927dd2fae9bc3361403ac2c7a00c32ddce9ad7e8"
   integrity sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==
 
-"@rushstack/node-core-library@5.10.1":
-  version "5.10.1"
-  resolved "https://registry.npmjs.org/@rushstack/node-core-library/-/node-core-library-5.10.1.tgz#14c10c918ed12da003c21af9d5bf0e76633215d2"
-  integrity sha512-BSb/KcyBHmUQwINrgtzo6jiH0HlGFmrUy33vO6unmceuVKTEyL2q+P0fQq2oB5hvXVWOEUhxB2QvlkZluvUEmg==
+"@rushstack/node-core-library@5.10.2":
+  version "5.10.2"
+  resolved "https://registry.npmjs.org/@rushstack/node-core-library/-/node-core-library-5.10.2.tgz#8d12bc5bd9244ea57f441877246efb0a1b7b7df6"
+  integrity sha512-xOF/2gVJZTfjTxbo4BDj9RtQq/HFnrrKdtem4JkyRLnwsRz2UDTg8gA1/et10fBx5RxmZD9bYVGST69W8ME5OQ==
   dependencies:
     ajv "~8.13.0"
     ajv-draft-04 "~1.0.0"
@@ -4763,20 +4763,20 @@
     resolve "~1.22.1"
     strip-json-comments "~3.1.1"
 
-"@rushstack/terminal@0.14.4":
-  version "0.14.4"
-  resolved "https://registry.npmjs.org/@rushstack/terminal/-/terminal-0.14.4.tgz#37e160b0878a324cf3e0fecab25fe48a030e29ed"
-  integrity sha512-NxACqERW0PHq8Rpq1V6v5iTHEwkRGxenjEW+VWqRYQ8T9puUzgmGHmEZUaUEDHAe9Qyvp0/Ew04sAiQw9XjhJg==
+"@rushstack/terminal@0.14.5":
+  version "0.14.5"
+  resolved "https://registry.npmjs.org/@rushstack/terminal/-/terminal-0.14.5.tgz#4b0e79b139b4372901956f920b5a4a405a1d09d8"
+  integrity sha512-TEOpNwwmsZVrkp0omnuTUTGZRJKTr6n6m4OITiNjkqzLAkcazVpwR1SOtBg6uzpkIBLgrcNHETqI8rbw3uiUfw==
   dependencies:
-    "@rushstack/node-core-library" "5.10.1"
+    "@rushstack/node-core-library" "5.10.2"
     supports-color "~8.1.1"
 
-"@rushstack/ts-command-line@4.23.2":
-  version "4.23.2"
-  resolved "https://registry.npmjs.org/@rushstack/ts-command-line/-/ts-command-line-4.23.2.tgz#37b28a418db84d04f6a1c787390dd02ad8dfadf0"
-  integrity sha512-JJ7XZX5K3ThBBva38aomgsPv1L7FV6XmSOcR6HtM7HDFZJkepqT65imw26h9ggGqMjsY0R9jcl30tzKcVj9aOQ==
+"@rushstack/ts-command-line@4.23.3":
+  version "4.23.3"
+  resolved "https://registry.npmjs.org/@rushstack/ts-command-line/-/ts-command-line-4.23.3.tgz#a42fe413159c0f3f2c57afdceedf91a5b75c2d67"
+  integrity sha512-HazKL8fv4HMQMzrKJCrOrhyBPPdzk7iajUXgsASwjQ8ROo1cmgyqxt/k9+SdmrNLGE1zATgRqMUH3s/6smbRMA==
   dependencies:
-    "@rushstack/terminal" "0.14.4"
+    "@rushstack/terminal" "0.14.5"
     "@types/argparse" "1.0.38"
     argparse "~1.0.9"
     string-argv "~0.3.1"
@@ -5315,10 +5315,10 @@
   dependencies:
     defer-to-connect "^2.0.1"
 
-"@tanstack/history@1.95.0":
-  version "1.95.0"
-  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.95.0.tgz#24b1632ac0e5d422c878d7da6f677956aafb0732"
-  integrity sha512-w1/yWuIBqmG0Z0MPMf1OuOCce7FXyVH4L4dIA4rvpnjIUCH8qRUgloFAVg37nTMUbOmhMsY2NZDxCpKBv+CLJg==
+"@tanstack/history@1.95.2":
+  version "1.95.2"
+  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.95.2.tgz#dbe688889904365748e9c3ebdca391718ac73a7e"
+  integrity sha512-FgUauZLg+nRybH5dKyAYokmXs064rHc0qpMizKxTegSTMHj/z2B6T7pjEG2Zd6dBegeYNVL97ROg7Srr9cuBug==
 
 "@tanstack/query-core@5.62.16":
   version "5.62.16"
@@ -5344,12 +5344,12 @@
   dependencies:
     "@tanstack/query-core" "5.62.16"
 
-"@tanstack/react-router@1.95.1":
-  version "1.95.1"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.95.1.tgz#e0cc5143d8e1d8cc882ca20652023e420df5627b"
-  integrity sha512-P5x4yNhcdkYsCEoYeGZP8Q9Jlxf0WXJa4G/xvbmM905seZc9FqJqvCSRvX3dWTPOXRABhl4g+8DHqfft0c/AvQ==
+"@tanstack/react-router@1.95.2":
+  version "1.95.2"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.95.2.tgz#d3af3cf8e5501c464d0a9c1291b1ad64d68f9cd1"
+  integrity sha512-nGk4krnN5STQhlNmLlGvBp0TAIEAWzOE7fOUfN55f91RFdjEohIpSHDioY6aAH3AqtM59d09BcBuR/oGBy53+A==
   dependencies:
-    "@tanstack/history" "1.95.0"
+    "@tanstack/history" "1.95.2"
     "@tanstack/react-store" "^0.7.0"
     jsesc "^3.0.2"
     tiny-invariant "^1.3.3"
@@ -6386,7 +6386,7 @@
     loupe "^3.1.2"
     tinyrainbow "^1.2.0"
 
-"@volar/language-core@2.4.11", "@volar/language-core@~2.4.8":
+"@volar/language-core@2.4.11", "@volar/language-core@~2.4.11":
   version "2.4.11"
   resolved "https://registry.npmjs.org/@volar/language-core/-/language-core-2.4.11.tgz#d95a9ec4f14fbdb41a6a64f9f321d11d23a5291c"
   integrity sha512-lN2C1+ByfW9/JRPpqScuZt/4OrUUse57GLI6TbLgTIqBVemdl1wNcZ1qYGEo2+Gw8coYLgCy7SuKqn6IrQcQgg==
@@ -6434,16 +6434,16 @@
     de-indent "^1.0.2"
     he "^1.2.0"
 
-"@vue/language-core@2.1.10":
-  version "2.1.10"
-  resolved "https://registry.npmjs.org/@vue/language-core/-/language-core-2.1.10.tgz#5988e9ea155f3e09ccbbb3b2a0ddd530dad912e6"
-  integrity sha512-DAI289d0K3AB5TUG3xDp9OuQ71CnrujQwJrQnfuZDwo6eGNf0UoRlPuaVNO+Zrn65PC3j0oB2i7mNmVPggeGeQ==
+"@vue/language-core@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.npmjs.org/@vue/language-core/-/language-core-2.2.0.tgz#e48c54584f889f78b120ce10a050dfb316c7fcdf"
+  integrity sha512-O1ZZFaaBGkKbsRfnVH1ifOK1/1BUkyK+3SQsfnh6PmMmD4qJcTU8godCeA96jjDRTL6zgnK7YzCHfaUlH2r0Mw==
   dependencies:
-    "@volar/language-core" "~2.4.8"
+    "@volar/language-core" "~2.4.11"
     "@vue/compiler-dom" "^3.5.0"
     "@vue/compiler-vue2" "^2.7.16"
     "@vue/shared" "^3.5.0"
-    alien-signals "^0.2.0"
+    alien-signals "^0.4.9"
     minimatch "^9.0.3"
     muggle-string "^0.4.1"
     path-browserify "^1.0.1"
@@ -6899,10 +6899,10 @@ ajv@~8.13.0:
     require-from-string "^2.0.2"
     uri-js "^4.4.1"
 
-alien-signals@^0.2.0:
-  version "0.2.2"
-  resolved "https://registry.npmjs.org/alien-signals/-/alien-signals-0.2.2.tgz#439d09b363dc4d609c0f6ce69362dce068d23197"
-  integrity sha512-cZIRkbERILsBOXTQmMrxc9hgpxglstn69zm+F1ARf4aPAzdAFYd6sBq87ErO0Fj3DV94tglcyHG5kQz9nDC/8A==
+alien-signals@^0.4.9:
+  version "0.4.14"
+  resolved "https://registry.npmjs.org/alien-signals/-/alien-signals-0.4.14.tgz#9ff8f72a272300a51692f54bd9bbbada78fbf539"
+  integrity sha512-itUAVzhczTmP2U5yX67xVpsbbOiquusbWVyA9N+sy6+r6YVbFkahXvNCeEPWEOMhwDYwbVbGHFkVL03N9I5g+Q==
 
 ansi-align@^3.0.0:
   version "3.0.1"
@@ -15492,21 +15492,21 @@ ora@5.4.1, ora@^5.4.1:
     strip-ansi "^6.0.0"
     wcwidth "^1.0.1"
 
-orval@7.4.0:
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/orval/-/orval-7.4.0.tgz#5ed4a6a3c67330fb4f4f970856b9a50ee83a108c"
-  integrity sha512-JB93lqFRcQFERqC9+JTe34hVWOgbqT0p9fLQZcI/SCy0iQ6xiEYL3XZ7ICuxNlRoAoa/b0o/RRPqhgalwsrYCQ==
+orval@7.4.1:
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/orval/-/orval-7.4.1.tgz#f47a93c05b3789f098a0ad9a2cb270d19346bc3e"
+  integrity sha512-pXg5g5gdAzFqCUURZsMJoVeiWynSNSzqi6lXI1Opw08ILtmzDTdiU7PoSOf7pKVTB6oEf82zQzWeJMqSk8nzuQ==
   dependencies:
     "@apidevtools/swagger-parser" "^10.1.0"
-    "@orval/angular" "7.4.0"
-    "@orval/axios" "7.4.0"
-    "@orval/core" "7.4.0"
-    "@orval/fetch" "7.4.0"
-    "@orval/hono" "7.4.0"
-    "@orval/mock" "7.4.0"
-    "@orval/query" "7.4.0"
-    "@orval/swr" "7.4.0"
-    "@orval/zod" "7.4.0"
+    "@orval/angular" "7.4.1"
+    "@orval/axios" "7.4.1"
+    "@orval/core" "7.4.1"
+    "@orval/fetch" "7.4.1"
+    "@orval/hono" "7.4.1"
+    "@orval/mock" "7.4.1"
+    "@orval/query" "7.4.1"
+    "@orval/swr" "7.4.1"
+    "@orval/zod" "7.4.1"
     ajv "^8.17.1"
     cac "^6.7.14"
     chalk "^4.1.2"
@@ -19114,20 +19114,15 @@ typescript-eslint@8.19.1:
     "@typescript-eslint/parser" "8.19.1"
     "@typescript-eslint/utils" "8.19.1"
 
-typescript@5.4.2:
-  version "5.4.2"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-5.4.2.tgz#0ae9cebcfae970718474fe0da2c090cad6577372"
-  integrity sha512-+2/g0Fds1ERlP6JsakQQDXjZdZMM+rqpamFZJEKh4kwTIn3iDkgKtby0CeNd5ATNZ4Ry1ax15TMx0W2V+miizQ==
+typescript@5.7.2, typescript@^5.6.3:
+  version "5.7.2"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-5.7.2.tgz#3169cf8c4c8a828cde53ba9ecb3d2b1d5dd67be6"
+  integrity sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==
 
 typescript@5.7.3:
   version "5.7.3"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.7.3.tgz#919b44a7dbb8583a9b856d162be24a54bf80073e"
   integrity sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==
-
-typescript@^5.6.3:
-  version "5.7.2"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-5.7.2.tgz#3169cf8c4c8a828cde53ba9ecb3d2b1d5dd67be6"
-  integrity sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==
 
 typescript@~5.6.2:
   version "5.6.3"
@@ -19204,10 +19199,10 @@ undici-types@~6.20.0:
   resolved "https://registry.npmjs.org/undici-types/-/undici-types-6.20.0.tgz#8171bf22c1f588d1554d55bf204bc624af388433"
   integrity sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==
 
-undici@7.2.0, undici@^5.28.4, undici@^6.11.1, undici@^6.19.5:
-  version "7.2.0"
-  resolved "https://registry.npmjs.org/undici/-/undici-7.2.0.tgz#446219e2a57cfcbdc2f135fcfa6dc662b3cae169"
-  integrity sha512-klt+0S55GBViA9nsq48/NSCo4YX5mjydjypxD7UmHh/brMu8h/Mhd/F7qAeoH2NOO8SDTk6kjnTFc4WpzmfYpQ==
+undici@7.2.1, undici@^5.28.4, undici@^6.11.1, undici@^6.19.5:
+  version "7.2.1"
+  resolved "https://registry.npmjs.org/undici/-/undici-7.2.1.tgz#897dc535f78bee62217efc0c5f50ea6b5f078b64"
+  integrity sha512-U2k0XHLJfaciARRxDcqTk2AZQsGXerHzdvfCZcy1hNhSf5KCAF4jIQQxL+apQviOekhRFPqED6Of5/+LcUSLzQ==
 
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.1"
@@ -19641,15 +19636,15 @@ vite-node@^1.2.0, vite-node@^1.6.0:
     picocolors "^1.0.0"
     vite "^5.0.0"
 
-vite-plugin-dts@4.4.0:
-  version "4.4.0"
-  resolved "https://registry.npmjs.org/vite-plugin-dts/-/vite-plugin-dts-4.4.0.tgz#ef79b5ceaa39a70aa69b619b249b6b49be911257"
-  integrity sha512-CJ6phvnnPLF+aFk8Jz2ZcMBLleJ4gKJOXb9We5Kzmsp5bPuD+uMDeVefjFNYSXZ+wdcqnf+Yp2P7oA5hBKQTlQ==
+vite-plugin-dts@4.5.0:
+  version "4.5.0"
+  resolved "https://registry.npmjs.org/vite-plugin-dts/-/vite-plugin-dts-4.5.0.tgz#a83899470dc3d423298755b615f1279abd49e0ac"
+  integrity sha512-M1lrPTdi7gilLYRZoLmGYnl4fbPryVYsehPN9JgaxjJKTs8/f7tuAlvCCvOLB5gRDQTTKnptBcB0ACsaw2wNLw==
   dependencies:
-    "@microsoft/api-extractor" "^7.48.1"
+    "@microsoft/api-extractor" "^7.49.1"
     "@rollup/pluginutils" "^5.1.4"
     "@volar/typescript" "^2.4.11"
-    "@vue/language-core" "2.1.10"
+    "@vue/language-core" "2.2.0"
     compare-versions "^6.1.1"
     debug "^4.4.0"
     kolorist "^1.8.0"
