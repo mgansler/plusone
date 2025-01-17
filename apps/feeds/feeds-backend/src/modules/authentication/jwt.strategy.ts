@@ -6,6 +6,8 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
 
 import { User } from '@plusone/feeds-persistence'
 
+import { Config, JWT_ACCESS_TOKEN_SECRET, JWT_REFRESH_TOKEN_SECRET } from '../../app/config'
+
 import { AuthenticationService } from './authentication.service'
 
 export type TokenPayload = {
@@ -17,15 +19,16 @@ export type TokenPayload = {
 
 @Injectable()
 export class JwtAccessTokenStrategy extends PassportStrategy(Strategy, 'jwt-access-token') {
-  constructor(private readonly configService: ConfigService) {
+  constructor(private readonly configService: ConfigService<Config, true>) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: configService.get('JWT_ACCESS_TOKEN_SECRET'),
+      secretOrKey: configService.get<string>(JWT_ACCESS_TOKEN_SECRET),
       ignoreExpiration: false,
+      passReqToCallback: true,
     })
   }
 
-  validate(payload: TokenPayload): TokenPayload {
+  validate(_: Request, payload: TokenPayload): TokenPayload {
     return { username: payload.username, isAdmin: payload.isAdmin, roles: payload.roles, id: payload.id }
   }
 }
@@ -37,11 +40,11 @@ export class JwtAccessTokenGuard extends AuthGuard('jwt-access-token') {}
 export class JwtRefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refresh-token') {
   constructor(
     private readonly authenticationService: AuthenticationService,
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService<Config, true>,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: configService.get('JWT_REFRESH_TOKEN_SECRET'),
+      secretOrKey: configService.get<string>(JWT_REFRESH_TOKEN_SECRET),
       passReqToCallback: true,
     })
   }
