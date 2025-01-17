@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { mount } from 'cypress/react18'
+import { mount } from 'cypress/react'
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
