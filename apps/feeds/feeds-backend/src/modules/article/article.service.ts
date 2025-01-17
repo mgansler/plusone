@@ -4,8 +4,7 @@ import { Item } from 'rss-parser'
 
 import { Article, Feed, Prisma, PrismaService, User } from '@plusone/feeds-persistence'
 
-import { Config } from '../../app/config'
-import { PAGE_SIZE } from '../../app/consts'
+import { Config, PAGE_SIZE, RECENTLY_READ_COUNT } from '../../app/config'
 import { Pagination, Sort } from '../../app/shared'
 
 import { ArticleResponseDto, PaginatedArticleResponseDto, StarArticleDto } from './article.dto'
@@ -133,7 +132,7 @@ export class ArticleService {
             select: { cursor: true },
             where: { userId },
             orderBy: { cursor: Prisma.SortOrder.desc },
-            take: Math.max(this.configService.get('RECENTLY_READ_COUNT') - 1, 1),
+            take: Math.max(this.configService.get(RECENTLY_READ_COUNT) - 1, 1),
           })
         ).map((e) => e.cursor)
         await tx.recentlyRead.deleteMany({ where: { userId, cursor: { notIn: currentCursors } } })

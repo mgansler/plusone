@@ -2,8 +2,8 @@ import { Controller, Get } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 
-import { Config } from '../../app/config'
-import { APP_VERSION, PAGE_SIZE } from '../../app/consts'
+import { Config, PAGE_SIZE } from '../../app/config'
+import { APP_VERSION } from '../../app/consts'
 
 import { BootInfoDto } from './boot-info.dto'
 
