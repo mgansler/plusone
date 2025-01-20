@@ -3424,10 +3424,10 @@
   resolved "https://registry.npmjs.org/@nestjs/axios/-/axios-4.0.0.tgz#520ff7c6238e635658fe334ee62db9d1b9c5546f"
   integrity sha512-1cB+Jyltu/uUPNQrpUimRHEQHrnQrpLzVj6dU3dgn6iDDDdahr10TgHFGTmw5VuJ9GzKZsCLDL78VSwJAs/9JQ==
 
-"@nestjs/common@11.0.2":
-  version "11.0.2"
-  resolved "https://registry.npmjs.org/@nestjs/common/-/common-11.0.2.tgz#e8f7ddf1885365877108ec6d03a93da075d2711f"
-  integrity sha512-SC3RsvFAPPwV+S55M056UfbLq43CPWxe8bPWQranm7hrWpIXh43CVqoUW9o38u0NF3gb5ES8QAQa8KAk2+bOkA==
+"@nestjs/common@11.0.3":
+  version "11.0.3"
+  resolved "https://registry.npmjs.org/@nestjs/common/-/common-11.0.3.tgz#0deb7aec8087f088b78cc1ef102b81a4ad097a33"
+  integrity sha512-fTkJWQ20+jvPKfrv3A+T3wsPwwYSJyoJ+pcBzyKtv5fCpK/yX/rJalFUIpw1CDmarfqIaMX9SdkplNyxtvH6RA==
   dependencies:
     uid "2.0.2"
     iterare "1.2.1"
@@ -3442,10 +3442,10 @@
     dotenv-expand "12.0.1"
     lodash "4.17.21"
 
-"@nestjs/core@11.0.2":
-  version "11.0.2"
-  resolved "https://registry.npmjs.org/@nestjs/core/-/core-11.0.2.tgz#9739fe4afc4ba390611d61caf52d59b350b6acac"
-  integrity sha512-MA9+vnNLnDLfZDWGX7Y6z7IozKwahGBxsiywmEkEkue4iHj6/mZF1PMl31ZUISszixFMPkYkxjQfYNSVONkNwA==
+"@nestjs/core@11.0.3":
+  version "11.0.3"
+  resolved "https://registry.npmjs.org/@nestjs/core/-/core-11.0.3.tgz#a3e836f725242b788bb48454c34d05b9658c1557"
+  integrity sha512-6UoVHpwa23HJxMNtuTXQCiqx/NHTG3lRBRgnZ8EDHTjgaNnR7P+xBS68zN3gLH7rBIrhhQ5Q1hVs7WswRxrw7Q==
   dependencies:
     uid "2.0.2"
     "@nuxt/opencollective" "0.4.1"
@@ -3472,14 +3472,15 @@
   resolved "https://registry.npmjs.org/@nestjs/passport/-/passport-11.0.4.tgz#90970a9b3f4ba5dfe69ea968d8ed4d1d8605193f"
   integrity sha512-XpqLKPlo6yt0tFSAKgh1Q2j442UWhaL8qPh6GoMVTi5MsvK/uYD2aaMr3wrwyFIpH0/hjOqKC7TI5+Dw9e7/ng==
 
-"@nestjs/platform-express@11.0.2":
-  version "11.0.2"
-  resolved "https://registry.npmjs.org/@nestjs/platform-express/-/platform-express-11.0.2.tgz#db508a4ccb0ae811d3ddc42447c91787c1c76b23"
-  integrity sha512-Gs4xPASTDxTHuZHrituNMbxvljUdOlu0Xcx2cepN8+4wQh93OoDsvTDaKO0vlnWhN3wj9DO+Xv9PVjIYBYsIag==
+"@nestjs/platform-express@11.0.3":
+  version "11.0.3"
+  resolved "https://registry.npmjs.org/@nestjs/platform-express/-/platform-express-11.0.3.tgz#939e84e340e27e0a55021f7c19b6f88a9103ba7c"
+  integrity sha512-KFzxOjd7FYOBR3AtUnhbTHi3LdDpMT3sWSNT/DqTD6t/dEfk/FtgCE7ZtNnIuPY1KTvP68BW40VVcwauyvRJwg==
   dependencies:
     cors "2.8.5"
     express "5.0.1"
     multer "1.4.5-lts.1"
+    path-to-regexp "8.2.0"
     tslib "2.8.1"
 
 "@nestjs/schedule@5.0.0":
@@ -3510,10 +3511,10 @@
     jsonc-parser "3.2.0"
     pluralize "8.0.0"
 
-"@nestjs/serve-static@5.0.0":
-  version "5.0.0"
-  resolved "https://registry.npmjs.org/@nestjs/serve-static/-/serve-static-5.0.0.tgz#990cc6eb04bac368c451ec012eb37019aef58e97"
-  integrity sha512-3vfaYIk45vru3pXSe95StJmRNLTAGH62T7kcu2RGPh/O4KCsjMIQhMHEgJar1xHZDzZ0u/W6qdAfNYrTGDlblg==
+"@nestjs/serve-static@5.0.1":
+  version "5.0.1"
+  resolved "https://registry.npmjs.org/@nestjs/serve-static/-/serve-static-5.0.1.tgz#1c57aa706204ea490f00d5f158d92cf4d5d1c9f3"
+  integrity sha512-s9wtFS9tKR7/Z7X5lVMAIpEGazZN49Ouvy1pNqRLGzI41ameuVWY9vaxZp9oMg83fCcRPMDj8q/6kpwLlosVgg==
   dependencies:
     path-to-regexp "8.2.0"
 
@@ -3537,10 +3538,10 @@
     boxen "5.1.2"
     check-disk-space "3.4.0"
 
-"@nestjs/testing@11.0.2":
-  version "11.0.2"
-  resolved "https://registry.npmjs.org/@nestjs/testing/-/testing-11.0.2.tgz#8dce4193ee45dee401fa65b719f2864c9b3fa60d"
-  integrity sha512-bjfPY/vRYYFhAk6arPdPNKmq+otoTuIb6Jwq2dhbzLJ5hMQHe3PvDcL4FoRAGurTiHI8hZu+zz/NCX7KeIF1vQ==
+"@nestjs/testing@11.0.3":
+  version "11.0.3"
+  resolved "https://registry.npmjs.org/@nestjs/testing/-/testing-11.0.3.tgz#932e48edf3afb26a517656959dc39ecb1e4a8ee1"
+  integrity sha512-Md8fZWglj+UQ3WGrA2ivQdgjzn1nSpglLKaWgE5BL7Kyx2uVU3qksclaPjNmidwp2bNr+ZfYHzfJz4L4FO7f7w==
   dependencies:
     tslib "2.8.1"
 
