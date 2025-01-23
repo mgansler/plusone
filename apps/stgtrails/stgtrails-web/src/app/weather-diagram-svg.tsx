@@ -2,7 +2,7 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 
 import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
-import { Circle, Rect } from './svg'
+import { Rect } from './svg'
 
 const CHART_WIDTH = 980
 const CHART_HEIGHT = 600
@@ -34,6 +34,10 @@ function getYForTemperature(temp: number): number {
   return CHART_HEIGHT / 3 - temp * 3
 }
 
+function getYForMoisture(moisture: number): number {
+  return CHART_HEIGHT - moisture * CHART_HEIGHT
+}
+
 type WeatherDiagramSvgProps = {
   weather: Array<WeatherDataResponseDto>
   sunriseSunset: Array<SunriseSunsetResponseDto>
@@ -51,6 +55,10 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
     }
   }, [])
 
+  const [sliderPos, setSliderPos] = useState<number>(() =>
+    Math.min(weather.length - 1, Math.ceil(getXForTimestamp(Date.now(), weather) / (CHART_WIDTH / weather.length)) - 1),
+  )
+
   const xForCurrentTimestamp = getXForTimestamp(Date.now(), weather)
   const yForTemperatureThreshold = CHART_HEIGHT / 3
   const yForMoistureThreshold = CHART_HEIGHT * (1 - threshold)
@@ -66,23 +74,40 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
           viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
           xmlns={'http://www.w3.org/2000/svg'}
         >
+          <defs>
+            <filter id={'frostedGlass'} x={0} y={0}>
+              <feGaussianBlur in={'SourceGraphic'} stdDeviation={5} result={'blur'} />
+              <feColorMatrix
+                in="blur"
+                mode="matrix"
+                values="1 0 0 0 0
+                        0 1 0 0 0
+                        0 0 1 0 0
+                        0 0 0 0.6 0"
+                result="blured"
+              />
+            </filter>
+          </defs>
+
           {/* frame */}
           <rect x={0} y={0} width={CHART_WIDTH} height={CHART_HEIGHT} stroke={'black'} fill={'none'} />
 
           {/* amount of rain per hour */}
-          {weather.map((w, i) => (
-            <Rect
-              key={i}
-              text={w.rain.toFixed(2) + ' l/m\xB2'}
-              timestamp={new Date(w.time)}
-              x={getXForTimestamp(new Date(weather[i].time).valueOf(), weather)}
-              y={CHART_HEIGHT - CHART_HEIGHT * scaleRain(w.rain)}
-              width={5}
-              height={CHART_HEIGHT * scaleRain(w.rain)}
-              fill={'lightblue'}
-              portal={portalElement}
-            />
-          ))}
+          {weather.map((w, i) =>
+            w.rain > 0 ? (
+              <Rect
+                key={i}
+                text={w.rain.toFixed(2) + ' l/m\xB2'}
+                timestamp={new Date(w.time)}
+                x={getXForTimestamp(new Date(weather[i].time).valueOf(), weather)}
+                y={CHART_HEIGHT - CHART_HEIGHT * scaleRain(w.rain)}
+                width={5}
+                height={CHART_HEIGHT * scaleRain(w.rain)}
+                fill={'lightblue'}
+                portal={portalElement}
+              />
+            ) : null,
+          )}
 
           {mightBeFreezing && (
             <line
@@ -105,6 +130,15 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
             strokeDasharray={'5,5'}
             x1={xForCurrentTimestamp}
             x2={xForCurrentTimestamp}
+            y1={44}
+            y2={CHART_HEIGHT}
+          />
+
+          <line
+            stroke={'green'}
+            strokeDasharray={'5,5'}
+            x1={(CHART_WIDTH / (weather.length - 1)) * sliderPos}
+            x2={(CHART_WIDTH / (weather.length - 1)) * sliderPos}
             y1={44}
             y2={CHART_HEIGHT}
           />
@@ -135,20 +169,17 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
             fill={'none'}
             points={weather
               .map((w, i) => {
-                return `${getXForTimestamp(new Date(weather[i].time).valueOf(), weather)} ${CHART_HEIGHT - w.soilMoisture0To1cm * CHART_HEIGHT}`
+                return `${getXForTimestamp(new Date(weather[i].time).valueOf(), weather)} ${getYForMoisture(w.soilMoisture0To1cm)}`
               })
               .join(' ')}
           />
           {weather.map((w, i) => (
-            <Circle
+            <circle
               key={i}
-              text={`Soil Moisture: ${w.soilMoisture0To1cm.toFixed(2)}%`}
-              timestamp={new Date(w.time)}
               cx={getXForTimestamp(new Date(weather[i].time).valueOf(), weather)}
-              cy={CHART_HEIGHT - w.soilMoisture0To1cm * CHART_HEIGHT}
-              r={3}
+              cy={getYForMoisture(w.soilMoisture0To1cm)}
+              r={2}
               fill={'blue'}
-              portal={portalElement}
             />
           ))}
 
@@ -166,19 +197,75 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
           )}
           {mightBeFreezing &&
             weather.map((w, i) => (
-              <Circle
+              <circle
                 key={i}
-                text={`Soil Temperature: ${w.soilTemperature0cm.toFixed(1)}˚C`}
-                timestamp={new Date(w.time)}
                 cx={getXForTimestamp(new Date(weather[i].time).valueOf(), weather)}
                 cy={getYForTemperature(w.soilTemperature0cm)}
-                r={3}
+                r={2}
                 fill={'orange'}
-                portal={portalElement}
               />
             ))}
+
+          {mightBeFreezing && (
+            <Fragment>
+              <rect
+                x={(CHART_WIDTH / (weather.length - 1)) * sliderPos}
+                y={getYForTemperature(weather[sliderPos].soilTemperature0cm) - 36}
+                width={135}
+                height={40}
+                fill={'white'}
+                filter={'url(#frostedGlass)'}
+              />
+              <text
+                fontSize={'small'}
+                x={(CHART_WIDTH / (weather.length - 1)) * sliderPos + 5}
+                y={getYForTemperature(weather[sliderPos].soilTemperature0cm) - 20}
+              >
+                {new Date(weather[sliderPos].time).toLocaleTimeString()}
+              </text>
+              <text
+                fontSize={'small'}
+                x={(CHART_WIDTH / (weather.length - 1)) * sliderPos + 5}
+                y={getYForTemperature(weather[sliderPos].soilTemperature0cm) - 5}
+              >
+                {`Soil Temperature: ${weather[sliderPos].soilTemperature0cm.toFixed(1)}˚C`}
+              </text>
+            </Fragment>
+          )}
+
+          <rect
+            x={(CHART_WIDTH / (weather.length - 1)) * sliderPos}
+            y={getYForMoisture(weather[sliderPos].soilMoisture0To1cm) - 36}
+            width={120}
+            height={40}
+            fill={'white'}
+            filter={'url(#frostedGlass)'}
+          />
+          <text
+            fontSize={'small'}
+            x={(CHART_WIDTH / (weather.length - 1)) * sliderPos + 5}
+            y={getYForMoisture(weather[sliderPos].soilMoisture0To1cm) - 20}
+          >
+            {new Date(weather[sliderPos].time).toLocaleTimeString()}
+          </text>
+          <text
+            fontSize={'small'}
+            x={(CHART_WIDTH / (weather.length - 1)) * sliderPos + 5}
+            y={getYForMoisture(weather[sliderPos].soilMoisture0To1cm) - 5}
+          >
+            {`Soil Moisture: ${weather[sliderPos].soilMoisture0To1cm.toFixed(2)}%`}
+          </text>
         </svg>
       )}
+
+      <input
+        type="range"
+        style={{ width: '100%' }}
+        min={0}
+        max={weather.length - 1}
+        value={sliderPos}
+        onChange={(event) => setSliderPos(event.currentTarget.valueAsNumber)}
+      />
     </>
   )
 }
