@@ -2,8 +2,6 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 
 import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
-import { Rect } from './svg'
-
 const CHART_WIDTH = 980
 const CHART_HEIGHT = 600
 
@@ -93,20 +91,18 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
           <rect x={0} y={0} width={CHART_WIDTH} height={CHART_HEIGHT} stroke={'black'} fill={'none'} />
 
           {/* amount of rain per hour */}
-          {weather.map((w, i) =>
-            w.rain > 0 ? (
-              <Rect
-                key={i}
-                text={w.rain.toFixed(2) + ' l/m\xB2'}
-                timestamp={new Date(w.time)}
-                x={getXForTimestamp(new Date(weather[i].time).valueOf(), weather)}
-                y={CHART_HEIGHT - CHART_HEIGHT * scaleRain(w.rain)}
-                width={5}
-                height={CHART_HEIGHT * scaleRain(w.rain)}
-                fill={'lightblue'}
-                portal={portalElement}
-              />
-            ) : null,
+          {weather.map(
+            (w, i) =>
+              w.rain > 0 && (
+                <rect
+                  key={i}
+                  x={getXForTimestamp(new Date(weather[i].time).valueOf(), weather) - 2.5}
+                  y={CHART_HEIGHT - CHART_HEIGHT * scaleRain(w.rain)}
+                  width={i === 0 || i === weather.length - 1 ? 2.5 : 5}
+                  height={CHART_HEIGHT * scaleRain(w.rain)}
+                  fill={'lightblue'}
+                />
+              ),
           )}
 
           {mightBeFreezing && (
@@ -209,7 +205,7 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
           {mightBeFreezing && (
             <Fragment>
               <rect
-                x={(CHART_WIDTH / (weather.length - 1)) * sliderPos}
+                x={Math.min(CHART_WIDTH - 135, (CHART_WIDTH / (weather.length - 1)) * sliderPos)}
                 y={getYForTemperature(weather[sliderPos].soilTemperature0cm) - 36}
                 width={135}
                 height={40}
@@ -218,14 +214,14 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
               />
               <text
                 fontSize={'small'}
-                x={(CHART_WIDTH / (weather.length - 1)) * sliderPos + 5}
+                x={Math.min(CHART_WIDTH - 135, (CHART_WIDTH / (weather.length - 1)) * sliderPos + 5)}
                 y={getYForTemperature(weather[sliderPos].soilTemperature0cm) - 20}
               >
                 {new Date(weather[sliderPos].time).toLocaleTimeString()}
               </text>
               <text
                 fontSize={'small'}
-                x={(CHART_WIDTH / (weather.length - 1)) * sliderPos + 5}
+                x={Math.min(CHART_WIDTH - 135, (CHART_WIDTH / (weather.length - 1)) * sliderPos + 5)}
                 y={getYForTemperature(weather[sliderPos].soilTemperature0cm) - 5}
               >
                 {`Soil Temperature: ${weather[sliderPos].soilTemperature0cm.toFixed(1)}˚C`}
@@ -234,7 +230,7 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
           )}
 
           <rect
-            x={(CHART_WIDTH / (weather.length - 1)) * sliderPos}
+            x={Math.min(CHART_WIDTH - 120, (CHART_WIDTH / (weather.length - 1)) * sliderPos)}
             y={getYForMoisture(weather[sliderPos].soilMoisture0To1cm) - 36}
             width={120}
             height={40}
@@ -243,17 +239,40 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
           />
           <text
             fontSize={'small'}
-            x={(CHART_WIDTH / (weather.length - 1)) * sliderPos + 5}
+            x={Math.min(CHART_WIDTH - 120, (CHART_WIDTH / (weather.length - 1)) * sliderPos + 5)}
             y={getYForMoisture(weather[sliderPos].soilMoisture0To1cm) - 20}
           >
             {new Date(weather[sliderPos].time).toLocaleTimeString()}
           </text>
           <text
             fontSize={'small'}
-            x={(CHART_WIDTH / (weather.length - 1)) * sliderPos + 5}
+            x={Math.min(CHART_WIDTH - 120, (CHART_WIDTH / (weather.length - 1)) * sliderPos + 5)}
             y={getYForMoisture(weather[sliderPos].soilMoisture0To1cm) - 5}
           >
             {`Soil Moisture: ${weather[sliderPos].soilMoisture0To1cm.toFixed(2)}%`}
+          </text>
+
+          <rect
+            x={Math.min(CHART_WIDTH - 90, (CHART_WIDTH / (weather.length - 1)) * sliderPos)}
+            y={CHART_HEIGHT - 46}
+            width={90}
+            height={40}
+            fill={'white'}
+            filter={'url(#frostedGlass)'}
+          />
+          <text
+            fontSize={'small'}
+            x={Math.min(CHART_WIDTH - 90, (CHART_WIDTH / (weather.length - 1)) * sliderPos + 5)}
+            y={CHART_HEIGHT - 30}
+          >
+            {new Date(weather[sliderPos].time).toLocaleTimeString()}
+          </text>
+          <text
+            fontSize={'small'}
+            x={Math.min(CHART_WIDTH - 90, (CHART_WIDTH / (weather.length - 1)) * sliderPos + 5)}
+            y={CHART_HEIGHT - 15}
+          >
+            {`Rain: ${weather[sliderPos].rain.toFixed(2)} l/m\xB2`}
           </text>
         </svg>
       )}

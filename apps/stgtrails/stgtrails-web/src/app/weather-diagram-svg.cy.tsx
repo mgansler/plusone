@@ -56,7 +56,7 @@ describe('WeatherDiagramSvg', () => {
     cy.mount(<WeatherDiagramSvg weather={weatherData} sunriseSunset={sunriseSunsetData} threshold={0.33} />)
 
     cy.get('svg').within(() => {
-      cy.get('rect').should('have.length', 6)
+      cy.get('rect').should('have.length', 7)
 
       // frame
       cy.get('rect')
@@ -83,7 +83,7 @@ describe('WeatherDiagramSvg', () => {
       // 15mm of rain should be capped at full height of the diagram
       cy.get('rect').eq(3).should('have.attr', 'height', 600).and('have.attr', 'y', 0)
 
-      cy.get('text').should('have.length', 9)
+      cy.get('text').should('have.length', 11)
       cy.get('text').eq(0).should('have.text', 'Now')
       // Depending on the locale of the browser used in testing we get 18:00:00 or 6:00:00 PM
       cy.get('text').eq(2).should('include.text', 'Monday, Sunset at').and('include.text', ':00:00')
