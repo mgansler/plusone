@@ -63,6 +63,8 @@ model WeatherData {
   soilTemperature0cm Float
   soilTemperature6cm Float
 
+  windGusts10m Float
+
   trailArea   TrailArea @relation(fields: [trailAreaId], references: [id])
   trailAreaId Int
 

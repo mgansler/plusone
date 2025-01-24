@@ -27,4 +27,7 @@ export class WeatherDataResponseDto {
 
   @ApiProperty()
   soilTemperature6cm: number
+
+  @ApiProperty()
+  windGusts10m: number
 }

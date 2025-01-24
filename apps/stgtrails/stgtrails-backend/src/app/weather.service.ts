@@ -35,6 +35,7 @@ export class WeatherService {
             soilMoisture9To27cm: true,
             soilTemperature0cm: true,
             soilTemperature6cm: true,
+            windGusts10m: true,
           },
           where: { trailAreaId },
           take: hours,
@@ -77,6 +78,7 @@ export class WeatherService {
               soilMoisture9To27cm: weatherData.soilMoisture9To27cm[currentIndex],
               soilTemperature0cm: weatherData.soilTemperature0cm[currentIndex],
               soilTemperature6cm: weatherData.soilTemperature6cm[currentIndex],
+              windGusts10m: weatherData.windGusts10m[currentIndex],
             },
           ]
         },

@@ -13,6 +13,7 @@ const weatherData: Array<WeatherDataResponseDto> = [
     soilTemperature0cm: -1.0,
     soilTemperature6cm: 0,
     temperature2m: 0,
+    windGusts10m: 30,
   },
   {
     time: '2024-01-02T00:00:00.000Z',
@@ -24,6 +25,7 @@ const weatherData: Array<WeatherDataResponseDto> = [
     soilTemperature0cm: -0.9,
     soilTemperature6cm: 0,
     temperature2m: 0,
+    windGusts10m: 40,
   },
   {
     time: '2024-01-02T23:00:00.000Z',
@@ -35,6 +37,7 @@ const weatherData: Array<WeatherDataResponseDto> = [
     soilTemperature0cm: -0.8,
     soilTemperature6cm: 0,
     temperature2m: 0,
+    windGusts10m: 50,
   },
 ]
 

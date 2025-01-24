@@ -18,6 +18,7 @@ export class WeatherApiService {
     soilMoisture9To27cm: 'soil_moisture_9_to_27cm',
     soilTemperature0cm: 'soil_temperature_0cm',
     soilTemperature6cm: 'soil_temperature_6cm',
+    windGusts10m: 'wind_gusts_10m',
   }
   private static HOURLY_WEATHER_VARIABLES = Object.values(WeatherApiService.WEATHER_VARIABLES)
 

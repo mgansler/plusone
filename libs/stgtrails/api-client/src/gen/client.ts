@@ -112,6 +112,7 @@ export interface WeatherDataResponseDto {
   soilMoisture9To27cm: number
   soilTemperature0cm: number
   soilTemperature6cm: number
+  windGusts10m: number
 }
 
 export interface TrailUpdateDto {

@@ -696,6 +696,9 @@
           },
           "soilTemperature6cm": {
             "type": "number"
+          },
+          "windGusts10m": {
+            "type": "number"
           }
         },
         "required": [
@@ -707,7 +710,8 @@
           "soilMoisture3To9cm",
           "soilMoisture9To27cm",
           "soilTemperature0cm",
-          "soilTemperature6cm"
+          "soilTemperature6cm",
+          "windGusts10m"
         ]
       }
     }

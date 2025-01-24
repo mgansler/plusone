@@ -12,6 +12,7 @@ describe('getHourlyWeatherVariables', () => {
       'soil_moisture_9_to_27cm',
       'soil_temperature_0cm',
       'soil_temperature_6cm',
+      'wind_gusts_10m',
     ])
   })
 })

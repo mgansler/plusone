@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios'
-import { SetupServer, setupServer } from 'msw/node'
+import { setupServer } from 'msw/node'
 
 import { getAccessoryInfoResponseStub } from '../../stubs/accessory-info-response.stub'
 import { getDevice } from '../../stubs/device.stub'
@@ -22,14 +22,18 @@ import { ElgatoSettingsResponseDto } from './dto/elgato-settings-response.dto'
 import { ElgatoService } from './elgato.service'
 
 describe('ElgatoService', () => {
-  let server: SetupServer
+  const server = setupServer()
   let elgatoService: ElgatoService
   let httpService: HttpService
   let errSpy: jest.SpyInstance
   let warnSpy: jest.SpyInstance
 
   beforeAll(() => {
-    server = setupServer(
+    server.listen({ onUnhandledRequest: 'error' })
+  })
+
+  beforeEach(() => {
+    server.resetHandlers(
       getAccessoryInfo(DeviceType.LightStrip),
       getAccessoryInfo(DeviceType.RingLight),
       getLights(DeviceType.LightStrip),
@@ -42,11 +46,6 @@ describe('ElgatoService', () => {
       putState(DeviceType.RingLight),
       setDisplayName(),
     )
-    server.listen()
-  })
-
-  beforeEach(() => {
-    server.resetHandlers()
     httpService = new HttpService()
     elgatoService = new ElgatoService(httpService)
 
@@ -107,8 +106,7 @@ describe('ElgatoService', () => {
 
   describe('setDisplayName', () => {
     beforeEach(() => {
-      server = setupServer(setDisplayName(), doesNotResolve())
-      server.listen()
+      server.use(setDisplayName(), doesNotResolve())
     })
 
     it('should make a put request', async () => {
