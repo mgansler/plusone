@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
 import { WeatherDiagramSvg } from './weather-diagram-svg'
@@ -56,7 +58,9 @@ const sunriseSunsetData: Array<SunriseSunsetResponseDto> = [
 
 describe('WeatherDiagramSvg', () => {
   it('should render a svg', () => {
-    cy.mount(<WeatherDiagramSvg weather={weatherData} sunriseSunset={sunriseSunsetData} threshold={0.33} />)
+    cy.mount(
+      (<WeatherDiagramSvg weather={weatherData} sunriseSunset={sunriseSunsetData} threshold={0.33} />) as ReactNode,
+    )
 
     cy.get('svg').within(() => {
       cy.get('rect').should('have.length', 7)
@@ -87,23 +91,24 @@ describe('WeatherDiagramSvg', () => {
       cy.get('rect').eq(3).should('have.attr', 'height', 600).and('have.attr', 'y', 0)
 
       cy.get('text').should('have.length', 11)
-      cy.get('text').eq(0).should('have.text', 'Now')
       // Depending on the locale of the browser used in testing we get 18:00:00 or 6:00:00 PM
-      cy.get('text').eq(2).should('include.text', 'Monday, Sunset at').and('include.text', ':00:00')
-      cy.get('text').eq(4).should('include.text', 'Tuesday, Sunset at').and('include.text', ':10:00')
+      cy.get('text').eq(1).should('include.text', 'Monday, Sunset at').and('include.text', ':00:00')
+      cy.get('text').eq(3).should('include.text', 'Tuesday, Sunset at').and('include.text', ':10:00')
     })
   })
 
   it('should render the provided threshold', () => {
-    cy.mount(<WeatherDiagramSvg weather={weatherData} sunriseSunset={sunriseSunsetData} threshold={0.5} />)
+    cy.mount(
+      (<WeatherDiagramSvg weather={weatherData} sunriseSunset={sunriseSunsetData} threshold={0.5} />) as ReactNode,
+    )
 
     cy.get('svg').within(() => {
       cy.get('line')
-        .eq(0)
+        .eq(4)
         .should('have.attr', 'stroke', 'orange')
         .and('have.attr', 'y1', 200)
         .and('have.attr', 'y2', 200)
-      cy.get('line').eq(1).should('have.attr', 'stroke', 'red').and('have.attr', 'y1', 300).and('have.attr', 'y2', 300)
+      cy.get('line').eq(5).should('have.attr', 'stroke', 'red').and('have.attr', 'y1', 300).and('have.attr', 'y2', 300)
     })
   })
 })
