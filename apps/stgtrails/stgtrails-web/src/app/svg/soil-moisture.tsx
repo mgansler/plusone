@@ -20,6 +20,7 @@ export function SoilMoisture({ weather, sliderIndex, moistureThreshold }: SoilMo
   return (
     <Fragment>
       <line
+        id={'moisture-threshold'}
         stroke={'red'}
         x1={0}
         x2={CHART_WIDTH}
@@ -28,6 +29,7 @@ export function SoilMoisture({ weather, sliderIndex, moistureThreshold }: SoilMo
       />
 
       <polyline
+        id={'moisture'}
         stroke={'blue'}
         fill={'none'}
         points={weather
@@ -41,7 +43,7 @@ export function SoilMoisture({ weather, sliderIndex, moistureThreshold }: SoilMo
         (dataPoint, index) =>
           (
             <circle
-              key={`soil-temperature-${index}`}
+              key={`soil-moisture-${index}`}
               cx={getXForTimestamp(new Date(weather[index].time).valueOf(), weather)}
               cy={getYForMoisture(dataPoint.soilMoisture0To1cm)}
               r={index === sliderIndex ? 5 : 2}

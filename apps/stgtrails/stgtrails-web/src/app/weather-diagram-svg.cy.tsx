@@ -90,7 +90,9 @@ describe('WeatherDiagramSvg', () => {
       // 15mm of rain should be capped at full height of the diagram
       cy.get('rect').eq(3).should('have.attr', 'height', 600).and('have.attr', 'y', 0)
 
-      cy.get('text').should('have.length', 11)
+      cy.get('polyline[id=temperature]').should('be.visible')
+      cy.get('polyline[id=moisture]').should('be.visible')
+
       // Depending on the locale of the browser used in testing we get 18:00:00 or 6:00:00 PM
       cy.get('text').eq(1).should('include.text', 'Monday, Sunset at').and('include.text', ':00:00')
       cy.get('text').eq(3).should('include.text', 'Tuesday, Sunset at').and('include.text', ':10:00')
@@ -103,12 +105,15 @@ describe('WeatherDiagramSvg', () => {
     )
 
     cy.get('svg').within(() => {
-      cy.get('line')
-        .eq(4)
+      cy.get('line[id=temperature-threshold]')
         .should('have.attr', 'stroke', 'orange')
         .and('have.attr', 'y1', 200)
         .and('have.attr', 'y2', 200)
-      cy.get('line').eq(5).should('have.attr', 'stroke', 'red').and('have.attr', 'y1', 300).and('have.attr', 'y2', 300)
+
+      cy.get('line[id=moisture-threshold]')
+        .should('have.attr', 'stroke', 'red')
+        .and('have.attr', 'y1', 300)
+        .and('have.attr', 'y2', 300)
     })
   })
 })

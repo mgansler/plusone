@@ -26,9 +26,17 @@ export function SoilTemperature({ weather, sliderIndex }: SoilTemperatureProps) 
 
   return (
     <Fragment>
-      <line stroke={'orange'} x1={0} x2={CHART_WIDTH} y1={CHART_HEIGHT / 3} y2={CHART_HEIGHT / 3} />
+      <line
+        id={'temperature-threshold'}
+        stroke={'orange'}
+        x1={0}
+        x2={CHART_WIDTH}
+        y1={CHART_HEIGHT / 3}
+        y2={CHART_HEIGHT / 3}
+      />
 
       <polyline
+        id={'temperature'}
         stroke={'orange'}
         fill={'none'}
         points={weather

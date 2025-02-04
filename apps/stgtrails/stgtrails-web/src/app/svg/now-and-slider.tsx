@@ -31,6 +31,7 @@ export function NowAndSlider({ sliderIndex, timestamps }: NowAndSliderProps) {
                 Now
               </text>
               <line
+                id={'now'}
                 stroke={'blue'}
                 strokeDasharray={'5,5'}
                 x1={xForCurrentTimestamp}
@@ -43,6 +44,7 @@ export function NowAndSlider({ sliderIndex, timestamps }: NowAndSliderProps) {
         : null}
 
       <line
+        id={'slider'}
         stroke={'green'}
         strokeDasharray={'5,5'}
         x1={(CHART_WIDTH / (timestamps.length - 1)) * sliderIndex}

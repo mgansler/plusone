@@ -12,7 +12,7 @@ function getXForTimestamp(timestamp: Date, first: Date, last: Date) {
   return (CHART_WIDTH / end) * now
 }
 
-const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 type FrameProps = {
   timestamps: Array<Date>
@@ -22,7 +22,7 @@ type FrameProps = {
 export function Frame({ timestamps, sunriseSunset }: FrameProps) {
   return (
     <Fragment>
-      <rect x={0} y={0} width={CHART_WIDTH} height={CHART_HEIGHT} stroke={'black'} fill={'none'} />
+      <rect id={'outer-frame'} x={0} y={0} width={CHART_WIDTH} height={CHART_HEIGHT} stroke={'black'} fill={'none'} />
 
       {
         timestamps
@@ -30,12 +30,12 @@ export function Frame({ timestamps, sunriseSunset }: FrameProps) {
           .map((datetime) => {
             const x = getXForTimestamp(datetime, timestamps[0], timestamps[timestamps.length - 1])
             return (
-              <Fragment key={datetime.toLocaleTimeString()}>
+              <Fragment key={datetime.toLocaleDateString()}>
                 <text x={x + 5} y={20}>
                   {datetime.toLocaleDateString()}
                 </text>
                 <text x={x + 5} y={36}>
-                  {weekdays[datetime.getDay()]}
+                  {WEEKDAYS[datetime.getDay()]}
                   {getSunsetString(datetime, sunriseSunset)}
                 </text>
                 <line stroke={'black'} x1={x} x2={x} y1={0} y2={CHART_HEIGHT} />
