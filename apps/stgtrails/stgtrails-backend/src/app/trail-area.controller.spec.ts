@@ -59,69 +59,100 @@ describe('TrailAreaController', () => {
   })
 
   describe('createTrailArea', () => {
-    it('should reject missing properties', async () => {
-      const res = await request(app.getHttpServer()).post('/api/trailAreas').send({})
+    describe('fromCoordinates', () => {
+      it('should reject missing properties', async () => {
+        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromCoordinates').send({})
 
-      expect(res.status).toBe(400)
-      expect(res.body.message).toEqual([
-        'name must be longer than or equal to 1 characters',
-        'latitude must not be greater than 90',
-        'latitude must not be less than -90',
-        'longitude must not be greater than 180',
-        'longitude must not be less than -180',
-      ])
-      expect(appServiceMock.fetchDataForNewArea).not.toHaveBeenCalled()
+        expect(res.status).toBe(400)
+        expect(res.body.message).toEqual([
+          'latitude must not be greater than 90',
+          'latitude must not be less than -90',
+          'longitude must not be greater than 180',
+          'longitude must not be less than -180',
+          'name must be longer than or equal to 1 characters',
+        ])
+        expect(appServiceMock.fetchDataForNewArea).not.toHaveBeenCalled()
+      })
+
+      it('should reject too large values', async () => {
+        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromCoordinates').send({
+          name: 'TestTrailArea',
+          latitude: 100,
+          longitude: 200,
+          threshold: 1.01,
+        })
+
+        expect(res.status).toBe(400)
+        expect(res.body.message).toEqual([
+          'latitude must not be greater than 90',
+          'longitude must not be greater than 180',
+          'threshold must not be greater than 1',
+        ])
+        expect(appServiceMock.fetchDataForNewArea).not.toHaveBeenCalled()
+      })
+
+      it('should reject too small longitude/latitude', async () => {
+        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromCoordinates').send({
+          name: 'TestTrailArea',
+          latitude: -100,
+          longitude: -200,
+          threshold: -0.01,
+        })
+
+        expect(res.status).toBe(400)
+        expect(res.body.message).toEqual([
+          'latitude must not be less than -90',
+          'longitude must not be less than -180',
+          'threshold must not be less than 0',
+        ])
+        expect(appServiceMock.fetchDataForNewArea).not.toHaveBeenCalled()
+      })
+
+      it('should create a trail area', async () => {
+        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromCoordinates').send({
+          name: 'TestTrailArea',
+          latitude: 48,
+          longitude: 9,
+        })
+        expect(res.status).toBe(201)
+        expect(res.body).toEqual({
+          trailAreaId: 1,
+          name: 'TestTrailArea',
+          latitude: 48,
+          longitude: 9,
+          threshold: 0.35,
+        })
+        expect(appServiceMock.fetchDataForNewArea).toHaveBeenCalled()
+      })
     })
 
-    it('should reject too large values', async () => {
-      const res = await request(app.getHttpServer()).post('/api/trailAreas').send({
-        name: 'TestTrailArea',
-        latitude: 100,
-        longitude: 200,
-        threshold: 1.01,
+    describe('fromUrl', () => {
+      it('should reject missing properties', async () => {
+        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromUrl').send({})
+
+        expect(res.status).toBe(400)
+        expect(res.body.message).toEqual([
+          'mapsShortUrl must be a URL address',
+          'name must be longer than or equal to 1 characters',
+        ])
+        expect(appServiceMock.fetchDataForNewArea).not.toHaveBeenCalled()
       })
 
-      expect(res.status).toBe(400)
-      expect(res.body.message).toEqual([
-        'latitude must not be greater than 90',
-        'longitude must not be greater than 180',
-        'threshold must not be greater than 1',
-      ])
-      expect(appServiceMock.fetchDataForNewArea).not.toHaveBeenCalled()
-    })
-
-    it('should reject too small longitude/latitude', async () => {
-      const res = await request(app.getHttpServer()).post('/api/trailAreas').send({
-        name: 'TestTrailArea',
-        latitude: -100,
-        longitude: -200,
-        threshold: -0.01,
+      it('should create a trail area', async () => {
+        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromUrl').send({
+          name: 'Whistler',
+          mapsShortUrl: 'https://maps.app.goo.gl/bPvKchfbcaYH8CbP9',
+        })
+        expect(res.status).toBe(201)
+        expect(res.body).toEqual({
+          trailAreaId: 1,
+          name: 'Whistler',
+          latitude: 50.113334,
+          longitude: -122.954281,
+          threshold: 0.35,
+        })
+        expect(appServiceMock.fetchDataForNewArea).toHaveBeenCalled()
       })
-
-      expect(res.status).toBe(400)
-      expect(res.body.message).toEqual([
-        'latitude must not be less than -90',
-        'longitude must not be less than -180',
-        'threshold must not be less than 0',
-      ])
-      expect(appServiceMock.fetchDataForNewArea).not.toHaveBeenCalled()
-    })
-
-    it('should create a trail area', async () => {
-      const res = await request(app.getHttpServer()).post('/api/trailAreas').send({
-        name: 'TestTrailArea',
-        latitude: 48,
-        longitude: 9,
-      })
-      expect(res.status).toBe(201)
-      expect(res.body).toEqual({
-        trailAreaId: 1,
-        name: 'TestTrailArea',
-        latitude: 48,
-        longitude: 9,
-        threshold: 0.35,
-      })
-      expect(appServiceMock.fetchDataForNewArea).toHaveBeenCalled()
     })
   })
 
@@ -131,13 +162,13 @@ describe('TrailAreaController', () => {
 
       expect(res.status).toBe(400)
       expect(res.body.message).toEqual([
-        'name must be longer than or equal to 1 characters',
         'latitude must not be greater than 90',
         'latitude must not be less than -90',
         'longitude must not be greater than 180',
         'longitude must not be less than -180',
         'threshold must not be greater than 1',
         'threshold must not be less than 0',
+        'name must be longer than or equal to 1 characters',
       ])
       expect(appServiceMock.fetchDataForNewArea).not.toHaveBeenCalled()
     })

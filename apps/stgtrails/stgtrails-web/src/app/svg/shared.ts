@@ -21,3 +21,7 @@ export function getSunsetString(date: Date, sunriseSunsetData: Array<SunriseSuns
   )
   return sunriseSunsetForDay ? `, Sunset at ${new Date(sunriseSunsetForDay.sunset).toLocaleTimeString()}` : ''
 }
+
+export function mightBeFreezing(weather: Array<WeatherDataResponseDto>) {
+  return Math.min(...weather.map((w) => w.soilTemperature0cm)) < 5
+}

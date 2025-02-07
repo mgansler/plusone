@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 
-import { TrailAreaCreateDto } from './dto/trail-area-create.dto'
+import { TrailAreaCreateFromCoordinatesDto } from './dto/trail-area-create-from-coordinates.dto'
+import { TrailAreaCreateFromUrlDto } from './dto/trail-area-create-from-url.dto'
 import { TrailAreaResponseDto } from './dto/trail-area-response.dto'
 import { TrailAreaUpdateDto } from './dto/trail-area-update.dto'
 import { TrailCreateDto } from './dto/trail-create.dto'
@@ -14,11 +15,18 @@ import { TrailAreaService } from './trail-area.service'
 export class TrailAreaController {
   constructor(private readonly trailAreaService: TrailAreaService) {}
 
-  @ApiOperation({ operationId: 'createTrailArea' })
+  @ApiOperation({ operationId: 'createTrailAreaFromCoordinates' })
   @ApiOkResponse({ type: TrailAreaResponseDto })
-  @Post()
-  async createTrailArea(@Body() trailArea: TrailAreaCreateDto) {
-    return this.trailAreaService.createTrailArea(trailArea)
+  @Post('fromCoordinates')
+  async createTrailAreaFromCoordinates(@Body() trailArea: TrailAreaCreateFromCoordinatesDto) {
+    return this.trailAreaService.createTrailAreaFromCoordinates(trailArea)
+  }
+
+  @ApiOperation({ operationId: 'createTrailAreaFromUrl' })
+  @ApiOkResponse({ type: TrailAreaResponseDto })
+  @Post('fromUrl')
+  async createTrailAreaFromUrl(@Body() trailArea: TrailAreaCreateFromUrlDto) {
+    return this.trailAreaService.createTrailAreaFromUrl(trailArea)
   }
 
   @ApiOperation({ operationId: 'getTrailAreas' })

@@ -51,15 +51,43 @@ export const getSunriseSunsetForTrailAreaResponseItem = zod
   .strict()
 export const getSunriseSunsetForTrailAreaResponse = zod.array(getSunriseSunsetForTrailAreaResponseItem)
 
-export const createTrailAreaResponse = zod
+export const createTrailAreaFromCoordinatesResponseThresholdMin = 0
+
+export const createTrailAreaFromCoordinatesResponseThresholdMax = 1
+
+export const createTrailAreaFromCoordinatesResponse = zod
   .object({
     id: zod.number(),
     name: zod.string(),
     latitude: zod.number(),
     longitude: zod.number(),
-    threshold: zod.number(),
+    threshold: zod
+      .number()
+      .min(createTrailAreaFromCoordinatesResponseThresholdMin)
+      .max(createTrailAreaFromCoordinatesResponseThresholdMax),
   })
   .strict()
+
+export const createTrailAreaFromUrlResponseThresholdMin = 0
+
+export const createTrailAreaFromUrlResponseThresholdMax = 1
+
+export const createTrailAreaFromUrlResponse = zod
+  .object({
+    id: zod.number(),
+    name: zod.string(),
+    latitude: zod.number(),
+    longitude: zod.number(),
+    threshold: zod
+      .number()
+      .min(createTrailAreaFromUrlResponseThresholdMin)
+      .max(createTrailAreaFromUrlResponseThresholdMax),
+  })
+  .strict()
+
+export const getTrailAreasResponseThresholdMin = 0
+
+export const getTrailAreasResponseThresholdMax = 1
 
 export const getTrailAreasResponseItem = zod
   .object({
@@ -67,10 +95,14 @@ export const getTrailAreasResponseItem = zod
     name: zod.string(),
     latitude: zod.number(),
     longitude: zod.number(),
-    threshold: zod.number(),
+    threshold: zod.number().min(getTrailAreasResponseThresholdMin).max(getTrailAreasResponseThresholdMax),
   })
   .strict()
 export const getTrailAreasResponse = zod.array(getTrailAreasResponseItem)
+
+export const updateTrailAreaResponseThresholdMin = 0
+
+export const updateTrailAreaResponseThresholdMax = 1
 
 export const updateTrailAreaResponse = zod
   .object({
@@ -78,7 +110,7 @@ export const updateTrailAreaResponse = zod
     name: zod.string(),
     latitude: zod.number(),
     longitude: zod.number(),
-    threshold: zod.number(),
+    threshold: zod.number().min(updateTrailAreaResponseThresholdMin).max(updateTrailAreaResponseThresholdMax),
   })
   .strict()
 

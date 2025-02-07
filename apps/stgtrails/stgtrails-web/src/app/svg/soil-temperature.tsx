@@ -4,14 +4,10 @@ import { Fragment } from 'react'
 import type { WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
 import { FROSTED_GLASS_FILTER_ID } from './frosted-glass-filter'
-import { CHART_HEIGHT, CHART_WIDTH, getXForTimestamp } from './shared'
+import { CHART_HEIGHT, CHART_WIDTH, getXForTimestamp, mightBeFreezing } from './shared'
 
 function getYForTemperature(temperature: number): number {
   return CHART_HEIGHT / 3 - temperature * 3
-}
-
-function mightBeFreezing(weather: Array<WeatherDataResponseDto>) {
-  return Math.min(...weather.map((w) => w.soilTemperature0cm)) < 5
 }
 
 type SoilTemperatureProps = {

@@ -1,23 +1,58 @@
-import { Injectable } from '@nestjs/common'
+import { HttpService } from '@nestjs/axios'
+import { Injectable, Logger } from '@nestjs/common'
+import { AxiosResponse } from 'axios'
+import { lastValueFrom } from 'rxjs'
 
-import { PrismaService } from '@plusone/stgtrails-persistence'
+import { Prisma, PrismaService } from '@plusone/stgtrails-persistence'
 
 import { AppService } from './app.service'
-import { TrailAreaCreateDto } from './dto/trail-area-create.dto'
+import { TrailAreaCreateFromCoordinatesDto } from './dto/trail-area-create-from-coordinates.dto'
+import { TrailAreaCreateFromUrlDto } from './dto/trail-area-create-from-url.dto'
 import { TrailAreaResponseDto } from './dto/trail-area-response.dto'
 import { TrailAreaUpdateDto } from './dto/trail-area-update.dto'
 import { TrailCreateDto } from './dto/trail-create.dto'
 import { TrailUpdateDto } from './dto/trail-update.dto'
 
+import TrailAreaCreateArgs = Prisma.TrailAreaCreateArgs
+
 @Injectable()
 export class TrailAreaService {
+  private logger = new Logger(TrailAreaService.name)
+
   constructor(
     private readonly appService: AppService,
     private readonly prisma: PrismaService,
+    private readonly httpService: HttpService,
   ) {}
 
-  public async createTrailArea(trailAreaCreateDto: TrailAreaCreateDto) {
-    const trailArea = await this.prisma.trailArea.create({ data: trailAreaCreateDto })
+  public async createTrailAreaFromCoordinates(input: TrailAreaCreateFromCoordinatesDto) {
+    return this.createTrailArea(input)
+  }
+
+  public async createTrailAreaFromUrl(input: TrailAreaCreateFromUrlDto) {
+    try {
+      // Do not follow redirects, we want the redirect from the first call
+      await lastValueFrom(this.httpService.get(input.mapsShortUrl, { maxRedirects: 0 }))
+    } catch (e) {
+      // HTTP Status Code 302 will be treated as an error
+      if (e.response) {
+        const redirectUrl: string = (e.response as AxiosResponse).headers['location']
+        // redirect URL looks like this: https://www.google.de/maps/search/<latitude>,+<longitude>
+        // latitude and longitude can be negative and are seperated by ,+
+        const matchRes = redirectUrl.match(/^https:\/\/www\.google\.de\/maps\/search\/(-?\d+\.\d+),\+(-?\d+\.\d+)/)
+        if (Array.isArray(matchRes)) {
+          const latitude = Number(matchRes[1])
+          const longitude = Number(matchRes[2])
+          return this.createTrailArea({ latitude, longitude, name: input.name, threshold: input.threshold })
+        } else {
+          this.logger.warn(`Failed to extract coordinates from request with url: ${input.mapsShortUrl}`)
+        }
+      }
+    }
+  }
+
+  private async createTrailArea(data: TrailAreaCreateArgs['data']) {
+    const trailArea = await this.prisma.trailArea.create({ data })
     await this.appService.fetchDataForNewArea(trailArea)
     return trailArea
   }

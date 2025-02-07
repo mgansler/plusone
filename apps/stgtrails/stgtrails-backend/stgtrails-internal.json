@@ -212,16 +212,16 @@
         ]
       }
     },
-    "/api/trailAreas": {
+    "/api/trailAreas/fromCoordinates": {
       "post": {
-        "operationId": "createTrailArea",
+        "operationId": "createTrailAreaFromCoordinates",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TrailAreaCreateDto"
+                "$ref": "#/components/schemas/TrailAreaCreateFromCoordinatesDto"
               }
             }
           }
@@ -242,7 +242,41 @@
         "tags": [
           "trail-area"
         ]
-      },
+      }
+    },
+    "/api/trailAreas/fromUrl": {
+      "post": {
+        "operationId": "createTrailAreaFromUrl",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrailAreaCreateFromUrlDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrailAreaResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "trail-area"
+        ]
+      }
+    },
+    "/api/trailAreas": {
       "get": {
         "operationId": "getTrailAreas",
         "parameters": [],
@@ -541,26 +575,30 @@
           "sunset"
         ]
       },
-      "TrailAreaCreateDto": {
+      "TrailAreaCreateFromCoordinatesDto": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
-          },
-          "latitude": {
-            "type": "number",
-            "minimum": -90,
-            "maximum": 90
-          },
-          "longitude": {
-            "type": "number",
-            "minimum": -180,
-            "maximum": 180
+            "type": "string",
+            "example": "Whistler"
           },
           "threshold": {
             "type": "number",
             "minimum": 0,
-            "maximum": 1
+            "maximum": 1,
+            "example": 0.33
+          },
+          "latitude": {
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90,
+            "example": 48.7
+          },
+          "longitude": {
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180,
+            "example": 9.123
           }
         },
         "required": [
@@ -573,19 +611,26 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "number"
+            "type": "number",
+            "example": 5
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Whistler"
           },
           "latitude": {
-            "type": "number"
+            "type": "number",
+            "example": 50.113
           },
           "longitude": {
-            "type": "number"
+            "type": "number",
+            "example": -122.954
           },
           "threshold": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "example": 0.33
           }
         },
         "required": [
@@ -596,33 +641,60 @@
           "threshold"
         ]
       },
-      "TrailAreaUpdateDto": {
+      "TrailAreaCreateFromUrlDto": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
-          },
-          "latitude": {
-            "type": "number",
-            "minimum": -90,
-            "maximum": 90
-          },
-          "longitude": {
-            "type": "number",
-            "minimum": -180,
-            "maximum": 180
+            "type": "string",
+            "example": "Whistler"
           },
           "threshold": {
             "type": "number",
             "minimum": 0,
-            "maximum": 1
+            "maximum": 1,
+            "example": 0.33
+          },
+          "mapsShortUrl": {
+            "type": "string",
+            "example": "https://maps.app.goo.gl/bPvKchfbcaYH8CbP9"
           }
         },
         "required": [
           "name",
+          "mapsShortUrl"
+        ]
+      },
+      "TrailAreaUpdateDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Whistler"
+          },
+          "threshold": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "example": 0.33
+          },
+          "latitude": {
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90,
+            "example": 48.7
+          },
+          "longitude": {
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180,
+            "example": 9.123
+          }
+        },
+        "required": [
+          "name",
+          "threshold",
           "latitude",
-          "longitude",
-          "threshold"
+          "longitude"
         ]
       },
       "TrailCreateDto": {

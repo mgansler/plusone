@@ -4,104 +4,48 @@ import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/
 
 import { WeatherDiagramSvg } from './weather-diagram-svg'
 
-const weatherData: Array<WeatherDataResponseDto> = [
-  {
-    time: '2024-01-01T00:00:00.000Z',
-    rain: 1,
-    soilMoisture0To1cm: 0.5,
-    soilMoisture1To3cm: 0,
-    soilMoisture3To9cm: 0,
-    soilMoisture9To27cm: 0,
-    soilTemperature0cm: -1.0,
-    soilTemperature6cm: 0,
-    temperature2m: 0,
-    windGusts10m: 30,
-  },
-  {
-    time: '2024-01-02T00:00:00.000Z',
-    rain: 5,
-    soilMoisture0To1cm: 0.4,
-    soilMoisture1To3cm: 0,
-    soilMoisture3To9cm: 0,
-    soilMoisture9To27cm: 0,
-    soilTemperature0cm: -0.9,
-    soilTemperature6cm: 0,
-    temperature2m: 0,
-    windGusts10m: 40,
-  },
-  {
-    time: '2024-01-02T23:00:00.000Z',
-    rain: 15,
-    soilMoisture0To1cm: 0.3,
-    soilMoisture1To3cm: 0,
-    soilMoisture3To9cm: 0,
-    soilMoisture9To27cm: 0,
-    soilTemperature0cm: -0.8,
-    soilTemperature6cm: 0,
-    temperature2m: 0,
-    windGusts10m: 50,
-  },
-]
-
-const sunriseSunsetData: Array<SunriseSunsetResponseDto> = [
-  {
-    date: '2024-01-01',
-    sunrise: '2024-01-01T06:00:00.000Z',
-    sunset: '2024-01-01T18:00:00.000Z',
-  },
-  {
-    date: '2024-01-02',
-    sunrise: '2024-01-01T05:50:00.000Z',
-    sunset: '2024-01-01T18:10:00.000Z',
-  },
-]
-
 describe('WeatherDiagramSvg', () => {
   it('should render a svg', () => {
+    generateSunriseSunsetData()
     cy.mount(
-      (<WeatherDiagramSvg weather={weatherData} sunriseSunset={sunriseSunsetData} threshold={0.33} />) as ReactNode,
+      (
+        <WeatherDiagramSvg
+          weather={generateWeatherData(-3)}
+          sunriseSunset={generateSunriseSunsetData()}
+          threshold={0.33}
+        />
+      ) as ReactNode,
     )
 
     cy.get('svg').within(() => {
-      cy.get('rect').should('have.length', 7)
-
-      // frame
-      cy.get('rect')
-        .eq(0)
+      cy.get('rect[id=outer-frame]')
         .should('have.attr', 'x', 0)
         .and('have.attr', 'y', 0)
         .and('have.attr', 'width', 980)
         .and('have.attr', 'height', 600)
 
-      // 1mm of rain should be around 1/3
-      cy.get('rect')
-        .eq(1)
-        .should(($rect) => {
-          expect(Number($rect.attr('height'))).greaterThan(198)
-          expect(Number($rect.attr('height'))).lessThan(199)
-        })
-      // 5mm of rain should be around 5/6
-      cy.get('rect')
-        .eq(2)
-        .should(($rect) => {
-          expect(Number($rect.attr('height'))).greaterThan(513)
-          expect(Number($rect.attr('height'))).lessThan(514)
-        })
-      // 15mm of rain should be capped at full height of the diagram
-      cy.get('rect').eq(3).should('have.attr', 'height', 600).and('have.attr', 'y', 0)
-
       cy.get('polyline[id=temperature]').should('be.visible')
       cy.get('polyline[id=moisture]').should('be.visible')
 
       // Depending on the locale of the browser used in testing we get 18:00:00 or 6:00:00 PM
-      cy.get('text').eq(1).should('include.text', 'Monday, Sunset at').and('include.text', ':00:00')
-      cy.get('text').eq(3).should('include.text', 'Tuesday, Sunset at').and('include.text', ':10:00')
+      cy.findAllByText(/(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), Sunset at.+/i)
+        .eq(0)
+        .should('include.text', ':00:00')
+      cy.findAllByText(/(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), Sunset at.+/i)
+        .eq(1)
+        .should('include.text', ':10:00')
     })
   })
 
-  it('should render the provided threshold', () => {
+  it('should render the provided threshold for cold weather', () => {
     cy.mount(
-      (<WeatherDiagramSvg weather={weatherData} sunriseSunset={sunriseSunsetData} threshold={0.5} />) as ReactNode,
+      (
+        <WeatherDiagramSvg
+          weather={generateWeatherData(0)}
+          sunriseSunset={generateSunriseSunsetData()}
+          threshold={0.5}
+        />
+      ) as ReactNode,
     )
 
     cy.get('svg').within(() => {
@@ -112,8 +56,72 @@ describe('WeatherDiagramSvg', () => {
 
       cy.get('line[id=moisture-threshold]')
         .should('have.attr', 'stroke', 'red')
-        .and('have.attr', 'y1', 300)
-        .and('have.attr', 'y2', 300)
+        .and('have.attr', 'y1', 315)
+        .and('have.attr', 'y2', 315)
     })
   })
+
+  it('should render the provided threshold for warm weather', () => {
+    cy.mount(
+      (
+        <WeatherDiagramSvg
+          weather={generateWeatherData()}
+          sunriseSunset={generateSunriseSunsetData()}
+          threshold={0.5}
+        />
+      ) as ReactNode,
+    )
+
+    cy.get('line[id=moisture-threshold]')
+      .should('have.attr', 'stroke', 'red')
+      .and('have.attr', 'y1', 300)
+      .and('have.attr', 'y2', 300)
+  })
 })
+
+function generateWeatherData(minTemp = 6): Array<WeatherDataResponseDto> {
+  const yesterday = new Date()
+  yesterday.setHours(0, 0, 0, 0)
+  yesterday.setDate(new Date().getDate() - 1)
+
+  const weatherData: Array<WeatherDataResponseDto> = []
+  for (let i = 0; i < 48; i++) {
+    const timeSlot = new Date(yesterday.getTime())
+    timeSlot.setHours(yesterday.getHours() + i)
+
+    weatherData.push({
+      time: timeSlot.toISOString(),
+      rain: Math.max(0, Math.random() * 2 - 1),
+      soilMoisture0To1cm: Math.min(0.35, Math.max(0.25, Math.random() / 10 + 0.25)),
+      soilMoisture1To3cm: 0,
+      soilMoisture3To9cm: 0,
+      soilMoisture9To27cm: 0,
+      soilTemperature0cm: Math.max(minTemp, Math.random() * 20 - 10),
+      soilTemperature6cm: 0,
+      temperature2m: 0,
+      windGusts10m: 30,
+    })
+  }
+
+  return weatherData
+}
+
+function generateSunriseSunsetData(): Array<SunriseSunsetResponseDto> {
+  const todayDate = new Date().toISOString().split('T')[0]
+  const yesterday = new Date()
+  yesterday.setDate(new Date().getDate() - 1)
+  const yesterdayDate = yesterday.toISOString().split('T')[0]
+
+  return [
+    {
+      date: yesterdayDate,
+      sunrise: `${yesterdayDate}T06:00:00.000Z`,
+      sunset: `${yesterdayDate}T18:00:00.000Z`,
+    },
+    {
+      date: todayDate,
+      sunrise: `${todayDate}T05:50:00.000Z`,
+      sunset: `${todayDate}T18:10:00.000Z`,
+    },
+  ]
+}

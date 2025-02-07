@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Max, Min } from 'class-validator'
+import { IsOptional, Max, Min } from 'class-validator'
 
 import { TrailAreaBaseDto } from './trail-area-create-base.dto'
 
-export class TrailAreaUpdateDto extends TrailAreaBaseDto {
+export class TrailAreaCreateFromCoordinatesDto extends TrailAreaBaseDto {
   @ApiProperty({ minimum: -90, maximum: 90, example: 48.7 })
   @Min(-90)
   @Max(90)
@@ -14,8 +14,6 @@ export class TrailAreaUpdateDto extends TrailAreaBaseDto {
   @Max(180)
   longitude: number
 
-  @ApiProperty({ minimum: 0, maximum: 1, example: 0.33, required: true })
-  @Min(0)
-  @Max(1)
-  threshold: number
+  @IsOptional()
+  threshold?: number
 }

@@ -1,4 +1,3 @@
-import { HttpService } from '@nestjs/axios'
 import { Test } from '@nestjs/testing'
 
 import { WeatherApiService } from '@plusone/nestjs-services'
@@ -26,10 +25,6 @@ describe('WeatherService', () => {
             },
             $transaction: jest.fn(),
           },
-        },
-        {
-          provide: HttpService,
-          useValue: new HttpService(),
         },
         {
           provide: WeatherApiService,

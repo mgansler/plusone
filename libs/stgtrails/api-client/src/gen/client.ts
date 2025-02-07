@@ -25,8 +25,13 @@ export interface SunriseSunsetResponseDto {
   sunset: string
 }
 
-export interface TrailAreaCreateDto {
+export interface TrailAreaCreateFromCoordinatesDto {
   name: string
+  /**
+   * @minimum 0
+   * @maximum 1
+   */
+  threshold?: number
   /**
    * @minimum -90
    * @maximum 90
@@ -37,11 +42,6 @@ export interface TrailAreaCreateDto {
    * @maximum 180
    */
   longitude: number
-  /**
-   * @minimum 0
-   * @maximum 1
-   */
-  threshold?: number
 }
 
 export interface TrailAreaResponseDto {
@@ -49,11 +49,30 @@ export interface TrailAreaResponseDto {
   name: string
   latitude: number
   longitude: number
+  /**
+   * @minimum 0
+   * @maximum 1
+   */
   threshold: number
+}
+
+export interface TrailAreaCreateFromUrlDto {
+  name: string
+  /**
+   * @minimum 0
+   * @maximum 1
+   */
+  threshold?: number
+  mapsShortUrl: string
 }
 
 export interface TrailAreaUpdateDto {
   name: string
+  /**
+   * @minimum 0
+   * @maximum 1
+   */
+  threshold: number
   /**
    * @minimum -90
    * @maximum 90
@@ -64,11 +83,6 @@ export interface TrailAreaUpdateDto {
    * @maximum 180
    */
   longitude: number
-  /**
-   * @minimum 0
-   * @maximum 1
-   */
-  threshold: number
 }
 
 export interface TrailCreateDto {
@@ -359,55 +373,135 @@ export function useGetSunriseSunsetForTrailArea<
   return query
 }
 
-export const createTrailArea = (trailAreaCreateDto: TrailAreaCreateDto, signal?: AbortSignal) => {
+export const createTrailAreaFromCoordinates = (
+  trailAreaCreateFromCoordinatesDto: TrailAreaCreateFromCoordinatesDto,
+  signal?: AbortSignal,
+) => {
   return customAxiosInstance<TrailAreaResponseDto>({
-    url: `/api/trailAreas`,
+    url: `/api/trailAreas/fromCoordinates`,
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    data: trailAreaCreateDto,
+    data: trailAreaCreateFromCoordinatesDto,
     signal,
   })
 }
 
-export const getCreateTrailAreaMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const getCreateTrailAreaFromCoordinatesMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createTrailArea>>,
+    Awaited<ReturnType<typeof createTrailAreaFromCoordinates>>,
     TError,
-    { data: TrailAreaCreateDto },
+    { data: TrailAreaCreateFromCoordinatesDto },
     TContext
   >
-}): UseMutationOptions<Awaited<ReturnType<typeof createTrailArea>>, TError, { data: TrailAreaCreateDto }, TContext> => {
-  const mutationKey = ['createTrailArea']
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createTrailAreaFromCoordinates>>,
+  TError,
+  { data: TrailAreaCreateFromCoordinatesDto },
+  TContext
+> => {
+  const mutationKey = ['createTrailAreaFromCoordinates']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof createTrailArea>>, { data: TrailAreaCreateDto }> = (
-    props,
-  ) => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createTrailAreaFromCoordinates>>,
+    { data: TrailAreaCreateFromCoordinatesDto }
+  > = (props) => {
     const { data } = props ?? {}
 
-    return createTrailArea(data)
+    return createTrailAreaFromCoordinates(data)
   }
 
   return { mutationFn, ...mutationOptions }
 }
 
-export type CreateTrailAreaMutationResult = NonNullable<Awaited<ReturnType<typeof createTrailArea>>>
-export type CreateTrailAreaMutationBody = TrailAreaCreateDto
-export type CreateTrailAreaMutationError = unknown
+export type CreateTrailAreaFromCoordinatesMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createTrailAreaFromCoordinates>>
+>
+export type CreateTrailAreaFromCoordinatesMutationBody = TrailAreaCreateFromCoordinatesDto
+export type CreateTrailAreaFromCoordinatesMutationError = unknown
 
-export const useCreateTrailArea = <TError = unknown, TContext = unknown>(options?: {
+export const useCreateTrailAreaFromCoordinates = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createTrailArea>>,
+    Awaited<ReturnType<typeof createTrailAreaFromCoordinates>>,
     TError,
-    { data: TrailAreaCreateDto },
+    { data: TrailAreaCreateFromCoordinatesDto },
     TContext
   >
-}): UseMutationResult<Awaited<ReturnType<typeof createTrailArea>>, TError, { data: TrailAreaCreateDto }, TContext> => {
-  const mutationOptions = getCreateTrailAreaMutationOptions(options)
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createTrailAreaFromCoordinates>>,
+  TError,
+  { data: TrailAreaCreateFromCoordinatesDto },
+  TContext
+> => {
+  const mutationOptions = getCreateTrailAreaFromCoordinatesMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
+
+export const createTrailAreaFromUrl = (trailAreaCreateFromUrlDto: TrailAreaCreateFromUrlDto, signal?: AbortSignal) => {
+  return customAxiosInstance<TrailAreaResponseDto>({
+    url: `/api/trailAreas/fromUrl`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: trailAreaCreateFromUrlDto,
+    signal,
+  })
+}
+
+export const getCreateTrailAreaFromUrlMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createTrailAreaFromUrl>>,
+    TError,
+    { data: TrailAreaCreateFromUrlDto },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createTrailAreaFromUrl>>,
+  TError,
+  { data: TrailAreaCreateFromUrlDto },
+  TContext
+> => {
+  const mutationKey = ['createTrailAreaFromUrl']
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createTrailAreaFromUrl>>,
+    { data: TrailAreaCreateFromUrlDto }
+  > = (props) => {
+    const { data } = props ?? {}
+
+    return createTrailAreaFromUrl(data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type CreateTrailAreaFromUrlMutationResult = NonNullable<Awaited<ReturnType<typeof createTrailAreaFromUrl>>>
+export type CreateTrailAreaFromUrlMutationBody = TrailAreaCreateFromUrlDto
+export type CreateTrailAreaFromUrlMutationError = unknown
+
+export const useCreateTrailAreaFromUrl = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createTrailAreaFromUrl>>,
+    TError,
+    { data: TrailAreaCreateFromUrlDto },
+    TContext
+  >
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createTrailAreaFromUrl>>,
+  TError,
+  { data: TrailAreaCreateFromUrlDto },
+  TContext
+> => {
+  const mutationOptions = getCreateTrailAreaFromUrlMutationOptions(options)
 
   return useMutation(mutationOptions)
 }

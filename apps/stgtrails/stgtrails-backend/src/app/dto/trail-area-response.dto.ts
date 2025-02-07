@@ -1,18 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 export class TrailAreaResponseDto {
-  @ApiProperty()
+  @ApiProperty({ example: 5 })
   id: number
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Whistler' })
   name: string
 
-  @ApiProperty()
+  @ApiProperty({ example: 50.113 })
   latitude: number
 
-  @ApiProperty()
+  @ApiProperty({ example: -122.954 })
   longitude: number
 
-  @ApiProperty()
+  @ApiProperty({ minimum: 0, maximum: 1, example: 0.33 })
   threshold: number
 }

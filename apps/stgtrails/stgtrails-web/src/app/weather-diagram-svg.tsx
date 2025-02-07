@@ -6,7 +6,7 @@ import { Frame } from './svg/frame'
 import { FrostedGlassFilter } from './svg/frosted-glass-filter'
 import { NowAndSlider } from './svg/now-and-slider'
 import { RainPerHour } from './svg/rain-per-hour'
-import { CHART_HEIGHT, CHART_WIDTH, getXForTimestamp } from './svg/shared'
+import { CHART_HEIGHT, CHART_WIDTH, getXForTimestamp, mightBeFreezing } from './svg/shared'
 import { SoilMoisture } from './svg/soil-moisture'
 import { SoilTemperature } from './svg/soil-temperature'
 
@@ -38,7 +38,11 @@ export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: Weather
 
         <RainPerHour weather={weather} sliderIndex={sliderIndex} />
         <SoilTemperature weather={weather} sliderIndex={sliderIndex} />
-        <SoilMoisture weather={weather} sliderIndex={sliderIndex} moistureThreshold={threshold} />
+        <SoilMoisture
+          weather={weather}
+          sliderIndex={sliderIndex}
+          moistureThreshold={mightBeFreezing(weather) ? threshold * 0.95 : threshold}
+        />
       </svg>
 
       <input
