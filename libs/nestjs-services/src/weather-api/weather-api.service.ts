@@ -24,9 +24,10 @@ export class WeatherApiService {
 
   public async fetchWeatherData(
     params: FetchWeatherDataParams,
+    pastDays = 1,
   ): Promise<Record<keyof typeof WeatherApiService.WEATHER_VARIABLES, Float32Array<never>> & { time: Array<Date> }> {
     const responses = await fetchWeatherApi('https://api.open-meteo.com/v1/forecast', {
-      past_days: 1,
+      past_days: pastDays,
       forecast_days: 3,
       hourly: WeatherApiService.HOURLY_WEATHER_VARIABLES,
       timezone: 'UTC',

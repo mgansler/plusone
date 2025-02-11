@@ -1,4 +1,6 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common'
+import process from 'node:process'
+
+import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
@@ -6,6 +8,7 @@ import { Prisma, PrismaService } from '@plusone/stgtrails-persistence'
 
 import { AppModule } from './app.module'
 import { AppService } from './app.service'
+import { ADMIN_PASSWORD, ADMIN_USERNAME } from './config'
 
 describe('TrailAreaController', () => {
   let app: INestApplication
@@ -34,6 +37,9 @@ describe('TrailAreaController', () => {
     },
   }
 
+  const username = process.env[ADMIN_USERNAME]
+  const password = process.env[ADMIN_PASSWORD]
+
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
@@ -58,12 +64,26 @@ describe('TrailAreaController', () => {
     jest.resetAllMocks()
   })
 
+  it('should have set a username and password', () => {
+    expect(username).toBeDefined()
+    expect(password).toBeDefined()
+  })
+
   describe('createTrailArea', () => {
     describe('fromCoordinates', () => {
-      it('should reject missing properties', async () => {
-        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromCoordinates').send({})
+      it('should reject unauthenticated request', async () => {
+        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromCoordinates').send()
 
-        expect(res.status).toBe(400)
+        expect(res.status).toBe(HttpStatus.UNAUTHORIZED)
+      })
+
+      it('should reject missing properties', async () => {
+        const res = await request(app.getHttpServer())
+          .post('/api/trailAreas/fromCoordinates')
+          .auth(username, password)
+          .send({})
+
+        expect(res.status).toBe(HttpStatus.BAD_REQUEST)
         expect(res.body.message).toEqual([
           'latitude must not be greater than 90',
           'latitude must not be less than -90',
@@ -75,14 +95,17 @@ describe('TrailAreaController', () => {
       })
 
       it('should reject too large values', async () => {
-        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromCoordinates').send({
-          name: 'TestTrailArea',
-          latitude: 100,
-          longitude: 200,
-          threshold: 1.01,
-        })
+        const res = await request(app.getHttpServer())
+          .post('/api/trailAreas/fromCoordinates')
+          .auth(username, password)
+          .send({
+            name: 'TestTrailArea',
+            latitude: 100,
+            longitude: 200,
+            threshold: 1.01,
+          })
 
-        expect(res.status).toBe(400)
+        expect(res.status).toBe(HttpStatus.BAD_REQUEST)
         expect(res.body.message).toEqual([
           'latitude must not be greater than 90',
           'longitude must not be greater than 180',
@@ -92,14 +115,17 @@ describe('TrailAreaController', () => {
       })
 
       it('should reject too small longitude/latitude', async () => {
-        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromCoordinates').send({
-          name: 'TestTrailArea',
-          latitude: -100,
-          longitude: -200,
-          threshold: -0.01,
-        })
+        const res = await request(app.getHttpServer())
+          .post('/api/trailAreas/fromCoordinates')
+          .auth(username, password)
+          .send({
+            name: 'TestTrailArea',
+            latitude: -100,
+            longitude: -200,
+            threshold: -0.01,
+          })
 
-        expect(res.status).toBe(400)
+        expect(res.status).toBe(HttpStatus.BAD_REQUEST)
         expect(res.body.message).toEqual([
           'latitude must not be less than -90',
           'longitude must not be less than -180',
@@ -109,11 +135,14 @@ describe('TrailAreaController', () => {
       })
 
       it('should create a trail area', async () => {
-        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromCoordinates').send({
-          name: 'TestTrailArea',
-          latitude: 48,
-          longitude: 9,
-        })
+        const res = await request(app.getHttpServer())
+          .post('/api/trailAreas/fromCoordinates')
+          .auth(username, password)
+          .send({
+            name: 'TestTrailArea',
+            latitude: 48,
+            longitude: 9,
+          })
         expect(res.status).toBe(201)
         expect(res.body).toEqual({
           trailAreaId: 1,
@@ -127,10 +156,15 @@ describe('TrailAreaController', () => {
     })
 
     describe('fromUrl', () => {
-      it('should reject missing properties', async () => {
-        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromUrl').send({})
+      it('should reject unauthenticated request', async () => {
+        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromUrl').send()
 
-        expect(res.status).toBe(400)
+        expect(res.status).toBe(HttpStatus.UNAUTHORIZED)
+      })
+      it('should reject missing properties', async () => {
+        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromUrl').auth(username, password).send({})
+
+        expect(res.status).toBe(HttpStatus.BAD_REQUEST)
         expect(res.body.message).toEqual([
           'mapsShortUrl must be a URL address',
           'name must be longer than or equal to 1 characters',
@@ -139,7 +173,7 @@ describe('TrailAreaController', () => {
       })
 
       it('should create a trail area', async () => {
-        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromUrl').send({
+        const res = await request(app.getHttpServer()).post('/api/trailAreas/fromUrl').auth(username, password).send({
           name: 'Whistler',
           mapsShortUrl: 'https://maps.app.goo.gl/bPvKchfbcaYH8CbP9',
         })
@@ -157,10 +191,16 @@ describe('TrailAreaController', () => {
   })
 
   describe('updateTrailArea', () => {
-    it('should reject missing properties', async () => {
-      const res = await request(app.getHttpServer()).put('/api/trailAreas/1').send({})
+    it('should reject unauthenticated request', async () => {
+      const res = await request(app.getHttpServer()).put('/api/trailAreas/1').send()
 
-      expect(res.status).toBe(400)
+      expect(res.status).toBe(HttpStatus.UNAUTHORIZED)
+    })
+
+    it('should reject missing properties', async () => {
+      const res = await request(app.getHttpServer()).put('/api/trailAreas/1').auth(username, password).send({})
+
+      expect(res.status).toBe(HttpStatus.BAD_REQUEST)
       expect(res.body.message).toEqual([
         'latitude must not be greater than 90',
         'latitude must not be less than -90',
@@ -174,7 +214,7 @@ describe('TrailAreaController', () => {
     })
 
     it('should update a trail area', async () => {
-      const res = await request(app.getHttpServer()).put('/api/trailAreas/2').send({
+      const res = await request(app.getHttpServer()).put('/api/trailAreas/2').auth(username, password).send({
         name: 'UpdatedTrailArea',
         latitude: 49,
         longitude: 10,

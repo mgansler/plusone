@@ -10,7 +10,7 @@ export const GLOBAL_PREFIX = 'api'
 export function setupApi(app: INestApplication): OpenAPIObject {
   app.setGlobalPrefix(GLOBAL_PREFIX)
 
-  const swaggerConfig = new DocumentBuilder().setTitle('stgtrails API').setVersion('0.1').build()
+  const swaggerConfig = new DocumentBuilder().setTitle('stgtrails API').setVersion('0.1').addBasicAuth().build()
   const document = SwaggerModule.createDocument(app, swaggerConfig)
   SwaggerModule.setup(GLOBAL_PREFIX, app, document)
 

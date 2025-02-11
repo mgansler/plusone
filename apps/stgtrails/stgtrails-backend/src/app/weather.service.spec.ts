@@ -52,10 +52,17 @@ describe('WeatherService', () => {
   })
 
   describe('updateWeatherForecast', () => {
-    it('should update weather data', async () => {
+    it('should regularly update weather data', async () => {
       await weatherService.updateWeatherForecast()
 
-      expect(weatherApiService.fetchWeatherData).toHaveBeenCalledWith({ latitude: 1, longitude: 2 })
+      expect(weatherApiService.fetchWeatherData).toHaveBeenCalledWith({ latitude: 1, longitude: 2 }, undefined)
+      expect(prismaService.weatherData.upsert).toHaveBeenCalledTimes(3)
+    })
+
+    it('should update weather data for new trail area', async () => {
+      await weatherService.updateWeatherForecast([], true)
+
+      expect(weatherApiService.fetchWeatherData).toHaveBeenCalledWith({ latitude: 1, longitude: 2 }, 7)
       expect(prismaService.weatherData.upsert).toHaveBeenCalledTimes(3)
     })
   })

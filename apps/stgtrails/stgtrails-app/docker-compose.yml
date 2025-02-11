@@ -5,6 +5,8 @@ services:
     environment:
       TZ: 'Europe/Berlin'
       STGTRAILS_DATABASE_URL: 'file:/usr/stgtrails/sqlite/stgtrails.db'
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: ${STGTRAILS_ADMIN_PASSWORD}
     volumes:
       - sqlite:/usr/stgtrails/sqlite/
     labels:

@@ -19,12 +19,6 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query'
 import { customAxiosInstance } from '../custom-axios'
-export interface SunriseSunsetResponseDto {
-  date: string
-  sunrise: string
-  sunset: string
-}
-
 export interface TrailAreaCreateFromCoordinatesDto {
   name: string
   /**
@@ -97,6 +91,12 @@ export interface TrailResponseDto {
 
 export interface TrailUpdateDto {
   name: string
+}
+
+export interface SunriseSunsetResponseDto {
+  date: string
+  sunrise: string
+  sunset: string
 }
 
 export interface WeatherDataResponseDto {
@@ -193,184 +193,6 @@ export type GetWeatherDataForTrailAreaParams = {
   trailAreaId: number
   hours?: number
   utcOffsetHours?: number
-}
-
-export const getHealthStatus = (signal?: AbortSignal) => {
-  return customAxiosInstance<GetHealthStatus200>({ url: `/api/health`, method: 'GET', signal })
-}
-
-export const getGetHealthStatusQueryKey = () => {
-  return [`/api/health`] as const
-}
-
-export const getGetHealthStatusQueryOptions = <
-  TData = Awaited<ReturnType<typeof getHealthStatus>>,
-  TError = GetHealthStatus503,
->(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getGetHealthStatusQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getHealthStatus>>> = ({ signal }) => getHealthStatus(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getHealthStatus>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type GetHealthStatusQueryResult = NonNullable<Awaited<ReturnType<typeof getHealthStatus>>>
-export type GetHealthStatusQueryError = GetHealthStatus503
-
-export function useGetHealthStatus<
-  TData = Awaited<ReturnType<typeof getHealthStatus>>,
-  TError = GetHealthStatus503,
->(options: {
-  query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof getHealthStatus>>,
-        TError,
-        Awaited<ReturnType<typeof getHealthStatus>>
-      >,
-      'initialData'
-    >
-}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetHealthStatus<
-  TData = Awaited<ReturnType<typeof getHealthStatus>>,
-  TError = GetHealthStatus503,
->(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof getHealthStatus>>,
-        TError,
-        Awaited<ReturnType<typeof getHealthStatus>>
-      >,
-      'initialData'
-    >
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetHealthStatus<
-  TData = Awaited<ReturnType<typeof getHealthStatus>>,
-  TError = GetHealthStatus503,
->(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-export function useGetHealthStatus<
-  TData = Awaited<ReturnType<typeof getHealthStatus>>,
-  TError = GetHealthStatus503,
->(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetHealthStatusQueryOptions(options)
-
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-  query.queryKey = queryOptions.queryKey
-
-  return query
-}
-
-export const getSunriseSunsetForTrailArea = (params: GetSunriseSunsetForTrailAreaParams, signal?: AbortSignal) => {
-  return customAxiosInstance<SunriseSunsetResponseDto[]>({ url: `/api/sunrise-sunset`, method: 'GET', params, signal })
-}
-
-export const getGetSunriseSunsetForTrailAreaQueryKey = (params: GetSunriseSunsetForTrailAreaParams) => {
-  return [`/api/sunrise-sunset`, ...(params ? [params] : [])] as const
-}
-
-export const getGetSunriseSunsetForTrailAreaQueryOptions = <
-  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
-  TError = unknown,
->(
-  params: GetSunriseSunsetForTrailAreaParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>>
-  },
-) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getGetSunriseSunsetForTrailAreaQueryKey(params)
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>> = ({ signal }) =>
-    getSunriseSunsetForTrailArea(params, signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type GetSunriseSunsetForTrailAreaQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>
->
-export type GetSunriseSunsetForTrailAreaQueryError = unknown
-
-export function useGetSunriseSunsetForTrailArea<
-  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
-  TError = unknown,
->(
-  params: GetSunriseSunsetForTrailAreaParams,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>> &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
-          TError,
-          Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>
-        >,
-        'initialData'
-      >
-  },
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetSunriseSunsetForTrailArea<
-  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
-  TError = unknown,
->(
-  params: GetSunriseSunsetForTrailAreaParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>> &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
-          TError,
-          Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>
-        >,
-        'initialData'
-      >
-  },
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetSunriseSunsetForTrailArea<
-  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
-  TError = unknown,
->(
-  params: GetSunriseSunsetForTrailAreaParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>>
-  },
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-export function useGetSunriseSunsetForTrailArea<
-  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
-  TError = unknown,
->(
-  params: GetSunriseSunsetForTrailAreaParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>>
-  },
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetSunriseSunsetForTrailAreaQueryOptions(params, options)
-
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-  query.queryKey = queryOptions.queryKey
-
-  return query
 }
 
 export const createTrailAreaFromCoordinates = (
@@ -504,74 +326,6 @@ export const useCreateTrailAreaFromUrl = <TError = unknown, TContext = unknown>(
   const mutationOptions = getCreateTrailAreaFromUrlMutationOptions(options)
 
   return useMutation(mutationOptions)
-}
-
-export const getTrailAreas = (signal?: AbortSignal) => {
-  return customAxiosInstance<TrailAreaResponseDto[]>({ url: `/api/trailAreas`, method: 'GET', signal })
-}
-
-export const getGetTrailAreasQueryKey = () => {
-  return [`/api/trailAreas`] as const
-}
-
-export const getGetTrailAreasQueryOptions = <
-  TData = Awaited<ReturnType<typeof getTrailAreas>>,
-  TError = unknown,
->(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getGetTrailAreasQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTrailAreas>>> = ({ signal }) => getTrailAreas(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getTrailAreas>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type GetTrailAreasQueryResult = NonNullable<Awaited<ReturnType<typeof getTrailAreas>>>
-export type GetTrailAreasQueryError = unknown
-
-export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas>>, TError = unknown>(options: {
-  query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>> &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof getTrailAreas>>,
-        TError,
-        Awaited<ReturnType<typeof getTrailAreas>>
-      >,
-      'initialData'
-    >
-}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas>>, TError = unknown>(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>> &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof getTrailAreas>>,
-        TError,
-        Awaited<ReturnType<typeof getTrailAreas>>
-      >,
-      'initialData'
-    >
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas>>, TError = unknown>(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>>
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas>>, TError = unknown>(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>>
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetTrailAreasQueryOptions(options)
-
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-  query.queryKey = queryOptions.queryKey
-
-  return query
 }
 
 export const updateTrailArea = (trailAreaId: number, trailAreaUpdateDto: TrailAreaUpdateDto) => {
@@ -913,6 +667,252 @@ export const useDeleteTrail = <TError = unknown, TContext = unknown>(options?: {
   const mutationOptions = getDeleteTrailMutationOptions(options)
 
   return useMutation(mutationOptions)
+}
+
+export const getHealthStatus = (signal?: AbortSignal) => {
+  return customAxiosInstance<GetHealthStatus200>({ url: `/api/health`, method: 'GET', signal })
+}
+
+export const getGetHealthStatusQueryKey = () => {
+  return [`/api/health`] as const
+}
+
+export const getGetHealthStatusQueryOptions = <
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetHealthStatusQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getHealthStatus>>> = ({ signal }) => getHealthStatus(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getHealthStatus>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetHealthStatusQueryResult = NonNullable<Awaited<ReturnType<typeof getHealthStatus>>>
+export type GetHealthStatusQueryError = GetHealthStatus503
+
+export function useGetHealthStatus<
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
+>(options: {
+  query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getHealthStatus>>,
+        TError,
+        Awaited<ReturnType<typeof getHealthStatus>>
+      >,
+      'initialData'
+    >
+}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetHealthStatus<
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getHealthStatus>>,
+        TError,
+        Awaited<ReturnType<typeof getHealthStatus>>
+      >,
+      'initialData'
+    >
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetHealthStatus<
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetHealthStatus<
+  TData = Awaited<ReturnType<typeof getHealthStatus>>,
+  TError = GetHealthStatus503,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>>
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetHealthStatusQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const getSunriseSunsetForTrailArea = (params: GetSunriseSunsetForTrailAreaParams, signal?: AbortSignal) => {
+  return customAxiosInstance<SunriseSunsetResponseDto[]>({ url: `/api/sunrise-sunset`, method: 'GET', params, signal })
+}
+
+export const getGetSunriseSunsetForTrailAreaQueryKey = (params: GetSunriseSunsetForTrailAreaParams) => {
+  return [`/api/sunrise-sunset`, ...(params ? [params] : [])] as const
+}
+
+export const getGetSunriseSunsetForTrailAreaQueryOptions = <
+  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+  TError = unknown,
+>(
+  params: GetSunriseSunsetForTrailAreaParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>>
+  },
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetSunriseSunsetForTrailAreaQueryKey(params)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>> = ({ signal }) =>
+    getSunriseSunsetForTrailArea(params, signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSunriseSunsetForTrailAreaQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>
+>
+export type GetSunriseSunsetForTrailAreaQueryError = unknown
+
+export function useGetSunriseSunsetForTrailArea<
+  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+  TError = unknown,
+>(
+  params: GetSunriseSunsetForTrailAreaParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+          TError,
+          Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>
+        >,
+        'initialData'
+      >
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSunriseSunsetForTrailArea<
+  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+  TError = unknown,
+>(
+  params: GetSunriseSunsetForTrailAreaParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+          TError,
+          Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>
+        >,
+        'initialData'
+      >
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSunriseSunsetForTrailArea<
+  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+  TError = unknown,
+>(
+  params: GetSunriseSunsetForTrailAreaParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>>
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSunriseSunsetForTrailArea<
+  TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
+  TError = unknown,
+>(
+  params: GetSunriseSunsetForTrailAreaParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>, TError, TData>>
+  },
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetSunriseSunsetForTrailAreaQueryOptions(params, options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const getTrailAreas = (signal?: AbortSignal) => {
+  return customAxiosInstance<TrailAreaResponseDto[]>({ url: `/api/trailAreas`, method: 'GET', signal })
+}
+
+export const getGetTrailAreasQueryKey = () => {
+  return [`/api/trailAreas`] as const
+}
+
+export const getGetTrailAreasQueryOptions = <
+  TData = Awaited<ReturnType<typeof getTrailAreas>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetTrailAreasQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTrailAreas>>> = ({ signal }) => getTrailAreas(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getTrailAreas>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetTrailAreasQueryResult = NonNullable<Awaited<ReturnType<typeof getTrailAreas>>>
+export type GetTrailAreasQueryError = unknown
+
+export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas>>, TError = unknown>(options: {
+  query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>> &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getTrailAreas>>,
+        TError,
+        Awaited<ReturnType<typeof getTrailAreas>>
+      >,
+      'initialData'
+    >
+}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas>>, TError = unknown>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>> &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getTrailAreas>>,
+        TError,
+        Awaited<ReturnType<typeof getTrailAreas>>
+      >,
+      'initialData'
+    >
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas>>, TError = unknown>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>>
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas>>, TError = unknown>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>>
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetTrailAreasQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
 }
 
 export const getWeatherDataForTrailArea = (params: GetWeatherDataForTrailAreaParams, signal?: AbortSignal) => {

@@ -20,6 +20,6 @@ export class AppService implements OnModuleInit {
 
   public async fetchDataForNewArea(trailArea: TrailArea) {
     await this.sunriseSunsetService.updateSunriseSunsetData([trailArea])
-    await this.weatherService.updateWeatherForecast([trailArea])
+    await this.weatherService.updateWeatherForecast([trailArea], true)
   }
 }

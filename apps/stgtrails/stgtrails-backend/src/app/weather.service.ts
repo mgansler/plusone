@@ -52,17 +52,20 @@ export class WeatherService {
   }
 
   @Cron(CronExpression.EVERY_30_MINUTES)
-  public async updateWeatherForecast(trailAreas: Array<TrailArea> = []) {
+  public async updateWeatherForecast(trailAreas: Array<TrailArea> = [], isNewArea = false) {
     if (trailAreas.length === 0) {
       trailAreas = await this.prisma.trailArea.findMany()
     }
     this.logger.log(`Updating weather data for ${trailAreas.length} trail areas.`)
 
     for (const trailArea of trailAreas) {
-      const weatherData = await this.weatherApi.fetchWeatherData({
-        latitude: trailArea.latitude,
-        longitude: trailArea.longitude,
-      })
+      const weatherData = await this.weatherApi.fetchWeatherData(
+        {
+          latitude: trailArea.latitude,
+          longitude: trailArea.longitude,
+        },
+        isNewArea ? 7 : undefined,
+      )
 
       const transformedData: Array<WeatherDataCreateManyInput> = weatherData.time.reduce(
         (previousValue, currentValue, currentIndex) => {
