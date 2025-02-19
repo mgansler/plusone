@@ -15,5 +15,9 @@
       ],
       allowedVersions: '0.1.x',
     },
+    {
+      matchPackageNames: ['vite'],
+      allowedVersions: '!/6\\.1\\.1/',
+    },
   ],
 }
