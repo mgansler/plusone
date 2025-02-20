@@ -3609,10 +3609,10 @@
     jsonc-parser "3.2.0"
     pluralize "8.0.0"
 
-"@nestjs/serve-static@5.0.2":
-  version "5.0.2"
-  resolved "https://registry.npmjs.org/@nestjs/serve-static/-/serve-static-5.0.2.tgz#2d878078dcf564245b705f5b60f17de695bd7cdd"
-  integrity sha512-MvgBQ691s8cIIsr7w4gE3NiUghCsD+1d/njqEG83M4U/9+WeczCgjrsgHTtGFYMBYBMysXQ9ni6VsUiSdzKtrQ==
+"@nestjs/serve-static@5.0.3":
+  version "5.0.3"
+  resolved "https://registry.npmjs.org/@nestjs/serve-static/-/serve-static-5.0.3.tgz#63d8021ce93ab91515fd7dfffaa71d734bddb3f8"
+  integrity sha512-0jFjTlSVSLrI+mot8lfm+h2laXtKzCvgsVStv9T1ZBZTDwS26gM5czIhIESmWAod0PfrbCDFiu9C1MglObL8VA==
   dependencies:
     path-to-regexp "8.2.0"
 
@@ -5429,17 +5429,17 @@
   resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.65.0.tgz#37da5e911543b4f6d98b9a04369eab0de6044ba1"
   integrity sha512-g5y7zc07U9D3esMdqUfTEVu9kMHoIaVBsD0+M3LPdAdD710RpTcLiNvJY1JkYXqkq9+NV+CQoemVNpQPBXVsJg==
 
-"@tanstack/react-query-devtools@5.66.7":
-  version "5.66.7"
-  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.66.7.tgz#3344306c643db65b93c0f9104fb9a13f1a375404"
-  integrity sha512-40z4PPkz06tYIF0vwLZZIZfZxKUH4OAaBOR14blCFyYm6hlU6qc+M82mkZ+D00HcEMhV7P4XeJiEuDhFq0q9Qw==
+"@tanstack/react-query-devtools@5.66.8":
+  version "5.66.8"
+  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.66.8.tgz#1dca5c82e10e8058ed315594ee00bcf719250ac6"
+  integrity sha512-OOdGk4ijs1SEliluWoE5D0ghxwDQz4x2LKzO69K6++VuxtizONXEXtk/oC3QGa9Tru/2CQmsJ5HUk8pmUAi9Qg==
   dependencies:
     "@tanstack/query-devtools" "5.65.0"
 
-"@tanstack/react-query@5.66.7":
-  version "5.66.7"
-  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.66.7.tgz#ee96c42cc5b4a4447b602eee6e67653268b0ed3a"
-  integrity sha512-qd3q/tUpF2K1xItfPZddk1k/8pSXnovg41XyCqJgPoyYEirMBtB0sVEVVQ/CsAOngzgWtBPXimVf4q4kM9uO6A==
+"@tanstack/react-query@5.66.8":
+  version "5.66.8"
+  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.66.8.tgz#a27494a4ce69c88363eee33637a57e013d7dd5c1"
+  integrity sha512-LqYHYArmM7ycyT1I/Txc/n6KzI8S/hBFw2SQ9Uj1GpbZ89AvZLEvetquiQEHkZ5rFEm+iVNpZ6zYjTiPmJ9N5Q==
   dependencies:
     "@tanstack/query-core" "5.66.4"
 
@@ -10674,12 +10674,12 @@ fast-uri@^3.0.1:
   resolved "https://registry.npmjs.org/fast-uri/-/fast-uri-3.0.3.tgz#892a1c91802d5d7860de728f18608a0573142241"
   integrity sha512-aLrHthzCjH5He4Z2H9YZ+v6Ujb9ocRuW6ZzkJQOrTxleEijANq4v1TsaPaVG1PZcuurEzrLcWRyYBYXD5cEiaw==
 
-fast-xml-parser@5.0.3:
-  version "5.0.3"
-  resolved "https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-5.0.3.tgz#aee7133c6561ec6155083cd4cd9da705d6452ba4"
-  integrity sha512-I1OW1Uhq5Q2ucdddCUSGHT8n+kToAE/1vj8SC/Tq7Ebrbe+/EYVQdxrgL0ZmIWWZbDc2/jrFsSV5gvUirQSgXg==
+fast-xml-parser@5.0.6:
+  version "5.0.6"
+  resolved "https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-5.0.6.tgz#3531c630ea334bd67b91f236117fbf439a19b21f"
+  integrity sha512-5zIl0jWsewL5LdneswG6aJXx1YH1FXQ02UVIe/CZI3wXhI3SqP62bjcIYRNOgU43/MnN1t/MCpH6UoOtBrDNug==
   dependencies:
-    strnum "^2.0.2"
+    strnum "^2.0.4"
 
 fastq@^1.6.0:
   version "1.17.1"
@@ -18504,10 +18504,10 @@ strip-json-comments@^3.1.1, strip-json-comments@~3.1.1:
   resolved "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-strnum@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/strnum/-/strnum-2.0.2.tgz#cb4662222913ed1c5e0bd694d0b62a80a4bdb3b7"
-  integrity sha512-FHl2fmHvonQrrw9/5xzBqBOcIpdES1mkNSl617CKEu5HRB5P6v/4JtGohPPMZ7+7EmVn6HElt7/9Vl8N4vO63A==
+strnum@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.npmjs.org/strnum/-/strnum-2.0.4.tgz#7b2ace8a55d8c92a41c2d339ddb1bc306f337820"
+  integrity sha512-qrXhLMohxtEPKMlajtNaOp5zvAQUo6L3fNcdiJKzWH98kGfklqGwmxhFjM7DzxsuoVM7rJeiYr+lEcu4Jlu9UQ==
 
 strtok3@^9.0.1:
   version "9.1.1"
