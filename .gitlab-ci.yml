@@ -25,7 +25,7 @@ stages:
 
 .dind:
   services:
-    - docker:27.5.1-dind
+    - docker:28.0.0-dind
   variables:
     DOCKER_HOST: 'tcp://docker:2375'
     DOCKER_TLS_CERTDIR: ''
