@@ -16,6 +16,9 @@ model TrailArea {
   longitude Float
   threshold Float  @default(0.33)
 
+  country String @default("unknown")
+  state   String @default("unknown")
+
   trails        Trail[]
   weather       WeatherData[]
   sunriseSunset SunriseSunset[]

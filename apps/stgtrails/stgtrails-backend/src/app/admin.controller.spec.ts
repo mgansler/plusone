@@ -9,12 +9,16 @@ import { Prisma, PrismaService } from '@plusone/stgtrails-persistence'
 import { AppModule } from './app.module'
 import { AppService } from './app.service'
 import { ADMIN_PASSWORD, ADMIN_USERNAME } from './config'
+import { OsmService } from './osm.service'
 
 describe('TrailAreaController', () => {
   let app: INestApplication
 
   const appServiceMock = {
     fetchDataForNewArea: jest.fn(),
+  }
+  const osmServiceMock = {
+    reverseLookup: jest.fn(),
   }
   const prismaServiceMock = {
     trailArea: {
@@ -34,6 +38,7 @@ describe('TrailAreaController', () => {
           latitude: input.data.latitude,
           threshold: input.data.threshold,
         }),
+      findMany: (input: Prisma.TrailAreaFindManyArgs) => Promise.resolve([]),
     },
   }
 
@@ -46,6 +51,8 @@ describe('TrailAreaController', () => {
     })
       .overrideProvider(AppService)
       .useValue(appServiceMock)
+      .overrideProvider(OsmService)
+      .useValue(osmServiceMock)
       .overrideProvider(PrismaService)
       .useValue(prismaServiceMock)
       .compile()

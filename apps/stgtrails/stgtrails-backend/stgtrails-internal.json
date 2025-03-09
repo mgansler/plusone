@@ -503,6 +503,31 @@
         ]
       }
     },
+    "/api/trailAreas/countries": {
+      "get": {
+        "operationId": "getCountries",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CountryListResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "trail-area"
+        ]
+      }
+    },
     "/api/trailAreas": {
       "get": {
         "operationId": "getTrailAreas",
@@ -651,6 +676,14 @@
             "minimum": 0,
             "maximum": 1,
             "example": 0.33
+          },
+          "country": {
+            "type": "string",
+            "example": "de"
+          },
+          "state": {
+            "type": "string",
+            "example": "bw"
           }
         },
         "required": [
@@ -658,7 +691,9 @@
           "name",
           "latitude",
           "longitude",
-          "threshold"
+          "threshold",
+          "country",
+          "state"
         ]
       },
       "TrailAreaCreateFromUrlDto": {
@@ -777,6 +812,21 @@
           "date",
           "sunrise",
           "sunset"
+        ]
+      },
+      "CountryListResponseDto": {
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "country",
+          "state"
         ]
       },
       "WeatherDataResponseDto": {

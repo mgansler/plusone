@@ -15,6 +15,7 @@ import { AdminController } from './admin.controller'
 import { AppService } from './app.service'
 import { configSchema } from './config'
 import { HealthController } from './health.controller'
+import { OsmService } from './osm.service'
 import { SunriseSunsetController } from './sunrise-sunset.controller'
 import { SunriseSunsetService } from './sunrise-sunset.service'
 import { TrailAreaController } from './trail-area.controller'
@@ -42,12 +43,15 @@ import { WeatherService } from './weather.service'
   ],
   controllers: [AdminController, HealthController, SunriseSunsetController, TrailAreaController, WeatherController],
   providers: [
+    // Services
     AppService,
+    OsmService,
     SunriseSunsetApiService,
     SunriseSunsetService,
     TrailAreaService,
     WeatherApiService,
     WeatherService,
+    // Other
     UsernamePasswordStrategy,
   ],
 })

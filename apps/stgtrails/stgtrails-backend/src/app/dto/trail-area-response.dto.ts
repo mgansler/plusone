@@ -15,4 +15,10 @@ export class TrailAreaResponseDto {
 
   @ApiProperty({ minimum: 0, maximum: 1, example: 0.33 })
   threshold: number
+
+  @ApiProperty({ example: 'de' })
+  country: string
+
+  @ApiProperty({ example: 'bw' })
+  state: string
 }
