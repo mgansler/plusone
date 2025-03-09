@@ -13,6 +13,7 @@ export class TrailAreaController {
   @ApiOperation({ operationId: 'getTrailAreas' })
   @ApiOkResponse({ type: [TrailAreaResponseDto] })
   @Get()
+  // TODO: filter by country/state
   async getTrailAreas() {
     return this.trailAreaService.getTrailAreas()
   }

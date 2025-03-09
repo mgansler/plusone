@@ -651,6 +651,14 @@
             "minimum": 0,
             "maximum": 1,
             "example": 0.33
+          },
+          "country": {
+            "type": "string",
+            "example": "de"
+          },
+          "state": {
+            "type": "string",
+            "example": "bw"
           }
         },
         "required": [
@@ -658,7 +666,9 @@
           "name",
           "latitude",
           "longitude",
-          "threshold"
+          "threshold",
+          "country",
+          "state"
         ]
       },
       "TrailAreaCreateFromUrlDto": {

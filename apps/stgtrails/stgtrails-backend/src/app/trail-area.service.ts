@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios'
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { AxiosResponse } from 'axios'
 import { lastValueFrom } from 'rxjs'
 
@@ -12,18 +12,34 @@ import { TrailAreaResponseDto } from './dto/trail-area-response.dto'
 import { TrailAreaUpdateDto } from './dto/trail-area-update.dto'
 import { TrailCreateDto } from './dto/trail-create.dto'
 import { TrailUpdateDto } from './dto/trail-update.dto'
+import { OsmService } from './osm.service'
 
 import TrailAreaCreateArgs = Prisma.TrailAreaCreateArgs
 
 @Injectable()
-export class TrailAreaService {
+export class TrailAreaService implements OnModuleInit {
   private logger = new Logger(TrailAreaService.name)
 
   constructor(
     private readonly appService: AppService,
+    private readonly osmService: OsmService,
     private readonly prisma: PrismaService,
     private readonly httpService: HttpService,
   ) {}
+
+  async onModuleInit(): Promise<void> {
+    const trailAreas = await this.findTrailAreasWithUnknownCountryAndState()
+    if (trailAreas.length > 0) {
+      this.logger.log(`There are ${trailAreas.length} trail areas without state/country information, updating now.`)
+      for (const trailArea of trailAreas) {
+        const address = await this.osmService.reverseLookup({
+          latitude: trailArea.latitude,
+          longitude: trailArea.longitude,
+        })
+        await this.updateTrailAreaCountryAndState(trailArea.id, address.countryCode, address.stateCode)
+      }
+    }
+  }
 
   public async createTrailAreaFromCoordinates(input: TrailAreaCreateFromCoordinatesDto) {
     return this.createTrailArea(input)
@@ -49,12 +65,6 @@ export class TrailAreaService {
         }
       }
     }
-  }
-
-  private async createTrailArea(data: TrailAreaCreateArgs['data']) {
-    const trailArea = await this.prisma.trailArea.create({ data })
-    await this.appService.fetchDataForNewArea(trailArea)
-    return trailArea
   }
 
   public async getTrailAreas(): Promise<Array<TrailAreaResponseDto>> {
@@ -96,5 +106,25 @@ export class TrailAreaService {
 
   public async deleteTrail(trailId: number) {
     return this.prisma.trail.delete({ where: { id: trailId } })
+  }
+
+  private async createTrailArea(data: TrailAreaCreateArgs['data']) {
+    const address = await this.osmService.reverseLookup({ latitude: data.latitude, longitude: data.latitude })
+    const trailArea = await this.prisma.trailArea.create({ data: { ...data, ...address } })
+    await this.appService.fetchDataForNewArea(trailArea)
+    return trailArea
+  }
+
+  private async findTrailAreasWithUnknownCountryAndState(): Promise<Array<TrailAreaResponseDto>> {
+    return this.prisma.trailArea.findMany({
+      where: { AND: [{ country: OsmService.UnknownLocation }, { state: OsmService.UnknownLocation }] },
+    })
+  }
+
+  private async updateTrailAreaCountryAndState(trailAreaId: number, country: string, state: string) {
+    return this.prisma.trailArea.update({
+      where: { id: trailAreaId },
+      data: { country, state },
+    })
   }
 }
