@@ -20,6 +20,8 @@ export const createTrailAreaFromCoordinatesResponse = zod
       .number()
       .min(createTrailAreaFromCoordinatesResponseThresholdMin)
       .max(createTrailAreaFromCoordinatesResponseThresholdMax),
+    country: zod.string(),
+    state: zod.string(),
   })
   .strict()
 
@@ -37,6 +39,8 @@ export const createTrailAreaFromUrlResponse = zod
       .number()
       .min(createTrailAreaFromUrlResponseThresholdMin)
       .max(createTrailAreaFromUrlResponseThresholdMax),
+    country: zod.string(),
+    state: zod.string(),
   })
   .strict()
 
@@ -51,6 +55,8 @@ export const updateTrailAreaResponse = zod
     latitude: zod.number(),
     longitude: zod.number(),
     threshold: zod.number().min(updateTrailAreaResponseThresholdMin).max(updateTrailAreaResponseThresholdMax),
+    country: zod.string(),
+    state: zod.string(),
   })
   .strict()
 
@@ -116,6 +122,14 @@ export const getSunriseSunsetForTrailAreaResponseItem = zod
   .strict()
 export const getSunriseSunsetForTrailAreaResponse = zod.array(getSunriseSunsetForTrailAreaResponseItem)
 
+export const getCountriesResponseItem = zod
+  .object({
+    country: zod.string(),
+    state: zod.string(),
+  })
+  .strict()
+export const getCountriesResponse = zod.array(getCountriesResponseItem)
+
 export const getTrailAreasResponseThresholdMin = 0
 
 export const getTrailAreasResponseThresholdMax = 1
@@ -127,6 +141,8 @@ export const getTrailAreasResponseItem = zod
     latitude: zod.number(),
     longitude: zod.number(),
     threshold: zod.number().min(getTrailAreasResponseThresholdMin).max(getTrailAreasResponseThresholdMax),
+    country: zod.string(),
+    state: zod.string(),
   })
   .strict()
 export const getTrailAreasResponse = zod.array(getTrailAreasResponseItem)

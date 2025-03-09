@@ -49,6 +49,8 @@ export interface TrailAreaResponseDto {
    * @maximum 1
    */
   threshold: number
+  country: string
+  state: string
 }
 
 export interface TrailAreaCreateFromUrlDto {
@@ -98,6 +100,11 @@ export interface SunriseSunsetResponseDto {
   date: string
   sunrise: string
   sunset: string
+}
+
+export interface CountryListResponseDto {
+  country: string
+  state: string
 }
 
 export interface WeatherDataResponseDto {
@@ -840,6 +847,74 @@ export function useGetSunriseSunsetForTrailArea<
   },
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetSunriseSunsetForTrailAreaQueryOptions(params, options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const getCountries = (signal?: AbortSignal) => {
+  return customAxiosInstance<CountryListResponseDto[]>({ url: `/api/trailAreas/countries`, method: 'GET', signal })
+}
+
+export const getGetCountriesQueryKey = () => {
+  return [`/api/trailAreas/countries`] as const
+}
+
+export const getGetCountriesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getCountries>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCountries>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetCountriesQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCountries>>> = ({ signal }) => getCountries(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getCountries>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetCountriesQueryResult = NonNullable<Awaited<ReturnType<typeof getCountries>>>
+export type GetCountriesQueryError = unknown
+
+export function useGetCountries<TData = Awaited<ReturnType<typeof getCountries>>, TError = unknown>(options: {
+  query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCountries>>, TError, TData>> &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getCountries>>,
+        TError,
+        Awaited<ReturnType<typeof getCountries>>
+      >,
+      'initialData'
+    >
+}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetCountries<TData = Awaited<ReturnType<typeof getCountries>>, TError = unknown>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCountries>>, TError, TData>> &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getCountries>>,
+        TError,
+        Awaited<ReturnType<typeof getCountries>>
+      >,
+      'initialData'
+    >
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetCountries<TData = Awaited<ReturnType<typeof getCountries>>, TError = unknown>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCountries>>, TError, TData>>
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetCountries<TData = Awaited<ReturnType<typeof getCountries>>, TError = unknown>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCountries>>, TError, TData>>
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetCountriesQueryOptions(options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 

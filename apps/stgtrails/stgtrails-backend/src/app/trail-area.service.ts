@@ -6,6 +6,7 @@ import { lastValueFrom } from 'rxjs'
 import { Prisma, PrismaService } from '@plusone/stgtrails-persistence'
 
 import { AppService } from './app.service'
+import { CountryListResponseDto } from './dto/country-list-response.dto'
 import { TrailAreaCreateFromCoordinatesDto } from './dto/trail-area-create-from-coordinates.dto'
 import { TrailAreaCreateFromUrlDto } from './dto/trail-area-create-from-url.dto'
 import { TrailAreaResponseDto } from './dto/trail-area-response.dto'
@@ -67,6 +68,8 @@ export class TrailAreaService implements OnModuleInit {
     }
   }
 
+  public async
+
   public async getTrailAreas(): Promise<Array<TrailAreaResponseDto>> {
     return this.prisma.trailArea.findMany()
   }
@@ -125,6 +128,13 @@ export class TrailAreaService implements OnModuleInit {
     return this.prisma.trailArea.update({
       where: { id: trailAreaId },
       data: { country, state },
+    })
+  }
+
+  public async getCountries(): Promise<Array<CountryListResponseDto>> {
+    return this.prisma.trailArea.findMany({
+      distinct: ['country', 'state'],
+      select: { country: true, state: true },
     })
   }
 }
