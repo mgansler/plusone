@@ -5427,10 +5427,10 @@
   dependencies:
     defer-to-connect "^2.0.1"
 
-"@tanstack/history@1.114.1":
-  version "1.114.1"
-  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.114.1.tgz#4be2ecffab7cca18314c4638d386747a86a559f2"
-  integrity sha512-6UHeQDgJbY1uR+vVzcIEO4s/Hy8wZuZ8px+AIk9Wl/3EQ8mFfduVjHkjl4gRzf7rHC2zvlkz87cLnGrJbG1ORQ==
+"@tanstack/history@1.114.3":
+  version "1.114.3"
+  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.114.3.tgz#b341b1ed00476286c40e496a0c01d5bd939a629e"
+  integrity sha512-UVJEleUvkVfTwDecq9VbGJKcYQg8J3wMuMn1DGCX4wkNLM2EEQ7BI3oeESmD+DU1uDD/yueSplRjGq8nTtZT2Q==
 
 "@tanstack/query-core@5.67.2":
   version "5.67.2"
@@ -5456,14 +5456,14 @@
   dependencies:
     "@tanstack/query-core" "5.67.2"
 
-"@tanstack/react-router@1.114.1":
-  version "1.114.1"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.114.1.tgz#cd0e0831bee67f3ff2d80e24830f6b38f558b683"
-  integrity sha512-2/PAmBhAG5PdE54ZYnOS1UPHX3sTVPwl26NxJYG8Gjvuovoc/EsJyVvkQrOED1OUdRLRJEbUUaBvfHU6i8FiGA==
+"@tanstack/react-router@1.114.3":
+  version "1.114.3"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.114.3.tgz#a613b82b0784cef6470b42c29c59c2568adc800f"
+  integrity sha512-P1s6snXxkEFqsZDTkoAB4cGtAgTSIPfZhMrUeyM47Lk19pOQSnYcqNhRehtDJdZhVYj7TNegIhI8W267D/xcyw==
   dependencies:
-    "@tanstack/history" "1.114.1"
+    "@tanstack/history" "1.114.3"
     "@tanstack/react-store" "^0.7.0"
-    "@tanstack/router-core" "^1.114.1"
+    "@tanstack/router-core" "^1.114.3"
     jsesc "^3.1.0"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
@@ -5476,12 +5476,12 @@
     "@tanstack/store" "0.7.0"
     use-sync-external-store "^1.4.0"
 
-"@tanstack/router-core@^1.114.1":
-  version "1.114.1"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.114.1.tgz#a93a341bf781a84db9e02ba55a882d53007aa775"
-  integrity sha512-QoOBV+00M18Ea58nRflRt/yFDeGkT7S4skrIZL8jhXFFVtSNr9hJ0fyLBNjQEasrzIKTO23iy4846e2fIV5BVQ==
+"@tanstack/router-core@^1.114.3":
+  version "1.114.3"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.114.3.tgz#769995c36f75964721b981dc653bcf633f525865"
+  integrity sha512-uKez7bBnFDwqyCJlOtAvu456vx9VCEu/VFw9gs5AALKm6ONXbK66sehn+1sBYgHhkPBnllIaKnmDIGhGuSCheg==
   dependencies:
-    "@tanstack/history" "1.114.1"
+    "@tanstack/history" "1.114.3"
     "@tanstack/store" "^0.7.0"
 
 "@tanstack/store@0.7.0", "@tanstack/store@^0.7.0":
@@ -11529,10 +11529,10 @@ handle-thing@^2.0.0:
   resolved "https://registry.npmjs.org/handle-thing/-/handle-thing-2.0.1.tgz#857f79ce359580c340d43081cc648970d0bb234e"
   integrity sha512-9Qn4yBxelxoh2Ow62nP+Ka/kMnOXRi8BXnRaUwezLNhqelnN49xKz4F/dPP8OYLxLxq6JDtZb2i9XznUQbNPTg==
 
-happy-dom@17.4.1:
-  version "17.4.1"
-  resolved "https://registry.npmjs.org/happy-dom/-/happy-dom-17.4.1.tgz#d0411e1b959013c6f031cd3b60946a0a2576d338"
-  integrity sha512-W4WzlDOXdEj1zRmBuq/pveIZnD0bBDsTl1DjIben76aOG/6nzdQAdpV5nR3QjOEFRJLlqJltBV0cb4NzbkB8zw==
+happy-dom@17.4.2:
+  version "17.4.2"
+  resolved "https://registry.npmjs.org/happy-dom/-/happy-dom-17.4.2.tgz#1f7e6a927e8dca79aa6eab4c21d4ef257a796b70"
+  integrity sha512-3SA9ZdmDXTvJ5OrHfc7TdqfrKEOM15Gc3dMAvKivlaewUsOJQrNnPTQnAb3n/NR0fRVDniFxk9i82D+HhHWZcA==
   dependencies:
     webidl-conversions "^7.0.0"
     whatwg-mimetype "^3.0.0"
