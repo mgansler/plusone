@@ -18,7 +18,14 @@ describe('TrailAreaController', () => {
     fetchDataForNewArea: jest.fn(),
   }
   const osmServiceMock = {
-    reverseLookup: jest.fn(),
+    reverseLookup: ({ latitude, longitude }) => {
+      return {
+        country: 'unknown',
+        countryCode: 'unknown',
+        state: 'unknown',
+        stateCode: 'unknown',
+      }
+    },
   }
   const prismaServiceMock = {
     trailArea: {

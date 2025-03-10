@@ -26,8 +26,8 @@ export type ReverseLookupArgs = {
 const addressResponseSchema = z
   .object({
     country: z.string(),
-    'ISO3166-2-lvl4': z.string().regex(/[A-Z]{2}-.{2}/),
-    country_code: z.string().regex(/[a-z]{2}/),
+    'ISO3166-2-lvl4': z.string().regex(/\w{2}-\w{1,3}/),
+    country_code: z.string().regex(/\w{2}/),
     state: z.string(),
   })
   .transform((input) => ({

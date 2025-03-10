@@ -113,7 +113,9 @@ export class TrailAreaService implements OnModuleInit {
 
   private async createTrailArea(data: TrailAreaCreateArgs['data']) {
     const address = await this.osmService.reverseLookup({ latitude: data.latitude, longitude: data.latitude })
-    const trailArea = await this.prisma.trailArea.create({ data: { ...data, ...address } })
+    const trailArea = await this.prisma.trailArea.create({
+      data: { ...data, country: address.countryCode, state: address.stateCode },
+    })
     await this.appService.fetchDataForNewArea(trailArea)
     return trailArea
   }

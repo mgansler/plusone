@@ -26,6 +26,18 @@ describe('OsmService', () => {
     })
   })
 
+  it('should handle single character states', async () => {
+    // Innsbruck
+    const actual = await osmService.reverseLookup({ latitude: 47.289351, longitude: 11.376731 })
+
+    expect(actual).toEqual({
+      country: 'Österreich',
+      countryCode: 'at',
+      state: 'Tirol',
+      stateCode: '7',
+    })
+  })
+
   it('should return location details for an area in italy', async () => {
     // Finale Ligure
     const actual = await osmService.reverseLookup({ latitude: 44.189, longitude: 8.318 })
