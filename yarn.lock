@@ -5438,38 +5438,38 @@
   resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.114.22.tgz#888258c95fa9fbbca967aa22be1b03c769561a3e"
   integrity sha512-CNwKraj/Xa8H7DUyzrFBQC3wL96JzIxT4i9CW0hxqFNNmLDyUcMJr8264iqqfxC0u1lFSG96URad08T2Qhadpw==
 
-"@tanstack/query-core@5.68.0":
-  version "5.68.0"
-  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.68.0.tgz#3765573de58741c68fb80b128d3e3ffb4d80cb68"
-  integrity sha512-r8rFYYo8/sY/LNaOqX84h12w7EQev4abFXDWy4UoDVUJzJ5d9Fbmb8ayTi7ScG+V0ap44SF3vNs/45mkzDGyGw==
+"@tanstack/query-core@5.69.0":
+  version "5.69.0"
+  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.69.0.tgz#c434505987ade936dc53e6e27aa1406b0295516f"
+  integrity sha512-Kn410jq6vs1P8Nm+ZsRj9H+U3C0kjuEkYLxbiCyn3MDEiYor1j2DGVULqAz62SLZtUZ/e9Xt6xMXiJ3NJ65WyQ==
 
 "@tanstack/query-devtools@5.67.2":
   version "5.67.2"
   resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.67.2.tgz#890ae9913bd21d3969c7fd85c68b1bd1500cfc57"
   integrity sha512-O4QXFFd7xqp6EX7sdvc9tsVO8nm4lpWBqwpgjpVLW5g7IeOY6VnS/xvs/YzbRhBVkKTMaJMOUGU7NhSX+YGoNg==
 
-"@tanstack/react-query-devtools@5.68.0":
-  version "5.68.0"
-  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.68.0.tgz#83a76ae279796e0c2105cd760ef27e93bee79155"
-  integrity sha512-h9ArHkfa7SD5eGnJ9h+9M5uYWBdeVeY+WalrtGLCAtJJvHx6/RrtbbzxeoEQbPyx3f0kPcwJ58DGQ+7CBXelpg==
+"@tanstack/react-query-devtools@5.69.0":
+  version "5.69.0"
+  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.69.0.tgz#2cb8083028aab591b9a82caf68cd7a383a0c8b1a"
+  integrity sha512-sYklnou3IKAemqB5wJeBwjmG5bUGDKAL5/I4pVA+aqSnsNibVLt8/pAU976uuJ5K71w71bHtI/AMxiIs3gtkEA==
   dependencies:
     "@tanstack/query-devtools" "5.67.2"
 
-"@tanstack/react-query@5.68.0":
-  version "5.68.0"
-  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.68.0.tgz#f7b242eb800ce7c36b4edbe26c9ba8478eb18826"
-  integrity sha512-mMOdGDKlwTP/WV72QqSNf4PAMeoBp/DqBHQ222wBfb51Looi8QUqnCnb9O98ZgvNISmy6fzxRGBJdZ+9IBvX2Q==
+"@tanstack/react-query@5.69.0":
+  version "5.69.0"
+  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.69.0.tgz#8d58e800854cc11d0aa2c39569f53ae32ba442a9"
+  integrity sha512-Ift3IUNQqTcaFa1AiIQ7WCb/PPy8aexZdq9pZWLXhfLcLxH0+PZqJ2xFImxCpdDZrFRZhLJrh76geevS5xjRhA==
   dependencies:
-    "@tanstack/query-core" "5.68.0"
+    "@tanstack/query-core" "5.69.0"
 
-"@tanstack/react-router@1.114.23":
-  version "1.114.23"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.114.23.tgz#3e3351f08271c60ba3f7d43399dd97268e991d82"
-  integrity sha512-L9TS8HE5nvXzCyjwlwfXwnC7pfiofbDLCSAGN7Me2jUbxHPyQpAtxRYqtByANaFVclOJgYBmZkx1m6/GVk9oiA==
+"@tanstack/react-router@1.114.24":
+  version "1.114.24"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.114.24.tgz#3d5b4a15a75b4e208fb08ae05bf7ea9ab7e3acff"
+  integrity sha512-xHrgcYi/GvwBh/lTpVpZtDFGA8f8oBSSsFagAGgSGkvz+EPTIhAML0hvwKCV1jP2HaIdU/7aJk14y4q8TT2M4Q==
   dependencies:
     "@tanstack/history" "1.114.22"
     "@tanstack/react-store" "^0.7.0"
-    "@tanstack/router-core" "1.114.23"
+    "@tanstack/router-core" "1.114.24"
     jsesc "^3.1.0"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
@@ -5482,10 +5482,10 @@
     "@tanstack/store" "0.7.0"
     use-sync-external-store "^1.4.0"
 
-"@tanstack/router-core@1.114.23":
-  version "1.114.23"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.114.23.tgz#824443b1bc35140b18a3135e5e14c2ee368c8de5"
-  integrity sha512-aJkqAtVyRbdNBuoAsiy5Jmc9MYa2Gt9r1s/xlYBDfSEWoJzhMmWVoKfgBI6Ggeu3dwe6uCr/gkBRmpRkgWjg1w==
+"@tanstack/router-core@1.114.24":
+  version "1.114.24"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.114.24.tgz#eb7cb7488cf6390a8b9f98e251b71857652ff246"
+  integrity sha512-OmYX/oPby8CMfpm3a4xCBB9mfo6mqe2OAByz62XFD8ZcXvcDEcpHB5t2/ZrX2CCNH4gXQHUyZzl9+PxqqIpNPw==
   dependencies:
     "@tanstack/history" "1.114.22"
     "@tanstack/store" "^0.7.0"
@@ -15607,10 +15607,10 @@ opener@^1.5.1:
   resolved "https://registry.npmjs.org/opener/-/opener-1.5.2.tgz#5d37e1f35077b9dcac4301372271afdeb2a13598"
   integrity sha512-ur5UIdyw5Y7yEj9wLzhqXiy6GZ3Mwx0yGI+5sMn2r0N0v3cKJvUmFH5yPP+WXh9e0xfyzyJX95D8l088DNFj7A==
 
-openmeteo@1.1.5:
-  version "1.1.5"
-  resolved "https://registry.npmjs.org/openmeteo/-/openmeteo-1.1.5.tgz#32e3b6d764680af36d3bcf760763f3c99356b862"
-  integrity sha512-4VTt8TGW5KlczvSJd7IiRjKkRygmCq3O4T89Qc5c6PAnj0CeH/MGlqb4m9Z/yBtHpZTnaUac/9/t/p4obpFC1A==
+openmeteo@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/openmeteo/-/openmeteo-1.2.0.tgz#ea5a29c74bd430193822943329a6f36aafc2486b"
+  integrity sha512-YinFo02TM4wXdm9o2FBAO2u1ka3drNdnFsGNskiO8aCWvZa6nljh3ioH79ipwPdFhCrIiq/LCfpjDGXqH2RBFw==
   dependencies:
     "@openmeteo/sdk" "^1.19.0"
     flatbuffers "^25.2.10"
@@ -18957,10 +18957,10 @@ test-exclude@^7.0.1:
     glob "^10.4.1"
     minimatch "^9.0.4"
 
-testcontainers@10.20.0:
-  version "10.20.0"
-  resolved "https://registry.npmjs.org/testcontainers/-/testcontainers-10.20.0.tgz#45c524ae4be9b1ffe2fb42b701f6c0a04ee2d90a"
-  integrity sha512-pOPm/OUIT41aMijAZ9RsYg5xOq9ciy93+pCf2D9qDI0oV8rwk91XpPoUlizll4qwxmmHsLmfZFHJTpeB+BIfmw==
+testcontainers@10.21.0:
+  version "10.21.0"
+  resolved "https://registry.npmjs.org/testcontainers/-/testcontainers-10.21.0.tgz#ee1973d9f783984853965da22035b58627253b81"
+  integrity sha512-avzqNfP0HyHaOPTztHbGnHycZWzWaeUwSPnJGCYin2LB+n/tlGjAzExVrkIaCSBwIjFkMlufEYuKWzGc8mupDQ==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
     "@types/dockerode" "^3.3.29"
