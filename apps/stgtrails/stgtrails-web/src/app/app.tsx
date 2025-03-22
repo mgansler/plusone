@@ -1,5 +1,5 @@
 import { useNavigate } from '@tanstack/react-router'
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import { useValidatedCountryList, useValidatedTrailAreas } from '@plusone/stgtrails-api-client'
 
@@ -7,44 +7,24 @@ import { indexRoute } from '../routes'
 
 import { TrailArea } from './trail-area'
 import { useTrailAreaFilter } from './use-trail-area-filter'
+import { useTrailAreaId } from './use-trail-area-id'
 
 export function App() {
-  const { data: trailAreas } = useValidatedTrailAreas()
+  const trailAreaFilter = useTrailAreaFilter()
+  const navigate = useNavigate()
+
+  const { data: trailAreas } = useValidatedTrailAreas({
+    country: trailAreaFilter.country === 'any' ? undefined : trailAreaFilter.country,
+    state: trailAreaFilter.state === 'any' ? undefined : trailAreaFilter.state,
+  })
 
   const { data: countries } = useValidatedCountryList()
   const distinctCountries = [...new Set([...(countries ?? []).map((value) => value.country)])]
 
-  const [trailAreaId, setTrailAreaId] = useState<number | undefined>(undefined)
+  const [trailAreaId, setTrailAreaId] = useTrailAreaId(trailAreas)
   const [hours, setHours] = useState<number>(96)
 
-  const navigate = useNavigate()
-  const trailAreaFilter = useTrailAreaFilter()
-
-  const filteredTrailAreas = useMemo(
-    () =>
-      trailAreas?.filter((trailArea) => {
-        if (trailAreaFilter.country === 'any') {
-          return true
-        }
-        if (trailAreaFilter.state === 'any') {
-          return trailArea.country === trailAreaFilter.country
-        }
-        return trailArea.country === trailAreaFilter.country && trailArea.state === trailAreaFilter.state
-      }) ?? [],
-    [trailAreaFilter.country, trailAreaFilter.state, trailAreas],
-  )
-
-  useEffect(() => {
-    if (
-      filteredTrailAreas &&
-      filteredTrailAreas.length > 0 &&
-      (typeof trailAreaId !== 'number' || filteredTrailAreas.find((area) => area.id === trailAreaId) === undefined)
-    ) {
-      setTrailAreaId(filteredTrailAreas[0].id)
-    }
-  }, [trailAreas, trailAreaId, filteredTrailAreas])
-
-  if (!filteredTrailAreas) {
+  if (!trailAreas) {
     return (
       <>
         <h1>Welcome stgtrails-web</h1>
@@ -104,8 +84,8 @@ export function App() {
       )}
       <label>
         Trail Area
-        <select onChange={(event) => setTrailAreaId(Number(event.currentTarget.value))}>
-          {filteredTrailAreas.map((trailArea) => (
+        <select onChange={(event) => setTrailAreaId(Number(event.currentTarget.value))} value={trailAreaId}>
+          {trailAreas.map((trailArea) => (
             <option key={trailArea.id} value={trailArea.id}>
               {trailArea.name}
             </option>
@@ -127,9 +107,8 @@ export function App() {
       {typeof trailAreaId === 'number' ? (
         <TrailArea
           trailAreaId={trailAreaId}
-          threshold={filteredTrailAreas.find((trailArea) => trailArea.id === trailAreaId)?.threshold}
+          threshold={trailAreas.find((trailArea) => trailArea.id === trailAreaId)?.threshold}
           hours={hours}
-          key={hours}
         />
       ) : null}
     </div>

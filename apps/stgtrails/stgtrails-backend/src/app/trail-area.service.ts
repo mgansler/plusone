@@ -70,8 +70,8 @@ export class TrailAreaService implements OnModuleInit {
 
   public async
 
-  public async getTrailAreas(): Promise<Array<TrailAreaResponseDto>> {
-    return this.prisma.trailArea.findMany()
+  public async getTrailAreas(country: string, state: string): Promise<Array<TrailAreaResponseDto>> {
+    return this.prisma.trailArea.findMany({ where: { country, state } })
   }
 
   public async updateTrailArea(trailAreaId: number, trail: TrailAreaUpdateDto) {

@@ -1,5 +1,5 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common'
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common'
+import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { CountryListResponseDto } from './dto/country-list-response.dto'
 import { TrailAreaResponseDto } from './dto/trail-area-response.dto'
@@ -19,11 +19,12 @@ export class TrailAreaController {
   }
 
   @ApiOperation({ operationId: 'getTrailAreas' })
+  @ApiQuery({ name: 'country', description: 'Filter for country', type: String, required: false })
+  @ApiQuery({ name: 'state', description: 'Filter for state', type: String, required: false })
   @ApiOkResponse({ type: [TrailAreaResponseDto] })
   @Get()
-  // TODO: filter by country/state
-  async getTrailAreas() {
-    return this.trailAreaService.getTrailAreas()
+  async getTrailAreas(@Query('country') country: string, @Query('state') state: string) {
+    return this.trailAreaService.getTrailAreas(country, state)
   }
 
   @ApiOperation({ operationId: 'getTrailsOfArea' })
