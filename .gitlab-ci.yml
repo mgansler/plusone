@@ -85,14 +85,12 @@ test:
   retry: 2
   script:
     - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t test --parallel=8 --configuration=ci
-  after_script:
-    - yarn jrm ./reports/test.xml "./reports/test/*.xml"
   artifacts:
     when: always
     paths:
-      - reports/test.xml
+      - reports/test/*.xml
     reports:
-      junit: reports/test.xml
+      junit: reports/test/*.xml
     expire_in: 2 weeks
 
 component-test:
@@ -105,14 +103,12 @@ component-test:
     - sh tools/scripts/install-cypress-dependencies.sh
   script:
     - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t component-test --parallel=1 --configuration=ci --browser chrome
-  after_script:
-    - yarn jrm ./reports/component-test.xml "./reports/component-test/*.xml"
   artifacts:
     when: always
     paths:
-      - reports/component-test.xml
+      - reports/component-test/*.xml
     reports:
-      junit: reports/component-test.xml
+      junit: reports/component-test/*.xml
     expire_in: 2 weeks
 
 e2e:
