@@ -8,5 +8,9 @@
       matchPackageNames: ['node'],
       allowedVersions: '22.x',
     },
+    {
+      matchPackageNames: ['@mui/icons-material', '@mui/material'],
+      allowedVersion: '6.4.9',
+    },
   ],
 }
