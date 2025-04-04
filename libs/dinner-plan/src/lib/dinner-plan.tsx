@@ -1,6 +1,4 @@
 import { Button, Container, Paper, Toolbar, Typography } from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import React from 'react'
 import { Navigate, Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 
@@ -10,24 +8,9 @@ import { Dishes } from './dishes/dishes'
 import { DinnerPlanStore } from './store/dinner-plan.store'
 import { Week } from './week/week'
 
-const useClassNames = makeStyles((theme) =>
-  createStyles({
-    toolbar: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 50% 1fr',
-    },
-    navigation: {
-      display: 'flex',
-      justifyContent: 'space-around',
-    },
-  }),
-)
-
 export function DinnerPlan() {
   const match = useMatch(':app/:year/:week')
   const navigate = useNavigate()
-
-  const classNames = useClassNames()
 
   const lastWeeksYear = getYearFor('last-week')
   const lastWeek = getWeekOfYearFor(getDateFor('last-week'))
@@ -40,9 +23,14 @@ export function DinnerPlan() {
     <DinnerPlanStore>
       <Container>
         <Paper>
-          <Toolbar className={classNames.toolbar}>
+          <Toolbar
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 50% 1fr',
+            }}
+          >
             <Typography>KW {match?.params.week}</Typography>
-            <nav className={classNames.navigation}>
+            <nav style={{ display: 'flex', justifyContent: 'space-around' }}>
               <Button variant={'outlined'} onClick={() => navigate(`/dinner-plan/${lastWeeksYear}/${lastWeek}`)}>
                 Last Week
               </Button>

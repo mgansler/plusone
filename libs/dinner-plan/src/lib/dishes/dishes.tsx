@@ -1,42 +1,11 @@
 import { AddCircleOutline } from '@mui/icons-material'
-import type { Theme } from '@mui/material'
-import { Chip, InputAdornment, TextField } from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import { Chip, Container, InputAdornment, TextField, useTheme } from '@mui/material'
 import type { DragEventHandler, FormEventHandler } from 'react'
 
 import { useDinnerPlanStoreDispatch, useDishes } from '../store/dinner-plan.store'
 
-const useClassNames = makeStyles<Theme>((theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      paddingBottom: theme.spacing(2),
-    },
-    dishes: {
-      display: 'flex',
-      justifyContent: 'center',
-      flexWrap: 'wrap',
-      '& > *': {
-        margin: theme.spacing(0.5),
-      },
-    },
-    dish: {
-      '&:active': {
-        cursor: 'grabbing',
-      },
-      '&:hover': {
-        cursor: 'grab',
-      },
-    },
-  }),
-)
-
 export function Dishes() {
-  const classNames = useClassNames()
-
+  const theme = useTheme()
   const dispatch = useDinnerPlanStoreDispatch()
   const dishes = useDishes()
 
@@ -52,7 +21,7 @@ export function Dishes() {
   }
 
   return (
-    <div className={classNames.root}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom: theme.spacing(2) }}>
       <form onSubmit={onSubmit}>
         <TextField
           name={'dish'}
@@ -68,10 +37,26 @@ export function Dishes() {
         />
       </form>
 
-      <div className={classNames.dishes}>
+      <Container
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          '& > *': {
+            margin: theme.spacing(0.5),
+          },
+        }}
+      >
         {dishes.map((dish) => (
           <Chip
-            className={classNames.dish}
+            sx={{
+              '&:active': {
+                cursor: 'grabbing',
+              },
+              '&:hover': {
+                cursor: 'grab',
+              },
+            }}
             key={dish}
             draggable={true}
             onDragStart={onDragStart}
@@ -80,7 +65,7 @@ export function Dishes() {
             onDelete={() => dispatch({ type: 'remove-dish', payload: dish })}
           />
         ))}
-      </div>
+      </Container>
     </div>
   )
 }

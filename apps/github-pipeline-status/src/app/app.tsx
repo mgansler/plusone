@@ -1,6 +1,4 @@
-import type { Theme } from '@mui/material'
-import { AppBar, CssBaseline, Toolbar, Typography } from '@mui/material'
-import { createStyles, makeStyles } from '@mui/styles'
+import { AppBar, CssBaseline, Toolbar, Typography, useTheme } from '@mui/material'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
@@ -12,38 +10,33 @@ import { Organizations } from './organizations/organizations'
 import { OrganizationsBootstrap } from './organizations/organizations-bootstrap'
 import { UserInfo } from './user-info/user-info'
 
-const useClassNames = makeStyles<Theme>((theme) =>
-  createStyles({
-    toolbar: {
-      gap: theme.spacing(1),
-    },
-    title: {
-      flexGrow: 1,
-    },
-    main: {
-      padding: theme.spacing(1),
-      display: 'flex',
-      flexDirection: 'column',
-      gap: theme.spacing(1),
-      height: '100vh',
-    },
-  }),
-)
-
 export function AppWithProviders() {
-  const classNames = useClassNames()
+  const theme = useTheme()
+
   return (
     <React.Fragment>
       <AppBar position={'static'}>
-        <Toolbar className={classNames.toolbar}>
-          <Typography variant={'h6'} className={classNames.title}>
+        <Toolbar
+          sx={{
+            gap: theme.spacing(1),
+          }}
+        >
+          <Typography variant={'h6'} sx={{ flexGrow: 1 }}>
             GitHub Pipeline Status
           </Typography>
           <UserInfo />
         </Toolbar>
       </AppBar>
 
-      <main className={classNames.main}>
+      <main
+        style={{
+          padding: theme.spacing(1),
+          display: 'flex',
+          flexDirection: 'column',
+          gap: theme.spacing(1),
+          height: '100vh',
+        }}
+      >
         <Routes>
           <Route path={''} element={<OrganizationsBootstrap />} />
           <Route path={'/organization/:organizationName'} element={<Organizations />} />

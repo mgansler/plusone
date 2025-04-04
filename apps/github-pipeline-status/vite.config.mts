@@ -17,7 +17,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           octokit: ['@octokit/core', '@plusone/github-schema'],
-          mui: ['@mui/material', '@mui/styles', '@mui/icons-material'],
+          mui: ['@mui/material', '@mui/icons-material'],
         },
       },
     },

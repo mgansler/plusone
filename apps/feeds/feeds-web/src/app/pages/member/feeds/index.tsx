@@ -13,7 +13,6 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material'
-import { createStyles, makeStyles } from '@mui/styles'
 import { useMemo, useState } from 'react'
 import { Link, Outlet, useMatch, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
@@ -55,14 +54,7 @@ function FeedEntry({ feed }: FeedEntryProps) {
   )
 }
 
-const drawerWidth = 320
-const useClassNames = makeStyles(() =>
-  createStyles({
-    drawerPaper: {
-      width: drawerWidth,
-    },
-  }),
-)
+const DRAWER_WIDTH = 320
 
 type TagGroupProps = {
   name: string
@@ -100,7 +92,6 @@ function TagGroup({ name, feeds }: TagGroupProps) {
 }
 
 export function FeedList() {
-  const classNames = useClassNames()
   const { feedId } = useParams()
   const isRecentPath = useMatch('/member/feeds/recent')
   const isStarredPath = useMatch('/member/feeds/starred')
@@ -131,7 +122,14 @@ export function FeedList() {
 
   return (
     <>
-      <Drawer variant={'permanent'} classes={{ paper: classNames.drawerPaper }}>
+      <Drawer
+        variant={'permanent'}
+        sx={{
+          '& .MuiDrawer-paper': {
+            width: DRAWER_WIDTH,
+          },
+        }}
+      >
         <Toolbar />
 
         <List dense={true}>
@@ -181,7 +179,7 @@ export function FeedList() {
         </List>
       </Drawer>
 
-      <main style={{ paddingLeft: drawerWidth, height: '100%' }}>
+      <main style={{ paddingLeft: DRAWER_WIDTH, height: '100%' }}>
         <Outlet />
       </main>
     </>
