@@ -1,7 +1,14 @@
-import { Portal } from '@mui/base'
-import type { Theme } from '@mui/material'
-import { FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material'
-import { createStyles, makeStyles } from '@mui/styles'
+import {
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Portal,
+  Select,
+  Switch,
+  TextField,
+  useTheme,
+} from '@mui/material'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import type { MutableRefObject } from 'react'
 import React, { useEffect, useState } from 'react'
@@ -17,21 +24,6 @@ import { useOctokit } from '../octokit-provider/octokit-provider'
 import { AccordionSkeleton, RepositoryAccordion } from './repository-accordion'
 
 export type UserFilter = 'all' | 'dependabot' | 'user'
-
-const useStyles = makeStyles<Theme>((theme) =>
-  createStyles({
-    // TODO: remove me when pagination is styled
-    pagination: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      gap: theme.spacing(1),
-    },
-    formControl: {
-      minWidth: 200,
-    },
-  }),
-)
 
 const PAGE_SIZE = 20
 
@@ -77,7 +69,7 @@ type RepositoryOverviewProps = {
 }
 
 export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
-  const classNames = useStyles()
+  const theme = useTheme()
 
   // Get the request params
   const { organizationName } = useParams<'organizationName'>()
@@ -124,7 +116,7 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
     <React.Fragment>
       <Portal container={toolbarRef.current}>
         <TextField
-          className={classNames.formControl}
+          sx={{ minWidth: 200 }}
           id={'repository-name'}
           label={'Repository Name'}
           type={'text'}
@@ -132,7 +124,7 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
           onChange={(event) => setQueryString(event.target.value)}
         />
 
-        <FormControl className={classNames.formControl}>
+        <FormControl sx={{ minWidth: 200 }}>
           <InputLabel id={'user-details-filter-label'}>Filter details by user</InputLabel>
           <Select
             labelId={'user-details-filter-label'}
@@ -173,7 +165,14 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
         <RepositoryAccordion key={repo.id} userFilter={userFilter as UserFilter} repository={repo} />
       ))}
 
-      <div className={classNames.pagination}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          gap: theme.spacing(1),
+        }}
+      >
         <h4>
           Page {pages.currentPage + 1} of {pages.totalPages} ({data.search.repositoryCount} entries)
         </h4>
