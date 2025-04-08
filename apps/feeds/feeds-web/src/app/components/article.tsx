@@ -1,7 +1,5 @@
 import { CheckBoxOutlineBlank, CheckBoxOutlined, OpenInNew, Star, StarOutline } from '@mui/icons-material'
-import type { Theme } from '@mui/material'
-import { Card, CardContent, CardHeader, IconButton } from '@mui/material'
-import { createStyles, makeStyles } from '@mui/styles'
+import { Card, CardContent, CardHeader, Container, IconButton, useTheme } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import type { RefObject } from 'react'
 import { useCallback, useEffect, useState } from 'react'
@@ -70,18 +68,9 @@ type ArticleProps = {
   scrollTargetRef?: RefObject<HTMLDivElement | undefined>
 }
 
-const useClassNames = makeStyles<Theme, object, 'article'>((theme) =>
-  createStyles({
-    article: {
-      '& a': {
-        color: theme.palette.primary.main,
-      },
-    },
-  }),
-)
-
 export function Article({ article: { article, unread, starred }, selectedArticle, scrollTargetRef }: ArticleProps) {
-  const classNames = useClassNames()
+  const theme = useTheme()
+
   const { expandContent } = useFeedSettingsContext()
   const [showContent, setShowContent] = useState<boolean>(expandContent)
 
@@ -98,10 +87,13 @@ export function Article({ article: { article, unread, starred }, selectedArticle
         <CardHeader
           avatar={
             <>
-              <IconButton onClick={() => readArticle(article.id, unread)}>
+              <IconButton
+                onClick={() => readArticle(article.id, unread)}
+                aria-label={unread ? 'Mark read' : 'Mark unread'}
+              >
                 {unread ? <CheckBoxOutlineBlank color={color} /> : <CheckBoxOutlined color={color} />}
               </IconButton>
-              <IconButton onClick={() => starArticle(article.id, !starred)}>
+              <IconButton onClick={() => starArticle(article.id, !starred)} aria-label={starred ? 'Star' : 'Unstar'}>
                 {starred ? <Star /> : <StarOutline />}
               </IconButton>
             </>
@@ -116,7 +108,14 @@ export function Article({ article: { article, unread, starred }, selectedArticle
         />
         {showContent && (
           <CardContent>
-            <div className={classNames.article} dangerouslySetInnerHTML={{ __html: article.content }} />
+            <Container
+              sx={{
+                '& a': {
+                  color: theme.palette.primary.main,
+                },
+              }}
+              dangerouslySetInnerHTML={{ __html: article.content }}
+            />
           </CardContent>
         )}
       </Card>

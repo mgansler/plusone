@@ -1,5 +1,5 @@
 import { Check, Error, MergeType, OpenInNew } from '@mui/icons-material'
-import { Chip, IconButton, Tooltip, Typography } from '@mui/material'
+import { Chip, IconButton, Tooltip, Typography, useTheme } from '@mui/material'
 import React from 'react'
 
 import type {
@@ -15,7 +15,6 @@ import { MergeableState, PullRequestReviewState } from '@plusone/github-schema'
 import { ApproveButton } from './approve-button'
 import { CheckConclusion } from './check-conclusion'
 import { EnableAutoMerge } from './enable-auto-merge'
-import { useClassNames } from './repository-overview.styles'
 
 const UNKNOWN_USER = 'unknown user'
 
@@ -52,7 +51,6 @@ const ReviewStateIconMap: Record<PullRequestReviewState, React.JSX.Element | und
 }
 
 type CanBeMergedProps = {
-  className: HTMLDivElement['className']
   commits: Array<PullRequestCommit>
   mergeable: MergeableState
   autoMergeRequest?: AutoMergeRequestFieldsFragment | null
@@ -60,19 +58,20 @@ type CanBeMergedProps = {
   pullRequestUrl: PullRequest['url']
 }
 
-function CanBeMerged({
-  className,
-  commits,
-  mergeable,
-  autoMergeRequest,
-  pullRequestId,
-  pullRequestUrl,
-}: CanBeMergedProps) {
+function CanBeMerged({ commits, mergeable, autoMergeRequest, pullRequestId, pullRequestUrl }: CanBeMergedProps) {
+  const theme = useTheme()
   const checkSuites = commits.flatMap((node) => node.commit.checkSuites?.nodes)
   const checkSuite = checkSuites[checkSuites.length - 1]
 
   return mergeable === MergeableState.Conflicting ? (
-    <div className={className}>
+    <div
+      style={{
+        flexBasis: '20%',
+        display: 'flex',
+        alignItems: 'center',
+        gap: theme.spacing(1),
+      }}
+    >
       <Typography variant={'caption'}>Merge Conflicts</Typography>
       <IconButton
         href={pullRequestUrl}
@@ -87,7 +86,14 @@ function CanBeMerged({
       </IconButton>
     </div>
   ) : (
-    <div className={className}>
+    <div
+      style={{
+        flexBasis: '20%',
+        display: 'flex',
+        alignItems: 'center',
+        gap: theme.spacing(1),
+      }}
+    >
       <Typography variant={'caption'}>Workflows</Typography>
       <CheckConclusion checkSuite={checkSuite} />
       {autoMergeRequest !== null ? (
@@ -104,13 +110,22 @@ type PullRequestProps = {
 }
 
 export function PullRequestRow({ pr }: PullRequestProps) {
-  const classNames = useClassNames()
+  const theme = useTheme()
   const lastReviewStatePerAuthor = getLastReviewStatePerAuthor(pr.reviews?.nodes as Array<PullRequestReview>)
 
   return (
-    <div className={classNames.row}>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        maxHeight: theme.spacing(4.5),
+      }}
+    >
       <IconButton
-        className={[classNames.linkColumn, classNames.pullRequestLink].join(' ')}
+        sx={{
+          flexBasis: '5%',
+          marginLeft: theme.spacing(1),
+        }}
         href={pr.url}
         target={'_blank'}
         rel={'noreferrer'}
@@ -121,20 +136,24 @@ export function PullRequestRow({ pr }: PullRequestProps) {
       </IconButton>
 
       <Tooltip
-        classes={{
-          tooltip: classNames.draftTooltip,
-          arrow: classNames.draftTooltipArrow,
+        sx={{
+          '& .MuiTooltip-tooltip': {
+            color: theme.palette.warning.contrastText,
+            backgroundColor: theme.palette.warning.light,
+          },
+          '& .MuiTooltip-arrow': {
+            color: theme.palette.warning.light,
+          },
         }}
         title={pr.isDraft ? 'Draft' : ''}
         arrow={true}
       >
-        <Typography className={classNames.titleColumn} variant={'caption'} color={pr.isDraft ? 'textSecondary' : ''}>
+        <Typography sx={{ flexBasis: '50%' }} variant={'caption'} color={pr.isDraft ? 'textSecondary' : ''}>
           {pr.title} by {(pr.author as User).name ?? (pr.author as User).login ?? UNKNOWN_USER}
         </Typography>
       </Tooltip>
 
       <CanBeMerged
-        className={classNames.workflowColumn}
         commits={pr.commits.nodes as Array<PullRequestCommit>}
         mergeable={pr.mergeable}
         autoMergeRequest={pr.autoMergeRequest}
@@ -142,7 +161,14 @@ export function PullRequestRow({ pr }: PullRequestProps) {
         pullRequestUrl={pr.url}
       />
 
-      <div className={classNames.pullRequestsOrReviewsColumn}>
+      <div
+        style={{
+          flexBasis: '25%',
+          display: 'flex',
+          alignItems: 'center',
+          gap: theme.spacing(1),
+        }}
+      >
         <ApproveButton pullRequestId={pr.id} />
         {Object.entries(lastReviewStatePerAuthor).map(([login, state]) => (
           <Chip key={login} label={login} icon={ReviewStateIconMap[state]} />

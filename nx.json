@@ -129,7 +129,9 @@
       "inputs": [
         "default",
         "{projectRoot}/src/lib/schema.prisma",
-        { "externalDependencies": ["@prisma/client", "prisma"] }
+        {
+          "externalDependencies": ["@prisma/client", "prisma"]
+        }
       ],
       "outputs": ["{projectRoot}/src/lib/client/**"],
       "cache": true

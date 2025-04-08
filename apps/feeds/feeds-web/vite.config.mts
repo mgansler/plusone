@@ -1,20 +1,12 @@
-/// <reference types="vitest" />
+/// <reference types='vitest' />
+import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin'
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
-import { replaceFiles } from '@nx/vite/plugins/rollup-replace-files.plugin'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
-export default defineConfig({
+export default defineConfig(() => ({
   root: __dirname,
-  build: {
-    outDir: '../../../dist/apps/feeds/web',
-    reportCompressedSize: true,
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
-  },
-  cacheDir: '../../../node_modules/.vite/apps/feeds/web',
-
+  cacheDir: '../../../node_modules/.vite/apps/feeds/feeds-web',
   server: {
     port: 4200,
     host: 'localhost',
@@ -25,33 +17,30 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [
-    react(),
-    replaceFiles([
-      {
-        replace: 'apps/feeds/web/src/environments/environment.ts',
-        with: 'apps/feeds/web/src/environments/environment.prod.ts',
-      },
-    ]),
-
-    nxViteTsPaths(),
-  ],
-
+  plugins: [react(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],
   // },
 
-  // @ts-expect-error vitest needs this
-  test: {
-    reporters: ['default', 'junit'],
-    outputFile: '../../../reports/test/feeds-web.xml',
-    coverage: {
-      reportsDirectory: '../../../coverage/apps/feeds/web',
-      provider: 'v8',
+  build: {
+    outDir: '../../../dist/apps/feeds/feeds-web',
+    emptyOutDir: true,
+    reportCompressedSize: true,
+    commonjsOptions: {
+      transformMixedEsModules: true,
     },
+  },
+
+  test: {
+    watch: false,
     globals: true,
     environment: 'happy-dom',
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    include: ['{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    reporters: ['default', 'junit'],
+    coverage: {
+      reportsDirectory: '../../../coverage/apps/feeds/feeds-web',
+      provider: 'v8' as const,
+    },
   },
-})
+}))

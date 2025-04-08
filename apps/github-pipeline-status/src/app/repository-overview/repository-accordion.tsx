@@ -1,5 +1,15 @@
 import { ExpandMore, OpenInNew } from '@mui/icons-material'
-import { Accordion, AccordionDetails, AccordionSummary, Button, IconButton, Skeleton, Typography } from '@mui/material'
+import type { SkeletonOwnProps } from '@mui/material'
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Button,
+  IconButton,
+  Skeleton,
+  Typography,
+  useTheme,
+} from '@mui/material'
 import React, { useMemo } from 'react'
 
 import type {
@@ -12,14 +22,13 @@ import type {
 import { CheckConclusion } from './check-conclusion'
 import { PullRequestRow } from './pull-request-row'
 import type { UserFilter } from './repository-overview'
-import { useClassNames } from './repository-overview.styles'
 
 type DefaultBranchStateProps = {
-  className: HTMLDivElement['className']
   defaultBranchRef?: DefaultBranchRefFieldsFragment
 }
 
-function DefaultBranchState({ className, defaultBranchRef }: DefaultBranchStateProps) {
+function DefaultBranchState({ defaultBranchRef }: DefaultBranchStateProps) {
+  const theme = useTheme()
   if (
     typeof defaultBranchRef === 'undefined' ||
     defaultBranchRef.target?.__typename !== 'Commit' ||
@@ -36,7 +45,14 @@ function DefaultBranchState({ className, defaultBranchRef }: DefaultBranchStateP
   const checkSuite = commit.checkSuites.nodes[commit.checkSuites.nodes.length - 1]
 
   return (
-    <div className={className}>
+    <div
+      style={{
+        flexBasis: '20%',
+        display: 'flex',
+        alignItems: 'center',
+        gap: theme.spacing(1),
+      }}
+    >
       <Typography>{defaultBranchRef.name}</Typography>
       <CheckConclusion checkSuite={checkSuite} />
     </div>
@@ -57,7 +73,7 @@ export function RepositoryAccordion({
     pullRequests: { totalCount: pullRequestCount, nodes: pullRequests },
   },
 }: RepositoryAccordionProps) {
-  const classNames = useClassNames()
+  const theme = useTheme()
 
   const filteredPullRequests = useMemo(
     () =>
@@ -78,21 +94,33 @@ export function RepositoryAccordion({
 
   return (
     <Accordion
-      classes={{
-        root: classNames.accordionRoot,
-        expanded: classNames.expanded,
+      sx={{
+        '& .MuiAccordion-root': {
+          '&:before': {
+            display: 'none',
+          },
+          '& .Mui-expanded': {
+            margin: 'auto',
+          },
+        },
       }}
     >
       <AccordionSummary
-        classes={{
-          root: classNames.accordionSummaryRoot,
-          content: classNames.accordionSummaryContent,
-          expanded: classNames.expanded,
+        sx={{
+          '& .MuiAccordionSummary-root': {
+            minHeight: theme.spacing(6),
+          },
+          '& .MuiAccordionSummary-content': {
+            alignItems: 'center',
+            margin: 0,
+          },
         }}
         expandIcon={<ExpandMore />}
       >
         <IconButton
-          className={classNames.linkColumn}
+          sx={{
+            flexBasis: '5%',
+          }}
           href={url}
           target={'_blank'}
           rel={'noreferrer'}
@@ -102,15 +130,20 @@ export function RepositoryAccordion({
           <OpenInNew />
         </IconButton>
 
-        <div className={classNames.titleColumn}>
+        <div style={{ flexBasis: '50%' }}>
           <Typography>{name}</Typography>
         </div>
 
-        {defaultBranchRef ? (
-          <DefaultBranchState className={classNames.workflowColumn} defaultBranchRef={defaultBranchRef} />
-        ) : null}
+        {defaultBranchRef ? <DefaultBranchState defaultBranchRef={defaultBranchRef} /> : null}
 
-        <div className={classNames.pullRequestsOrReviewsColumn}>
+        <div
+          style={{
+            flexBasis: '25%',
+            display: 'flex',
+            alignItems: 'center',
+            gap: theme.spacing(1),
+          }}
+        >
           {pullRequestCount > 0 && (
             <React.Fragment>
               <Typography>Open pull requests</Typography>
@@ -127,7 +160,12 @@ export function RepositoryAccordion({
           )}
         </div>
       </AccordionSummary>
-      <AccordionDetails className={classNames.accordionDetails}>
+      <AccordionDetails
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         {filteredPullRequests.map((pr) => (
           <PullRequestRow key={pr.id} pr={pr} />
         ))}
@@ -137,15 +175,36 @@ export function RepositoryAccordion({
 }
 
 export function AccordionSkeleton() {
-  const classNames = useClassNames()
+  const theme = useTheme()
 
   return (
     <Accordion>
-      <AccordionSummary classes={{ content: classNames.accordionSummarySkeleton }} expandIcon={<ExpandMore />}>
-        <Skeleton variant={'circular'} width={28} height={28} />
-        <Skeleton className={classNames.titleColumn} variant={'text'} />
-        <Skeleton className={classNames.workflowColumn} variant={'text'} />
-        <Skeleton className={classNames.pullRequestsOrReviewsColumn} variant={'text'} />
+      <AccordionSummary
+        sx={{
+          '& .MuiAccordionSummary-content': { gap: theme.spacing(3) },
+        }}
+        expandIcon={<ExpandMore />}
+      >
+        <Skeleton variant={'circular' as SkeletonOwnProps['variant']} width={28} height={28} />
+        <Skeleton sx={{ flexBasis: '50%' }} variant={'text' as SkeletonOwnProps['variant']} />
+        <Skeleton
+          sx={{
+            flexBasis: '20%',
+            display: 'flex',
+            alignItems: 'center',
+            gap: theme.spacing(1),
+          }}
+          variant={'text' as SkeletonOwnProps['variant']}
+        />
+        <Skeleton
+          sx={{
+            flexBasis: '25%',
+            display: 'flex',
+            alignItems: 'center',
+            gap: theme.spacing(1),
+          }}
+          variant={'text' as SkeletonOwnProps['variant']}
+        />
       </AccordionSummary>
     </Accordion>
   )

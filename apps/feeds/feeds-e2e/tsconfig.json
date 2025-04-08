@@ -1,13 +1,20 @@
 {
   "extends": "../../../tsconfig.base.json",
-  "files": [],
-  "include": ["src/**/*.ts", "src/**/*.js", "cypress.config.ts"],
-  "references": [],
   "compilerOptions": {
-    "sourceMap": false,
-    "outDir": "../../../dist/out-tsc",
     "allowJs": true,
-    "types": ["cypress", "node", "@testing-library/cypress"]
+    "outDir": "../../../dist/out-tsc",
+    "module": "commonjs",
+    "types": ["cypress", "node", "@testing-library/cypress"],
+    "sourceMap": false
   },
-  "exclude": []
+  "include": [
+    "**/*.ts",
+    "**/*.js",
+    "cypress.config.ts",
+    "**/*.cy.ts",
+    "**/*.cy.tsx",
+    "**/*.cy.js",
+    "**/*.cy.jsx",
+    "**/*.d.ts"
+  ]
 }

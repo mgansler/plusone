@@ -13,11 +13,8 @@
   "dependencies": {
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.0",
-    "@mui/base": "5.0.0-beta.70",
-    "@mui/icons-material": "6.4.9",
-    "@mui/lab": "5.0.0-alpha.176",
-    "@mui/material": "6.4.9",
-    "@mui/styles": "6.4.8",
+    "@mui/icons-material": "7.0.1",
+    "@mui/material": "7.0.1",
     "@nestjs/axios": "4.0.0",
     "@nestjs/common": "11.0.13",
     "@nestjs/config": "4.0.2",
@@ -155,6 +152,7 @@
     "jest-environment-node": "29.7.0",
     "jest-junit": "16.0.0",
     "jiti": "2.4.2",
+    "jsdom": "~22.1.0",
     "jsonc-eslint-parser": "2.4.0",
     "lint-staged": "15.5.0",
     "msw": "2.7.3",
@@ -188,7 +186,6 @@
     "*": "nx format"
   },
   "resolutions": {
-    "@mui/system": "6.4.9",
     "cookie": "1.0.2",
     "esbuild": "0.25.2",
     "jsonpath-plus": "10.3.0",

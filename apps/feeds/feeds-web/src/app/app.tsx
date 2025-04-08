@@ -1,6 +1,4 @@
-import type { Theme } from '@mui/material'
-import { AppBar, Link as MuiLink, Toolbar, Typography } from '@mui/material'
-import { createStyles, makeStyles } from '@mui/styles'
+import { AppBar, Container, Link as MuiLink, Toolbar, Typography, useTheme } from '@mui/material'
 import React from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
 
@@ -19,35 +17,20 @@ import { RecentArticles } from './pages/member/feeds/recent'
 import { NewFeed } from './pages/member/new-feed'
 import { Tags } from './pages/member/tags'
 
-const useClassNames = makeStyles<Theme, object, 'appBar' | 'root' | 'toolbar'>((theme) =>
-  createStyles({
-    appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-    },
-    root: {
-      padding: theme.spacing(1),
-      display: 'flex',
-      flexDirection: 'column',
-      gap: theme.spacing(1),
-      flexShrink: 1,
-      overflowY: 'scroll',
-    },
-    toolbar: {
-      gap: theme.spacing(1),
-      justifyContent: 'space-between',
-    },
-  }),
-)
-
 export function App() {
-  const classNames = useClassNames()
+  const theme = useTheme()
 
   const { isLoggedIn, userInfo } = useUserContext()
 
   return (
     <>
-      <AppBar position={'sticky'} className={classNames.appBar}>
-        <Toolbar className={classNames.toolbar}>
+      <AppBar position={'sticky'} sx={{ zIndex: theme.zIndex.drawer + 1 }}>
+        <Toolbar
+          sx={{
+            gap: theme.spacing(1),
+            justifyContent: 'space-between',
+          }}
+        >
           <Typography variant={'h6'}>Feeds</Typography>
 
           {isLoggedIn ? (
@@ -60,7 +43,17 @@ export function App() {
         </Toolbar>
       </AppBar>
 
-      <div className={classNames.root}>
+      <Container
+        maxWidth={false}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          padding: theme.spacing(1),
+          gap: theme.spacing(1),
+          flexShrink: 1,
+          overflowX: 'scroll',
+        }}
+      >
         <Routes>
           <Route path={'home'} element={<Home />} />
           <Route path={'login'} element={<Login />} />
@@ -84,7 +77,7 @@ export function App() {
             </Route>
           )}
         </Routes>
-      </div>
+      </Container>
     </>
   )
 }
