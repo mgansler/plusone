@@ -87,10 +87,13 @@ export function Article({ article: { article, unread, starred }, selectedArticle
         <CardHeader
           avatar={
             <>
-              <IconButton onClick={() => readArticle(article.id, unread)}>
+              <IconButton
+                onClick={() => readArticle(article.id, unread)}
+                aria-label={unread ? 'Mark read' : 'Mark unread'}
+              >
                 {unread ? <CheckBoxOutlineBlank color={color} /> : <CheckBoxOutlined color={color} />}
               </IconButton>
-              <IconButton onClick={() => starArticle(article.id, !starred)}>
+              <IconButton onClick={() => starArticle(article.id, !starred)} aria-label={starred ? 'Star' : 'Unstar'}>
                 {starred ? <Star /> : <StarOutline />}
               </IconButton>
             </>

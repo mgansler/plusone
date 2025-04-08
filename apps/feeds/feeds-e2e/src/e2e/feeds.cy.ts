@@ -37,17 +37,17 @@ describe('feeds', () => {
     cy.get('article').findAllByTestId('CheckBoxOutlinedIcon').should('have.length', 0)
     let articleCount: number
     cy.get('article')
-      .findAllByTestId('CheckBoxOutlineBlankIcon')
+      .findAllByLabelText('Mark read')
       .should('have.length.at.least', 1)
       .then(($checkboxes) => (articleCount = $checkboxes.length))
 
     // Mark one as read manually to later check in recently read articles
-    cy.get('article').findAllByTestId('CheckBoxOutlineBlankIcon').first().click()
+    cy.get('article').findAllByLabelText('Mark read').first().click()
     cy.findByRole('button', { name: 'Mark all read' }).click()
     cy.get('article')
-      .findAllByTestId('CheckBoxOutlinedIcon')
+      .findAllByLabelText('Mark unread')
       .should(($checkboxes) => expect($checkboxes.length).to.equal(articleCount))
-    cy.get('article').findAllByTestId('CheckBoxOutlineBlankIcon').should('have.length', 0)
+    cy.get('article').findAllByTestId('Mark read').should('have.length', 0)
 
     cy.findByRole('button', { name: /Recently Read/i }).click()
     cy.get('article').should('have.length', 1)
