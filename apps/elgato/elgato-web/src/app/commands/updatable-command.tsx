@@ -90,7 +90,7 @@ export function UpdatableCommand({ commandId }: UpdatableCommandProps) {
     <form className={' max-w-xl flex flex-col'} onSubmit={handleSubmit(onSubmit)}>
       <label>
         Command Name
-        <input type={'text'} {...register('name')} />
+        <input className={'border-2 border-gray-200 rounded-sm p-1'} type={'text'} {...register('name')} />
       </label>
 
       {fields.map((field, index) => {

@@ -1,3 +1,4 @@
+import type { Attributes } from 'react'
 import { useState } from 'react'
 
 import type { CommandResponseDto } from '@plusone/elgato-api-client'
@@ -5,7 +6,7 @@ import { useDeleteCommand, useTriggerAppleShortcutsCommand } from '@plusone/elga
 
 import { UpdatableCommand } from './updatable-command'
 
-type CommandItemProps = {
+type CommandItemProps = Attributes & {
   command: CommandResponseDto
 }
 
