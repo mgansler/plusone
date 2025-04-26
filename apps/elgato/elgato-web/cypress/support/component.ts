@@ -13,6 +13,6 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 import '@testing-library/cypress/add-commands'
-import '../../src/styles.scss'
+import '../../src/styles.css'
 
 import './commands'

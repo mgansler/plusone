@@ -62,7 +62,7 @@ export function LocationSettings() {
 
         <label className={'grid grid-cols-[2fr_1fr_3fr]'}>
           Name
-          <input className={'max-w-40'} type={'text'} {...register('name')} />
+          <input className={'max-w-40 border-2 border-gray-200 rounded-sm p-1'} type={'text'} {...register('name')} />
           <button type={'button'} onClick={getGeoCoordinates} disabled={lookupInProgress}>
             get current coordinates
           </button>

@@ -17,7 +17,7 @@ export function ManualDevice() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input type={'text'} {...register('address')} />
+      <input className={'border-2 border-gray-200 rounded-sm p-1'} type={'text'} {...register('address')} />
       <button type={'submit'}>Add</button>
     </form>
   )

@@ -66,7 +66,11 @@ export function UpdatableDisplayName({ deviceId }: UpdatableDisplayNameProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input type={'text'} {...register('displayName', { minLength: 5 })} />
+      <input
+        className={'border-2 border-gray-200 rounded-sm p-1'}
+        type={'text'}
+        {...register('displayName', { minLength: 5 })}
+      />
       <button type={'submit'} hidden={!isEditing}>
         Save
       </button>
