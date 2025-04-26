@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import type { LocationResponseDto } from '@plusone/elgato-api-client'
 import { useUpdateLocation, useValidatedCurrentLocation } from '@plusone/elgato-api-client'
 
 type LocationFormFields = {
@@ -14,19 +13,10 @@ export function LocationSettings() {
   const [lookupFailed, setLookupFailed] = useState<boolean>(false)
   const [lookupInProgress, setLookupInProgress] = useState<boolean>(false)
 
-  const { refetch } = useValidatedCurrentLocation({ query: { enabled: false } })
+  const { data: currentLocationSettings } = useValidatedCurrentLocation()
   const { mutate } = useUpdateLocation()
 
-  const { handleSubmit, register, reset } = useForm<LocationFormFields>({
-    defaultValues: async () => {
-      try {
-        return (await refetch()).data as LocationResponseDto
-      } catch (e) {
-        console.error('Could not get current location', e)
-        return {} as LocationResponseDto
-      }
-    },
-  })
+  const { handleSubmit, register, reset } = useForm<LocationFormFields>({ values: currentLocationSettings })
 
   const getGeoCoordinates = () => {
     setLookupInProgress(true)

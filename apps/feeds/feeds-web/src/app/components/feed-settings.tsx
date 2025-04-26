@@ -9,17 +9,22 @@ import {
   useUpdateFeedSettings,
   useValidatedGetFeedSettings,
 } from '@plusone/feeds/api-client'
-import type { UpdateFeedSettingsMutationBody } from '@plusone/feeds/api-client'
 
-type FeedSettingsForm = UpdateFeedSettingsMutationBody
+type FeedSettingsFormFields = {
+  expandContent: boolean
+  includeRead: boolean
+  disabled: boolean
+  order: Sort
+  title?: string
+}
 
 export function FeedSettings() {
   const { feedId } = useParams()
 
-  const { data: currentSettings, isFetching, refetch } = useValidatedGetFeedSettings(feedId)
+  const { data: currentSettings, isFetching } = useValidatedGetFeedSettings(feedId)
 
   const queryClient = useQueryClient()
-  const { mutateAsync } = useUpdateFeedSettings({
+  const { mutate } = useUpdateFeedSettings({
     mutation: {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: getGetUserFeedsQueryKey() })
@@ -27,25 +32,12 @@ export function FeedSettings() {
     },
   })
 
-  const { register, handleSubmit } = useForm<FeedSettingsForm>({
-    defaultValues: async () => {
-      try {
-        const response = await refetch()
-        return response.data as FeedSettingsForm
-      } catch (e) {
-        console.error('Could not get current feed settings', e)
-        return {
-          disabled: false,
-          expandContent: false,
-          includeRead: true,
-          order: Sort.desc,
-        }
-      }
-    },
+  const { register, handleSubmit } = useForm<FeedSettingsFormFields>({
+    values: currentSettings as FeedSettingsFormFields,
   })
 
-  const onSubmit = async (data: FeedSettingsForm) => {
-    await mutateAsync({ id: feedId, data })
+  const onSubmit = (data: FeedSettingsFormFields) => {
+    mutate({ id: feedId, data })
   }
 
   if (isFetching) {

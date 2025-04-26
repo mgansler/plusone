@@ -14,23 +14,10 @@ type DeviceSettingsProps = Attributes & {
 }
 
 export function DeviceSettings({ device }: DeviceSettingsProps) {
-  const { refetch } = useValidatedDeviceSettings(device.macAddress, { query: { enabled: false } })
+  const { data: currentDeviceSettings } = useValidatedDeviceSettings(device.macAddress)
   const { mutate } = useUpdateDeviceSettings()
 
-  const { handleSubmit, register } = useForm<Fields>({
-    defaultValues: async () => {
-      try {
-        const response = await refetch()
-        return response.data as Fields
-      } catch (e) {
-        console.error('Could not current device settings', e)
-        return {
-          sunrise: false,
-          sunset: false,
-        }
-      }
-    },
-  })
+  const { handleSubmit, register } = useForm<Fields>({ values: currentDeviceSettings })
 
   const onSubmit = (data: Fields) => {
     mutate({ macAddress: device.macAddress, data })

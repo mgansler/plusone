@@ -1,9 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useSetDisplayName, useValidatedDeviceDetails } from '@plusone/elgato-api-client'
-import type { DeviceDetailsResponseDto } from '@plusone/elgato-api-client'
 
 type DisplayNameFormFields = {
   displayName: string
@@ -17,7 +16,13 @@ export function UpdatableDisplayName({ deviceId }: UpdatableDisplayNameProps) {
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
   const queryClient = useQueryClient()
-  const { data: deviceDetails, refetch, queryKey, isLoading } = useValidatedDeviceDetails(deviceId)
+  const { data: deviceDetails, queryKey, isLoading } = useValidatedDeviceDetails(deviceId)
+  useEffect(() => {
+    if (!isLoading && (deviceDetails?.displayName?.length ?? 0) < 1) {
+      setIsEditing(true)
+    }
+  }, [deviceDetails?.displayName, isLoading])
+
   const { mutate } = useSetDisplayName({
     mutation: {
       onSuccess: async () => {
@@ -26,25 +31,7 @@ export function UpdatableDisplayName({ deviceId }: UpdatableDisplayNameProps) {
     },
   })
 
-  const { handleSubmit, register } = useForm<DisplayNameFormFields>({
-    defaultValues: async () => {
-      try {
-        const response = await refetch()
-        const displayName = (response.data as DeviceDetailsResponseDto).details.displayName
-        if (displayName.length === 0) {
-          setIsEditing(true)
-        }
-        return {
-          displayName,
-        }
-      } catch (e) {
-        console.error('Could not get current device name', e)
-        return {
-          displayName: '',
-        }
-      }
-    },
-  })
+  const { handleSubmit, register } = useForm<DisplayNameFormFields>({ values: deviceDetails })
 
   const onSubmit = (data: DisplayNameFormFields) => {
     const displayName = data.displayName.trim()

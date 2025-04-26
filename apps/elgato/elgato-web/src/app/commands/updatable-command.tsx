@@ -36,31 +36,15 @@ export function UpdatableCommand({ commandId }: UpdatableCommandProps) {
   const onMutationSuccess = async () => {
     await queryClient.invalidateQueries({ queryKey: getGetCommandsQueryKey() })
   }
-  // @ts-expect-error query is disable, we will only fetch when the commandId is given
-  const { refetch } = useGetCommand(commandId, { query: { enabled: false } })
+
+  // @ts-expect-error commandId may be undefined, but we only enable the query if it's a number
+  const { data: currentCommand } = useGetCommand(commandId, { query: { enabled: typeof commandId === 'number' } })
   const { data: deviceList } = useValidatedDeviceList()
   const { mutate: createCommand } = useCreateCommand({ mutation: { onSuccess: onMutationSuccess } })
   const { mutate: updateCommand } = useUpdateCommand({ mutation: { onSuccess: onMutationSuccess } })
 
   const { control, handleSubmit, register, getValues } = useForm<UpdatableCommandFields>({
-    defaultValues: async () => {
-      if (typeof commandId === 'undefined') {
-        return {
-          name: '',
-          actions: [],
-        }
-      }
-      try {
-        const { data } = await refetch()
-        return data as UpdatableCommandFields
-      } catch (e) {
-        console.error('Could not get current command', e)
-        return {
-          name: '',
-          actions: [],
-        }
-      }
-    },
+    values: currentCommand as UpdatableCommandFields,
   })
   const { fields, append, remove } = useFieldArray({ control, name: 'actions' })
 
