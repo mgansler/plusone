@@ -1,4 +1,5 @@
 import { Link, Outlet } from '@tanstack/react-router'
+import type { Attributes } from 'react'
 
 import type { DeviceListResponseDto } from '@plusone/elgato-api-client'
 import { useValidatedDeviceList } from '@plusone/elgato-api-client'
@@ -7,7 +8,7 @@ import { deviceDetailsRoute } from '../../routes'
 
 import { DevicePowerStateControl } from './device-power-state-control'
 
-type DeviceListItemProps = {
+type DeviceListItemProps = Attributes & {
   device: DeviceListResponseDto['devices'][0]
 }
 

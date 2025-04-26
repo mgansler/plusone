@@ -1,3 +1,4 @@
+import type { Attributes } from 'react'
 import { useForm } from 'react-hook-form'
 
 import type { DeviceResponseDto } from '@plusone/elgato-api-client'
@@ -8,7 +9,7 @@ type Fields = {
   sunset: boolean
 }
 
-type DeviceSettingsProps = {
+type DeviceSettingsProps = Attributes & {
   device: DeviceResponseDto
 }
 
