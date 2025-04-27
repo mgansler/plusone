@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import type { ReactNode } from 'react'
 
-import { UpdatableCommand } from './updatable-command'
+import { COMMAND_ID_DOES_NOT_EXIST, UpdatableCommand } from './updatable-command'
 
 describe('UpdatableCommand', () => {
   let queryClient: QueryClient
@@ -17,9 +18,11 @@ describe('UpdatableCommand', () => {
     cy.intercept('POST', '/api/commands', { fixture: 'command-create.json' }).as('createCommand')
 
     cy.mount(
-      <QueryClientProvider client={queryClient}>
-        <UpdatableCommand />
-      </QueryClientProvider>,
+      (
+        <QueryClientProvider client={queryClient}>
+          <UpdatableCommand commandId={COMMAND_ID_DOES_NOT_EXIST} />
+        </QueryClientProvider>
+      ) as ReactNode,
     )
 
     cy.wait('@deviceList')
@@ -49,9 +52,11 @@ describe('UpdatableCommand', () => {
     cy.intercept('POST', '/api/commands', { fixture: 'command-create.json' }).as('createCommand')
 
     cy.mount(
-      <QueryClientProvider client={queryClient}>
-        <UpdatableCommand />
-      </QueryClientProvider>,
+      (
+        <QueryClientProvider client={queryClient}>
+          <UpdatableCommand commandId={COMMAND_ID_DOES_NOT_EXIST} />
+        </QueryClientProvider>
+      ) as ReactNode,
     )
 
     cy.wait('@deviceList')
@@ -84,9 +89,11 @@ describe('UpdatableCommand', () => {
     cy.intercept('POST', '/api/commands', { fixture: 'command-create.json' }).as('createCommand')
 
     cy.mount(
-      <QueryClientProvider client={queryClient}>
-        <UpdatableCommand />
-      </QueryClientProvider>,
+      (
+        <QueryClientProvider client={queryClient}>
+          <UpdatableCommand commandId={COMMAND_ID_DOES_NOT_EXIST} />
+        </QueryClientProvider>
+      ) as ReactNode,
     )
 
     cy.wait('@deviceList')

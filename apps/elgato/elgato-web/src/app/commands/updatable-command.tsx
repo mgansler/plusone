@@ -21,6 +21,8 @@ type UpdatableCommandFields = {
   }>
 }
 
+export const COMMAND_ID_DOES_NOT_EXIST = -1
+
 const actionDefaults = {
   macAddress: '',
   on: true,
@@ -28,7 +30,7 @@ const actionDefaults = {
 }
 
 type UpdatableCommandProps = {
-  commandId?: number
+  commandId: number
 }
 
 export function UpdatableCommand({ commandId }: UpdatableCommandProps) {
@@ -37,8 +39,9 @@ export function UpdatableCommand({ commandId }: UpdatableCommandProps) {
     await queryClient.invalidateQueries({ queryKey: getGetCommandsQueryKey() })
   }
 
-  // @ts-expect-error commandId may be undefined, but we only enable the query if it's a number
-  const { data: currentCommand } = useGetCommand(commandId, { query: { enabled: typeof commandId === 'number' } })
+  const { data: currentCommand } = useGetCommand(commandId, {
+    query: { enabled: commandId !== COMMAND_ID_DOES_NOT_EXIST },
+  })
   const { data: deviceList } = useValidatedDeviceList()
   const { mutate: createCommand } = useCreateCommand({ mutation: { onSuccess: onMutationSuccess } })
   const { mutate: updateCommand } = useUpdateCommand({ mutation: { onSuccess: onMutationSuccess } })
@@ -59,7 +62,7 @@ export function UpdatableCommand({ commandId }: UpdatableCommandProps) {
       })),
     }
 
-    if (typeof commandId === 'undefined') {
+    if (commandId === COMMAND_ID_DOES_NOT_EXIST) {
       createCommand({ data })
     } else {
       updateCommand({ commandId, data })

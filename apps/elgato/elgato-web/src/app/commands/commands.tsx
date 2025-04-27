@@ -1,7 +1,7 @@
 import { useValidatedCommandsList } from '@plusone/elgato-api-client'
 
 import { CommandItem } from './command-item'
-import { UpdatableCommand } from './updatable-command'
+import { COMMAND_ID_DOES_NOT_EXIST, UpdatableCommand } from './updatable-command'
 
 export function Commands() {
   const { data } = useValidatedCommandsList()
@@ -9,7 +9,7 @@ export function Commands() {
   return (
     <div>
       {data?.commands.map((command) => <CommandItem key={command.hash} command={command} />)}
-      <UpdatableCommand />
+      <UpdatableCommand commandId={COMMAND_ID_DOES_NOT_EXIST} />
     </div>
   )
 }
