@@ -59,7 +59,7 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(RequestLoggerMiddleware)
-      // excludes are matched without global prefix
+      // excludes are matched without a global prefix
       .exclude('/health', '/sunrise-sunset', '/weather')
       .forRoutes('*')
   }

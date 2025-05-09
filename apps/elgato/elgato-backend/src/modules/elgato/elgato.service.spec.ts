@@ -34,6 +34,7 @@ describe('ElgatoService', () => {
 
   beforeEach(() => {
     server.resetHandlers(
+      // @ts-expect-error false positive with msw 2.8.0
       getAccessoryInfo(DeviceType.LightStrip),
       getAccessoryInfo(DeviceType.RingLight),
       getLights(DeviceType.LightStrip),
@@ -106,6 +107,7 @@ describe('ElgatoService', () => {
 
   describe('setDisplayName', () => {
     beforeEach(() => {
+      // @ts-expect-error false positive with msw 2.8.0
       server.use(setDisplayName(), doesNotResolve())
     })
 
