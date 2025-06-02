@@ -169,19 +169,19 @@
             }
           },
           {
-            "name": "starred",
+            "name": "r",
             "required": false,
             "in": "query",
-            "description": "Should articles appear in chronically ascending or descending order.",
+            "description": "Should read articles be included.",
             "schema": {
               "type": "boolean"
             }
           },
           {
-            "name": "r",
+            "name": "starred",
             "required": false,
             "in": "query",
-            "description": "Should read articles be included.",
+            "description": "Should articles appear in chronically ascending or descending order.",
             "schema": {
               "type": "boolean"
             }

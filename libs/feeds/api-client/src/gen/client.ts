@@ -184,13 +184,13 @@ export type FindArticlesParams = {
    */
   s?: string
   /**
-   * Should articles appear in chronically ascending or descending order.
-   */
-  starred?: boolean
-  /**
    * Should read articles be included.
    */
   r?: boolean
+  /**
+   * Should articles appear in chronically ascending or descending order.
+   */
+  starred?: boolean
   /**
    * Should articles appear in chronically ascending or descending order.
    */

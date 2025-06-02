@@ -1,4 +1,18 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  DefaultValuePipe,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseBoolPipe,
+  Post,
+  Put,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common'
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { Feed } from '@plusone/feeds-persistence'
@@ -105,18 +119,17 @@ export class ArticleController {
     @Query('cursor') cursor: Pagination['cursor'],
     @Query('s') searchTerm: string,
     @Query('f') feedId: Feed['id'],
+    @Query('r', new DefaultValuePipe(true), ParseBoolPipe) includeRead: boolean,
+    @Query('starred', new ParseBoolPipe({ optional: true })) starred?: boolean,
     @Query('sort') sort: Sort = Sort.NewestFirst,
-    @Query('r') includeRead = true,
-    @Query('starred') starred?: boolean,
   ): Promise<PaginatedArticleResponseDto> {
     return this.articleService.find(user.id, {
       cursor,
       searchTerm,
       feedId,
       sort,
-      // starred & includeUnread are parsed as string, we need to manually convert
-      starred: (starred as unknown as string) === 'true' ? true : undefined,
-      includeRead: (includeRead as unknown as string) === 'true',
+      starred,
+      includeRead,
     })
   }
 
