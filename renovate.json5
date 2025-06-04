@@ -8,5 +8,10 @@
       matchPackageNames: ['node'],
       allowedVersions: '22.x',
     },
+    {
+      // Breaking change with generated orval clients
+      matchPackageNames: ['@tanstack/react-query', '@tanstack/react-query-devtools'],
+      allowedVersions: '5.79.x',
+    },
   ],
 }
