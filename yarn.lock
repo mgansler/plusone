@@ -10901,10 +10901,10 @@ docker-modem@^5.0.6:
     split-ca "^1.0.1"
     ssh2 "^1.15.0"
 
-dockerode@^4.0.6:
-  version "4.0.6"
-  resolved "https://registry.npmjs.org/dockerode/-/dockerode-4.0.6.tgz#e53978605346afaaed940a72e24d4e8490d52437"
-  integrity sha512-FbVf3Z8fY/kALB9s+P9epCpWhfi/r0N2DgYYcYpsAUlaTxPjdsitsFobnltb+lyCgAIvf9C+4PSWlTnHlJMf1w==
+dockerode@^4.0.7:
+  version "4.0.7"
+  resolved "https://registry.npmjs.org/dockerode/-/dockerode-4.0.7.tgz#8c68a80f4e057723a07a1e886416248945056621"
+  integrity sha512-R+rgrSRTRdU5mH14PZTCPZtW/zw3HDWNTS/1ZAQpL/5Upe/ye5K9WQkIysu4wBoiMwKynsz0a8qWuGsHgEvSAA==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
     "@grpc/grpc-js" "^1.11.1"
@@ -20833,10 +20833,10 @@ test-exclude@^7.0.1:
     glob "^10.4.1"
     minimatch "^9.0.4"
 
-testcontainers@11.0.2:
-  version "11.0.2"
-  resolved "https://registry.npmjs.org/testcontainers/-/testcontainers-11.0.2.tgz#b22bc9ac3e8ea8669d57ef5dedd51a9509f61468"
-  integrity sha512-rI+CiMYGxd1t/fTW+xs79OHkhBIVLCh7Xstm6duYhKH+LZGyoWtXJsljLvkvWV0J8y8FovcG2Z6/1j1KPqM3rA==
+testcontainers@11.0.3:
+  version "11.0.3"
+  resolved "https://registry.npmjs.org/testcontainers/-/testcontainers-11.0.3.tgz#2d444996d0eebed27d2caed6cdd7321210d5353e"
+  integrity sha512-Xu6ZAaE1FaLyHzFSYdCsd+xMPxUegUjkum0r6zgO8SinnFDHRX/PllIHMt1D+DVUmJqBvPQI6vge/J5jgE5vng==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
     "@types/dockerode" "^3.3.39"
@@ -20845,7 +20845,7 @@ testcontainers@11.0.2:
     byline "^5.0.0"
     debug "^4.4.1"
     docker-compose "^1.2.0"
-    dockerode "^4.0.6"
+    dockerode "^4.0.7"
     get-port "^7.1.0"
     proper-lockfile "^4.1.2"
     properties-reader "^2.3.0"
