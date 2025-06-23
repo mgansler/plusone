@@ -5774,10 +5774,10 @@
   resolved "https://registry.npmjs.org/@repeaterjs/repeater/-/repeater-3.0.6.tgz#be23df0143ceec3c69f8b6c2517971a5578fdaa2"
   integrity sha512-Javneu5lsuhwNCryN+pXH93VPQ8g0dBX7wItHFgYiwQmzE1sVdg5tWHiOgHywzL2W21XQopa7IwIEnNbmeUJYA==
 
-"@rolldown/pluginutils@1.0.0-beta.11":
-  version "1.0.0-beta.11"
-  resolved "https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.0.0-beta.11.tgz#1e3e8044dd053c3dfa4bbbb3861f6e180ee78343"
-  integrity sha512-L/gAA/hyCSuzTF1ftlzUSI/IKr2POHsv1Dd78GfqkR83KMNuswWD61JxGV2L7nRwBBBSDr6R1gCkdTmoN7W4ag==
+"@rolldown/pluginutils@1.0.0-beta.19":
+  version "1.0.0-beta.19"
+  resolved "https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.0.0-beta.19.tgz#fc3b95145a8e7a3bf92754269d8e4f40eea8a244"
+  integrity sha512-3FL3mnMbPu0muGOCaKAhhFEYmqv9eTfPSJRJmANrCwtgK8VuxpsZDGK+m0LYAGoyO8+0j5uRe4PeyPDK1yA/hA==
 
 "@rollup/pluginutils@^5.1.4":
   version "5.1.4"
@@ -6650,10 +6650,10 @@
     "@tailwindcss/oxide" "4.1.10"
     tailwindcss "4.1.10"
 
-"@tanstack/history@1.121.21":
-  version "1.121.21"
-  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.121.21.tgz#98060d706ad0d428e2442c24ba849d41f2e664e1"
-  integrity sha512-8BFGA7fpElicM1aEfZRDoEiWgMrNb/fVuJjSKv+nYtbp7jdtqt57fROi/uDGf6PLlgJbMoT3GWxqveZisOUEKA==
+"@tanstack/history@1.121.34":
+  version "1.121.34"
+  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.121.34.tgz#c11f09d2a0fedd6596a0f89d929d3c17ec4f1130"
+  integrity sha512-YL8dGi5ZU+xvtav2boRlw4zrRghkY6hvdcmHhA0RGSJ/CBgzv+cbADW9eYJLx74XMZvIQ1pp6VMbrpXnnM5gHA==
 
 "@tanstack/query-core@5.81.2":
   version "5.81.2"
@@ -6679,14 +6679,14 @@
   dependencies:
     "@tanstack/query-core" "5.81.2"
 
-"@tanstack/react-router@1.121.27":
-  version "1.121.27"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.121.27.tgz#5e46e082438a821622b5cc95a1c6f15034bdfd9c"
-  integrity sha512-zuLy8IC5fF52fzTTG61nMW2pMoK8LW4kSpeW21deb4gx/kMFKDOaYTe/soT63CO9/x0X6TYcbfjRj67038J0pQ==
+"@tanstack/react-router@1.121.34":
+  version "1.121.34"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.121.34.tgz#8c528f27c3a51eec751818361f11ec83e89e5793"
+  integrity sha512-nQYUXh459/YX9tDOGUqBb8yCiUw4JjcCf1o9wtb9fMxy3hnP0iQNU2TeV1A1N4KCGKXV3ZzkhpBb6sJe3kd43Q==
   dependencies:
-    "@tanstack/history" "1.121.21"
+    "@tanstack/history" "1.121.34"
     "@tanstack/react-store" "^0.7.0"
-    "@tanstack/router-core" "1.121.27"
+    "@tanstack/router-core" "1.121.34"
     jsesc "^3.1.0"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
@@ -6699,12 +6699,12 @@
     "@tanstack/store" "0.7.0"
     use-sync-external-store "^1.4.0"
 
-"@tanstack/router-core@1.121.27":
-  version "1.121.27"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.121.27.tgz#7fe15b7deb6be29a86ece584adbf980886e6379b"
-  integrity sha512-6lCQ3p7KhJ8Qy33TPRM6wIkQ1XKaikD5qqx3K2fPr3YtyDNefKQValbSAkb2CBB+hlDodfHNyxemE9alnQr55A==
+"@tanstack/router-core@1.121.34":
+  version "1.121.34"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.121.34.tgz#51915309bd0c08e29711a65bb7f751494d2e03d1"
+  integrity sha512-CRH9dC8uLfFOKUGTbtOcMPv+weNVt2xs+me34KLX0Yja2yHG99oAUCBwamXsVQPpfjLFPYeJuKyo98+Mg+Ppeg==
   dependencies:
-    "@tanstack/history" "1.121.21"
+    "@tanstack/history" "1.121.34"
     "@tanstack/store" "^0.7.0"
     tiny-invariant "^1.3.3"
 
@@ -7776,15 +7776,15 @@
   resolved "https://registry.npmjs.org/@vanilla-extract/private/-/private-1.0.6.tgz#f10bbf3189f7b827d0bd7f804a6219dd03ddbdd4"
   integrity sha512-ytsG/JLweEjw7DBuZ/0JCN4WAQgM9erfSTdS1NQY778hFQSZ6cfCDEZZ0sgVm4k54uNz6ImKB33AYvSR//fjxw==
 
-"@vitejs/plugin-react@4.5.2":
-  version "4.5.2"
-  resolved "https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-4.5.2.tgz#8b98a8fbcefff4aa4c946966fbec560dc66d2bd9"
-  integrity sha512-QNVT3/Lxx99nMQWJWF7K4N6apUEuT0KlZA3mx/mVaoGj3smm/8rc8ezz15J1pcbcjDK0V15rpHetVfya08r76Q==
+"@vitejs/plugin-react@4.6.0":
+  version "4.6.0"
+  resolved "https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-4.6.0.tgz#2707b485f44806d42d41c63921883cff9c54dfaa"
+  integrity sha512-5Kgff+m8e2PB+9j51eGHEpn5kUzRKH2Ry0qGoe8ItJg7pqnkPrYPkDQZGgGmTa0EGarHrkjLvOdU3b1fzI8otQ==
   dependencies:
     "@babel/core" "^7.27.4"
     "@babel/plugin-transform-react-jsx-self" "^7.27.1"
     "@babel/plugin-transform-react-jsx-source" "^7.27.1"
-    "@rolldown/pluginutils" "1.0.0-beta.11"
+    "@rolldown/pluginutils" "1.0.0-beta.19"
     "@types/babel__core" "^7.20.5"
     react-refresh "^0.17.0"
 
@@ -18577,10 +18577,10 @@ prelude-ls@^1.2.1:
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-prettier@3.5.3:
-  version "3.5.3"
-  resolved "https://registry.npmjs.org/prettier/-/prettier-3.5.3.tgz#4fc2ce0d657e7a02e602549f053b239cb7dfe1b5"
-  integrity sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==
+prettier@3.6.0:
+  version "3.6.0"
+  resolved "https://registry.npmjs.org/prettier/-/prettier-3.6.0.tgz#18ec98d62cb0757a5d4eab40253ff3e6d0fc8dea"
+  integrity sha512-ujSB9uXHJKzM/2GBuE0hBOUgC77CN3Bnpqa+g80bkv3T3A93wL/xlzDATHhnhkzifz/UE2SNOvmbTz5hSkDlHw==
 
 prettier@^2.7.1:
   version "2.8.8"
