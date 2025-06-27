@@ -1,4 +1,4 @@
-image: node:22.16.0
+image: node:22.17.0
 
 variables:
   GIT_DEPTH: 0
@@ -25,7 +25,7 @@ stages:
 
 .dind:
   services:
-    - docker:28.2.2-dind
+    - docker:28.3.0-dind
   variables:
     DOCKER_HOST: 'tcp://docker:2375'
     DOCKER_TLS_CERTDIR: ''
