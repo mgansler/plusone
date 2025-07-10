@@ -10,155 +10,129 @@ export const createTrailAreaFromCoordinatesResponseThresholdMin = 0
 
 export const createTrailAreaFromCoordinatesResponseThresholdMax = 1
 
-export const createTrailAreaFromCoordinatesResponse = zod
-  .object({
-    id: zod.number(),
-    name: zod.string(),
-    latitude: zod.number(),
-    longitude: zod.number(),
-    threshold: zod
-      .number()
-      .min(createTrailAreaFromCoordinatesResponseThresholdMin)
-      .max(createTrailAreaFromCoordinatesResponseThresholdMax),
-    country: zod.string(),
-    state: zod.string(),
-  })
-  .strict()
+export const createTrailAreaFromCoordinatesResponse = zod.strictObject({
+  id: zod.number(),
+  name: zod.string(),
+  latitude: zod.number(),
+  longitude: zod.number(),
+  threshold: zod
+    .number()
+    .min(createTrailAreaFromCoordinatesResponseThresholdMin)
+    .max(createTrailAreaFromCoordinatesResponseThresholdMax),
+  country: zod.string(),
+  state: zod.string(),
+})
 
 export const createTrailAreaFromUrlResponseThresholdMin = 0
 
 export const createTrailAreaFromUrlResponseThresholdMax = 1
 
-export const createTrailAreaFromUrlResponse = zod
-  .object({
-    id: zod.number(),
-    name: zod.string(),
-    latitude: zod.number(),
-    longitude: zod.number(),
-    threshold: zod
-      .number()
-      .min(createTrailAreaFromUrlResponseThresholdMin)
-      .max(createTrailAreaFromUrlResponseThresholdMax),
-    country: zod.string(),
-    state: zod.string(),
-  })
-  .strict()
+export const createTrailAreaFromUrlResponse = zod.strictObject({
+  id: zod.number(),
+  name: zod.string(),
+  latitude: zod.number(),
+  longitude: zod.number(),
+  threshold: zod
+    .number()
+    .min(createTrailAreaFromUrlResponseThresholdMin)
+    .max(createTrailAreaFromUrlResponseThresholdMax),
+  country: zod.string(),
+  state: zod.string(),
+})
 
 export const updateTrailAreaResponseThresholdMin = 0
 
 export const updateTrailAreaResponseThresholdMax = 1
 
-export const updateTrailAreaResponse = zod
-  .object({
-    id: zod.number(),
-    name: zod.string(),
-    latitude: zod.number(),
-    longitude: zod.number(),
-    threshold: zod.number().min(updateTrailAreaResponseThresholdMin).max(updateTrailAreaResponseThresholdMax),
-    country: zod.string(),
-    state: zod.string(),
-  })
-  .strict()
+export const updateTrailAreaResponse = zod.strictObject({
+  id: zod.number(),
+  name: zod.string(),
+  latitude: zod.number(),
+  longitude: zod.number(),
+  threshold: zod.number().min(updateTrailAreaResponseThresholdMin).max(updateTrailAreaResponseThresholdMax),
+  country: zod.string(),
+  state: zod.string(),
+})
 
-export const createTrailResponse = zod
-  .object({
-    id: zod.number(),
-    name: zod.string(),
-    trailAreaId: zod.number(),
-  })
-  .strict()
+export const createTrailResponse = zod.strictObject({
+  id: zod.number(),
+  name: zod.string(),
+  trailAreaId: zod.number(),
+})
 
-export const getTrailsOfAreaResponseItem = zod
-  .object({
-    id: zod.number(),
-    name: zod.string(),
-    trailAreaId: zod.number(),
-  })
-  .strict()
+export const getTrailsOfAreaResponseItem = zod.strictObject({
+  id: zod.number(),
+  name: zod.string(),
+  trailAreaId: zod.number(),
+})
 export const getTrailsOfAreaResponse = zod.array(getTrailsOfAreaResponseItem)
 
-export const getHealthStatusResponse = zod
-  .object({
-    status: zod.string().optional(),
-    info: zod
-      .record(
-        zod.string(),
-        zod
-          .object({
-            status: zod.string(),
-          })
-          .strict(),
-      )
-      .nullish(),
-    error: zod
-      .record(
-        zod.string(),
-        zod
-          .object({
-            status: zod.string(),
-          })
-          .strict(),
-      )
-      .nullish(),
-    details: zod
-      .record(
-        zod.string(),
-        zod
-          .object({
-            status: zod.string(),
-          })
-          .strict(),
-      )
-      .optional(),
-  })
-  .strict()
+export const getHealthStatusResponse = zod.strictObject({
+  status: zod.string().optional(),
+  info: zod
+    .record(
+      zod.string(),
+      zod.strictObject({
+        status: zod.string(),
+      }),
+    )
+    .nullish(),
+  error: zod
+    .record(
+      zod.string(),
+      zod.strictObject({
+        status: zod.string(),
+      }),
+    )
+    .nullish(),
+  details: zod
+    .record(
+      zod.string(),
+      zod.strictObject({
+        status: zod.string(),
+      }),
+    )
+    .optional(),
+})
 
-export const getSunriseSunsetForTrailAreaResponseItem = zod
-  .object({
-    date: zod.string(),
-    sunrise: zod.string().datetime({}),
-    sunset: zod.string().datetime({}),
-  })
-  .strict()
+export const getSunriseSunsetForTrailAreaResponseItem = zod.strictObject({
+  date: zod.string(),
+  sunrise: zod.iso.datetime({}),
+  sunset: zod.iso.datetime({}),
+})
 export const getSunriseSunsetForTrailAreaResponse = zod.array(getSunriseSunsetForTrailAreaResponseItem)
 
-export const getCountriesResponseItem = zod
-  .object({
-    country: zod.string(),
-    state: zod.string(),
-  })
-  .strict()
+export const getCountriesResponseItem = zod.strictObject({
+  country: zod.string(),
+  state: zod.string(),
+})
 export const getCountriesResponse = zod.array(getCountriesResponseItem)
 
 export const getTrailAreasResponseThresholdMin = 0
 
 export const getTrailAreasResponseThresholdMax = 1
 
-export const getTrailAreasResponseItem = zod
-  .object({
-    id: zod.number(),
-    name: zod.string(),
-    latitude: zod.number(),
-    longitude: zod.number(),
-    threshold: zod.number().min(getTrailAreasResponseThresholdMin).max(getTrailAreasResponseThresholdMax),
-    country: zod.string(),
-    state: zod.string(),
-  })
-  .strict()
+export const getTrailAreasResponseItem = zod.strictObject({
+  id: zod.number(),
+  name: zod.string(),
+  latitude: zod.number(),
+  longitude: zod.number(),
+  threshold: zod.number().min(getTrailAreasResponseThresholdMin).max(getTrailAreasResponseThresholdMax),
+  country: zod.string(),
+  state: zod.string(),
+})
 export const getTrailAreasResponse = zod.array(getTrailAreasResponseItem)
 
-export const getWeatherDataForTrailAreaResponseItem = zod
-  .object({
-    time: zod.string().datetime({}),
-    temperature2m: zod.number(),
-    rain: zod.number(),
-    soilMoisture0To1cm: zod.number(),
-    soilMoisture1To3cm: zod.number(),
-    soilMoisture3To9cm: zod.number(),
-    soilMoisture9To27cm: zod.number(),
-    soilTemperature0cm: zod.number(),
-    soilTemperature6cm: zod.number(),
-    windGusts10m: zod.number(),
-  })
-  .strict()
+export const getWeatherDataForTrailAreaResponseItem = zod.strictObject({
+  time: zod.iso.datetime({}),
+  temperature2m: zod.number(),
+  rain: zod.number(),
+  soilMoisture0To1cm: zod.number(),
+  soilMoisture1To3cm: zod.number(),
+  soilMoisture3To9cm: zod.number(),
+  soilMoisture9To27cm: zod.number(),
+  soilTemperature0cm: zod.number(),
+  soilTemperature6cm: zod.number(),
+  windGusts10m: zod.number(),
+})
 export const getWeatherDataForTrailAreaResponse = zod.array(getWeatherDataForTrailAreaResponseItem)

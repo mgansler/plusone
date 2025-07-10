@@ -29,10 +29,8 @@ export const commandRequestSchema = z.object({
         })
         return hasNoDuplicates
       },
-      () => {
-        return {
-          message: 'actions contains duplicated macAddresses.',
-        }
+      {
+        error: 'actions contains duplicated macAddresses.',
       },
     ),
 })

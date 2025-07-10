@@ -138,17 +138,17 @@ const lightsSchema = zod
     numberOfSceneElements: zod.number(),
     scene: zod.array(sceneElementSchema),
   })
-  .refine(
-    (data) => data.scene.length === data.numberOfSceneElements,
-    (data) => {
-      return {
-        expected: data.scene.length,
-        received: data.numberOfSceneElements,
+  .check((ctx) => {
+    const { scene, numberOfSceneElements } = ctx.value
+    if (scene.length !== numberOfSceneElements) {
+      ctx.issues.push({
+        code: 'custom',
+        input: ctx.value,
         path: ['numberOfSceneElements'],
-        message: 'numberOfSceneElements must match the length of scene array',
-      }
-    },
-  )
+        message: `numberOfSceneElements (${numberOfSceneElements}) must match the length of scene array (${scene.length})`,
+      })
+    }
+  })
   .transform(splitTransition)
   .transform(splitDuration)
 
@@ -167,14 +167,14 @@ export const elgatoSceneRequestSchema = zod
     numberOfLights: zod.number(),
     lights: zod.array(lightsSchema),
   })
-  .refine(
-    (data) => data.numberOfLights === data.lights.length,
-    (data) => {
-      return {
-        expected: data.lights.length,
-        received: data.numberOfLights,
+  .check((ctx) => {
+    const { lights, numberOfLights } = ctx.value
+    if (lights.length !== numberOfLights) {
+      ctx.issues.push({
+        code: 'custom',
+        input: ctx.value,
         path: ['numberOfLights'],
-        message: 'numberOfLights must match the length of lights array',
-      }
-    },
-  )
+        message: `numberOfLights (${numberOfLights}) must match the length of lights array (${lights.length})`,
+      })
+    }
+  })
