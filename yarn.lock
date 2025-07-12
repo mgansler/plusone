@@ -6847,16 +6847,15 @@
   dependencies:
     "@tanstack/query-core" "5.83.0"
 
-"@tanstack/react-router@1.127.1":
-  version "1.127.1"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.127.1.tgz#f3a5888c12c375b71c856ade7487c123f7c3edb5"
-  integrity sha512-6Ofe9VxvmuGmaJ1qUBSOsCimsPHlq4nx75EC8JhIwnkc95AQaFCZce7mTp++qECVf6HlkE5El12YwpeTz8wnpQ==
+"@tanstack/react-router@1.127.3":
+  version "1.127.3"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.127.3.tgz#6eb13dcd36dae33d077d1793a454d9458d4f086e"
+  integrity sha512-QprmWHJrGbEKXJiP7WZ+dilTJRc7nMbsFCUnfAUw8PsOYanhgvBkBwAU05YEo8WTIZ9atCc1R90hyzqbiBFkdA==
   dependencies:
     "@tanstack/history" "1.121.34"
     "@tanstack/react-store" "^0.7.0"
-    "@tanstack/router-core" "1.127.0"
+    "@tanstack/router-core" "1.127.3"
     isbot "^5.1.22"
-    jsesc "^3.1.0"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
 
@@ -6868,15 +6867,14 @@
     "@tanstack/store" "0.7.0"
     use-sync-external-store "^1.4.0"
 
-"@tanstack/router-core@1.127.0":
-  version "1.127.0"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.127.0.tgz#f4bdc3d29aaf261141be07b2331c487863033a24"
-  integrity sha512-hHgbtLOAnN61LFqBrE2bq3mctRLfXvJefBlTFakZJavSoMEniX6bMQ5ZMDwMtpo57Hbyzx2rTD4yZfYu74Eydg==
+"@tanstack/router-core@1.127.3":
+  version "1.127.3"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.127.3.tgz#6bb532c66f9de7160a6ded9d2b20a4b816b47149"
+  integrity sha512-08JlfwsMIDkMyCQsRviMVBn0cVUzlNzkll4pZgf6QRSO1RASBsci5hMojcsdH0d/yXLH0FBJ6fINbj0ctBm63Q==
   dependencies:
     "@tanstack/history" "1.121.34"
     "@tanstack/store" "^0.7.0"
     cookie-es "^1.2.2"
-    jsesc "^3.1.0"
     seroval "^1.3.2"
     seroval-plugins "^1.3.2"
     tiny-invariant "^1.3.3"
@@ -15520,11 +15518,6 @@ jsesc@3.0.2, jsesc@^3.0.2, jsesc@~3.0.2:
   resolved "https://registry.npmjs.org/jsesc/-/jsesc-3.0.2.tgz#bb8b09a6597ba426425f2e4a07245c3d00b9343e"
   integrity sha512-xKqzzWXDttJuOcawBt4KnKHHIf5oQ/Cxax+0PWFG+DFDgHNAdi+TXECADI+RYiFUMmx8792xsMbbgXj4CwnP4g==
 
-jsesc@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.npmjs.org/jsesc/-/jsesc-3.1.0.tgz#74d335a234f67ed19907fdadfac7ccf9d409825d"
-  integrity sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==
-
 json-buffer@3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/json-buffer/-/json-buffer-3.0.1.tgz#9338802a30d3b6605fbe0613e094008ca8c05a13"
@@ -17308,10 +17301,10 @@ ms@2.1.3, ms@^2.1.1, ms@^2.1.3:
   resolved "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-msw@2.10.3:
-  version "2.10.3"
-  resolved "https://registry.npmjs.org/msw/-/msw-2.10.3.tgz#accd0925d2852e9aaa2c86d4fdd724288fee5f35"
-  integrity sha512-rpqW4wIqISJlgDfu3tiqzuWC/d6jofSuMUsBu1rwepzSwX21aQoagsd+fjahJ8sewa6FwlYhu4no+jfGVQm2IA==
+msw@2.10.4:
+  version "2.10.4"
+  resolved "https://registry.npmjs.org/msw/-/msw-2.10.4.tgz#a39dad96468aecfd752e5b7df4bbc86f1d73dec4"
+  integrity sha512-6R1or/qyele7q3RyPwNuvc0IxO8L8/Aim6Sz5ncXEgcWUNxSKE+udriTOWHtpMwmfkLYlacA2y7TIx4cL5lgHA==
   dependencies:
     "@bundled-es-modules/cookie" "^2.0.1"
     "@bundled-es-modules/statuses" "^1.0.1"
