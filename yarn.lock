@@ -7,11 +7,6 @@
   resolved "https://registry.npmjs.org/@adobe/css-tools/-/css-tools-4.4.1.tgz#2447a230bfe072c1659e6815129c03cf170710e3"
   integrity sha512-12WGKBQzjUAI4ayyF4IAtfw2QR/IDoqk6jTddXDhtYTJF9ASmoE1zst7cVtP0aL/F1jUJL5r+JxKXKEgHNbEUQ==
 
-"@adobe/css-tools@~4.3.3":
-  version "4.3.3"
-  resolved "https://registry.npmjs.org/@adobe/css-tools/-/css-tools-4.3.3.tgz#90749bde8b89cd41764224f5aac29cd4138f75ff"
-  integrity sha512-rE0Pygv0sEZ4vBWHlAgJLGDU7Pm8xoO6p3wsEceb7GYAjScrOHpEo8KK/eVkAcnSM+slAEtXjA2JpdjLp4fJQQ==
-
 "@ampproject/remapping@^2.2.0", "@ampproject/remapping@^2.3.0":
   version "2.3.0"
   resolved "https://registry.npmjs.org/@ampproject/remapping/-/remapping-2.3.0.tgz#ed441b6fa600072520ce18b43d2c8cc8caecc7f4"
@@ -12977,7 +12972,7 @@ glob-to-regexp@^0.4.1:
   resolved "https://registry.npmjs.org/glob-to-regexp/-/glob-to-regexp-0.4.1.tgz#c75297087c851b9a578bd217dd59a92f59fe546e"
   integrity sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==
 
-glob@^10.0.0, glob@^10.2.2, glob@^10.3.10, glob@^10.4.1, glob@^10.4.5:
+glob@^10.0.0, glob@^10.2.2, glob@^10.3.10, glob@^10.4.1:
   version "10.4.5"
   resolved "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz#f4d9f0b90ffdbab09c9d77f5f29b4262517b0956"
   integrity sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==
@@ -19776,7 +19771,7 @@ sass@^1.85.0:
   optionalDependencies:
     "@parcel/watcher" "^2.4.1"
 
-sax@>=0.6.0, sax@^1.2.4, sax@~1.4.1:
+sax@>=0.6.0, sax@^1.2.4:
   version "1.4.1"
   resolved "https://registry.npmjs.org/sax/-/sax-1.4.1.tgz#44cc8988377f126304d3b3fc1010c733b929ef0f"
   integrity sha512-+aWOz7yVScEGoKNd4PA10LZ8sk0A/z5+nXQG5giUO5rprX9jgYsTdov9qCchZiPIZezbZH+jRut8nPodFAX4Jg==
@@ -20889,16 +20884,10 @@ stylus-loader@^7.1.0:
     fast-glob "^3.2.12"
     normalize-path "^3.0.0"
 
-stylus@0.64.0, stylus@^0.64.0:
-  version "0.64.0"
-  resolved "https://registry.npmjs.org/stylus/-/stylus-0.64.0.tgz#af99253f1254c851528c44eddc3ccf1f831942f1"
-  integrity sha512-ZIdT8eUv8tegmqy1tTIdJv9We2DumkNZFdCF5mz/Kpq3OcTaxSuCAYZge6HKK2CmNC02G1eJig2RV7XTw5hQrA==
-  dependencies:
-    "@adobe/css-tools" "~4.3.3"
-    debug "^4.3.2"
-    glob "^10.4.5"
-    sax "~1.4.1"
-    source-map "^0.7.3"
+stylus@0.0.1-security, stylus@^0.64.0:
+  version "0.0.1-security"
+  resolved "https://registry.npmjs.org/stylus/-/stylus-0.0.1-security.tgz#7fbf8df07e6c1202fce29d57fed2ecbf960e6a3b"
+  integrity sha512-qTLX5NJwuj5dqdJyi1eAjXGE4HfjWDoPLbSIpYWn/rAEdiyZnsngS/Yj0BRjM7wC41e/+spK4QCXFqz7LM0fFQ==
 
 superagent@^10.2.3:
   version "10.2.3"
