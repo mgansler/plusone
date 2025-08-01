@@ -2838,15 +2838,15 @@
   resolved "https://registry.npmjs.org/@exodus/schemasafe/-/schemasafe-1.3.0.tgz#731656abe21e8e769a7f70a4d833e6312fe59b7f"
   integrity sha512-5Aap/GaRupgNx/feGBwLLTVv8OQFfv3pq2lPRzPg9R+IOBnDgghTGW7l7EuVXOvg5cc/xSAlRW8rBrjIC3Nvqw==
 
-"@gerrit0/mini-shiki@^3.2.2":
-  version "3.2.2"
-  resolved "https://registry.npmjs.org/@gerrit0/mini-shiki/-/mini-shiki-3.2.2.tgz#86d968b15386f2396b8cb1b2de8da95c2fb9d4f2"
-  integrity sha512-vaZNGhGLKMY14HbF53xxHNgFO9Wz+t5lTlGNpl2N9xFiKQ0I5oIe0vKjU9dh7Nb3Dw6lZ7wqUE0ri+zcdpnK+Q==
+"@gerrit0/mini-shiki@^3.7.0":
+  version "3.8.1"
+  resolved "https://registry.npmjs.org/@gerrit0/mini-shiki/-/mini-shiki-3.8.1.tgz#e94f9f53a9d63aa1863ca2ab1fdc8b53c70829e1"
+  integrity sha512-HVZW+8pxoOExr5ZMPK15U79jQAZTO/S6i5byQyyZGjtNj+qaYd82cizTncwFzTQgiLo8uUBym6vh+/1tfJklTw==
   dependencies:
-    "@shikijs/engine-oniguruma" "^3.2.1"
-    "@shikijs/langs" "^3.2.1"
-    "@shikijs/themes" "^3.2.1"
-    "@shikijs/types" "^3.2.1"
+    "@shikijs/engine-oniguruma" "^3.8.1"
+    "@shikijs/langs" "^3.8.1"
+    "@shikijs/themes" "^3.8.1"
+    "@shikijs/types" "^3.8.1"
     "@shikijs/vscode-textmate" "^10.0.2"
 
 "@graphql-codegen/add@^5.0.3":
@@ -5277,24 +5277,24 @@
   dependencies:
     flatbuffers "^25.2.10"
 
-"@orval/angular@7.10.0":
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/@orval/angular/-/angular-7.10.0.tgz#346b1f52c352683f54bf6af2b3514182119528b2"
-  integrity sha512-M89GKo/PibxYXvOKp9+i6BLxhEW8YsO+evwuV2kMbDGNS3RiYDwzmMBcA9SVL7m8CumeZoxNEAXsupzq96ZAXA==
+"@orval/angular@7.11.1":
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/@orval/angular/-/angular-7.11.1.tgz#fc1b8ca3f44d7a90babcc3c824897e2dd848969b"
+  integrity sha512-pw6FcUr+PrFLqkUbHm63ejUwNDISsBtcdjHnl/umyNIvA6bWMbHBJ6q6yrTfoz8uysakxuyKSd/ycrQK1AFNTA==
   dependencies:
-    "@orval/core" "7.10.0"
+    "@orval/core" "7.11.1"
 
-"@orval/axios@7.10.0":
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/@orval/axios/-/axios-7.10.0.tgz#714a12b15f7f907ea8826531103ac4f3d977726d"
-  integrity sha512-AB6BjEwyguIcH8olzOTFPvwUP8z63yP4Jfl3T2UoeFchK04KqWqxbUoxmDG9xVQ79uMs/uOrb0X+GFwdZ56gAg==
+"@orval/axios@7.11.1":
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/@orval/axios/-/axios-7.11.1.tgz#e6a5fbeb7170374e86ecfbaeb8a92d1804ab1493"
+  integrity sha512-Y5gCXICi5yGLUSpaqkJZ+DlduYYk9Vkw/QmdxhClHEcncHvaKYfZEIbUMBz7kC1xbW7BrxnA2ypjKlbQ/cxHzg==
   dependencies:
-    "@orval/core" "7.10.0"
+    "@orval/core" "7.11.1"
 
-"@orval/core@7.10.0":
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/@orval/core/-/core-7.10.0.tgz#4b6026708d8e1118067e310875e5eea9a00b8b58"
-  integrity sha512-Lm7HY4Kwzehe+2HNfi+Ov/IZ+m3nj3NskVGvOyJDAqaaHB7G/xydSCtgELG32ur4G+M/XmwChAjoP4TCNVh0VA==
+"@orval/core@7.11.1":
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/@orval/core/-/core-7.11.1.tgz#49a57591c50e49b313e99fa8e894efeb689f8f76"
+  integrity sha512-dl1RaoFgGuINEG++j30OtqkTUVVXDHrw+3XSu353vmbRZhyFqrwNF1Vov1O04BkedR4L4gLz7kmEnfOFffm4Zg==
   dependencies:
     "@apidevtools/swagger-parser" "^10.1.1"
     "@ibm-cloud/openapi-ruleset" "^1.29.4"
@@ -5315,61 +5315,62 @@
     openapi3-ts "4.4.0"
     swagger2openapi "^7.0.8"
 
-"@orval/fetch@7.10.0":
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-7.10.0.tgz#ccdf3f0c9635a2f91c0e4ba930ef19110426128b"
-  integrity sha512-bWcXPmARcXhXRveBtUnkfPlkUcLEzfGaflAdqN4CtScS48LgNrXXtuyt2BV2wvEXAavCWIhnRyQvz2foTU4U8Q==
+"@orval/fetch@7.11.1":
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-7.11.1.tgz#bf56333354d8561a10a797d892830816206afa40"
+  integrity sha512-A0JhBAiL0yphocEKwpf+j+KvpbhkuLSnJa8hStolsL6mmDZqFH9NJ50Ht1kqbEL8cMKsv74IpS/plUKuUj2kBw==
   dependencies:
-    "@orval/core" "7.10.0"
+    "@orval/core" "7.11.1"
 
-"@orval/hono@7.10.0":
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/@orval/hono/-/hono-7.10.0.tgz#86c29b660ccd09b9abff413abdede5c32fd543df"
-  integrity sha512-bOxTdZxx2BpGQf7fFuCeeUe//ZYDWc6Yz9WOhj3HrnsD06xTRKFWVBi/QZ29QcAPxqwunu/VWwbqoiHHuuX3bA==
+"@orval/hono@7.11.1":
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/@orval/hono/-/hono-7.11.1.tgz#09cf7b46b73ce1951884e26aa107c65dc3c0d42c"
+  integrity sha512-aCTIxpnX01glJBZfecwh4fDvyRB/cXQraUstBAnvrEY8lqU6yZQ7UaxIhPmI7ivOEtqmoiUVpokP2UtWMdOAJg==
   dependencies:
-    "@orval/core" "7.10.0"
-    "@orval/zod" "7.10.0"
+    "@orval/core" "7.11.1"
+    "@orval/zod" "7.11.1"
     lodash.uniq "^4.5.0"
 
-"@orval/mcp@7.10.0":
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/@orval/mcp/-/mcp-7.10.0.tgz#7ee5129aa9120dbded4c03e18c533405e31ea2a6"
-  integrity sha512-ztLXGOSxK7jFwPKAeYPR85BjKRh3KTClKEnM2MFmo2FHHojn72DPXRPCmy0Wbw5Ee+JOxK2kIpyx+HZi9XVxiA==
+"@orval/mcp@7.11.1":
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/@orval/mcp/-/mcp-7.11.1.tgz#2483a0d8710633a0954a0b23f01f504850d43923"
+  integrity sha512-z4Lbel7Uwx4SQdxtHrwLh3eQ+XhVgwgl3jQ6wzypAtWdc0I54wgNuzInyKtPE+oFAh/Auu019/597NIaDxYjrw==
   dependencies:
-    "@orval/core" "7.10.0"
-    "@orval/zod" "7.10.0"
+    "@orval/core" "7.11.1"
+    "@orval/fetch" "7.11.1"
+    "@orval/zod" "7.11.1"
 
-"@orval/mock@7.10.0":
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/@orval/mock/-/mock-7.10.0.tgz#689355f8bcffac1819332417bb767a940a82e089"
-  integrity sha512-vkEWCaKEyMfWGJF5MtxVzl+blwc9vYzwdYxMoSdjA5yS2dNBrdNlt1aLtb4+aoI1jgBgpCg/OB7VtWaL5QYidA==
+"@orval/mock@7.11.1":
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/@orval/mock/-/mock-7.11.1.tgz#1075390272b9510846c8f205c0f107a403896596"
+  integrity sha512-sN4qk09VrlIzkdjliA19MOWChg9DbLgFypCbAUqpemr1CkY5A5m0EzN/MKzm3Fv+wMg5DfJIdXZjqOBR+fEvxA==
   dependencies:
-    "@orval/core" "7.10.0"
+    "@orval/core" "7.11.1"
     openapi3-ts "^4.2.2"
 
-"@orval/query@7.10.0":
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/@orval/query/-/query-7.10.0.tgz#19302365305ebec6a3279ad8657dbe96331d9dd3"
-  integrity sha512-DBVg8RyKWSQKhr5Zfvxx5XICUdDUkG4MJKSd4BQCrRjUWgN6vwGunMEKyfnjpS5mFUSCkwWD/I3rTkjW6aysJA==
+"@orval/query@7.11.1":
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/@orval/query/-/query-7.11.1.tgz#6f843fd6045ad57e1b55a1fe7bf5a2945357984d"
+  integrity sha512-K7oCQ+tmqBlJB7/O13WzV9GryV+9OU0vBMYjDzXr5ptj1bkXfB9zrA2vQSDm5iIZCe6DVXPoDKUuxBpr++Q38Q==
   dependencies:
-    "@orval/core" "7.10.0"
-    "@orval/fetch" "7.10.0"
+    "@orval/core" "7.11.1"
+    "@orval/fetch" "7.11.1"
     lodash.omitby "^4.6.0"
 
-"@orval/swr@7.10.0":
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/@orval/swr/-/swr-7.10.0.tgz#40e732cebfd5c7bb0da0dbed4b3a27699d32a43f"
-  integrity sha512-ZdApomZQhJ5ZogjJgBK+haeCOP9gUaMaGKGjTVJr86jJaygDcKn54Ok1quiDUCbX42Eye+cgmQJeKeZvqnPohA==
+"@orval/swr@7.11.1":
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/@orval/swr/-/swr-7.11.1.tgz#1a45dedc169f1d6d47f909ff86aa3825672d5140"
+  integrity sha512-Qpo/euq/ZoxYUi5w+yvnKlMrpc2YEfTDH/EUCeM8oTnZQ9VmgIJWAJ8zF2B8ocirNbI11oaz1qtHfnddXD1P9A==
   dependencies:
-    "@orval/core" "7.10.0"
-    "@orval/fetch" "7.10.0"
+    "@orval/core" "7.11.1"
+    "@orval/fetch" "7.11.1"
 
-"@orval/zod@7.10.0":
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/@orval/zod/-/zod-7.10.0.tgz#5e2cd72dbaaea8f99fed58ff3273b30eef35ddb2"
-  integrity sha512-AB/508IBMlVDBcGvlq+ASz7DvqU3nhoDnIeBCyjwNfQwhYzREU0qqiFBnH0XAW70c6SCMf9/bIcYbw8GAx/zxA==
+"@orval/zod@7.11.1":
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/@orval/zod/-/zod-7.11.1.tgz#2a81011ec75d527390da29dc0d1fd1473926f100"
+  integrity sha512-dWd8GgpwahXph+OxCCd42T5w8X1+nYvT3TD8PNTDSd9SE65G2PBiQ4aS0BW0Q8+zUM1qrVyS2+KVXdgYn2tArw==
   dependencies:
-    "@orval/core" "7.10.0"
+    "@orval/core" "7.11.1"
     lodash.uniq "^4.5.0"
 
 "@oxc-resolver/binding-darwin-arm64@5.0.0":
@@ -6073,32 +6074,32 @@
   resolved "https://registry.npmjs.org/@sec-ant/readable-stream/-/readable-stream-0.4.1.tgz#60de891bb126abfdc5410fdc6166aca065f10a0c"
   integrity sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==
 
-"@shikijs/engine-oniguruma@^3.2.1":
-  version "3.2.1"
-  resolved "https://registry.npmjs.org/@shikijs/engine-oniguruma/-/engine-oniguruma-3.2.1.tgz#be07d9f09a4b5e35af1896ff232001b9d4f5466e"
-  integrity sha512-wZZAkayEn6qu2+YjenEoFqj0OyQI64EWsNR6/71d1EkG4sxEOFooowKivsWPpaWNBu3sxAG+zPz5kzBL/SsreQ==
+"@shikijs/engine-oniguruma@^3.8.1":
+  version "3.9.0"
+  resolved "https://registry.npmjs.org/@shikijs/engine-oniguruma/-/engine-oniguruma-3.9.0.tgz#348e4531d2ef0c1d8f95a3a9a849c8c1f7d9bde2"
+  integrity sha512-bCX7BZGYgKISP6t3pab11eu0rUBzKvWKvS4KBN9fu9maBJM7PWn+Uhsl+5H3Z5lMq0JaCcY/N1oPQJ36eyQHHg==
   dependencies:
-    "@shikijs/types" "3.2.1"
+    "@shikijs/types" "3.9.0"
     "@shikijs/vscode-textmate" "^10.0.2"
 
-"@shikijs/langs@^3.2.1":
-  version "3.2.1"
-  resolved "https://registry.npmjs.org/@shikijs/langs/-/langs-3.2.1.tgz#662390328675e0244f18559bade4aac0e60e5b64"
-  integrity sha512-If0iDHYRSGbihiA8+7uRsgb1er1Yj11pwpX1c6HLYnizDsKAw5iaT3JXj5ZpaimXSWky/IhxTm7C6nkiYVym+A==
+"@shikijs/langs@^3.8.1":
+  version "3.9.0"
+  resolved "https://registry.npmjs.org/@shikijs/langs/-/langs-3.9.0.tgz#5688cecfed83e96ff3e9d6783df569a8e3c6ea5f"
+  integrity sha512-XANUVPauGJfMkebskmSGCT8TwfQPbMY+SFbRY8gyMwY3NY95jjqTg1JlplkwaccoSAEAe5BLtwz0jDp1kg5Jbg==
   dependencies:
-    "@shikijs/types" "3.2.1"
+    "@shikijs/types" "3.9.0"
 
-"@shikijs/themes@^3.2.1":
-  version "3.2.1"
-  resolved "https://registry.npmjs.org/@shikijs/themes/-/themes-3.2.1.tgz#93d9c5fcc16649ec1e017217c0a88209cc619731"
-  integrity sha512-k5DKJUT8IldBvAm8WcrDT5+7GA7se6lLksR+2E3SvyqGTyFMzU2F9Gb7rmD+t+Pga1MKrYFxDIeyWjMZWM6uBQ==
+"@shikijs/themes@^3.8.1":
+  version "3.9.0"
+  resolved "https://registry.npmjs.org/@shikijs/themes/-/themes-3.9.0.tgz#69402befa32973e384b873e59fcb43ba3ccfd35a"
+  integrity sha512-p6UssgDp9moDhkp32Uog/r5XKCGfCm8NfSvunD0tfweetxmCUs525qj0koXq3ldfUGzlMdHooophlw2CtOifew==
   dependencies:
-    "@shikijs/types" "3.2.1"
+    "@shikijs/types" "3.9.0"
 
-"@shikijs/types@3.2.1", "@shikijs/types@^3.2.1":
-  version "3.2.1"
-  resolved "https://registry.npmjs.org/@shikijs/types/-/types-3.2.1.tgz#8d289ad95d62833d7f9af536c073312d7afe8182"
-  integrity sha512-/NTWAk4KE2M8uac0RhOsIhYQf4pdU0OywQuYDGIGAJ6Mjunxl2cGiuLkvu4HLCMn+OTTLRWkjZITp+aYJv60yA==
+"@shikijs/types@3.9.0", "@shikijs/types@^3.8.1":
+  version "3.9.0"
+  resolved "https://registry.npmjs.org/@shikijs/types/-/types-3.9.0.tgz#8799f56ea24eed6c9f7bec6942fc6ec2f75cc35c"
+  integrity sha512-jEl8FtchHsg/lM0DYJVL+3Ss7VhcmYsjVbsqIfB5Qyi/fWBIIrH54SlhN79phFLkGHKqpOA4uWDATjYuRa0JQQ==
   dependencies:
     "@shikijs/vscode-textmate" "^10.0.2"
     "@types/hast" "^3.0.4"
@@ -6713,22 +6714,22 @@
   resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.83.1.tgz#eed82970b30cb24536f561613b5630e03d349628"
   integrity sha512-OG69LQgT7jSp+5pPuCfzltq/+7l2xoweggjme9vlbCPa/d7D7zaqv5vN/S82SzSYZ4EDLTxNO1PWrv49RAS64Q==
 
-"@tanstack/query-devtools@5.83.1":
-  version "5.83.1"
-  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.83.1.tgz#8edb301ac8bc4f99c7cfbb937cf0fa2762537d49"
-  integrity sha512-KOQ3SMLnHHrnwwAHflK50QT8zEHg3rjPZx6cd+G7yZl4vU9moctTQU1A3zvHYEXabzKu5G31bcll6qhNCya9+w==
+"@tanstack/query-devtools@5.84.0":
+  version "5.84.0"
+  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.84.0.tgz#dabed4f4abf405f0e320758ed7bc895a7687d9bb"
+  integrity sha512-fbF3n+z1rqhvd9EoGp5knHkv3p5B2Zml1yNRjh7sNXklngYI5RVIWUrUjZ1RIcEoscarUb0+bOvIs5x9dwzOXQ==
 
-"@tanstack/react-query-devtools@5.83.1":
-  version "5.83.1"
-  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.83.1.tgz#b2c14adbb45090bedbc847a8e1d41d45a1d51ee5"
-  integrity sha512-t5zcIHoSbT4ducv5YBYULgol6mt1gflHBLbN9oMa/VvPxVtQBY7nyDWFzOYycGXLlH3RrSp7w+oFBTB2GS04Ug==
+"@tanstack/react-query-devtools@5.84.0":
+  version "5.84.0"
+  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.84.0.tgz#a1c0d1ef40480de46f4f33c9f171ef3f847d87e9"
+  integrity sha512-7SwgDOm1Waz9wKOwR8WPaN4yo6zq1UBQxGLWy/SJWZOoo2bUVRVlGPvFicuOUwQWv5VDzzNYq4GvTQnX4T3xtw==
   dependencies:
-    "@tanstack/query-devtools" "5.83.1"
+    "@tanstack/query-devtools" "5.84.0"
 
-"@tanstack/react-query@5.83.1":
-  version "5.83.1"
-  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.83.1.tgz#894a42cb0275194321efe43777c61f6469dc34e1"
-  integrity sha512-JHZ3xox3p0sqCgM7ykBRtMWSLmWgjR7I+oJMAZ1beK/O/gfShI2b/PdovL2/ivVLUZklXgBenQu4ZjPhIM+yrw==
+"@tanstack/react-query@5.84.0":
+  version "5.84.0"
+  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.84.0.tgz#4e369b5f94114a9e15d01f0ada4726bfc1de406b"
+  integrity sha512-iPycFGLq5lltDE16Jf13Nx7SOvtfoopfOH/+Ahbdd+z4QqOfYu/SOkY86AVYVcKjneuqPxTm8e85lSGhwe0cog==
   dependencies:
     "@tanstack/query-core" "5.83.1"
 
@@ -17917,22 +17918,22 @@ ora@5.4.1, ora@^5.4.1:
     strip-ansi "^6.0.0"
     wcwidth "^1.0.1"
 
-orval@7.10.0:
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/orval/-/orval-7.10.0.tgz#0440efd070de0c919643b815960635672331623b"
-  integrity sha512-R1TlDDgK82dHfTXG0IuaIXHOrk6HQ1CuGejQQpQW9mBSCQA84AInp8U4Ovxw3upjMFNhghE8OlAQqD0ES8GgHQ==
+orval@7.11.1:
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/orval/-/orval-7.11.1.tgz#8d10bee1da472a40ba69215f543a632d3d4faaa1"
+  integrity sha512-r+Aow8NsNznOmRsEPyUwQFEZnDr4hzvZ0vaEm3/x+Z9LxGFyzDIqjJqFlPlv44uMwfuqds7HQrDtgRCASVmaJA==
   dependencies:
     "@apidevtools/swagger-parser" "^10.1.1"
-    "@orval/angular" "7.10.0"
-    "@orval/axios" "7.10.0"
-    "@orval/core" "7.10.0"
-    "@orval/fetch" "7.10.0"
-    "@orval/hono" "7.10.0"
-    "@orval/mcp" "7.10.0"
-    "@orval/mock" "7.10.0"
-    "@orval/query" "7.10.0"
-    "@orval/swr" "7.10.0"
-    "@orval/zod" "7.10.0"
+    "@orval/angular" "7.11.1"
+    "@orval/axios" "7.11.1"
+    "@orval/core" "7.11.1"
+    "@orval/fetch" "7.11.1"
+    "@orval/hono" "7.11.1"
+    "@orval/mcp" "7.11.1"
+    "@orval/mock" "7.11.1"
+    "@orval/query" "7.11.1"
+    "@orval/swr" "7.11.1"
+    "@orval/zod" "7.11.1"
     ajv "^8.17.1"
     cac "^6.7.14"
     chalk "^4.1.2"
@@ -17945,7 +17946,7 @@ orval@7.10.0:
     openapi3-ts "4.2.2"
     string-argv "^0.3.2"
     tsconfck "^2.0.1"
-    typedoc "^0.28.0"
+    typedoc "^0.28.7"
     typedoc-plugin-markdown "^4.4.2"
     typescript "^5.6.3"
 
@@ -21924,16 +21925,16 @@ typedoc-plugin-markdown@^4.4.2:
   resolved "https://registry.npmjs.org/typedoc-plugin-markdown/-/typedoc-plugin-markdown-4.4.2.tgz#fc31779595aa9bf00e66709f3894e048345bf7ed"
   integrity sha512-kJVkU2Wd+AXQpyL6DlYXXRrfNrHrEIUgiABWH8Z+2Lz5Sq6an4dQ/hfvP75bbokjNDUskOdFlEEm/0fSVyC7eg==
 
-typedoc@^0.28.0:
-  version "0.28.2"
-  resolved "https://registry.npmjs.org/typedoc/-/typedoc-0.28.2.tgz#342c42f2e4c0306c47a0a5e92592af9aa60e1a85"
-  integrity sha512-9Giuv+eppFKnJ0oi+vxqLM817b/IrIsEMYgy3jj6zdvppAfDqV3d6DXL2vXUg2TnlL62V48th25Zf/tcQKAJdg==
+typedoc@^0.28.7:
+  version "0.28.8"
+  resolved "https://registry.npmjs.org/typedoc/-/typedoc-0.28.8.tgz#3f2de31e8b2233bab12fb40d25ff861a4fac0962"
+  integrity sha512-16GfLopc8icHfdvqZDqdGBoS2AieIRP2rpf9mU+MgN+gGLyEQvAO0QgOa6NJ5QNmQi0LFrDY9in4F2fUNKgJKA==
   dependencies:
-    "@gerrit0/mini-shiki" "^3.2.2"
+    "@gerrit0/mini-shiki" "^3.7.0"
     lunr "^2.3.9"
     markdown-it "^14.1.0"
     minimatch "^9.0.5"
-    yaml "^2.7.1"
+    yaml "^2.8.0"
 
 typescript-eslint@8.38.0:
   version "8.38.0"
@@ -23159,11 +23160,6 @@ yaml@^2.2.2, yaml@^2.3.1, yaml@^2.3.4, yaml@^2.5.0, yaml@^2.6.0:
   version "2.6.1"
   resolved "https://registry.npmjs.org/yaml/-/yaml-2.6.1.tgz#42f2b1ba89203f374609572d5349fb8686500773"
   integrity sha512-7r0XPzioN/Q9kXBro/XPnA6kznR73DHq+GXh5ON7ZozRO6aMjbmiBuKste2wslTFkC5d1dw0GooOCepZXJ2SAg==
-
-yaml@^2.7.1:
-  version "2.7.1"
-  resolved "https://registry.npmjs.org/yaml/-/yaml-2.7.1.tgz#44a247d1b88523855679ac7fa7cda6ed7e135cf6"
-  integrity sha512-10ULxpnOCQXxJvBgxsn9ptjq6uviG/htZKk9veJGhlqn3w/DxQ631zFF+nlQXLwmImeS5amR2dl2U8sg6U9jsQ==
 
 yaml@^2.8.0:
   version "2.8.0"
