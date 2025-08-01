@@ -6,205 +6,161 @@
  */
 import { z as zod } from 'zod'
 
-export const getAdminStatsResponse = zod
-  .object({
-    feedCount: zod.number(),
-    articleCount: zod.number(),
-    userCount: zod.number(),
-  })
-  .strict()
+export const getAdminStatsResponse = zod.strictObject({
+  feedCount: zod.number(),
+  articleCount: zod.number(),
+  userCount: zod.number(),
+})
 
-export const toggleUnreadResponse = zod
-  .object({
-    article: zod
-      .object({
+export const toggleUnreadResponse = zod.strictObject({
+  article: zod.strictObject({
+    content: zod.string().nullable(),
+    date: zod.iso.datetime({}),
+    guid: zod.string(),
+    id: zod.string(),
+    link: zod.string().nullable(),
+    title: zod.string().nullable(),
+  }),
+  cursor: zod.number(),
+  starred: zod.boolean(),
+  unread: zod.boolean(),
+})
+
+export const findArticlesResponse = zod.strictObject({
+  content: zod.array(
+    zod.strictObject({
+      article: zod.strictObject({
         content: zod.string().nullable(),
-        date: zod.string().datetime({}),
+        date: zod.iso.datetime({}),
         guid: zod.string(),
         id: zod.string(),
         link: zod.string().nullable(),
         title: zod.string().nullable(),
-      })
-      .strict(),
-    cursor: zod.number(),
-    starred: zod.boolean(),
-    unread: zod.boolean(),
-  })
-  .strict()
+      }),
+      cursor: zod.number(),
+      starred: zod.boolean(),
+      unread: zod.boolean(),
+    }),
+  ),
+  pageSize: zod.number(),
+  totalCount: zod.number(),
+  unreadCount: zod.number(),
+  lastCursor: zod.number().optional(),
+})
 
-export const findArticlesResponse = zod
-  .object({
-    content: zod.array(
-      zod
-        .object({
-          article: zod
-            .object({
-              content: zod.string().nullable(),
-              date: zod.string().datetime({}),
-              guid: zod.string(),
-              id: zod.string(),
-              link: zod.string().nullable(),
-              title: zod.string().nullable(),
-            })
-            .strict(),
-          cursor: zod.number(),
-          starred: zod.boolean(),
-          unread: zod.boolean(),
-        })
-        .strict(),
-    ),
-    pageSize: zod.number(),
-    totalCount: zod.number(),
-    unreadCount: zod.number(),
-    lastCursor: zod.number().optional(),
-  })
-  .strict()
-
-export const recentlyReadArticlesResponseItem = zod
-  .object({
-    article: zod
-      .object({
-        content: zod.string().nullable(),
-        date: zod.string().datetime({}),
-        guid: zod.string(),
-        id: zod.string(),
-        link: zod.string().nullable(),
-        title: zod.string().nullable(),
-      })
-      .strict(),
-    cursor: zod.number(),
-    starred: zod.boolean(),
-    unread: zod.boolean(),
-  })
-  .strict()
+export const recentlyReadArticlesResponseItem = zod.strictObject({
+  article: zod.strictObject({
+    content: zod.string().nullable(),
+    date: zod.iso.datetime({}),
+    guid: zod.string(),
+    id: zod.string(),
+    link: zod.string().nullable(),
+    title: zod.string().nullable(),
+  }),
+  cursor: zod.number(),
+  starred: zod.boolean(),
+  unread: zod.boolean(),
+})
 export const recentlyReadArticlesResponse = zod.array(recentlyReadArticlesResponseItem)
 
-export const profileResponse = zod
-  .object({
-    email: zod.string().optional(),
-    id: zod.string(),
-    isAdmin: zod.boolean(),
-    username: zod.string(),
-  })
-  .strict()
+export const profileResponse = zod.strictObject({
+  email: zod.string().optional(),
+  id: zod.string(),
+  isAdmin: zod.boolean(),
+  username: zod.string(),
+})
 
-export const refreshResponse = zod
-  .object({
-    access_token: zod.string(),
-    refresh_token: zod.string(),
-  })
-  .strict()
+export const refreshResponse = zod.strictObject({
+  access_token: zod.string(),
+  refresh_token: zod.string(),
+})
 
 export const bootInfoResponseAppVersionRegExp = new RegExp('^\\d\\.\\d+$')
 
-export const bootInfoResponse = zod
-  .object({
-    appVersion: zod.string().regex(bootInfoResponseAppVersionRegExp),
-    pageSize: zod.number(),
-  })
-  .strict()
+export const bootInfoResponse = zod.strictObject({
+  appVersion: zod.string().regex(bootInfoResponseAppVersionRegExp),
+  pageSize: zod.number(),
+})
 
-export const getUserFeedsResponseItem = zod
-  .object({
-    feedUrl: zod.string(),
-    id: zod.string(),
-    feedId: zod.string(),
-    originalTitle: zod.string(),
-    title: zod.string().optional(),
-    includeRead: zod.boolean(),
-    disabled: zod.boolean(),
-    order: zod.enum(['desc', 'asc']),
-    expandContent: zod.boolean(),
-    unreadCount: zod.number(),
-    tags: zod.array(
-      zod
-        .object({
-          id: zod.string(),
-          name: zod.string(),
-        })
-        .strict(),
-    ),
-  })
-  .strict()
+export const getUserFeedsResponseItem = zod.strictObject({
+  feedUrl: zod.string(),
+  id: zod.string(),
+  feedId: zod.string(),
+  originalTitle: zod.string(),
+  title: zod.string().optional(),
+  includeRead: zod.boolean(),
+  disabled: zod.boolean(),
+  order: zod.enum(['desc', 'asc']),
+  expandContent: zod.boolean(),
+  unreadCount: zod.number(),
+  tags: zod.array(
+    zod.strictObject({
+      id: zod.string(),
+      name: zod.string(),
+    }),
+  ),
+})
 export const getUserFeedsResponse = zod.array(getUserFeedsResponseItem)
 
-export const discoverFeedResponse = zod
-  .object({
-    feedUrl: zod.string().nullable(),
-    title: zod.string().nullable(),
-    url: zod.string(),
-  })
-  .strict()
+export const discoverFeedResponse = zod.strictObject({
+  feedUrl: zod.string().nullable(),
+  title: zod.string().nullable(),
+  url: zod.string(),
+})
 
-export const getFeedSettingsResponse = zod
-  .object({
-    id: zod.string(),
-    title: zod.string(),
-    expandContent: zod.boolean(),
-    includeRead: zod.boolean(),
-    disabled: zod.boolean(),
-    order: zod.enum(['desc', 'asc']),
-  })
-  .strict()
+export const getFeedSettingsResponse = zod.strictObject({
+  id: zod.string(),
+  title: zod.string(),
+  expandContent: zod.boolean(),
+  includeRead: zod.boolean(),
+  disabled: zod.boolean(),
+  order: zod.enum(['desc', 'asc']),
+})
 
-export const getFeedTagsResponseItem = zod
-  .object({
-    id: zod.string(),
-    name: zod.string(),
-  })
-  .strict()
+export const getFeedTagsResponseItem = zod.strictObject({
+  id: zod.string(),
+  name: zod.string(),
+})
 export const getFeedTagsResponse = zod.array(getFeedTagsResponseItem)
 
-export const getTagsResponseItem = zod
-  .object({
-    id: zod.string(),
-    name: zod.string(),
-  })
-  .strict()
+export const getTagsResponseItem = zod.strictObject({
+  id: zod.string(),
+  name: zod.string(),
+})
 export const getTagsResponse = zod.array(getTagsResponseItem)
 
-export const getHealthStatusResponse = zod
-  .object({
-    status: zod.string().optional(),
-    info: zod
-      .record(
-        zod.string(),
-        zod
-          .object({
-            status: zod.string(),
-          })
-          .strict(),
-      )
-      .nullish(),
-    error: zod
-      .record(
-        zod.string(),
-        zod
-          .object({
-            status: zod.string(),
-          })
-          .strict(),
-      )
-      .nullish(),
-    details: zod
-      .record(
-        zod.string(),
-        zod
-          .object({
-            status: zod.string(),
-          })
-          .strict(),
-      )
-      .optional(),
-  })
-  .strict()
+export const getHealthStatusResponse = zod.strictObject({
+  status: zod.string().optional(),
+  info: zod
+    .record(
+      zod.string(),
+      zod.strictObject({
+        status: zod.string(),
+      }),
+    )
+    .nullish(),
+  error: zod
+    .record(
+      zod.string(),
+      zod.strictObject({
+        status: zod.string(),
+      }),
+    )
+    .nullish(),
+  details: zod
+    .record(
+      zod.string(),
+      zod.strictObject({
+        status: zod.string(),
+      }),
+    )
+    .optional(),
+})
 
-export const getUsersResponseItem = zod
-  .object({
-    email: zod.string().optional(),
-    id: zod.string(),
-    isAdmin: zod.boolean(),
-    username: zod.string(),
-  })
-  .strict()
+export const getUsersResponseItem = zod.strictObject({
+  email: zod.string().optional(),
+  id: zod.string(),
+  isAdmin: zod.boolean(),
+  username: zod.string(),
+})
 export const getUsersResponse = zod.array(getUsersResponseItem)

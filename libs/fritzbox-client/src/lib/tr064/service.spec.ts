@@ -34,13 +34,12 @@ describe('service', () => {
     await expect(service.parseActions()).rejects.toThrowErrorMatchingInlineSnapshot(`
       [ZodError: [
         {
-          "code": "invalid_type",
           "expected": "object",
-          "received": "undefined",
+          "code": "invalid_type",
           "path": [
             "scpd"
           ],
-          "message": "Required"
+          "message": "Invalid input: expected object, received undefined"
         }
       ]]
     `)

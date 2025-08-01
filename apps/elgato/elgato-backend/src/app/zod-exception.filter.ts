@@ -10,7 +10,7 @@ export class ZodExceptionFilter<T extends ZodError> implements ExceptionFilter {
 
     response.status(HttpStatus.BAD_REQUEST).json({
       statusCode: HttpStatus.BAD_REQUEST,
-      errors: exception.errors,
+      errors: JSON.parse(exception.message),
     })
   }
 }

@@ -1,6 +1,39 @@
 import { elgatoSceneRequestSchema } from './elgato-scene-request.dto'
 
 describe('lightsSchema', () => {
+  it('should show an error when scene elements and numberOfSceneElements mismatch', () => {
+    const input = {
+      numberOfLights: 1,
+      lights: [
+        {
+          id: 'invalid-number-of-numberOfSceneElements',
+          brightness: 100,
+          name: 'Invalid number of numberOfSceneElements',
+          on: 1,
+          numberOfSceneElements: 1,
+          scene: [
+            { hue: 0, saturation: 100, brightness: 100, transitionMs: 0, durationMs: 1_000 },
+            { hue: 180, saturation: 100, brightness: 100, transitionMs: 1_000, durationMs: 90_000 },
+          ],
+        },
+      ],
+    }
+
+    expect(() => elgatoSceneRequestSchema.parse(input)).toThrowErrorMatchingInlineSnapshot(`
+      "[
+        {
+          "code": "custom",
+          "path": [
+            "lights",
+            0,
+            "numberOfSceneElements"
+          ],
+          "message": "numberOfSceneElements (1) must match the length of scene array (2)"
+        }
+      ]"
+    `)
+  })
+
   it('should split up scene elements when duration is longer then 60s', () => {
     const input = {
       numberOfLights: 1,

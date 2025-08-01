@@ -6,177 +6,118 @@
  */
 import { z as zod } from 'zod'
 
-export const discoveredDevicesResponse = zod
-  .object({
-    devices: zod.array(
-      zod
-        .object({
-          id: zod.string().describe('The mac address of the device.'),
-          macAddress: zod.string(),
-          name: zod.string(),
-          fqdn: zod.string(),
-          host: zod.string(),
-          ipv4: zod.string().nullish(),
-          port: zod.number(),
-          displayName: zod.string(),
-          productName: zod.string(),
-          type: zod.enum(['RingLight', 'LightStrip', 'Unknown']),
-          isControlled: zod.boolean(),
-        })
-        .strict(),
-    ),
-  })
-  .strict()
+export const discoveredDevicesResponse = zod.strictObject({
+  devices: zod.array(
+    zod.strictObject({
+      id: zod.string().describe('The mac address of the device.'),
+      macAddress: zod.string(),
+      name: zod.string(),
+      fqdn: zod.string(),
+      host: zod.string(),
+      ipv4: zod.string().nullish(),
+      port: zod.number(),
+      displayName: zod.string(),
+      productName: zod.string(),
+      type: zod.enum(['RingLight', 'LightStrip', 'Unknown']),
+      isControlled: zod.boolean(),
+    }),
+  ),
+})
 
-export const deviceListResponse = zod
-  .object({
-    devices: zod.array(
-      zod
-        .object({
-          macAddress: zod.string().describe('The unique id for the device is its mac address.'),
-          displayName: zod.string(),
-        })
-        .strict(),
-    ),
-  })
-  .strict()
+export const deviceListResponse = zod.strictObject({
+  devices: zod.array(
+    zod.strictObject({
+      macAddress: zod.string().describe('The unique id for the device is its mac address.'),
+      displayName: zod.string(),
+    }),
+  ),
+})
 
-export const deviceDetailsResponse = zod
-  .object({
-    macAddress: zod.string().describe('The unique id for the device is its mac address.'),
+export const deviceDetailsResponse = zod.strictObject({
+  macAddress: zod.string().describe('The unique id for the device is its mac address.'),
+  displayName: zod.string(),
+  details: zod.strictObject({
+    productName: zod.string(),
+    deviceType: zod.enum(['RingLight', 'LightStrip', 'Unknown']),
     displayName: zod.string(),
-    details: zod
-      .object({
-        productName: zod.string(),
-        deviceType: zod.enum(['RingLight', 'LightStrip', 'Unknown']),
-        displayName: zod.string(),
-      })
-      .strict(),
-    state: zod
-      .object({
-        on: zod.boolean(),
-        hue: zod.number().nullish(),
-        saturation: zod.number().nullish(),
-        brightness: zod.number().nullish(),
-        temperature: zod.number().nullish(),
-      })
-      .strict(),
-    lastSeen: zod.string().datetime({}).nullable(),
-  })
-  .strict()
+  }),
+  state: zod.strictObject({
+    on: zod.boolean(),
+    hue: zod.number().nullish(),
+    saturation: zod.number().nullish(),
+    brightness: zod.number().nullish(),
+    temperature: zod.number().nullish(),
+  }),
+  lastSeen: zod.iso.datetime({}).nullable(),
+})
 
-export const currentDeviceSettingsResponse = zod
-  .object({
-    sunrise: zod.boolean(),
-    sunset: zod.boolean(),
-  })
-  .strict()
+export const currentDeviceSettingsResponse = zod.strictObject({
+  sunrise: zod.boolean(),
+  sunset: zod.boolean(),
+})
 
-export const updateDeviceSettingsResponse = zod
-  .object({
-    sunrise: zod.boolean(),
-    sunset: zod.boolean(),
-  })
-  .strict()
+export const updateDeviceSettingsResponse = zod.strictObject({
+  sunrise: zod.boolean(),
+  sunset: zod.boolean(),
+})
 
-export const getHealthStatusResponse = zod
-  .object({
-    status: zod.string().optional(),
-    info: zod
-      .record(
-        zod.string(),
-        zod
-          .object({
-            status: zod.string(),
-          })
-          .strict(),
-      )
-      .nullish(),
-    error: zod
-      .record(
-        zod.string(),
-        zod
-          .object({
-            status: zod.string(),
-          })
-          .strict(),
-      )
-      .nullish(),
-    details: zod
-      .record(
-        zod.string(),
-        zod
-          .object({
-            status: zod.string(),
-          })
-          .strict(),
-      )
-      .optional(),
-  })
-  .strict()
+export const getHealthStatusResponse = zod.strictObject({
+  status: zod.string().optional(),
+  info: zod
+    .record(
+      zod.string(),
+      zod.strictObject({
+        status: zod.string(),
+      }),
+    )
+    .nullish(),
+  error: zod
+    .record(
+      zod.string(),
+      zod.strictObject({
+        status: zod.string(),
+      }),
+    )
+    .nullish(),
+  details: zod
+    .record(
+      zod.string(),
+      zod.strictObject({
+        status: zod.string(),
+      }),
+    )
+    .optional(),
+})
 
-export const currentLocationResponse = zod
-  .object({
-    longitude: zod.number(),
-    latitude: zod.number(),
-    name: zod.string(),
-  })
-  .strict()
+export const currentLocationResponse = zod.strictObject({
+  longitude: zod.number(),
+  latitude: zod.number(),
+  name: zod.string(),
+})
 
-export const getLocationDataResponse = zod
-  .object({
-    longitude: zod.number(),
-    latitude: zod.number(),
-    name: zod.string(),
-    sunrise: zod.string().datetime({}),
-    sunset: zod.string().datetime({}),
-    firstLight: zod.string().datetime({}).nullable(),
-    lastLight: zod.string().datetime({}).nullable(),
-    dawn: zod.string().datetime({}),
-    dusk: zod.string().datetime({}),
-    solarNoon: zod.string().datetime({}),
-    goldenHour: zod.string().datetime({}),
-    dayLength: zod.number().describe('Time between sunrise and sunset in seconds.'),
-    timeZone: zod.string(),
-    utcOffset: zod.number(),
-  })
-  .strict()
+export const getLocationDataResponse = zod.strictObject({
+  longitude: zod.number(),
+  latitude: zod.number(),
+  name: zod.string(),
+  sunrise: zod.iso.datetime({}),
+  sunset: zod.iso.datetime({}),
+  firstLight: zod.iso.datetime({}).nullable(),
+  lastLight: zod.iso.datetime({}).nullable(),
+  dawn: zod.iso.datetime({}),
+  dusk: zod.iso.datetime({}),
+  solarNoon: zod.iso.datetime({}),
+  goldenHour: zod.iso.datetime({}),
+  dayLength: zod.number().describe('Time between sunrise and sunset in seconds.'),
+  timeZone: zod.string(),
+  utcOffset: zod.number(),
+})
 
-export const getCommandsResponse = zod
-  .object({
-    commands: zod.array(
-      zod
-        .object({
-          name: zod.string(),
-          actions: zod.array(
-            zod
-              .object({
-                on: zod.boolean(),
-                hue: zod.number().nullish(),
-                saturation: zod.number().nullish(),
-                brightness: zod.number().nullish(),
-                temperature: zod.number().nullish(),
-                powerOnly: zod.boolean(),
-                macAddress: zod.string(),
-                id: zod.number(),
-                commandId: zod.number(),
-              })
-              .strict(),
-          ),
-          id: zod.number(),
-          hash: zod.string(),
-        })
-        .strict(),
-    ),
-  })
-  .strict()
-
-export const getCommandResponse = zod
-  .object({
-    name: zod.string(),
-    actions: zod.array(
-      zod
-        .object({
+export const getCommandsResponse = zod.strictObject({
+  commands: zod.array(
+    zod.strictObject({
+      name: zod.string(),
+      actions: zod.array(
+        zod.strictObject({
           on: zod.boolean(),
           hue: zod.number().nullish(),
           saturation: zod.number().nullish(),
@@ -186,10 +127,29 @@ export const getCommandResponse = zod
           macAddress: zod.string(),
           id: zod.number(),
           commandId: zod.number(),
-        })
-        .strict(),
-    ),
-    id: zod.number(),
-    hash: zod.string(),
-  })
-  .strict()
+        }),
+      ),
+      id: zod.number(),
+      hash: zod.string(),
+    }),
+  ),
+})
+
+export const getCommandResponse = zod.strictObject({
+  name: zod.string(),
+  actions: zod.array(
+    zod.strictObject({
+      on: zod.boolean(),
+      hue: zod.number().nullish(),
+      saturation: zod.number().nullish(),
+      brightness: zod.number().nullish(),
+      temperature: zod.number().nullish(),
+      powerOnly: zod.boolean(),
+      macAddress: zod.string(),
+      id: zod.number(),
+      commandId: zod.number(),
+    }),
+  ),
+  id: zod.number(),
+  hash: zod.string(),
+})

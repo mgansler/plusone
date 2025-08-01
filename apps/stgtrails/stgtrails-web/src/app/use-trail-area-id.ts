@@ -1,10 +1,10 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useState } from 'react'
 
-import type { useValidatedTrailAreas } from '@plusone/stgtrails-api-client'
+import type { TrailAreaResponseDto } from '@plusone/stgtrails-api-client'
 
 export function useTrailAreaId(
-  trailAreas: ReturnType<typeof useValidatedTrailAreas>['data'],
+  trailAreas?: Array<TrailAreaResponseDto>,
 ): [trailAreaId: number | undefined, Dispatch<SetStateAction<number | undefined>>] {
   const [trailAreaId, setTrailAreaId] = useState<number>()
 
