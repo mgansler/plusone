@@ -22,7 +22,7 @@ type DiscoverFeedFormProps = {
   resetAddFeed: UseFormReset<NewFeedFormFields>
 }
 
-function DiscoverFeedForm({ resetAddFeed }: DiscoverFeedFormProps) {
+function DiscoverFeedForm({ resetAddFeed }: Readonly<DiscoverFeedFormProps>) {
   const { handleSubmit, register } = useForm<DiscoverFeedFormFields>()
   const { mutateAsync: discover } = useDiscoverFeed()
 
@@ -46,7 +46,7 @@ type AddFeedFormProps = {
   methods: UseFormReturn<NewFeedFormFields>
 }
 
-function AddFeedForm({ methods: { register, handleSubmit } }: AddFeedFormProps) {
+function AddFeedForm({ methods: { register, handleSubmit } }: Readonly<AddFeedFormProps>) {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -120,7 +120,7 @@ function ImportForm() {
   )
 }
 
-function NewFeedFallback({ error, resetErrorBoundary }: FallbackProps) {
+function NewFeedFallback({ error, resetErrorBoundary }: Readonly<FallbackProps>) {
   return (
     <div>
       Could not add feed: {error.message}

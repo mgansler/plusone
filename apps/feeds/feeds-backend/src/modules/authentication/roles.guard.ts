@@ -12,7 +12,7 @@ export const Roles = (...roles: Array<string>) => SetMetadata(ROLES_KEY, roles)
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
     const roles = this.reflector.get<Array<string>>(ROLES_KEY, context.getHandler())

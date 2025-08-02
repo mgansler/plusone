@@ -1,5 +1,4 @@
 import type { ActionFunction } from '@remix-run/node'
-import { json } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 
 type Board = [
@@ -23,8 +22,8 @@ function parseDrawnNumbers(drawn: string): Array<number> {
 }
 
 function parseBoard(board: string): Board {
-  const rows = board.split(/\r?\n[ ]*/).filter((row) => row.length)
-  return rows.map((row) => row.trim().split(/[ ]+/).map(Number)) as Board
+  const rows = board.split(/\r?\n */).filter((row) => row.length)
+  return rows.map((row) => row.trim().split(/ +/).map(Number)) as Board
 }
 
 function findInBoard(drawn: number, board: Board, checked: CheckedBoard) {
@@ -111,7 +110,7 @@ export const action: ActionFunction = async ({ request }) => {
   const loosingNumber = drawn[latestWin]
   const loosingSum = winningBoardSum(loosingBoard, loosingDrawSequence)
 
-  return json({ winningNumber, winningSum, loosingNumber, loosingSum })
+  return Response.json({ winningNumber, winningSum, loosingNumber, loosingSum })
 }
 
 export default function () {

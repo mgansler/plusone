@@ -1,5 +1,4 @@
 import type { ActionFunction } from '@remix-run/node'
-import { json } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 
 function countPathsPartOne(edges: Record<string, Array<string>>, node: string, visited = new Set<string>()): number {
@@ -79,7 +78,7 @@ export const action: ActionFunction = async ({ request }) => {
     {} as Record<string, Array<string>>,
   )
 
-  return json({
+  return Response.json({
     partOne: countPathsPartOne(edges, 'start'),
     partTwo: countPathsPartTwo(edges, 'start'),
   } as ActionResponse)

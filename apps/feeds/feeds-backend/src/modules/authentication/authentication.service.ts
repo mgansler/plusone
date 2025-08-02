@@ -13,7 +13,7 @@ import { Role } from './roles.guard'
 
 @Injectable()
 export class AuthenticationService implements OnModuleInit {
-  private logger = new Logger(AuthenticationService.name)
+  private readonly logger = new Logger(AuthenticationService.name)
 
   constructor(
     private readonly prismaService: PrismaService,

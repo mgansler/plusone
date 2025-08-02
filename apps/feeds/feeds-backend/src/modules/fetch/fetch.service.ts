@@ -3,8 +3,8 @@ import Parser, { Item } from 'rss-parser'
 
 @Injectable()
 export class FetchService {
-  private parser = new Parser({ timeout: 30_000 })
-  private logger = new Logger(FetchService.name)
+  private readonly parser = new Parser({ timeout: 30_000 })
+  private readonly logger = new Logger(FetchService.name)
 
   async fetchFeedItems(uri: string): Promise<Array<Item>> {
     try {

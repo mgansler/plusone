@@ -20,7 +20,7 @@ export class Tr064 {
 
   private constructor(
     private readonly config: FritzBoxConfig,
-    private services: Array<Service> = [],
+    private readonly services: Array<Service> = [],
     private readonly axiosInstance: AxiosInstance,
   ) {}
 

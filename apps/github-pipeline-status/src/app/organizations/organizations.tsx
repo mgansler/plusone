@@ -1,5 +1,5 @@
 import { FormControl, InputLabel, LinearProgress, MenuItem, Paper, Select, Toolbar, useTheme } from '@mui/material'
-import type { MutableRefObject, ReactNode, RefObject } from 'react'
+import type { ReactNode, RefObject } from 'react'
 import { useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -56,7 +56,7 @@ export function Organizations() {
         </FormControl>
       </Toolbar>
 
-      <RepositoryOverview toolbarRef={toolbar as MutableRefObject<HTMLDivElement>} />
+      <RepositoryOverview toolbarRef={toolbar as RefObject<HTMLDivElement>} />
     </Paper>
   )
 }

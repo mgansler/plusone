@@ -19,7 +19,7 @@ import {
 
 @Injectable()
 export class FeedService {
-  private logger = new Logger(FeedService.name)
+  private readonly logger = new Logger(FeedService.name)
 
   constructor(
     private readonly prismaService: PrismaService,
@@ -47,8 +47,8 @@ export class FeedService {
       } else {
         originalTitle = feedInputDto.title ?? ''
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
+      this.logger.warn(e)
       if (typeof feedInputDto.title === 'undefined' || feedInputDto.title.length < 1) {
         throw new HttpException('Feed discovery failed, you MUST provide a title.', HttpStatus.BAD_REQUEST)
       }
