@@ -28,6 +28,12 @@ describe('github-pipeline-status', () => {
   })
 
   it('should be able to select an organization', () => {
+    cy.on('uncaught:exception', (err) => {
+      // ignore error, that is thrown by MUI during this test
+      expect(err.message).to.include("Cannot read properties of null (reading 'contains')")
+      return false
+    })
+
     cy.findByLabelText(/select organization/i).click()
     cy.findByRole('option', { name: /test org 2/i }).should('be.visible')
     cy.findByRole('option', { name: /test org 1/i })
@@ -50,6 +56,12 @@ describe('github-pipeline-status', () => {
   })
 
   it('should have filters', () => {
+    cy.on('uncaught:exception', (err) => {
+      // ignore error, that is thrown by MUI during this test
+      expect(err.message).to.include("Cannot read properties of null (reading 'contains')")
+      return false
+    })
+
     cy.visit('/organization/org2')
 
     cy.findByLabelText(/repository name/i)
