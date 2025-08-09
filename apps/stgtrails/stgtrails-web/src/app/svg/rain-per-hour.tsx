@@ -3,8 +3,10 @@ import { Fragment } from 'react'
 
 import type { WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
+import { useIsDesktop } from '../use-is-desktop'
+
 import { FROSTED_GLASS_FILTER_ID } from './frosted-glass-filter'
-import { CHART_HEIGHT, CHART_WIDTH, getXForTimestamp } from './shared'
+import { getChartHeight, getChartWidth, getXForTimestamp } from './shared'
 
 function scaleRain(rain: number): number {
   return Math.min(1, Math.log10(rain + 1) * 1.1)
@@ -14,7 +16,9 @@ type RainPerHourProps = {
   weather: Array<WeatherDataResponseDto>
   sliderIndex: number
 }
-export function RainPerHour({ weather, sliderIndex }: RainPerHourProps) {
+export function RainPerHour({ weather, sliderIndex }: Readonly<RainPerHourProps>) {
+  const isDesktop = useIsDesktop()
+
   return (
     <Fragment>
       {weather.map((dataPoint, index) => {
@@ -22,19 +26,19 @@ export function RainPerHour({ weather, sliderIndex }: RainPerHourProps) {
           ? null
           : ((
               <rect
-                key={`rain-per-hour-${index}`}
-                x={getXForTimestamp(new Date(weather[index].time).valueOf(), weather) - 2.5}
-                y={CHART_HEIGHT - CHART_HEIGHT * scaleRain(dataPoint.rain)}
+                key={`rain-per-hour-${weather[index].time}`}
+                x={getXForTimestamp(new Date(weather[index].time).valueOf(), weather, isDesktop) - 2.5}
+                y={getChartHeight(isDesktop) - getChartHeight(isDesktop) * scaleRain(dataPoint.rain)}
                 width={index === 0 || index === weather.length - 1 ? 2.5 : 5}
-                height={CHART_HEIGHT * scaleRain(dataPoint.rain)}
+                height={getChartHeight(isDesktop) * scaleRain(dataPoint.rain)}
                 fill={index === sliderIndex ? 'lightskyblue' : 'lightblue'}
               />
             ) as ReactNode)
       })}
 
       <rect
-        x={Math.min(CHART_WIDTH - 90, (CHART_WIDTH / (weather.length - 1)) * sliderIndex)}
-        y={CHART_HEIGHT - 46}
+        x={Math.min(getChartWidth(isDesktop) - 90, (getChartWidth(isDesktop) / (weather.length - 1)) * sliderIndex)}
+        y={getChartHeight(isDesktop) - 46}
         width={90}
         height={40}
         fill={'white'}
@@ -42,15 +46,15 @@ export function RainPerHour({ weather, sliderIndex }: RainPerHourProps) {
       />
       <text
         fontSize={'small'}
-        x={Math.min(CHART_WIDTH - 90, (CHART_WIDTH / (weather.length - 1)) * sliderIndex + 5)}
-        y={CHART_HEIGHT - 30}
+        x={Math.min(getChartWidth(isDesktop) - 90, (getChartWidth(isDesktop) / (weather.length - 1)) * sliderIndex + 5)}
+        y={getChartHeight(isDesktop) - 30}
       >
         {new Date(weather[sliderIndex].time).toLocaleTimeString()}
       </text>
       <text
         fontSize={'small'}
-        x={Math.min(CHART_WIDTH - 90, (CHART_WIDTH / (weather.length - 1)) * sliderIndex + 5)}
-        y={CHART_HEIGHT - 15}
+        x={Math.min(getChartWidth(isDesktop) - 90, (getChartWidth(isDesktop) / (weather.length - 1)) * sliderIndex + 5)}
+        y={getChartHeight(isDesktop) - 15}
       >
         {`Rain: ${weather[sliderIndex].rain.toFixed(2)} l/m\xB2`}
       </text>

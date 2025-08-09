@@ -1,0 +1,74 @@
+.svg-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 600px; /* Anpassen je nach Bedarf */
+  margin: 0 auto;
+}
+
+.svg-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 400px; /* Anpassen je nach SVG-Größe */
+}
+
+.svg-item {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Animation für das Einblenden von links */
+.slide-in-left {
+  animation: slideInLeft 0.5s forwards;
+}
+
+/* Animation für das Einblenden von rechts */
+.slide-in-right {
+  animation: slideInRight 0.5s forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+}
+.day-controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.control-button {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.control-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -4,8 +4,11 @@ import {
   useValidatedWeatherDataForTrailArea,
 } from '@plusone/stgtrails-api-client'
 
+import { DesktopView } from './desktop-view'
 import { getUtcOffsetHours } from './get-utc-offset-hours'
-import { WeatherDiagramSvg } from './weather-diagram-svg'
+import { groupByDay } from './group-by-day'
+import { MobileView } from './mobile-view'
+import { useIsDesktop } from './use-is-desktop'
 
 type TrailAreaProps = {
   trailAreaId: number
@@ -13,7 +16,9 @@ type TrailAreaProps = {
   hours: number
 }
 
-export function TrailArea({ trailAreaId, threshold = 0.3, hours }: TrailAreaProps) {
+export function TrailArea({ trailAreaId, threshold = 0.3, hours }: Readonly<TrailAreaProps>) {
+  const isDesktop = useIsDesktop()
+
   const { data: trails } = useValidatedTrailsForTrailArea(trailAreaId)
   const { data: sunriseSunset } = useValidatedSunriseSunsetDataForTrailArea({ trailAreaId, days: hours / 24 })
   const { data: weather } = useValidatedWeatherDataForTrailArea(
@@ -39,12 +44,23 @@ export function TrailArea({ trailAreaId, threshold = 0.3, hours }: TrailAreaProp
     return previousValue
   }, 0)
 
+  const groupedPerDay = groupByDay(weather)
+
   return (
     <>
-      <ul>{trails?.map((trail) => <li key={trail.id}>{trail.name}</li>)}</ul>
+      <ul>
+        {trails?.map((trail) => (
+          <li key={trail.id}>{trail.name}</li>
+        ))}
+      </ul>
+      <div>{isDesktop ? 'desktop' : 'mobile'}</div>
       <div>The total amount of rain over the past 24h was {rainPast24h.toFixed(1)}l.</div>
 
-      <WeatherDiagramSvg threshold={threshold as number} weather={weather} sunriseSunset={sunriseSunset} />
+      {isDesktop ? (
+        <DesktopView threshold={threshold} weather={weather} sunriseSunset={sunriseSunset} />
+      ) : (
+        <MobileView threshold={threshold} weather={groupedPerDay} sunriseSunset={sunriseSunset} />
+      )}
     </>
   )
 }

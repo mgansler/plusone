@@ -3,24 +3,31 @@ import { Fragment } from 'react'
 
 import type { WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
-import { CHART_HEIGHT, CHART_WIDTH } from './shared'
+import { useIsDesktop } from '../use-is-desktop'
 
-export function getXForTimestamp(ts: number, timestamps: Array<WeatherDataResponseDto['time']>): number {
+import { getChartHeight, getChartWidth } from './shared'
+
+export function getXForTimestamp(
+  ts: number,
+  timestamps: Array<WeatherDataResponseDto['time']>,
+  isDesktop: boolean,
+): number {
   const firstTs = new Date(timestamps[0])
   const lastTs = new Date(timestamps[timestamps.length - 1])
 
   const end = lastTs.valueOf() - firstTs.valueOf()
   const now = ts - firstTs.valueOf()
 
-  return (CHART_WIDTH / end) * now
+  return (getChartWidth(isDesktop) / end) * now
 }
 
 type NowAndSliderProps = {
   sliderIndex: number
   timestamps: Array<WeatherDataResponseDto['time']>
 }
-export function NowAndSlider({ sliderIndex, timestamps }: NowAndSliderProps) {
-  const xForCurrentTimestamp = getXForTimestamp(Date.now(), timestamps)
+export function NowAndSlider({ sliderIndex, timestamps }: Readonly<NowAndSliderProps>) {
+  const isDesktop = useIsDesktop()
+  const xForCurrentTimestamp = getXForTimestamp(Date.now(), timestamps, isDesktop)
 
   return (
     <Fragment>
@@ -37,7 +44,7 @@ export function NowAndSlider({ sliderIndex, timestamps }: NowAndSliderProps) {
                 x1={xForCurrentTimestamp}
                 x2={xForCurrentTimestamp}
                 y1={44}
-                y2={CHART_HEIGHT}
+                y2={getChartHeight(isDesktop)}
               />
             </Fragment>
           ) as ReactNode)
@@ -47,10 +54,10 @@ export function NowAndSlider({ sliderIndex, timestamps }: NowAndSliderProps) {
         id={'slider'}
         stroke={'green'}
         strokeDasharray={'5,5'}
-        x1={(CHART_WIDTH / (timestamps.length - 1)) * sliderIndex}
-        x2={(CHART_WIDTH / (timestamps.length - 1)) * sliderIndex}
+        x1={(getChartWidth(isDesktop) / (timestamps.length - 1)) * sliderIndex}
+        x2={(getChartWidth(isDesktop) / (timestamps.length - 1)) * sliderIndex}
         y1={44}
-        y2={CHART_HEIGHT}
+        y2={getChartHeight(isDesktop)}
       />
     </Fragment>
   )

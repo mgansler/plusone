@@ -37,7 +37,7 @@ export function App() {
     <div>
       <h1>Welcome stgtrails-web</h1>
       <label>
-        Country
+        <span>Country</span>
         <select
           value={trailAreaFilter.country}
           onChange={(event) => {
@@ -59,7 +59,7 @@ export function App() {
       </label>
       {trailAreaFilter.country === 'any' ? null : (
         <label>
-          State
+          <span>State</span>
           <select
             value={trailAreaFilter.state}
             onChange={(event) => {
@@ -83,7 +83,7 @@ export function App() {
         </label>
       )}
       <label>
-        Trail Area
+        <span>Trail Area</span>
         <select onChange={(event) => setTrailAreaId(Number(event.currentTarget.value))} value={trailAreaId}>
           {trailAreas.map((trailArea) => (
             <option key={trailArea.id} value={trailArea.id}>
@@ -94,7 +94,7 @@ export function App() {
       </label>
 
       <label>
-        Past days
+        <span>Past days</span>
         <select onChange={(event) => setHours(Number(event.currentTarget.value))}>
           {[1, 2, 3, 4, 5, 6, 7].map((days) => (
             <option key={days} value={days * 24 + 72}>

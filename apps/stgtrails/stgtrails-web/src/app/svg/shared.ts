@@ -1,16 +1,18 @@
 import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
-export const CHART_WIDTH = 980
-export const CHART_HEIGHT = 600
+export const getChartWidth = (isDesktop: boolean) => (isDesktop ? 980 : 370)
+export const getChartHeight = (isDesktop: boolean) => (isDesktop ? 600 : 400)
 
-export function getXForTimestamp(ts: number, weather: Array<WeatherDataResponseDto>): number {
+export const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+export function getXForTimestamp(ts: number, weather: Array<WeatherDataResponseDto>, isDesktop: boolean): number {
   const firstTs = new Date(weather[0].time)
   const lastTs = new Date(weather[weather.length - 1].time)
 
   const end = lastTs.valueOf() - firstTs.valueOf()
   const now = ts - firstTs.valueOf()
 
-  return (CHART_WIDTH / end) * now
+  return (getChartWidth(isDesktop) / end) * now
 }
 
 export function getSunsetString(date: Date, sunriseSunsetData: Array<SunriseSunsetResponseDto>): string {

@@ -2,18 +2,14 @@ import type { ReactNode } from 'react'
 
 import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
-import { WeatherDiagramSvg } from './weather-diagram-svg'
+import { DesktopView } from './desktop-view'
 
 describe('WeatherDiagramSvg', () => {
   it('should render a svg', () => {
     generateSunriseSunsetData()
     cy.mount(
       (
-        <WeatherDiagramSvg
-          weather={generateWeatherData(-3)}
-          sunriseSunset={generateSunriseSunsetData()}
-          threshold={0.33}
-        />
+        <DesktopView weather={generateWeatherData(-3)} sunriseSunset={generateSunriseSunsetData()} threshold={0.33} />
       ) as ReactNode,
     )
 
@@ -40,11 +36,7 @@ describe('WeatherDiagramSvg', () => {
   it('should render the provided threshold for cold weather', () => {
     cy.mount(
       (
-        <WeatherDiagramSvg
-          weather={generateWeatherData(0)}
-          sunriseSunset={generateSunriseSunsetData()}
-          threshold={0.5}
-        />
+        <DesktopView weather={generateWeatherData(0)} sunriseSunset={generateSunriseSunsetData()} threshold={0.5} />
       ) as ReactNode,
     )
 
@@ -64,11 +56,7 @@ describe('WeatherDiagramSvg', () => {
   it('should render the provided threshold for warm weather', () => {
     cy.mount(
       (
-        <WeatherDiagramSvg
-          weather={generateWeatherData()}
-          sunriseSunset={generateSunriseSunsetData()}
-          threshold={0.5}
-        />
+        <DesktopView weather={generateWeatherData()} sunriseSunset={generateSunriseSunsetData()} threshold={0.5} />
       ) as ReactNode,
     )
 

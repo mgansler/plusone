@@ -10,11 +10,11 @@ async function main() {
       name: 'Heslach West',
       latitude: 48.752,
       longitude: 9.129,
-      trails: {
-        createMany: {
-          data: [{ name: 'Klabuster' }, { name: 'Saubuckel' }],
-        },
-      },
+      // trails: {
+      //   createMany: {
+      //     data: [{ name: 'Klabuster' }, { name: 'Saubuckel' }],
+      //   },
+      // },
     },
   })
   await prisma.trailArea.upsert({
@@ -24,11 +24,11 @@ async function main() {
       name: 'Heslach Ost',
       latitude: 48.746,
       longitude: 9.14,
-      trails: {
-        createMany: {
-          data: [{ name: 'Schwälblesklinge' }, { name: 'Geilbahn' }],
-        },
-      },
+      // trails: {
+      //   createMany: {
+      //     data: [{ name: 'Schwälblesklinge' }, { name: 'Geilbahn' }],
+      //   },
+      // },
     },
   })
   await prisma.trailArea.upsert({
@@ -38,11 +38,11 @@ async function main() {
       name: 'Birkenkopf',
       latitude: 48.765,
       longitude: 9.135,
-      trails: {
-        createMany: {
-          data: [{ name: 'Mogli' }, { name: 'King Louie' }],
-        },
-      },
+      // trails: {
+      //   createMany: {
+      //     data: [{ name: 'Mogli' }, { name: 'King Louie' }],
+      //   },
+      // },
     },
   })
   await prisma.trailArea.upsert({
@@ -52,11 +52,11 @@ async function main() {
       name: 'Solitude',
       latitude: 48.79,
       longitude: 9.077,
-      trails: {
-        createMany: {
-          data: [{ name: 'Jojo' }, { name: 'Äffle und Pferdle' }],
-        },
-      },
+      // trails: {
+      //   createMany: {
+      //     data: [{ name: 'Jojo' }, { name: 'Äffle und Pferdle' }],
+      //   },
+      // },
     },
   })
 }
