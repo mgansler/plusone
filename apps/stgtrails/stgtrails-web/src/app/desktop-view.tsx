@@ -6,26 +6,31 @@ import { Frame } from './svg/frame'
 import { FrostedGlassFilter } from './svg/frosted-glass-filter'
 import { NowAndSlider } from './svg/now-and-slider'
 import { RainPerHour } from './svg/rain-per-hour'
-import { CHART_HEIGHT, CHART_WIDTH, getXForTimestamp, mightBeFreezing } from './svg/shared'
+import { getChartHeight, getChartWidth, getXForTimestamp, mightBeFreezing } from './svg/shared'
 import { SoilMoisture } from './svg/soil-moisture'
 import { SoilTemperature } from './svg/soil-temperature'
+import { useIsDesktop } from './use-is-desktop'
 
-type WeatherDiagramSvgProps = {
+type DesktopViewProps = {
   weather: Array<WeatherDataResponseDto>
   sunriseSunset: Array<SunriseSunsetResponseDto>
   threshold: number
 }
 
-export function WeatherDiagramSvg({ weather, sunriseSunset, threshold }: WeatherDiagramSvgProps) {
+export function DesktopView({ weather, sunriseSunset, threshold }: Readonly<DesktopViewProps>) {
+  const isDesktop = useIsDesktop()
   const [sliderIndex, setSliderIndex] = useState<number>(() =>
-    Math.min(weather.length - 1, Math.ceil(getXForTimestamp(Date.now(), weather) / (CHART_WIDTH / weather.length)) - 1),
+    Math.min(
+      weather.length - 1,
+      Math.ceil(getXForTimestamp(Date.now(), weather, isDesktop) / (getChartWidth(isDesktop) / weather.length)) - 1,
+    ),
   )
 
   return (
     <Fragment>
       <svg
         style={{ width: '100%', height: 'auto', maxHeight: 1000 }}
-        viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+        viewBox={`0 0 ${getChartWidth(isDesktop)} ${getChartHeight(isDesktop)}`}
         xmlns={'http://www.w3.org/2000/svg'}
       >
         <defs>

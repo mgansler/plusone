@@ -34,75 +34,85 @@ export function App() {
   }
 
   return (
-    <div>
-      <h1>Welcome stgtrails-web</h1>
-      <label>
-        Country
-        <select
-          value={trailAreaFilter.country}
-          onChange={(event) => {
-            const country = event.currentTarget.value
-            if (country === 'any') {
-              navigate({ to: indexRoute.path })
-            } else {
-              navigate({ to: '/country/$country', params: { country } })
-            }
-          }}
-        >
-          <option value="any">All</option>
-          {distinctCountries.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </select>
-      </label>
-      {trailAreaFilter.country === 'any' ? null : (
+    <div className="app">
+      <div className={'header-controls'}>
         <label>
-          State
+          <span>Country</span>
           <select
-            value={trailAreaFilter.state}
+            name={'country'}
+            value={trailAreaFilter.country}
             onChange={(event) => {
-              const state = event.currentTarget.value
-              if (state === 'any') {
-                navigate({ to: '/country/$country', params: { country: trailAreaFilter.country } })
+              const country = event.currentTarget.value
+              if (country === 'any') {
+                navigate({ to: indexRoute.path })
               } else {
-                navigate({ to: '/country/$country/state/$state', params: { country: trailAreaFilter.country, state } })
+                navigate({ to: '/country/$country', params: { country } })
               }
             }}
           >
             <option value="any">All</option>
-            {countries
-              ?.filter(({ country }) => country === trailAreaFilter.country)
-              .map((value) => (
-                <option key={value.state} value={value.state}>
-                  {value.state}
-                </option>
-              ))}
+            {distinctCountries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
           </select>
         </label>
-      )}
-      <label>
-        Trail Area
-        <select onChange={(event) => setTrailAreaId(Number(event.currentTarget.value))} value={trailAreaId}>
-          {trailAreas.map((trailArea) => (
-            <option key={trailArea.id} value={trailArea.id}>
-              {trailArea.name}
-            </option>
-          ))}
-        </select>
-      </label>
+        {trailAreaFilter.country === 'any' ? null : (
+          <label>
+            <span>State</span>
+            <select
+              name={'state'}
+              value={trailAreaFilter.state}
+              onChange={(event) => {
+                const state = event.currentTarget.value
+                if (state === 'any') {
+                  navigate({ to: '/country/$country', params: { country: trailAreaFilter.country } })
+                } else {
+                  navigate({
+                    to: '/country/$country/state/$state',
+                    params: { country: trailAreaFilter.country, state },
+                  })
+                }
+              }}
+            >
+              <option value="any">All</option>
+              {countries
+                ?.filter(({ country }) => country === trailAreaFilter.country)
+                .map((value) => (
+                  <option key={value.state} value={value.state}>
+                    {value.state}
+                  </option>
+                ))}
+            </select>
+          </label>
+        )}
+        <label>
+          <span>Trail Area</span>
+          <select
+            name={'trail-area'}
+            onChange={(event) => setTrailAreaId(Number(event.currentTarget.value))}
+            value={trailAreaId}
+          >
+            {trailAreas.map((trailArea) => (
+              <option key={trailArea.id} value={trailArea.id}>
+                {trailArea.name}
+              </option>
+            ))}
+          </select>
+        </label>
 
-      <label>
-        Past days
-        <select onChange={(event) => setHours(Number(event.currentTarget.value))}>
-          {[1, 2, 3, 4, 5, 6, 7].map((days) => (
-            <option key={days} value={days * 24 + 72}>
-              {days} day{days > 1 ? 's' : ''}
-            </option>
-          ))}
-        </select>
-      </label>
+        <label>
+          <span>Past days</span>
+          <select name={'past-days'} onChange={(event) => setHours(Number(event.currentTarget.value))}>
+            {[1, 2, 3, 4, 5, 6, 7].map((days) => (
+              <option key={days} value={days * 24 + 72}>
+                {days} day{days > 1 ? 's' : ''}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
 
       {typeof trailAreaId === 'number' ? (
         <TrailArea

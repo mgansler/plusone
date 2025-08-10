@@ -2,18 +2,14 @@ import type { ReactNode } from 'react'
 
 import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
-import { WeatherDiagramSvg } from './weather-diagram-svg'
+import { DesktopView } from './desktop-view'
 
-describe('WeatherDiagramSvg', () => {
+describe('DesktopView', () => {
   it('should render a svg', () => {
     generateSunriseSunsetData()
     cy.mount(
       (
-        <WeatherDiagramSvg
-          weather={generateWeatherData(-3)}
-          sunriseSunset={generateSunriseSunsetData()}
-          threshold={0.33}
-        />
+        <DesktopView weather={generateWeatherData(-3)} sunriseSunset={generateSunriseSunsetData()} threshold={0.33} />
       ) as ReactNode,
     )
 
@@ -28,10 +24,10 @@ describe('WeatherDiagramSvg', () => {
       cy.get('polyline[id=moisture]').should('be.visible')
 
       // Depending on the locale of the browser used in testing we get 18:00:00 or 6:00:00 PM
-      cy.findAllByText(/(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), Sunset at.+/i)
+      cy.findAllByText(/Sunset at.+/i)
         .eq(0)
         .should('include.text', ':00:00')
-      cy.findAllByText(/(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), Sunset at.+/i)
+      cy.findAllByText(/Sunset at.+/i)
         .eq(1)
         .should('include.text', ':10:00')
     })
@@ -40,11 +36,7 @@ describe('WeatherDiagramSvg', () => {
   it('should render the provided threshold for cold weather', () => {
     cy.mount(
       (
-        <WeatherDiagramSvg
-          weather={generateWeatherData(0)}
-          sunriseSunset={generateSunriseSunsetData()}
-          threshold={0.5}
-        />
+        <DesktopView weather={generateWeatherData(0)} sunriseSunset={generateSunriseSunsetData()} threshold={0.5} />
       ) as ReactNode,
     )
 
@@ -64,11 +56,7 @@ describe('WeatherDiagramSvg', () => {
   it('should render the provided threshold for warm weather', () => {
     cy.mount(
       (
-        <WeatherDiagramSvg
-          weather={generateWeatherData()}
-          sunriseSunset={generateSunriseSunsetData()}
-          threshold={0.5}
-        />
+        <DesktopView weather={generateWeatherData()} sunriseSunset={generateSunriseSunsetData()} threshold={0.5} />
       ) as ReactNode,
     )
 

@@ -1,16 +1,20 @@
 import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
-export const CHART_WIDTH = 980
-export const CHART_HEIGHT = 600
+// @ts-expect-error global var
+export const getChartWidth = (isDesktop: boolean) => (isDesktop ? 980 : window.__stgtrails.svgWidth)
+// @ts-expect-error global var
+export const getChartHeight = (isDesktop: boolean) => (isDesktop ? 600 : window.__stgtrails.svgHeight)
 
-export function getXForTimestamp(ts: number, weather: Array<WeatherDataResponseDto>): number {
+export const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+export function getXForTimestamp(ts: number, weather: Array<WeatherDataResponseDto>, isDesktop: boolean): number {
   const firstTs = new Date(weather[0].time)
   const lastTs = new Date(weather[weather.length - 1].time)
 
   const end = lastTs.valueOf() - firstTs.valueOf()
   const now = ts - firstTs.valueOf()
 
-  return (CHART_WIDTH / end) * now
+  return (getChartWidth(isDesktop) / end) * now
 }
 
 export function getSunsetString(date: Date, sunriseSunsetData: Array<SunriseSunsetResponseDto>): string {
@@ -19,7 +23,7 @@ export function getSunsetString(date: Date, sunriseSunsetData: Array<SunriseSuns
       sunriseSunsetResponse.date ===
       `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`,
   )
-  return sunriseSunsetForDay ? `, Sunset at ${new Date(sunriseSunsetForDay.sunset).toLocaleTimeString()}` : ''
+  return sunriseSunsetForDay ? `Sunset at ${new Date(sunriseSunsetForDay.sunset).toLocaleTimeString()}` : ''
 }
 
 export function mightBeFreezing(weather: Array<WeatherDataResponseDto>) {

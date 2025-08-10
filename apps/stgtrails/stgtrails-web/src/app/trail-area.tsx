@@ -1,11 +1,16 @@
+import { useMemo } from 'react'
+
 import {
   useValidatedSunriseSunsetDataForTrailArea,
   useValidatedTrailsForTrailArea,
   useValidatedWeatherDataForTrailArea,
 } from '@plusone/stgtrails-api-client'
 
+import { DesktopView } from './desktop-view'
 import { getUtcOffsetHours } from './get-utc-offset-hours'
-import { WeatherDiagramSvg } from './weather-diagram-svg'
+import { groupByDay } from './group-by-day'
+import { MobileView } from './mobile-view'
+import { useIsDesktop } from './use-is-desktop'
 
 type TrailAreaProps = {
   trailAreaId: number
@@ -13,7 +18,9 @@ type TrailAreaProps = {
   hours: number
 }
 
-export function TrailArea({ trailAreaId, threshold = 0.3, hours }: TrailAreaProps) {
+export function TrailArea({ trailAreaId, threshold = 0.3, hours }: Readonly<TrailAreaProps>) {
+  const isDesktop = useIsDesktop()
+
   const { data: trails } = useValidatedTrailsForTrailArea(trailAreaId)
   const { data: sunriseSunset } = useValidatedSunriseSunsetDataForTrailArea({ trailAreaId, days: hours / 24 })
   const { data: weather } = useValidatedWeatherDataForTrailArea(
@@ -22,6 +29,8 @@ export function TrailArea({ trailAreaId, threshold = 0.3, hours }: TrailAreaProp
       query: { refetchInterval: 30_000 },
     },
   )
+  const groupedPerDay = useMemo(() => groupByDay(weather), [weather])
+
   if (!weather || !sunriseSunset) {
     return null
   }
@@ -41,10 +50,21 @@ export function TrailArea({ trailAreaId, threshold = 0.3, hours }: TrailAreaProp
 
   return (
     <>
-      <ul>{trails?.map((trail) => <li key={trail.id}>{trail.name}</li>)}</ul>
-      <div>The total amount of rain over the past 24h was {rainPast24h.toFixed(1)}l.</div>
+      {Array.isArray(trails) && trails.length > 0 ? (
+        <ul>
+          {trails?.map((trail) => (
+            <li key={trail.id}>{trail.name}</li>
+          ))}
+        </ul>
+      ) : null}
 
-      <WeatherDiagramSvg threshold={threshold as number} weather={weather} sunriseSunset={sunriseSunset} />
+      <div style={{ marginLeft: '5px' }}>The total amount of rain over the past 24h was {rainPast24h.toFixed(1)}l.</div>
+
+      {isDesktop ? (
+        <DesktopView threshold={threshold} weather={weather} sunriseSunset={sunriseSunset} />
+      ) : (
+        <MobileView threshold={threshold} weather={groupedPerDay} sunriseSunset={sunriseSunset} />
+      )}
     </>
   )
 }

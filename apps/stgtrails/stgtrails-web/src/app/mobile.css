@@ -1,0 +1,82 @@
+.svg-carousel {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.svg-container {
+  position: relative;
+  overflow: hidden;
+  margin: 5px;
+  flex-grow: 1;
+}
+
+.svg-item {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Animation für das Einblenden von links */
+.slide-in-left {
+  animation: slideInLeft 0.5s forwards;
+}
+
+/* Animation für das Einblenden von rechts */
+.slide-in-right {
+  animation: slideInRight 0.5s forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  margin: 0 5px 10px 5px;
+}
+
+.day-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 1rem;
+  margin-top: 5px;
+}
+
+.control-button {
+  -webkit-appearance: none;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.control-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
