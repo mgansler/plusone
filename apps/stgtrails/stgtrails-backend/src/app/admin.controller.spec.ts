@@ -17,8 +17,8 @@ describe('TrailAreaController', () => {
   const appServiceMock = {
     fetchDataForNewArea: jest.fn(),
   }
-  const osmServiceMock = {
-    reverseLookup: ({ latitude, longitude }) => {
+  const osmServiceMock: Pick<OsmService, 'reverseLookup'> = {
+    reverseLookup: async (_) => {
       return {
         country: 'unknown',
         countryCode: 'unknown',
@@ -45,7 +45,7 @@ describe('TrailAreaController', () => {
           latitude: input.data.latitude,
           threshold: input.data.threshold,
         }),
-      findMany: (input: Prisma.TrailAreaFindManyArgs) => Promise.resolve([]),
+      findMany: () => Promise.resolve([]),
     },
   }
 

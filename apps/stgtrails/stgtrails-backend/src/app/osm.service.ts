@@ -39,9 +39,9 @@ const addressResponseSchema = z
 
 @Injectable()
 export class OsmService {
-  private logger = new Logger(OsmService.name)
+  private readonly logger = new Logger(OsmService.name)
 
-  public static UnknownLocation = 'unknown'
+  public static readonly UnknownLocation = 'unknown'
 
   constructor(private readonly httpService: HttpService) {}
 
