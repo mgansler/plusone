@@ -9,6 +9,7 @@ import { RainPerHour } from './svg/rain-per-hour'
 import { getChartHeight, getChartWidth, getXForTimestamp, mightBeFreezing } from './svg/shared'
 import { SoilMoisture } from './svg/soil-moisture'
 import { SoilTemperature } from './svg/soil-temperature'
+import { WindGustWarnings } from './svg/wind-gust-warning'
 import { useIsDesktop } from './use-is-desktop'
 
 type DesktopViewProps = {
@@ -38,6 +39,8 @@ export function DesktopView({ weather, sunriseSunset, threshold }: Readonly<Desk
         </defs>
 
         <Frame timestamps={weather.map(({ time }) => new Date(time))} sunriseSunset={sunriseSunset} />
+
+        <WindGustWarnings weather={weather} />
 
         <NowAndSlider sliderIndex={sliderIndex} timestamps={weather.map(({ time }) => time)} />
 
