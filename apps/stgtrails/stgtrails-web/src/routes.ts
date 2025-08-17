@@ -15,8 +15,15 @@ export const stateRoute = createRoute({
   component: App,
   path: `/country/$country/state/$state`,
 })
+export const trailAreaRoute = createRoute({
+  getParentRoute: () => stateRoute,
+  component: App,
+  path: `/country/$country/state/$state/trailArea/$trailArea`,
+})
 
-const routeTree = rootRoute.addChildren([indexRoute.addChildren([countryRoute.addChildren([stateRoute])])])
+const routeTree = rootRoute.addChildren([
+  indexRoute.addChildren([countryRoute.addChildren([stateRoute.addChildren([trailAreaRoute])])]),
+])
 
 export const router = createRouter({ routeTree })
 

@@ -6,7 +6,7 @@ import { useValidatedCountryList, useValidatedTrailAreas } from '@plusone/stgtra
 import { indexRoute } from '../routes'
 
 import { TrailArea } from './trail-area'
-import { useTrailAreaFilter } from './use-trail-area-filter'
+import { AnyCountryOrState, useTrailAreaFilter } from './use-trail-area-filter'
 import { useTrailAreaId } from './use-trail-area-id'
 
 export function App() {
@@ -14,14 +14,14 @@ export function App() {
   const navigate = useNavigate()
 
   const { data: trailAreas } = useValidatedTrailAreas({
-    country: trailAreaFilter.country === 'any' ? undefined : trailAreaFilter.country,
-    state: trailAreaFilter.state === 'any' ? undefined : trailAreaFilter.state,
+    country: trailAreaFilter.country === AnyCountryOrState ? undefined : trailAreaFilter.country,
+    state: trailAreaFilter.state === AnyCountryOrState ? undefined : trailAreaFilter.state,
   })
 
   const { data: countries } = useValidatedCountryList()
   const distinctCountries = [...new Set([...(countries ?? []).map((value) => value.country)])]
 
-  const [trailAreaId, setTrailAreaId] = useTrailAreaId(trailAreas)
+  const trailAreaId = useTrailAreaId(trailAreas, trailAreaFilter.trailArea)
   const [hours, setHours] = useState<number>(96)
 
   if (!trailAreas) {
@@ -43,10 +43,10 @@ export function App() {
             value={trailAreaFilter.country}
             onChange={(event) => {
               const country = event.currentTarget.value
-              if (country === 'any') {
-                navigate({ to: indexRoute.path })
+              if (country === AnyCountryOrState) {
+                void navigate({ to: indexRoute.path })
               } else {
-                navigate({ to: '/country/$country', params: { country } })
+                void navigate({ to: '/country/$country', params: { country } })
               }
             }}
           >
@@ -58,7 +58,7 @@ export function App() {
             ))}
           </select>
         </label>
-        {trailAreaFilter.country === 'any' ? null : (
+        {trailAreaFilter.country === AnyCountryOrState ? null : (
           <label>
             <span>State</span>
             <select
@@ -66,10 +66,10 @@ export function App() {
               value={trailAreaFilter.state}
               onChange={(event) => {
                 const state = event.currentTarget.value
-                if (state === 'any') {
-                  navigate({ to: '/country/$country', params: { country: trailAreaFilter.country } })
+                if (state === AnyCountryOrState) {
+                  void navigate({ to: '/country/$country', params: { country: trailAreaFilter.country } })
                 } else {
-                  navigate({
+                  void navigate({
                     to: '/country/$country/state/$state',
                     params: { country: trailAreaFilter.country, state },
                   })
@@ -91,7 +91,16 @@ export function App() {
           <span>Trail Area</span>
           <select
             name={'trail-area'}
-            onChange={(event) => setTrailAreaId(Number(event.currentTarget.value))}
+            onChange={(event) => {
+              void navigate({
+                to: `/country/$country/state/$state/trailArea/$trailArea`,
+                params: {
+                  country: trailAreaFilter.country,
+                  state: trailAreaFilter.state,
+                  trailArea: event.currentTarget.value,
+                },
+              })
+            }}
             value={trailAreaId}
           >
             {trailAreas.map((trailArea) => (

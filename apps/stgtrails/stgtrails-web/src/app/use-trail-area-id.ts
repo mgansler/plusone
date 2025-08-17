@@ -1,26 +1,9 @@
-import type { Dispatch, SetStateAction } from 'react'
-import { useEffect, useState } from 'react'
-
 import type { TrailAreaResponseDto } from '@plusone/stgtrails-api-client'
 
-export function useTrailAreaId(
-  trailAreas?: Array<TrailAreaResponseDto>,
-): [trailAreaId: number | undefined, Dispatch<SetStateAction<number | undefined>>] {
-  const [trailAreaId, setTrailAreaId] = useState<number>()
-
-  useEffect(() => {
-    if (
-      // prettier-ignore
-      // when trailAreas have been loaded
-      trailAreas && trailAreas.length > 0 &&
-      // and trailAreaId is unset
-      (typeof trailAreaId !== 'number' ||
-        // or previous selected trailAreaId is not in current list
-        trailAreas.find((area) => area.id === trailAreaId) === undefined)
-    ) {
-      setTrailAreaId(trailAreas[0].id)
-    }
-  }, [trailAreas, trailAreaId])
-
-  return [trailAreaId, setTrailAreaId]
+export function useTrailAreaId(trailAreas?: Array<TrailAreaResponseDto>, areaId?: string): number | undefined {
+  const normalizedAreaId = Number(areaId)
+  if (trailAreas?.findIndex((area) => area.id === normalizedAreaId) !== -1) {
+    return normalizedAreaId
+  }
+  return trailAreas ? trailAreas[0].id : undefined
 }
