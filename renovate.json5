@@ -8,5 +8,9 @@
       matchPackageNames: ['node'],
       allowedVersions: '22.x',
     },
+    {
+      matchDatasources: ['npm'],
+      minimumReleaseAge: '3 days',
+    },
   ],
 }
