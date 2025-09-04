@@ -10,7 +10,7 @@ describe('feeds-settings', () => {
     cy.addFeed(feedName)
 
     cy.findByRole('list', { name: 'other feed list' }).within(() => {
-      cy.findByText(feedName).parent().should('have.css', 'text-decoration').and('include', 'none')
+      cy.findByText(feedName).parent().should('have.css', 'text-decoration-line').and('include', 'none')
     })
 
     cy.findByText(feedName)
@@ -24,7 +24,7 @@ describe('feeds-settings', () => {
     cy.findByRole('button', { name: 'Save' }).click()
 
     cy.findByRole('list', { name: 'other feed list' }).within(() => {
-      cy.findByText(feedName).parent().should('have.css', 'text-decoration').and('include', 'line-through')
+      cy.findByText(feedName).parent().should('have.css', 'text-decoration-line').and('include', 'line-through')
     })
   })
 })

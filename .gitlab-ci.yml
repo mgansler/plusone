@@ -107,6 +107,7 @@ component-test:
     when: always
     paths:
       - reports/component-test/*.xml
+      - dist/cypress/*
     reports:
       junit: reports/component-test/*.xml
     expire_in: 2 weeks
@@ -131,6 +132,7 @@ e2e:
     when: always
     paths:
       - reports/e2e/*.xml
+      - dist/cypress/*
     reports:
       junit: reports/e2e/*.xml
     expire_in: 2 weeks

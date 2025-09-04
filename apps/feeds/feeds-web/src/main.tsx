@@ -1,7 +1,7 @@
 import { CssBaseline, GlobalStyles } from '@mui/material'
-import type { AxiosError } from '@nestjs/terminus/dist/errors/axios.error'
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import type { AxiosError } from 'axios'
 import React, { StrictMode } from 'react'
 import * as ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
@@ -31,8 +31,7 @@ const queryClient = new QueryClient({
   }),
 })
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-root.render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <StrictMode>
     <DarkModeThemeProvider>
       <CssBaseline />
