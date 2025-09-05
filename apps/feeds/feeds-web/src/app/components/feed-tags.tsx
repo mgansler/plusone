@@ -7,10 +7,10 @@ import { useParams } from 'react-router-dom'
 import {
   getGetFeedTagsQueryKey,
   getGetUserFeedsQueryKey,
-  useGetFeedTags,
-  useGetTags,
   useTagFeed,
   useUntagFeed,
+  useValidatedGetFeedTags,
+  useValidatedGetTags,
 } from '@plusone/feeds/api-client'
 import type { TagResponseDto } from '@plusone/feeds/api-client'
 
@@ -18,7 +18,7 @@ type RemovableChipProps = {
   tag: TagResponseDto
 }
 
-function RemovableTag({ tag }: RemovableChipProps) {
+function RemovableTag({ tag }: Readonly<RemovableChipProps>) {
   const { feedId } = useParams()
 
   const queryClient = useQueryClient()
@@ -45,8 +45,8 @@ export function FeedTags() {
   const { feedId } = useParams()
   const { handleSubmit, register } = useForm<FeedTagsForm>()
 
-  const { data: availableTags } = useGetTags()
-  const { data: currentTags } = useGetFeedTags(feedId)
+  const { data: availableTags } = useValidatedGetTags()
+  const { data: currentTags } = useValidatedGetFeedTags(feedId)
 
   const queryClient = useQueryClient()
   const { mutateAsync } = useTagFeed({
@@ -73,7 +73,9 @@ export function FeedTags() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack gap={2}>
         <Stack direction={'row'} spacing={1}>
-          {currentTags?.map((tag) => <RemovableTag key={tag.id} tag={tag} />)}
+          {currentTags?.map((tag) => (
+            <RemovableTag key={tag.id} tag={tag} />
+          ))}
         </Stack>
         <Autocomplete
           disablePortal={true}

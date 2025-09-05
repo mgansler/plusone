@@ -6,6 +6,7 @@ import {
   useDeviceDetails,
   useDeviceList,
   useDiscoveredDevices,
+  useGetCommand,
   useGetCommands,
 } from './gen/client'
 import {
@@ -14,6 +15,7 @@ import {
   deviceDetailsResponse,
   deviceListResponse,
   discoveredDevicesResponse,
+  getCommandResponse,
   getCommandsResponse,
 } from './gen/zod'
 
@@ -32,3 +34,5 @@ export const useValidatedDeviceSettings = buildValidatedUseQueryWrapper(
 export const useValidatedCurrentLocation = buildValidatedUseQueryWrapper(useCurrentLocation, currentLocationResponse)
 
 export const useValidatedCommandsList = buildValidatedUseQueryWrapper(useGetCommands, getCommandsResponse)
+
+export const useValidatedGetCommand = buildValidatedUseQueryWrapper(useGetCommand, getCommandResponse)

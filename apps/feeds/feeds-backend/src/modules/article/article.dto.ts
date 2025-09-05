@@ -14,6 +14,9 @@ class ArticleDto {
   @ApiProperty()
   id: string
 
+  @ApiProperty()
+  feedId: string
+
   @ApiProperty({ type: String, nullable: true })
   link: string | null
 

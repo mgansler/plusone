@@ -1,11 +1,11 @@
 import { Link, Outlet } from 'react-router-dom'
 
-import { useGetAdminStats } from '@plusone/feeds/api-client'
+import { useValidatedGetAdminStats } from '@plusone/feeds/api-client'
 
 import { Health } from '../../components/health'
 
 export function Admin() {
-  const { data: adminStats } = useGetAdminStats()
+  const { data: adminStats } = useValidatedGetAdminStats()
 
   return (
     <div>

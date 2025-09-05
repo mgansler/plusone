@@ -17,7 +17,7 @@ import { useMemo, useState } from 'react'
 import { Link, Outlet, useMatch, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import type { UserFeedResponseDto } from '@plusone/feeds/api-client'
-import { Sort, useGetUserFeeds } from '@plusone/feeds/api-client'
+import { Sort, useValidatedGetUserFeeds } from '@plusone/feeds/api-client'
 
 import { useFeedSettingsContext } from '../../../context/feed-settings'
 
@@ -25,7 +25,7 @@ type FeedEntryProps = {
   feed: UserFeedResponseDto
 }
 
-function FeedEntry({ feed }: FeedEntryProps) {
+function FeedEntry({ feed }: Readonly<FeedEntryProps>) {
   const { feedId } = useParams()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -61,7 +61,7 @@ type TagGroupProps = {
   feeds: Array<UserFeedResponseDto>
 }
 
-function TagGroup({ name, feeds }: TagGroupProps) {
+function TagGroup({ name, feeds }: Readonly<TagGroupProps>) {
   const [isOpen, setIsOpen] = useState<boolean>(true)
   const badgeContent = feeds.reduce((total, feed) => total + feed.unreadCount, 0)
 
@@ -96,12 +96,12 @@ export function FeedList() {
   const isRecentPath = useMatch('/member/feeds/recent')
   const isStarredPath = useMatch('/member/feeds/starred')
   const navigate = useNavigate()
-  const { data } = useGetUserFeeds()
+  const { data: userFeeds } = useValidatedGetUserFeeds()
   const [searchParams] = useSearchParams()
   const { setIncludeRead, setSort } = useFeedSettingsContext()
 
   const taggedFeeds = useMemo(() => {
-    return data?.reduce((prev, cur) => {
+    return userFeeds?.reduce((prev, cur) => {
       for (const { name } of cur.tags) {
         prev[name] = Array.isArray(prev[name]) ? [...prev[name], cur] : [cur]
       }
@@ -110,7 +110,7 @@ export function FeedList() {
       }
       return prev
     }, {})
-  }, [data])
+  }, [userFeeds])
 
   const goToAll = () => {
     setSort(Sort.desc)
@@ -118,7 +118,7 @@ export function FeedList() {
     navigate({ pathname: 'all', search: searchParams.toString() })
   }
 
-  const totalUnreadCount = data?.reduce((total, feed) => total + feed.unreadCount, 0)
+  const totalUnreadCount = userFeeds?.reduce((total, feed) => total + feed.unreadCount, 0)
 
   return (
     <>

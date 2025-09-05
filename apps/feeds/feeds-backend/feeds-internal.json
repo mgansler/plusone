@@ -1159,6 +1159,9 @@
           "id": {
             "type": "string"
           },
+          "feedId": {
+            "type": "string"
+          },
           "link": {
             "type": "string",
             "nullable": true
@@ -1173,6 +1176,7 @@
           "date",
           "guid",
           "id",
+          "feedId",
           "link",
           "title"
         ]
@@ -1397,6 +1401,9 @@
           "feedId": {
             "type": "string"
           },
+          "userId": {
+            "type": "string"
+          },
           "originalTitle": {
             "type": "string"
           },
@@ -1433,6 +1440,7 @@
           "feedUrl",
           "id",
           "feedId",
+          "userId",
           "originalTitle",
           "includeRead",
           "disabled",

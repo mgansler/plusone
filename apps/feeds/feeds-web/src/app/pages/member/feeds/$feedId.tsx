@@ -6,8 +6,8 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import {
   getFindArticlesQueryKey,
   getGetUserFeedsQueryKey,
-  useFindArticlesInfinite,
   useMarkArticlesRead,
+  useValidatedFindArticlesInfinite,
 } from '@plusone/feeds/api-client'
 
 import { ArticleList } from '../../../components/article-list'
@@ -26,7 +26,7 @@ export function Articles() {
   const f = feedId === 'all' || feedId === 'starred' ? undefined : feedId
   const starred = feedId === 'starred' ? true : undefined
 
-  const { data, hasNextPage, fetchNextPage } = useFindArticlesInfinite(
+  const { data, hasNextPage, fetchNextPage } = useValidatedFindArticlesInfinite(
     { f, s: search, sort, r: includeRead, starred },
     {
       query: {
@@ -35,7 +35,7 @@ export function Articles() {
     },
   )
 
-  const { mutateAsync } = useMarkArticlesRead({
+  const { mutate } = useMarkArticlesRead({
     mutation: {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: getFindArticlesQueryKey() })
@@ -44,7 +44,7 @@ export function Articles() {
     },
   })
   const markAllRead = async () => {
-    await mutateAsync({ params: { f: feedId !== 'all' ? feedId : undefined, s: search } })
+    mutate({ params: { f: feedId !== 'all' ? feedId : undefined, s: search } })
   }
 
   if (!data) {

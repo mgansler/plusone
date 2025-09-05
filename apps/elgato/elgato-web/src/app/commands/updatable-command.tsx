@@ -4,9 +4,9 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import {
   getGetCommandsQueryKey,
   useCreateCommand,
-  useGetCommand,
   useUpdateCommand,
   useValidatedDeviceList,
+  useValidatedGetCommand,
 } from '@plusone/elgato-api-client'
 
 type UpdatableCommandFields = {
@@ -33,13 +33,13 @@ type UpdatableCommandProps = {
   commandId: number
 }
 
-export function UpdatableCommand({ commandId }: UpdatableCommandProps) {
+export function UpdatableCommand({ commandId }: Readonly<UpdatableCommandProps>) {
   const queryClient = useQueryClient()
   const onMutationSuccess = async () => {
     await queryClient.invalidateQueries({ queryKey: getGetCommandsQueryKey() })
   }
 
-  const { data: currentCommand } = useGetCommand(commandId, {
+  const { data: currentCommand } = useValidatedGetCommand(commandId, {
     query: { enabled: commandId !== COMMAND_ID_DOES_NOT_EXIST },
   })
   const { data: deviceList } = useValidatedDeviceList()

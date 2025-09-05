@@ -97,6 +97,9 @@ export class UserFeedResponseDto {
   feedId: string
 
   @ApiProperty()
+  userId: string
+
+  @ApiProperty()
   originalTitle: string
 
   @ApiPropertyOptional()

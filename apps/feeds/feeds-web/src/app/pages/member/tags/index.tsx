@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { getGetTagsQueryKey, useAddTag, useGetTags, useRemoveTag } from '@plusone/feeds/api-client'
+import { getGetTagsQueryKey, useAddTag, useRemoveTag, useValidatedGetTags } from '@plusone/feeds/api-client'
 import type { AddTagMutationBody, TagResponseDto } from '@plusone/feeds/api-client'
 
 function AddTag() {
@@ -17,7 +17,7 @@ function AddTag() {
       },
     },
   })
-  const { data: currentTags } = useGetTags()
+  const { data: currentTags } = useValidatedGetTags()
 
   const onSubmit = async (data: AddTagMutationBody) => {
     await mutateAsync({ data })
@@ -52,7 +52,7 @@ type TagChipProps = {
   tag: TagResponseDto
 }
 
-function TagChip({ tag }: TagChipProps) {
+function TagChip({ tag }: Readonly<TagChipProps>) {
   const queryClient = useQueryClient()
   const { mutateAsync } = useRemoveTag({
     mutation: {
@@ -69,7 +69,7 @@ function TagChip({ tag }: TagChipProps) {
 }
 
 export function Tags() {
-  const { data } = useGetTags()
+  const { data: tags } = useValidatedGetTags()
 
   return (
     <Container maxWidth={'md'}>
@@ -79,7 +79,9 @@ export function Tags() {
         </MuiLink>
         <Divider />
         <Stack direction={'row'} spacing={1}>
-          {data?.map((tag) => <TagChip key={tag.id} tag={tag} />)}
+          {tags?.map((tag) => (
+            <TagChip key={tag.id} tag={tag} />
+          ))}
         </Stack>
         <Divider />
         <AddTag />

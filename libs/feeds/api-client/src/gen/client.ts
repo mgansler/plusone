@@ -41,6 +41,7 @@ export interface ArticleDto {
   date: string
   guid: string
   id: string
+  feedId: string
   /** @nullable */
   link: string | null
   /** @nullable */
@@ -124,6 +125,7 @@ export interface UserFeedResponseDto {
   feedUrl: string
   id: string
   feedId: string
+  userId: string
   originalTitle: string
   title?: string
   includeRead: boolean

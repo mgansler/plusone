@@ -2,13 +2,13 @@ import { useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 
 import type { UserResponseDto } from '@plusone/feeds/api-client'
-import { getGetUsersQueryKey, useDeleteUser, useGetUsers } from '@plusone/feeds/api-client'
+import { getGetUsersQueryKey, useDeleteUser, useValidatedGetUsers } from '@plusone/feeds/api-client'
 
 type UserProps = {
   user: UserResponseDto
 }
 
-function User({ user }: UserProps) {
+function User({ user }: Readonly<UserProps>) {
   const queryClient = useQueryClient()
   const { mutateAsync } = useDeleteUser({
     mutation: {
@@ -33,12 +33,14 @@ function User({ user }: UserProps) {
 }
 
 export function Users() {
-  const { data: users } = useGetUsers()
+  const { data: users } = useValidatedGetUsers()
 
   return (
     <div>
       <Link to={'..'}>up</Link>
-      {users?.map((user) => <User key={user.id} user={user} />)}
+      {users?.map((user) => (
+        <User key={user.id} user={user} />
+      ))}
     </div>
   )
 }
