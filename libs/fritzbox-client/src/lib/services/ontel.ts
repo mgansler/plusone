@@ -7,7 +7,7 @@ import { xmlParser } from './shared'
 
 export class OnTelService {
   // https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/x_contactSCPD.pdf
-  public static ServiceType = 'urn:dslforum-org:service:X_AVM-DE_OnTel:1'
+  public static readonly ServiceType = 'urn:dslforum-org:service:X_AVM-DE_OnTel:1'
 
   constructor(private readonly tr064: Tr064) {}
 

@@ -8,7 +8,7 @@ import type {
 } from './wan-common-interface-config.vars'
 
 export class WanCommonInterfaceConfigService {
-  public static ServiceType = 'urn:dslforum-org:service:WANCommonInterfaceConfig:1'
+  public static readonly ServiceType = 'urn:dslforum-org:service:WANCommonInterfaceConfig:1'
 
   constructor(private readonly tr064: Tr064) {}
 

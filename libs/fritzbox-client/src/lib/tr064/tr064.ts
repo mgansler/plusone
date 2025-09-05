@@ -169,7 +169,7 @@ export class Tr064 {
   /**
    * The returned callUrl may be in the format `https://[2001:db8::1]/xxx` which would be a valid ipv6 url.
    * Unfortunately, axios tries to resolve `[2001:db8::1]` as a hostname: https://github.com/axios/axios/issues/5333.
-   * Therefor we use the hostname from the config.
+   * Therefore, we use the hostname from the config.
    */
   public async callUrlFromActionResponse(callUrl: string) {
     const url = new URL(callUrl)

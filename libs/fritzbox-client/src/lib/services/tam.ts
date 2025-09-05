@@ -6,7 +6,7 @@ import { getMessageListSchema } from './tam.schema'
 import type { MessageListOutVars } from './tam.vars'
 
 export class TamService {
-  public static ServiceType = 'urn:dslforum-org:service:X_AVM-DE_TAM:1'
+  public static readonly ServiceType = 'urn:dslforum-org:service:X_AVM-DE_TAM:1'
 
   constructor(private readonly tr064: Tr064) {}
 

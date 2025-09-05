@@ -7,7 +7,7 @@ import type {
 } from './hosts.vars'
 
 export class HostsService {
-  public static ServiceType = 'urn:dslforum-org:service:Hosts:1'
+  public static readonly ServiceType = 'urn:dslforum-org:service:Hosts:1'
 
   constructor(private readonly tr064: Tr064) {}
 

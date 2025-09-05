@@ -13,7 +13,7 @@ export enum CallType {
 
 const callSchema = z.object({
   Id: z.number(),
-  Type: z.nativeEnum(CallType),
+  Type: z.enum(CallType),
   Caller: z.number().or(z.string()),
   Called: z.number().or(z.string()),
   Name: z.string(),
