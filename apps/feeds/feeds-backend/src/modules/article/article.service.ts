@@ -1,13 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
+import type { ConfigService } from '@nestjs/config'
+import type { Item } from 'rss-parser'
 
-import { Article, Feed, Prisma, PrismaService, User } from '@plusone/feeds-persistence'
-import { Item } from 'rss-parser'
+import type { Article, Feed, PrismaService, User } from '@plusone/feeds-persistence';
+import { Prisma } from '@plusone/feeds-persistence'
 
-import { Config, PAGE_SIZE, RECENTLY_READ_COUNT } from '../../app/config'
-import { Pagination, Sort } from '../../app/shared'
+import type { Config} from '../../app/config';
+import { PAGE_SIZE, RECENTLY_READ_COUNT } from '../../app/config'
+import type { Pagination, Sort } from '../../app/shared'
 
-import { ArticleResponseDto, PaginatedArticleResponseDto, StarArticleDto } from './article.dto'
+import type { ArticleResponseDto, PaginatedArticleResponseDto, StarArticleDto } from './article.dto'
 import { getArticleBuilderFunction } from './transformation/transformation'
 
 type ArticleFindParams = Pagination & {
