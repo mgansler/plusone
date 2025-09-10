@@ -91,7 +91,8 @@ export interface UserRegistrationDto {
 }
 
 export interface UserResponseDto {
-  email?: string
+  /** @nullable */
+  email?: string | null
   id: string
   isAdmin: boolean
   username: string

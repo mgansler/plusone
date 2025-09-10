@@ -1300,7 +1300,8 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "id": {
             "type": "string"

@@ -31,7 +31,7 @@ type PrismaPagination = {
 
 @Injectable()
 export class ArticleService {
-  private logger = new Logger(ArticleService.name)
+  private readonly logger = new Logger(ArticleService.name)
 
   constructor(
     private readonly prismaService: PrismaService,
@@ -51,9 +51,12 @@ export class ArticleService {
       }
     }
 
-    const feedSubscribers = await this.prismaService.user.findMany({
-      where: { UserFeed: { some: { feedId: feed.id } } },
-    })
+    const feedSubscriberIds = (
+      await this.prismaService.user.findMany({
+        select: { id: true },
+        where: { UserFeed: { some: { feedId: feed.id } } },
+      })
+    ).map(({ id }) => ({ userId: id }))
 
     await this.prismaService.article.upsert({
       where: {
@@ -65,12 +68,12 @@ export class ArticleService {
       update: {
         content: article.content,
         title: article.title,
-        UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })), skipDuplicates: true } },
+        UserArticle: { createMany: { data: feedSubscriberIds, skipDuplicates: true } },
       },
       create: {
         ...article,
         feedId: feed.id,
-        UserArticle: { createMany: { data: feedSubscribers.map(({ id }) => ({ userId: id })), skipDuplicates: true } },
+        UserArticle: { createMany: { data: feedSubscriberIds, skipDuplicates: true } },
       },
     })
   }

@@ -4,6 +4,8 @@ import { PassportModule } from '@nestjs/passport'
 
 import { PrismaService } from '@plusone/feeds-persistence'
 
+import { UserService } from '../user/user.service'
+
 import { AuthenticationController } from './authentication.controller'
 import { AuthenticationService } from './authentication.service'
 import { JwtAccessTokenStrategy, JwtRefreshTokenStrategy } from './jwt.strategy'
@@ -17,6 +19,7 @@ import { UsernamePasswordStrategy } from './username-password-strategy.service'
     UsernamePasswordStrategy,
     JwtAccessTokenStrategy,
     JwtRefreshTokenStrategy,
+    UserService,
     PrismaService,
   ],
   exports: [AuthenticationService],

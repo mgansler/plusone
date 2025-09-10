@@ -67,7 +67,7 @@ export const recentlyReadArticlesResponseItem = zod.strictObject({
 export const recentlyReadArticlesResponse = zod.array(recentlyReadArticlesResponseItem)
 
 export const profileResponse = zod.strictObject({
-  email: zod.string().optional(),
+  email: zod.string().nullish(),
   id: zod.string(),
   isAdmin: zod.boolean(),
   username: zod.string(),
@@ -162,7 +162,7 @@ export const getHealthStatusResponse = zod.strictObject({
 })
 
 export const getUsersResponseItem = zod.strictObject({
-  email: zod.string().optional(),
+  email: zod.string().nullish(),
   id: zod.string(),
   isAdmin: zod.boolean(),
   username: zod.string(),

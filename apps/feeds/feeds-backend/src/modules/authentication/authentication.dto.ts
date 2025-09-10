@@ -30,7 +30,7 @@ export class UserRegistrationDto {
 }
 
 export class UserResponseDto {
-  @ApiPropertyOptional({ type: String })
+  @ApiPropertyOptional({ type: String, nullable: true })
   email?: string | null
 
   @ApiProperty()
