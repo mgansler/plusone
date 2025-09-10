@@ -1300,7 +1300,8 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "id": {
             "type": "string"
@@ -1313,6 +1314,7 @@
           }
         },
         "required": [
+          "email",
           "id",
           "isAdmin",
           "username"
