@@ -6,14 +6,14 @@ import { PrismaClient } from './client'
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
-  private logger = new Logger(PrismaService.name)
+  private readonly logger = new Logger(PrismaService.name)
 
   constructor() {
     const log: Array<Prisma.LogLevel> = []
     if (process.env['PRINT_PRISMA_QUERIES'] === 'y') {
       log.push('query')
     }
-    super({ log })
+    super({ log, omit: { user: { password: true, refreshToken: true } } })
   }
 
   async onModuleInit() {

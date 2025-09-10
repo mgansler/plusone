@@ -8,7 +8,7 @@ import { AuthenticationService } from './authentication.service'
 
 @Injectable()
 export class UsernamePasswordStrategy extends PassportStrategy(Strategy, 'username-password') {
-  constructor(private authenticationService: AuthenticationService) {
+  constructor(private readonly authenticationService: AuthenticationService) {
     super()
   }
 

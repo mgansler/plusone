@@ -9,28 +9,11 @@ export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async getAll(): Promise<Array<UserResponseDto>> {
-    return this.prismaService.user.findMany({
-      select: {
-        id: true,
-        password: false,
-        username: true,
-        isAdmin: true,
-        email: true,
-      },
-    })
+    return this.prismaService.user.findMany()
   }
 
   async getUser(id: User['id']): Promise<UserResponseDto> {
-    return this.prismaService.user.findUniqueOrThrow({
-      select: {
-        id: true,
-        password: false,
-        username: true,
-        isAdmin: true,
-        email: true,
-      },
-      where: { id },
-    })
+    return this.prismaService.user.findUniqueOrThrow({ where: { id } })
   }
 
   async deleteUser(userId: User['id']): Promise<void> {

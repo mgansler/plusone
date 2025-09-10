@@ -70,7 +70,10 @@ export class AuthenticationService implements OnModuleInit {
   }
 
   async validateUsernamePassword(username: string, enteredPassword: string): Promise<Omit<User, 'password'> | null> {
-    const { password, ...rest } = await this.prismaService.user.findUniqueOrThrow({ where: { username } })
+    const { password, ...rest } = await this.prismaService.user.findUniqueOrThrow({
+      omit: { password: false },
+      where: { username },
+    })
     if (await compare(enteredPassword, password)) {
       return rest
     }
@@ -79,7 +82,10 @@ export class AuthenticationService implements OnModuleInit {
   }
 
   async validateRefreshToken(refreshToken: string, userId: string): Promise<User | undefined> {
-    const user = await this.prismaService.user.findUniqueOrThrow({ where: { id: userId } })
+    const user = await this.prismaService.user.findUniqueOrThrow({
+      omit: { refreshToken: false },
+      where: { id: userId },
+    })
 
     if (user.refreshToken) {
       const refreshTokenIsValid = await compare(refreshToken, user.refreshToken)
