@@ -1,5 +1,5 @@
-import type { InfiniteData, UseInfiniteQueryResult, UseQueryResult } from '@tanstack/react-query'
-import type { output, ZodType } from 'zod'
+import type { InfiniteData, UseQueryResult } from '@tanstack/react-query'
+import type { ZodType } from 'zod'
 
 export function buildValidatedUseQueryWrapper<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -9,22 +9,21 @@ export function buildValidatedUseQueryWrapper<
 >(useQueryWrapper: UseQueryWrapper, schema: Schema): UseQueryWrapper {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return ((...args: Array<any>): UseQueryResult => {
-    const { data, ...rest } = useQueryWrapper(...args)
+    const useQueryResult = useQueryWrapper(...args)
 
-    if (Object.hasOwn(rest, 'hasNextPage')) {
-      return {
-        ...rest,
-        data: rest.isSuccess
-          ? {
-              pagesParams: (data as InfiniteData<unknown, unknown>).pageParams,
-              pages: (data as InfiniteData<unknown, unknown>).pages.map((page) => schema.parse(page)),
-            }
-          : undefined,
-      } as UseInfiniteQueryResult<output<Schema>>
+    if (Object.hasOwn(useQueryResult, 'hasNextPage')) {
+      // Handle infinite queries
+      useQueryResult.data = useQueryResult.isSuccess
+        ? {
+            pagesParams: (useQueryResult.data as InfiniteData<unknown, unknown>).pageParams,
+            pages: (useQueryResult.data as InfiniteData<unknown, unknown>).pages.map((page) => schema.parse(page)),
+          }
+        : undefined
+    } else {
+      // Handle regular queries
+      useQueryResult.data = useQueryResult.isSuccess ? schema.parse(useQueryResult.data) : undefined
     }
-    return {
-      ...rest,
-      data: rest.isSuccess ? schema.parse(data) : undefined,
-    } as UseQueryResult<output<Schema>>
+
+    return useQueryResult
   }) as UseQueryWrapper
 }
