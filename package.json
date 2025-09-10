@@ -180,9 +180,7 @@
     "webpack-merge": "6.0.1"
   },
   "lint-staged": {
-    "*": "nx format",
-    "*.ts": "eslint --fix",
-    "*.tsx": "eslint --fix"
+    "*": "nx format"
   },
   "resolutions": {
     "cookie": "1.0.2",
