@@ -92,7 +92,7 @@ export interface UserRegistrationDto {
 
 export interface UserResponseDto {
   /** @nullable */
-  email: string | null
+  email?: string | null
   id: string
   isAdmin: boolean
   username: string

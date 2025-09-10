@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsNotEmpty } from 'class-validator'
 
 export class LoginResponseDto {
@@ -30,8 +30,8 @@ export class UserRegistrationDto {
 }
 
 export class UserResponseDto {
-  @ApiProperty({ type: String, nullable: true })
-  email: string | null
+  @ApiPropertyOptional({ type: String, nullable: true })
+  email?: string | null
 
   @ApiProperty()
   id: string

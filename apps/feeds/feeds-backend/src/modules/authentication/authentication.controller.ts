@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 
+import { UserService } from '../user/user.service'
+
 import { LoginResponseDto, UserLoginDto, UserRegistrationDto, UserResponseDto } from './authentication.dto'
 import { AuthenticationService } from './authentication.service'
 import { JwtAccessTokenGuard, JwtRefreshTokenGuard } from './jwt.strategy'
@@ -9,7 +11,10 @@ import { LocalAuthGuard } from './username-password-strategy.service'
 @ApiTags('authentication')
 @Controller('authentication')
 export class AuthenticationController {
-  constructor(private authenticationService: AuthenticationService) {}
+  constructor(
+    private readonly authenticationService: AuthenticationService,
+    private readonly userService: UserService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @ApiOperation({ operationId: 'login' })
@@ -41,7 +46,7 @@ export class AuthenticationController {
   @ApiOkResponse({ description: 'User information.', type: UserResponseDto })
   @Get('profile')
   getProfile(@Req() { user }): Promise<UserResponseDto> {
-    return user
+    return this.userService.getUser(user.id)
   }
 
   @UseGuards(JwtRefreshTokenGuard)

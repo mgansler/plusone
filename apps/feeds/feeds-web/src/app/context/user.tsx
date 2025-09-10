@@ -1,10 +1,10 @@
 import type { AxiosError } from '@nestjs/terminus/dist/errors/axios.error'
 import { useQueryClient } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
-import { createContext, useContext, useEffect } from 'react'
+import { createContext, useContext, useEffect, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { AUTHENTICATION_LOCAL_STORAGE_KEY, useLogout, useProfile } from '@plusone/feeds/api-client'
+import { AUTHENTICATION_LOCAL_STORAGE_KEY, useLogout, useValidatedProfile } from '@plusone/feeds/api-client'
 import type { LoginResponseDto, UserResponseDto } from '@plusone/feeds/api-client'
 
 type UserContextValue = {
@@ -31,7 +31,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
     data: profile,
     refetch: fetchProfile,
     error: profileError,
-  } = useProfile({
+  } = useValidatedProfile({
     query: {
       enabled: !isLoginOrRegister,
       refetchInterval: 30_000,
@@ -68,11 +68,16 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
     localStorage.removeItem(AUTHENTICATION_LOCAL_STORAGE_KEY)
     // Clear local state
     queryClient.clear()
-    // Finally redirect to the login page
+    // Finally, redirect to the login page
     navigate('/login')
   }
 
-  return <UserContext.Provider children={children} value={{ userInfo: profile, isLoggedIn, login, logout }} />
+  const value = useMemo(() => {
+    console.log('calculating new value')
+    return { userInfo: profile, isLoggedIn, login, logout }
+  }, [isLoggedIn, login, logout, profile])
+
+  return <UserContext.Provider children={children} value={value} />
 }
 
 export function useUserContext() {

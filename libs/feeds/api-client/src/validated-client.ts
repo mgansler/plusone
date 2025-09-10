@@ -10,6 +10,7 @@ import {
   useGetTags,
   useGetUserFeeds,
   useGetUsers,
+  useProfile,
   useRecentlyReadArticles,
 } from './gen/client'
 import {
@@ -22,6 +23,7 @@ import {
   getTagsResponse,
   getUserFeedsResponse,
   getUsersResponse,
+  profileResponse,
   recentlyReadArticlesResponse,
 } from './gen/zod'
 
@@ -41,3 +43,4 @@ export const useValidatedRecentlyReadArticles = buildValidatedUseQueryWrapper(
   useRecentlyReadArticles,
   recentlyReadArticlesResponse,
 )
+export const useValidatedProfile = buildValidatedUseQueryWrapper(useProfile, profileResponse)

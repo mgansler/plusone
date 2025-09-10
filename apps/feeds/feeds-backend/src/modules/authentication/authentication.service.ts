@@ -91,7 +91,7 @@ export class AuthenticationService implements OnModuleInit {
   }
 
   private async createRefreshToken(user: User): Promise<string> {
-    const refresh_token = this.jwtService.sign(
+    const refreshToken = this.jwtService.sign(
       { id: user.id },
       {
         secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
@@ -100,11 +100,11 @@ export class AuthenticationService implements OnModuleInit {
     )
 
     await this.prismaService.user.update({
-      data: { refreshToken: await hash(refresh_token, 10) },
+      data: { refreshToken: await hash(refreshToken, 10) },
       where: { id: user.id },
     })
 
-    return refresh_token
+    return refreshToken
   }
 
   private async createRootUser() {
