@@ -53,11 +53,24 @@ describe('DeviceDiscoveryService', () => {
     const moduleRef = await Test.createTestingModule({
       imports: [ElgatoModule, PrismaModule],
       providers: [DeviceDiscoveryService],
-    }).compile()
+    })
+      .overrideProvider(PrismaService)
+      .useValue({
+        discoveredDevice: {
+          findMany: jest.fn(),
+          findUniqueOrThrow: jest.fn(),
+          update: jest.fn(),
+        },
+        device: {
+          create: jest.fn(),
+          upsert: jest.fn(),
+        },
+      })
+      .compile()
 
-    prismaService = moduleRef.get<PrismaService, PrismaService>(PrismaService)
     elgatoService = moduleRef.get<ElgatoService, ElgatoService>(ElgatoService)
     deviceDiscoveryService = moduleRef.get<DeviceDiscoveryService, DeviceDiscoveryService>(DeviceDiscoveryService)
+    prismaService = moduleRef.get<PrismaService, PrismaService>(PrismaService)
   })
 
   afterEach(() => {

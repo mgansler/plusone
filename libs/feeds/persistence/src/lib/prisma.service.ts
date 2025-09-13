@@ -1,19 +1,19 @@
 import type { OnModuleDestroy, OnModuleInit } from '@nestjs/common'
 import { Injectable, Logger } from '@nestjs/common'
+import { PrismaPg } from '@prisma/adapter-pg'
 
-import type { Prisma } from './client'
-import { PrismaClient } from './client'
+import { PrismaClient } from './client/client'
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(PrismaService.name)
 
   constructor() {
-    const log: Array<Prisma.LogLevel> = []
-    if (process.env['PRINT_PRISMA_QUERIES'] === 'y') {
-      log.push('query')
-    }
-    super({ log, omit: { user: { password: true, refreshToken: true } } })
+    super({
+      adapter: new PrismaPg({ connectionString: process.env.FEEDS_DATABASE_URL }),
+      log: process.env['PRINT_PRISMA_QUERIES'] === 'y' ? ['query'] : [],
+      omit: { user: { password: true, refreshToken: true } },
+    })
   }
 
   async onModuleInit() {

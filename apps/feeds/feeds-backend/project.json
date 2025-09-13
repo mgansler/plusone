@@ -11,19 +11,20 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "generatePackageJson": true,
-        "target": "node",
+        "assets": ["apps/feeds/feeds-backend/src/assets"],
         "compiler": "tsc",
-        "outputPath": "dist/apps/feeds/feeds-backend",
+        "generatePackageJson": true,
         "main": "apps/feeds/feeds-backend/src/main.ts",
+        "outputPath": "dist/apps/feeds/feeds-backend",
+        "target": "node",
         "tsConfig": "apps/feeds/feeds-backend/tsconfig.app.json",
-        "webpackConfig": "apps/feeds/feeds-backend/webpack.config.js",
-        "assets": ["apps/feeds/feeds-backend/src/assets"]
+        "webpackConfig": "apps/feeds/feeds-backend/webpack.config.js"
       },
       "configurations": {
         "api-spec": {
           "main": "apps/feeds/feeds-backend/src/generate-openapi-spec.ts"
         },
+        "development": {},
         "production": {
           "optimization": true,
           "extractLicenses": true,
@@ -31,7 +32,7 @@
           "assets": [
             "apps/feeds/feeds-backend/src/assets",
             {
-              "input": "libs/feeds/persistence/src/lib/client",
+              "input": "libs/feeds/persistence/src/lib",
               "glob": "schema.prisma",
               "output": ""
             },
@@ -39,11 +40,6 @@
               "input": "libs/feeds/persistence/src/lib/",
               "glob": "migrations",
               "output": "migrations"
-            },
-            {
-              "input": "libs/feeds/persistence/src/lib/client",
-              "glob": "libquery_engine-linux-musl*",
-              "output": ""
             },
             {
               "input": "dist/apps/feeds/feeds-web",
@@ -66,13 +62,16 @@
     },
     "serve": {
       "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
       "options": {
         "buildTarget": "feeds-backend:build"
       },
       "configurations": {
-        "api-spec": {
-          "buildTarget": "feeds-backend:build:api-spec",
-          "watch": false
+        "development": {
+          "buildTarget": "feeds-backend:build:development"
+        },
+        "production": {
+          "buildTarget": "feeds-backend:build:production"
         }
       },
       "dependsOn": [
@@ -109,14 +108,19 @@
       ]
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/feeds/feeds-backend"],
       "options": {
-        "jestConfig": "apps/feeds/feeds-backend/jest.config.ts"
+        "jestConfig": "apps/feeds/feeds-backend/jest.config.ts",
+        "codeCoverage": true
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
       },
       "dependsOn": [
         {

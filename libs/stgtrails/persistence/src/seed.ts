@@ -1,6 +1,7 @@
-import { PrismaClient } from './lib/client'
+import { PrismaClient } from './lib/client/client'
+import { createAdapter } from './lib/create-adapter'
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient({ adapter: createAdapter() })
 
 async function main() {
   await prisma.trailArea.upsert({

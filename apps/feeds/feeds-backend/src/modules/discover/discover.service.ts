@@ -9,8 +9,8 @@ import { discoveredFeedSchema, DiscoverFeed } from './discover.schema'
 
 @Injectable()
 export class DiscoverService {
-  private parser = new Parser()
-  private logger = new Logger(DiscoverService.name)
+  private readonly parser = new Parser()
+  private readonly logger = new Logger(DiscoverService.name)
 
   constructor(private readonly httpService: HttpService) {}
 
@@ -22,7 +22,7 @@ export class DiscoverService {
         this.httpService.get(requestedUri, { timeout: 5_000 }).pipe(
           catchError((error: AxiosError) => {
             this.logger.debug(error.response?.data)
-            throw `Could not connect to ${requestedUri}.`
+            throw new Error(`Could not connect to ${requestedUri}.`)
           }),
         ),
       )

@@ -12,4 +12,3 @@ COPY ./dist/apps/stgtrails/stgtrails-backend/yarn.lock .
 RUN yarn install --frozen-lockfile
 
 COPY ./dist/apps/stgtrails/stgtrails-backend .
-RUN sed -i 's#file:./stgtrails.db#file:/usr/stgtrails/sqlite/stgtrails.db#' schema.prisma

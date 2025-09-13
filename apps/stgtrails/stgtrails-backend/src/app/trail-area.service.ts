@@ -19,7 +19,7 @@ import TrailAreaCreateArgs = Prisma.TrailAreaCreateArgs
 
 @Injectable()
 export class TrailAreaService implements OnModuleInit {
-  private logger = new Logger(TrailAreaService.name)
+  private readonly logger = new Logger(TrailAreaService.name)
 
   constructor(
     private readonly appService: AppService,
