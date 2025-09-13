@@ -4,19 +4,20 @@
   "sourceRoot": "apps/stgtrails/stgtrails-backend/src",
   "projectType": "application",
   "tags": [],
+  "implicitDependencies": ["stgtrails-web"],
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "generatePackageJson": true,
-        "target": "node",
-        "compiler": "tsc",
-        "outputPath": "dist/apps/stgtrails/stgtrails-backend",
-        "main": "apps/stgtrails/stgtrails-backend/src/main.ts",
-        "tsConfig": "apps/stgtrails/stgtrails-backend/tsconfig.app.json",
         "assets": ["apps/stgtrails/stgtrails-backend/src/assets"],
+        "compiler": "tsc",
+        "generatePackageJson": true,
+        "main": "apps/stgtrails/stgtrails-backend/src/main.ts",
+        "outputPath": "dist/apps/stgtrails/stgtrails-backend",
+        "target": "node",
+        "tsConfig": "apps/stgtrails/stgtrails-backend/tsconfig.app.json",
         "webpackConfig": "apps/stgtrails/stgtrails-backend/webpack.config.js"
       },
       "configurations": {
@@ -27,10 +28,11 @@
         "production": {
           "optimization": true,
           "extractLicenses": true,
+          "inspect": false,
           "assets": [
             "apps/stgtrails/stgtrails-backend/src/assets",
             {
-              "input": "libs/stgtrails/persistence/src/lib/client",
+              "input": "libs/stgtrails/persistence/src/lib",
               "glob": "schema.prisma",
               "output": ""
             },
@@ -38,11 +40,6 @@
               "input": "libs/stgtrails/persistence/src/lib/",
               "glob": "migrations",
               "output": "migrations"
-            },
-            {
-              "input": "libs/stgtrails/persistence/src/lib/client",
-              "glob": "libquery_engine-linux-musl*",
-              "output": ""
             },
             {
               "input": "dist/apps/stgtrails/stgtrails-web",

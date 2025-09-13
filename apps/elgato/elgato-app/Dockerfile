@@ -14,4 +14,3 @@ RUN yarn install --frozen-lockfile
 
 # Copy the app itself
 COPY ./dist/apps/elgato/elgato-backend/ .
-RUN sed -i 's#file:./elgato.db#file:/usr/elgato/sqlite/elgato.db#' schema.prisma

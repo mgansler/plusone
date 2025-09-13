@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common'
 
-import { PrismaService } from '@plusone/feeds-persistence'
+import { PrismaModule } from '@plusone/feeds-persistence'
 
 import { ArticleController } from './article.controller'
 import { ArticleService } from './article.service'
 
 @Module({
-  imports: [],
+  imports: [PrismaModule],
   controllers: [ArticleController],
-  providers: [ArticleService, PrismaService],
+  providers: [ArticleService],
   exports: [ArticleService],
 })
 export class ArticleModule {}
