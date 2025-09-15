@@ -14,7 +14,7 @@ type MobileViewProps = {
   threshold: number
 }
 
-export function MobileView({ weather, sunriseSunset, threshold }: MobileViewProps) {
+export function MobileView({ weather, sunriseSunset, threshold }: Readonly<MobileViewProps>) {
   const indexOfToday = weather.findIndex((day) => new Date(day[0].time).getDate() === new Date().getDate())
   const [currentIndex, setCurrentIndex] = useState(indexOfToday)
 

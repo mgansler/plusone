@@ -9,7 +9,7 @@ export type FetchWeatherDataParams = {
 
 @Injectable()
 export class WeatherApiService {
-  private static WEATHER_VARIABLES = {
+  private static readonly WEATHER_VARIABLES = {
     temperature2m: 'temperature_2m',
     rain: 'rain',
     soilMoisture0To1cm: 'soil_moisture_0_to_1cm',
@@ -20,7 +20,7 @@ export class WeatherApiService {
     soilTemperature6cm: 'soil_temperature_6cm',
     windGusts10m: 'wind_gusts_10m',
   }
-  private static HOURLY_WEATHER_VARIABLES = Object.values(WeatherApiService.WEATHER_VARIABLES)
+  private static readonly HOURLY_WEATHER_VARIABLES = Object.values(WeatherApiService.WEATHER_VARIABLES)
 
   public async fetchWeatherData(
     params: FetchWeatherDataParams,

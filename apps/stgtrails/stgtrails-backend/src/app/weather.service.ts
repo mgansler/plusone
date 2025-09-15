@@ -10,7 +10,7 @@ import WeatherDataCreateManyInput = Prisma.WeatherDataCreateManyInput
 
 @Injectable()
 export class WeatherService {
-  private logger = new Logger(WeatherService.name)
+  private readonly logger = new Logger(WeatherService.name)
 
   constructor(
     private readonly prisma: PrismaService,

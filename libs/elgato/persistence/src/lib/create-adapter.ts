@@ -27,5 +27,5 @@ export function createAdapter(): PrismaBetterSQLite3 {
     url = `file:${libFilePath}`
   }
 
-  return new PrismaBetterSQLite3({ url })
+  return new PrismaBetterSQLite3({ url }, { timestampFormat: 'unixepoch-ms' })
 }
