@@ -41,6 +41,6 @@ export class TagController {
   @ApiParam({ name: 'id', description: 'The id of the tag.', type: String })
   @Delete(':id')
   async deleteTag(@Param('id') id: string, @Req() { user }) {
-    return await this.tagService.deleteTag(id, user.id)
+    await this.tagService.deleteTag(id, user.id)
   }
 }

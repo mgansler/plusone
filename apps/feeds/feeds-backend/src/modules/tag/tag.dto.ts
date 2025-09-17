@@ -7,6 +7,9 @@ export class TagResponseDto {
 
   @ApiProperty()
   name: string
+
+  @ApiProperty()
+  userId: string
 }
 
 export class TagInputDto {

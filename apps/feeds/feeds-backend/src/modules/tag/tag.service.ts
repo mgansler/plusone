@@ -2,22 +2,22 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
 
 import { Feed, PrismaService, User, UserTag } from '@plusone/feeds-persistence'
 
-import { TagInputDto } from './tag.dto'
+import { TagInputDto, TagResponseDto } from './tag.dto'
 
 @Injectable()
 export class TagService {
-  private logger = new Logger(TagService.name)
+  private readonly logger = new Logger(TagService.name)
 
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getAll(userId: User['id']) {
+  async getAll(userId: User['id']): Promise<Array<TagResponseDto>> {
     return this.prismaService.userTag.findMany({
-      select: { id: true, name: true },
+      select: { id: true, name: true, userId: true },
       where: { userId },
     })
   }
 
-  async createTag(tagInput: TagInputDto, userId: User['id']) {
+  async createTag(tagInput: TagInputDto, userId: User['id']): Promise<TagResponseDto> {
     try {
       return await this.prismaService.userTag.create({
         data: { name: tagInput.name, userId },
@@ -32,19 +32,17 @@ export class TagService {
     }
   }
 
-  async deleteTag(id: UserTag['id'], userId: User['id']) {
-    return this.prismaService.$transaction(async (tx) => {
+  async deleteTag(id: UserTag['id'], userId: User['id']): Promise<void> {
+    this.prismaService.$transaction(async (tx) => {
       const tag = await tx.userTag.findUniqueOrThrow({ select: { userId: true }, where: { id } })
       if (tag.userId !== userId) {
         throw new HttpException('This tag does not belong to you.', HttpStatus.FORBIDDEN)
       }
-      return tx.userTag.delete({
-        where: { id },
-      })
+      tx.userTag.delete({ where: { id } })
     })
   }
 
-  async getFeedTags(feedId: Feed['id'], userId: User['id']) {
+  async getFeedTags(feedId: Feed['id'], userId: User['id']): Promise<Array<TagResponseDto>> {
     const feed = await this.prismaService.userFeed.findUniqueOrThrow({
       select: { tags: true },
       where: { userId_feedId: { userId, feedId } },
@@ -52,7 +50,7 @@ export class TagService {
     return feed.tags
   }
 
-  async attachToFeed(feedId: Feed['id'], tagId: UserTag['id'], userId: User['id']) {
+  async attachToFeed(feedId: Feed['id'], tagId: UserTag['id'], userId: User['id']): Promise<void> {
     await this.prismaService.userFeed.update({
       where: { userId_feedId: { userId, feedId } },
       data: {
@@ -61,7 +59,7 @@ export class TagService {
     })
   }
 
-  async detachFromFeed(feedId: Feed['id'], tagId: UserTag['id'], userId: User['id']) {
+  async detachFromFeed(feedId: Feed['id'], tagId: UserTag['id'], userId: User['id']): Promise<void> {
     await this.prismaService.userFeed.update({
       where: { userId_feedId: { userId, feedId } },
       data: {

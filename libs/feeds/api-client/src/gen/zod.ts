@@ -101,6 +101,7 @@ export const getUserFeedsResponseItem = zod.strictObject({
     zod.strictObject({
       id: zod.string(),
       name: zod.string(),
+      userId: zod.string(),
     }),
   ),
 })
@@ -124,12 +125,14 @@ export const getFeedSettingsResponse = zod.strictObject({
 export const getFeedTagsResponseItem = zod.strictObject({
   id: zod.string(),
   name: zod.string(),
+  userId: zod.string(),
 })
 export const getFeedTagsResponse = zod.array(getFeedTagsResponseItem)
 
 export const getTagsResponseItem = zod.strictObject({
   id: zod.string(),
   name: zod.string(),
+  userId: zod.string(),
 })
 export const getTagsResponse = zod.array(getTagsResponseItem)
 

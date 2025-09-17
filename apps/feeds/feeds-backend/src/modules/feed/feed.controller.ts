@@ -90,8 +90,8 @@ export class FeedController {
   @ApiParam({ name: 'id', description: 'The id of the feed.', type: String })
   @ApiOkResponse({ description: 'Settings for feed', type: [TagResponseDto] })
   @Get(':id/tags')
-  async getFeedTags(@Param('id') id: string, @Req() { user }) {
-    return await this.tagService.getFeedTags(id, user.id)
+  async getFeedTags(@Param('id') id: string, @Req() { user }): Promise<Array<TagResponseDto>> {
+    return this.tagService.getFeedTags(id, user.id)
   }
 
   @ApiOperation({ operationId: 'tag-feed' })

@@ -120,6 +120,7 @@ export interface FeedResponseDto {
 export interface TagResponseDto {
   id: string
   name: string
+  userId: string
 }
 
 export interface UserFeedResponseDto {

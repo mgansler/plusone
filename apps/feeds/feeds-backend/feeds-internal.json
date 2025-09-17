@@ -1383,11 +1383,15 @@
           },
           "name": {
             "type": "string"
+          },
+          "userId": {
+            "type": "string"
           }
         },
         "required": [
           "id",
-          "name"
+          "name",
+          "userId"
         ]
       },
       "UserFeedResponseDto": {
