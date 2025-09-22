@@ -35,7 +35,7 @@ export function NowAndSlider({ sliderIndex, timestamps }: Readonly<NowAndSliderP
         ? ((
             <Fragment>
               {isDesktop ? (
-                <text x={xForCurrentTimestamp + 5} y={54}>
+                <text x={xForCurrentTimestamp + 5} y={66}>
                   Now
                 </text>
               ) : null}
@@ -45,7 +45,7 @@ export function NowAndSlider({ sliderIndex, timestamps }: Readonly<NowAndSliderP
                 strokeDasharray={'5,5'}
                 x1={xForCurrentTimestamp}
                 x2={xForCurrentTimestamp}
-                y1={44}
+                y1={56}
                 y2={getChartHeight(isDesktop)}
               />
             </Fragment>
@@ -58,7 +58,7 @@ export function NowAndSlider({ sliderIndex, timestamps }: Readonly<NowAndSliderP
         strokeDasharray={'5,5'}
         x1={(getChartWidth(isDesktop) / (timestamps.length - 1)) * sliderIndex}
         x2={(getChartWidth(isDesktop) / (timestamps.length - 1)) * sliderIndex}
-        y1={44}
+        y1={56}
         y2={getChartHeight(isDesktop)}
       />
     </Fragment>

@@ -32,7 +32,7 @@ export function WindGustWarnings({ weather, threshold = 30 }: Readonly<WindGustW
       {midnightDates.map((date) => {
         const hasStrongGust = weather.some((w) => {
           const wDate = new Date(w.time)
-          const gust = (w.windGusts10m ?? 0) as number
+          const gust = w.windGusts10m
           return isSameDay(wDate, date) && gust > threshold
         })
 

@@ -37,6 +37,7 @@ export function DesktopView({ weather, sunriseSunset, threshold }: Readonly<Desk
         <defs>
           <FrostedGlassFilter />
         </defs>
+        <RainPerHour weather={weather} sliderIndex={sliderIndex} />
 
         <Frame timestamps={weather.map(({ time }) => new Date(time))} sunriseSunset={sunriseSunset} />
 
@@ -44,7 +45,6 @@ export function DesktopView({ weather, sunriseSunset, threshold }: Readonly<Desk
 
         <NowAndSlider sliderIndex={sliderIndex} timestamps={weather.map(({ time }) => time)} />
 
-        <RainPerHour weather={weather} sliderIndex={sliderIndex} />
         <SoilTemperature weather={weather} sliderIndex={sliderIndex} />
         <SoilMoisture
           weather={weather}

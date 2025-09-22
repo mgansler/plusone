@@ -64,7 +64,7 @@ export class WeatherService {
           latitude: trailArea.latitude,
           longitude: trailArea.longitude,
         },
-        isNewArea ? 7 : undefined,
+        isNewArea ? 7 : 2,
       )
 
       const transformedData: Array<WeatherDataCreateManyInput> = weatherData.time.reduce(

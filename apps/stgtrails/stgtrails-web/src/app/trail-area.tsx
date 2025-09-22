@@ -61,7 +61,7 @@ export function TrailArea({ trailAreaId, threshold = 0.3, hours }: Readonly<Trai
       <div style={{ marginLeft: '5px' }}>The total amount of rain over the past 24h was {rainPast24h.toFixed(1)}l.</div>
 
       {isDesktop ? (
-        <DesktopView threshold={threshold} weather={weather} sunriseSunset={sunriseSunset} />
+        <DesktopView threshold={threshold} weather={weather} sunriseSunset={sunriseSunset} key={weather.length} />
       ) : (
         <MobileView threshold={threshold} weather={groupedPerDay} sunriseSunset={sunriseSunset} />
       )}

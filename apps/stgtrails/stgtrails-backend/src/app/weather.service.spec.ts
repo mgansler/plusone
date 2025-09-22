@@ -55,7 +55,7 @@ describe('WeatherService', () => {
     it('should regularly update weather data', async () => {
       await weatherService.updateWeatherForecast()
 
-      expect(weatherApiService.fetchWeatherData).toHaveBeenCalledWith({ latitude: 1, longitude: 2 }, undefined)
+      expect(weatherApiService.fetchWeatherData).toHaveBeenCalledWith({ latitude: 1, longitude: 2 }, 2)
       expect(prismaService.weatherData.upsert).toHaveBeenCalledTimes(3)
     })
 

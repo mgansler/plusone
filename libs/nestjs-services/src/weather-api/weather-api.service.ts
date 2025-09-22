@@ -24,7 +24,7 @@ export class WeatherApiService {
 
   public async fetchWeatherData(
     params: FetchWeatherDataParams,
-    pastDays = 1,
+    pastDays: number,
   ): Promise<Record<keyof typeof WeatherApiService.WEATHER_VARIABLES, Float32Array<never>> & { time: Array<Date> }> {
     const responses = await fetchWeatherApi('https://api.open-meteo.com/v1/forecast', {
       past_days: pastDays,
