@@ -59,14 +59,10 @@ export interface StarArticleDto {
   starred: boolean
 }
 
-export type Sort = (typeof Sort)[keyof typeof Sort]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const Sort = {
-  desc: 'desc',
-  asc: 'asc',
-} as const
-
+export enum Sort {
+  desc = 'desc',
+  asc = 'asc',
+}
 export interface PaginatedArticleResponseDto {
   content: ArticleResponseDto[]
   pageSize: number

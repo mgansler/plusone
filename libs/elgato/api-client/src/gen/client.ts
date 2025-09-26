@@ -21,15 +21,11 @@ import type {
 } from '@tanstack/react-query'
 
 import { customAxiosInstance } from '../custom-axios'
-export type DeviceType = (typeof DeviceType)[keyof typeof DeviceType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeviceType = {
-  RingLight: 'RingLight',
-  LightStrip: 'LightStrip',
-  Unknown: 'Unknown',
-} as const
-
+export enum DeviceType {
+  RingLight = 'RingLight',
+  LightStrip = 'LightStrip',
+  Unknown = 'Unknown',
+}
 export interface DiscoveredDeviceResponseDto {
   /** The mac address of the device. */
   id: string

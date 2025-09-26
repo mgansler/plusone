@@ -7,6 +7,7 @@ module.exports = defineConfig({
       client: 'react-query',
       target: './src/gen/client.ts',
       override: {
+        enumGenerationType: 'enum',
         mutator: {
           path: './src/custom-axios.ts',
           name: 'customAxiosInstance',
