@@ -2,23 +2,27 @@ import { createRootRoute, createRoute, createRouter } from '@tanstack/react-rout
 
 import { App } from './app/app'
 
+export const COUNTRY_PATH = '/country/$country'
+export const STATE_PATH = COUNTRY_PATH + '/state/$state'
+export const TRAIL_AREA_PATH = STATE_PATH + '/trailArea/$trailArea'
+
 export const rootRoute = createRootRoute({ component: App })
 
 export const indexRoute = createRoute({ getParentRoute: () => rootRoute, component: App, path: '/' })
 export const countryRoute = createRoute({
   getParentRoute: () => indexRoute,
   component: App,
-  path: `/country/$country`,
+  path: COUNTRY_PATH,
 })
 export const stateRoute = createRoute({
   getParentRoute: () => countryRoute,
   component: App,
-  path: `/country/$country/state/$state`,
+  path: STATE_PATH,
 })
 export const trailAreaRoute = createRoute({
   getParentRoute: () => stateRoute,
   component: App,
-  path: `/country/$country/state/$state/trailArea/$trailArea`,
+  path: TRAIL_AREA_PATH,
 })
 
 const routeTree = rootRoute.addChildren([

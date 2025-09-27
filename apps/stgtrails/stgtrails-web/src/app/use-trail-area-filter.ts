@@ -1,6 +1,6 @@
 import { useMatchRoute } from '@tanstack/react-router'
 
-import { countryRoute, stateRoute, trailAreaRoute } from '../routes'
+import { COUNTRY_PATH, STATE_PATH, TRAIL_AREA_PATH } from '../routes'
 
 export const AnyCountryOrState = 'any'
 
@@ -13,21 +13,21 @@ type TrailAreaFilter = {
 export function useTrailAreaFilter(): TrailAreaFilter {
   const matchRoute = useMatchRoute()
 
-  if (matchRoute({ to: trailAreaRoute.path })) {
-    return matchRoute({ to: trailAreaRoute.path })
+  if (matchRoute({ to: TRAIL_AREA_PATH })) {
+    return matchRoute({ to: TRAIL_AREA_PATH })
   }
 
-  if (matchRoute({ to: stateRoute.path })) {
+  if (matchRoute({ to: STATE_PATH })) {
     return {
-      country: matchRoute({ to: stateRoute.path }).country,
-      state: matchRoute({ to: stateRoute.path }).state,
+      country: matchRoute({ to: STATE_PATH }).country,
+      state: matchRoute({ to: STATE_PATH }).state,
       trailArea: undefined,
     }
   }
 
-  if (matchRoute({ to: countryRoute.path })) {
+  if (matchRoute({ to: COUNTRY_PATH })) {
     return {
-      country: matchRoute({ to: countryRoute.path }).country,
+      country: matchRoute({ to: COUNTRY_PATH }).country,
       state: AnyCountryOrState,
       trailArea: undefined,
     }
