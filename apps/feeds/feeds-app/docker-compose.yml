@@ -20,7 +20,7 @@ services:
 
   database:
     restart: always
-    image: postgres:17-alpine
+    image: postgres:18-alpine
     networks:
       - default
     environment:
