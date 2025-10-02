@@ -3105,17 +3105,28 @@
     change-case-all "1.0.15"
     tslib "~2.6.0"
 
-"@graphql-codegen/typescript-document-nodes@5.0.0":
-  version "5.0.0"
-  resolved "https://registry.npmjs.org/@graphql-codegen/typescript-document-nodes/-/typescript-document-nodes-5.0.0.tgz#d76aba668afe144e4e3d9a8307378aa1e5770eac"
-  integrity sha512-f+0QgFe8KYuKyRyXUCJLe8lfXMZcCLyXkbkkIb8iXhPiVC1TZORwYrQ+Yo5+2dq2kty9PqAwKRq8OyI9Fl1wgQ==
+"@graphql-codegen/typescript-document-nodes@5.0.1":
+  version "5.0.1"
+  resolved "https://registry.npmjs.org/@graphql-codegen/typescript-document-nodes/-/typescript-document-nodes-5.0.1.tgz#60bbd9dfc20e5d16936c5941c9eb2ec78f5f9205"
+  integrity sha512-YdTiPT5Tg0RC8Hj1jBggATAhVKpEVpgw/eP350HG10MZFto06mQYGkxMvXiweOxXSqh3jxLDsz4QniaTa3s2qA==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^6.0.0"
-    "@graphql-codegen/visitor-plugin-common" "6.0.0"
+    "@graphql-codegen/visitor-plugin-common" "6.0.1"
     auto-bind "~4.0.0"
     tslib "~2.6.0"
 
-"@graphql-codegen/typescript-operations@5.0.0", "@graphql-codegen/typescript-operations@^5.0.0":
+"@graphql-codegen/typescript-operations@5.0.1":
+  version "5.0.1"
+  resolved "https://registry.npmjs.org/@graphql-codegen/typescript-operations/-/typescript-operations-5.0.1.tgz#69c98787a0ffa135fa2b51315b76b639ba8d1c43"
+  integrity sha512-uJwsOIqvXyxlOI1Mnoy8Mn3TiOHTzVTGDwqL9gHnpKqQZdFfvMgfDf/HyT7Mw3XCOfhSS99fe9ATW0bkMExBZg==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^6.0.0"
+    "@graphql-codegen/typescript" "^5.0.1"
+    "@graphql-codegen/visitor-plugin-common" "6.0.1"
+    auto-bind "~4.0.0"
+    tslib "~2.6.0"
+
+"@graphql-codegen/typescript-operations@^5.0.0":
   version "5.0.0"
   resolved "https://registry.npmjs.org/@graphql-codegen/typescript-operations/-/typescript-operations-5.0.0.tgz#e93bf359243e02555c62826635d66ebaf6c55eab"
   integrity sha512-mqgp/lp5v7w+RYj5AJ/BVquP+sgje3EAgg++62ciolOB5zzWT8en09cRdNq4UZfszCYTOtlhCG7NQAAcSae37A==
@@ -3137,7 +3148,18 @@
     change-case-all "1.0.15"
     tslib "^2.8.1"
 
-"@graphql-codegen/typescript@5.0.0", "@graphql-codegen/typescript@^5.0.0":
+"@graphql-codegen/typescript@5.0.1", "@graphql-codegen/typescript@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.npmjs.org/@graphql-codegen/typescript/-/typescript-5.0.1.tgz#3afac0ae4c68dc564163037c6ae8a6e2b88f831c"
+  integrity sha512-GqAl4pxFdWTvW1h+Ume7djrucYwt03wiaS88m4ErG+tHsJaR2ZCtoHOo+B4bh7KIuBKap14/xOZG0qY/ThWAhg==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^6.0.0"
+    "@graphql-codegen/schema-ast" "^5.0.0"
+    "@graphql-codegen/visitor-plugin-common" "6.0.1"
+    auto-bind "~4.0.0"
+    tslib "~2.6.0"
+
+"@graphql-codegen/typescript@^5.0.0":
   version "5.0.0"
   resolved "https://registry.npmjs.org/@graphql-codegen/typescript/-/typescript-5.0.0.tgz#567504f3ae56053f9b01696a2cd0402554a5866c"
   integrity sha512-u90SGM6+Rdc3Je1EmVQOrGk5fl7hK1cLR4y5Q1MeUenj0aZFxKno65DCW7RcQpcfebvkPsVGA6y3oS02wPFj6Q==
@@ -3168,6 +3190,22 @@
   version "6.0.0"
   resolved "https://registry.npmjs.org/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-6.0.0.tgz#87484cd410fb643e86591cd1e14f2f311c3addc2"
   integrity sha512-K05Jv2elOeFstH3i+Ah0Pi9do6NYUvrbdhEkP+UvP9fmIro1hCKwcIEP7j4VFz8mt3gAC3dB5KVJDoyaPUgi4Q==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^6.0.0"
+    "@graphql-tools/optimize" "^2.0.0"
+    "@graphql-tools/relay-operation-optimizer" "^7.0.0"
+    "@graphql-tools/utils" "^10.0.0"
+    auto-bind "~4.0.0"
+    change-case-all "1.0.15"
+    dependency-graph "^1.0.0"
+    graphql-tag "^2.11.0"
+    parse-filepath "^1.0.2"
+    tslib "~2.6.0"
+
+"@graphql-codegen/visitor-plugin-common@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-6.0.1.tgz#7aa2c5936c1a0593b8946a0d172bb202c688cfbb"
+  integrity sha512-3gopoUYXn26PSj2UdCWmYj0QiRVD5qR3eDiXx72OQcN1Vb8qj6VfOWB+NDuD1Q1sgVYbCQVKgj92ERsSW1xH9Q==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^6.0.0"
     "@graphql-tools/optimize" "^2.0.0"
@@ -12542,10 +12580,10 @@ eslint-plugin-react@7.37.5:
     string.prototype.matchall "^4.0.12"
     string.prototype.repeat "^1.0.0"
 
-eslint-plugin-testing-library@7.10.0:
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/eslint-plugin-testing-library/-/eslint-plugin-testing-library-7.10.0.tgz#c49f6b90cbdbcf39dbd6d9978e66eea2d19ac889"
-  integrity sha512-0yctS5KjVPfDYzswJKQ6d/1767+qsmlu2TzjN9yB25wtfto5vMmSC0z3hDYcsTj9bekzKaxueSh8AReWm2Illg==
+eslint-plugin-testing-library@7.11.0:
+  version "7.11.0"
+  resolved "https://registry.npmjs.org/eslint-plugin-testing-library/-/eslint-plugin-testing-library-7.11.0.tgz#6a892df6fd5122cfbf7613837a8618351d5fdaf0"
+  integrity sha512-Fpzn3L3RUmoCEZKaQCkkEgjM2bQwrPrgz7E2StlP1bymjaPmYMHY0knTh0CAAA7Nk+9jkEV2nDhq1UsLR4TbbA==
   dependencies:
     "@typescript-eslint/scope-manager" "^8.15.0"
     "@typescript-eslint/utils" "^8.15.0"
