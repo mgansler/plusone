@@ -621,6 +621,45 @@
           "weather"
         ]
       }
+    },
+    "/api/weather/elevation": {
+      "get": {
+        "operationId": "getElevationForCoordinates",
+        "parameters": [
+          {
+            "name": "latitude",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "longitude",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Elevation in meters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "weather"
+        ]
+      }
     }
   },
   "info": {

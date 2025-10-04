@@ -2,6 +2,7 @@ import { buildValidatedUseQueryWrapper } from '@plusone/validated-query-factory'
 
 import {
   useGetCountries,
+  useGetElevationForCoordinates,
   useGetSunriseSunsetForTrailArea,
   useGetTrailAreas,
   useGetTrailsOfArea,
@@ -9,6 +10,7 @@ import {
 } from './gen/client'
 import {
   getCountriesResponse,
+  getElevationForCoordinatesResponse,
   getSunriseSunsetForTrailAreaResponse,
   getTrailAreasResponse,
   getTrailsOfAreaResponse,
@@ -29,4 +31,9 @@ export const useValidatedSunriseSunsetDataForTrailArea = buildValidatedUseQueryW
 export const useValidatedWeatherDataForTrailArea = buildValidatedUseQueryWrapper(
   useGetWeatherDataForTrailArea,
   getWeatherDataForTrailAreaResponse,
+)
+
+export const useValidatedElevationDataForCoordinates = buildValidatedUseQueryWrapper(
+  useGetElevationForCoordinates,
+  getElevationForCoordinatesResponse,
 )

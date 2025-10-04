@@ -1,3 +1,6 @@
+import { HttpService } from '@nestjs/axios'
+import { Test } from '@nestjs/testing'
+
 import { WeatherApiService } from './weather-api.service'
 
 describe('getHourlyWeatherVariables', () => {
@@ -14,5 +17,28 @@ describe('getHourlyWeatherVariables', () => {
       'soil_temperature_6cm',
       'wind_gusts_10m',
     ])
+  })
+})
+
+describe('getDailyWeatherVariables', () => {
+  let weatherApiService: WeatherApiService
+
+  beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
+      providers: [
+        {
+          provide: HttpService,
+          useValue: new HttpService(),
+        },
+        WeatherApiService,
+      ],
+    }).compile()
+
+    weatherApiService = moduleRef.get<WeatherApiService, WeatherApiService>(WeatherApiService)
+  })
+
+  it('should return the height for coordinates', async () => {
+    const actual = await weatherApiService.getHeightForCoordinates({ latitude: 48.7742045, longitude: 9.1595041 })
+    expect(actual).toEqual(285)
   })
 })

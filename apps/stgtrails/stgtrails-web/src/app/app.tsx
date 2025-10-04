@@ -19,7 +19,7 @@ export function App() {
   })
 
   const { data: countries } = useValidatedCountryList()
-  const distinctCountries = [...new Set([...(countries ?? []).map((value) => value.country)])]
+  const distinctCountries = [...new Set((countries ?? []).map((value) => value.country))]
 
   const trailAreaId = useTrailAreaId(trailAreas, trailAreaFilter.trailArea)
   const [hours, setHours] = useState<number>(96)

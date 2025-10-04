@@ -22,4 +22,16 @@ export class WeatherController {
   ): Promise<Array<WeatherDataResponseDto>> {
     return this.weatherService.getWeatherDataForTrailArea(trailAreaId, hours, utcOffsetHours)
   }
+
+  @ApiOperation({ operationId: 'getElevationForCoordinates' })
+  @ApiQuery({ name: 'latitude', type: Number, required: true })
+  @ApiQuery({ name: 'longitude', type: Number, required: true })
+  @ApiOkResponse({ type: Number, description: 'Elevation in meters' })
+  @Get('elevation')
+  async getElevationForCoordinates(
+    @Query('latitude') latitude: number,
+    @Query('longitude') longitude: number,
+  ): Promise<number> {
+    return this.weatherService.getElevationForCoordinates({ latitude, longitude })
+  }
 }

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 
-import { WeatherApiService } from '@plusone/nestjs-services'
+import { FetchWeatherDataParams, WeatherApiService } from '@plusone/nestjs-services'
 import { Prisma, PrismaService, TrailArea } from '@plusone/stgtrails-persistence'
 
 import { WeatherDataResponseDto } from './dto/weather-data-response.dto'
@@ -98,5 +98,9 @@ export class WeatherService {
         ),
       )
     }
+  }
+
+  public async getElevationForCoordinates(params: FetchWeatherDataParams): Promise<number> {
+    return this.weatherApi.getHeightForCoordinates(params)
   }
 }

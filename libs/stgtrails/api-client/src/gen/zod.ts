@@ -136,3 +136,5 @@ export const getWeatherDataForTrailAreaResponseItem = zod.strictObject({
   windGusts10m: zod.number(),
 })
 export const getWeatherDataForTrailAreaResponse = zod.array(getWeatherDataForTrailAreaResponseItem)
+
+export const getElevationForCoordinatesResponse = zod.number()

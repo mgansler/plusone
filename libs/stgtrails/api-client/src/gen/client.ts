@@ -215,6 +215,11 @@ export type GetWeatherDataForTrailAreaParams = {
   utcOffsetHours?: number
 }
 
+export type GetElevationForCoordinatesParams = {
+  latitude: number
+  longitude: number
+}
+
 export const createTrailAreaFromCoordinates = (
   trailAreaCreateFromCoordinatesDto: TrailAreaCreateFromCoordinatesDto,
   signal?: AbortSignal,
@@ -1148,6 +1153,102 @@ export function useGetWeatherDataForTrailArea<
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetWeatherDataForTrailAreaQueryOptions(params, options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
+}
+
+export const getElevationForCoordinates = (params: GetElevationForCoordinatesParams, signal?: AbortSignal) => {
+  return customAxiosInstance<number>({ url: `/api/weather/elevation`, method: 'GET', params, signal })
+}
+
+export const getGetElevationForCoordinatesQueryKey = (params?: GetElevationForCoordinatesParams) => {
+  return [`/api/weather/elevation`, ...(params ? [params] : [])] as const
+}
+
+export const getGetElevationForCoordinatesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getElevationForCoordinates>>,
+  TError = unknown,
+>(
+  params: GetElevationForCoordinatesParams,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getElevationForCoordinates>>, TError, TData>> },
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetElevationForCoordinatesQueryKey(params)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getElevationForCoordinates>>> = ({ signal }) =>
+    getElevationForCoordinates(params, signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getElevationForCoordinates>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetElevationForCoordinatesQueryResult = NonNullable<Awaited<ReturnType<typeof getElevationForCoordinates>>>
+export type GetElevationForCoordinatesQueryError = unknown
+
+export function useGetElevationForCoordinates<
+  TData = Awaited<ReturnType<typeof getElevationForCoordinates>>,
+  TError = unknown,
+>(
+  params: GetElevationForCoordinatesParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getElevationForCoordinates>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getElevationForCoordinates>>,
+          TError,
+          Awaited<ReturnType<typeof getElevationForCoordinates>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetElevationForCoordinates<
+  TData = Awaited<ReturnType<typeof getElevationForCoordinates>>,
+  TError = unknown,
+>(
+  params: GetElevationForCoordinatesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getElevationForCoordinates>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getElevationForCoordinates>>,
+          TError,
+          Awaited<ReturnType<typeof getElevationForCoordinates>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetElevationForCoordinates<
+  TData = Awaited<ReturnType<typeof getElevationForCoordinates>>,
+  TError = unknown,
+>(
+  params: GetElevationForCoordinatesParams,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getElevationForCoordinates>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetElevationForCoordinates<
+  TData = Awaited<ReturnType<typeof getElevationForCoordinates>>,
+  TError = unknown,
+>(
+  params: GetElevationForCoordinatesParams,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getElevationForCoordinates>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetElevationForCoordinatesQueryOptions(params, options)
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>

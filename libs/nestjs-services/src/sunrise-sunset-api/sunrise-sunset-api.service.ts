@@ -15,7 +15,7 @@ export type GeographicalCoordinates = {
 
 @Injectable()
 export class SunriseSunsetApiService {
-  private logger = new Logger(SunriseSunsetApiService.name)
+  private readonly logger = new Logger(SunriseSunsetApiService.name)
 
   constructor(private readonly httpService: HttpService) {}
 

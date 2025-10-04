@@ -1,10 +1,16 @@
+import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
 import { WeatherApiResponse } from '@openmeteo/sdk/weather-api-response'
 import { fetchWeatherApi } from 'openmeteo'
+import { firstValueFrom } from 'rxjs'
 
 export type FetchWeatherDataParams = {
   latitude: number
   longitude: number
+}
+
+type ElevationApiResponse = {
+  elevation: [number]
 }
 
 @Injectable()
@@ -20,7 +26,10 @@ export class WeatherApiService {
     soilTemperature6cm: 'soil_temperature_6cm',
     windGusts10m: 'wind_gusts_10m',
   }
+
   private static readonly HOURLY_WEATHER_VARIABLES = Object.values(WeatherApiService.WEATHER_VARIABLES)
+
+  constructor(private readonly httpService: HttpService) {}
 
   public async fetchWeatherData(
     params: FetchWeatherDataParams,
@@ -35,6 +44,15 @@ export class WeatherApiService {
     })
 
     return this.parseWeatherApiResponse(responses[0])
+  }
+
+  public async getHeightForCoordinates(params: FetchWeatherDataParams): Promise<number> {
+    const elevationApiResponse = await firstValueFrom(
+      this.httpService.get<ElevationApiResponse>(
+        `https://api.open-meteo.com/v1/elevation?latitude=${params.latitude}&longitude=${params.longitude}`,
+      ),
+    )
+    return elevationApiResponse.data.elevation[0]
   }
 
   private parseWeatherApiResponse(response: WeatherApiResponse) {
