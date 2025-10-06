@@ -15,10 +15,10 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@angular-devkit/core@19.2.15":
-  version "19.2.15"
-  resolved "https://registry.npmjs.org/@angular-devkit/core/-/core-19.2.15.tgz#35af566f9c69d3eca9c183936ee8527d9725a006"
-  integrity sha512-pU2RZYX6vhd7uLSdLwPnuBcr0mXJSjp3EgOXKsrlQFQZevc+Qs+2JdXgIElnOT/aDqtRtriDmLlSbtdE8n3ZbA==
+"@angular-devkit/core@19.2.17":
+  version "19.2.17"
+  resolved "https://registry.npmjs.org/@angular-devkit/core/-/core-19.2.17.tgz#014107a94240dd3ecf38edfcf23113ad55b9752b"
+  integrity sha512-Ah008x2RJkd0F+NLKqIpA34/vUGwjlprRCkvddjDopAWRzYn6xCkz1Tqwuhn0nR1Dy47wTLKYD999TYl5ONOAQ==
   dependencies:
     ajv "8.17.1"
     ajv-formats "3.0.1"
@@ -39,12 +39,12 @@
     rxjs "7.8.1"
     source-map "0.7.4"
 
-"@angular-devkit/schematics@19.2.15":
-  version "19.2.15"
-  resolved "https://registry.npmjs.org/@angular-devkit/schematics/-/schematics-19.2.15.tgz#d20ceba32f97b5f0e07e25268d9b8fea7ee142dd"
-  integrity sha512-kNOJ+3vekJJCQKWihNmxBkarJzNW09kP5a9E1SRNiQVNOUEeSwcRR0qYotM65nx821gNzjjhJXnAZ8OazWldrg==
+"@angular-devkit/schematics@19.2.17":
+  version "19.2.17"
+  resolved "https://registry.npmjs.org/@angular-devkit/schematics/-/schematics-19.2.17.tgz#253c0c6f4d5400c3bf038d73ed114af5516b72ef"
+  integrity sha512-ADfbaBsrG8mBF6Mfs+crKA/2ykB8AJI50Cv9tKmZfwcUcyAdmTr+vVvhsBCfvUAEokigSsgqgpYxfkJVxhJYeg==
   dependencies:
-    "@angular-devkit/core" "19.2.15"
+    "@angular-devkit/core" "19.2.17"
     jsonc-parser "3.3.1"
     magic-string "0.30.17"
     ora "5.4.1"
@@ -5048,14 +5048,14 @@
   dependencies:
     cron "4.3.3"
 
-"@nestjs/schematics@11.0.7":
-  version "11.0.7"
-  resolved "https://registry.npmjs.org/@nestjs/schematics/-/schematics-11.0.7.tgz#4a3cd162b38a4756995d89473ec45f8d1e952bd1"
-  integrity sha512-t8dNYYMwEeEsrlwc2jbkfwCfXczq4AeNEgx1KVQuJ6wYibXk0ZbXbPdfp8scnEAaQv1grpncNV5gWgzi7ZwbvQ==
+"@nestjs/schematics@11.0.8":
+  version "11.0.8"
+  resolved "https://registry.npmjs.org/@nestjs/schematics/-/schematics-11.0.8.tgz#ecc3920016bd88f462aa54d12689b2561799b7a8"
+  integrity sha512-HKunkzfBYLpNyL/qP5wu0OBKVPrISJLnrB4r6S53fT99pEvopDcJAeIuznSAD1Dx1njUqpbTR/uGyD0xL1y0nw==
   dependencies:
-    "@angular-devkit/core" "19.2.15"
-    "@angular-devkit/schematics" "19.2.15"
-    comment-json "4.2.5"
+    "@angular-devkit/core" "19.2.17"
+    "@angular-devkit/schematics" "19.2.17"
+    comment-json "4.4.1"
     jsonc-parser "3.3.1"
     pluralize "8.0.0"
 
@@ -10706,6 +10706,15 @@ comment-json@4.2.5:
     esprima "^4.0.1"
     has-own-prop "^2.0.0"
     repeat-string "^1.6.1"
+
+comment-json@4.4.1:
+  version "4.4.1"
+  resolved "https://registry.npmjs.org/comment-json/-/comment-json-4.4.1.tgz#0757e3ba31a9e56f3f6e00bdaae114384ac8bcf3"
+  integrity sha512-r1To31BQD5060QdkC+Iheai7gHwoSZobzunqkf2/kQ6xIAfJyrKNAFUwdKvkK7Qgu7pVTKQEa7ok7Ed3ycAJgg==
+  dependencies:
+    array-timsort "^1.0.3"
+    core-util-is "^1.0.3"
+    esprima "^4.0.1"
 
 common-path-prefix@^3.0.0:
   version "3.0.0"
@@ -22571,10 +22580,10 @@ test-exclude@^7.0.1:
     glob "^10.4.1"
     minimatch "^9.0.4"
 
-testcontainers@11.7.0:
-  version "11.7.0"
-  resolved "https://registry.npmjs.org/testcontainers/-/testcontainers-11.7.0.tgz#d22a9a936ec3e04f5c2cfd8010eb30f7f741be4c"
-  integrity sha512-uImnn8TqYfjv/e+McPBpBqKWvWKPIPzKtL+jxHHxy4CsaXWaZr9Z01viVfml1xCblUnr76GsMjlEsi/Q7SFupw==
+testcontainers@11.7.1:
+  version "11.7.1"
+  resolved "https://registry.npmjs.org/testcontainers/-/testcontainers-11.7.1.tgz#4ee8595f02b594012fae10433e059608a4aaa565"
+  integrity sha512-fjut+07G4Avp6Lly/6hQePpUpQFv9ZyQd+7JC5iCDKg+dWa2Sw7fXD3pBrkzslYFfKqGx9M6kyIaLpg9VeMsjw==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
     "@types/dockerode" "^3.3.44"
