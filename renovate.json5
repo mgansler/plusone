@@ -12,5 +12,10 @@
       matchDatasources: ['npm'],
       minimumReleaseAge: '3 days',
     },
+    {
+      // v6.1.1 does not work with @nx/eslint-plugin due to flat/legacy config
+      matchPackageNames: ['eslint-plugin-react-hooks'],
+      allowedVersions: '!/6\\.1\\.1/',
+    },
   ],
 }
