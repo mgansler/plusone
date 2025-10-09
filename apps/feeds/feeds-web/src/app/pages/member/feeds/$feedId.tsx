@@ -4,7 +4,7 @@ import React from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
 import {
-  getFindArticlesQueryKey,
+  getFindArticlesInfiniteQueryKey,
   getGetUserFeedsQueryKey,
   useMarkArticlesRead,
   useValidatedFindArticlesInfinite,
@@ -38,7 +38,7 @@ export function Articles() {
   const { mutate } = useMarkArticlesRead({
     mutation: {
       onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: getFindArticlesQueryKey() })
+        await queryClient.invalidateQueries({ queryKey: getFindArticlesInfiniteQueryKey() })
         await queryClient.invalidateQueries({ queryKey: getGetUserFeedsQueryKey() })
       },
     },
