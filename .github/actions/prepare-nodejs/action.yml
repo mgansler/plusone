@@ -4,7 +4,7 @@ description: Installs node dependencies and sets up cache
 runs:
   using: composite
   steps:
-    - uses: actions/setup-node@v5.0.0
+    - uses: actions/setup-node@v6.0.0
       with:
         node-version: '22.20.0'
         cache: 'yarn'
