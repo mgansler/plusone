@@ -1,6 +1,4 @@
-import { defineConfig } from 'orval'
-
-module.exports = defineConfig({
+module.exports = {
   api: {
     input: { target: '../../../apps/elgato/elgato-backend/elgato-internal.json' },
     output: {
@@ -46,4 +44,4 @@ module.exports = defineConfig({
       afterAllFilesWrite: 'nx format --files libs/elgato/api-client/src/zod.ts',
     },
   },
-})
+}

@@ -1,6 +1,4 @@
-import { defineConfig } from 'orval'
-
-module.exports = defineConfig({
+module.exports = {
   api: {
     input: { target: '../../../apps/stgtrails/stgtrails-backend/stgtrails-internal.json' },
     output: {
@@ -46,4 +44,4 @@ module.exports = defineConfig({
       afterAllFilesWrite: 'nx format --files libs/stgtrails/api-client/src/zod.ts',
     },
   },
-})
+}
