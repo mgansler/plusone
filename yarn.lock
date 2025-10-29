@@ -79,10 +79,10 @@
   resolved "https://registry.npmjs.org/@apidevtools/swagger-methods/-/swagger-methods-3.0.2.tgz#b789a362e055b0340d04712eafe7027ddc1ac267"
   integrity sha512-QAkD5kK2b1WfjDS/UQn/qQkbwF31uqRjPTrsCs5ZG9BQGAkjwvqGFjjPqAuzac/IYzpPtRzjCP1WrTuAIjMrXg==
 
-"@apidevtools/swagger-parser@^12.0.0":
-  version "12.0.0"
-  resolved "https://registry.npmjs.org/@apidevtools/swagger-parser/-/swagger-parser-12.0.0.tgz#02667c728b0c6c1f92109d105b0561828be8c5d8"
-  integrity sha512-WLJIWcfOXrSKlZEM+yhA2Xzatgl488qr1FoOxixYmtWapBzwSC0gVGq4WObr4hHClMIiFFdOBdixNkvWqkWIWA==
+"@apidevtools/swagger-parser@^12.1.0":
+  version "12.1.0"
+  resolved "https://registry.npmjs.org/@apidevtools/swagger-parser/-/swagger-parser-12.1.0.tgz#ef73e5f9e32c2becef6d95b90fb4481b0fec8fe4"
+  integrity sha512-e5mJoswsnAX0jG+J09xHFYQXb/bUc5S3pLpMxUuRUA2H8T2kni3yEoyz2R3Dltw5f4A6j6rPNMpWTK+iVDFlng==
   dependencies:
     "@apidevtools/json-schema-ref-parser" "14.0.1"
     "@apidevtools/openapi-schemas" "^2.1.0"
@@ -3629,10 +3629,10 @@
   resolved "https://registry.npmjs.org/@ibm-cloud/openapi-ruleset-utilities/-/openapi-ruleset-utilities-1.9.0.tgz#4fecf175bd3d07ba81df8e5160729cf81da26901"
   integrity sha512-AoFbSarOqFBYH+1TZ9Ahkm2IWYSi5v0pBk88fpV+5b3qGJukypX8PwvCWADjuyIccKg48/F73a6hTTkBzDQ2UA==
 
-"@ibm-cloud/openapi-ruleset@^1.32.1":
-  version "1.33.1"
-  resolved "https://registry.npmjs.org/@ibm-cloud/openapi-ruleset/-/openapi-ruleset-1.33.1.tgz#c77b02bf5c4dcbae90540c84a1bc7222dffd47b6"
-  integrity sha512-70wibJ17BFXM6h0tVo2rvvSgMvp14vsqtL2AZJKJLytHaPgbRL0XZRYWQ89aQpwBH0NYO2dzE+FkRCkVX0irUw==
+"@ibm-cloud/openapi-ruleset@^1.33.1":
+  version "1.33.3"
+  resolved "https://registry.npmjs.org/@ibm-cloud/openapi-ruleset/-/openapi-ruleset-1.33.3.tgz#1d3b4791b17bddf6445053a608abe81a352b3b0c"
+  integrity sha512-lOxglXIzUZwsw5WsbgZraxxzAYMdXYyiMNOioxYJYTd55ZuN4XEERoPdV5v1oPTdKedHEUSQu5siiSHToENFdA==
   dependencies:
     "@ibm-cloud/openapi-ruleset-utilities" "1.9.0"
     "@stoplight/spectral-formats" "^1.8.2"
@@ -5652,33 +5652,33 @@
   dependencies:
     flatbuffers "^25.2.10"
 
-"@orval/angular@7.14.0":
-  version "7.14.0"
-  resolved "https://registry.npmjs.org/@orval/angular/-/angular-7.14.0.tgz#0b6d8841441ab6e99b458a5027d66859a59f17b2"
-  integrity sha512-z2V5svW0WwwsugG91v6k05HxeJNtbIy4V8wrTFxRZ7dzT0jhfayJvTnLW1DnaUkJ5PieS/yqytk53LVIIhRM6g==
+"@orval/angular@7.15.0":
+  version "7.15.0"
+  resolved "https://registry.npmjs.org/@orval/angular/-/angular-7.15.0.tgz#1b1ee852a1b341a41b03cb447b2245ab950fff03"
+  integrity sha512-CVQfohMdl7lU0StRlGJ0RfuhmsV+DrAy0x2sU8Mo6+Jb0UYGPhh/lQ+umsAHrCn5sqmoR8AEBoRDSYiD83rw/w==
   dependencies:
-    "@orval/core" "7.14.0"
+    "@orval/core" "7.15.0"
 
-"@orval/axios@7.14.0":
-  version "7.14.0"
-  resolved "https://registry.npmjs.org/@orval/axios/-/axios-7.14.0.tgz#ff33e489c254dbe1796e5be1ceb05bb650ea9a09"
-  integrity sha512-z2qdyTJ+O5cZHd3R635RDvhs2bv8omg0mNsKxULinWXOfGvSDWuCQtuVyh9m8hsNJKCJnOVdPiNVXNegBbFXaw==
+"@orval/axios@7.15.0":
+  version "7.15.0"
+  resolved "https://registry.npmjs.org/@orval/axios/-/axios-7.15.0.tgz#9f3c1c9f667423cfd91a94be9ba5b87002fd3662"
+  integrity sha512-NseXzeQpIfycvKaTr+g/pJoIGOqbR5IPWKwWtUGRal78k48NaVKlC5TIYR0PwyCUvxhli4rKPUsH5hsdUBZu/A==
   dependencies:
-    "@orval/core" "7.14.0"
+    "@orval/core" "7.15.0"
 
-"@orval/core@7.14.0":
-  version "7.14.0"
-  resolved "https://registry.npmjs.org/@orval/core/-/core-7.14.0.tgz#83493f17454215b0f5ff6c706678eed07497db5d"
-  integrity sha512-iGY7T8XJORPGpkZ0CDSnVxlv1ryHr4ieCvBO9YeP0BWXYoLO2ptvkkNvDhhJOfpMKjDppjo4227TxUU6Accl3g==
+"@orval/core@7.15.0":
+  version "7.15.0"
+  resolved "https://registry.npmjs.org/@orval/core/-/core-7.15.0.tgz#d64aaaee0fddccbb07f8dd3261e96d450965a8b7"
+  integrity sha512-jkEZQKvVZN6++ji6PicTbPHo/bzhvDqg2GIXL9u2t6rFgFwowZ92CP3v+S5bku+Y82d+wDYRUBCr1fVg/u9dzg==
   dependencies:
-    "@apidevtools/swagger-parser" "^12.0.0"
-    "@ibm-cloud/openapi-ruleset" "^1.32.1"
+    "@apidevtools/swagger-parser" "^12.1.0"
+    "@ibm-cloud/openapi-ruleset" "^1.33.1"
     "@stoplight/spectral-core" "^1.20.0"
     acorn "^8.15.0"
     chalk "^4.1.2"
     compare-versions "^6.1.1"
     debug "^4.4.3"
-    esbuild "^0.25.9"
+    esbuild "^0.25.11"
     esutils "2.0.3"
     fs-extra "^11.3.1"
     globby "11.1.0"
@@ -5689,69 +5689,69 @@
     micromatch "^4.0.8"
     openapi3-ts "4.5.0"
     swagger2openapi "^7.0.8"
-    typedoc "^0.28.12"
+    typedoc "^0.28.14"
 
-"@orval/fetch@7.14.0":
-  version "7.14.0"
-  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-7.14.0.tgz#548589ebdc5c33c7dac15913cad9ad86ac429d3b"
-  integrity sha512-TJeUc29EnRN3gq716E9SnepvroBiOWXjUS6PebllwxgSIpL2W3fimqYZuZR7T55dkneu/O09Kw3SBzVkfAHXGQ==
+"@orval/fetch@7.15.0":
+  version "7.15.0"
+  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-7.15.0.tgz#6bd4bd76af520e9963529617b0ee89360f74c74d"
+  integrity sha512-GwQohzMmwuSSbyu68z0gShGJIeRRYFtBJzugZCmY7z99A1pksaWvierWIHc7tmp2jXeOrodat7h/Ju3Hsw6WAQ==
   dependencies:
-    "@orval/core" "7.14.0"
+    "@orval/core" "7.15.0"
     openapi3-ts "4.5.0"
 
-"@orval/hono@7.14.0":
-  version "7.14.0"
-  resolved "https://registry.npmjs.org/@orval/hono/-/hono-7.14.0.tgz#9546428140488f8f9f4ace5882ba158fe6731ab0"
-  integrity sha512-zChGuWkWbbsQqEmmAzcNeENgAZ+R3pU4J/JN9VRtcIbh3Wwt+JFEOvCxkBydGbPkQiCwOWrXyFxmGbDqrXKpuQ==
+"@orval/hono@7.15.0":
+  version "7.15.0"
+  resolved "https://registry.npmjs.org/@orval/hono/-/hono-7.15.0.tgz#67382f48501d9a8833ce1175d06542b75a0b6966"
+  integrity sha512-lw8UYTEjQYUq7Fswh0INXyWpOaj9V1wTfXh5KL2xMjI2qhuyAoQhCkG9M1a07X7cVrK0RxSG5ZkbBeWWBeCjDA==
   dependencies:
-    "@orval/core" "7.14.0"
-    "@orval/zod" "7.14.0"
-    fs-extra "^11.3.1"
+    "@orval/core" "7.15.0"
+    "@orval/zod" "7.15.0"
+    fs-extra "^11.3.2"
     lodash.uniq "^4.5.0"
     openapi3-ts "4.5.0"
 
-"@orval/mcp@7.14.0":
-  version "7.14.0"
-  resolved "https://registry.npmjs.org/@orval/mcp/-/mcp-7.14.0.tgz#00b5284c53c07cc31a8b4d352d96d4fc2d882e47"
-  integrity sha512-gSvQvzi1/SSRvpA7Kslt5rhcm9+MXCwH+Qg0xJ0R/RtnBwvsBVezsDOvXCLmhrFz+7B6vT5+VHwN264mIrw4xQ==
+"@orval/mcp@7.15.0":
+  version "7.15.0"
+  resolved "https://registry.npmjs.org/@orval/mcp/-/mcp-7.15.0.tgz#376d0da3bbc82f7b3556958bef560656be03dd8e"
+  integrity sha512-unq34kRmLNMCG/9q6Kl5bilHjWIapt2dQfdoeb+02N/Pt870hulgaH3ERFOl23JPOUBW9vj2itbE+Qin5z2/2w==
   dependencies:
-    "@orval/core" "7.14.0"
-    "@orval/fetch" "7.14.0"
-    "@orval/zod" "7.14.0"
+    "@orval/core" "7.15.0"
+    "@orval/fetch" "7.15.0"
+    "@orval/zod" "7.15.0"
     openapi3-ts "4.5.0"
 
-"@orval/mock@7.14.0":
-  version "7.14.0"
-  resolved "https://registry.npmjs.org/@orval/mock/-/mock-7.14.0.tgz#fabe6a11ac2ef8c25280f3dee267df947c68d1b9"
-  integrity sha512-PQgY4guB+v4hnyiNAX9/Zx/ydzInL0ei3NruuBub7zEniuwIrBzHejGOqmFulGlNWRcWvAVrpJP9Arga2oNYKg==
+"@orval/mock@7.15.0":
+  version "7.15.0"
+  resolved "https://registry.npmjs.org/@orval/mock/-/mock-7.15.0.tgz#0099b3c94f67bb72ef41fffb59ebe90c0695e294"
+  integrity sha512-3oe6jfYsOWQVm/3A7T2ABjfjkdXTrNwB+KYn/4IToWtzViQjPQxderrNhB8yH8PmEzqRxkz8vGfqpGSUIfRikQ==
   dependencies:
-    "@orval/core" "7.14.0"
+    "@orval/core" "7.15.0"
     openapi3-ts "4.5.0"
 
-"@orval/query@7.14.0":
-  version "7.14.0"
-  resolved "https://registry.npmjs.org/@orval/query/-/query-7.14.0.tgz#1c2b0367f1ee44b18b640f8510d0dbdd25d589c6"
-  integrity sha512-yo8EN12cDKZwvrQdULMGmVsanQehFK3pxDGTrSM0BTCFowP4Fd407+2TLlRLjAoRFG8/zLs4rCETNvMgPtlo3w==
+"@orval/query@7.15.0":
+  version "7.15.0"
+  resolved "https://registry.npmjs.org/@orval/query/-/query-7.15.0.tgz#136d5fdc7590ab94f9143da8a68acd1e6f58d338"
+  integrity sha512-0SmpZNfisOU4piEWpfynl+O2EKRiH2FS6j5cGewDpsAjmZN7Pqg35h9EGvtYUgFisURH5z8AzB8P8hfVeNjxDA==
   dependencies:
-    "@orval/core" "7.14.0"
-    "@orval/fetch" "7.14.0"
+    "@orval/core" "7.15.0"
+    "@orval/fetch" "7.15.0"
     chalk "^4.1.2"
     lodash.omitby "^4.6.0"
 
-"@orval/swr@7.14.0":
-  version "7.14.0"
-  resolved "https://registry.npmjs.org/@orval/swr/-/swr-7.14.0.tgz#fe8000b6438433a0e26381ebccd2653d8eeea653"
-  integrity sha512-KgD3Z8NGSNo7RT/qjdpzVmPSGlLJ4oBirldYEFFUWe/G9KSi4uSXOuQiBpCO56aqQ6BV38kVQFXM6vvYQ0vn3w==
+"@orval/swr@7.15.0":
+  version "7.15.0"
+  resolved "https://registry.npmjs.org/@orval/swr/-/swr-7.15.0.tgz#6b4e12247fd2f9cd518526367fe6ace298e38e3d"
+  integrity sha512-papSt3cuhxSwIj3xoHz1JYt8Btt+qGHMsjKFoDJK4EYaotZRp5OYSElojJl8aOTyKEYc+3elQNkncReF24azfQ==
   dependencies:
-    "@orval/core" "7.14.0"
-    "@orval/fetch" "7.14.0"
+    "@orval/core" "7.15.0"
+    "@orval/fetch" "7.15.0"
 
-"@orval/zod@7.14.0":
-  version "7.14.0"
-  resolved "https://registry.npmjs.org/@orval/zod/-/zod-7.14.0.tgz#cccdb403fd449deafbf5fb40c2096759b86393e2"
-  integrity sha512-MJN43DxSNccG0sExxFZ92lCeF1kL6D6OaQNDRaxjtm4sdUgTsWdIkifAhyWyuP2ucWsARPfMef19EQT6rzrgwA==
+"@orval/zod@7.15.0":
+  version "7.15.0"
+  resolved "https://registry.npmjs.org/@orval/zod/-/zod-7.15.0.tgz#f844f5a6e2c70a3c2452f2fc42e48edc33a387d6"
+  integrity sha512-E86N+NeZI644zaHVDvDSrwkHTtreatBsnkWkktZVklE4C3eP99h0SmyiUm8l6miA2jXJIh6nF+/sbWdrbkmU7A==
   dependencies:
-    "@orval/core" "7.14.0"
+    "@orval/core" "7.15.0"
     lodash.uniq "^4.5.0"
     openapi3-ts "4.5.0"
 
@@ -7238,10 +7238,10 @@
     "@tailwindcss/oxide" "4.1.16"
     tailwindcss "4.1.16"
 
-"@tanstack/history@1.133.19":
-  version "1.133.19"
-  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.133.19.tgz#6e52020517465347d3a36b9c6851fb385e8fde9f"
-  integrity sha512-Y866qBVVprdQkmO0/W1AFBI8tiQy398vFeIwP+VrRWCOzs3VecxSVzAvaOM4iHfkJz81fFAZMhLLjDVoPikD+w==
+"@tanstack/history@1.133.28":
+  version "1.133.28"
+  resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.133.28.tgz#488a4050b48333b7d983b22cd4712bd234a5e46c"
+  integrity sha512-B7+x7eP2FFvi3fgd3rNH9o/Eixt+pp0zCIdGhnQbAJjFrlwIKGjGnwyJjhWJ5fMQlGks/E2LdDTqEV4W9Plx7g==
 
 "@tanstack/query-core@5.90.5":
   version "5.90.5"
@@ -7267,14 +7267,14 @@
   dependencies:
     "@tanstack/query-core" "5.90.5"
 
-"@tanstack/react-router@1.133.27":
-  version "1.133.27"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.133.27.tgz#b041cc485191b155f1127682c61ec133fe030260"
-  integrity sha512-0q87mjJWhMsnP9SOD/v07lclCxrMuB20CdKi305cTZRIF858ETG0fThUF4LlstiKvxE49Wr+PBY0kwjfY4pUow==
+"@tanstack/react-router@1.133.28":
+  version "1.133.28"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.133.28.tgz#324786835211ed0cc1d398503eda477a42d8aea0"
+  integrity sha512-YV8CmiMRz9JYvMHKGgz35sVCfSrmzXbZKF3CM8EtrcD1ilpoLdGu5avA4cfbqimLJ0SzJdgl1zu0OzvxFwgrKw==
   dependencies:
-    "@tanstack/history" "1.133.19"
+    "@tanstack/history" "1.133.28"
     "@tanstack/react-store" "^0.7.0"
-    "@tanstack/router-core" "1.133.27"
+    "@tanstack/router-core" "1.133.28"
     isbot "^5.1.22"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
@@ -7287,12 +7287,12 @@
     "@tanstack/store" "0.7.0"
     use-sync-external-store "^1.4.0"
 
-"@tanstack/router-core@1.133.27":
-  version "1.133.27"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.133.27.tgz#3ac977e17595ef7d6f7a12ab43874b87d6a98b38"
-  integrity sha512-1nb2CirHC0hZmFr8wEk0gxuExpvuk0jlKOY1+SQ7jcJCxBKHLGvAfhL6ycets3XetrTLzgBEvfuixFj3qYiFwA==
+"@tanstack/router-core@1.133.28":
+  version "1.133.28"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.133.28.tgz#708f7b93b5ef92e050a258fcb68c10b745f35177"
+  integrity sha512-HErb1X9F+u4VzguJKafX1p5fSnNnfo7aK8Xxh5cICFMShPBxt9i1K45nUbQaRkf45N1tg4gJ3l8mlmwWRm9WWA==
   dependencies:
-    "@tanstack/history" "1.133.19"
+    "@tanstack/history" "1.133.28"
     "@tanstack/store" "^0.7.0"
     cookie-es "^2.0.0"
     seroval "^1.3.2"
@@ -12454,7 +12454,7 @@ esbuild-plugins-node-modules-polyfill@^1.6.0:
     local-pkg "^0.5.0"
     resolve.exports "^2.0.2"
 
-esbuild@0.17.6, esbuild@0.25.11, esbuild@0.25.5, esbuild@^0.25.0, esbuild@^0.25.9, "esbuild@npm:esbuild@~0.17.6 || ~0.18.0 || ~0.19.0":
+esbuild@0.17.6, esbuild@0.25.11, esbuild@0.25.5, esbuild@^0.25.0, esbuild@^0.25.11, "esbuild@npm:esbuild@~0.17.6 || ~0.18.0 || ~0.19.0":
   version "0.25.11"
   resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.25.11.tgz#0f31b82f335652580f75ef6897bba81962d9ae3d"
   integrity sha512-KohQwyzrKTQmhXDW1PjCv3Tyspn9n5GcY2RTDqeORIdIJY8yKIF7sTSopFmn/wpMPW4rdPXI0UE5LJLuq3bx0Q==
@@ -13577,7 +13577,7 @@ fs-extra@^10.0.0:
     jsonfile "^6.0.1"
     universalify "^2.0.0"
 
-fs-extra@^11.3.1:
+fs-extra@^11.3.1, fs-extra@^11.3.2:
   version "11.3.2"
   resolved "https://registry.npmjs.org/fs-extra/-/fs-extra-11.3.2.tgz#c838aeddc6f4a8c74dd15f85e11fe5511bfe02a4"
   integrity sha512-Xr9F6z6up6Ws+NjzMCZc6WXg2YFRlrLP9NQDO3VQrWrfiojdhS56TzueT88ze0uBdCTwEIhQ3ptnmKeWGFAe0A==
@@ -18703,38 +18703,38 @@ ora@5.4.1, ora@^5.4.1:
     strip-ansi "^6.0.0"
     wcwidth "^1.0.1"
 
-orval@7.14.0:
-  version "7.14.0"
-  resolved "https://registry.npmjs.org/orval/-/orval-7.14.0.tgz#7c2558f69b5036fce98d16ad092c0a1a5444b731"
-  integrity sha512-m8WGuNmbzZkSaMBwF+uXPS73KOqJGaPaQw6/cM7QNYlcBmZdFg09a3xz9vxfbcSbk4rMr3/aCm8SzVO1ealf+g==
+orval@7.15.0:
+  version "7.15.0"
+  resolved "https://registry.npmjs.org/orval/-/orval-7.15.0.tgz#877a5b2e19cd34c7e8d446130f02b0658371f98c"
+  integrity sha512-uw03ULVDLX2coGbjZalq4sKQj2io6eyhJOqiIFcY76VqiJz9GUxrBvQwaFwyxOEUfy9EoI25c+clAjpYggNeNw==
   dependencies:
-    "@apidevtools/swagger-parser" "^12.0.0"
+    "@apidevtools/swagger-parser" "^12.1.0"
     "@commander-js/extra-typings" "^14.0.0"
-    "@orval/angular" "7.14.0"
-    "@orval/axios" "7.14.0"
-    "@orval/core" "7.14.0"
-    "@orval/fetch" "7.14.0"
-    "@orval/hono" "7.14.0"
-    "@orval/mcp" "7.14.0"
-    "@orval/mock" "7.14.0"
-    "@orval/query" "7.14.0"
-    "@orval/swr" "7.14.0"
-    "@orval/zod" "7.14.0"
+    "@orval/angular" "7.15.0"
+    "@orval/axios" "7.15.0"
+    "@orval/core" "7.15.0"
+    "@orval/fetch" "7.15.0"
+    "@orval/hono" "7.15.0"
+    "@orval/mcp" "7.15.0"
+    "@orval/mock" "7.15.0"
+    "@orval/query" "7.15.0"
+    "@orval/swr" "7.15.0"
+    "@orval/zod" "7.15.0"
     chalk "^4.1.2"
     chokidar "^4.0.3"
     commander "^14.0.1"
     enquirer "^2.4.1"
     execa "^5.1.1"
     find-up "5.0.0"
-    fs-extra "^11.3.1"
+    fs-extra "^11.3.2"
     js-yaml "4.1.0"
     lodash.uniq "^4.5.0"
     openapi3-ts "4.5.0"
     string-argv "^0.3.2"
     tsconfck "^2.1.2"
-    typedoc "^0.28.12"
-    typedoc-plugin-coverage "^4.0.1"
-    typedoc-plugin-markdown "^4.8.1"
+    typedoc "^0.28.14"
+    typedoc-plugin-coverage "^4.0.2"
+    typedoc-plugin-markdown "^4.9.0"
 
 ospath@^1.2.2:
   version "1.2.2"
@@ -23110,20 +23110,20 @@ typedarray@^0.0.6:
   resolved "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typedoc-plugin-coverage@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.npmjs.org/typedoc-plugin-coverage/-/typedoc-plugin-coverage-4.0.1.tgz#27042ed2bbfccc17ac00304718145424659e0b35"
-  integrity sha512-P1QBR5GJSfW3fDrpz4Vkd8z8lzWaBYjaHebRLk0u2Uga0oSFlPaqrCyiHzItBXxZX28aMlNlZwrUnsLgUgqA7g==
+typedoc-plugin-coverage@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.npmjs.org/typedoc-plugin-coverage/-/typedoc-plugin-coverage-4.0.2.tgz#96895bccb0656c1496ba818b000f4baf02223e2f"
+  integrity sha512-mfn0e7NCqB8x2PfvhXrtmd7KWlsNf1+B2N9y8gR/jexXBLrXl/0e+b2HdG5HaTXGi7i0t2pyQY2VRmq7gtdEHQ==
 
-typedoc-plugin-markdown@^4.8.1:
+typedoc-plugin-markdown@^4.9.0:
   version "4.9.0"
   resolved "https://registry.npmjs.org/typedoc-plugin-markdown/-/typedoc-plugin-markdown-4.9.0.tgz#88f37ba2417fc8b93951d457a3a557682ce5e01e"
   integrity sha512-9Uu4WR9L7ZBgAl60N/h+jqmPxxvnC9nQAlnnO/OujtG2ubjnKTVUFY1XDhcMY+pCqlX3N2HsQM2QTYZIU9tJuw==
 
-typedoc@^0.28.12:
-  version "0.28.13"
-  resolved "https://registry.npmjs.org/typedoc/-/typedoc-0.28.13.tgz#8f348898c33242be190e5d395d43758cf14c650c"
-  integrity sha512-dNWY8msnYB2a+7Audha+aTF1Pu3euiE7ySp53w8kEsXoYw7dMouV5A1UsTUY345aB152RHnmRMDiovuBi7BD+w==
+typedoc@^0.28.14:
+  version "0.28.14"
+  resolved "https://registry.npmjs.org/typedoc/-/typedoc-0.28.14.tgz#f48d650efc983b5cb3034b3b0e986b1702074326"
+  integrity sha512-ftJYPvpVfQvFzpkoSfHLkJybdA/geDJ8BGQt/ZnkkhnBYoYW6lBgPQXu6vqLxO4X75dA55hX8Af847H5KXlEFA==
   dependencies:
     "@gerrit0/mini-shiki" "^3.12.0"
     lunr "^2.3.9"
