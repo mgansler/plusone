@@ -5634,12 +5634,12 @@
   resolved "https://registry.npmjs.org/@open-draft/until/-/until-2.1.0.tgz#0acf32f470af2ceaf47f095cdecd40d68666efda"
   integrity sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==
 
-"@openmeteo/sdk@1.21.2", "@openmeteo/sdk@^1.21.1":
-  version "1.21.2"
-  resolved "https://registry.npmjs.org/@openmeteo/sdk/-/sdk-1.21.2.tgz#2dbd3b8841a41f0cb9bbb7d74bde8edb0ef767ab"
-  integrity sha512-AaX53PfPMVAaxdvuthRJePLD46eGYoaGQMEW5A0/xuAjigTQncN4WOhrXlOvg8aG8zfQQVUmhKFDHB/+UCUVoQ==
+"@openmeteo/sdk@1.22.0", "@openmeteo/sdk@^1.22.0":
+  version "1.22.0"
+  resolved "https://registry.npmjs.org/@openmeteo/sdk/-/sdk-1.22.0.tgz#69814d79c1cba5ed75d1dee3e8c2e1216a8640dc"
+  integrity sha512-llo/RbkN8wwOF8XrGe42pMbd3qFLUcBYCkmB3nWb8Ozwd+C47Xb0c2o/AsTmyk2WA6hV9tjXDSvyQWTaUFG6WA==
   dependencies:
-    flatbuffers "^25.2.10"
+    flatbuffers "^25.9.23"
 
 "@orval/angular@7.15.0":
   version "7.15.0"
@@ -13418,10 +13418,10 @@ flat@^5.0.2:
   resolved "https://registry.npmjs.org/flat/-/flat-5.0.2.tgz#8ca6fe332069ffa9d324c327198c598259ceb241"
   integrity sha512-b6suED+5/3rTpUBdG1gupIl8MPFCAMA0QXwmljLhvCUKcUvdE4gWky9zpuGCcXHOsz4J9wPGNWq6OKpmIzz3hQ==
 
-flatbuffers@^25.2.10:
-  version "25.2.10"
-  resolved "https://registry.npmjs.org/flatbuffers/-/flatbuffers-25.2.10.tgz#308b750545f62db670ca4c9d7dbc66161420a95e"
-  integrity sha512-7JlN9ZvLDG1McO3kbX0k4v+SUAg48L1rIwEvN6ZQl/eCtgJz9UylTMzE9wrmYrcorgxm3CX/3T/w5VAub99UUw==
+flatbuffers@^25.9.23:
+  version "25.9.23"
+  resolved "https://registry.npmjs.org/flatbuffers/-/flatbuffers-25.9.23.tgz#346811557fe9312ab5647535e793c761e9c81eb1"
+  integrity sha512-MI1qs7Lo4Syw0EOzUl0xjs2lsoeqFku44KpngfIduHBYvzm8h2+7K8YMQh1JtVVVrUvhLpNwqVi4DERegUJhPQ==
 
 flatted@^3.2.7, flatted@^3.2.9:
   version "3.3.2"
@@ -18629,13 +18629,13 @@ opener@^1.5.1, opener@^1.5.2:
   resolved "https://registry.npmjs.org/opener/-/opener-1.5.2.tgz#5d37e1f35077b9dcac4301372271afdeb2a13598"
   integrity sha512-ur5UIdyw5Y7yEj9wLzhqXiy6GZ3Mwx0yGI+5sMn2r0N0v3cKJvUmFH5yPP+WXh9e0xfyzyJX95D8l088DNFj7A==
 
-openmeteo@1.2.1:
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/openmeteo/-/openmeteo-1.2.1.tgz#3944e96d4c63dd0692a959214d45f9c392afc24b"
-  integrity sha512-BNps/RuJo0tIWhBiEvThO28Df3pU6q7m77wBhuS74FkvYYmrub9+KqzBiMd6XNPhWL4tPfG0iE3tXREy+pkwiQ==
+openmeteo@1.2.2:
+  version "1.2.2"
+  resolved "https://registry.npmjs.org/openmeteo/-/openmeteo-1.2.2.tgz#743a368d5cd2f9a29c633fa076a234665cf4bccf"
+  integrity sha512-n0FeYOFts9Tr/KYajfPvFVaYKd0PDQRuG3xnkgVsyagOI91QkVcSo2+CLIYgN4LlGCCVM5FZ5e+dswSG81PGZA==
   dependencies:
-    "@openmeteo/sdk" "^1.21.1"
-    flatbuffers "^25.2.10"
+    "@openmeteo/sdk" "^1.22.0"
+    flatbuffers "^25.9.23"
 
 optionator@^0.9.3:
   version "0.9.4"
