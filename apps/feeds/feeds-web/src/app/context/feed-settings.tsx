@@ -18,14 +18,13 @@ type FeedSettingsContextProviderProps = {
   children: ReactNode
 }
 
-export function FeedSettingsContextProvider({ children }: FeedSettingsContextProviderProps) {
+export function FeedSettingsContextProvider({ children }: Readonly<FeedSettingsContextProviderProps>) {
   const [sort, setSort] = useState<Sort>(Sort.desc)
   const [includeRead, setIncludeRead] = useState<boolean>(false)
   const [expandContent, setExpandContent] = useState<boolean>(true)
 
   return (
     <FeedSettingsContext.Provider
-      children={children}
       value={{
         sort,
         setSort,
@@ -34,7 +33,9 @@ export function FeedSettingsContextProvider({ children }: FeedSettingsContextPro
         expandContent,
         setExpandContent,
       }}
-    />
+    >
+      {children}
+    </FeedSettingsContext.Provider>
   )
 }
 

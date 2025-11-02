@@ -22,7 +22,7 @@ import { DevicePowerState } from './enum/device-power-state'
 
 @Injectable()
 export class DeviceService implements OnModuleInit {
-  private logger = new Logger(DeviceService.name)
+  private readonly logger = new Logger(DeviceService.name)
 
   constructor(
     private readonly prismaService: PrismaService,

@@ -7,16 +7,12 @@ import { useIsDesktop } from '../use-is-desktop'
 
 import { getChartHeight, getChartWidth } from './shared'
 
-export function getXForTimestamp(
-  ts: number,
-  timestamps: Array<WeatherDataResponseDto['time']>,
-  isDesktop: boolean,
-): number {
+export function getXForTimestamp(timestamps: Array<WeatherDataResponseDto['time']>, isDesktop: boolean): number {
   const firstTs = new Date(timestamps[0])
   const lastTs = new Date(timestamps[timestamps.length - 1])
 
   const end = lastTs.valueOf() - firstTs.valueOf()
-  const now = ts - firstTs.valueOf()
+  const now = Date.now() - firstTs.valueOf()
 
   return (getChartWidth(isDesktop) / end) * now
 }
@@ -27,7 +23,7 @@ type NowAndSliderProps = {
 }
 export function NowAndSlider({ sliderIndex, timestamps }: Readonly<NowAndSliderProps>) {
   const isDesktop = useIsDesktop()
-  const xForCurrentTimestamp = getXForTimestamp(Date.now(), timestamps, isDesktop)
+  const xForCurrentTimestamp = getXForTimestamp(timestamps, isDesktop)
 
   return (
     <Fragment>

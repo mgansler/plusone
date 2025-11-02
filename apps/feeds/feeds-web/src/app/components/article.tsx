@@ -2,7 +2,7 @@ import { CheckBoxOutlineBlank, CheckBoxOutlined, OpenInNew, Star, StarOutline } 
 import { Card, CardContent, CardHeader, Container, IconButton, useTheme } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import type { RefObject } from 'react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 
 import {
   getFindArticlesInfiniteQueryKey,
@@ -50,7 +50,7 @@ function useMarkArticleStarred() {
 }
 
 function subheader({ date }: ArticleDto): string {
-  const dateString = new Date(date).toLocaleString([], {
+  return new Date(date).toLocaleString([], {
     weekday: 'long',
     day: '2-digit',
     month: '2-digit',
@@ -58,8 +58,6 @@ function subheader({ date }: ArticleDto): string {
     hour: '2-digit',
     minute: '2-digit',
   })
-
-  return dateString
 }
 
 type ArticleProps = {
@@ -68,13 +66,14 @@ type ArticleProps = {
   scrollTargetRef?: RefObject<HTMLDivElement | undefined>
 }
 
-export function Article({ article: { article, unread, starred }, selectedArticle, scrollTargetRef }: ArticleProps) {
+export function Article({
+  article: { article, unread, starred },
+  selectedArticle,
+  scrollTargetRef,
+}: Readonly<ArticleProps>) {
   const theme = useTheme()
 
   const { expandContent } = useFeedSettingsContext()
-  const [showContent, setShowContent] = useState<boolean>(expandContent)
-
-  useEffect(() => setShowContent(expandContent), [expandContent])
 
   const readArticle = useReadArticle()
   const starArticle = useMarkArticleStarred()
@@ -106,7 +105,7 @@ export function Article({ article: { article, unread, starred }, selectedArticle
             </IconButton>
           }
         />
-        {showContent && (
+        {expandContent && (
           <CardContent>
             <Container
               sx={{

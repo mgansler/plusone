@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import {
   useValidatedSunriseSunsetDataForTrailArea,
@@ -21,6 +21,12 @@ type TrailAreaProps = {
 export function TrailArea({ trailAreaId, threshold = 0.3, hours }: Readonly<TrailAreaProps>) {
   const isDesktop = useIsDesktop()
 
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => {
+    const interval = setInterval(() => setNow(Date.now()), 60_000) // Update every minute
+    return () => clearInterval(interval)
+  }, [])
+
   const { data: trails } = useValidatedTrailsForTrailArea(trailAreaId)
   const { data: sunriseSunset } = useValidatedSunriseSunsetDataForTrailArea({ trailAreaId, days: hours / 24 })
   const { data: weather } = useValidatedWeatherDataForTrailArea(
@@ -39,7 +45,6 @@ export function TrailArea({ trailAreaId, threshold = 0.3, hours }: Readonly<Trai
     return <div>Sorry, there is currently no weather data available, check again later.</div>
   }
 
-  const now = Date.now()
   const rainPast24h = weather.reduce((previousValue, currentValue) => {
     const currentTs = new Date(currentValue.time)
     if (currentTs.valueOf() <= now && currentTs.valueOf() >= now - 24 * 60 * 60 * 1_000) {

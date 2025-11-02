@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@mui/material'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import type { MutableRefObject } from 'react'
+import type { RefObject } from 'react'
 import React, { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
@@ -65,10 +65,10 @@ const useFetchRepositoryData = ({ organizationName, queryString }: UseFetchRepos
 }
 
 type RepositoryOverviewProps = {
-  toolbarRef: MutableRefObject<HTMLDivElement>
+  toolbarRef: RefObject<HTMLDivElement>
 }
 
-export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
+export function RepositoryOverview({ toolbarRef }: Readonly<RepositoryOverviewProps>) {
   const theme = useTheme()
 
   // Get the request params
@@ -114,7 +114,7 @@ export function RepositoryOverview({ toolbarRef }: RepositoryOverviewProps) {
 
   return (
     <React.Fragment>
-      <Portal container={toolbarRef.current}>
+      <Portal container={() => toolbarRef.current}>
         <TextField
           sx={{ minWidth: 200 }}
           id={'repository-name'}
