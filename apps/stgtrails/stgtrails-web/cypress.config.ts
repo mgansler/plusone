@@ -3,6 +3,8 @@ import { defineConfig } from 'cypress'
 
 export default defineConfig({
   reporter: 'junit',
+  viewportWidth: 1920,
+  viewportHeight: 1080,
   reporterOptions: {
     mochaFile: '../../../reports/component-test/stgtrails-web-[hash].xml',
   },

@@ -34,7 +34,7 @@ export function getSunsetString(date: Date, sunriseSunsetData: Array<SunriseSuns
       `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`,
   )
   return sunriseSunsetForDay
-    ? i18next.t(['svg.sunset'], { time: new Date(sunriseSunsetForDay.sunset).toLocaleTimeString() })
+    ? i18next.t(['svg.sunset']) + ' ' + new Date(sunriseSunsetForDay.sunset).toLocaleTimeString()
     : ''
 }
 

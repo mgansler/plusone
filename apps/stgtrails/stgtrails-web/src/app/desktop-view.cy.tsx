@@ -23,11 +23,11 @@ describe('DesktopView', () => {
       cy.get('polyline[id=temperature]').should('be.visible')
       cy.get('polyline[id=moisture]').should('be.visible')
 
-      // Depending on the locale of the browser used in testing we get 18:00:00 or 6:00:00 PM
-      cy.findAllByText(/Sunset at.+/i)
+      // Depending on the locale of the browser used in testing, we get 18:00:00 or 6:00:00 PM
+      cy.findAllByText(/svg.sunset.+/i)
         .eq(0)
         .should('include.text', ':00:00')
-      cy.findAllByText(/Sunset at.+/i)
+      cy.findAllByText(/svg.sunset.+/i)
         .eq(1)
         .should('include.text', ':10:00')
     })
