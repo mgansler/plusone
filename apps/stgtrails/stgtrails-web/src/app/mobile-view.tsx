@@ -1,6 +1,7 @@
 import './mobile.css'
 
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
@@ -15,6 +16,7 @@ type MobileViewProps = {
 }
 
 export function MobileView({ weather, sunriseSunset, threshold }: Readonly<MobileViewProps>) {
+  const { t } = useTranslation()
   const indexOfToday = weather.findIndex((day) => new Date(day[0].time).getDate() === new Date().getDate())
   const [currentIndex, setCurrentIndex] = useState(indexOfToday)
 
@@ -99,13 +101,13 @@ export function MobileView({ weather, sunriseSunset, threshold }: Readonly<Mobil
 
         <div className={'day-controls'}>
           <button onClick={handlePrev} disabled={!canGoLeft} className="control-button">
-            ← {WEEKDAYS[(currentWeekdayIndex - 1) % 7]}
+            ← {t([WEEKDAYS[(currentWeekdayIndex + 6) % 7]])}
           </button>
           <button onClick={handleToday} disabled={currentIndex === indexOfToday} className="control-button">
-            Today
+            {t(['svg.weekdays.today'])}
           </button>
           <button onClick={handleNext} disabled={!canGoRight} className="control-button">
-            {WEEKDAYS[(currentWeekdayIndex + 1) % 7]} →
+            {t([WEEKDAYS[(currentWeekdayIndex + 1) % 7]])} →
           </button>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Fragment } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import type { WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
@@ -18,6 +19,7 @@ type SoilTemperatureProps = {
 }
 
 export function SoilTemperature({ weather, sliderIndex }: Readonly<SoilTemperatureProps>) {
+  const { t } = useTranslation()
   const isDesktop = useIsDesktop()
 
   if (!mightBeFreezing(weather)) {
@@ -86,7 +88,7 @@ export function SoilTemperature({ weather, sliderIndex }: Readonly<SoilTemperatu
         )}
         y={getYForTemperature(weather[sliderIndex].soilTemperature0cm, isDesktop) - 5}
       >
-        {`Soil Temperature: ${weather[sliderIndex].soilTemperature0cm.toFixed(1)}˚C`}
+        {t(['svg.soilTemperature'], { amount: weather[sliderIndex].soilTemperature0cm.toFixed(1) })}
       </text>
     </Fragment>
   )

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Fragment } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import type { WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
@@ -22,6 +23,7 @@ type NowAndSliderProps = {
   timestamps: Array<WeatherDataResponseDto['time']>
 }
 export function NowAndSlider({ sliderIndex, timestamps }: Readonly<NowAndSliderProps>) {
+  const { t } = useTranslation()
   const isDesktop = useIsDesktop()
   const xForCurrentTimestamp = getXForTimestamp(timestamps, isDesktop)
 
@@ -32,7 +34,7 @@ export function NowAndSlider({ sliderIndex, timestamps }: Readonly<NowAndSliderP
             <Fragment>
               {isDesktop ? (
                 <text x={xForCurrentTimestamp + 5} y={66}>
-                  Now
+                  {t(['svg.now'])}
                 </text>
               ) : null}
               <line

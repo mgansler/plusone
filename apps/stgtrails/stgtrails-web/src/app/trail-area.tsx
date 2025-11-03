@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import {
   useValidatedSunriseSunsetDataForTrailArea,
@@ -19,6 +20,7 @@ type TrailAreaProps = {
 }
 
 export function TrailArea({ trailAreaId, threshold = 0.3, hours }: Readonly<TrailAreaProps>) {
+  const { t } = useTranslation()
   const isDesktop = useIsDesktop()
 
   const [now, setNow] = useState(() => Date.now())
@@ -63,7 +65,7 @@ export function TrailArea({ trailAreaId, threshold = 0.3, hours }: Readonly<Trai
         </ul>
       ) : null}
 
-      <div style={{ marginLeft: '5px' }}>The total amount of rain over the past 24h was {rainPast24h.toFixed(1)}l.</div>
+      <div style={{ marginLeft: '5px' }}>{t(['rainPast24h'], { amount: rainPast24h.toFixed(1) })}</div>
 
       {isDesktop ? (
         <DesktopView threshold={threshold} weather={weather} sunriseSunset={sunriseSunset} key={weather.length} />
