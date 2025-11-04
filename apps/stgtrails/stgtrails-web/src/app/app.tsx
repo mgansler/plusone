@@ -1,5 +1,6 @@
 import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useValidatedCountryList, useValidatedTrailAreas } from '@plusone/stgtrails-api-client'
 
@@ -10,6 +11,7 @@ import { AnyCountryOrState, useTrailAreaFilter } from './use-trail-area-filter'
 import { useTrailAreaId } from './use-trail-area-id'
 
 export function App() {
+  const { t } = useTranslation()
   const trailAreaFilter = useTrailAreaFilter()
   const navigate = useNavigate()
 
@@ -37,7 +39,7 @@ export function App() {
     <div className="app">
       <div className={'header-controls'}>
         <label>
-          <span>Country</span>
+          <span>{t(['filter.country.label'])}</span>
           <select
             name={'country'}
             value={trailAreaFilter.country}
@@ -50,17 +52,17 @@ export function App() {
               }
             }}
           >
-            <option value="any">All</option>
+            <option value="any">{t(['filter.all'])}</option>
             {distinctCountries.map((country) => (
               <option key={country} value={country}>
-                {country}
+                {t([`filter.country.${country}`])}
               </option>
             ))}
           </select>
         </label>
         {trailAreaFilter.country === AnyCountryOrState ? null : (
           <label>
-            <span>State</span>
+            <span>{t(['filter.state.label'])}</span>
             <select
               name={'state'}
               value={trailAreaFilter.state}
@@ -76,19 +78,19 @@ export function App() {
                 }
               }}
             >
-              <option value="any">All</option>
+              <option value="any">{t(['filter.all'])}</option>
               {countries
                 ?.filter(({ country }) => country === trailAreaFilter.country)
                 .map((value) => (
                   <option key={value.state} value={value.state}>
-                    {value.state}
+                    {t([`filter.state.${trailAreaFilter.country}.${value.state}`])}
                   </option>
                 ))}
             </select>
           </label>
         )}
         <label>
-          <span>Trail Area</span>
+          <span>{t(['filter.trailArea'])}</span>
           <select
             name={'trail-area'}
             onChange={(event) => {
@@ -112,11 +114,11 @@ export function App() {
         </label>
 
         <label>
-          <span>Past days</span>
+          <span>{t(['filter.pastDays.label'])}</span>
           <select name={'past-days'} onChange={(event) => setHours(Number(event.currentTarget.value))}>
             {[1, 2, 3, 4, 5, 6, 7].map((days) => (
               <option key={days} value={days * 24 + 72}>
-                {days} day{days > 1 ? 's' : ''}
+                {t(['filter.pastDays.value'], { count: days })}
               </option>
             ))}
           </select>

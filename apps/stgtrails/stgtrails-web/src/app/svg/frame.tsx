@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Fragment } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import type { SunriseSunsetResponseDto } from '@plusone/stgtrails-api-client'
 
@@ -20,6 +21,7 @@ type FrameProps = {
 }
 
 export function Frame({ timestamps, sunriseSunset }: Readonly<FrameProps>) {
+  const { t } = useTranslation()
   const isDesktop = useIsDesktop()
 
   return (
@@ -42,7 +44,7 @@ export function Frame({ timestamps, sunriseSunset }: Readonly<FrameProps>) {
             return (
               <Fragment key={datetime.toLocaleDateString()}>
                 <text x={x + 5} y={20}>
-                  {WEEKDAYS[datetime.getDay()]}, {datetime.toLocaleDateString()}
+                  {t([WEEKDAYS[datetime.getDay()]])}, {datetime.toLocaleDateString()}
                 </text>
                 <text x={x + 5} y={36}>
                   {getSunsetString(datetime, sunriseSunset)}

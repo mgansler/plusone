@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import type { WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
@@ -12,6 +13,7 @@ type WindGustWarningsProps = {
 }
 
 export function WindGustWarnings({ weather, threshold = 30 }: Readonly<WindGustWarningsProps>) {
+  const { t } = useTranslation()
   const isDesktop = useIsDesktop()
 
   if (!weather || weather.length === 0) return null
@@ -45,7 +47,7 @@ export function WindGustWarnings({ weather, threshold = 30 }: Readonly<WindGustW
         return (
           <g key={`gust-warning-${date.toISOString()}`}>
             <text x={x} y={y} fill={'#b30000'} fontSize={12} fontWeight={600}>
-              {`⚠️ Wind gusts > ${threshold} km/h`}
+              {t(['svg.windGusts'], { amount: threshold })}
             </text>
           </g>
         )

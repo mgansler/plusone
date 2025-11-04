@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Fragment } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import type { WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
@@ -17,6 +18,7 @@ type RainPerHourProps = {
   sliderIndex: number
 }
 export function RainPerHour({ weather, sliderIndex }: Readonly<RainPerHourProps>) {
+  const { t } = useTranslation()
   const isDesktop = useIsDesktop()
 
   return (
@@ -56,7 +58,7 @@ export function RainPerHour({ weather, sliderIndex }: Readonly<RainPerHourProps>
         x={Math.min(getChartWidth(isDesktop) - 90, (getChartWidth(isDesktop) / (weather.length - 1)) * sliderIndex + 5)}
         y={getChartHeight(isDesktop) - 15}
       >
-        {`Rain: ${weather[sliderIndex].rain.toFixed(2)} l/m\xB2`}
+        {t(['svg.rain'], { amount: weather[sliderIndex].rain.toFixed(2) })}
       </text>
     </Fragment>
   )

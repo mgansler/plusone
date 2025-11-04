@@ -1,11 +1,21 @@
 import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
+import i18next from '../../i18n'
+
 // @ts-expect-error global var
 export const getChartWidth = (isDesktop: boolean) => (isDesktop ? 980 : window.__stgtrails.svgWidth)
 // @ts-expect-error global var
 export const getChartHeight = (isDesktop: boolean) => (isDesktop ? 600 : window.__stgtrails.svgHeight)
 
-export const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+export const WEEKDAYS = [
+  'svg.weekdays.sunday',
+  'svg.weekdays.monday',
+  'svg.weekdays.tuesday',
+  'svg.weekdays.wednesday',
+  'svg.weekdays.thursday',
+  'svg.weekdays.friday',
+  'svg.weekdays.saturday',
+]
 
 export function getXForTimestamp(ts: number, weather: Array<WeatherDataResponseDto>, isDesktop: boolean): number {
   const firstTs = new Date(weather[0].time)
@@ -23,7 +33,9 @@ export function getSunsetString(date: Date, sunriseSunsetData: Array<SunriseSuns
       sunriseSunsetResponse.date ===
       `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`,
   )
-  return sunriseSunsetForDay ? `Sunset at ${new Date(sunriseSunsetForDay.sunset).toLocaleTimeString()}` : ''
+  return sunriseSunsetForDay
+    ? i18next.t(['svg.sunset']) + ' ' + new Date(sunriseSunsetForDay.sunset).toLocaleTimeString()
+    : ''
 }
 
 export function mightBeFreezing(weather: Array<WeatherDataResponseDto>) {
