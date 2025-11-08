@@ -41,13 +41,6 @@
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/plugins/nx-prisma"],
-      "options": {
-        "jestConfig": "libs/plugins/nx-prisma/jest.config.ts"
-      }
     }
   }
 }

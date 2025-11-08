@@ -6,6 +6,9 @@
   "tags": [],
   "implicitDependencies": ["plugins-nx-prisma"],
   "targets": {
+    "prisma-validate": {
+      "executor": "@mgansler/nx-prisma:validate"
+    },
     "prisma-format": {
       "executor": "@mgansler/nx-prisma:format"
     },
@@ -16,10 +19,7 @@
       "executor": "@mgansler/nx-prisma:deploy"
     },
     "prisma-migrate": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "yarn prisma migrate dev --schema libs/stgtrails/persistence/src/lib/schema.prisma"
-      }
+      "executor": "@mgansler/nx-prisma:migrate"
     },
     "prisma-push": {
       "executor": "@mgansler/nx-prisma:push",

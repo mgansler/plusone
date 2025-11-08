@@ -6,10 +6,10 @@
   "description": "",
   "type": "object",
   "properties": {
-    "schema": {
-      "description": "Path to Prisma schema in src directory.",
+    "config": {
+      "description": "Path to Prisma config.",
       "type": "string",
-      "default": "lib/schema.prisma"
+      "default": "prisma.config.ts"
     }
   },
   "required": []

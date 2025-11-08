@@ -1,3 +1,3 @@
-export type FormatExecutorSchema = {
-  schema: string
+export type PushExecutorSchema = {
+  config: string
 }

@@ -1,12 +1,12 @@
 import { spawn } from 'node:child_process'
-import { resolve } from 'node:path'
+import { resolve } from 'path'
 
 import type { ExecutorContext } from '@nx/devkit'
 
-import type { FormatExecutorSchema } from './schema'
+import type { ValidateExecutorSchema } from './schema'
 
 export default async function runExecutor(
-  options: FormatExecutorSchema,
+  options: ValidateExecutorSchema,
   context: ExecutorContext,
 ): Promise<{ success: boolean }> {
   if (!context.projectName) {
@@ -14,13 +14,13 @@ export default async function runExecutor(
   }
 
   const configPath = resolve(context.projectsConfigurations.projects[context.projectName].root, options.config)
-  const prismaFormat = spawn('yarn', ['prisma', '--config', configPath, 'format'])
+  const prismaValidate = spawn('yarn', ['prisma', '--config', configPath, 'validate'])
 
   return new Promise((resolve) => {
-    prismaFormat.stdout.on('data', (data) => console.log(data.toString()))
-    prismaFormat.stderr.on('data', (data) => console.error(data.toString()))
+    prismaValidate.stdout.on('data', (data) => console.log(data.toString()))
+    prismaValidate.stderr.on('data', (data) => console.error(data.toString()))
 
-    prismaFormat.on('close', (code) => {
+    prismaValidate.on('close', (code) => {
       resolve({ success: code === 0 })
     })
   })

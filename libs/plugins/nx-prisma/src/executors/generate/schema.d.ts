@@ -1,3 +1,3 @@
-export type BuildExecutorSchema = {
-  schema: string
+export type GenerateExecutorSchema = {
+  config: string
 }
