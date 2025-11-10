@@ -2549,10 +2549,10 @@
     tunnel-agent "^0.6.0"
     uuid "^8.3.2"
 
-"@cypress/webpack-dev-server@5.1.4":
-  version "5.1.4"
-  resolved "https://registry.npmjs.org/@cypress/webpack-dev-server/-/webpack-dev-server-5.1.4.tgz#def44b5791c8af27c96ac78771d70c373176b570"
-  integrity sha512-2tfOHSzO4nJQTQyb/nu1j64dN/PXz7HoKYJTnP4DqRbUlU1rXzrcaVwU/+7m5htlFL3t28LkII3CLdAneLSudw==
+"@cypress/webpack-dev-server@5.1.5":
+  version "5.1.5"
+  resolved "https://registry.npmjs.org/@cypress/webpack-dev-server/-/webpack-dev-server-5.1.5.tgz#9a835c16b46864043b4aac9204b6672ecbba4453"
+  integrity sha512-tc9zGSDR0LPF2taO5zJoodBJ2j7ApDkz7BwHxVRKdsXxuNTBaDlyJ2wwShpZUEydBJtq+o7EDWR3rWOpx3Dxgw==
   dependencies:
     find-up "6.3.0"
     fs-extra "9.1.0"
@@ -2561,6 +2561,7 @@
     semver "^7.7.1"
     speed-measure-webpack-plugin "1.4.2"
     tslib "^2.3.1"
+    tsx "^4.20.6"
     webpack-bundle-analyzer "4.10.2"
     webpack-dev-server "^5.1.0"
     webpack-merge "^5.4.0"
@@ -12478,7 +12479,7 @@ esbuild-plugins-node-modules-polyfill@^1.6.0:
     local-pkg "^0.5.0"
     resolve.exports "^2.0.2"
 
-esbuild@0.17.6, esbuild@0.25.12, esbuild@0.25.5, esbuild@^0.25.0, esbuild@^0.25.11, "esbuild@npm:esbuild@~0.17.6 || ~0.18.0 || ~0.19.0":
+esbuild@0.17.6, esbuild@0.25.12, esbuild@0.25.5, esbuild@^0.25.0, esbuild@^0.25.11, "esbuild@npm:esbuild@~0.17.6 || ~0.18.0 || ~0.19.0", esbuild@~0.25.0:
   version "0.25.12"
   resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.25.12.tgz#97a1d041f4ab00c2fce2f838d2b9969a2d2a97a5"
   integrity sha512-bbPBYYrtZbkt6Os6FiTLCTFxvq4tt3JKall1vRwshA3fdVztsLAatFaZobhkBC8/BrPetoa0oksYoKXoG4ryJg==
@@ -13826,6 +13827,13 @@ get-them-args@1.3.2:
   version "1.3.2"
   resolved "https://registry.npmjs.org/get-them-args/-/get-them-args-1.3.2.tgz#74a20ba8a4abece5ae199ad03f2bcc68fdfc9ba5"
   integrity sha512-LRn8Jlk+DwZE4GTlDbT3Hikd1wSHgLMme/+7ddlqKd7ldwR6LjJgTVWzBnR01wnYGe4KgrXjg287RaI22UHmAw==
+
+get-tsconfig@^4.7.5:
+  version "4.13.0"
+  resolved "https://registry.npmjs.org/get-tsconfig/-/get-tsconfig-4.13.0.tgz#fcdd991e6d22ab9a600f00e91c318707a5d9a0d7"
+  integrity sha512-1VKTZJCwBrvbd+Wn3AOgQP/2Av+TfTCOlE4AcRJE72W1ksZXbAx8PPBR9RzgTeSPzlPMHrbANMH3LbltH73wxQ==
+  dependencies:
+    resolve-pkg-maps "^1.0.0"
 
 getpass@^0.1.1:
   version "0.1.7"
@@ -20761,6 +20769,11 @@ resolve-from@^4.0.0:
   resolved "https://registry.npmjs.org/resolve-from/-/resolve-from-4.0.0.tgz#4abcd852ad32dd7baabfe9b40e00a36db5f392e6"
   integrity sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==
 
+resolve-pkg-maps@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/resolve-pkg-maps/-/resolve-pkg-maps-1.0.0.tgz#616b3dc2c57056b5588c31cdf4b3d64db133720f"
+  integrity sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==
+
 resolve.exports@2.0.3, resolve.exports@^2.0.2:
   version "2.0.3"
   resolved "https://registry.npmjs.org/resolve.exports/-/resolve.exports-2.0.3.tgz#41955e6f1b4013b7586f873749a635dea07ebe3f"
@@ -22980,6 +22993,16 @@ tsscmp@1.0.6:
   version "1.0.6"
   resolved "https://registry.npmjs.org/tsscmp/-/tsscmp-1.0.6.tgz#85b99583ac3589ec4bfef825b5000aa911d605eb"
   integrity sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==
+
+tsx@^4.20.6:
+  version "4.20.6"
+  resolved "https://registry.npmjs.org/tsx/-/tsx-4.20.6.tgz#8fb803fd9c1f70e8ccc93b5d7c5e03c3979ccb2e"
+  integrity sha512-ytQKuwgmrrkDTFP4LjR0ToE2nqgy886GpvRSpU0JAnrdBYppuY5rLkRUYPU1yCryb24SsKBTL/hlDQAEFVwtZg==
+  dependencies:
+    esbuild "~0.25.0"
+    get-tsconfig "^4.7.5"
+  optionalDependencies:
+    fsevents "~2.3.3"
 
 tunnel-agent@^0.6.0:
   version "0.6.0"
