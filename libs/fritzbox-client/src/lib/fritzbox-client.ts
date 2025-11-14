@@ -21,10 +21,13 @@ export class FritzboxClient {
   private sid: string | undefined
   private readonly axiosInstance: AxiosInstance
 
+  public readonly tr064: AvmServices
+
   private constructor(
     private readonly config: FritzBoxConfig,
-    public readonly tr064: AvmServices,
+    tr064: AvmServices,
   ) {
+    this.tr064 = tr064
     this.axiosInstance = axios.create({
       baseURL: `https://${config.host}`,
       httpsAgent: new Agent({
