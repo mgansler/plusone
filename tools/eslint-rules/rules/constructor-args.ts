@@ -68,7 +68,7 @@ export const rule = ESLintUtils.RuleCreator(() => __filename)({
                 // Replace 'public' with 'private'
                 const sourceCode = context.sourceCode
                 const tokenBefore = sourceCode.getFirstToken(param)
-                if (tokenBefore && tokenBefore.value === 'public') {
+                if (tokenBefore?.value === 'public') {
                   // If also missing readonly, replace with 'private readonly'
                   if (!isReadonly) {
                     return fixer.replaceText(tokenBefore, 'private readonly')
