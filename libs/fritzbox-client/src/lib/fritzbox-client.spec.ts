@@ -3,6 +3,7 @@ import { setupServer } from 'msw/node'
 
 import type { AvmServices } from './fritzbox-client'
 import { FritzboxClient } from './fritzbox-client'
+import { HostsService } from './services/hosts'
 import { OnTelService } from './services/ontel'
 import { TamService } from './services/tam'
 import { Tr064 } from './tr064/tr064'
@@ -105,6 +106,7 @@ describe('fritzboxClient', () => {
 
   describe('services', () => {
     it.each([
+      { name: 'hosts', type: HostsService },
       { name: 'tam', type: TamService },
       { name: 'onTel', type: OnTelService },
     ])(`with name $name should exist`, ({ name, type }) => {
