@@ -29,6 +29,7 @@ module.exports = [
           ],
         },
       ],
+      '@nx/workspace-constructor-args': 'error',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
