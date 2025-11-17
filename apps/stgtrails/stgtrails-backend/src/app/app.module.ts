@@ -15,6 +15,8 @@ import { AdminController } from './admin.controller'
 import { AppService } from './app.service'
 import { configSchema } from './config'
 import { HealthController } from './health.controller'
+import { InviteController } from './invite.controller'
+import { InviteService } from './invite.service'
 import { OsmService } from './osm.service'
 import { SunriseSunsetController } from './sunrise-sunset.controller'
 import { SunriseSunsetService } from './sunrise-sunset.service'
@@ -41,10 +43,18 @@ import { WeatherService } from './weather.service'
     TerminusModule,
     PrismaModule,
   ],
-  controllers: [AdminController, HealthController, SunriseSunsetController, TrailAreaController, WeatherController],
+  controllers: [
+    AdminController,
+    HealthController,
+    InviteController,
+    SunriseSunsetController,
+    TrailAreaController,
+    WeatherController,
+  ],
   providers: [
     // Services
     AppService,
+    InviteService,
     OsmService,
     SunriseSunsetApiService,
     SunriseSunsetService,

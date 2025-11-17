@@ -73,3 +73,16 @@ model WeatherData {
 
   @@unique([trailAreaId, time])
 }
+
+model Invite {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  code String @unique
+
+  createdAt  DateTime  @default(now())
+  expiresAt  DateTime
+  acceptedAt DateTime?
+
+  accepted Boolean @default(false)
+  expired  Boolean @default(false)
+}

@@ -461,6 +461,49 @@
         ]
       }
     },
+    "/api/invite/createInvite": {
+      "post": {
+        "operationId": "createInvite",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "invite"
+        ]
+      }
+    },
+    "/api/invite/accept/{inviteId}": {
+      "get": {
+        "operationId": "InviteController_acceptInvite",
+        "parameters": [
+          {
+            "name": "inviteId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "invite"
+        ]
+      }
+    },
     "/api/sunrise-sunset": {
       "get": {
         "operationId": "getSunriseSunsetForTrailArea",
