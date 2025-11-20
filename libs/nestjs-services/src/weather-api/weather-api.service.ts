@@ -18,6 +18,8 @@ export class WeatherApiService {
   private static readonly WEATHER_VARIABLES = {
     temperature2m: 'temperature_2m',
     rain: 'rain',
+    snowfall: 'snowfall',
+    snowDepth: 'snow_depth',
     soilMoisture0To1cm: 'soil_moisture_0_to_1cm',
     soilMoisture1To3cm: 'soil_moisture_1_to_3cm',
     soilMoisture3To9cm: 'soil_moisture_3_to_9cm',

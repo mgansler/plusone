@@ -16,11 +16,11 @@ export class UsernamePasswordStrategy extends PassportStrategy(BasicStrategy) im
     if (this.appConfig.get(ADMIN_PASSWORD) === undefined) {
       const generatedPassword = v4()
       this.appConfig.set(ADMIN_PASSWORD, generatedPassword)
-      console.log(
+      console.info(
         `Using a generated password for admin user ['${this.appConfig.get(ADMIN_USERNAME)}': '${generatedPassword}']`,
       )
     } else {
-      console.log(`Using provided password for admin user ['${this.appConfig.get(ADMIN_USERNAME)}': '***']`)
+      console.info(`Using provided password for admin user ['${this.appConfig.get(ADMIN_USERNAME)}': '***']`)
     }
   }
 

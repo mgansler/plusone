@@ -58,6 +58,8 @@ model WeatherData {
   time                DateTime
   temperature2m       Float
   rain                Float
+  snowfall            Float
+  snowDepth           Float
   soilMoisture0To1cm  Float
   soilMoisture1To3cm  Float
   soilMoisture3To9cm  Float

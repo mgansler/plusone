@@ -53,6 +53,8 @@ describe('TrailAreaController', () => {
   const password = process.env[ADMIN_PASSWORD]
 
   beforeAll(async () => {
+    const consoleInfoSpy = jest.spyOn(console, 'info').mockImplementation(() => undefined)
+
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
     })
@@ -68,6 +70,8 @@ describe('TrailAreaController', () => {
     app.useGlobalPipes(new ValidationPipe())
     app.setGlobalPrefix('api')
     await app.init()
+
+    expect(consoleInfoSpy).toHaveBeenCalledWith("Using provided password for admin user ['admin': '***']")
   })
 
   afterAll(async () => {

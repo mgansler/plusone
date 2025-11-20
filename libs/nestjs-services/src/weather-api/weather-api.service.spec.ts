@@ -9,6 +9,8 @@ describe('getHourlyWeatherVariables', () => {
     expect(WeatherApiService.HOURLY_WEATHER_VARIABLES).toEqual([
       'temperature_2m',
       'rain',
+      'snowfall',
+      'snow_depth',
       'soil_moisture_0_to_1cm',
       'soil_moisture_1_to_3cm',
       'soil_moisture_3_to_9cm',

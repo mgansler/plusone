@@ -33,6 +33,8 @@ describe('WeatherService', () => {
               time: [new Date(1_000), new Date(2_000), new Date(3_000)],
               temperature2m: [10, 11, 12],
               rain: [0, 1, 2],
+              snowfall: [0, 0.01, 0.02],
+              snowDepth: [0, 0.0001, 0.0002],
               soilMoisture0To1cm: [0.2, 0.25, 0.3],
               soilMoisture1To3cm: [0.3, 0.35, 0.4],
               soilMoisture3To9cm: [0.4, 0.45, 0.5],

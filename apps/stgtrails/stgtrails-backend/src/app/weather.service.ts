@@ -75,6 +75,8 @@ export class WeatherService {
               time: currentValue,
               temperature2m: weatherData.temperature2m[currentIndex],
               rain: weatherData.rain[currentIndex],
+              snowfall: weatherData.snowfall[currentIndex],
+              snowDepth: weatherData.snowDepth[currentIndex],
               soilMoisture0To1cm: weatherData.soilMoisture0To1cm[currentIndex],
               soilMoisture1To3cm: weatherData.soilMoisture1To3cm[currentIndex],
               soilMoisture3To9cm: weatherData.soilMoisture3To9cm[currentIndex],
