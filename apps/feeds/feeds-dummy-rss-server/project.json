@@ -26,6 +26,7 @@
     },
     "serve": {
       "executor": "@nx/js:node",
+      "continuous": true,
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "feeds-dummy-rss-server:build"

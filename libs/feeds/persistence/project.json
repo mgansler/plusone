@@ -16,7 +16,12 @@
       "executor": "@mgansler/nx-prisma:generate"
     },
     "prisma-deploy": {
-      "executor": "@mgansler/nx-prisma:deploy"
+      "executor": "@mgansler/nx-prisma:deploy",
+      "dependsOn": [
+        {
+          "target": "docker-compose"
+        }
+      ]
     },
     "prisma-migrate": {
       "executor": "@mgansler/nx-prisma:migrate"
@@ -28,6 +33,13 @@
           "target": "prisma-generate"
         }
       ]
+    },
+    "docker-compose": {
+      "executor": "@mgansler/nx-prisma:docker-compose",
+      "options": {
+        "path": "../../../apps/feeds/docker-compose.database.yml",
+        "readyLogStatement": "database system is ready to accept connections"
+      }
     },
     "lint": {
       "executor": "@nx/eslint:lint",

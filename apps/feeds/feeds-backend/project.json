@@ -52,7 +52,7 @@
       "dependsOn": [
         {
           "target": "prisma-generate",
-          "dependencies": true
+          "projects": ["feeds-persistence"]
         },
         {
           "target": "build",
@@ -62,6 +62,7 @@
     },
     "serve": {
       "executor": "@nx/js:node",
+      "continuous": true,
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "feeds-backend:build"
@@ -76,24 +77,16 @@
       },
       "dependsOn": [
         {
-          "target": "docker"
-        },
-        {
           "target": "prisma-generate",
-          "dependencies": true
+          "projects": ["feeds-persistence"]
         },
         {
           "target": "prisma-deploy",
-          "dependencies": true
+          "projects": ["feeds-persistence"]
         }
       ]
     },
-    "docker": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "docker compose -f apps/feeds/docker-compose.database.yml up -d"
-      }
-    },
+
     "generate-api-spec": {
       "executor": "@nx/js:node",
       "options": {

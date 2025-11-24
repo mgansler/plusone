@@ -12,50 +12,23 @@
         "cypressConfig": "apps/feeds/feeds-e2e/cypress.config.ts",
         "testingType": "e2e"
       },
+      "devServerTarget": "",
       "defaultConfiguration": "production",
       "configurations": {
-        "development": {
-          "devServerTarget": "feeds-e2e:serve-all"
-        },
-        "production": {
-          "devServerTarget": "feeds-e2e:serve-all:production"
-        },
-        "all": {
-          "devServerTarget": ""
-        },
+        "development": {},
+        "production": {},
         "watch": {
-          "devServerTarget": "",
           "watch": true
         }
       },
       "dependsOn": [
         {
-          "target": "docker",
-          "dependencies": true
-        },
-        {
-          "target": "build",
-          "projects": ["feeds-web"]
+          "target": "serve",
+          "projects": ["feeds-dummy-rss-server", "feeds-web", "feeds-backend"]
         }
       ]
     },
-    "serve-all": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["nx run feeds-dummy-rss-server:serve --watch", "nx run feeds-backend:serve --watch"],
-        "parallel": true,
-        "readyWhen": "Application is running on"
-      },
-      "configurations": {
-        "production": {
-          "commands": [
-            "nx run feeds-dummy-rss-server:serve --watch",
-            "nx run feeds-web:serve:production --watch",
-            "nx run feeds-backend:serve:production --watch"
-          ]
-        }
-      }
-    },
+
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]

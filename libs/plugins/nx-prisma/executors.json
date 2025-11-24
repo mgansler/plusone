@@ -6,6 +6,11 @@
       "schema": "./src/executors/deploy/schema.json",
       "description": "deploy executor"
     },
+    "docker-compose": {
+      "implementation": "./src/executors/docker-compose/executor",
+      "schema": "./src/executors/docker-compose/schema.json",
+      "description": "docker-compose executor"
+    },
     "format": {
       "implementation": "./src/executors/format/executor",
       "schema": "./src/executors/format/schema.json",

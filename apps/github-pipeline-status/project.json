@@ -44,7 +44,7 @@
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nx/vite:test",
+      "executor": "@nx/vitest:test",
       "outputs": ["{workspaceRoot}/coverage/apps/github-pipeline-status"],
       "options": {
         "passWithNoTests": true,

@@ -102,7 +102,7 @@ component-test:
     - !reference [.distributed, before_script]
     - sh tools/scripts/install-cypress-dependencies.sh
   script:
-    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t component-test --parallel=1 --configuration=ci --browser chrome
+    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t component-test --parallel=1 --configuration=ci
   artifacts:
     when: always
     paths:
@@ -127,7 +127,7 @@ e2e:
     - !reference [.dind, before_script]
     - sh tools/scripts/install-cypress-dependencies.sh
   script:
-    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t e2e --parallel=1 --configuration=ci --browser chrome
+    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t e2e --parallel=1 --configuration=ci
   artifacts:
     when: always
     paths:
@@ -151,7 +151,7 @@ build:
       # We do not need to run this on the main branch as package runs build on its own.
       when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      # We want this job for merge requests because sometime this fails even though lint is happy
+      # We want this job for merge requests because sometimes this fails even though lint is happy
       when: on_success
   script:
     - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t build --parallel=8
