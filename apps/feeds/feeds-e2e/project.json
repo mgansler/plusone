@@ -25,10 +25,18 @@
         {
           "target": "serve",
           "projects": ["feeds-dummy-rss-server", "feeds-web", "feeds-backend"]
+        },
+        {
+          "target": "wait"
         }
       ]
     },
-
+    "wait": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["sleep 10"]
+      }
+    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
