@@ -1,7 +1,0 @@
-services:
-  suite:
-    image: ${DOCKER_IMAGE_NAME}
-    labels:
-      - 'traefik.http.routers.suite.rule=Host(`suite.martingansler.de`)'
-      - 'traefik.http.routers.suite.tls=true'
-      - 'traefik.http.routers.suite.tls.certresolver=letsencrypt'
