@@ -5836,24 +5836,24 @@
   dependencies:
     flatbuffers "^25.9.23"
 
-"@orval/angular@7.16.0":
-  version "7.16.0"
-  resolved "https://registry.npmjs.org/@orval/angular/-/angular-7.16.0.tgz#d9002a37f1a220840fb65595b1f14f3d79e254ab"
-  integrity sha512-WTNPtN5YHDHl6GV5gW37PonvC2QGzxVZpjjhqEKvghZcSHfEVCYHV9VJJv1LkMoLr4LtryDMYOIdREAvYq5zKg==
+"@orval/angular@7.16.1":
+  version "7.16.1"
+  resolved "https://registry.npmjs.org/@orval/angular/-/angular-7.16.1.tgz#3866ef22949b3f7148124d114f90b28f58785650"
+  integrity sha512-RggE6Hq0cIGkQGnU7A7POgIU4wdnSlfiCDwFUnNseUJJnkvg9ODeKW75UqefCM/j9mrX4F2+lMVHF8kN5/GJ2g==
   dependencies:
-    "@orval/core" "7.16.0"
+    "@orval/core" "7.16.1"
 
-"@orval/axios@7.16.0":
-  version "7.16.0"
-  resolved "https://registry.npmjs.org/@orval/axios/-/axios-7.16.0.tgz#50cfd6767e11357c87b30ae98f3a6ad9f2b3db4f"
-  integrity sha512-Zkgw51tIDvJSkPrji8cZxiq/lLW9LXYccrTZit1tiEP7au8wYQbbW7EAnssdxPuj42MA7bTLEg8SaWO2BbUHJQ==
+"@orval/axios@7.16.1":
+  version "7.16.1"
+  resolved "https://registry.npmjs.org/@orval/axios/-/axios-7.16.1.tgz#9c72a21ea2013197bd94d6e18fdde27e8e54fba1"
+  integrity sha512-VYyLtBhrR5lk2Kat5VbfQEOnJMH5FAUjgjYBeO45jaOe5K2KYk7NiHNKNZNshi9dHUIb9HxiwFp0oEMzzmGFOg==
   dependencies:
-    "@orval/core" "7.16.0"
+    "@orval/core" "7.16.1"
 
-"@orval/core@7.16.0":
-  version "7.16.0"
-  resolved "https://registry.npmjs.org/@orval/core/-/core-7.16.0.tgz#4cbe0432c9197301b156a28549fcdd568ae7d42e"
-  integrity sha512-f30Dc6BQDc58/PTo3DF7VkT/szu9YL04STiG6IQa3f7DDLY6c1jALgMIB1+EDyT+SWLPSP3U3yDB6lHi0gZ4sQ==
+"@orval/core@7.16.1":
+  version "7.16.1"
+  resolved "https://registry.npmjs.org/@orval/core/-/core-7.16.1.tgz#bd25962f746cd22869502e535ddfb81bbc14356c"
+  integrity sha512-54VnuOjLH5g3I8BSPUTSO5tTxLq9ZWd1ylVfsoIw992TI34prckTFDMj16c18U5jN4SUTwYik7Y1/Ptw5tmplQ==
   dependencies:
     "@apidevtools/swagger-parser" "^12.1.0"
     "@ibm-cloud/openapi-ruleset" "^1.33.1"
@@ -5875,67 +5875,67 @@
     swagger2openapi "^7.0.8"
     typedoc "^0.28.14"
 
-"@orval/fetch@7.16.0":
-  version "7.16.0"
-  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-7.16.0.tgz#8867279af47479d2c54c82dc73736ff7577f49fc"
-  integrity sha512-tIYH0eH9Wzf/g+Z9gJ4jw7Ti4WLa428Q4Sjc6sS22BAL9A8XsAiyP2AlmTvotwfFPPBqpqhEUOy0CuzKpn4wGg==
+"@orval/fetch@7.16.1":
+  version "7.16.1"
+  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-7.16.1.tgz#7367a5479bf175f171c8e41f7c47d40c1bc29fa2"
+  integrity sha512-j/hb/VBIzJktOziOfzxn1YJLbUmSqyybS7c75ELv+m7VEIrxSIX+zsolfAw3eIlNGN6T62ExF71sOfbXDfJSGw==
   dependencies:
-    "@orval/core" "7.16.0"
+    "@orval/core" "7.16.1"
     openapi3-ts "4.5.0"
 
-"@orval/hono@7.16.0":
-  version "7.16.0"
-  resolved "https://registry.npmjs.org/@orval/hono/-/hono-7.16.0.tgz#ef1d738a0c486139dbff176c08709411b900ee75"
-  integrity sha512-ToONyxV6tcH1SnnxTGGXjf+iO8gUp3r2U03QoH1fLy0UuHXvQ37Q1BjgjnHM8k2QQVz1F5YZhg9DZUg+qNCKWg==
+"@orval/hono@7.16.1":
+  version "7.16.1"
+  resolved "https://registry.npmjs.org/@orval/hono/-/hono-7.16.1.tgz#07ff98444d50960986b67fd7d4dbd096ce3a3a48"
+  integrity sha512-e3TvUD5Vc1RPSIyHd6rzgbPxzj7wAU0tWdv/3Az5suxqZdIQVUstHsnUs2Y25843l/WnI5IMgMYrvU4wrobw8A==
   dependencies:
-    "@orval/core" "7.16.0"
-    "@orval/zod" "7.16.0"
+    "@orval/core" "7.16.1"
+    "@orval/zod" "7.16.1"
     fs-extra "^11.3.2"
     lodash.uniq "^4.5.0"
     openapi3-ts "4.5.0"
 
-"@orval/mcp@7.16.0":
-  version "7.16.0"
-  resolved "https://registry.npmjs.org/@orval/mcp/-/mcp-7.16.0.tgz#61b98d6a2e75a35a24183d844e0b100ba9a5cb37"
-  integrity sha512-4V8buKib5SwKTmtpjaCREkMQGL/NUDycUyW4HqeBdOWy+fTdYtcxQy983spzjMH323qRStUmMoIaoRwTPY8OhA==
+"@orval/mcp@7.16.1":
+  version "7.16.1"
+  resolved "https://registry.npmjs.org/@orval/mcp/-/mcp-7.16.1.tgz#4f5050f2bdff9c67bcaa2d9e7b46fc68b2858e9c"
+  integrity sha512-xO94xmlVwlgeFFOO5/iPzshzLGGnXUNAsF3uwl2B4nuWOyCfANxkcpfDXTCCc9XbOfEET/Mxx/Bst10JYP7r1g==
   dependencies:
-    "@orval/core" "7.16.0"
-    "@orval/fetch" "7.16.0"
-    "@orval/zod" "7.16.0"
+    "@orval/core" "7.16.1"
+    "@orval/fetch" "7.16.1"
+    "@orval/zod" "7.16.1"
     openapi3-ts "4.5.0"
 
-"@orval/mock@7.16.0":
-  version "7.16.0"
-  resolved "https://registry.npmjs.org/@orval/mock/-/mock-7.16.0.tgz#3234a64c10e5c985808812666ed0ebb1c8500960"
-  integrity sha512-USAFjRAgyeT/cXZYUuCuUhAOkEJYCByVmpE568jeGATdMpCNLgKg3Lm/m+fptomcgYkCLZxeOTgyYtSwSnTQDg==
+"@orval/mock@7.16.1":
+  version "7.16.1"
+  resolved "https://registry.npmjs.org/@orval/mock/-/mock-7.16.1.tgz#6994e0d9e90c34801c8f374cef0cffd1bab999c4"
+  integrity sha512-dHNC8j196oqlc16BLIguj7Upqi/Kob2glKKv6DItLXzpQ1xqfFutY8qTDlDhbfDkqFOLFcTFaCXBV+/rgXJtNg==
   dependencies:
-    "@orval/core" "7.16.0"
+    "@orval/core" "7.16.1"
     openapi3-ts "4.5.0"
 
-"@orval/query@7.16.0":
-  version "7.16.0"
-  resolved "https://registry.npmjs.org/@orval/query/-/query-7.16.0.tgz#96b3247fc5164b26ca56cbbd99562ffaa0bf0f8c"
-  integrity sha512-8knD8275SB21jnZDtW+Yc7hwd/HOk9S0jFPbaSnptG/RZbtPahabUC8d8uJvyCUZU9Af3zwJvoJizCgqvHDlyg==
+"@orval/query@7.16.1":
+  version "7.16.1"
+  resolved "https://registry.npmjs.org/@orval/query/-/query-7.16.1.tgz#b2d31f999403cdc2fd88a1ba00da3873ccd38d20"
+  integrity sha512-zb25SNUOiH2PXV5ng8aMDVMe1B0Ply0cDbQlpzbOhPyqpHt6x/UB+CpTIt8dIL8oun9Lur508/R8iNnq7McRgw==
   dependencies:
-    "@orval/core" "7.16.0"
-    "@orval/fetch" "7.16.0"
+    "@orval/core" "7.16.1"
+    "@orval/fetch" "7.16.1"
     chalk "^4.1.2"
     lodash.omitby "^4.6.0"
 
-"@orval/swr@7.16.0":
-  version "7.16.0"
-  resolved "https://registry.npmjs.org/@orval/swr/-/swr-7.16.0.tgz#eca157787ac44c5fef41e4fc59dddc33ea7b989b"
-  integrity sha512-BB0UoujDDkLxfAX8qyqS0vU2QGFYQ1uE6RM3lCWeOIb8FfAPIIfRf0Qu78yQcuIBQ0Tq2N2KQt/bw0roNiLPNw==
+"@orval/swr@7.16.1":
+  version "7.16.1"
+  resolved "https://registry.npmjs.org/@orval/swr/-/swr-7.16.1.tgz#f80d373139604366a77e194df1a0ae9414a24a06"
+  integrity sha512-W+S9HreJFVAlbvJspOQk7O2m2aS1sVhd6kz6irHLSH4jmQ5Q/ye4B9ojveDuPbps4q1vNLgx1qP6z0Pls1Nt5w==
   dependencies:
-    "@orval/core" "7.16.0"
-    "@orval/fetch" "7.16.0"
+    "@orval/core" "7.16.1"
+    "@orval/fetch" "7.16.1"
 
-"@orval/zod@7.16.0":
-  version "7.16.0"
-  resolved "https://registry.npmjs.org/@orval/zod/-/zod-7.16.0.tgz#ca3db6076db433f7909e1ca0a30e004d6ea83577"
-  integrity sha512-dwN5SepJusXJj/YLZkIUvvkpysJfxt7tR9LOlWknvQgSsfLKbDAePqJPOrxyL32MfQ7He9Y2Bz1AytM6x1XIOA==
+"@orval/zod@7.16.1":
+  version "7.16.1"
+  resolved "https://registry.npmjs.org/@orval/zod/-/zod-7.16.1.tgz#acfee3706b0d59c6ed1f47cc271d6528fc7598b6"
+  integrity sha512-27Az6bfO10e+JqOHGkJNrz2SnVBvvl/dJ4i3RTwN1EaS8yT0KropZYskc2UZB2rBmQkthGGpcOQBYzdx5+sBJQ==
   dependencies:
-    "@orval/core" "7.16.0"
+    "@orval/core" "7.16.1"
     lodash.uniq "^4.5.0"
     openapi3-ts "4.5.0"
 
@@ -16433,7 +16433,7 @@ js-tokens@^9.0.1:
   resolved "https://registry.npmjs.org/js-tokens/-/js-tokens-9.0.1.tgz#2ec43964658435296f6761b34e10671c2d9527f4"
   integrity sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==
 
-js-yaml@4.1.0, js-yaml@4.1.1, js-yaml@^3.10.0, js-yaml@^3.13.1, js-yaml@^4.0.0, js-yaml@^4.1.0:
+js-yaml@4.1.1, js-yaml@^3.10.0, js-yaml@^3.13.1, js-yaml@^4.0.0, js-yaml@^4.1.0:
   version "4.1.1"
   resolved "https://registry.npmjs.org/js-yaml/-/js-yaml-4.1.1.tgz#854c292467705b699476e1a2decc0c8a3458806b"
   integrity sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==
@@ -18817,23 +18817,23 @@ ora@5.4.1, ora@^5.4.1:
     strip-ansi "^6.0.0"
     wcwidth "^1.0.1"
 
-orval@7.16.0:
-  version "7.16.0"
-  resolved "https://registry.npmjs.org/orval/-/orval-7.16.0.tgz#3b66b5eab2f510c3bb866895e4c5c6cd7c6536f4"
-  integrity sha512-i63Ini66krmi5jaMGX6q2e5EePfKA/4wiyXVelPUSenRcf5rs8D7GCN5zNRLIuWamcPrJ7dEb3Afrvn90oPzJA==
+orval@7.16.1:
+  version "7.16.1"
+  resolved "https://registry.npmjs.org/orval/-/orval-7.16.1.tgz#0d1eb96cb95f6980624151fece7607bfea16b267"
+  integrity sha512-Rz13jq4zk86QEBHfbb8aflO7P2YjmhBDPZCpamKwci9l1ByPifHVtVuEI+4uZVrJRSFWI2hOlNR3X5rMmZ8V0g==
   dependencies:
     "@apidevtools/swagger-parser" "^12.1.0"
     "@commander-js/extra-typings" "^14.0.0"
-    "@orval/angular" "7.16.0"
-    "@orval/axios" "7.16.0"
-    "@orval/core" "7.16.0"
-    "@orval/fetch" "7.16.0"
-    "@orval/hono" "7.16.0"
-    "@orval/mcp" "7.16.0"
-    "@orval/mock" "7.16.0"
-    "@orval/query" "7.16.0"
-    "@orval/swr" "7.16.0"
-    "@orval/zod" "7.16.0"
+    "@orval/angular" "7.16.1"
+    "@orval/axios" "7.16.1"
+    "@orval/core" "7.16.1"
+    "@orval/fetch" "7.16.1"
+    "@orval/hono" "7.16.1"
+    "@orval/mcp" "7.16.1"
+    "@orval/mock" "7.16.1"
+    "@orval/query" "7.16.1"
+    "@orval/swr" "7.16.1"
+    "@orval/zod" "7.16.1"
     chalk "^4.1.2"
     chokidar "^4.0.3"
     commander "^14.0.1"
@@ -18842,7 +18842,7 @@ orval@7.16.0:
     find-up "5.0.0"
     fs-extra "^11.3.2"
     jiti "^2.6.1"
-    js-yaml "4.1.0"
+    js-yaml "4.1.1"
     lodash.uniq "^4.5.0"
     openapi3-ts "4.5.0"
     string-argv "^0.3.2"

@@ -97,6 +97,9 @@ component-test:
   stage: test
   extends:
     - .distributed
+  tags:
+    - docker
+    - chrome
   retry: 2
   before_script:
     - !reference [.distributed, before_script]
@@ -117,6 +120,9 @@ e2e:
   extends:
     - .distributed
     - .dind
+  tags:
+    - docker
+    - chrome
   retry: 2
   needs:
     - lint-and-format
@@ -126,8 +132,9 @@ e2e:
   before_script:
     - !reference [.dind, before_script]
     - sh tools/scripts/install-cypress-dependencies.sh
+    - sh tools/scripts/install-google-chrome.sh
   script:
-    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t e2e --parallel=1 --configuration=ci
+    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t e2e --parallel=1 --configuration=ci --browser=chrome
   artifacts:
     when: always
     paths:
