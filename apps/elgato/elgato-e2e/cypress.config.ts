@@ -6,7 +6,7 @@ export default defineConfig({
   reporterOptions: {
     mochaFile: '../../../reports/e2e/elgato-[hash].xml',
   },
-  e2e: {
-    ...nxE2EPreset(__filename, { cypressDir: 'src', bundler: 'vite' }),
-  },
+  e2e: { ...nxE2EPreset(__filename, { cypressDir: 'src', bundler: 'vite' }) },
+  experimentalMemoryManagement: true,
+  retries: 2,
 })
