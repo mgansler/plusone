@@ -41,9 +41,9 @@
           "STGTRAILS_DATABASE_URL": "file:./stgtrails-e2e.db"
         },
         "commands": [
-          "rm -f libs/stgtrails/persistence/src/lib/stgtrails-e2e.db",
-          "prisma generate --schema libs/stgtrails/persistence/src/lib/schema.prisma",
-          "prisma migrate deploy --schema libs/stgtrails/persistence/src/lib/schema.prisma",
+          "rm -f libs/stgtrails/persistence/stgtrails-e2e.db",
+          "prisma --config libs/stgtrails/persistence/prisma.config.ts generate",
+          "prisma --config libs/stgtrails/persistence/prisma.config.ts migrate deploy",
           "ts-node libs/stgtrails/persistence/src/seed.ts"
         ],
         "parallel": false

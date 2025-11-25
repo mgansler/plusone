@@ -32,12 +32,17 @@
           "assets": [
             "apps/stgtrails/stgtrails-backend/src/assets",
             {
-              "input": "libs/stgtrails/persistence/src/lib",
+              "input": "libs/stgtrails/persistence/",
+              "glob": "prisma.config.ts",
+              "output": ""
+            },
+            {
+              "input": "libs/stgtrails/persistence/",
               "glob": "schema.prisma",
               "output": ""
             },
             {
-              "input": "libs/stgtrails/persistence/src/lib/",
+              "input": "libs/stgtrails/persistence/",
               "glob": "migrations",
               "output": "migrations"
             },

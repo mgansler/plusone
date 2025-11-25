@@ -32,12 +32,17 @@
           "assets": [
             "apps/elgato/elgato-backend/src/assets",
             {
-              "input": "libs/elgato/persistence/src/lib",
+              "input": "libs/elgato/persistence/",
+              "glob": "prisma.config.ts",
+              "output": ""
+            },
+            {
+              "input": "libs/elgato/persistence/",
               "glob": "schema.prisma",
               "output": ""
             },
             {
-              "input": "libs/elgato/persistence/src/lib/",
+              "input": "libs/elgato/persistence/",
               "glob": "migrations",
               "output": "migrations"
             },

@@ -6,7 +6,7 @@ import { Prisma, PrismaService, TrailArea } from '@plusone/stgtrails-persistence
 
 @Injectable()
 export class SunriseSunsetService {
-  private logger = new Logger(SunriseSunsetService.name)
+  private readonly logger = new Logger(SunriseSunsetService.name)
 
   constructor(
     private readonly prisma: PrismaService,

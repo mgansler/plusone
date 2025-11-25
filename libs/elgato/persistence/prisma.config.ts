@@ -1,15 +1,11 @@
 import { defineConfig, env } from 'prisma/config'
 
 import type { PrismaEnv } from './src'
-import { createAdapter } from './src/lib/create-adapter'
 
 export default defineConfig({
-  schema: './src/lib/schema.prisma',
+  schema: './schema.prisma',
   migrations: {
-    path: './src/lib/migrations',
-  },
-  async adapter() {
-    return createAdapter()
+    path: './migrations',
   },
   datasource: {
     url: env<PrismaEnv>('ELGATO_DATABASE_URL'),

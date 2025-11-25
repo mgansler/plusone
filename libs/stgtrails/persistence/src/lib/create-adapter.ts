@@ -1,14 +1,14 @@
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 
-import { PrismaBetterSQLite3 } from '@prisma/adapter-better-sqlite3'
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
 
 const STGTRAILS_DATABASE_URL = 'STGTRAILS_DATABASE_URL'
-const STGTRAILS_LIBS_DIRECTORY = './libs/stgtrails/persistence/src/lib/'
+const STGTRAILS_DIRECTORY = './libs/stgtrails/persistence/'
 
-export function createAdapter(): PrismaBetterSQLite3 {
+export function createAdapter(): PrismaBetterSqlite3 {
   const providedUrl = process.env[STGTRAILS_DATABASE_URL]
-  if (typeof providedUrl === 'undefined') {
+  if (!providedUrl) {
     throw new Error(`Missing environment variable '${STGTRAILS_DATABASE_URL}'`)
   }
 
@@ -20,12 +20,12 @@ export function createAdapter(): PrismaBetterSQLite3 {
 
   let url = providedUrl
   if (!existsSync(filePath)) {
-    const libFilePath = join('./', STGTRAILS_LIBS_DIRECTORY, filePath)
+    const libFilePath = join('./', STGTRAILS_DIRECTORY, filePath)
     if (!existsSync(libFilePath)) {
       throw new Error(`File '${libFilePath}' does not exist`)
     }
     url = `file:${libFilePath}`
   }
 
-  return new PrismaBetterSQLite3({ url }, { timestampFormat: 'unixepoch-ms' })
+  return new PrismaBetterSqlite3({ url }, { timestampFormat: 'unixepoch-ms' })
 }

@@ -32,12 +32,17 @@
           "assets": [
             "apps/feeds/feeds-backend/src/assets",
             {
-              "input": "libs/feeds/persistence/src/lib",
+              "input": "libs/feeds/persistence/",
+              "glob": "prisma.config.ts",
+              "output": ""
+            },
+            {
+              "input": "libs/feeds/persistence/",
               "glob": "schema.prisma",
               "output": ""
             },
             {
-              "input": "libs/feeds/persistence/src/lib/",
+              "input": "libs/feeds/persistence/",
               "glob": "migrations",
               "output": "migrations"
             },

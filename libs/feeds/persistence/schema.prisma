@@ -1,12 +1,11 @@
 datasource db {
   provider = "postgresql"
-  url      = env("FEEDS_DATABASE_URL")
 }
 
 generator client {
   provider        = "prisma-client"
   previewFeatures = ["fullTextSearchPostgres"]
-  output          = "client"
+  output          = "src/lib/client"
   engineType      = "client"
 }
 

@@ -2,7 +2,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { CronJob } from 'cron'
 
-import { Device, PrismaService } from '@plusone/elgato-persistence'
+import { Prisma, PrismaService } from '@plusone/elgato-persistence'
 
 import { DevicePowerState } from '../device/enum/device-power-state'
 import { ElgatoService } from '../elgato/elgato.service'
@@ -12,10 +12,10 @@ import { LocationService } from '../location/location.service'
 
 @Injectable()
 export class SunriseSunsetService implements OnModuleInit {
-  private logger = new Logger(SunriseSunsetService.name)
+  private readonly logger = new Logger(SunriseSunsetService.name)
 
-  private static START_SUNRISE_JOB_NAME = 'start-sunrise'
-  private static STOP_SUNRISE_JOB_NAME = 'stop-sunrise'
+  private static readonly START_SUNRISE_JOB_NAME = 'start-sunrise'
+  private static readonly STOP_SUNRISE_JOB_NAME = 'stop-sunrise'
 
   constructor(
     private readonly schedulerRegistry: SchedulerRegistry,
@@ -48,7 +48,9 @@ export class SunriseSunsetService implements OnModuleInit {
               this.logger.log(
                 `Starting sunrise for ${devices.length}: [${devices.map((device) => device.displayName).join(', ')}]`,
               )
-              devices.forEach((device) => this.elgatoService.setLightStripScene(device, sunrise))
+              for (const device of devices) {
+                this.elgatoService.setLightStripScene(device, sunrise)
+              }
             },
           }),
         )
@@ -71,7 +73,9 @@ export class SunriseSunsetService implements OnModuleInit {
               this.logger.log(
                 `Turning off ${devices.length} devices after sunrise: [${devices.map((d) => d.displayName).join(', ')}]`,
               )
-              devices.forEach((device: Device) => this.elgatoService.setDevicePowerState(device, DevicePowerState.off))
+              for (const device of devices) {
+                this.elgatoService.setDevicePowerState(device, DevicePowerState.off)
+              }
             },
           }),
         )
@@ -80,6 +84,14 @@ export class SunriseSunsetService implements OnModuleInit {
         )
       }
     } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2025') {
+          this.logger.warn(
+            'Location is not set. Please set the location in the settings page of the app and restart the application. Skipping sunrise timings.',
+          )
+          return
+        }
+      }
       this.logger.error(e)
     }
   }

@@ -1,9 +1,10 @@
 {
   "scripts": {
-    "prestart": "npx prisma@6.19.0 migrate deploy",
+    "prestart": "prisma migrate deploy",
     "start": "node main.js"
   },
   "dependencies": {
+    "prisma": "7.0.0",
     "@nestjs/platform-express": "11.1.9",
     "class-transformer": "0.5.1"
   }
