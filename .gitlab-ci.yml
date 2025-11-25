@@ -25,7 +25,7 @@ stages:
 
 .dind:
   services:
-    - docker:29.0.4-dind
+    - docker:29.0.2-dind
   variables:
     DOCKER_HOST: 'tcp://docker:2375'
     DOCKER_TLS_CERTDIR: ''
@@ -121,8 +121,9 @@ e2e:
     - .distributed
     - .dind
   tags:
-    - docker
+    - amd64
     - chrome
+    - docker
   retry: 2
   needs:
     - lint-and-format
@@ -168,6 +169,9 @@ package:
   extends:
     - .distributed
     - .dind
+  tags:
+    - amd64
+    - docker
   needs:
     - lint-and-format
     - test
@@ -208,6 +212,7 @@ deploy-on-nas:
   extends:
     - .deploy
   tags:
+    - amd64
     - elgato
   script:
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t deploy --parallel=1 --configuration=ci --exclude='*,!tag:nas'
@@ -218,6 +223,7 @@ deploy-on-server:
   extends:
     - .deploy
   tags:
+    - amd64
     - deploy
   script:
     - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t deploy --parallel=1 --configuration=ci --exclude='tag:nas'
