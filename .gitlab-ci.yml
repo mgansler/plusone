@@ -166,6 +166,7 @@ build:
 
 package:
   stage: build
+  timeout: 30 minutes
   extends:
     - .distributed
     - .dind
