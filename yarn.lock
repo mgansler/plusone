@@ -7514,17 +7514,17 @@
   resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.90.10.tgz#2704b038277fb41e631f356e7428951b5354ed13"
   integrity sha512-EhZVFu9rl7GfRNuJLJ3Y7wtbTnENsvzp+YpcAV7kCYiXni1v8qZh++lpw4ch4rrwC0u/EZRnBHIehzCGzwXDSQ==
 
-"@tanstack/query-devtools@5.90.1":
-  version "5.90.1"
-  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.90.1.tgz#c57a739a5293f4960a4a6b6fb4b7e4a56e6bd932"
-  integrity sha512-GtINOPjPUH0OegJExZ70UahT9ykmAhmtNVcmtdnOZbxLwT7R5OmRztR5Ahe3/Cu7LArEmR6/588tAycuaWb1xQ==
+"@tanstack/query-devtools@5.91.0":
+  version "5.91.0"
+  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.91.0.tgz#5950b7d4000c5a572da07c587d1436d2b6a4fd9c"
+  integrity sha512-uNWkqWTiIKCv8Iaahb7bftmDaZVkBetB+l+OQhQeCEZAedyqxw2eyaRUc8sAQ2LzD843tVdYL6bzOtRWJHJSbQ==
 
-"@tanstack/react-query-devtools@5.90.2":
-  version "5.90.2"
-  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.90.2.tgz#248d6ae89ace7dc2da816fa95cdc2b4f63c9e4d2"
-  integrity sha512-vAXJzZuBXtCQtrY3F/yUNJCV4obT/A/n81kb3+YqLbro5Z2+phdAbceO+deU3ywPw8B42oyJlp4FhO0SoivDFQ==
+"@tanstack/react-query-devtools@5.91.0":
+  version "5.91.0"
+  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.91.0.tgz#1f972bceb2ca6eb6621e5846ceea589f21ca1e8a"
+  integrity sha512-s7g8Zn8HN05HNe22n/KdNm8wXaRbkcsVkqpkdYIQuCfjVmEUoTQqtJsN2iZtgd9CU36xNS38trWIofxzyW5vbQ==
   dependencies:
-    "@tanstack/query-devtools" "5.90.1"
+    "@tanstack/query-devtools" "5.91.0"
 
 "@tanstack/react-query@5.90.10":
   version "5.90.10"
@@ -7533,14 +7533,14 @@
   dependencies:
     "@tanstack/query-core" "5.90.10"
 
-"@tanstack/react-router@1.139.0":
-  version "1.139.0"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.139.0.tgz#2c374cc7388c10b245aad07766854c26258b4599"
-  integrity sha512-7QZ5SBJDwgJeiAZK1SrE6/Ol15lrayAhjW6NXKnxWGtXH8p9wKj6+iWzp57bYDFNxgAeG02/odfqQcMctyqV/Q==
+"@tanstack/react-router@1.139.1":
+  version "1.139.1"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.139.1.tgz#ccc9dc8e2e1e38a4b94df4ee920cb764269dbeae"
+  integrity sha512-0AXxrtgc+MUiXVF6+xOZK5x/ww+XzIDF0hVeBY9oZcmV1nxJeuwFYEMswBzm6Fc6CSgtK4OIBg5+O4MdtW2lrQ==
   dependencies:
     "@tanstack/history" "1.139.0"
     "@tanstack/react-store" "^0.8.0"
-    "@tanstack/router-core" "1.139.0"
+    "@tanstack/router-core" "1.139.1"
     isbot "^5.1.22"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
@@ -7553,10 +7553,10 @@
     "@tanstack/store" "0.8.0"
     use-sync-external-store "^1.6.0"
 
-"@tanstack/router-core@1.139.0":
-  version "1.139.0"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.139.0.tgz#e9e12b2250ad8e6d8d6e1bd89d9ab2310aebe893"
-  integrity sha512-IKD0ET1mTWoaRppuJ+nRHIM2bxyuQKgDVSlXlrPXts/QSUuOSQBAAuc5yLTYqeMlqVRNa37RL0ZDwLSubug8BQ==
+"@tanstack/router-core@1.139.1":
+  version "1.139.1"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.139.1.tgz#29d74acaa265c8e11c970a12299c188cde6e99f3"
+  integrity sha512-nPcP7mKmX38wOlqRZLITxXSo6y71LkK31Uh4xtLnO8SVEebEsNehO9p+wDYlUKnmQqWHqC+GQX5gLULVlTYmqg==
   dependencies:
     "@tanstack/history" "1.139.0"
     "@tanstack/store" "^0.8.0"
