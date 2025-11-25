@@ -49,9 +49,7 @@
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "sharedGlobals": [
-      "{workspaceRoot}/workspace.json",
       "{workspaceRoot}/tsconfig.base.json",
-      "{workspaceRoot}/tslint.json",
       "{workspaceRoot}/nx.json",
       "{workspaceRoot}/.github/workflows/verify.yml",
       "{workspaceRoot}/.gitlab-ci.yml",
@@ -128,7 +126,7 @@
     "prisma-generate": {
       "inputs": [
         "default",
-        "{projectRoot}/src/lib/schema.prisma",
+        "{projectRoot}/schema.prisma",
         {
           "externalDependencies": ["@prisma/client", "prisma"]
         }

@@ -13,4 +13,4 @@ echo \
   tee /etc/apt/sources.list.d/docker.list > /dev/null
 apt-get update
 
-apt-get install -y docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+apt-get install -y docker-ce-cli=5:29.0.3-1~debian.12~bookworm containerd.io docker-buildx-plugin docker-compose-plugin
