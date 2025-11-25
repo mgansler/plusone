@@ -3,6 +3,7 @@
     "prestart": "prisma migrate deploy",
     "start": "node main.js"
   },
+  "version": "1.0.0",
   "dependencies": {
     "prisma": "7.0.0",
     "@nestjs/platform-express": "11.1.9",
