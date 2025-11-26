@@ -8043,10 +8043,10 @@
   resolved "https://registry.npmjs.org/@types/stack-utils/-/stack-utils-2.0.3.tgz#6209321eb2c1712a7e7466422b8cb1fc0d9dd5d8"
   integrity sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==
 
-"@types/statuses@^2.0.4":
-  version "2.0.5"
-  resolved "https://registry.npmjs.org/@types/statuses/-/statuses-2.0.5.tgz#f61ab46d5352fd73c863a1ea4e1cef3b0b51ae63"
-  integrity sha512-jmIUGWrAiwu3dZpxntxieC+1n/5c3mjrImkmOSQ2NC5uP6cYO4aAZDdSmRcI5C1oiTmqlZGHC+/NmJrKogbP5A==
+"@types/statuses@^2.0.6":
+  version "2.0.6"
+  resolved "https://registry.npmjs.org/@types/statuses/-/statuses-2.0.6.tgz#66748315cc9a96d63403baa8671b2c124f8633aa"
+  integrity sha512-xMAgYwceFhRA2zY+XbEA7mxYbA093wdiW8Vu6gZPGWy9cmOyU9XesH1tNcEWsKFd5Vzrqx5T3D38PWx1FIIXkA==
 
 "@types/superagent@^8.1.0":
   version "8.1.9"
@@ -13889,15 +13889,10 @@ graphql-ws@^6.0.6:
   resolved "https://registry.npmjs.org/graphql-ws/-/graphql-ws-6.0.6.tgz#e9c9ff85f4ddb5bbe6faa2721c0d27e6c11746d2"
   integrity sha512-zgfER9s+ftkGKUZgc0xbx8T7/HMO4AV5/YuYiFc+AtgcO5T0v8AxYYNQ+ltzuzDZgNkYJaFspm5MMYLjQzrkmw==
 
-graphql@16.12.0:
+graphql@16.12.0, graphql@^16.12.0:
   version "16.12.0"
   resolved "https://registry.npmjs.org/graphql/-/graphql-16.12.0.tgz#28cc2462435b1ac3fdc6976d030cef83a0c13ac7"
   integrity sha512-DKKrynuQRne0PNpEbzuEdHlYOMksHSUI8Zc9Unei5gTsMNA2/vMpoMz/yKba50pejK56qj98qM0SjYxAKi13gQ==
-
-graphql@^16.8.1:
-  version "16.9.0"
-  resolved "https://registry.npmjs.org/graphql/-/graphql-16.9.0.tgz#1c310e63f16a49ce1fbb230bd0a000e99f6f115f"
-  integrity sha512-GGTKBX4SD7Wdb8mqeDLni2oaRGYQWjWHGKPQ24ZMnUtKfcsVoiv4uX8+LJr1K6U5VW2Lu1BwJnj7uiori0YtRw==
 
 gzip-size@^6.0.0:
   version "6.0.0"
@@ -17155,17 +17150,17 @@ ms@2.1.3, ms@^2.1.1, ms@^2.1.3:
   resolved "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-msw@2.12.2:
-  version "2.12.2"
-  resolved "https://registry.npmjs.org/msw/-/msw-2.12.2.tgz#9e5c25ca5cffce6e9bd96c8ae1105096e81a82a2"
-  integrity sha512-Fsr8AR5Yu6C0thoWa1Z8qGBFQLDvLsWlAn/v3CNLiUizoRqBYArK3Ex3thXpMWRr1Li5/MKLOEZ5mLygUmWi1A==
+msw@2.12.3:
+  version "2.12.3"
+  resolved "https://registry.npmjs.org/msw/-/msw-2.12.3.tgz#fdafc6d1245f3e04bd04aeb97a2979320e03240c"
+  integrity sha512-/5rpGC0eK8LlFqsHaBmL19/PVKxu/CCt8pO1vzp9X6SDLsRDh/Ccudkf3Ur5lyaKxJz9ndAx+LaThdv0ySqB6A==
   dependencies:
     "@inquirer/confirm" "^5.0.0"
     "@mswjs/interceptors" "^0.40.0"
     "@open-draft/deferred-promise" "^2.2.0"
-    "@types/statuses" "^2.0.4"
+    "@types/statuses" "^2.0.6"
     cookie "^1.0.2"
-    graphql "^16.8.1"
+    graphql "^16.12.0"
     headers-polyfill "^4.0.2"
     is-node-process "^1.2.0"
     outvariant "^1.4.3"
@@ -17175,7 +17170,7 @@ msw@2.12.2:
     statuses "^2.0.2"
     strict-event-emitter "^0.5.1"
     tough-cookie "^6.0.0"
-    type-fest "^4.26.1"
+    type-fest "^5.2.0"
     until-async "^3.0.2"
     yargs "^17.7.2"
 
@@ -21261,6 +21256,11 @@ systeminformation@5.27.7:
   resolved "https://registry.npmjs.org/systeminformation/-/systeminformation-5.27.7.tgz#4dc9d436419948cd5e5f076779a1298220d19a72"
   integrity sha512-saaqOoVEEFaux4v0K8Q7caiauRwjXC4XbD2eH60dxHXbpKxQ8kH9Rf7Jh+nryKpOUSEFxtCdBlSUx0/lO6rwRg==
 
+tagged-tag@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/tagged-tag/-/tagged-tag-1.0.0.tgz#a0b5917c2864cba54841495abfa3f6b13edcf4d6"
+  integrity sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==
+
 tailwindcss@4.1.17:
   version "4.1.17"
   resolved "https://registry.npmjs.org/tailwindcss/-/tailwindcss-4.1.17.tgz#e6dcb7a9c60cef7522169b5f207ffec2fd652286"
@@ -21760,15 +21760,17 @@ type-fest@^0.8.0:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
-type-fest@^4.26.1:
-  version "4.30.0"
-  resolved "https://registry.npmjs.org/type-fest/-/type-fest-4.30.0.tgz#cf411e7630578ad9e9884951dfaeef6588f970fe"
-  integrity sha512-G6zXWS1dLj6eagy6sVhOMQiLtJdxQBHIA9Z6HFUNLOlr6MFOgzV8wvmidtPONfPtEUv0uZsy77XJNzTAfwPDaA==
-
 type-fest@^4.39.1, type-fest@^4.41.0:
   version "4.41.0"
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-4.41.0.tgz#6ae1c8e5731273c2bf1f58ad39cbae2c91a46c58"
   integrity sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==
+
+type-fest@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.npmjs.org/type-fest/-/type-fest-5.2.0.tgz#7dd671273eb6bcba71af0babe303e8dbab60f795"
+  integrity sha512-xxCJm+Bckc6kQBknN7i9fnP/xobQRsRQxR01CztFkp/h++yfVxUUcmMgfR2HttJx/dpWjS9ubVuyspJv24Q9DA==
+  dependencies:
+    tagged-tag "^1.0.0"
 
 type-is@^1.6.18, type-is@~1.6.18:
   version "1.6.18"
