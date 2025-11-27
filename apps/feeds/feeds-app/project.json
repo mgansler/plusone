@@ -7,20 +7,14 @@
     "package": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["docker build -t ${DOCKER_IMAGE_NAME} -f apps/feeds/feeds-app/Dockerfile ."],
-        "parallel": false
+        "command": "docker buildx build --file apps/feeds/feeds-app/Dockerfile --tag ${DOCKER_IMAGE_NAME} ."
       },
       "configurations": {
         "ci": {
-          "commands": [
-            "docker build -t ${CI_REGISTRY_IMAGE}/feeds-app/${CI_COMMIT_REF_SLUG} -f apps/feeds/feeds-app/Dockerfile .",
-            "docker push ${CI_REGISTRY_IMAGE}/feeds-app/${CI_COMMIT_REF_SLUG}:latest"
-          ]
+          "command": "docker buildx build --file apps/feeds/feeds-app/Dockerfile --tag ${CI_REGISTRY_IMAGE}/feeds-app/${CI_COMMIT_REF_SLUG} --push ."
         },
         "macos": {
-          "commands": [
-            "docker buildx build --platform linux/arm64/v8 -t feeds-app -f apps/feeds/feeds-app/Dockerfile ."
-          ]
+          "command": "docker buildx build --file apps/feeds/feeds-app/Dockerfile --tag feeds-app --platform linux/arm64/v8 ."
         }
       },
       "dependsOn": [

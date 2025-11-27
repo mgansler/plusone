@@ -52,7 +52,7 @@ migrations-check:
   script:
     # Check if we need to run migrations for Nx
     - echo Based of nx version $(git show ${NX_BASE}:package.json|jq -r '.devDependencies.nx')
-    - time npx nx migrate $(cat package.json|jq -r '.devDependencies.nx') --from nx@$(git show ${NX_BASE}:package.json|jq -r '.devDependencies.nx')
+    - time yarn nx migrate $(cat package.json|jq -r '.devDependencies.nx') --from nx@$(git show ${NX_BASE}:package.json|jq -r '.devDependencies.nx')
     - if [[ -f migrations.json ]] ; then echo "Cancelling this update because it has migrations" ; cat migrations.json ; exit 1 ; fi
   after_script:
     - git status
@@ -64,8 +64,8 @@ api-client-check:
     - .distributed
   script:
     # Check if API specification and client are up to date
-    - time npx nx run-many --target generate-api-spec --all
-    - time npx nx run-many --target generate-api-client --all
+    - time yarn nx run-many --target generate-api-spec --all
+    - time yarn nx run-many --target generate-api-client --all
     - git diff --quiet -- ':!package.json' # This will have a non-zero exit code when a file is modified (excluding package.json)
   after_script:
     - git status
@@ -75,8 +75,8 @@ lint-and-format:
   extends:
     - .distributed
   script:
-    - time npx nx format:check --base=$NX_BASE --head=$NX_HEAD
-    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t lint --parallel=8
+    - time yarn nx format:check --base=$NX_BASE --head=$NX_HEAD
+    - time yarn nx affected --base=$NX_BASE --head=$NX_HEAD -t lint --parallel=8
 
 test:
   stage: test
@@ -84,7 +84,7 @@ test:
     - .distributed
   retry: 2
   script:
-    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t test --parallel=8 --configuration=ci
+    - time yarn nx affected --base=$NX_BASE --head=$NX_HEAD -t test --parallel=8 --configuration=ci
   artifacts:
     when: always
     paths:
@@ -99,13 +99,12 @@ component-test:
     - .distributed
   tags:
     - docker
-    - chrome
   retry: 2
   before_script:
     - !reference [.distributed, before_script]
     - sh tools/scripts/install-cypress-dependencies.sh
   script:
-    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t component-test --parallel=1 --configuration=ci
+    - time yarn nx affected --base=$NX_BASE --head=$NX_HEAD -t component-test --parallel=1 --configuration=ci
   artifacts:
     when: always
     paths:
@@ -135,7 +134,7 @@ e2e:
     - sh tools/scripts/install-cypress-dependencies.sh
     - sh tools/scripts/install-google-chrome.sh
   script:
-    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t e2e --parallel=1 --configuration=ci --browser=chrome
+    - time yarn nx affected --base=$NX_BASE --head=$NX_HEAD -t e2e --parallel=1 --configuration=ci --browser=chrome
   artifacts:
     when: always
     paths:
@@ -162,17 +161,17 @@ build:
       # We want this job for merge requests because sometimes this fails even though lint is happy
       when: on_success
   script:
-    - time npx nx affected --base=$NX_BASE --head=$NX_HEAD -t build --parallel=8
+    - time yarn nx affected --base=$NX_BASE --head=$NX_HEAD -t build --parallel=8
 
 package:
   stage: build
   timeout: 30 minutes
   extends:
     - .distributed
-    - .dind
+  #    - .dind
   tags:
     - amd64
-    - docker
+    - deploy
   needs:
     - lint-and-format
     - test
@@ -186,7 +185,7 @@ package:
       when: never
   script:
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
-    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t package --parallel=1 --configuration=ci
+    - yarn nx affected --base=$NX_BASE --head=$NX_HEAD -t package --parallel=1 --configuration=ci
   artifacts:
     paths:
       - dist/apps
@@ -216,7 +215,7 @@ deploy-on-nas:
     - amd64
     - elgato
   script:
-    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t deploy --parallel=1 --configuration=ci --exclude='*,!tag:nas'
+    - yarn nx affected --base=$NX_BASE --head=$NX_HEAD -t deploy --parallel=1 --configuration=ci --exclude='*,!tag:nas'
   retry: 2 # DNS sometimes fails, but we can safely retry
 
 deploy-on-server:
@@ -227,4 +226,4 @@ deploy-on-server:
     - amd64
     - deploy
   script:
-    - npx nx affected --base=$NX_BASE --head=$NX_HEAD -t deploy --parallel=1 --configuration=ci --exclude='tag:nas'
+    - yarn nx affected --base=$NX_BASE --head=$NX_HEAD -t deploy --parallel=1 --configuration=ci --exclude='tag:nas'

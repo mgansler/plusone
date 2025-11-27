@@ -10,9 +10,9 @@
       "executor": "@nx/cypress:cypress",
       "options": {
         "cypressConfig": "apps/feeds/feeds-e2e/cypress.config.ts",
+        "devServerTarget": "",
         "testingType": "e2e"
       },
-      "devServerTarget": "",
       "defaultConfiguration": "production",
       "configurations": {
         "development": {},
