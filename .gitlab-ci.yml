@@ -168,10 +168,10 @@ package:
   timeout: 30 minutes
   extends:
     - .distributed
-  #    - .dind
+    - .dind
   tags:
+    - docker
     - amd64
-    - deploy
   needs:
     - lint-and-format
     - test
