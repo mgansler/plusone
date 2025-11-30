@@ -1,0 +1,45 @@
+{
+  "name": "borgo-app",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/elgato/elgato",
+  "projectType": "application",
+  "targets": {
+    "package": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker buildx build --file apps/borgo/borgo-app/Dockerfile --tag ${DOCKER_IMAGE_NAME} ."
+      },
+      "configurations": {
+        "ci": {
+          "command": "docker buildx build --file apps/borgo/borgo-app/Dockerfile --tag ${CI_REGISTRY_IMAGE}/borgo-app/${CI_COMMIT_REF_SLUG} --push ."
+        },
+        "macos": {
+          "command": "docker buildx build --file apps/borgo/borgo-app/Dockerfile --tag borgo-app --platform linux/arm64/v8 ."
+        }
+      },
+      "dependsOn": [
+        {
+          "target": "build",
+          "dependencies": true
+        }
+      ]
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["docker compose -f apps/borgo/borgo-app/docker-compose.yml up -d --remove-orphans"],
+        "parallel": false
+      },
+      "configurations": {
+        "ci": {
+          "commands": [
+            "DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/borgo-app/${CI_COMMIT_REF_SLUG} docker compose -f apps/borgo/borgo-app/docker-compose.yml pull",
+            "DOCKER_IMAGE_NAME=${CI_REGISTRY_IMAGE}/borgo-app/${CI_COMMIT_REF_SLUG} docker compose -f apps/borgo/borgo-app/docker-compose.yml up -d --remove-orphans"
+          ]
+        }
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["borgo-web"]
+}

@@ -1,0 +1,8 @@
+services:
+  borgo:
+    image: ${DOCKER_IMAGE_NAME}
+    labels:
+      - 'traefik.http.services.borgo-app.loadbalancer.server.port=80'
+      - 'traefik.http.routers.borgo-app.rule=Host(`borgo.martingansler.de`)'
+      - 'traefik.http.routers.borgo-app.tls=true'
+      - 'traefik.http.routers.borgo-app.tls.certresolver=letsencrypt'

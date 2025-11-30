@@ -1,0 +1,77 @@
+{
+  "name": "borgo-web",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/borgo/borgo-web/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/borgo/borgo-web"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "borgo-web:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "borgo-web:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "borgo-web:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "dependsOn": ["build"],
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "borgo-web:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "borgo-web:build:development"
+        },
+        "production": {
+          "buildTarget": "borgo-web:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../coverage/apps/borgo/borgo-web"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "borgo-web:build",
+        "spa": true
+      }
+    }
+  }
+}

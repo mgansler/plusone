@@ -1,0 +1,28 @@
+{
+  "name": "borgo-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/borgo/borgo-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["borgo-web"],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/borgo/borgo-e2e/cypress.config.ts",
+        "testingType": "e2e",
+        "devServerTarget": "borgo-web:serve",
+        "port": 4100
+      },
+      "configurations": {
+        "ci": {
+          "devServerTarget": "borgo-web:serve-static"
+        },
+        "watch": { "watch": true }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

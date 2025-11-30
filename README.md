@@ -4,19 +4,13 @@
 
 ## Apps
 
-### Advent of Code 2021
-
-My run at [Advent of Code](https://adventofcode.com/2021). Deployed at https://aoc-21.martingansler.de.
-
-### App Suite
-
-A collection of utilities, all apps are lazy loaded.
-
-- Dinner Plan
-
 ### Feeds
 
 A RSS feed reader.
+
+### Stgtrails
+
+Trail condition forecasting app for Mountain Bike trails.
 
 ### GitHub Status Pipeline
 
@@ -40,9 +34,8 @@ on [npmjs.com](https://www.npmjs.com/package/@mgansler/cypress-graphql).
 
 | App                    | Frontend                      | Backend | Other                  |
 | ---------------------- | ----------------------------- | ------- | ---------------------- |
-| advent-of-code-2021    | [4100](http://localhost:4100) | 4100    |                        |
+| borgo                  | [4100](http://localhost:4100) |         |                        |
 | elgato                 | [4101](http://localhost:4101) | 3101    |                        |
 | feeds                  | [4102](http://localhost:4102) | 3333    | 3334 (Dumm RSS Server) |
 | github-pipeline-status | [4103](http://localhost:4103) |         |                        |
 | stgtrails              | [4104](http://localhost:4104) | 3104    |                        |
-| suite                  | [4105](http://localhost:4105) |         |                        |
