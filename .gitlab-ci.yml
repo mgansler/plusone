@@ -80,6 +80,7 @@ lint-and-format:
 
 test:
   stage: test
+  needs: []
   extends:
     - .distributed
   retry: 2
@@ -95,6 +96,7 @@ test:
 
 component-test:
   stage: test
+  needs: []
   extends:
     - .distributed
   tags:

@@ -5,6 +5,7 @@ export default defineConfig({
   reporter: 'junit',
   reporterOptions: {
     mochaFile: '../../reports/component-test/components-[hash].xml',
+    testCaseSwitchClassnameAndName: true,
   },
   component: nxComponentTestingPreset(__filename, {
     bundler: 'vite',

@@ -47,7 +47,7 @@ body {
   //background: linear-gradient($color-flap-darker 50%, $color-flap 50%);
   //box-shadow: 0 0 12px rgba($color-black, .3);
   //font-size: 12vw;
-  width: 3.33vw;
+  width: 4vw;
   height: 5vw;
   border-radius: 0.33vw;
   background: linear-gradient($color-flap-darker 50%, $color-flap 50%);
@@ -136,7 +136,7 @@ body {
   border-radius: 1vw 1vw 0 0;
 
   &::after {
-    top: calc(50% - 2px);
+    top: 50%;
     background-color: $color-flap-darker;
   }
 
@@ -152,7 +152,7 @@ body {
   border-radius: 0 0 1vw 1vw;
 
   &::after {
-    bottom: calc(50% - 2px);
+    top: 50%;
     background-color: $color-flap;
   }
 

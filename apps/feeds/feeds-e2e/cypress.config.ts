@@ -5,6 +5,7 @@ export default defineConfig({
   reporter: 'junit',
   reporterOptions: {
     mochaFile: '../../../reports/e2e/feeds-[hash].xml',
+    testCaseSwitchClassnameAndName: true,
   },
   e2e: { ...nxE2EPreset(__filename, { cypressDir: 'src', bundler: 'vite' }), baseUrl: 'http://localhost:4102' },
   experimentalMemoryManagement: true,

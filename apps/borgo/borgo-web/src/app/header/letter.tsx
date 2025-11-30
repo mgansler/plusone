@@ -7,10 +7,6 @@ type LetterProps = {
 }
 
 export function Letter({ char, prevChar }: Readonly<LetterProps>) {
-  if (char.length !== 1) {
-    throw new Error('Letter component expects a single character')
-  }
-
   const bottomRef = useRef<HTMLDivElement>(null)
   const flapFrontRef = useRef<HTMLDivElement>(null)
   const flapBackRef = useRef<HTMLDivElement>(null)
