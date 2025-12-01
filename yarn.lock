@@ -5795,17 +5795,10 @@
   resolved "https://registry.npmjs.org/@open-draft/until/-/until-2.1.0.tgz#0acf32f470af2ceaf47f095cdecd40d68666efda"
   integrity sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==
 
-"@openmeteo/sdk@1.23.0":
+"@openmeteo/sdk@1.23.0", "@openmeteo/sdk@^1.23.0":
   version "1.23.0"
   resolved "https://registry.npmjs.org/@openmeteo/sdk/-/sdk-1.23.0.tgz#d00b4d6bd10812e35638e652f0a42d87091ee9b6"
   integrity sha512-haGK9vDCYkSq/ikp68NJwgZS1jT9LqUeJEq/tTKqO18g5e/V1m0qKs1Cqt3c7elws2/hbTvX7VLvt8gqoMxU2w==
-  dependencies:
-    flatbuffers "^25.9.23"
-
-"@openmeteo/sdk@^1.22.0":
-  version "1.22.0"
-  resolved "https://registry.npmjs.org/@openmeteo/sdk/-/sdk-1.22.0.tgz#69814d79c1cba5ed75d1dee3e8c2e1216a8640dc"
-  integrity sha512-llo/RbkN8wwOF8XrGe42pMbd3qFLUcBYCkmB3nWb8Ozwd+C47Xb0c2o/AsTmyk2WA6hV9tjXDSvyQWTaUFG6WA==
   dependencies:
     flatbuffers "^25.9.23"
 
@@ -17666,12 +17659,12 @@ opener@^1.5.1, opener@^1.5.2:
   resolved "https://registry.npmjs.org/opener/-/opener-1.5.2.tgz#5d37e1f35077b9dcac4301372271afdeb2a13598"
   integrity sha512-ur5UIdyw5Y7yEj9wLzhqXiy6GZ3Mwx0yGI+5sMn2r0N0v3cKJvUmFH5yPP+WXh9e0xfyzyJX95D8l088DNFj7A==
 
-openmeteo@1.2.2:
-  version "1.2.2"
-  resolved "https://registry.npmjs.org/openmeteo/-/openmeteo-1.2.2.tgz#743a368d5cd2f9a29c633fa076a234665cf4bccf"
-  integrity sha512-n0FeYOFts9Tr/KYajfPvFVaYKd0PDQRuG3xnkgVsyagOI91QkVcSo2+CLIYgN4LlGCCVM5FZ5e+dswSG81PGZA==
+openmeteo@1.2.3:
+  version "1.2.3"
+  resolved "https://registry.npmjs.org/openmeteo/-/openmeteo-1.2.3.tgz#754a4941d78301ff7fc47a384512c3f4a1821071"
+  integrity sha512-3updmgCMnCAAjAgV3RfhMdIBPi/43RtbjQ4CizHGn52RP9SpgmVCDRpun+Ex75NG3jTF3pZp+d1BPlP9DWMHiQ==
   dependencies:
-    "@openmeteo/sdk" "^1.22.0"
+    "@openmeteo/sdk" "^1.23.0"
     flatbuffers "^25.9.23"
 
 optionator@^0.9.3:
