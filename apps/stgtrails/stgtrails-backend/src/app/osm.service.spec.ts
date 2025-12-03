@@ -3,7 +3,9 @@ import { Test } from '@nestjs/testing'
 
 import { OsmService } from './osm.service'
 
-describe('OsmService', () => {
+// Disabled because of rate limiting by osm.org
+// eslint-disable-next-line no-restricted-properties
+describe.skip('OsmService', () => {
   let osmService: OsmService
 
   beforeEach(async () => {
