@@ -7,6 +7,6 @@ export default {
     '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../coverage/apps/elgato/backend',
+  coverageDirectory: '../../../coverage/apps/elgato/elgato-backend',
   coveragePathIgnorePatterns: ['src/stubs/*'],
 }

@@ -13,6 +13,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
+        "coverage": true,
         "passWithNoTests": true,
         "reportsDirectory": "../../coverage/libs/dom-utils"
       }

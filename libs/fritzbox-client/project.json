@@ -25,7 +25,9 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../coverage/libs/fritzbox-client"
+        "coverage": true,
+        "reportsDirectory": "../../coverage/libs/fritzbox-client",
+        "coverage": true
       }
     },
     "lint": {

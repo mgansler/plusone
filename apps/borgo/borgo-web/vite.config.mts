@@ -38,8 +38,11 @@ export default defineConfig(() => ({
     environment: 'jsdom',
     include: ['{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     includeSource: ['src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    reporters: ['default'],
+    reporters: ['default', 'junit'],
+    outputFile: '../../../reports/test/borgo-web.xml',
     coverage: {
+      reporter: ['html', 'clover', 'json', 'cobertura'],
+      include: ['src/**/*.{ts,tsx}'],
       reportsDirectory: '../../coverage/apps/borgo/borgo-web',
       provider: 'v8' as const,
     },

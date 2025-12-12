@@ -38,6 +38,8 @@ export default defineConfig({
     reporters: ['default', 'junit'],
     outputFile: '../../../reports/test/stgtrails-web.xml',
     coverage: {
+      reporter: ['html', 'clover', 'json', 'cobertura'],
+      include: ['src/**/*.{ts,tsx}'],
       reportsDirectory: '../../../coverage/apps/stgtrails/stgtrails-web',
       provider: 'v8',
     },

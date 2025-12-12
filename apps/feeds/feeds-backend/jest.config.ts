@@ -12,6 +12,6 @@ export default {
     ],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../coverage/apps/feeds/backend',
+  coverageDirectory: '../../../coverage/apps/feeds/feeds-backend',
   preset: '../../../jest.preset.js',
 }

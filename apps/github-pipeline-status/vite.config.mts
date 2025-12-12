@@ -54,6 +54,8 @@ export default defineConfig({
     reporters: ['default', 'junit'],
     outputFile: '../../reports/test/github-pipeline-status.xml',
     coverage: {
+      reporter: ['html', 'clover', 'json', 'cobertura'],
+      include: ['src/**/*.{ts,tsx}'],
       reportsDirectory: '../../coverage/apps/github-pipeline-status',
       provider: 'v8',
     },

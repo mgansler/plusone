@@ -60,7 +60,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "passWithNoTests": true,
+        "coverage": true,
         "reportsDirectory": "../../../coverage/apps/elgato/elgato-web"
       }
     },

@@ -7,14 +7,14 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   root: __dirname,
   build: {
-    outDir: '../../../dist/apps/elgato/frontend',
+    outDir: '../../../dist/apps/elgato/elgato-web',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true,
     },
   },
-  cacheDir: '../../../node_modules/.vite/apps/elgato/frontend',
+  cacheDir: '../../../node_modules/.vite/apps/elgato/elgato-web',
 
   server: {
     port: 4200,
@@ -38,7 +38,9 @@ export default defineConfig({
     reporters: ['default', 'junit'],
     outputFile: '../../../reports/test/elgato-web.xml',
     coverage: {
-      reportsDirectory: '../../../coverage/apps/elgato/frontend',
+      reporter: ['html', 'clover', 'json', 'cobertura'],
+      include: ['src/**/*.{ts,tsx}'],
+      reportsDirectory: '../../../coverage/apps/elgato/elgato-web',
       provider: 'v8',
     },
     globals: true,

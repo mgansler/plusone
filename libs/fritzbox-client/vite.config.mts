@@ -46,10 +46,11 @@ export default defineConfig({
     globalSetup: './vitest.global-setup.ts',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     exclude: ['src/**/stubs/**/*'],
-
     reporters: ['default', 'junit'],
     outputFile: '../../reports/test/fritzbox-client.xml',
     coverage: {
+      reporter: ['html', 'clover', 'json', 'cobertura'],
+      include: ['src/**/*.{ts,tsx}'],
       reportsDirectory: '../../coverage/libs/fritzbox-client',
       provider: 'v8',
       exclude: ['vite.config.mts', 'vitest.global-setup.ts', 'src/index.ts'],

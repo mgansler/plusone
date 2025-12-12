@@ -8,8 +8,9 @@ module.exports = {
       'jest-junit',
       {
         outputDirectory: 'reports/test',
-        outputName: `test-${process.env.NX_TASK_TARGET_PROJECT}.xml`,
+        outputName: `${process.env.NX_TASK_TARGET_PROJECT}.xml`,
       },
     ],
   ],
+  coverageReporters: ['html', 'clover', 'json', 'cobertura'],
 }

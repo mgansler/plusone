@@ -36,9 +36,12 @@ export default defineConfig(() => ({
     watch: false,
     globals: true,
     environment: 'happy-dom',
+    outputFile: '../../../reports/test/feeds-web.xml',
     include: ['{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default', 'junit'],
     coverage: {
+      reporter: ['html', 'clover', 'json', 'cobertura'],
+      include: ['src/**/*.{ts,tsx}'],
       reportsDirectory: '../../../coverage/apps/feeds/feeds-web',
       provider: 'v8' as const,
     },

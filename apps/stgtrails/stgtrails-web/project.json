@@ -70,6 +70,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
+        "coverage": true,
         "reportsDirectory": "../../../coverage/apps/stgtrails/stgtrails-web"
       }
     },

@@ -47,6 +47,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{workspaceRoot}/coverage/apps/github-pipeline-status"],
       "options": {
+        "coverage": true,
         "passWithNoTests": true,
         "reportsDirectory": "../../coverage/apps/github-pipeline-status"
       }
