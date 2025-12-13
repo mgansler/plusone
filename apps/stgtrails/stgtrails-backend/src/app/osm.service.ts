@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
 import { firstValueFrom } from 'rxjs'
 import { z } from 'zod'
+import { AxiosError } from 'axios'
 
 // https://nominatim.org/release-docs/develop/api/Reverse/#result-restriction
 enum ZoomLevel {
@@ -64,7 +65,7 @@ export class OsmService {
     } catch (error: unknown) {
       this.logger.warn(
         `Failed to get address data for coordinates: latitude=${latitude}, longitude=${longitude}`,
-        error,
+        error instanceof AxiosError ? error.message : error,
       )
       return {
         country: OsmService.UnknownLocation,

@@ -33,11 +33,15 @@ export class TrailAreaService implements OnModuleInit {
     if (trailAreas.length > 0) {
       this.logger.log(`There are ${trailAreas.length} trail areas without state/country information, updating now.`)
       for (const trailArea of trailAreas) {
-        const address = await this.osmService.reverseLookup({
-          latitude: trailArea.latitude,
-          longitude: trailArea.longitude,
-        })
-        await this.updateTrailAreaCountryAndState(trailArea.id, address.countryCode, address.stateCode)
+        try {
+          const address = await this.osmService.reverseLookup({
+            latitude: trailArea.latitude,
+            longitude: trailArea.longitude,
+          })
+          await this.updateTrailAreaCountryAndState(trailArea.id, address.countryCode, address.stateCode)
+        } catch (e) {
+          this.logger.warn(`Failed to update trail area with id ${trailArea.id}: ${e.message}`)
+        }
       }
     }
   }
