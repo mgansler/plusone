@@ -12347,7 +12347,7 @@ es6-promise@^3.2.1:
   resolved "https://registry.npmjs.org/es6-promise/-/es6-promise-3.3.1.tgz#a08cdde84ccdbf34d027a1451bc91d4bcd28a613"
   integrity sha512-SOp9Phqvqn7jtEUxPWdWfWoLmyt2VaJ6MpvP9Comy1MceMXqE6bxvaTu4iaxpYYPzhny28Lc+M87/c2cPK6lDg==
 
-esbuild@0.25.5, esbuild@0.27.1, esbuild@^0.25.0, esbuild@^0.25.11, esbuild@~0.25.0:
+esbuild@0.25.5, esbuild@0.27.1, esbuild@^0.25.0, esbuild@^0.25.11, esbuild@^0.27.0, esbuild@~0.25.0:
   version "0.27.1"
   resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.27.1.tgz#56bf43e6a4b4d2004642ec7c091b78de02b0831a"
   integrity sha512-yY35KZckJJuVVPXpvjgxiCuVEJT67F6zDeVTv4rizyPrfGBUpZQsvmxnN+C371c2esD/hNMjj4tpBhuueLN7aA==
@@ -22196,12 +22196,12 @@ vite-tsconfig-paths@6.0.1:
     globrex "^0.1.2"
     tsconfck "^3.0.3"
 
-vite@7.2.7:
-  version "7.2.7"
-  resolved "https://registry.npmjs.org/vite/-/vite-7.2.7.tgz#0789a4c3206081699f34a9ecca2dda594a07478e"
-  integrity sha512-ITcnkFeR3+fI8P1wMgItjGrR10170d8auB4EpMLPqmx6uxElH3a/hHGQabSHKdqd4FXWO1nFIp9rRn7JQ34ACQ==
+vite@7.3.0:
+  version "7.3.0"
+  resolved "https://registry.npmjs.org/vite/-/vite-7.3.0.tgz#066c7a835993a66e82004eac3e185d0d157fd658"
+  integrity sha512-dZwN5L1VlUBewiP6H9s2+B3e3Jg96D0vzN+Ry73sOefebhYr9f94wwkMNN/9ouoU8pV1BqA1d1zGk8928cx0rg==
   dependencies:
-    esbuild "^0.25.0"
+    esbuild "^0.27.0"
     fdir "^6.5.0"
     picomatch "^4.0.3"
     postcss "^8.5.6"
@@ -22943,10 +22943,10 @@ zip-stream@^6.0.1:
   resolved "https://registry.npmjs.org/zod-validation-error/-/zod-validation-error-4.0.2.tgz#bc605eba49ce0fcd598c127fee1c236be3f22918"
   integrity sha512-Q6/nZLe6jxuU80qb/4uJ4t5v2VEZ44lzQjPDhYJNztRQ4wyWc6VF3D3Kb/fAuPetZQnhS3hnajCf9CsWesghLQ==
 
-zod@4.1.13:
-  version "4.1.13"
-  resolved "https://registry.npmjs.org/zod/-/zod-4.1.13.tgz#93699a8afe937ba96badbb0ce8be6033c0a4b6b1"
-  integrity sha512-AvvthqfqrAhNH9dnfmrfKzX5upOdjUVJYFqNSlkmGf64gRaTzlPwz99IHYnVs28qYAybvAlBV+H7pn0saFY4Ig==
+zod@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npmjs.org/zod/-/zod-4.2.0.tgz#01e86f2c2b6d525a1b9fa6dbe78beccad082118f"
+  integrity sha512-Bd5fw9wlIhtqCCxotZgdTOMwGm1a0u75wARVEY9HMs1X17trvA/lMi4+MGK5EUfYkXVTbX8UDiDKW4OgzHVUZw==
 
 "zod@^3.25.0 || ^4.0.0":
   version "4.1.12"
