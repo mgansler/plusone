@@ -40,8 +40,6 @@ export function UpdatableDisplayName({ deviceId }: Readonly<UpdatableDisplayName
     return null
   }
 
-  console.log(deviceDetails)
-
   if (!enableEditMode) {
     return (
       <h2 style={{ cursor: 'pointer' }} onClick={() => setIsEditing(true)}>

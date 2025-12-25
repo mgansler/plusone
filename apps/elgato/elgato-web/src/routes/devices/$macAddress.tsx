@@ -1,19 +1,22 @@
+import { createFileRoute } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
-import { convert } from 'colvertize'
-import { throttle } from 'lodash'
 import { useCallback } from 'react'
+import { throttle } from 'lodash'
+import { convert } from 'colvertize'
 
 import { DeviceType, useTransitionToColor, useValidatedDeviceDetails } from '@plusone/elgato-api-client'
 
-import { deviceDetailsRoute } from '../../routes'
-import { LightColorPicker } from '../components/color-picker'
-import { UpdatableDisplayName } from '../components/updateable-display-name'
+import { UpdatableDisplayName } from '../../app/components/updateable-display-name'
+import { LightColorPicker } from '../../app/components/color-picker'
+import { DevicePowerStateControl } from '../../app/devices/device-power-state-control'
+import { GetStreamDeckUrl } from '../../app/devices/get-stream-deck-url'
 
-import { DevicePowerStateControl } from './device-power-state-control'
-import { GetStreamDeckUrl } from './get-stream-deck-url'
+export const Route = createFileRoute('/devices/$macAddress')({
+  component: DeviceDetailsComponent,
+})
 
-export function DeviceDetails() {
-  const { macAddress } = deviceDetailsRoute.useParams()
+function DeviceDetailsComponent() {
+  const { macAddress } = Route.useParams()
 
   const queryClient = useQueryClient()
   const { data: deviceDetails, queryKey } = useValidatedDeviceDetails(macAddress)

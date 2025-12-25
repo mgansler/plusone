@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { createMemoryHistory, RouterProvider } from '@tanstack/react-router'
+import { createMemoryHistory, createRouter, RouterProvider } from '@tanstack/react-router'
 
-import { router } from '../../routes'
+import { routeTree } from '../../routeTree.gen'
 
 describe('DeviceDetails', () => {
   let queryClient: QueryClient
@@ -21,7 +21,7 @@ describe('DeviceDetails', () => {
     cy.mount(
       <QueryClientProvider client={queryClient}>
         <RouterProvider
-          router={router}
+          router={createRouter({ routeTree })}
           history={createMemoryHistory({ initialEntries: ['/devices/ma:ca:dd:re:ss'] })}
         />
       </QueryClientProvider>,

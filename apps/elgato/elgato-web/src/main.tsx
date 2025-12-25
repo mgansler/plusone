@@ -1,10 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { RouterProvider } from '@tanstack/react-router'
+import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { StrictMode } from 'react'
 import * as ReactDOM from 'react-dom/client'
 
 import './styles.css'
-import { router } from './routes'
+import { routeTree } from './routeTree.gen'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,6 +15,8 @@ const queryClient = new QueryClient({
     },
   },
 })
+
+const router = createRouter({ routeTree })
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(

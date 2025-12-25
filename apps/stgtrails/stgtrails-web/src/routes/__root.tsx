@@ -1,19 +1,29 @@
-import { useNavigate } from '@tanstack/react-router'
+import * as React from 'react'
 import { useState } from 'react'
+import { createRootRoute, useMatchRoute, useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 
 import { useValidatedCountryList, useValidatedTrailAreas } from '@plusone/stgtrails-api-client'
 
-import { indexRoute } from '../routes'
+import { TrailArea } from '../app/trail-area'
+import { AnyCountryOrState, useTrailAreaFilter } from '../app/use-trail-area-filter'
+import { useTrailAreaId } from '../app/use-trail-area-id'
+import { Egg } from '../app/egg'
 
-import { TrailArea } from './trail-area'
-import { AnyCountryOrState, useTrailAreaFilter } from './use-trail-area-filter'
-import { useTrailAreaId } from './use-trail-area-id'
+export const COUNTRY_PATH = '/country/$country'
+export const STATE_PATH = COUNTRY_PATH + '/state/$state'
+export const TRAIL_AREA_PATH = STATE_PATH + '/trailArea/$trailArea'
 
-export function App() {
+export const Route = createRootRoute({
+  component: RootComponent,
+})
+
+function RootComponent() {
   const { t } = useTranslation()
   const trailAreaFilter = useTrailAreaFilter()
   const navigate = useNavigate()
+
+  const matchRoute = useMatchRoute()
 
   const { data: trailAreas } = useValidatedTrailAreas({
     country: trailAreaFilter.country === AnyCountryOrState ? undefined : trailAreaFilter.country,
@@ -25,6 +35,10 @@ export function App() {
 
   const trailAreaId = useTrailAreaId(trailAreas, trailAreaFilter.trailArea)
   const [hours, setHours] = useState<number>(96)
+
+  if (matchRoute({ to: '/egg' })) {
+    return <Egg />
+  }
 
   if (!trailAreas) {
     return (
@@ -46,9 +60,9 @@ export function App() {
             onChange={(event) => {
               const country = event.currentTarget.value
               if (country === AnyCountryOrState) {
-                void navigate({ to: indexRoute.path })
+                void navigate({ to: '/' })
               } else {
-                void navigate({ to: '/country/$country', params: { country } })
+                void navigate({ to: COUNTRY_PATH, params: { country } })
               }
             }}
           >
@@ -69,10 +83,10 @@ export function App() {
               onChange={(event) => {
                 const state = event.currentTarget.value
                 if (state === AnyCountryOrState) {
-                  void navigate({ to: '/country/$country', params: { country: trailAreaFilter.country } })
+                  void navigate({ to: COUNTRY_PATH, params: { country: trailAreaFilter.country } })
                 } else {
                   void navigate({
-                    to: '/country/$country/state/$state',
+                    to: STATE_PATH,
                     params: { country: trailAreaFilter.country, state },
                   })
                 }
@@ -95,7 +109,7 @@ export function App() {
             name={'trail-area'}
             onChange={(event) => {
               void navigate({
-                to: `/country/$country/state/$state/trailArea/$trailArea`,
+                to: TRAIL_AREA_PATH,
                 params: {
                   country: trailAreaFilter.country,
                   state: trailAreaFilter.state,

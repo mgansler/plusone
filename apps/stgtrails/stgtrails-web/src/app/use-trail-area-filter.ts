@@ -1,6 +1,6 @@
 import { useMatchRoute } from '@tanstack/react-router'
 
-import { COUNTRY_PATH, STATE_PATH, TRAIL_AREA_PATH } from '../routes'
+import { COUNTRY_PATH, STATE_PATH, TRAIL_AREA_PATH } from '../routes/__root'
 
 export const AnyCountryOrState = 'any'
 
