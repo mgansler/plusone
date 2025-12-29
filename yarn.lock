@@ -203,7 +203,7 @@
   resolved "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.28.5.tgz#a8a4962e1567121ac0b3b487f52107443b455c7f"
   integrity sha512-6uFXyCayocRbqhZOB+6XcuZbkMNimwfVGFji8CTZnCzOHVGvDqzvitu1re2AU5LROliz7eQPhB8CpAMvnx9EjA==
 
-"@babel/core@7.28.5", "@babel/core@^7.23.7", "@babel/core@^7.26.10", "@babel/core@^7.27.7", "@babel/core@^7.28.5":
+"@babel/core@7.28.5", "@babel/core@^7.23.7", "@babel/core@^7.26.10", "@babel/core@^7.28.5":
   version "7.28.5"
   resolved "https://registry.npmjs.org/@babel/core/-/core-7.28.5.tgz#4c81b35e51e1b734f510c99b07dfbc7bbbb48f7e"
   integrity sha512-e7jT4DxYvIDLk1ZHmU/m/mB19rex9sv0c2ftBtjSBv+kVM/902eh0fINUzD7UwLLNR+jU585GxUJ8/EBfAM5fw==
@@ -2214,7 +2214,7 @@
     "@babel/plugin-transform-react-jsx-development" "^7.25.9"
     "@babel/plugin-transform-react-pure-annotations" "^7.25.9"
 
-"@babel/preset-typescript@7.28.5", "@babel/preset-typescript@^7.27.1":
+"@babel/preset-typescript@7.28.5":
   version "7.28.5"
   resolved "https://registry.npmjs.org/@babel/preset-typescript/-/preset-typescript-7.28.5.tgz#540359efa3028236958466342967522fd8f2a60c"
   integrity sha512-+bQy5WOI2V6LJZpPVxY+yp66XdZ2yifu0Mc1aP5CQKgjn4QM5IN2i5fAZ4xKop47pr8rpVhiAeu+nDQa12C8+g==
@@ -2297,7 +2297,7 @@
     debug "^4.3.1"
     globals "^11.1.0"
 
-"@babel/traverse@^7.23.7", "@babel/traverse@^7.26.10", "@babel/traverse@^7.27.7", "@babel/traverse@^7.28.5":
+"@babel/traverse@^7.23.7", "@babel/traverse@^7.26.10", "@babel/traverse@^7.28.5":
   version "7.28.5"
   resolved "https://registry.npmjs.org/@babel/traverse/-/traverse-7.28.5.tgz#450cab9135d21a7a2ca9d2d35aa05c20e68c360b"
   integrity sha512-TCCj4t55U90khlYkVV/0TfkJkAkUg3jZFA3Neb7unZT8CPok7iiRfaX0F+WnqWqt7OxhOn0uBKXCw4lbL8W0aQ==
@@ -2396,7 +2396,7 @@
     "@babel/helper-string-parser" "^7.25.9"
     "@babel/helper-validator-identifier" "^7.25.9"
 
-"@babel/types@^7.23.6", "@babel/types@^7.27.7", "@babel/types@^7.28.5":
+"@babel/types@^7.23.6", "@babel/types@^7.28.5":
   version "7.28.5"
   resolved "https://registry.npmjs.org/@babel/types/-/types-7.28.5.tgz#10fc405f60897c35f07e85493c932c7b5ca0592b"
   integrity sha512-qQ5m48eI/MFLQ5PxQj4PFaprjyCTLI37ElWMmNs0K8Lk3dVeOdNpB3ks8jc7yM5CDmVC73eMVk/trk3fgmrUpA==
@@ -7218,7 +7218,14 @@
   resolved "https://registry.npmjs.org/@swc/counter/-/counter-0.1.3.tgz#cc7463bd02949611c6329596fccd2b0ec782b0e9"
   integrity sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==
 
-"@swc/helpers@0.5.17", "@swc/helpers@^0.5.17":
+"@swc/helpers@0.5.18":
+  version "0.5.18"
+  resolved "https://registry.npmjs.org/@swc/helpers/-/helpers-0.5.18.tgz#feeeabea0d10106ee25aaf900165df911ab6d3b1"
+  integrity sha512-TXTnIcNJQEKwThMMqBXsZ4VGAza6bvN4pa41Rkqoio6QBKMvo+5lexeTMScGCIxtzgQJzElcvIltani+adC5PQ==
+  dependencies:
+    tslib "^2.8.0"
+
+"@swc/helpers@^0.5.17":
   version "0.5.17"
   resolved "https://registry.npmjs.org/@swc/helpers/-/helpers-0.5.17.tgz#5a7be95ac0f0bf186e7e6e890e7a6f6cda6ce971"
   integrity sha512-5IKx/Y13RsYd+sauPb2x+U/xZikHjolzfuDgTAl/Tdf3Q8rslRvC19NKDLgAJQ6wsqADk10ntlv08nPFw/gO/A==
@@ -7375,10 +7382,10 @@
   dependencies:
     "@tanstack/query-core" "5.90.12"
 
-"@tanstack/react-router@1.143.6":
-  version "1.143.6"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.143.6.tgz#98cbcd342b43b165f450e4fc4157eccdc66c06b8"
-  integrity sha512-UqMX0xasL7ZTWPrDkXDnjRe/1zQt3zGZ/kybvdhwDoi+pfJcJFm1jXCwyWtIxWLkJ+oWaAWlVGbxyt353EE8HQ==
+"@tanstack/react-router@1.143.11":
+  version "1.143.11"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.143.11.tgz#1872a0cb0401d75e1893d242ca884d9576ac3886"
+  integrity sha512-FMjcJVlJa4TFkbpfH1wvfEIOvlQX2/JQbFFcTRGEVBYtegXULL8ipoMemMkKYeyd7EPjGvSPbHgTtMFwVhdtFQ==
   dependencies:
     "@tanstack/history" "1.141.0"
     "@tanstack/react-store" "^0.8.0"
@@ -7408,13 +7415,13 @@
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
 
-"@tanstack/router-generator@1.143.6":
-  version "1.143.6"
-  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.143.6.tgz#1f38e06954d3ed032bc396778415a0e51b236199"
-  integrity sha512-vnBZvjemSn901TRo5SXOkoBs6KWWwJLW1S8i9o09ISicUrTzEE1yx4WucsBRRDBeeWO8YlloBaRGcR9CH+FlCg==
+"@tanstack/router-generator@1.143.11":
+  version "1.143.11"
+  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.143.11.tgz#378b1829d3685825d6fc6b6b77dc41224100b279"
+  integrity sha512-vq5LnMyN3VuZN2Stnv5B9FzkxQK+0nr4D6S1stAag1fv6ypb7/QF5IBunojs1uLfLMB4E/Kl8lFtlRImJ/KTQA==
   dependencies:
     "@tanstack/router-core" "1.143.6"
-    "@tanstack/router-utils" "1.141.0"
+    "@tanstack/router-utils" "1.143.11"
     "@tanstack/virtual-file-routes" "1.141.0"
     prettier "^3.5.0"
     recast "^0.23.11"
@@ -7422,35 +7429,34 @@
     tsx "^4.19.2"
     zod "^3.24.2"
 
-"@tanstack/router-plugin@1.143.6":
-  version "1.143.6"
-  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.143.6.tgz#48962a2917f345e5a9e79d5bb96d112163345f48"
-  integrity sha512-h3i/ZJp61PSQLZ3AjMHrCaBc9eh56iSPOc6G6OADTZL8Gq3gukqVM1Ezvz0jxXYySC4qafOJJ7UWMVxYU6xX6g==
+"@tanstack/router-plugin@1.143.11":
+  version "1.143.11"
+  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.143.11.tgz#0a305d51138eeab5bb9bd62f96d738887f915dee"
+  integrity sha512-mG1bP30mXA89Ury5/NrjqJnEzz5QiVUomeOjaftg/OioAlCSEpq20+1t/wrCqnGHq1y+0AZDVfArAPp5YtTdcg==
   dependencies:
-    "@babel/core" "^7.27.7"
+    "@babel/core" "^7.28.5"
     "@babel/plugin-syntax-jsx" "^7.27.1"
     "@babel/plugin-syntax-typescript" "^7.27.1"
     "@babel/template" "^7.27.2"
-    "@babel/traverse" "^7.27.7"
-    "@babel/types" "^7.27.7"
+    "@babel/traverse" "^7.28.5"
+    "@babel/types" "^7.28.5"
     "@tanstack/router-core" "1.143.6"
-    "@tanstack/router-generator" "1.143.6"
-    "@tanstack/router-utils" "1.141.0"
+    "@tanstack/router-generator" "1.143.11"
+    "@tanstack/router-utils" "1.143.11"
     "@tanstack/virtual-file-routes" "1.141.0"
-    babel-dead-code-elimination "^1.0.10"
+    babel-dead-code-elimination "^1.0.11"
     chokidar "^3.6.0"
     unplugin "^2.1.2"
     zod "^3.24.2"
 
-"@tanstack/router-utils@1.141.0":
-  version "1.141.0"
-  resolved "https://registry.npmjs.org/@tanstack/router-utils/-/router-utils-1.141.0.tgz#45cd7fd0216c96ef7b1c8f60f24c4ab8d03ef8c7"
-  integrity sha512-/eFGKCiix1SvjxwgzrmH4pHjMiMxc+GA4nIbgEkG2RdAJqyxLcRhd7RPLG0/LZaJ7d0ad3jrtRqsHLv2152Vbw==
+"@tanstack/router-utils@1.143.11":
+  version "1.143.11"
+  resolved "https://registry.npmjs.org/@tanstack/router-utils/-/router-utils-1.143.11.tgz#7aadf88ce3c84c479d48ab5b1fa84cefe51b1a81"
+  integrity sha512-N24G4LpfyK8dOlnP8BvNdkuxg1xQljkyl6PcrdiPSA301pOjatRT1y8wuCCJZKVVD8gkd0MpCZ0VEjRMGILOtA==
   dependencies:
-    "@babel/core" "^7.27.4"
-    "@babel/generator" "^7.27.5"
-    "@babel/parser" "^7.27.5"
-    "@babel/preset-typescript" "^7.27.1"
+    "@babel/core" "^7.28.5"
+    "@babel/generator" "^7.28.5"
+    "@babel/parser" "^7.28.5"
     ansis "^4.1.0"
     diff "^8.0.2"
     pathe "^2.0.3"
@@ -9541,7 +9547,7 @@ b4a@^1.6.4:
   resolved "https://registry.npmjs.org/b4a/-/b4a-1.6.7.tgz#a99587d4ebbfbd5a6e3b21bdb5d5fa385767abe4"
   integrity sha512-OnAYlL5b7LEkALw87fUVafQw5rVR9RjwGd4KUwNQ6DrrNmaVaUCgLipfVlzrPQ4tWOR9P0IXGNOx50jYCCdSJg==
 
-babel-dead-code-elimination@^1.0.10:
+babel-dead-code-elimination@^1.0.11:
   version "1.0.11"
   resolved "https://registry.npmjs.org/babel-dead-code-elimination/-/babel-dead-code-elimination-1.0.11.tgz#c392d4a8eade455cf0620d415941d18c4c33cf3b"
   integrity sha512-mwq3W3e/pKSI6TG8lXMiDWvEi1VXYlSBlJlB3l+I0bAb5u1RNUl88udos85eOPNK3m5EXK9uO7d2g08pesTySQ==
@@ -21230,10 +21236,10 @@ synckit@^0.11.8:
   dependencies:
     "@pkgr/core" "^0.2.4"
 
-systeminformation@5.28.0, systeminformation@^5.27.14:
-  version "5.28.0"
-  resolved "https://registry.npmjs.org/systeminformation/-/systeminformation-5.28.0.tgz#418d48b0ec8b39bf61a2cd9c5eedbfc5e649bbe1"
-  integrity sha512-TUgB+Si//7ojoKhqV3yhhHx9/pebPSAlHAK5o2IbpPax3+HA7PF0QyHeW9Yc7zm57xzYUmL1LLKa2AHIzZzaJw==
+systeminformation@5.28.1, systeminformation@^5.27.14:
+  version "5.28.1"
+  resolved "https://registry.npmjs.org/systeminformation/-/systeminformation-5.28.1.tgz#3014fbe606946a3863f6ad7b1e2fa2ee98118d62"
+  integrity sha512-E1R8ILjak1wPx9CNiQbPV+AeDkT2n5UTOumB8nJ7TPk9QVjhOZvs+xGnp5LqPyQCmh8izuJPZ777COK1X2Cj4g==
 
 tagged-tag@^1.0.0:
   version "1.0.0"
