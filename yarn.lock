@@ -7387,14 +7387,14 @@
   dependencies:
     "@tanstack/query-core" "5.90.12"
 
-"@tanstack/react-router@1.143.11":
-  version "1.143.11"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.143.11.tgz#1872a0cb0401d75e1893d242ca884d9576ac3886"
-  integrity sha512-FMjcJVlJa4TFkbpfH1wvfEIOvlQX2/JQbFFcTRGEVBYtegXULL8ipoMemMkKYeyd7EPjGvSPbHgTtMFwVhdtFQ==
+"@tanstack/react-router@1.144.0":
+  version "1.144.0"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.144.0.tgz#28067cabc410b183cbdac405bedf3838495f4752"
+  integrity sha512-GmRyIGmHtGj3VLTHXepIwXAxTcHyL5W7Vw7O1CnVEtFxQQWKMVOnWgI7tPY6FhlNwMKVb3n0mPFWz9KMYyd2GA==
   dependencies:
     "@tanstack/history" "1.141.0"
     "@tanstack/react-store" "^0.8.0"
-    "@tanstack/router-core" "1.143.6"
+    "@tanstack/router-core" "1.144.0"
     isbot "^5.1.22"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
@@ -7407,10 +7407,10 @@
     "@tanstack/store" "0.8.0"
     use-sync-external-store "^1.6.0"
 
-"@tanstack/router-core@1.143.6":
-  version "1.143.6"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.143.6.tgz#8fee95f3134e760701b2e29657225f3bdc387e4c"
-  integrity sha512-NOdkn0lQNNjtyqns8lzZrq05mK3UdIOLR6WyH/reCwTqQ5w7lflquqM0AqbDuBA4iT2hOdNf1lS9NdW9esE2ig==
+"@tanstack/router-core@1.144.0":
+  version "1.144.0"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.144.0.tgz#18074a6d18fe4c7926699aaa8ab3987833d362c7"
+  integrity sha512-6oVERtK9XDHCP4XojgHsdHO56ZSj11YaWjF5g/zw39LhyA6Lx+/X86AEIHO4y0BUrMQaJfcjdAQMVSAs6Vjtdg==
   dependencies:
     "@tanstack/history" "1.141.0"
     "@tanstack/store" "^0.8.0"
@@ -7420,12 +7420,12 @@
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
 
-"@tanstack/router-generator@1.143.11":
-  version "1.143.11"
-  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.143.11.tgz#378b1829d3685825d6fc6b6b77dc41224100b279"
-  integrity sha512-vq5LnMyN3VuZN2Stnv5B9FzkxQK+0nr4D6S1stAag1fv6ypb7/QF5IBunojs1uLfLMB4E/Kl8lFtlRImJ/KTQA==
+"@tanstack/router-generator@1.144.0":
+  version "1.144.0"
+  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.144.0.tgz#a1f2f500994d640d7f1a14311ef3d04ed05e86ea"
+  integrity sha512-NRXO/e9fZkSPF/Xa2S2+UxKgQWQpA/DmTQLCjQfPumCnNLUHpq0+iQPUWY9b5Rk2fnKwQkBZNLAl2EuWGa7rvw==
   dependencies:
-    "@tanstack/router-core" "1.143.6"
+    "@tanstack/router-core" "1.144.0"
     "@tanstack/router-utils" "1.143.11"
     "@tanstack/virtual-file-routes" "1.141.0"
     prettier "^3.5.0"
@@ -7434,10 +7434,10 @@
     tsx "^4.19.2"
     zod "^3.24.2"
 
-"@tanstack/router-plugin@1.143.11":
-  version "1.143.11"
-  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.143.11.tgz#0a305d51138eeab5bb9bd62f96d738887f915dee"
-  integrity sha512-mG1bP30mXA89Ury5/NrjqJnEzz5QiVUomeOjaftg/OioAlCSEpq20+1t/wrCqnGHq1y+0AZDVfArAPp5YtTdcg==
+"@tanstack/router-plugin@1.144.0":
+  version "1.144.0"
+  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.144.0.tgz#a47f70e44e661b316a6e1d6181f3bc6952d2b27a"
+  integrity sha512-P5pJ/dYeDxwgHkDk5xq4MYdWIRWiehlfWjcIewnd21hG0hud/IQCfAwnGY89k/izJV8WZSOV+rKtJf6ufW2aKw==
   dependencies:
     "@babel/core" "^7.28.5"
     "@babel/plugin-syntax-jsx" "^7.27.1"
@@ -7445,8 +7445,8 @@
     "@babel/template" "^7.27.2"
     "@babel/traverse" "^7.28.5"
     "@babel/types" "^7.28.5"
-    "@tanstack/router-core" "1.143.6"
-    "@tanstack/router-generator" "1.143.11"
+    "@tanstack/router-core" "1.144.0"
+    "@tanstack/router-generator" "1.144.0"
     "@tanstack/router-utils" "1.143.11"
     "@tanstack/virtual-file-routes" "1.141.0"
     babel-dead-code-elimination "^1.0.11"
@@ -17181,10 +17181,10 @@ ms@^2.1.1, ms@^2.1.3:
   resolved "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-msw@2.12.6:
-  version "2.12.6"
-  resolved "https://registry.npmjs.org/msw/-/msw-2.12.6.tgz#e2c3553682c221816efb48e1cabbe22b58127aac"
-  integrity sha512-nGhVcHP64skBrJbn1RVO/573cq8vgoce19Ljm60xp66RDpcPrX96ik5oMf3tIIku2kc31plyI2i0vd2J6GPMVg==
+msw@2.12.7:
+  version "2.12.7"
+  resolved "https://registry.npmjs.org/msw/-/msw-2.12.7.tgz#755fa4a0df51133bf76ebc9b7d4bdcc4355f0c8e"
+  integrity sha512-retd5i3xCZDVWMYjHEVuKTmhqY8lSsxujjVrZiGbbdoxxIBg5S7rCuYy/YQpfrTYIxpd/o0Kyb/3H+1udBMoYg==
   dependencies:
     "@inquirer/confirm" "^5.0.0"
     "@mswjs/interceptors" "^0.40.0"
@@ -19151,19 +19151,12 @@ pure-rand@^7.0.0:
   resolved "https://registry.npmjs.org/pure-rand/-/pure-rand-7.0.1.tgz#6f53a5a9e3e4a47445822af96821ca509ed37566"
   integrity sha512-oTUZM/NAZS8p7ANR3SHh30kXB+zK2r2BPcEn/awJIbOvq82WoMN4p62AWWp3Hhw50G0xMsw1mhIBLqHw64EcNQ==
 
-qs@6.14.0, qs@^6.11.2, qs@^6.14.0:
-  version "6.14.0"
-  resolved "https://registry.npmjs.org/qs/-/qs-6.14.0.tgz#c63fa40680d2c5c941412a0e899c89af60c0a930"
-  integrity sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==
+qs@6.14.0, qs@6.14.1, qs@^6.11.2, qs@^6.14.0, qs@^6.4.0:
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/qs/-/qs-6.14.1.tgz#a41d85b9d3902f31d27861790506294881871159"
+  integrity sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==
   dependencies:
     side-channel "^1.1.0"
-
-qs@^6.4.0:
-  version "6.13.1"
-  resolved "https://registry.npmjs.org/qs/-/qs-6.13.1.tgz#3ce5fc72bd3a8171b85c99b93c65dd20b7d1b16e"
-  integrity sha512-EJPeIn0CYrGu+hli1xilKAPXODtJ12T0sP63Ijx2/khC2JtuaN3JyNIpvmnkmaEtha9ocbG4A4cMcr+TvqvwQg==
-  dependencies:
-    side-channel "^1.0.6"
 
 quansync@^0.2.1:
   version "0.2.4"
@@ -20426,7 +20419,7 @@ side-channel-weakmap@^1.0.2:
     object-inspect "^1.13.3"
     side-channel-map "^1.0.1"
 
-side-channel@^1.0.4, side-channel@^1.0.6:
+side-channel@^1.0.4:
   version "1.0.6"
   resolved "https://registry.npmjs.org/side-channel/-/side-channel-1.0.6.tgz#abd25fb7cd24baf45466406b1096b7831c9215f2"
   integrity sha512-fDW/EZ6Q9RiO8eFG8Hj+7u/oW+XrPTIChwCOM2+th2A6OblDtYYIpve9m+KvI9Z4C9qSEXlaGR6bTEYHReuglA==
@@ -21241,10 +21234,10 @@ synckit@^0.11.8:
   dependencies:
     "@pkgr/core" "^0.2.4"
 
-systeminformation@5.28.2, systeminformation@^5.27.14:
-  version "5.28.2"
-  resolved "https://registry.npmjs.org/systeminformation/-/systeminformation-5.28.2.tgz#b617bb90aae4861812e057f0e3daa45bdce1aac7"
-  integrity sha512-AWrPnmbIcfjLX7wiQMd7r6bl3PDaGoqvrfn8pCLJbk9CiB+vQXTk8RVxNs2vQRTezYlhb9skxEIyAPTm1If5bQ==
+systeminformation@5.28.3, systeminformation@^5.27.14:
+  version "5.28.3"
+  resolved "https://registry.npmjs.org/systeminformation/-/systeminformation-5.28.3.tgz#2a929e0800bc41e12497fb93b792a62049fb6805"
+  integrity sha512-crbaZrBH3TpTbqc0PKFqnUFHdAJOxV9UhF3KCGSrf+YP+SkoMHmxU2Nr9yIG2xgCr4645Z9Ec4GHQQQ7kGX/HA==
 
 tagged-tag@^1.0.0:
   version "1.0.0"
@@ -21367,10 +21360,10 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
-testcontainers@11.10.0:
-  version "11.10.0"
-  resolved "https://registry.npmjs.org/testcontainers/-/testcontainers-11.10.0.tgz#879b445b763aa357a862770334943d75f2a60159"
-  integrity sha512-8hwK2EnrOZfrHPpDC7CPe03q7H8Vv8j3aXdcmFFyNV8dzpBzgZYmqyDtduJ8YQ5kbzj+A+jUXMQ6zI8B5U3z+g==
+testcontainers@11.11.0:
+  version "11.11.0"
+  resolved "https://registry.npmjs.org/testcontainers/-/testcontainers-11.11.0.tgz#0f397cd3d2a71fc5e1573d36d78149ddb2e0ab3b"
+  integrity sha512-nKTJn3n/gkyGg/3SVkOwX+isPOGSHlfI+CWMobSmvQrsj7YW01aWvl2pYIfV4LMd+C8or783yYrzKSK2JlP+Qw==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
     "@types/dockerode" "^3.3.47"
