@@ -43,8 +43,8 @@ function RootComponent() {
   if (!trailAreas) {
     return (
       <>
-        <h1>Welcome stgtrails-web</h1>
-        <div>Please wait until the data is loaded.</div>
+        <h1>{t(['app.title'])}</h1>
+        <div>{t(['app.loading'])}</div>
       </>
     )
   }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import type { GetElevationForCoordinatesParams } from '@plusone/stgtrails-api-client'
 import { useValidatedElevationDataForCoordinates } from '@plusone/stgtrails-api-client'
@@ -37,6 +38,8 @@ export function calculateCookingTime({ diameter, startTemp, endTemp, height = 0 
 }
 
 export function Egg() {
+  const { t } = useTranslation()
+
   const [coords, setCoords] = useState<GetElevationForCoordinatesParams>({ latitude: -1, longitude: -1 })
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -60,11 +63,11 @@ export function Egg() {
 
   return (
     <div style={{ marginLeft: 10 }}>
-      <h2>Egg Calculator</h2>
+      <h2>{t(['egg.title'])}</h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <label>
-          Size: {diameterToSize(diameter)}
+          {t(['egg.size'], { size: diameterToSize(diameter) })}
           <input
             type={'range'}
             min={40}
@@ -77,7 +80,7 @@ export function Egg() {
         </label>
 
         <label>
-          Refrigerator
+          {t(['egg.refrigerator'])}
           <input
             type={'checkbox'}
             checked={startTemp === 4}
@@ -86,7 +89,7 @@ export function Egg() {
         </label>
 
         <label>
-          Target inner temperatur (softness): {endTemp} °C
+          {t(['egg.targetTemp'], { temp: endTemp })}
           <input
             type={'range'}
             min={62}
@@ -97,7 +100,7 @@ export function Egg() {
           />
         </label>
 
-        <span>Cook for {calculateCookingTime({ diameter, height, endTemp, startTemp })}</span>
+        <span>{t(['egg.duration'], { duration: calculateCookingTime({ diameter, height, endTemp, startTemp }) })}</span>
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
-import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
+import type { TFunction } from 'i18next'
 
-import i18next from '../../i18n'
+import type { SunriseSunsetResponseDto, WeatherDataResponseDto } from '@plusone/stgtrails-api-client'
 
 // @ts-expect-error global var
 export const getChartWidth = (isDesktop: boolean) => (isDesktop ? 980 : window.__stgtrails.svgWidth)
@@ -27,14 +27,14 @@ export function getXForTimestamp(ts: number, weather: Array<WeatherDataResponseD
   return (getChartWidth(isDesktop) / end) * now
 }
 
-export function getSunsetString(date: Date, sunriseSunsetData: Array<SunriseSunsetResponseDto>): string {
+export function getSunsetString(t: TFunction, date: Date, sunriseSunsetData: Array<SunriseSunsetResponseDto>): string {
   const sunriseSunsetForDay = sunriseSunsetData.find(
     (sunriseSunsetResponse) =>
       sunriseSunsetResponse.date ===
       `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`,
   )
   return sunriseSunsetForDay
-    ? i18next.t(['svg.sunset']) + ' ' + new Date(sunriseSunsetForDay.sunset).toLocaleTimeString()
+    ? t(['svg.sunset'], { time: new Date(sunriseSunsetForDay.sunset).toLocaleTimeString() })
     : ''
 }
 

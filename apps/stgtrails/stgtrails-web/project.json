@@ -87,6 +87,20 @@
           "watch": true
         }
       }
+    },
+    "i18n-lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/stgtrails/stgtrails-web",
+        "command": "i18next-cli lint"
+      }
+    },
+    "i18n-status": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/stgtrails/stgtrails-web",
+        "command": "i18next-cli status"
+      }
     }
   }
 }

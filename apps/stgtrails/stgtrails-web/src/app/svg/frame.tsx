@@ -47,7 +47,7 @@ export function Frame({ timestamps, sunriseSunset }: Readonly<FrameProps>) {
                   {t([WEEKDAYS[datetime.getDay()]])}, {datetime.toLocaleDateString()}
                 </text>
                 <text x={x + 5} y={36}>
-                  {getSunsetString(datetime, sunriseSunset)}
+                  {getSunsetString(t, datetime, sunriseSunset)}
                 </text>
                 <line stroke={'black'} x1={x} x2={x} y1={0} y2={getChartHeight(isDesktop)} />
               </Fragment>

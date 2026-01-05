@@ -14,4 +14,25 @@
 // ***********************************************************
 import '@testing-library/cypress/add-commands'
 
+import type { BackendModule } from 'i18next'
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
+
 import './commands'
+
+i18n
+  .use({
+    type: 'backend',
+    read: (language, namespace, callback) => {
+      import('../../public/locales/' + language + '/' + namespace + '.json')
+        .then((res) => callback(null, res))
+        .catch((error) => callback(error, null))
+    },
+  } as BackendModule)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: 'en',
+    load: 'languageOnly',
+    debug: true,
+    interpolation: { escapeValue: false },
+  })

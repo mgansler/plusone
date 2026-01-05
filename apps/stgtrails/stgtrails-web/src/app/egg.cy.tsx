@@ -40,17 +40,17 @@ describe('Egg', () => {
 
     cy.wait('@elevation')
 
-    cy.findByText('Cook for 5:46').should('be.visible')
+    cy.findByText('Cook for 5:46 minutes.').should('be.visible')
 
     cy.findByRole('slider', { name: 'Size: M' }).invoke('val', 50).trigger('input')
 
     cy.findByLabelText('Size: L').should('be.visible')
-    cy.findByText('Cook for 7:07').should('be.visible')
+    cy.findByText('Cook for 7:07 minutes.').should('be.visible')
 
-    cy.findByRole('checkbox', { name: 'Refrigerator' }).uncheck()
-    cy.findByText('Cook for 6:23').should('be.visible')
+    cy.findByRole('checkbox', { name: 'Refrigerator:' }).uncheck()
+    cy.findByText('Cook for 6:23 minutes.').should('be.visible')
 
-    cy.findByRole('slider', { name: 'Target inner temperatur (softness): 67 °C' }).invoke('val', 74).trigger('input')
-    cy.findByText('Cook for 7:22').should('be.visible')
+    cy.findByRole('slider', { name: 'Target inner temperature (softness): 67°C' }).invoke('val', 74).trigger('input')
+    cy.findByText('Cook for 7:22 minutes.').should('be.visible')
   })
 })

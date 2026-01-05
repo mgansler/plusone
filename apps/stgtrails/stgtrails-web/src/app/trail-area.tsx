@@ -44,7 +44,7 @@ export function TrailArea({ trailAreaId, threshold = 0.3, hours }: Readonly<Trai
   }
 
   if (weather.length === 0) {
-    return <div>Sorry, there is currently no weather data available, check again later.</div>
+    return <div>{t(['app.noData'])}</div>
   }
 
   const rainPast24h = weather.reduce((previousValue, currentValue) => {
