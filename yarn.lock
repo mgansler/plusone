@@ -7636,10 +7636,10 @@
   dependencies:
     "@tanstack/query-core" "5.90.16"
 
-"@tanstack/react-router@1.146.2":
-  version "1.146.2"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.146.2.tgz#14c5e32030b92e18be9a38b4d7c9c1d6af461d3b"
-  integrity sha512-Oq/shGk5nCNyK/YhB9SGByeU3wgjNVzpGoDovuOvIacE9hsicZYOv9EnII1fEku8xavqWtN8D9wr21z2CDanjA==
+"@tanstack/react-router@1.147.0":
+  version "1.147.0"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.147.0.tgz#f9841ee07fc5454c89bd4f1e0a67ce67575f746b"
+  integrity sha512-lZypZZsqFMUA5L5PsTXFbayvSA7BkYqzypElEbq0PQyCU3X6hBkOnrY731ji20c6p1mItJG4KBzhQmgR+vVztw==
   dependencies:
     "@tanstack/history" "1.145.7"
     "@tanstack/react-store" "^0.8.0"
@@ -7683,10 +7683,10 @@
     tsx "^4.19.2"
     zod "^3.24.2"
 
-"@tanstack/router-plugin@1.146.3":
-  version "1.146.3"
-  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.146.3.tgz#b3f841c32d965df88ee7861cc858c96b981a14ef"
-  integrity sha512-2YCieC5UbFBEf3d1Up6Q2IeGqRjc+qmxbCvVxSONnitK6aDFKpRoxltlhMyeQyeIhFsIyhqxaIADOkO+fMrFRQ==
+"@tanstack/router-plugin@1.147.0":
+  version "1.147.0"
+  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.147.0.tgz#f42d5a096d2ef2769f86edfcce742c8f7c57cbe9"
+  integrity sha512-H/t/wL9CVm5iBjKqHyLrXXni+Ky64O0gSHSA9zFJDRuzSo9sTnDinth3F5ntIpP85QUKXtFh1cwNDeYMcaC7eQ==
   dependencies:
     "@babel/core" "^7.28.5"
     "@babel/plugin-syntax-jsx" "^7.27.1"
@@ -8168,10 +8168,10 @@
   dependencies:
     undici-types "~6.20.0"
 
-"@types/node@24.10.4":
-  version "24.10.4"
-  resolved "https://registry.npmjs.org/@types/node/-/node-24.10.4.tgz#9d27c032a1b2c42a4eab8fb65c5856a8b8e098c4"
-  integrity sha512-vnDVpYPMzs4wunl27jHrfmwojOGKya0xyM3sH+UE5iv5uPS6vX7UIoh6m+vQc5LGBq52HBKPIn/zcSZVzeDEZg==
+"@types/node@24.10.6":
+  version "24.10.6"
+  resolved "https://registry.npmjs.org/@types/node/-/node-24.10.6.tgz#6070ebcb8045885f7c5afbb113d53236a37be20c"
+  integrity sha512-B8h60xgJMR/xmgyX9fncRzEW9gCxoJjdenUhke2v1JGOd/V66KopmWrLPXi5oUI4VuiGK+d+HlXJjDRZMj21EQ==
   dependencies:
     undici-types "~7.16.0"
 
@@ -22827,16 +22827,17 @@ vite-plugin-dts@4.5.4:
     local-pkg "^1.0.0"
     magic-string "^0.30.17"
 
-vite-tsconfig-paths@6.0.3:
-  version "6.0.3"
-  resolved "https://registry.npmjs.org/vite-tsconfig-paths/-/vite-tsconfig-paths-6.0.3.tgz#df8c11b56a6247707e76b472af084fc6e5e68c35"
-  integrity sha512-7bL7FPX/DSviaZGYUKowWF1AiDVWjMjxNbE8lyaVGDezkedWqfGhlnQ4BZXre0ZN5P4kAgIJfAlgFDVyjrCIyg==
+vite-tsconfig-paths@6.0.4:
+  version "6.0.4"
+  resolved "https://registry.npmjs.org/vite-tsconfig-paths/-/vite-tsconfig-paths-6.0.4.tgz#637e7608065acce67962cdd4bc3bbd47817b0cc0"
+  integrity sha512-iIsEJ+ek5KqRTK17pmxtgIxXtqr3qDdE6OxrP9mVeGhVDNXRJTKN/l9oMbujTQNzMLe6XZ8qmpztfbkPu2TiFQ==
   dependencies:
     debug "^4.1.1"
     globrex "^0.1.2"
     tsconfck "^3.0.3"
+    vite "*"
 
-vite@7.3.1:
+vite@*, vite@7.3.1:
   version "7.3.1"
   resolved "https://registry.npmjs.org/vite/-/vite-7.3.1.tgz#7f6cfe8fb9074138605e822a75d9d30b814d6507"
   integrity sha512-w+N7Hifpc3gRjZ63vYBXA56dvvRlNWRczTdmCBBa+CotUzAPf5b7YMdMR/8CQoeYE5LX3W4wj6RYTgonm1b9DA==
