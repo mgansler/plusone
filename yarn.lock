@@ -7636,10 +7636,10 @@
   dependencies:
     "@tanstack/query-core" "5.90.16"
 
-"@tanstack/react-router@1.147.1":
-  version "1.147.1"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.147.1.tgz#f03a6878bfa47920b39c413632468a3608805d97"
-  integrity sha512-TKoQRxCua9tuFUhZch5bn5MYKTGAtr96Gp/GB8uGKhkLoHXkCP7HA8nwkZU/JSluONiro42+3MoAsQA8HTkIPQ==
+"@tanstack/react-router@1.147.3":
+  version "1.147.3"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.147.3.tgz#8daa9c0a57ac3e5a977fcfeeb47747c79370de6f"
+  integrity sha512-Fp9DoszYiIJclwxU43kyP/cqcWD418DPmV6yhmIOuVedsSMnfh2g7uRQ+bOoaWn996JjuU9yt/x48h66aCQSQA==
   dependencies:
     "@tanstack/history" "1.145.7"
     "@tanstack/react-store" "^0.8.0"
@@ -7683,10 +7683,10 @@
     tsx "^4.19.2"
     zod "^3.24.2"
 
-"@tanstack/router-plugin@1.147.1":
-  version "1.147.1"
-  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.147.1.tgz#e586a172684c641f906d248a63d586adf7974680"
-  integrity sha512-gVrcHYxWA1OQKw0YEbND8nb4UDJZq+rO8Xu0BQIQdbKndhRfqyUk3riCFvr9XNgeI4G0g2lsFyb46Hqgn2gDJQ==
+"@tanstack/router-plugin@1.147.3":
+  version "1.147.3"
+  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.147.3.tgz#8924c86196767ff4722e32c7dd1cbbe075635907"
+  integrity sha512-eBTeLujRZI8Mq7xCcjggS5oF1AuyJml7YI2Vk/OqmDt0mUNIppMOdZaZX+7HJXSFPjw/SaX0NNlxExC3Lc58GA==
   dependencies:
     "@babel/core" "^7.28.5"
     "@babel/plugin-syntax-jsx" "^7.27.1"
@@ -19706,12 +19706,21 @@ react-error-boundary@6.0.3:
   resolved "https://registry.npmjs.org/react-error-boundary/-/react-error-boundary-6.0.3.tgz#e84bb9e67e692f83d3ea0fc35612db68d7d804c6"
   integrity sha512-5guqn2UYpCFjE8UDMA8J7Kke+YSGBFrKQRJb3XdcaGZXYINZfQXgBt3ifY6MvjkN7QROc5A8zclyoSCwrcRUKw==
 
-react-hook-form@7.70.0:
-  version "7.70.0"
-  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.70.0.tgz#256fa2ca71633c99f16ca2cd6074628aa52001b2"
-  integrity sha512-COOMajS4FI3Wuwrs3GPpi/Jeef/5W1DRR84Yl5/ShlT3dKVFUfoGiEZ/QE6Uw8P4T2/CLJdcTVYKvWBMQTEpvw==
+react-hook-form@7.71.0:
+  version "7.71.0"
+  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.71.0.tgz#0cd17a5650050d19861196a89fe1b24ac8046842"
+  integrity sha512-oFDt/iIFMV9ZfV52waONXzg4xuSlbwKUPvXVH2jumL1me5qFhBMc4knZxuXiZ2+j6h546sYe3ZKJcg/900/iHw==
 
-react-i18next@16.5.1, react-i18next@^16.5.1:
+react-i18next@16.5.2:
+  version "16.5.2"
+  resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-16.5.2.tgz#6fab6f5494cfe00e9da36c3f5eb23fcbe60e5f24"
+  integrity sha512-GG/SBVxx9dvrO1uCs8VYdKfOP8NEBUhNP+2VDQLCifRJ8DL1qPq296k2ACNGyZMDe7iyIlz/LMJTQOs8HXSRvw==
+  dependencies:
+    "@babel/runtime" "^7.28.4"
+    html-parse-stringify "^3.0.1"
+    use-sync-external-store "^1.6.0"
+
+react-i18next@^16.5.1:
   version "16.5.1"
   resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-16.5.1.tgz#a299224b6d9c054dc92d7d65b642e48964b318ee"
   integrity sha512-Hks6UIRZWW4c+qDAnx1csVsCGYeIR4MoBGQgJ+NUoNnO6qLxXuf8zu0xdcinyXUORgGzCdRsexxO1Xzv3sTdnw==

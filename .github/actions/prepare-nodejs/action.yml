@@ -6,7 +6,7 @@ runs:
   steps:
     - uses: actions/setup-node@v6.1.0
       with:
-        node-version: '24.12.0'
+        node-version: '24.13.0'
         cache: 'yarn'
 
     - name: Install dependencies
