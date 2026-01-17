@@ -6126,7 +6126,14 @@
   resolved "https://registry.npmjs.org/@open-draft/until/-/until-2.1.0.tgz#0acf32f470af2ceaf47f095cdecd40d68666efda"
   integrity sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==
 
-"@openmeteo/sdk@1.23.0", "@openmeteo/sdk@^1.23.0":
+"@openmeteo/sdk@1.24.0":
+  version "1.24.0"
+  resolved "https://registry.npmjs.org/@openmeteo/sdk/-/sdk-1.24.0.tgz#3d021c2dc00dec95c08952e43f0889abdf8c1dc8"
+  integrity sha512-SriwYZ9aMADJN2x37Hils0/vJ/gTSWtdUwuJs8vXcmwZY0MXVNJ+AT4bhYcBrss2XR2Kq5qmR2yDKq3VQbaE3A==
+  dependencies:
+    flatbuffers "^25.9.23"
+
+"@openmeteo/sdk@^1.23.0":
   version "1.23.0"
   resolved "https://registry.npmjs.org/@openmeteo/sdk/-/sdk-1.23.0.tgz#d00b4d6bd10812e35638e652f0a42d87091ee9b6"
   integrity sha512-haGK9vDCYkSq/ikp68NJwgZS1jT9LqUeJEq/tTKqO18g5e/V1m0qKs1Cqt3c7elws2/hbTvX7VLvt8gqoMxU2w==
@@ -7696,10 +7703,10 @@
   resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.145.7.tgz#38a28b0b020fe3c6e1da0ec810cf1b64be66f978"
   integrity sha512-gMo/ReTUp0a3IOcZoI3hH6PLDC2R/5ELQ7P2yu9F6aEkA0wSQh+Q4qzMrtcKvF2ut0oE+16xWCGDo/TdYd6cEQ==
 
-"@tanstack/query-core@5.90.16":
-  version "5.90.16"
-  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.90.16.tgz#19a972c2ffbc47727ab6649028af1bee70e28cdf"
-  integrity sha512-MvtWckSVufs/ja463/K4PyJeqT+HMlJWtw6PrCpywznd2NSgO3m4KwO9RqbFqGg6iDE8vVMFWMeQI4Io3eEYww==
+"@tanstack/query-core@5.90.17":
+  version "5.90.17"
+  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.90.17.tgz#e97c44cde35c341f2c8dd56f5f6621b4c50004a2"
+  integrity sha512-hDww+RyyYhjhUfoYQ4es6pbgxY7LNiPWxt4l1nJqhByjndxJ7HIjDxTBtfvMr5HwjYavMrd+ids5g4Rfev3lVQ==
 
 "@tanstack/query-devtools@5.92.0":
   version "5.92.0"
@@ -7713,21 +7720,21 @@
   dependencies:
     "@tanstack/query-devtools" "5.92.0"
 
-"@tanstack/react-query@5.90.16":
-  version "5.90.16"
-  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.90.16.tgz#76955d7027b5bff3d7f51163db7ea1c0bd430cb5"
-  integrity sha512-bpMGOmV4OPmif7TNMteU/Ehf/hoC0Kf98PDc0F4BZkFrEapRMEqI/V6YS0lyzwSV6PQpY1y4xxArUIfBW5LVxQ==
+"@tanstack/react-query@5.90.17":
+  version "5.90.17"
+  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.90.17.tgz#509cc41ee1700b852866b477ee086fc3a4ed1e27"
+  integrity sha512-PGc2u9KLwohDUSchjW9MZqeDQJfJDON7y4W7REdNBgiFKxQy+Pf7eGjiFWEj5xPqKzAeHYdAb62IWI1a9UJyGQ==
   dependencies:
-    "@tanstack/query-core" "5.90.16"
+    "@tanstack/query-core" "5.90.17"
 
-"@tanstack/react-router@1.147.3":
-  version "1.147.3"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.147.3.tgz#8daa9c0a57ac3e5a977fcfeeb47747c79370de6f"
-  integrity sha512-Fp9DoszYiIJclwxU43kyP/cqcWD418DPmV6yhmIOuVedsSMnfh2g7uRQ+bOoaWn996JjuU9yt/x48h66aCQSQA==
+"@tanstack/react-router@1.149.3":
+  version "1.149.3"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.149.3.tgz#61ce72cff112b21dec8e84ca16f7c569fba3b361"
+  integrity sha512-yklZ2LSXLGfhW4PXu2N98yhGk8qtlkUbFRV42np0rx46s50wB5sXRkjdnqyGuDG/dldaBIi76M6vWg84Pmb4+A==
   dependencies:
     "@tanstack/history" "1.145.7"
     "@tanstack/react-store" "^0.8.0"
-    "@tanstack/router-core" "1.147.1"
+    "@tanstack/router-core" "1.149.3"
     isbot "^5.1.22"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
@@ -7740,10 +7747,10 @@
     "@tanstack/store" "0.8.0"
     use-sync-external-store "^1.6.0"
 
-"@tanstack/router-core@1.147.1":
-  version "1.147.1"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.147.1.tgz#04c441791299bbf789ad48962e2c6ccc6d00be2b"
-  integrity sha512-yf8o3CNgJVGO5JnIqiTe0y2eChxEM0w7TrEs1VSumL/zz2bQroYGNr1mOXJ2VeN+7YfJJwjEqq71P5CzWwMzRg==
+"@tanstack/router-core@1.149.3":
+  version "1.149.3"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.149.3.tgz#26e876ed7dccaf6cf0a6374014886992569163c1"
+  integrity sha512-obXmQ2hElxqjQ9cpABjXOvR/aQG+uG9ALEcVvyqP1ae57Fb3VhOuynmc2k/eVgx/bKKvxe2cqj4wCG04O0i5Zg==
   dependencies:
     "@tanstack/history" "1.145.7"
     "@tanstack/store" "^0.8.0"
@@ -7753,12 +7760,12 @@
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
 
-"@tanstack/router-generator@1.149.0":
-  version "1.149.0"
-  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.149.0.tgz#2df5f436e8e7a38143d2172fe89d2aaecb3c9a5c"
-  integrity sha512-H+SZbJ9j4G+y/329LlRLb//4sBdPNQpuMddb/rgkfoRZpdztm9Ejm9EEbMJB0rkNDrSgfSPOZ6VtJbndYH/AQA==
+"@tanstack/router-generator@1.149.3":
+  version "1.149.3"
+  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.149.3.tgz#31d9f39da727a3171c912b7128a1254b71f731ef"
+  integrity sha512-SKjsYiXT81wO2V1wF+7ITc/EDvt1xsN4JO5MvFYFL1s5Pq1gCW7/nI4yvqZzGm7aE26J8TLdTn419GfuE9SIlw==
   dependencies:
-    "@tanstack/router-core" "1.147.1"
+    "@tanstack/router-core" "1.149.3"
     "@tanstack/router-utils" "1.143.11"
     "@tanstack/virtual-file-routes" "1.145.4"
     prettier "^3.5.0"
@@ -7767,10 +7774,10 @@
     tsx "^4.19.2"
     zod "^3.24.2"
 
-"@tanstack/router-plugin@1.149.0":
-  version "1.149.0"
-  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.149.0.tgz#e229f695cd48fdf2a9888375e342dde16a9f7c9e"
-  integrity sha512-DYPScneHZ0fm3FJyDhkUCW0w0dOopAKvep57n/Ft2b3RrHSeSeJB/cJWgsUvpcYJfpywkyOLyqVLMoiDvLoG/A==
+"@tanstack/router-plugin@1.149.3":
+  version "1.149.3"
+  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.149.3.tgz#bce5f699863de216481f9f043e18dc9e94463f8f"
+  integrity sha512-OO+S5czNWGC/+IC6XtKwPkqkRRaVJna6P8jNu+trV1hByhl1NKvPFRFBIqvUlMsM100hAesb0Jk2LsKwleywNA==
   dependencies:
     "@babel/core" "^7.28.5"
     "@babel/plugin-syntax-jsx" "^7.27.1"
@@ -7778,8 +7785,8 @@
     "@babel/template" "^7.27.2"
     "@babel/traverse" "^7.28.5"
     "@babel/types" "^7.28.5"
-    "@tanstack/router-core" "1.147.1"
-    "@tanstack/router-generator" "1.149.0"
+    "@tanstack/router-core" "1.149.3"
+    "@tanstack/router-generator" "1.149.3"
     "@tanstack/router-utils" "1.143.11"
     "@tanstack/virtual-file-routes" "1.145.4"
     babel-dead-code-elimination "^1.0.11"
@@ -11726,10 +11733,10 @@ csstype@^3.2.2, csstype@^3.2.3:
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz#ec48c0f3e993e50648c86da559e2610995cf989a"
   integrity sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==
 
-cypress@15.8.2:
-  version "15.8.2"
-  resolved "https://registry.npmjs.org/cypress/-/cypress-15.8.2.tgz#685d6e090b1c5f76cb5430eafa21f63b1eded0a6"
-  integrity sha512-KGpuiE8o9l9eyVLPkig574t8zOXkEDKzI0a+RQwy4cfXzpaLipvTOv0t+QEEkLiw/8HbgMNZ0fbPKakJAB3USA==
+cypress@15.9.0:
+  version "15.9.0"
+  resolved "https://registry.npmjs.org/cypress/-/cypress-15.9.0.tgz#9bcbbfbf3923d8aca7d06990cb174d5ba67e4084"
+  integrity sha512-Ks6Bdilz3TtkLZtTQyqYaqtL/WT3X3APKaSLhTV96TmTyudzSjc6EJsJCHmBb7DxO+3R12q3Jkbjgm/iPgmwfg==
   dependencies:
     "@cypress/request" "^3.0.10"
     "@cypress/xvfb" "^1.2.4"
@@ -19789,15 +19796,15 @@ react-error-boundary@6.0.3:
   resolved "https://registry.npmjs.org/react-error-boundary/-/react-error-boundary-6.0.3.tgz#e84bb9e67e692f83d3ea0fc35612db68d7d804c6"
   integrity sha512-5guqn2UYpCFjE8UDMA8J7Kke+YSGBFrKQRJb3XdcaGZXYINZfQXgBt3ifY6MvjkN7QROc5A8zclyoSCwrcRUKw==
 
-react-hook-form@7.71.0:
-  version "7.71.0"
-  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.71.0.tgz#0cd17a5650050d19861196a89fe1b24ac8046842"
-  integrity sha512-oFDt/iIFMV9ZfV52waONXzg4xuSlbwKUPvXVH2jumL1me5qFhBMc4knZxuXiZ2+j6h546sYe3ZKJcg/900/iHw==
+react-hook-form@7.71.1:
+  version "7.71.1"
+  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.71.1.tgz#6a758958861682cf0eb22131eead684ba3618f66"
+  integrity sha512-9SUJKCGKo8HUSsCO+y0CtqkqI5nNuaDqTxyqPsZPqIwudpj4rCrAz/jZV+jn57bx5gtZKOh3neQu94DXMc+w5w==
 
-react-i18next@16.5.2:
-  version "16.5.2"
-  resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-16.5.2.tgz#6fab6f5494cfe00e9da36c3f5eb23fcbe60e5f24"
-  integrity sha512-GG/SBVxx9dvrO1uCs8VYdKfOP8NEBUhNP+2VDQLCifRJ8DL1qPq296k2ACNGyZMDe7iyIlz/LMJTQOs8HXSRvw==
+react-i18next@16.5.3:
+  version "16.5.3"
+  resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-16.5.3.tgz#1f102c8e8e7b0c9069e21ac40cd730f32a64e180"
+  integrity sha512-fo+/NNch37zqxOzlBYrWMx0uy/yInPkRfjSuy4lqKdaecR17nvCHnEUt3QyzA8XjQ2B/0iW/5BhaHR3ZmukpGw==
   dependencies:
     "@babel/runtime" "^7.28.4"
     html-parse-stringify "^3.0.1"
