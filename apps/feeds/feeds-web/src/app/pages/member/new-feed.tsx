@@ -1,7 +1,7 @@
 import { Button, Container, Divider, Link as MuiLink, Stack, TextField, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import type { FallbackProps } from 'react-error-boundary'
-import { ErrorBoundary } from 'react-error-boundary'
+import { getErrorMessage, ErrorBoundary } from 'react-error-boundary'
 import type { UseFormReturn } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import type { UseFormReset } from 'react-hook-form/dist/types/form'
@@ -123,7 +123,7 @@ function ImportForm() {
 function NewFeedFallback({ error, resetErrorBoundary }: Readonly<FallbackProps>) {
   return (
     <div>
-      Could not add feed: {error.message}
+      Could not add feed: {getErrorMessage(error)}
       <Button onClick={resetErrorBoundary}>reset</Button>
     </div>
   )
