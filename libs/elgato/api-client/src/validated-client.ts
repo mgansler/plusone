@@ -10,29 +10,29 @@ import {
   useGetCommands,
 } from './gen/client'
 import {
-  currentDeviceSettingsResponse,
-  currentLocationResponse,
-  deviceDetailsResponse,
-  deviceListResponse,
-  discoveredDevicesResponse,
-  getCommandResponse,
-  getCommandsResponse,
+  CurrentDeviceSettingsResponse,
+  CurrentLocationResponse,
+  DeviceDetailsResponse,
+  DeviceListResponse,
+  DiscoveredDevicesResponse,
+  GetCommandResponse,
+  GetCommandsResponse,
 } from './gen/zod'
 
 export const useValidatedDiscoveredDevicesList = buildValidatedUseQueryWrapper(
   useDiscoveredDevices,
-  discoveredDevicesResponse,
+  DiscoveredDevicesResponse,
 )
-export const useValidatedDeviceList = buildValidatedUseQueryWrapper(useDeviceList, deviceListResponse)
-export const useValidatedDeviceDetails = buildValidatedUseQueryWrapper(useDeviceDetails, deviceDetailsResponse)
+export const useValidatedDeviceList = buildValidatedUseQueryWrapper(useDeviceList, DeviceListResponse)
+export const useValidatedDeviceDetails = buildValidatedUseQueryWrapper(useDeviceDetails, DeviceDetailsResponse)
 
 export const useValidatedDeviceSettings = buildValidatedUseQueryWrapper(
   useCurrentDeviceSettings,
-  currentDeviceSettingsResponse,
+  CurrentDeviceSettingsResponse,
 )
 
-export const useValidatedCurrentLocation = buildValidatedUseQueryWrapper(useCurrentLocation, currentLocationResponse)
+export const useValidatedCurrentLocation = buildValidatedUseQueryWrapper(useCurrentLocation, CurrentLocationResponse)
 
-export const useValidatedCommandsList = buildValidatedUseQueryWrapper(useGetCommands, getCommandsResponse)
+export const useValidatedCommandsList = buildValidatedUseQueryWrapper(useGetCommands, GetCommandsResponse)
 
-export const useValidatedGetCommand = buildValidatedUseQueryWrapper(useGetCommand, getCommandResponse)
+export const useValidatedGetCommand = buildValidatedUseQueryWrapper(useGetCommand, GetCommandResponse)

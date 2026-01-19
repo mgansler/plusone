@@ -9,31 +9,31 @@ import {
   useGetWeatherDataForTrailArea,
 } from './gen/client'
 import {
-  getCountriesResponse,
-  getElevationForCoordinatesResponse,
-  getSunriseSunsetForTrailAreaResponse,
-  getTrailAreasResponse,
-  getTrailsOfAreaResponse,
-  getWeatherDataForTrailAreaResponse,
+  GetCountriesResponse,
+  GetElevationForCoordinatesResponse,
+  GetSunriseSunsetForTrailAreaResponse,
+  GetTrailAreasResponse,
+  GetTrailsOfAreaResponse,
+  GetWeatherDataForTrailAreaResponse,
 } from './gen/zod'
 
-export const useValidatedCountryList = buildValidatedUseQueryWrapper(useGetCountries, getCountriesResponse)
+export const useValidatedCountryList = buildValidatedUseQueryWrapper(useGetCountries, GetCountriesResponse)
 
-export const useValidatedTrailAreas = buildValidatedUseQueryWrapper(useGetTrailAreas, getTrailAreasResponse)
+export const useValidatedTrailAreas = buildValidatedUseQueryWrapper(useGetTrailAreas, GetTrailAreasResponse)
 
-export const useValidatedTrailsForTrailArea = buildValidatedUseQueryWrapper(useGetTrailsOfArea, getTrailsOfAreaResponse)
+export const useValidatedTrailsForTrailArea = buildValidatedUseQueryWrapper(useGetTrailsOfArea, GetTrailsOfAreaResponse)
 
 export const useValidatedSunriseSunsetDataForTrailArea = buildValidatedUseQueryWrapper(
   useGetSunriseSunsetForTrailArea,
-  getSunriseSunsetForTrailAreaResponse,
+  GetSunriseSunsetForTrailAreaResponse,
 )
 
 export const useValidatedWeatherDataForTrailArea = buildValidatedUseQueryWrapper(
   useGetWeatherDataForTrailArea,
-  getWeatherDataForTrailAreaResponse,
+  GetWeatherDataForTrailAreaResponse,
 )
 
 export const useValidatedElevationDataForCoordinates = buildValidatedUseQueryWrapper(
   useGetElevationForCoordinates,
-  getElevationForCoordinatesResponse,
+  GetElevationForCoordinatesResponse,
 )

@@ -2,6 +2,7 @@ module.exports = {
   api: {
     input: { target: '../../../apps/stgtrails/stgtrails-backend/stgtrails-internal.json' },
     output: {
+      httpClient: 'axios',
       client: 'react-query',
       target: './src/gen/client.ts',
       override: {

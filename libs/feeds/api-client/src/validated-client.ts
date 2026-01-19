@@ -14,33 +14,33 @@ import {
   useRecentlyReadArticles,
 } from './gen/client'
 import {
-  bootInfoResponse,
-  findArticlesResponse,
-  getAdminStatsResponse,
-  getFeedSettingsResponse,
-  getFeedTagsResponse,
-  getHealthStatusResponse,
-  getTagsResponse,
-  getUserFeedsResponse,
-  getUsersResponse,
-  profileResponse,
-  recentlyReadArticlesResponse,
+  BootInfoResponse,
+  FindArticlesResponse,
+  GetAdminStatsResponse,
+  GetFeedSettingsResponse,
+  GetFeedTagsResponse,
+  GetHealthStatusResponse,
+  GetTagsResponse,
+  GetUserFeedsResponse,
+  GetUsersResponse,
+  ProfileResponse,
+  RecentlyReadArticlesResponse,
 } from './gen/zod'
 
-export const useValidatedBootInfo = buildValidatedUseQueryWrapper(useBootInfo, bootInfoResponse)
-export const useValidatedGetAdminStats = buildValidatedUseQueryWrapper(useGetAdminStats, getAdminStatsResponse)
-export const useValidatedGetFeedSettings = buildValidatedUseQueryWrapper(useGetFeedSettings, getFeedSettingsResponse)
-export const useValidatedGetFeedTags = buildValidatedUseQueryWrapper(useGetFeedTags, getFeedTagsResponse)
-export const useValidatedGetHealthStatus = buildValidatedUseQueryWrapper(useGetHealthStatus, getHealthStatusResponse)
-export const useValidatedGetTags = buildValidatedUseQueryWrapper(useGetTags, getTagsResponse)
-export const useValidatedGetUsers = buildValidatedUseQueryWrapper(useGetUsers, getUsersResponse)
+export const useValidatedBootInfo = buildValidatedUseQueryWrapper(useBootInfo, BootInfoResponse)
+export const useValidatedGetAdminStats = buildValidatedUseQueryWrapper(useGetAdminStats, GetAdminStatsResponse)
+export const useValidatedGetFeedSettings = buildValidatedUseQueryWrapper(useGetFeedSettings, GetFeedSettingsResponse)
+export const useValidatedGetFeedTags = buildValidatedUseQueryWrapper(useGetFeedTags, GetFeedTagsResponse)
+export const useValidatedGetHealthStatus = buildValidatedUseQueryWrapper(useGetHealthStatus, GetHealthStatusResponse)
+export const useValidatedGetTags = buildValidatedUseQueryWrapper(useGetTags, GetTagsResponse)
+export const useValidatedGetUsers = buildValidatedUseQueryWrapper(useGetUsers, GetUsersResponse)
 export const useValidatedFindArticlesInfinite = buildValidatedUseQueryWrapper(
   useFindArticlesInfinite,
-  findArticlesResponse,
+  FindArticlesResponse,
 )
-export const useValidatedGetUserFeeds = buildValidatedUseQueryWrapper(useGetUserFeeds, getUserFeedsResponse)
+export const useValidatedGetUserFeeds = buildValidatedUseQueryWrapper(useGetUserFeeds, GetUserFeedsResponse)
 export const useValidatedRecentlyReadArticles = buildValidatedUseQueryWrapper(
   useRecentlyReadArticles,
-  recentlyReadArticlesResponse,
+  RecentlyReadArticlesResponse,
 )
-export const useValidatedProfile = buildValidatedUseQueryWrapper(useProfile, profileResponse)
+export const useValidatedProfile = buildValidatedUseQueryWrapper(useProfile, ProfileResponse)
