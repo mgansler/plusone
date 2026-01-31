@@ -6070,24 +6070,24 @@
   dependencies:
     flatbuffers "^25.9.23"
 
-"@orval/angular@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/@orval/angular/-/angular-8.1.0.tgz#cc342cd3dee43829ade8f17c2a0d53f345c3d621"
-  integrity sha512-C0YZbCE5E99qgRTiFPlr8irCvXjRJzKlw4pKKW7lyeP3P1nchsPx/L6Wm0iJ6nTv97WbxeNzMzNqaT2hEMH7vQ==
+"@orval/angular@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.npmjs.org/@orval/angular/-/angular-8.2.0.tgz#e09f4bdcda367e3bf3f2e574656be6878f368e81"
+  integrity sha512-M7Y8MHd8lkhmqXrwtN9A7qWLw4ec0PovlPpZuffe5wHA/dl1PCN4fVTVOqAG8TFD+Xml/r9yl2yVgvg6osK2Nw==
   dependencies:
-    "@orval/core" "8.1.0"
+    "@orval/core" "8.2.0"
 
-"@orval/axios@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/@orval/axios/-/axios-8.1.0.tgz#231fbb2ace6947172cd211a11d6a57e228f60250"
-  integrity sha512-sWmaNzHFhf5JBfL7gRIqx6fzRQkSx2Qf2hrf6OWHzK3TnBpJzflLHEBgrXzIYzqOn5yVazeH2IbsF0CSU94mdQ==
+"@orval/axios@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.npmjs.org/@orval/axios/-/axios-8.2.0.tgz#1877a9b3286f005f6d053e992b0e968810d81c05"
+  integrity sha512-aR/5DKE06FWZd9LV9vvPdxVkbu1oGwfPRn3smAfUiZSFFf8CYI8eFcA33Ihazyh0z0Y7FNsk0nXtTvlfPIgx0A==
   dependencies:
-    "@orval/core" "8.1.0"
+    "@orval/core" "8.2.0"
 
-"@orval/core@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/@orval/core/-/core-8.1.0.tgz#63e95ff0302d4b2ebd52d258ae14f2c78a280315"
-  integrity sha512-dQoNy77ckcfpKT8pWJrRzrMK8OapuJtUscqZ4iDMk2XGBh0EEAVNmobEXAj7dzTPaDFuB5LJpQ9LiU+/NDdlfg==
+"@orval/core@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.npmjs.org/@orval/core/-/core-8.2.0.tgz#9f1ba194140668ba41bc228e8fe293ac4806690f"
+  integrity sha512-opnmNg03nZJ6rXGyMDJJ2UrsrMpINYHcJQIeCH+7WV8IHn8nBtgC7fZBeFpFkw2yK8cLyP7h+q5TDy8rkPEYPw==
   dependencies:
     "@scalar/openapi-types" "0.5.3"
     acorn "^8.15.0"
@@ -6101,71 +6101,71 @@
     remeda "^2.32.0"
     typedoc "^0.28.15"
 
-"@orval/fetch@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-8.1.0.tgz#39c36c7379a6df9d2415f395548e452cfe0fa1c7"
-  integrity sha512-ppVvUVq4v+z9Julknysk4VCIPpkoYEqlHt2JgmlMKX2fcwFBjpzStkrf5xBHTQr8NyvIy5M+O5j8gDnEsi4OpQ==
+"@orval/fetch@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-8.2.0.tgz#19ecbc4514c90ecd21d9f598077399c70fa15360"
+  integrity sha512-dY82yR3z5QP4m4HGKiROf7p263D31nCIUPm4HCj1mpN6ua6gDEcqvjlvuclcOLd2x0DpG0NESq+ujZvQ3m2GGw==
   dependencies:
-    "@orval/core" "8.1.0"
+    "@orval/core" "8.2.0"
     "@scalar/openapi-types" "0.5.3"
 
-"@orval/hono@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/@orval/hono/-/hono-8.1.0.tgz#67f75ff7589c5670ea883b8ccde2a714acffcf4b"
-  integrity sha512-GUOgC1w4yXMz57ZgYgAwxHnNslGYJeZFvqVflfL48epaccjrs6tfuLynTvyjsehr2dtaIcdlw+txvpsL2wRI3A==
+"@orval/hono@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.npmjs.org/@orval/hono/-/hono-8.2.0.tgz#353e3bdc5e6b619af3bb7eb2e0fd437f60e0efda"
+  integrity sha512-qRZtQMwrZ/dQRPcYfG9L3EW0q1Tc3BGjPDFF/EPTbuxOAxYvIB/Jgq3KBVImHyuGdwmiJiBH1px7EIcfki1YbQ==
   dependencies:
-    "@orval/core" "8.1.0"
-    "@orval/zod" "8.1.0"
+    "@orval/core" "8.2.0"
+    "@orval/zod" "8.2.0"
     fs-extra "^11.3.2"
     remeda "^2.32.0"
 
-"@orval/mcp@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/@orval/mcp/-/mcp-8.1.0.tgz#734a17a0b144b095773d8e34c6a3331850c0e261"
-  integrity sha512-EDmjY+lU0w2PHMu1UN1nVS2v7j6eRbKxeggBsWNBKyEiGIDqxp8ALYO/u6TRSCeVjs3PGeX/2wFbUiIaB0tgnA==
+"@orval/mcp@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.npmjs.org/@orval/mcp/-/mcp-8.2.0.tgz#78dc5dd11eeac7f01c5657dde821c8337897d988"
+  integrity sha512-n5jogm6/tJeZarGGHsnMxKPPLJkfYeSPFnZYOpR54UXt82KaEDqltqphTJLuKHpZLUkhmIxMRtUrhmpW7MWKEQ==
   dependencies:
-    "@orval/core" "8.1.0"
-    "@orval/fetch" "8.1.0"
-    "@orval/zod" "8.1.0"
+    "@orval/core" "8.2.0"
+    "@orval/fetch" "8.2.0"
+    "@orval/zod" "8.2.0"
 
-"@orval/mock@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/@orval/mock/-/mock-8.1.0.tgz#96d925d40b0baa09cbc3e7fc310ac0e252091536"
-  integrity sha512-+80bTjDr+/X+8MwVw+LVqc2Mqr4ByWc+9pOc4QYkeKHm5NnKaBKHlrIAv/WDJs7exmeb7RQjfKJSwDCZoI/qDw==
+"@orval/mock@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.npmjs.org/@orval/mock/-/mock-8.2.0.tgz#dc904b791bf57937c4b3d37bdcb223c2cb65c75d"
+  integrity sha512-eJuPvKZnV6Ty89i/ab0gWiWE0LS2Xtu+M+67+3PBTi/PqpxI9jsYeIWlNnv8mhOmtMhZ9z/FRxydjfODKeGK+g==
   dependencies:
-    "@orval/core" "8.1.0"
+    "@orval/core" "8.2.0"
 
-"@orval/query@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/@orval/query/-/query-8.1.0.tgz#dcf377c10f8b9ad48205e3cfc2d99684ae59fc34"
-  integrity sha512-Kq/dn5AbE4u8NbJXdfwNg7L8YC69R4+D2SUgvKxUV//tMgD7RjmJbO3CsfPxlcFkY9eUeaCmb1weDxK1Afkd5w==
+"@orval/query@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.npmjs.org/@orval/query/-/query-8.2.0.tgz#6138a19955a6ccb7a2d887342176ea98c06d829a"
+  integrity sha512-9/y55gKm1mF+BKZBetKowCcJrnz5HrcDlHOtnf2rZJjepQ73vgsOOnLviVxUrJf4w5Yxb4MPbgzL8KklOzhYPQ==
   dependencies:
-    "@orval/core" "8.1.0"
-    "@orval/fetch" "8.1.0"
+    "@orval/core" "8.2.0"
+    "@orval/fetch" "8.2.0"
     chalk "^5.6.2"
     remeda "^2.32.0"
 
-"@orval/solid-start@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/@orval/solid-start/-/solid-start-8.1.0.tgz#bd254937e8d7bda443ec3160e720c5acac34f837"
-  integrity sha512-AYob5tdeznkC9HbxJidgDdktTalFE4fJA7WSgQYjJt16dC6ZysIURQl4xhPGlzVlFWSx5k1kukXceMKdP6vs2A==
+"@orval/solid-start@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.npmjs.org/@orval/solid-start/-/solid-start-8.2.0.tgz#b22245c1d9e72ff530978b710cd9435d2abb59bf"
+  integrity sha512-FPxEC4cMi3VIMBb3lcuI33VrRug+PHREI5QMA6TqKULGfc07OtStKZaRXLugIP8Dxkkn+YU+xSZgE58/bG77Qg==
   dependencies:
-    "@orval/core" "8.1.0"
+    "@orval/core" "8.2.0"
 
-"@orval/swr@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/@orval/swr/-/swr-8.1.0.tgz#d1fbab9b6168c4b3f917e7c21e2c94d6cc4bb4c8"
-  integrity sha512-rUIS80rzMaT1co55GpqXvCTxIHJ01Lr4oiBmXTSpWBDc4oxFRZb650RPjILm3JOLK+wjw4BASaafitFnh202+A==
+"@orval/swr@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.npmjs.org/@orval/swr/-/swr-8.2.0.tgz#6ffc0c0da05cba99d7f6907b0a6362946c00e4db"
+  integrity sha512-CSvhQAWv/MD2MeF6ewfgMCIB1NB1neSnpo/iVxehodPnM0tWqf0+xSdUWktSofLbJa900Si/XRbmywa9wLd3Kw==
   dependencies:
-    "@orval/core" "8.1.0"
-    "@orval/fetch" "8.1.0"
+    "@orval/core" "8.2.0"
+    "@orval/fetch" "8.2.0"
 
-"@orval/zod@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/@orval/zod/-/zod-8.1.0.tgz#99e5a2c5711ab4db9ab9cc91b765aa608a3c86a0"
-  integrity sha512-ARAT4kygdT/5M5WbJ7RMcxFujji4bua7TF23VEawu8U7E61o41OdPdXTYGAnNkocnHDf0xKXRip2X4dOaIpnuw==
+"@orval/zod@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.npmjs.org/@orval/zod/-/zod-8.2.0.tgz#516e2de5db7281b95a928008f11a79a3602800e9"
+  integrity sha512-r710+ZNxl4AHiIuyh5/T1S3Gx/tGoA5b/ukWtRIsICNuSJpOd2o4Pct4CKWiBIn+Vyv4J0xN9hU2EZeRs0qXBA==
   dependencies:
-    "@orval/core" "8.1.0"
+    "@orval/core" "8.2.0"
     remeda "^2.32.0"
 
 "@oxc-resolver/binding-android-arm-eabi@11.6.1":
@@ -13096,10 +13096,10 @@ fast-uri@^3.0.1:
   resolved "https://registry.npmjs.org/fast-uri/-/fast-uri-3.0.3.tgz#892a1c91802d5d7860de728f18608a0573142241"
   integrity sha512-aLrHthzCjH5He4Z2H9YZ+v6Ujb9ocRuW6ZzkJQOrTxleEijANq4v1TsaPaVG1PZcuurEzrLcWRyYBYXD5cEiaw==
 
-fast-xml-parser@5.3.3:
-  version "5.3.3"
-  resolved "https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-5.3.3.tgz#84b678e44eb81207c8585795152b4b1c94738b4d"
-  integrity sha512-2O3dkPAAC6JavuMm8+4+pgTk+5hoAs+CjZ+sWcQLkX9+/tHRuTkQh/Oaifr8qDmZ8iEHb771Ea6G8CdwkrgvYA==
+fast-xml-parser@5.3.4:
+  version "5.3.4"
+  resolved "https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-5.3.4.tgz#06f39aafffdbc97bef0321e626c7ddd06a043ecf"
+  integrity sha512-EFd6afGmXlCx8H8WTZHhAoDaWaGyuIBoZJ2mknrNxug+aZKjkp0a0dlars9Izl+jF+7Gu1/5f/2h68cQpe0IiA==
   dependencies:
     strnum "^2.1.0"
 
@@ -17865,23 +17865,23 @@ ora@9.1.0:
     stdin-discarder "^0.2.2"
     string-width "^8.1.0"
 
-orval@8.1.0:
-  version "8.1.0"
-  resolved "https://registry.npmjs.org/orval/-/orval-8.1.0.tgz#7022fbcfa7a2f4a88544cc96abb5329d6145d77c"
-  integrity sha512-qjjw85hA4ds5vTFZ4gKrnfHYoo3tw36m0Cs+4AdIfXPgZUjeNMeFMXHljPedoEARCt6xwOQqWWeK97qv2VKm4Q==
+orval@8.2.0:
+  version "8.2.0"
+  resolved "https://registry.npmjs.org/orval/-/orval-8.2.0.tgz#4941f07765037e9d6dc9dd39d840f8f4b97c7694"
+  integrity sha512-1X/OUopJNvnOJKHbkdhrjChF2QPIRRLWMLXgnI42efS8ErNViassU2HLm/T27tgptbYxTxbAsiidcSrgRbrL0Q==
   dependencies:
     "@commander-js/extra-typings" "^14.0.0"
-    "@orval/angular" "8.1.0"
-    "@orval/axios" "8.1.0"
-    "@orval/core" "8.1.0"
-    "@orval/fetch" "8.1.0"
-    "@orval/hono" "8.1.0"
-    "@orval/mcp" "8.1.0"
-    "@orval/mock" "8.1.0"
-    "@orval/query" "8.1.0"
-    "@orval/solid-start" "8.1.0"
-    "@orval/swr" "8.1.0"
-    "@orval/zod" "8.1.0"
+    "@orval/angular" "8.2.0"
+    "@orval/axios" "8.2.0"
+    "@orval/core" "8.2.0"
+    "@orval/fetch" "8.2.0"
+    "@orval/hono" "8.2.0"
+    "@orval/mcp" "8.2.0"
+    "@orval/mock" "8.2.0"
+    "@orval/query" "8.2.0"
+    "@orval/solid-start" "8.2.0"
+    "@orval/swr" "8.2.0"
+    "@orval/zod" "8.2.0"
     "@scalar/json-magic" "^0.8.8"
     "@scalar/openapi-parser" "^0.23.9"
     "@scalar/openapi-types" "0.5.3"
