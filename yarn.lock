@@ -5492,14 +5492,14 @@
     load-esm "1.0.3"
     tslib "2.8.1"
 
-"@nestjs/config@4.0.2":
-  version "4.0.2"
-  resolved "https://registry.npmjs.org/@nestjs/config/-/config-4.0.2.tgz#a2777a1fd2d0d594bab3953f50fbca95c14cce52"
-  integrity sha512-McMW6EXtpc8+CwTUwFdg6h7dYcBUpH5iUILCclAsa+MbCEvC9ZKu4dCHRlJqALuhjLw97pbQu62l4+wRwGeZqA==
+"@nestjs/config@4.0.3":
+  version "4.0.3"
+  resolved "https://registry.npmjs.org/@nestjs/config/-/config-4.0.3.tgz#bb24a5f64e4e3ccf6fbf9e02f63303d14d7f308e"
+  integrity sha512-FQ3M3Ohqfl+nHAn5tp7++wUQw0f2nAk+SFKe8EpNRnIifPqvfJP6JQxPKtFLMOHbyer4X646prFG4zSRYEssQQ==
   dependencies:
-    dotenv "16.4.7"
-    dotenv-expand "12.0.1"
-    lodash "4.17.21"
+    dotenv "17.2.3"
+    dotenv-expand "12.0.3"
+    lodash "4.17.23"
 
 "@nestjs/core@11.1.13":
   version "11.1.13"
@@ -5542,12 +5542,12 @@
     path-to-regexp "8.3.0"
     tslib "2.8.1"
 
-"@nestjs/schedule@6.1.0":
-  version "6.1.0"
-  resolved "https://registry.npmjs.org/@nestjs/schedule/-/schedule-6.1.0.tgz#4653383c6aaf82e19754eae281ec1036da41febe"
-  integrity sha512-W25Ydc933Gzb1/oo7+bWzzDiOissE+h/dhIAPugA39b9MuIzBbLybuXpc1AjoQLczO3v0ldmxaffVl87W0uqoQ==
+"@nestjs/schedule@6.1.1":
+  version "6.1.1"
+  resolved "https://registry.npmjs.org/@nestjs/schedule/-/schedule-6.1.1.tgz#757775c099d4b5df8e11e9a8c2f701115b4ed5cd"
+  integrity sha512-kQl1RRgi02GJ0uaUGCrXHCcwISsCsJDciCKe38ykJZgnAeeoeVWs8luWtBo4AqAAXm4nS5K8RlV0smHUJ4+2FA==
   dependencies:
-    cron "4.3.5"
+    cron "4.4.0"
 
 "@nestjs/schematics@11.0.9":
   version "11.0.9"
@@ -5578,15 +5578,15 @@
   dependencies:
     path-to-regexp "8.3.0"
 
-"@nestjs/swagger@11.2.5":
-  version "11.2.5"
-  resolved "https://registry.npmjs.org/@nestjs/swagger/-/swagger-11.2.5.tgz#41334fca6d42704e4175c04c15031046d73498e9"
-  integrity sha512-wCykbEybMqiYcvkyzPW4SbXKcwra9AGdajm0MvFgKR3W+gd1hfeKlo67g/s9QCRc/mqUU4KOE5Qtk7asMeFuiA==
+"@nestjs/swagger@11.2.6":
+  version "11.2.6"
+  resolved "https://registry.npmjs.org/@nestjs/swagger/-/swagger-11.2.6.tgz#c9f2689a932bd431f5e7f8c29e6a57309f4c92bc"
+  integrity sha512-oiXOxMQqDFyv1AKAqFzSo6JPvMEs4uA36Eyz/s2aloZLxUjcLfUMELSLSNQunr61xCPTpwEOShfmO7NIufKXdA==
   dependencies:
     "@microsoft/tsdoc" "0.16.0"
     "@nestjs/mapped-types" "2.1.0"
     js-yaml "4.1.1"
-    lodash "4.17.21"
+    lodash "4.17.23"
     path-to-regexp "8.3.0"
     swagger-ui-dist "5.31.0"
 
@@ -8153,10 +8153,10 @@
   resolved "https://registry.npmjs.org/@types/react-transition-group/-/react-transition-group-4.4.12.tgz#b5d76568485b02a307238270bfe96cb51ee2a044"
   integrity sha512-8TV6R3h2j7a91c+1DXdJi3Syo69zzIZbz7Lg5tORM5LEJG7X/E6a1V3drRyBRZq7/utz7A+c4OgYLiLcYGHG6w==
 
-"@types/react@19.2.10":
-  version "19.2.10"
-  resolved "https://registry.npmjs.org/@types/react/-/react-19.2.10.tgz#f3ea799e6b4cebad6dfd231c238fc9de7652e2d2"
-  integrity sha512-WPigyYuGhgZ/cTPRXB2EwUw+XvsRA3GqHlsP4qteqrnnjDrApbS7MxcGr/hke5iUoeB7E/gQtrs9I37zAJ0Vjw==
+"@types/react@19.2.11":
+  version "19.2.11"
+  resolved "https://registry.npmjs.org/@types/react/-/react-19.2.11.tgz#301b615ec33df67f6b0ba63f2b6aedce46cca0de"
+  integrity sha512-tORuanb01iEzWvMGVGv2ZDhYZVeRMrw453DCSAIn/5yvcSVnMoUMTyf33nQJLahYEnv9xqrTNbgz4qY5EfSh0g==
   dependencies:
     csstype "^3.2.2"
 
@@ -11216,10 +11216,10 @@ cron-parser@^4.2.0:
   dependencies:
     luxon "^3.2.1"
 
-cron@4.3.5:
-  version "4.3.5"
-  resolved "https://registry.npmjs.org/cron/-/cron-4.3.5.tgz#53112ec0f5260722b89633ed72f005dc782864f1"
-  integrity sha512-hKPP7fq1+OfyCqoePkKfVq7tNAdFwiQORr4lZUHwrf0tebC65fYEeWgOrXOL6prn1/fegGOdTfrM6e34PJfksg==
+cron@4.4.0:
+  version "4.4.0"
+  resolved "https://registry.npmjs.org/cron/-/cron-4.4.0.tgz#1488444a23ea7134e2b7686c17711abdffcebba8"
+  integrity sha512-fkdfq+b+AHI4cKdhZlppHveI/mgz2qpiYxcm+t5E5TsxX7QrLS1VE0+7GENEk9z0EeGPcpSciGv6ez24duWhwQ==
   dependencies:
     "@types/luxon" "~3.7.0"
     luxon "~3.7.0"
@@ -11989,10 +11989,10 @@ dot-case@^3.0.4:
     no-case "^3.0.4"
     tslib "^2.0.3"
 
-dotenv-expand@12.0.1:
-  version "12.0.1"
-  resolved "https://registry.npmjs.org/dotenv-expand/-/dotenv-expand-12.0.1.tgz#44bdfa204a368100689ec35d7385755f599ceeb1"
-  integrity sha512-LaKRbou8gt0RNID/9RoI+J2rvXsBRPMV7p+ElHlPhcSARbCPDYcYG2s1TIzAfWv4YSgyY5taidWzzs31lNV3yQ==
+dotenv-expand@12.0.3:
+  version "12.0.3"
+  resolved "https://registry.npmjs.org/dotenv-expand/-/dotenv-expand-12.0.3.tgz#6323ceca51ca0c1b1f0055e2aba39c79781739a6"
+  integrity sha512-uc47g4b+4k/M/SeaW1y4OApx+mtLWl92l5LMPP0GNXctZqELk+YGgOPIIC5elYmUH4OuoK3JLhuRUYegeySiFA==
   dependencies:
     dotenv "^16.4.5"
 
@@ -12003,15 +12003,15 @@ dotenv-expand@~11.0.6:
   dependencies:
     dotenv "^16.4.5"
 
-dotenv@16.4.7, dotenv@^16.4.5, dotenv@~16.4.5:
-  version "16.4.7"
-  resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.4.7.tgz#0e20c5b82950140aa99be360a8a5f52335f53c26"
-  integrity sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==
-
 dotenv@17.2.3:
   version "17.2.3"
   resolved "https://registry.npmjs.org/dotenv/-/dotenv-17.2.3.tgz#ad995d6997f639b11065f419a22fabf567cdb9a2"
   integrity sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==
+
+dotenv@^16.4.5, dotenv@~16.4.5:
+  version "16.4.7"
+  resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.4.7.tgz#0e20c5b82950140aa99be360a8a5f52335f53c26"
+  integrity sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==
 
 dotenv@^16.6.1:
   version "16.6.1"
