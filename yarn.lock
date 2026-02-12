@@ -7522,15 +7522,16 @@
   dependencies:
     "@tanstack/query-core" "5.90.20"
 
-"@tanstack/react-router@1.158.4":
-  version "1.158.4"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.158.4.tgz#0e5be7c74cbc3b1ef079557e8a4d7055e5cb91fc"
-  integrity sha512-i15xXumgvpuM+4NSuIwgouGezuj9eHjZsgpTZSQ7E9pa8rYmhZbWnf8xU68qaLmaKIol/e75o/YzVH2QWHs3iQ==
+"@tanstack/react-router@1.159.4":
+  version "1.159.4"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.159.4.tgz#0e6ab4b8d7028e668c3701617fcee6f449f95d65"
+  integrity sha512-z3DhNkRh/joky5b+X4jEYOn9q4Jieie6mVFP62wgwM9pVlNRYh6aIroiU95ZyOwDXDijItVEZtvHuipbLHy4jw==
   dependencies:
     "@tanstack/history" "1.154.14"
     "@tanstack/react-store" "^0.8.0"
-    "@tanstack/router-core" "1.158.4"
+    "@tanstack/router-core" "1.159.4"
     isbot "^5.1.22"
+    srvx "^0.11.2"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
 
@@ -7542,10 +7543,10 @@
     "@tanstack/store" "0.8.0"
     use-sync-external-store "^1.6.0"
 
-"@tanstack/router-core@1.158.4":
-  version "1.158.4"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.158.4.tgz#0d89296b8d591ef53ae56b99a807fea8ab5bd241"
-  integrity sha512-KikgYdyrEFqsjjgv9pMhDTMmASMAyFRvUiKFdQPQtXq3aD1qv/zck4CbA4bfzp9N9nYu/qvWwU1mlYU4u5JeXg==
+"@tanstack/router-core@1.159.4":
+  version "1.159.4"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.159.4.tgz#9638076f0280a52a0969da0ce0005e561d9e26a1"
+  integrity sha512-MFzPH39ijNO83qJN3pe7x4iAlhZyqgao3sJIzv3SJ4Pnk12xMnzuDzIAQT/1WV6JolPQEcw0Wr4L5agF8yxoeg==
   dependencies:
     "@tanstack/history" "1.154.14"
     "@tanstack/store" "^0.8.0"
@@ -7555,12 +7556,12 @@
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
 
-"@tanstack/router-generator@1.158.4":
-  version "1.158.4"
-  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.158.4.tgz#e97f6c84cea256c7ff77403bb5688cc902b15b07"
-  integrity sha512-RQmqMTT0oV8dS/3Glcq9SPzDZqOPyKb/LVFUkNoTfMwW88WyGnQcYqZAkmVk/CGBWWDfwObOUZoGq5jTF7bG8w==
+"@tanstack/router-generator@1.159.4":
+  version "1.159.4"
+  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.159.4.tgz#3ac095ca7c9d6cc57340fb2055fdd54c20b5867d"
+  integrity sha512-O8tICQoSuvK6vs3mvBdI3zVLFmYfj/AYDCX0a5msSADP/2S0GsgDDTB5ah731TqYCtjeNriaWz9iqst38cjF/Q==
   dependencies:
-    "@tanstack/router-core" "1.158.4"
+    "@tanstack/router-core" "1.159.4"
     "@tanstack/router-utils" "1.158.0"
     "@tanstack/virtual-file-routes" "1.154.7"
     prettier "^3.5.0"
@@ -7569,10 +7570,10 @@
     tsx "^4.19.2"
     zod "^3.24.2"
 
-"@tanstack/router-plugin@1.158.4":
-  version "1.158.4"
-  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.158.4.tgz#9ddd93e131108ea1c1081cd05fba61cc91c0684d"
-  integrity sha512-g2sytAhljw6Jd6Klu37OZ75+o+vhiGdbWtnBy/4rYLC4NN6hSnjgJQRI3+h1CI1KQ4EUgsZYZr/hgE1KHoiWYQ==
+"@tanstack/router-plugin@1.159.4":
+  version "1.159.4"
+  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.159.4.tgz#4c09e43c85125f7b376980bed621bd90a099a278"
+  integrity sha512-xXLUPwIf1Y+VGrpryHZYoJoG7V5evxTkmP64CYm6JEJGTb3hai/syhZb69iVQYb4f4IR5LqEL7VgagnlekdAWw==
   dependencies:
     "@babel/core" "^7.28.5"
     "@babel/plugin-syntax-jsx" "^7.27.1"
@@ -7580,8 +7581,8 @@
     "@babel/template" "^7.27.2"
     "@babel/traverse" "^7.28.5"
     "@babel/types" "^7.28.5"
-    "@tanstack/router-core" "1.158.4"
-    "@tanstack/router-generator" "1.158.4"
+    "@tanstack/router-core" "1.159.4"
+    "@tanstack/router-generator" "1.159.4"
     "@tanstack/router-utils" "1.158.0"
     "@tanstack/virtual-file-routes" "1.154.7"
     chokidar "^3.6.0"
@@ -12211,7 +12212,7 @@ entities@^4.2.0, entities@^4.4.0, entities@^4.5.0:
   resolved "https://registry.npmjs.org/entities/-/entities-4.5.0.tgz#5d268ea5e7113ec74c4d033b79ea5a35a488fb48"
   integrity sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==
 
-entities@^6.0.0:
+entities@^6.0.0, entities@^6.0.1:
   version "6.0.1"
   resolved "https://registry.npmjs.org/entities/-/entities-6.0.1.tgz#c28c34a43379ca7f61d074130b2f5f7020a30694"
   integrity sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==
@@ -14075,15 +14076,15 @@ handlebars@^4.7.8:
   optionalDependencies:
     uglify-js "^3.1.4"
 
-happy-dom@20.5.0:
-  version "20.5.0"
-  resolved "https://registry.npmjs.org/happy-dom/-/happy-dom-20.5.0.tgz#64899aad7272f7e02a728e231bc9c151b872a3a5"
-  integrity sha512-VQe+Q5CYiGOgcCERXhcfNsbnrN92FDEKciMH/x6LppU9dd0j4aTjCTlqONFOIMcAm/5JxS3+utowbXV1OoFr+g==
+happy-dom@20.5.3:
+  version "20.5.3"
+  resolved "https://registry.npmjs.org/happy-dom/-/happy-dom-20.5.3.tgz#0cc4159c4ca841cd388a45afe452060f41dbb84b"
+  integrity sha512-xqAxGnkRU0KNhheHpxb3uScqg/aehqUiVto/a9ApWMyNvnH9CAqHYq9dEPAovM6bOGbLstmTfGIln5ZIezEU0g==
   dependencies:
     "@types/node" ">=20.0.0"
     "@types/whatwg-mimetype" "^3.0.2"
     "@types/ws" "^8.18.1"
-    entities "^4.5.0"
+    entities "^6.0.1"
     whatwg-mimetype "^3.0.0"
     ws "^8.18.3"
 
@@ -20474,6 +20475,11 @@ sqlstring@^2.3.2:
   version "2.3.3"
   resolved "https://registry.npmjs.org/sqlstring/-/sqlstring-2.3.3.tgz#2ddc21f03bce2c387ed60680e739922c65751d0c"
   integrity sha512-qC9iz2FlN7DQl3+wjwn3802RTyjCx7sDvfQEXchwa6CWOx07/WVfh91gBmQ9fahw8snwGEWU3xGzOt4tFyHLxg==
+
+srvx@^0.11.2:
+  version "0.11.4"
+  resolved "https://registry.npmjs.org/srvx/-/srvx-0.11.4.tgz#0d1dd962c2320f84fc7872f2500b21c84c3d1b97"
+  integrity sha512-m/2p87bqWZ94xpRN06qNBwh0xq/D0dXajnvPDSHFqrTogxuTWYNP1UHz6Cf+oY7D+NPLY35TJAp4ESIKn0WArQ==
 
 ssh-remote-port-forward@^1.0.4:
   version "1.0.4"
