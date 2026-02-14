@@ -6113,24 +6113,24 @@
   dependencies:
     flatbuffers "^25.9.23"
 
-"@orval/angular@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@orval/angular/-/angular-8.2.0.tgz#e09f4bdcda367e3bf3f2e574656be6878f368e81"
-  integrity sha512-M7Y8MHd8lkhmqXrwtN9A7qWLw4ec0PovlPpZuffe5wHA/dl1PCN4fVTVOqAG8TFD+Xml/r9yl2yVgvg6osK2Nw==
+"@orval/angular@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/@orval/angular/-/angular-8.3.0.tgz#7934818fdac51f4b70a25f05295e69691b178e47"
+  integrity sha512-u4rnYUWA5S4wyCAmDF/Z2JUZKwyVVEoi0NOrXwprqh+t3ixriDb3dTJzu22CN8qCtlXmhcIU/rZDxsMzNgM03A==
   dependencies:
-    "@orval/core" "8.2.0"
+    "@orval/core" "8.3.0"
 
-"@orval/axios@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@orval/axios/-/axios-8.2.0.tgz#1877a9b3286f005f6d053e992b0e968810d81c05"
-  integrity sha512-aR/5DKE06FWZd9LV9vvPdxVkbu1oGwfPRn3smAfUiZSFFf8CYI8eFcA33Ihazyh0z0Y7FNsk0nXtTvlfPIgx0A==
+"@orval/axios@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/@orval/axios/-/axios-8.3.0.tgz#6e75893b904afdb12c6783be56f606234a3dbd71"
+  integrity sha512-a4ItU75sAbWTWaLyD79sRZVXpQBo1PdzaMS4LtfkLMtKIfBsBgqS3GU7EtFfpnmlFA+snEorHCQxmITqMYEXsg==
   dependencies:
-    "@orval/core" "8.2.0"
+    "@orval/core" "8.3.0"
 
-"@orval/core@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@orval/core/-/core-8.2.0.tgz#9f1ba194140668ba41bc228e8fe293ac4806690f"
-  integrity sha512-opnmNg03nZJ6rXGyMDJJ2UrsrMpINYHcJQIeCH+7WV8IHn8nBtgC7fZBeFpFkw2yK8cLyP7h+q5TDy8rkPEYPw==
+"@orval/core@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/@orval/core/-/core-8.3.0.tgz#20a81462d57435f5f175cda8dbcff216930fe464"
+  integrity sha512-YnRmHoD+J8zClMMuJpMPgtLFsdawIRCRqJbkTZyT4aeBQw8QcmUZpI+1yX/XOsOAwRawa87FNuQLPtU04LR1bg==
   dependencies:
     "@scalar/openapi-types" "0.5.3"
     acorn "^8.15.0"
@@ -6144,71 +6144,71 @@
     remeda "^2.32.0"
     typedoc "^0.28.15"
 
-"@orval/fetch@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-8.2.0.tgz#19ecbc4514c90ecd21d9f598077399c70fa15360"
-  integrity sha512-dY82yR3z5QP4m4HGKiROf7p263D31nCIUPm4HCj1mpN6ua6gDEcqvjlvuclcOLd2x0DpG0NESq+ujZvQ3m2GGw==
+"@orval/fetch@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-8.3.0.tgz#fb1780a1a4ce95b6fe90d8a7b22710d9ed9c5e0f"
+  integrity sha512-HX6XDjWfa3yoMqszSUpfJGJ4HRPiRzt1gyEZDUiBKEtkWuFCv4SRt1TLaZ51yESjY+NyhK5unaCINb4TXQTOog==
   dependencies:
-    "@orval/core" "8.2.0"
+    "@orval/core" "8.3.0"
     "@scalar/openapi-types" "0.5.3"
 
-"@orval/hono@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@orval/hono/-/hono-8.2.0.tgz#353e3bdc5e6b619af3bb7eb2e0fd437f60e0efda"
-  integrity sha512-qRZtQMwrZ/dQRPcYfG9L3EW0q1Tc3BGjPDFF/EPTbuxOAxYvIB/Jgq3KBVImHyuGdwmiJiBH1px7EIcfki1YbQ==
+"@orval/hono@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/@orval/hono/-/hono-8.3.0.tgz#7507f43c8da557618a935af3c28fef091b378c09"
+  integrity sha512-p9FwQtrZe1qLK3/8CRBAwfkwDNftpegbNdsC+ZBKqOjhU8EEUInsG3ViNdxE+iGC2PyStYkHv9z0T8H6SaXyrA==
   dependencies:
-    "@orval/core" "8.2.0"
-    "@orval/zod" "8.2.0"
+    "@orval/core" "8.3.0"
+    "@orval/zod" "8.3.0"
     fs-extra "^11.3.2"
     remeda "^2.32.0"
 
-"@orval/mcp@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@orval/mcp/-/mcp-8.2.0.tgz#78dc5dd11eeac7f01c5657dde821c8337897d988"
-  integrity sha512-n5jogm6/tJeZarGGHsnMxKPPLJkfYeSPFnZYOpR54UXt82KaEDqltqphTJLuKHpZLUkhmIxMRtUrhmpW7MWKEQ==
+"@orval/mcp@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/@orval/mcp/-/mcp-8.3.0.tgz#754476c3c55c9088e888e70132bc9ede6b5153e8"
+  integrity sha512-nKK92T8IMLxP0k4i5Fz/aMFYYF6e7vGzk9PpD9wPZOKq+UAYY3CO/FzOdaTqS818lH6P9lzzlHj6uHLUO8AP3g==
   dependencies:
-    "@orval/core" "8.2.0"
-    "@orval/fetch" "8.2.0"
-    "@orval/zod" "8.2.0"
+    "@orval/core" "8.3.0"
+    "@orval/fetch" "8.3.0"
+    "@orval/zod" "8.3.0"
 
-"@orval/mock@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@orval/mock/-/mock-8.2.0.tgz#dc904b791bf57937c4b3d37bdcb223c2cb65c75d"
-  integrity sha512-eJuPvKZnV6Ty89i/ab0gWiWE0LS2Xtu+M+67+3PBTi/PqpxI9jsYeIWlNnv8mhOmtMhZ9z/FRxydjfODKeGK+g==
+"@orval/mock@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/@orval/mock/-/mock-8.3.0.tgz#73a3886ca11d6a6a79e2a4f1764889417877f0e5"
+  integrity sha512-JakiizNRtTBf/RQlv0pX5sRt7uRrBEEDvt47W39PAYl/2zpKy9SryhmJ8KIH/cpC0SHTt7fgFNyS1Zt+GfqbTg==
   dependencies:
-    "@orval/core" "8.2.0"
+    "@orval/core" "8.3.0"
 
-"@orval/query@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@orval/query/-/query-8.2.0.tgz#6138a19955a6ccb7a2d887342176ea98c06d829a"
-  integrity sha512-9/y55gKm1mF+BKZBetKowCcJrnz5HrcDlHOtnf2rZJjepQ73vgsOOnLviVxUrJf4w5Yxb4MPbgzL8KklOzhYPQ==
+"@orval/query@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/@orval/query/-/query-8.3.0.tgz#3fb5766d85c35529440bb6a13bcac024d664ac2e"
+  integrity sha512-qw0HfyPkFZATlQiT478zVX9gCNFhCxbfgoLavoq3UdfB+QVT7eEjXrbYBjMvMik0WrPqznJGizmCgq82EyKaQQ==
   dependencies:
-    "@orval/core" "8.2.0"
-    "@orval/fetch" "8.2.0"
+    "@orval/core" "8.3.0"
+    "@orval/fetch" "8.3.0"
     chalk "^5.6.2"
     remeda "^2.32.0"
 
-"@orval/solid-start@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@orval/solid-start/-/solid-start-8.2.0.tgz#b22245c1d9e72ff530978b710cd9435d2abb59bf"
-  integrity sha512-FPxEC4cMi3VIMBb3lcuI33VrRug+PHREI5QMA6TqKULGfc07OtStKZaRXLugIP8Dxkkn+YU+xSZgE58/bG77Qg==
+"@orval/solid-start@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/@orval/solid-start/-/solid-start-8.3.0.tgz#770a074b9f132f0df600d0d6fb0504f54d3856fa"
+  integrity sha512-OVnjGCZtMBKdo3SIiRwJKKrCi6/q3tLapUHpugZxEPWTAQCNmri5ADCNnuKfVFVNCmtPwyDSTVKf4rHnSSV2aA==
   dependencies:
-    "@orval/core" "8.2.0"
+    "@orval/core" "8.3.0"
 
-"@orval/swr@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@orval/swr/-/swr-8.2.0.tgz#6ffc0c0da05cba99d7f6907b0a6362946c00e4db"
-  integrity sha512-CSvhQAWv/MD2MeF6ewfgMCIB1NB1neSnpo/iVxehodPnM0tWqf0+xSdUWktSofLbJa900Si/XRbmywa9wLd3Kw==
+"@orval/swr@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/@orval/swr/-/swr-8.3.0.tgz#9356d9a250818187c89d44cd36d0170d56d4e71a"
+  integrity sha512-uyfePjCQZSMwy1urgPPPdwc0zB99beZf8fleAvJZRbYKBcM+8yRcjKjUj+nHp48LlkG6U8enWulNRXlZeupUGQ==
   dependencies:
-    "@orval/core" "8.2.0"
-    "@orval/fetch" "8.2.0"
+    "@orval/core" "8.3.0"
+    "@orval/fetch" "8.3.0"
 
-"@orval/zod@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@orval/zod/-/zod-8.2.0.tgz#516e2de5db7281b95a928008f11a79a3602800e9"
-  integrity sha512-r710+ZNxl4AHiIuyh5/T1S3Gx/tGoA5b/ukWtRIsICNuSJpOd2o4Pct4CKWiBIn+Vyv4J0xN9hU2EZeRs0qXBA==
+"@orval/zod@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/@orval/zod/-/zod-8.3.0.tgz#9b71225b5d68986b6dac7d8dd62a3a4d76727219"
+  integrity sha512-3jfLj/Az+7PI5J45+MiCuWooFjOu2APJV1+PcfYd7Bjb62SG9wsGG9BcbylgqUxdDXUlNUrt4qmzbBK8h62UAg==
   dependencies:
-    "@orval/core" "8.2.0"
+    "@orval/core" "8.3.0"
     remeda "^2.32.0"
 
 "@oxc-resolver/binding-android-arm-eabi@11.6.1":
@@ -6432,39 +6432,39 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
-"@prisma/adapter-better-sqlite3@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.npmjs.org/@prisma/adapter-better-sqlite3/-/adapter-better-sqlite3-7.3.0.tgz#ce438378c89bace0891b5fbc83307ea99698cec4"
-  integrity sha512-DkELPte3cHGCZI1isizw+IdQHFVMU5zASJ/deeBY4R2apQV0RCA8XDG54iGmMhwLMusGTYijDVYuB1ruxEy0KQ==
+"@prisma/adapter-better-sqlite3@7.4.0":
+  version "7.4.0"
+  resolved "https://registry.npmjs.org/@prisma/adapter-better-sqlite3/-/adapter-better-sqlite3-7.4.0.tgz#ef71956bf8ab4bea80619cfbf81fc9cb9497d91d"
+  integrity sha512-oQbd9oI1t1q0DXpxZKlRPehxTKSEYYureTQC0pNS/5tV4xBFYk2meWBiSPOp3Gd8ErkWc5Iy4ENI0aZ+KSsCxg==
   dependencies:
-    "@prisma/driver-adapter-utils" "7.3.0"
+    "@prisma/driver-adapter-utils" "7.4.0"
     better-sqlite3 "^12.6.0"
 
-"@prisma/adapter-pg@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.npmjs.org/@prisma/adapter-pg/-/adapter-pg-7.3.0.tgz#4672c13dd62e7720f71e651a42707d7370db65ca"
-  integrity sha512-iuYQMbIPO6i9O45Fv8TB7vWu00BXhCaNAShenqF7gLExGDbnGp5BfFB4yz1K59zQ59jF6tQ9YHrg0P6/J3OoLg==
+"@prisma/adapter-pg@7.4.0":
+  version "7.4.0"
+  resolved "https://registry.npmjs.org/@prisma/adapter-pg/-/adapter-pg-7.4.0.tgz#61591a22c189d3f9b56f524c46cc3a905350fe2e"
+  integrity sha512-LWwTHaio0bMxvzahmpwpWqsZM0vTfMqwF8zo06YvILL/o47voaSfKzCVxZw/o9awf4fRgS5Vgthobikj9Dusaw==
   dependencies:
-    "@prisma/driver-adapter-utils" "7.3.0"
+    "@prisma/driver-adapter-utils" "7.4.0"
     pg "^8.16.3"
     postgres-array "3.0.4"
 
-"@prisma/client-runtime-utils@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.npmjs.org/@prisma/client-runtime-utils/-/client-runtime-utils-7.3.0.tgz#80b4557315f6ca06dbc33725bac6d2cbd8aa394e"
-  integrity sha512-dG/ceD9c+tnXATPk8G+USxxYM9E6UdMTnQeQ+1SZUDxTz7SgQcfxEqafqIQHcjdlcNK/pvmmLfSwAs3s2gYwUw==
+"@prisma/client-runtime-utils@7.4.0":
+  version "7.4.0"
+  resolved "https://registry.npmjs.org/@prisma/client-runtime-utils/-/client-runtime-utils-7.4.0.tgz#feeb5a09f247ce1f0f8ef4cc817e9ccd6c8f46c3"
+  integrity sha512-jTmWAOBGBSCT8n7SMbpjCpHjELgcDW9GNP/CeK6CeqjUFlEL6dn8Cl81t/NBDjJdXDm85XDJmc+PEQqqQee3xw==
 
-"@prisma/client@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.npmjs.org/@prisma/client/-/client-7.3.0.tgz#6da3ce73b133bcca520a38f05580d2cf404ca3fe"
-  integrity sha512-FXBIxirqQfdC6b6HnNgxGmU7ydCPEPk7maHMOduJJfnTP+MuOGa15X4omjR/zpPUUpm8ef/mEFQjJudOGkXFcQ==
+"@prisma/client@7.4.0":
+  version "7.4.0"
+  resolved "https://registry.npmjs.org/@prisma/client/-/client-7.4.0.tgz#c3f19a15d4a678807035987b251293474639f1cc"
+  integrity sha512-Sc+ncr7+ph1hMf1LQfn6UyEXDEamCd5pXMsx8Q3SBH0NGX+zjqs3eaABt9hXwbcK9l7f8UyK8ldxOWA2LyPynQ==
   dependencies:
-    "@prisma/client-runtime-utils" "7.3.0"
+    "@prisma/client-runtime-utils" "7.4.0"
 
-"@prisma/config@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.npmjs.org/@prisma/config/-/config-7.3.0.tgz#7c3cc2198806237eb4e92d59fcc2a93396711be8"
-  integrity sha512-QyMV67+eXF7uMtKxTEeQqNu/Be7iH+3iDZOQZW5ttfbSwBamCSdwPszA0dum+Wx27I7anYTPLmRmMORKViSW1A==
+"@prisma/config@7.4.0":
+  version "7.4.0"
+  resolved "https://registry.npmjs.org/@prisma/config/-/config-7.4.0.tgz#8e3bbe7f37e9d98a9772556515d0799330e8ce9b"
+  integrity sha512-EnNrZMwZ9+O6UlG+YO9SP3VhVw4zwMahDRzQm3r0DQn9KeU5NwzmaDAY+BzACrgmaU71Id1/0FtWIDdl7xQp9g==
   dependencies:
     c12 "3.1.0"
     deepmerge-ts "7.1.5"
@@ -6476,10 +6476,10 @@
   resolved "https://registry.npmjs.org/@prisma/debug/-/debug-7.2.0.tgz#569b1cbc10eb3e8cae798b40075fd11d21f6b533"
   integrity sha512-YSGTiSlBAVJPzX4ONZmMotL+ozJwQjRmZweQNIq/ER0tQJKJynNkRB3kyvt37eOfsbMCXk3gnLF6J9OJ4QWftw==
 
-"@prisma/debug@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.npmjs.org/@prisma/debug/-/debug-7.3.0.tgz#b953ee8263b26af54ddb2c1799953009d51ec814"
-  integrity sha512-yh/tHhraCzYkffsI1/3a7SHX8tpgbJu1NPnuxS4rEpJdWAUDHUH25F1EDo6PPzirpyLNkgPPZdhojQK804BGtg==
+"@prisma/debug@7.4.0":
+  version "7.4.0"
+  resolved "https://registry.npmjs.org/@prisma/debug/-/debug-7.4.0.tgz#447c09556b3b530900255d0df3b637e1cd9715c2"
+  integrity sha512-fZicwzgFHvvPMrRLCUinrsBTdadJsi/1oirzShjmFvNLwtu2DYlkxwRVy5zEGhp85mrEGnLeS/PdNRCdE027+Q==
 
 "@prisma/dev@0.20.0":
   version "0.20.0"
@@ -6504,36 +6504,36 @@
     valibot "1.2.0"
     zeptomatch "2.1.0"
 
-"@prisma/driver-adapter-utils@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.npmjs.org/@prisma/driver-adapter-utils/-/driver-adapter-utils-7.3.0.tgz#3242f206a8749846db1c611a5cb283c547da7c0f"
-  integrity sha512-Wdlezh1ck0Rq2dDINkfSkwbR53q53//Eo1vVqVLwtiZ0I6fuWDGNPxwq+SNAIHnsU+FD/m3aIJKevH3vF13U3w==
+"@prisma/driver-adapter-utils@7.4.0":
+  version "7.4.0"
+  resolved "https://registry.npmjs.org/@prisma/driver-adapter-utils/-/driver-adapter-utils-7.4.0.tgz#d4a865a59d8aa64d77a10d21279976ae6a054b91"
+  integrity sha512-jEyE5LkqZ27Ba/DIOfCGOQl6nKMLxuwJNRceCfh7/LRs46UkIKn3bmkI97MEH2t7zkYV3PGBrUr+6sMJaHvc0A==
   dependencies:
-    "@prisma/debug" "7.3.0"
+    "@prisma/debug" "7.4.0"
 
-"@prisma/engines-version@7.3.0-16.9d6ad21cbbceab97458517b147a6a09ff43aa735":
-  version "7.3.0-16.9d6ad21cbbceab97458517b147a6a09ff43aa735"
-  resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-7.3.0-16.9d6ad21cbbceab97458517b147a6a09ff43aa735.tgz#e595b90d5afe5ee8312b14efb68a2815fda67998"
-  integrity sha512-IH2va2ouUHihyiTTRW889LjKAl1CusZOvFfZxCDNpjSENt7g2ndFsK0vdIw/72v7+jCN6YgkHmdAP/BI7SDgyg==
+"@prisma/engines-version@7.4.0-20.ab56fe763f921d033a6c195e7ddeb3e255bdbb57":
+  version "7.4.0-20.ab56fe763f921d033a6c195e7ddeb3e255bdbb57"
+  resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-7.4.0-20.ab56fe763f921d033a6c195e7ddeb3e255bdbb57.tgz#eacd6b7e75e837530c632af5feb10ec248ac8aea"
+  integrity sha512-5o3/bubIYdUeg38cyNf+VDq+LVtxvvi2393Fd1Uru52LPfkGJnmVbCaX1wBOAncgKR3BCloMJFD+Koog9LtYqQ==
 
-"@prisma/engines@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.npmjs.org/@prisma/engines/-/engines-7.3.0.tgz#4db30abcb4d20958d643b7370991352807ac60b0"
-  integrity sha512-cWRQoPDXPtR6stOWuWFZf9pHdQ/o8/QNWn0m0zByxf5Kd946Q875XdEJ52pEsX88vOiXUmjuPG3euw82mwQNMg==
+"@prisma/engines@7.4.0":
+  version "7.4.0"
+  resolved "https://registry.npmjs.org/@prisma/engines/-/engines-7.4.0.tgz#4e3ebb4a172b032e4cd690fb79e60bf760dcce80"
+  integrity sha512-H+dgpbbY3VN/j5hOSVP1LXsv/rU0w/4C2zh5PZUwo/Q3NqZjOvBlVvkhtziioRmeEZ3SBAqPCsf1sQ74sI3O/w==
   dependencies:
-    "@prisma/debug" "7.3.0"
-    "@prisma/engines-version" "7.3.0-16.9d6ad21cbbceab97458517b147a6a09ff43aa735"
-    "@prisma/fetch-engine" "7.3.0"
-    "@prisma/get-platform" "7.3.0"
+    "@prisma/debug" "7.4.0"
+    "@prisma/engines-version" "7.4.0-20.ab56fe763f921d033a6c195e7ddeb3e255bdbb57"
+    "@prisma/fetch-engine" "7.4.0"
+    "@prisma/get-platform" "7.4.0"
 
-"@prisma/fetch-engine@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.npmjs.org/@prisma/fetch-engine/-/fetch-engine-7.3.0.tgz#89ade55468c14904a28ff3b46a2d285fb7959ac6"
-  integrity sha512-Mm0F84JMqM9Vxk70pzfNpGJ1lE4hYjOeLMu7nOOD1i83nvp8MSAcFYBnHqLvEZiA6onUR+m8iYogtOY4oPO5lQ==
+"@prisma/fetch-engine@7.4.0":
+  version "7.4.0"
+  resolved "https://registry.npmjs.org/@prisma/fetch-engine/-/fetch-engine-7.4.0.tgz#93ec841021b97f87aa9b114b5c12e038dee00020"
+  integrity sha512-IXPOYskT89UTVsntuSnMTiKRWCuTg5JMWflgEDV1OSKFpuhwP5vqbfF01/iwo9y6rCjR0sDIO+jdV5kq38/hgA==
   dependencies:
-    "@prisma/debug" "7.3.0"
-    "@prisma/engines-version" "7.3.0-16.9d6ad21cbbceab97458517b147a6a09ff43aa735"
-    "@prisma/get-platform" "7.3.0"
+    "@prisma/debug" "7.4.0"
+    "@prisma/engines-version" "7.4.0-20.ab56fe763f921d033a6c195e7ddeb3e255bdbb57"
+    "@prisma/get-platform" "7.4.0"
 
 "@prisma/get-platform@7.2.0":
   version "7.2.0"
@@ -6542,12 +6542,12 @@
   dependencies:
     "@prisma/debug" "7.2.0"
 
-"@prisma/get-platform@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.npmjs.org/@prisma/get-platform/-/get-platform-7.3.0.tgz#f2325b9978d15ab3e6c806449d7d4239df9f7fdc"
-  integrity sha512-N7c6m4/I0Q6JYmWKP2RCD/sM9eWiyCPY98g5c0uEktObNSZnugW2U/PO+pwL0UaqzxqTXt7gTsYsb0FnMnJNbg==
+"@prisma/get-platform@7.4.0":
+  version "7.4.0"
+  resolved "https://registry.npmjs.org/@prisma/get-platform/-/get-platform-7.4.0.tgz#d1de860ae4da8abc6f5d63ad0f120dc5b499ec73"
+  integrity sha512-fOUIoGzAPgtjHVs4DsVSnEDPBEauAmFeZr4Ej3tMwxywam7hHdRtCzgKagQBKcYIJuya8gzYrTqUoukzXtWJaA==
   dependencies:
-    "@prisma/debug" "7.3.0"
+    "@prisma/debug" "7.4.0"
 
 "@prisma/query-plan-executor@7.2.0":
   version "7.2.0"
@@ -17892,23 +17892,23 @@ ora@9.3.0:
     stdin-discarder "^0.3.1"
     string-width "^8.1.0"
 
-orval@8.2.0:
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/orval/-/orval-8.2.0.tgz#4941f07765037e9d6dc9dd39d840f8f4b97c7694"
-  integrity sha512-1X/OUopJNvnOJKHbkdhrjChF2QPIRRLWMLXgnI42efS8ErNViassU2HLm/T27tgptbYxTxbAsiidcSrgRbrL0Q==
+orval@8.3.0:
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/orval/-/orval-8.3.0.tgz#e41d386941be874488dd22a6f568b82d149d7d19"
+  integrity sha512-njTZ+YcSawGc6Zo4Ak19VWH1Ohpw6MSofYiTYwUgYemNLeX+d+CDjC3VofzUF2+TNYP+dXl9Nyo+5wraAdSDfA==
   dependencies:
     "@commander-js/extra-typings" "^14.0.0"
-    "@orval/angular" "8.2.0"
-    "@orval/axios" "8.2.0"
-    "@orval/core" "8.2.0"
-    "@orval/fetch" "8.2.0"
-    "@orval/hono" "8.2.0"
-    "@orval/mcp" "8.2.0"
-    "@orval/mock" "8.2.0"
-    "@orval/query" "8.2.0"
-    "@orval/solid-start" "8.2.0"
-    "@orval/swr" "8.2.0"
-    "@orval/zod" "8.2.0"
+    "@orval/angular" "8.3.0"
+    "@orval/axios" "8.3.0"
+    "@orval/core" "8.3.0"
+    "@orval/fetch" "8.3.0"
+    "@orval/hono" "8.3.0"
+    "@orval/mcp" "8.3.0"
+    "@orval/mock" "8.3.0"
+    "@orval/query" "8.3.0"
+    "@orval/solid-start" "8.3.0"
+    "@orval/swr" "8.3.0"
+    "@orval/zod" "8.3.0"
     "@scalar/json-magic" "^0.8.8"
     "@scalar/openapi-parser" "^0.23.9"
     "@scalar/openapi-types" "0.5.3"
@@ -18877,14 +18877,14 @@ pretty-ms@^9.2.0:
   dependencies:
     parse-ms "^4.0.0"
 
-prisma@7.3.0:
-  version "7.3.0"
-  resolved "https://registry.npmjs.org/prisma/-/prisma-7.3.0.tgz#61c5c3377455e308406d57187497053dd8dfd440"
-  integrity sha512-ApYSOLHfMN8WftJA+vL6XwAPOh/aZ0BgUyyKPwUFgjARmG6EBI9LzDPf6SWULQMSAxydV9qn5gLj037nPNlg2w==
+prisma@7.4.0:
+  version "7.4.0"
+  resolved "https://registry.npmjs.org/prisma/-/prisma-7.4.0.tgz#f0b75439816769a0f595207ba182b7b78ad493c5"
+  integrity sha512-n2xU9vSaH4uxZF/l2aKoGYtKtC7BL936jM9Q94Syk1zOD39t/5hjDUxMgaPkVRDX5wWEMsIqvzQxoebNIesOKw==
   dependencies:
-    "@prisma/config" "7.3.0"
+    "@prisma/config" "7.4.0"
     "@prisma/dev" "0.20.0"
-    "@prisma/engines" "7.3.0"
+    "@prisma/engines" "7.4.0"
     "@prisma/studio-core" "0.13.1"
     mysql2 "3.15.3"
     postgres "3.4.7"
