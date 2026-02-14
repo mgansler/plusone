@@ -9157,7 +9157,7 @@ acorn-jsx@^5.3.2:
   resolved "https://registry.npmjs.org/acorn-jsx/-/acorn-jsx-5.3.2.tgz#7ed5bb55908b3b2f1bc55c6af1653bada7f07937"
   integrity sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==
 
-acorn-walk@^8.0.0, acorn-walk@^8.1.1, acorn-walk@^8.3.4:
+acorn-walk@^8.0.0, acorn-walk@^8.1.1:
   version "8.3.4"
   resolved "https://registry.npmjs.org/acorn-walk/-/acorn-walk-8.3.4.tgz#794dd169c3977edf4ba4ea47583587c5866236b7"
   integrity sha512-ueEepnujpqee2o5aIYnvHU6C0A42MNdsIDeqy5BydrkuC5R1ZuUFnm27EeFJGoEHJQgn3uleRvmTXaJgfXbt4g==
@@ -10480,11 +10480,6 @@ chalk@3.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-chalk@5.6.2, chalk@^5.6.2:
-  version "5.6.2"
-  resolved "https://registry.npmjs.org/chalk/-/chalk-5.6.2.tgz#b1238b6e23ea337af71c7f8a295db5af0c158aea"
-  integrity sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==
-
 chalk@^4.0.0, chalk@^4.0.2, chalk@^4.1.0, chalk@^4.1.2:
   version "4.1.2"
   resolved "https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
@@ -10492,6 +10487,11 @@ chalk@^4.0.0, chalk@^4.0.2, chalk@^4.1.0, chalk@^4.1.2:
   dependencies:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
+
+chalk@^5.6.2:
+  version "5.6.2"
+  resolved "https://registry.npmjs.org/chalk/-/chalk-5.6.2.tgz#b1238b6e23ea337af71c7f8a295db5af0c158aea"
+  integrity sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==
 
 change-case-all@1.0.15:
   version "1.0.15"
@@ -14453,14 +14453,13 @@ i18next-browser-languagedetector@8.2.0:
   dependencies:
     "@babel/runtime" "^7.23.2"
 
-i18next-cli@1.42.6:
-  version "1.42.6"
-  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.42.6.tgz#1098ac49a1b2d88db17557669766426c240ae900"
-  integrity sha512-pRKf0K4J7KdHJMRgVRolf1emfKfzjpBmpm+mxKRWNh8iYQp+mL4gzpgopF5ikRRw6GXu2l9CCzVFRLD0qFpg5A==
+i18next-cli@1.42.8:
+  version "1.42.8"
+  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.42.8.tgz#7f1d987cd8b2c10821151dfe229a749b8f077fb0"
+  integrity sha512-KhrJJyGjTGhLTkjlzOIcCCY8fo+TdNOSRoPrkzS610YhYAhTLk/hWhj+QJ8Kv1+vIrkz2uxk3aYUPXSUgSMElQ==
   dependencies:
     "@croct/json5-parser" "0.2.2"
     "@swc/core" "1.15.11"
-    chalk "5.6.2"
     chokidar "5.0.0"
     commander "14.0.3"
     execa "9.6.1"
@@ -14473,7 +14472,6 @@ i18next-cli@1.42.6:
     ora "9.3.0"
     react "^19.2.4"
     react-i18next "^16.5.4"
-    swc-walk "1.0.1"
     yaml "2.8.2"
 
 i18next-http-backend@3.0.2:
@@ -20946,13 +20944,6 @@ swap-case@^2.0.2:
   integrity sha512-kc6S2YS/2yXbtkSMunBtKdah4VFETZ8Oh6ONSmSd9bRxhqTrtARUCBUiWXH3xVPpvR7tz2CSnkuXVE42EcGnMw==
   dependencies:
     tslib "^2.0.3"
-
-swc-walk@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/swc-walk/-/swc-walk-1.0.1.tgz#b6a439b777c1a33c9b89e4fd1b4a2d8893a8694d"
-  integrity sha512-bHR0Zs+MdFxKKq5QXmPZuvbXybAJh4wV56zZT7n7hQC55eHpGvL1TeeHxNwL5XlXYSAXKK57GsKY0aEttGDuWQ==
-  dependencies:
-    acorn-walk "^8.3.4"
 
 symbol-tree@^3.2.4:
   version "3.2.4"
