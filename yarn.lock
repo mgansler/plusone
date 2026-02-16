@@ -7527,14 +7527,14 @@
   dependencies:
     "@tanstack/query-core" "5.90.20"
 
-"@tanstack/react-router@1.159.5":
-  version "1.159.5"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.159.5.tgz#b228812387f433f4a1780000ebdb9b0cc7a1e960"
-  integrity sha512-rVb0MtKzP5c0BkWIoFgWBiRAJHYSU3bhsEHbT0cRdRLmlJiw21Awb6VEjgYq3hJiEhowcKKm6J8AdRD/8oZ5dQ==
+"@tanstack/react-router@1.159.6":
+  version "1.159.6"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.159.6.tgz#db91ab9bdc6305742bcabddf9f0b37a47f78cf43"
+  integrity sha512-nvudIfK5D4XnBSQu092BtlBnndfWhjbrzC9fZHVqNoi3H1qvUx8Fg5hhtn7u+CBymM1dyhUd+AqxLExLSYC6Lw==
   dependencies:
     "@tanstack/history" "1.154.14"
     "@tanstack/react-store" "^0.8.0"
-    "@tanstack/router-core" "1.159.4"
+    "@tanstack/router-core" "1.159.6"
     isbot "^5.1.22"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
@@ -7547,10 +7547,10 @@
     "@tanstack/store" "0.8.0"
     use-sync-external-store "^1.6.0"
 
-"@tanstack/router-core@1.159.4":
-  version "1.159.4"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.159.4.tgz#9638076f0280a52a0969da0ce0005e561d9e26a1"
-  integrity sha512-MFzPH39ijNO83qJN3pe7x4iAlhZyqgao3sJIzv3SJ4Pnk12xMnzuDzIAQT/1WV6JolPQEcw0Wr4L5agF8yxoeg==
+"@tanstack/router-core@1.159.6":
+  version "1.159.6"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.159.6.tgz#7d2c7505d319e01361c96ffa15e022cfd992a562"
+  integrity sha512-j11iIQZDLvamWZo5Pd8uPt4u755JNUe5YkfS0q/6eXhgyXKkshL1Q5m/uJEcIgjFTAWTYasnbX9p99u5dgo7ug==
   dependencies:
     "@tanstack/history" "1.154.14"
     "@tanstack/store" "^0.8.0"
@@ -7560,12 +7560,12 @@
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
 
-"@tanstack/router-generator@1.159.4":
-  version "1.159.4"
-  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.159.4.tgz#3ac095ca7c9d6cc57340fb2055fdd54c20b5867d"
-  integrity sha512-O8tICQoSuvK6vs3mvBdI3zVLFmYfj/AYDCX0a5msSADP/2S0GsgDDTB5ah731TqYCtjeNriaWz9iqst38cjF/Q==
+"@tanstack/router-generator@1.159.6":
+  version "1.159.6"
+  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.159.6.tgz#d9b9af8eb5b9a86564bccc9b951f8b8e98c14e66"
+  integrity sha512-oV3L9gZT4CfFZFMi2h7x9j+hYknbmz3dLU+g34RA4OAVB27oh9iu6OCGnqcLya2H2SzU4BAok7SQSyCF1pG5wQ==
   dependencies:
-    "@tanstack/router-core" "1.159.4"
+    "@tanstack/router-core" "1.159.6"
     "@tanstack/router-utils" "1.158.0"
     "@tanstack/virtual-file-routes" "1.154.7"
     prettier "^3.5.0"
@@ -7574,10 +7574,10 @@
     tsx "^4.19.2"
     zod "^3.24.2"
 
-"@tanstack/router-plugin@1.159.5":
-  version "1.159.5"
-  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.159.5.tgz#5e999fce193c19cc836c6562c79bf6b9056baa55"
-  integrity sha512-i2LR3WRaBOAZ1Uab5QBG9UxZIRJ3V56JVu890NysbuX15rgzRiL5yLAbfenOHdhaHy2+4joX35VICAHuVWy7Og==
+"@tanstack/router-plugin@1.159.6":
+  version "1.159.6"
+  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.159.6.tgz#a934bef01a6e0a88d27df1f009811d989ef73d23"
+  integrity sha512-aAqcJhFabsQrgQqALwW+Xb5feyRNYhAEjCwGoGsBUuk1GxG3NKS/FNrdXB1QEpz86/qHUosGmem2IKazqDOOXg==
   dependencies:
     "@babel/core" "^7.28.5"
     "@babel/plugin-syntax-jsx" "^7.27.1"
@@ -7585,8 +7585,8 @@
     "@babel/template" "^7.27.2"
     "@babel/traverse" "^7.28.5"
     "@babel/types" "^7.28.5"
-    "@tanstack/router-core" "1.159.4"
-    "@tanstack/router-generator" "1.159.4"
+    "@tanstack/router-core" "1.159.6"
+    "@tanstack/router-generator" "1.159.6"
     "@tanstack/router-utils" "1.158.0"
     "@tanstack/virtual-file-routes" "1.154.7"
     chokidar "^3.6.0"
