@@ -72,6 +72,7 @@ export class WeatherService {
           return [
             ...previousValue,
             {
+              trailAreaId: trailArea.id,
               time: currentValue,
               temperature2m: weatherData.temperature2m[currentIndex],
               rain: weatherData.rain[currentIndex],
@@ -95,7 +96,7 @@ export class WeatherService {
           this.prisma.weatherData.upsert({
             where: { trailAreaId_time: { trailAreaId: trailArea.id, time: weatherData.time } },
             update: weatherData,
-            create: { trailAreaId: trailArea.id, ...weatherData },
+            create: weatherData,
           }),
         ),
       )

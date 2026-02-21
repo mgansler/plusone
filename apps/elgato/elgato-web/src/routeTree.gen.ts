@@ -65,10 +65,21 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/commands' | '/discovery' | '/settings' | '/devices/$macAddress'
+  fullPaths:
+    | '/'
+    | '/commands'
+    | '/discovery'
+    | '/settings'
+    | '/devices/$macAddress'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/commands' | '/discovery' | '/settings' | '/devices/$macAddress'
-  id: '__root__' | '/' | '/commands' | '/discovery' | '/settings' | '/devices/$macAddress'
+  id:
+    | '__root__'
+    | '/'
+    | '/commands'
+    | '/discovery'
+    | '/settings'
+    | '/devices/$macAddress'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -126,4 +137,6 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   DevicesMacAddressRoute: DevicesMacAddressRoute,
 }
-export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>()
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()

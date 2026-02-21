@@ -13,7 +13,7 @@ export class HealthController {
   @HealthCheck()
   @ApiOperation({ operationId: 'getHealthStatus' })
   @ApiOkResponse({ description: 'Health status of the application.', type: HealthCheckResultDto })
-  async getHealthStatus(): Promise<HealthCheckResultDto> {
+  async getHealthStatus() {
     return this.health.check([])
   }
 }

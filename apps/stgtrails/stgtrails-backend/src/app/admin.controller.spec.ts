@@ -49,8 +49,9 @@ describe('TrailAreaController', () => {
     },
   }
 
-  const username = process.env[ADMIN_USERNAME]
-  const password = process.env[ADMIN_PASSWORD]
+  // We have a test that checks username and password are really defined
+  const username = process.env[ADMIN_USERNAME] as string
+  const password = process.env[ADMIN_PASSWORD] as string
 
   beforeAll(async () => {
     const consoleInfoSpy = jest.spyOn(console, 'info').mockImplementation(() => undefined)
