@@ -4052,13 +4052,13 @@
     ansi-escapes "^4.3.2"
     yoctocolors-cjs "^2.1.2"
 
-"@inquirer/checkbox@^5.0.4":
-  version "5.0.4"
-  resolved "https://registry.npmjs.org/@inquirer/checkbox/-/checkbox-5.0.4.tgz#813e8fd64c5f9ce064e4a6517a1fcc4524d2cf05"
-  integrity sha512-DrAMU3YBGMUAp6ArwTIp/25CNDtDbxk7UjIrrtM25JVVrlVYlVzHh5HR1BDFu9JMyUoZ4ZanzeaHqNDttf3gVg==
+"@inquirer/checkbox@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.npmjs.org/@inquirer/checkbox/-/checkbox-5.1.0.tgz#4c62eb72ff3d6a4e15bec22bf508ec0899c2f6f4"
+  integrity sha512-/HjF1LN0a1h4/OFsbGKHNDtWICFU/dqXCdym719HFTyJo9IG7Otr+ziGWc9S0iQuohRZllh+WprSgd5UW5Fw0g==
   dependencies:
     "@inquirer/ansi" "^2.0.3"
-    "@inquirer/core" "^11.1.1"
+    "@inquirer/core" "^11.1.5"
     "@inquirer/figures" "^2.0.3"
     "@inquirer/type" "^4.0.3"
 
@@ -4078,12 +4078,12 @@
     "@inquirer/core" "^10.2.0"
     "@inquirer/type" "^3.0.8"
 
-"@inquirer/confirm@^6.0.4":
-  version "6.0.4"
-  resolved "https://registry.npmjs.org/@inquirer/confirm/-/confirm-6.0.4.tgz#548d63981f3bc189ee0773015fbe4625e7a204a0"
-  integrity sha512-WdaPe7foUnoGYvXzH4jp4wH/3l+dBhZ3uwhKjXjwdrq5tEIFaANxj6zrGHxLdsIA0yKM0kFPVcEalOZXBB5ISA==
+"@inquirer/confirm@^6.0.8":
+  version "6.0.8"
+  resolved "https://registry.npmjs.org/@inquirer/confirm/-/confirm-6.0.8.tgz#9fd60f2968e723f82dd067e1ffcc1fe32f5bfe04"
+  integrity sha512-Di6dgmiZ9xCSUxWUReWTqDtbhXCuG2MQm2xmgSAIruzQzBqNf49b8E07/vbCYY506kDe8BiwJbegXweG8M1klw==
   dependencies:
-    "@inquirer/core" "^11.1.1"
+    "@inquirer/core" "^11.1.5"
     "@inquirer/type" "^4.0.3"
 
 "@inquirer/core@^10.1.1":
@@ -4115,18 +4115,18 @@
     wrap-ansi "^6.2.0"
     yoctocolors-cjs "^2.1.2"
 
-"@inquirer/core@^11.1.1":
-  version "11.1.1"
-  resolved "https://registry.npmjs.org/@inquirer/core/-/core-11.1.1.tgz#7cf708b350f9e73b01ccb4b61ecf3016d3de1b0d"
-  integrity sha512-hV9o15UxX46OyQAtaoMqAOxGR8RVl1aZtDx1jHbCtSJy1tBdTfKxLPKf7utsE4cRy4tcmCQ4+vdV+ca+oNxqNA==
+"@inquirer/core@^11.1.4", "@inquirer/core@^11.1.5":
+  version "11.1.5"
+  resolved "https://registry.npmjs.org/@inquirer/core/-/core-11.1.5.tgz#781a7c5d56c12961870e4f0521ff881a85c81b7e"
+  integrity sha512-QQPAX+lka8GyLcZ7u7Nb1h6q72iZ/oy0blilC3IB2nSt1Qqxp7akt94Jqhi/DzARuN3Eo9QwJRvtl4tmVe4T5A==
   dependencies:
     "@inquirer/ansi" "^2.0.3"
     "@inquirer/figures" "^2.0.3"
     "@inquirer/type" "^4.0.3"
     cli-width "^4.1.0"
+    fast-wrap-ansi "^0.2.0"
     mute-stream "^3.0.0"
     signal-exit "^4.1.0"
-    wrap-ansi "^9.0.2"
 
 "@inquirer/editor@^4.2.18":
   version "4.2.18"
@@ -4137,12 +4137,12 @@
     "@inquirer/external-editor" "^1.0.1"
     "@inquirer/type" "^3.0.8"
 
-"@inquirer/editor@^5.0.4":
-  version "5.0.4"
-  resolved "https://registry.npmjs.org/@inquirer/editor/-/editor-5.0.4.tgz#8dda8bc92ca5a7f7326b4508f8da90358fbedfc5"
-  integrity sha512-QI3Jfqcv6UO2/VJaEFONH8Im1ll++Xn/AJTBn9Xf+qx2M+H8KZAdQ5sAe2vtYlo+mLW+d7JaMJB4qWtK4BG3pw==
+"@inquirer/editor@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.npmjs.org/@inquirer/editor/-/editor-5.0.8.tgz#3d028366cacd749efad80db67da2db173658ac9f"
+  integrity sha512-sLcpbb9B3XqUEGrj1N66KwhDhEckzZ4nI/W6SvLXyBX8Wic3LDLENlWRvkOGpCPoserabe+MxQkpiMoI8irvyA==
   dependencies:
-    "@inquirer/core" "^11.1.1"
+    "@inquirer/core" "^11.1.5"
     "@inquirer/external-editor" "^2.0.3"
     "@inquirer/type" "^4.0.3"
 
@@ -4155,12 +4155,12 @@
     "@inquirer/type" "^3.0.8"
     yoctocolors-cjs "^2.1.2"
 
-"@inquirer/expand@^5.0.4":
-  version "5.0.4"
-  resolved "https://registry.npmjs.org/@inquirer/expand/-/expand-5.0.4.tgz#72adbd795c451deb6e74d04d5da91e41a45372d3"
-  integrity sha512-0I/16YwPPP0Co7a5MsomlZLpch48NzYfToyqYAOWtBmaXSB80RiNQ1J+0xx2eG+Wfxt0nHtpEWSRr6CzNVnOGg==
+"@inquirer/expand@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.npmjs.org/@inquirer/expand/-/expand-5.0.8.tgz#837c1b3af8a9dda536c5af516b57e8c7f1053d4a"
+  integrity sha512-QieW3F1prNw3j+hxO7/NKkG1pk3oz7pOB6+5Upwu3OIwADfPX0oZVppsqlL+Vl/uBHHDSOBY0BirLctLnXwGGg==
   dependencies:
-    "@inquirer/core" "^11.1.1"
+    "@inquirer/core" "^11.1.5"
     "@inquirer/type" "^4.0.3"
 
 "@inquirer/external-editor@^1.0.1":
@@ -4202,12 +4202,12 @@
     "@inquirer/core" "^10.2.0"
     "@inquirer/type" "^3.0.8"
 
-"@inquirer/input@^5.0.4":
-  version "5.0.4"
-  resolved "https://registry.npmjs.org/@inquirer/input/-/input-5.0.4.tgz#56a839a27ed091972f0eb6be1ed6ede2f7f4223f"
-  integrity sha512-4B3s3jvTREDFvXWit92Yc6jF1RJMDy2VpSqKtm4We2oVU65YOh2szY5/G14h4fHlyQdpUmazU5MPCFZPRJ0AOw==
+"@inquirer/input@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.npmjs.org/@inquirer/input/-/input-5.0.8.tgz#f10db8f67e5b95a52fef12924bbe77a010d7f834"
+  integrity sha512-p0IJslw0AmedLEkOU+yrEX3Aj2RTpQq7ZOf8nc1DIhjzaxRWrrgeuE5Kyh39fVRgtcACaMXx/9WNo8+GjgBOfw==
   dependencies:
-    "@inquirer/core" "^11.1.1"
+    "@inquirer/core" "^11.1.5"
     "@inquirer/type" "^4.0.3"
 
 "@inquirer/number@^3.0.18":
@@ -4218,12 +4218,12 @@
     "@inquirer/core" "^10.2.0"
     "@inquirer/type" "^3.0.8"
 
-"@inquirer/number@^4.0.4":
-  version "4.0.4"
-  resolved "https://registry.npmjs.org/@inquirer/number/-/number-4.0.4.tgz#c0ea5cd3a3f5e15ea1e90d6144abfd338a07f4f7"
-  integrity sha512-CmMp9LF5HwE+G/xWsC333TlCzYYbXMkcADkKzcawh49fg2a1ryLc7JL1NJYYt1lJ+8f4slikNjJM9TEL/AljYQ==
+"@inquirer/number@^4.0.8":
+  version "4.0.8"
+  resolved "https://registry.npmjs.org/@inquirer/number/-/number-4.0.8.tgz#5a85b9aee783452d5d8067a71b16d481fa66d6dc"
+  integrity sha512-uGLiQah9A0F9UIvJBX52m0CnqtLaym0WpT9V4YZrjZ+YRDKZdwwoEPz06N6w8ChE2lrnsdyhY9sL+Y690Kh9gQ==
   dependencies:
-    "@inquirer/core" "^11.1.1"
+    "@inquirer/core" "^11.1.5"
     "@inquirer/type" "^4.0.3"
 
 "@inquirer/password@^4.0.18":
@@ -4235,13 +4235,13 @@
     "@inquirer/type" "^3.0.8"
     ansi-escapes "^4.3.2"
 
-"@inquirer/password@^5.0.4":
-  version "5.0.4"
-  resolved "https://registry.npmjs.org/@inquirer/password/-/password-5.0.4.tgz#d691b1e9f4cc323ffff94579db040c751140c4fa"
-  integrity sha512-ZCEPyVYvHK4W4p2Gy6sTp9nqsdHQCfiPXIP9LbJVW4yCinnxL/dDDmPaEZVysGrj8vxVReRnpfS2fOeODe9zjg==
+"@inquirer/password@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.npmjs.org/@inquirer/password/-/password-5.0.8.tgz#260f69a2179db824cfa13465525420ba3659de90"
+  integrity sha512-zt1sF4lYLdvPqvmvHdmjOzuUUjuCQ897pdUCO8RbXMUDKXJTTyOQgtn23le+jwcb+MpHl3VAFvzIdxRAf6aPlA==
   dependencies:
     "@inquirer/ansi" "^2.0.3"
-    "@inquirer/core" "^11.1.1"
+    "@inquirer/core" "^11.1.5"
     "@inquirer/type" "^4.0.3"
 
 "@inquirer/prompts@^7.8.2":
@@ -4260,21 +4260,21 @@
     "@inquirer/search" "^3.1.1"
     "@inquirer/select" "^4.3.2"
 
-"@inquirer/prompts@^8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@inquirer/prompts/-/prompts-8.2.0.tgz#864494037fe3d456a829198a0563b17492b95a77"
-  integrity sha512-rqTzOprAj55a27jctS3vhvDDJzYXsr33WXTjODgVOru21NvBo9yIgLIAf7SBdSV0WERVly3dR6TWyp7ZHkvKFA==
+"@inquirer/prompts@^8.2.1":
+  version "8.3.0"
+  resolved "https://registry.npmjs.org/@inquirer/prompts/-/prompts-8.3.0.tgz#dcae1093c84d08f3915fc253861579246b1e2929"
+  integrity sha512-JAj66kjdH/F1+B7LCigjARbwstt3SNUOSzMdjpsvwJmzunK88gJeXmcm95L9nw1KynvFVuY4SzXh/3Y0lvtgSg==
   dependencies:
-    "@inquirer/checkbox" "^5.0.4"
-    "@inquirer/confirm" "^6.0.4"
-    "@inquirer/editor" "^5.0.4"
-    "@inquirer/expand" "^5.0.4"
-    "@inquirer/input" "^5.0.4"
-    "@inquirer/number" "^4.0.4"
-    "@inquirer/password" "^5.0.4"
-    "@inquirer/rawlist" "^5.2.0"
-    "@inquirer/search" "^4.1.0"
-    "@inquirer/select" "^5.0.4"
+    "@inquirer/checkbox" "^5.1.0"
+    "@inquirer/confirm" "^6.0.8"
+    "@inquirer/editor" "^5.0.8"
+    "@inquirer/expand" "^5.0.8"
+    "@inquirer/input" "^5.0.8"
+    "@inquirer/number" "^4.0.8"
+    "@inquirer/password" "^5.0.8"
+    "@inquirer/rawlist" "^5.2.4"
+    "@inquirer/search" "^4.1.4"
+    "@inquirer/select" "^5.1.0"
 
 "@inquirer/rawlist@^4.1.6":
   version "4.1.6"
@@ -4285,12 +4285,12 @@
     "@inquirer/type" "^3.0.8"
     yoctocolors-cjs "^2.1.2"
 
-"@inquirer/rawlist@^5.2.0":
-  version "5.2.0"
-  resolved "https://registry.npmjs.org/@inquirer/rawlist/-/rawlist-5.2.0.tgz#fee7d58867508781ff96483f5894bfdd551a1ec2"
-  integrity sha512-CciqGoOUMrFo6HxvOtU5uL8fkjCmzyeB6fG7O1vdVAZVSopUBYECOwevDBlqNLyyYmzpm2Gsn/7nLrpruy9RFg==
+"@inquirer/rawlist@^5.2.4":
+  version "5.2.4"
+  resolved "https://registry.npmjs.org/@inquirer/rawlist/-/rawlist-5.2.4.tgz#bce70b0804543522d1f3cf726323bec26b6df549"
+  integrity sha512-fTuJ5Cq9W286isLxwj6GGyfTjx1Zdk4qppVEPexFuA6yioCCXS4V1zfKroQqw7QdbDPN73xs2DiIAlo55+kBqg==
   dependencies:
-    "@inquirer/core" "^11.1.1"
+    "@inquirer/core" "^11.1.5"
     "@inquirer/type" "^4.0.3"
 
 "@inquirer/search@^3.1.1":
@@ -4303,12 +4303,12 @@
     "@inquirer/type" "^3.0.8"
     yoctocolors-cjs "^2.1.2"
 
-"@inquirer/search@^4.1.0":
-  version "4.1.0"
-  resolved "https://registry.npmjs.org/@inquirer/search/-/search-4.1.0.tgz#5e17b5787975b8b4df182ca969e525c01c98dc4f"
-  integrity sha512-EAzemfiP4IFvIuWnrHpgZs9lAhWDA0GM3l9F4t4mTQ22IFtzfrk8xbkMLcAN7gmVML9O/i+Hzu8yOUyAaL6BKA==
+"@inquirer/search@^4.1.4":
+  version "4.1.4"
+  resolved "https://registry.npmjs.org/@inquirer/search/-/search-4.1.4.tgz#70a8e6fe726493d28fabe27044f630585b4a880b"
+  integrity sha512-9yPTxq7LPmYjrGn3DRuaPuPbmC6u3fiWcsE9ggfLcdgO/ICHYgxq7mEy1yJ39brVvgXhtOtvDVjDh9slJxE4LQ==
   dependencies:
-    "@inquirer/core" "^11.1.1"
+    "@inquirer/core" "^11.1.5"
     "@inquirer/figures" "^2.0.3"
     "@inquirer/type" "^4.0.3"
 
@@ -4323,13 +4323,13 @@
     ansi-escapes "^4.3.2"
     yoctocolors-cjs "^2.1.2"
 
-"@inquirer/select@^5.0.4":
-  version "5.0.4"
-  resolved "https://registry.npmjs.org/@inquirer/select/-/select-5.0.4.tgz#11249c7091946681d394f649b00844f8fda38d7a"
-  integrity sha512-s8KoGpPYMEQ6WXc0dT9blX2NtIulMdLOO3LA1UKOiv7KFWzlJ6eLkEYTDBIi+JkyKXyn8t/CD6TinxGjyLt57g==
+"@inquirer/select@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.npmjs.org/@inquirer/select/-/select-5.1.0.tgz#02be4e8a2c53cd72a7bf4685be6eac5497bd4c5c"
+  integrity sha512-OyYbKnchS1u+zRe14LpYrN8S0wH1vD0p2yKISvSsJdH2TpI87fh4eZdWnpdbrGauCRWDph3NwxRmM4Pcm/hx1Q==
   dependencies:
     "@inquirer/ansi" "^2.0.3"
-    "@inquirer/core" "^11.1.1"
+    "@inquirer/core" "^11.1.5"
     "@inquirer/figures" "^2.0.3"
     "@inquirer/type" "^4.0.3"
 
@@ -4353,7 +4353,7 @@
   resolved "https://registry.npmjs.org/@isaacs/balanced-match/-/balanced-match-4.0.1.tgz#3081dadbc3460661b751e7591d7faea5df39dd29"
   integrity sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ==
 
-"@isaacs/brace-expansion@^5.0.0", "@isaacs/brace-expansion@^5.0.1":
+"@isaacs/brace-expansion@^5.0.0":
   version "5.0.1"
   resolved "https://registry.npmjs.org/@isaacs/brace-expansion/-/brace-expansion-5.0.1.tgz#0ef5a92d91f2fff2a37646ce54da9e5f599f6eff"
   integrity sha512-WMz71T1JS624nWj2n2fnYAuPovhv7EUhk69R6i9dsVyzxt5eM3bjwvgk9L+APE1TRscGysAVMANkB0jh0LQZrQ==
@@ -6459,39 +6459,39 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
-"@prisma/adapter-better-sqlite3@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@prisma/adapter-better-sqlite3/-/adapter-better-sqlite3-7.4.0.tgz#ef71956bf8ab4bea80619cfbf81fc9cb9497d91d"
-  integrity sha512-oQbd9oI1t1q0DXpxZKlRPehxTKSEYYureTQC0pNS/5tV4xBFYk2meWBiSPOp3Gd8ErkWc5Iy4ENI0aZ+KSsCxg==
+"@prisma/adapter-better-sqlite3@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@prisma/adapter-better-sqlite3/-/adapter-better-sqlite3-7.4.1.tgz#308fdedbf539488a59c49a7f4428daaeeab97cda"
+  integrity sha512-qYcbk5gSfKfedVzEJHFTpIr7kybEmoJ+eRE1/wzdcZozDyHlEfnqKbhx+IEPcG5n7qSj4Zvx+G1uT0VXs9nF/w==
   dependencies:
-    "@prisma/driver-adapter-utils" "7.4.0"
+    "@prisma/driver-adapter-utils" "7.4.1"
     better-sqlite3 "^12.6.0"
 
-"@prisma/adapter-pg@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@prisma/adapter-pg/-/adapter-pg-7.4.0.tgz#61591a22c189d3f9b56f524c46cc3a905350fe2e"
-  integrity sha512-LWwTHaio0bMxvzahmpwpWqsZM0vTfMqwF8zo06YvILL/o47voaSfKzCVxZw/o9awf4fRgS5Vgthobikj9Dusaw==
+"@prisma/adapter-pg@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@prisma/adapter-pg/-/adapter-pg-7.4.1.tgz#e6f99773dd4ddbeccfbdb59071289e3416e907cd"
+  integrity sha512-AH9XrqvSoBAaStn0Gm/sAnF97pDKz8uLpNmn51j1S9O9dhUva6LIxGdoDiiU9VXRIR89wAJXsvJSy+mK40m2xw==
   dependencies:
-    "@prisma/driver-adapter-utils" "7.4.0"
+    "@prisma/driver-adapter-utils" "7.4.1"
     pg "^8.16.3"
     postgres-array "3.0.4"
 
-"@prisma/client-runtime-utils@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@prisma/client-runtime-utils/-/client-runtime-utils-7.4.0.tgz#feeb5a09f247ce1f0f8ef4cc817e9ccd6c8f46c3"
-  integrity sha512-jTmWAOBGBSCT8n7SMbpjCpHjELgcDW9GNP/CeK6CeqjUFlEL6dn8Cl81t/NBDjJdXDm85XDJmc+PEQqqQee3xw==
+"@prisma/client-runtime-utils@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@prisma/client-runtime-utils/-/client-runtime-utils-7.4.1.tgz#68f95c9a4ca0bdf6e5ae733569f685c99bf99570"
+  integrity sha512-8fy74OMYC7mt9cJ2MncIDk1awPRgmtXVvwTN2FlW4JVhbck8Dgt0wTkhPG85myfj4ZeP2stjF9Sdg12n5HrpQg==
 
-"@prisma/client@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@prisma/client/-/client-7.4.0.tgz#c3f19a15d4a678807035987b251293474639f1cc"
-  integrity sha512-Sc+ncr7+ph1hMf1LQfn6UyEXDEamCd5pXMsx8Q3SBH0NGX+zjqs3eaABt9hXwbcK9l7f8UyK8ldxOWA2LyPynQ==
+"@prisma/client@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@prisma/client/-/client-7.4.1.tgz#5c14febe23baf9e765cde246c834c88237ae0025"
+  integrity sha512-pgIll2W1NVdof37xLeyySW+yfQ4rI+ERGCRwnO3BjVOx42GpYq6jhTyuALK8VKirvJJIvImgfGDA2qwhYVvMuA==
   dependencies:
-    "@prisma/client-runtime-utils" "7.4.0"
+    "@prisma/client-runtime-utils" "7.4.1"
 
-"@prisma/config@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@prisma/config/-/config-7.4.0.tgz#8e3bbe7f37e9d98a9772556515d0799330e8ce9b"
-  integrity sha512-EnNrZMwZ9+O6UlG+YO9SP3VhVw4zwMahDRzQm3r0DQn9KeU5NwzmaDAY+BzACrgmaU71Id1/0FtWIDdl7xQp9g==
+"@prisma/config@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@prisma/config/-/config-7.4.1.tgz#142a323aa4c807869fffba728102cd0eb217629d"
+  integrity sha512-vteSXm8N46bo3FW9MhPGVHAj+KRgrR6TWtlSk6GqToCKjTnOexXdPZyiDyEsfVW38YhqEmVl6w/6iHN8uYVJcw==
   dependencies:
     c12 "3.1.0"
     deepmerge-ts "7.1.5"
@@ -6503,10 +6503,10 @@
   resolved "https://registry.npmjs.org/@prisma/debug/-/debug-7.2.0.tgz#569b1cbc10eb3e8cae798b40075fd11d21f6b533"
   integrity sha512-YSGTiSlBAVJPzX4ONZmMotL+ozJwQjRmZweQNIq/ER0tQJKJynNkRB3kyvt37eOfsbMCXk3gnLF6J9OJ4QWftw==
 
-"@prisma/debug@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@prisma/debug/-/debug-7.4.0.tgz#447c09556b3b530900255d0df3b637e1cd9715c2"
-  integrity sha512-fZicwzgFHvvPMrRLCUinrsBTdadJsi/1oirzShjmFvNLwtu2DYlkxwRVy5zEGhp85mrEGnLeS/PdNRCdE027+Q==
+"@prisma/debug@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@prisma/debug/-/debug-7.4.1.tgz#514177989538867c0ee6f2a9a548ce3f88cf0eae"
+  integrity sha512-qEtzO8oLouRv18JDQUC3G3Gnv+fGVscHZm/x1DBB/WT+kOvPDQLM2woX6IGgWnSMYYlrxjuALshT7G/blvY0bQ==
 
 "@prisma/dev@0.20.0":
   version "0.20.0"
@@ -6531,36 +6531,36 @@
     valibot "1.2.0"
     zeptomatch "2.1.0"
 
-"@prisma/driver-adapter-utils@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@prisma/driver-adapter-utils/-/driver-adapter-utils-7.4.0.tgz#d4a865a59d8aa64d77a10d21279976ae6a054b91"
-  integrity sha512-jEyE5LkqZ27Ba/DIOfCGOQl6nKMLxuwJNRceCfh7/LRs46UkIKn3bmkI97MEH2t7zkYV3PGBrUr+6sMJaHvc0A==
+"@prisma/driver-adapter-utils@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@prisma/driver-adapter-utils/-/driver-adapter-utils-7.4.1.tgz#4c8554d5b1180b7498d0d6670ed31236b813bd78"
+  integrity sha512-gEZOC2tnlHaZNbHUdbK8YvQphq2tKq/Ovu1YixJ/hPSutDAvNzC3R+xUeBuJ4AJp236eELMzwxb7rgo3UbRkTg==
   dependencies:
-    "@prisma/debug" "7.4.0"
+    "@prisma/debug" "7.4.1"
 
-"@prisma/engines-version@7.4.0-20.ab56fe763f921d033a6c195e7ddeb3e255bdbb57":
-  version "7.4.0-20.ab56fe763f921d033a6c195e7ddeb3e255bdbb57"
-  resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-7.4.0-20.ab56fe763f921d033a6c195e7ddeb3e255bdbb57.tgz#eacd6b7e75e837530c632af5feb10ec248ac8aea"
-  integrity sha512-5o3/bubIYdUeg38cyNf+VDq+LVtxvvi2393Fd1Uru52LPfkGJnmVbCaX1wBOAncgKR3BCloMJFD+Koog9LtYqQ==
+"@prisma/engines-version@7.5.0-4.55ae170b1ced7fc6ed07a15f110549408c501bb3":
+  version "7.5.0-4.55ae170b1ced7fc6ed07a15f110549408c501bb3"
+  resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-7.5.0-4.55ae170b1ced7fc6ed07a15f110549408c501bb3.tgz#009e13571095139f2360392fb55199ea41fcedd4"
+  integrity sha512-fUxVd1TjOW8K4XsZ8dAm88sDW5Ry7AxWDfsYEWwScS6Fjo3caKC6hgNumUfsmsy0Il9LjDn5X0PpVXNt3iwayw==
 
-"@prisma/engines@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@prisma/engines/-/engines-7.4.0.tgz#4e3ebb4a172b032e4cd690fb79e60bf760dcce80"
-  integrity sha512-H+dgpbbY3VN/j5hOSVP1LXsv/rU0w/4C2zh5PZUwo/Q3NqZjOvBlVvkhtziioRmeEZ3SBAqPCsf1sQ74sI3O/w==
+"@prisma/engines@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@prisma/engines/-/engines-7.4.1.tgz#72445bd7d3e5459144b43aea5946fb766d921513"
+  integrity sha512-BZEBdHvNJx5PzIG37EI/Zi5UUI5hGWjkYsQmKa7OIK6evAvebOTwutjS/VRI6cA6grmA52eLZR+oekGRMqkKxQ==
   dependencies:
-    "@prisma/debug" "7.4.0"
-    "@prisma/engines-version" "7.4.0-20.ab56fe763f921d033a6c195e7ddeb3e255bdbb57"
-    "@prisma/fetch-engine" "7.4.0"
-    "@prisma/get-platform" "7.4.0"
+    "@prisma/debug" "7.4.1"
+    "@prisma/engines-version" "7.5.0-4.55ae170b1ced7fc6ed07a15f110549408c501bb3"
+    "@prisma/fetch-engine" "7.4.1"
+    "@prisma/get-platform" "7.4.1"
 
-"@prisma/fetch-engine@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@prisma/fetch-engine/-/fetch-engine-7.4.0.tgz#93ec841021b97f87aa9b114b5c12e038dee00020"
-  integrity sha512-IXPOYskT89UTVsntuSnMTiKRWCuTg5JMWflgEDV1OSKFpuhwP5vqbfF01/iwo9y6rCjR0sDIO+jdV5kq38/hgA==
+"@prisma/fetch-engine@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@prisma/fetch-engine/-/fetch-engine-7.4.1.tgz#37915cc1213c8c76c6ab7a4ff4461b7ea5130e97"
+  integrity sha512-Z9kbuxX2bvEsyeS3LZEiEnxG0lVtZbpYgaAnPj69N+A9f2De8Lta0EoFtld9zhfERVPIQWhSWUc8himky3qYdA==
   dependencies:
-    "@prisma/debug" "7.4.0"
-    "@prisma/engines-version" "7.4.0-20.ab56fe763f921d033a6c195e7ddeb3e255bdbb57"
-    "@prisma/get-platform" "7.4.0"
+    "@prisma/debug" "7.4.1"
+    "@prisma/engines-version" "7.5.0-4.55ae170b1ced7fc6ed07a15f110549408c501bb3"
+    "@prisma/get-platform" "7.4.1"
 
 "@prisma/get-platform@7.2.0":
   version "7.2.0"
@@ -6569,12 +6569,12 @@
   dependencies:
     "@prisma/debug" "7.2.0"
 
-"@prisma/get-platform@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/@prisma/get-platform/-/get-platform-7.4.0.tgz#d1de860ae4da8abc6f5d63ad0f120dc5b499ec73"
-  integrity sha512-fOUIoGzAPgtjHVs4DsVSnEDPBEauAmFeZr4Ej3tMwxywam7hHdRtCzgKagQBKcYIJuya8gzYrTqUoukzXtWJaA==
+"@prisma/get-platform@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/@prisma/get-platform/-/get-platform-7.4.1.tgz#4746294f01c70590b95ef76403559e553889a61e"
+  integrity sha512-kN4tmkQzlgm/KtE+jTNSYjsDxxe/5i6GApPI32BN9T0tlgsgSBtDJbjGBICttkAIjsh73dXf8raPKxO/2n2UUg==
   dependencies:
-    "@prisma/debug" "7.4.0"
+    "@prisma/debug" "7.4.1"
 
 "@prisma/query-plan-executor@7.2.0":
   version "7.2.0"
@@ -7549,45 +7549,45 @@
   dependencies:
     "@tanstack/query-core" "5.90.20"
 
-"@tanstack/react-router@1.161.1":
-  version "1.161.1"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.161.1.tgz#7bad4497f19840748c2abc4cbf0b414a6abbedd6"
-  integrity sha512-RQlCaunj+sleC8/JLxd22sWNpwqTHftcRdwGwNF27tjEzTnj06C6azWmA5sGclTdxGVclEOc/eaW7bUv5klsNw==
+"@tanstack/react-router@1.161.3":
+  version "1.161.3"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.161.3.tgz#b20e1fc59cf80ec3e6d5bdfb15aefb2be2ec3ab0"
+  integrity sha512-evYPrkuFt4T6E0WVyBGGq83lWHJjsYy3E5SpPpfPY/uRnEgmgwfr6Xl570msRnWYMj7DIkYg8ZWFFwzqKrSlBw==
   dependencies:
     "@tanstack/history" "1.154.14"
-    "@tanstack/react-store" "^0.8.0"
-    "@tanstack/router-core" "1.161.1"
+    "@tanstack/react-store" "^0.9.1"
+    "@tanstack/router-core" "1.161.3"
     isbot "^5.1.22"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
 
-"@tanstack/react-store@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.npmjs.org/@tanstack/react-store/-/react-store-0.8.0.tgz#af2e73f1a466e08897349829bae1073f6172e7da"
-  integrity sha512-1vG9beLIuB7q69skxK9r5xiLN3ztzIPfSQSs0GfeqWGO2tGIyInZx0x1COhpx97RKaONSoAb8C3dxacWksm1ow==
+"@tanstack/react-store@^0.9.1":
+  version "0.9.1"
+  resolved "https://registry.npmjs.org/@tanstack/react-store/-/react-store-0.9.1.tgz#e9952273d908b8eddb3f496dba790dd7e70fce98"
+  integrity sha512-YzJLnRvy5lIEFTLWBAZmcOjK3+2AepnBv/sr6NZmiqJvq7zTQggyK99Gw8fqYdMdHPQWXjz0epFKJXC+9V2xDA==
   dependencies:
-    "@tanstack/store" "0.8.0"
+    "@tanstack/store" "0.9.1"
     use-sync-external-store "^1.6.0"
 
-"@tanstack/router-core@1.161.1":
-  version "1.161.1"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.161.1.tgz#6cd03c097558fc8d4b1dd80c6c5d0db57aed4891"
-  integrity sha512-Ika9RBvxB5cE+ziLxq90rqwhl9sb+j6mlGkRDwuDaGSDODenFeCDzjE0YQlgQ/kBUdSK2K1fFBiQPy5cnl54Og==
+"@tanstack/router-core@1.161.3":
+  version "1.161.3"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.161.3.tgz#923e0f6bb9d284f8a869dac64f78f71967e060fc"
+  integrity sha512-8EuaGXLUjugQE9Rsb8VrWSy+wImcs/DZ9JORqUJYCmiiWnJzbat8KedQItq/9LCjMJyx4vTLCt8NnZCL+j1Ayg==
   dependencies:
     "@tanstack/history" "1.154.14"
-    "@tanstack/store" "^0.8.0"
+    "@tanstack/store" "^0.9.1"
     cookie-es "^2.0.0"
     seroval "^1.4.2"
     seroval-plugins "^1.4.2"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
 
-"@tanstack/router-generator@1.161.1":
-  version "1.161.1"
-  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.161.1.tgz#c80d2c2bc60c52c659522924710c17ff67fd88a2"
-  integrity sha512-IvkjrSaqr3WzYDUjdXOug1x5MhJT5Pw+hKkAi+GDA4isaBjyXS71QmY3jhsZZ2Rz08Xjw2JkAoIJCxfqw6AQKw==
+"@tanstack/router-generator@1.161.3":
+  version "1.161.3"
+  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.161.3.tgz#d14a1e02f41fcb3746d078f5cf3b1b4b8ebf0e9b"
+  integrity sha512-GKOrsOu7u5aoK1+lRu6KUUOmbb42mYF2ezfXf27QMiBjMx/yDHXln8wmdR7ZQ+FdSGz2YVubt2Ns3KuFsDsZJg==
   dependencies:
-    "@tanstack/router-core" "1.161.1"
+    "@tanstack/router-core" "1.161.3"
     "@tanstack/router-utils" "1.158.0"
     "@tanstack/virtual-file-routes" "1.154.7"
     prettier "^3.5.0"
@@ -7596,10 +7596,10 @@
     tsx "^4.19.2"
     zod "^3.24.2"
 
-"@tanstack/router-plugin@1.161.1":
-  version "1.161.1"
-  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.161.1.tgz#e0a18a2259fbfa59b62c154dd857c1c5583fa426"
-  integrity sha512-1veqinPZRJMWJSgKljk3XF6l9PaDRRqnc2FMEGBRJ5ycmDqvzCP4RaKbA5pfE/DbXHkKF5Z7BiAeateZHgm4jA==
+"@tanstack/router-plugin@1.161.3":
+  version "1.161.3"
+  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.161.3.tgz#e66c9f1fb47951cec64e18ddf76f3a531f69b6fa"
+  integrity sha512-3Uy4AxgHNYjmCGf2WYWB8Gy3C6m0YE5DV1SK2p3yUrA/PhCMYRe+xzjyD5pViMUSLUoPHQYGY6bOIM9OOPRI/Q==
   dependencies:
     "@babel/core" "^7.28.5"
     "@babel/plugin-syntax-jsx" "^7.27.1"
@@ -7607,8 +7607,8 @@
     "@babel/template" "^7.27.2"
     "@babel/traverse" "^7.28.5"
     "@babel/types" "^7.28.5"
-    "@tanstack/router-core" "1.161.1"
-    "@tanstack/router-generator" "1.161.1"
+    "@tanstack/router-core" "1.161.3"
+    "@tanstack/router-generator" "1.161.3"
     "@tanstack/router-utils" "1.158.0"
     "@tanstack/virtual-file-routes" "1.154.7"
     chokidar "^3.6.0"
@@ -7630,10 +7630,10 @@
     pathe "^2.0.3"
     tinyglobby "^0.2.15"
 
-"@tanstack/store@0.8.0", "@tanstack/store@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.npmjs.org/@tanstack/store/-/store-0.8.0.tgz#f1c533b9cff000fc792ed77edda178000abc9442"
-  integrity sha512-Om+BO0YfMZe//X2z0uLF2j+75nQga6TpTJgLJQBiq85aOyZNIhkCgleNcud2KQg4k4v9Y9l+Uhru3qWMPGTOzQ==
+"@tanstack/store@0.9.1", "@tanstack/store@^0.9.1":
+  version "0.9.1"
+  resolved "https://registry.npmjs.org/@tanstack/store/-/store-0.9.1.tgz#965130b17e655385a38b963d82446bcdaf41e878"
+  integrity sha512-+qcNkOy0N1qSGsP7omVCW0SDrXtaDcycPqBDE726yryiA5eTDFpjBReaYjghVJwNf1pcPMyzIwTGlYjCSQR0Fg==
 
 "@tanstack/virtual-file-routes@1.154.7":
   version "1.154.7"
@@ -9946,6 +9946,11 @@ balanced-match@^1.0.0:
   resolved "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
+balanced-match@^4.0.2:
+  version "4.0.4"
+  resolved "https://registry.npmjs.org/balanced-match/-/balanced-match-4.0.4.tgz#bfb10662feed8196a2c62e7c68e17720c274179a"
+  integrity sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==
+
 bare-events@^2.2.0:
   version "2.5.0"
   resolved "https://registry.npmjs.org/bare-events/-/bare-events-2.5.0.tgz#305b511e262ffd8b9d5616b056464f8e1b3329cc"
@@ -10155,6 +10160,13 @@ brace-expansion@^2.0.1:
   integrity sha512-Jt0vHyM+jmUBqojB7E1NIYadt0vI0Qxjxd2TErW94wDz+E2LAm5vKMXXwg6ZZBTHPuUlDgQHKXvjGBdfcF1ZDQ==
   dependencies:
     balanced-match "^1.0.0"
+
+brace-expansion@^5.0.2:
+  version "5.0.3"
+  resolved "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.3.tgz#6a9c6c268f85b53959ec527aeafe0f7300258eef"
+  integrity sha512-fy6KJm2RawA5RcHkLa1z/ScpBeA762UF9KmZQxwIbDtRJrgLzM10depAiEQ+CXYcoiqW1/m96OAAoke2nE9EeA==
+  dependencies:
+    balanced-match "^4.0.2"
 
 braces@^3.0.3, braces@~3.0.2:
   version "3.0.3"
@@ -13094,15 +13106,34 @@ fast-safe-stringify@2.1.1, fast-safe-stringify@^2.1.1:
   resolved "https://registry.npmjs.org/fast-safe-stringify/-/fast-safe-stringify-2.1.1.tgz#c406a83b6e70d9e35ce3b30a81141df30aeba884"
   integrity sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==
 
+fast-string-truncated-width@^3.0.2:
+  version "3.0.3"
+  resolved "https://registry.npmjs.org/fast-string-truncated-width/-/fast-string-truncated-width-3.0.3.tgz#23afe0da67d752ca0727538f1e6967759728ce49"
+  integrity sha512-0jjjIEL6+0jag3l2XWWizO64/aZVtpiGE3t0Zgqxv0DPuxiMjvB3M24fCyhZUO4KomJQPj3LTSUnDP3GpdwC0g==
+
+fast-string-width@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.npmjs.org/fast-string-width/-/fast-string-width-3.0.2.tgz#16dbabb491ce5585b5ecb675b65c165d71688eeb"
+  integrity sha512-gX8LrtNEI5hq8DVUfRQMbr5lpaS4nMIWV+7XEbXk2b8kiQIizgnlr12B4dA3ZEx3308ze0O4Q1R+cHts8kyUJg==
+  dependencies:
+    fast-string-truncated-width "^3.0.2"
+
 fast-uri@^3.0.1:
   version "3.0.3"
   resolved "https://registry.npmjs.org/fast-uri/-/fast-uri-3.0.3.tgz#892a1c91802d5d7860de728f18608a0573142241"
   integrity sha512-aLrHthzCjH5He4Z2H9YZ+v6Ujb9ocRuW6ZzkJQOrTxleEijANq4v1TsaPaVG1PZcuurEzrLcWRyYBYXD5cEiaw==
 
-fast-xml-parser@5.3.6:
-  version "5.3.6"
-  resolved "https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-5.3.6.tgz#85a69117ca156b1b3c52e426495b6de266cb6a4b"
-  integrity sha512-QNI3sAvSvaOiaMl8FYU4trnEzCwiRr8XMWgAHzlrWpTSj+QaCSvOf1h82OEP1s4hiAXhnbXSyFWCf4ldZzZRVA==
+fast-wrap-ansi@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/fast-wrap-ansi/-/fast-wrap-ansi-0.2.0.tgz#c0ae3f3982d061c3d657ec927196fbb47e22fe64"
+  integrity sha512-rLV8JHxTyhVmFYhBJuMujcrHqOT2cnO5Zxj37qROj23CP39GXubJRBUFF0z8KFK77Uc0SukZUf7JZhsVEQ6n8w==
+  dependencies:
+    fast-string-width "^3.0.2"
+
+fast-xml-parser@5.3.7:
+  version "5.3.7"
+  resolved "https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-5.3.7.tgz#81694e71ff0e568cbb6befade342f2a7e58aa1d9"
+  integrity sha512-JzVLro9NQv92pOM/jTCR6mHlJh2FGwtomH8ZQjhFj/R29P2Fnj38OgPJVtcvYw6SuKClhgYuwUZf5b3rd8u2mA==
   dependencies:
     strnum "^2.1.2"
 
@@ -13799,14 +13830,14 @@ glob-to-regexp@^0.4.1:
   resolved "https://registry.npmjs.org/glob-to-regexp/-/glob-to-regexp-0.4.1.tgz#c75297087c851b9a578bd217dd59a92f59fe546e"
   integrity sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==
 
-glob@13.0.1:
-  version "13.0.1"
-  resolved "https://registry.npmjs.org/glob/-/glob-13.0.1.tgz#c59a2500c9a5f1ab9cdd370217ced63c2aa81e60"
-  integrity sha512-B7U/vJpE3DkJ5WXTgTpTRN63uV42DseiXXKMwG14LQBXmsdeIoHAPbU/MEo6II0k5ED74uc2ZGTC6MwHFQhF6w==
+glob@13.0.6:
+  version "13.0.6"
+  resolved "https://registry.npmjs.org/glob/-/glob-13.0.6.tgz#078666566a425147ccacfbd2e332deb66a2be71d"
+  integrity sha512-Wjlyrolmm8uDpm/ogGyXZXb1Z+Ca2B8NbJwqBVg0axK9GbBeoS7yGV6vjXnYdGm6X53iehEuxxbyiKp8QmN4Vw==
   dependencies:
-    minimatch "^10.1.2"
-    minipass "^7.1.2"
-    path-scurry "^2.0.0"
+    minimatch "^10.2.2"
+    minipass "^7.1.3"
+    path-scurry "^2.0.2"
 
 glob@^10.0.0, glob@^10.3.10:
   version "10.5.0"
@@ -14417,22 +14448,22 @@ i18next-browser-languagedetector@8.2.1:
   dependencies:
     "@babel/runtime" "^7.23.2"
 
-i18next-cli@1.42.9:
-  version "1.42.9"
-  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.42.9.tgz#b2bb2628ac2097dcfbe637dfef25f1d3c9dde1cb"
-  integrity sha512-Gh11eWLMyuqoxYVBRp+e+3DEmT2hDGJswjg04iqXMnMzT89buryLKx6zL20x8F7AwkM6n4KR5iN6H61drV6EAQ==
+i18next-cli@1.42.10:
+  version "1.42.10"
+  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.42.10.tgz#8b11e36f11fe12e58d077c14274fb969bb0cc9dd"
+  integrity sha512-0Yvgp4y5FT4kgqyiRPZzVXASvztJlaZQGTBJEBn+noHEMOd0lnh28bLOaH3DEUmfqBbUVGNZExjW61zhFSGcaA==
   dependencies:
     "@croct/json5-parser" "0.2.2"
     "@swc/core" "1.15.11"
     chokidar "5.0.0"
     commander "14.0.3"
     execa "9.6.1"
-    glob "13.0.1"
+    glob "13.0.6"
     i18next-resources-for-ts "2.0.0"
-    inquirer "13.2.2"
+    inquirer "13.2.5"
     jiti "2.6.1"
     jsonc-parser "3.3.1"
-    minimatch "10.1.2"
+    minimatch "10.2.2"
     ora "9.3.0"
     react "^19.2.4"
     react-i18next "^16.5.4"
@@ -14589,14 +14620,14 @@ ini@^1.3.4, ini@~1.3.0:
   resolved "https://registry.npmjs.org/ini/-/ini-1.3.8.tgz#a29da425b48806f34767a4efce397269af28432c"
   integrity sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==
 
-inquirer@13.2.2:
-  version "13.2.2"
-  resolved "https://registry.npmjs.org/inquirer/-/inquirer-13.2.2.tgz#035b944116eff13042dea646abb6ad152874575a"
-  integrity sha512-+hlN8I88JE9T3zjWHGnMhryniRDbSgFNJHJTyD2iKO5YNpMRyfghQ6wVoe+gV4ygMM4r4GzlsBxNa1g/UUZixA==
+inquirer@13.2.5:
+  version "13.2.5"
+  resolved "https://registry.npmjs.org/inquirer/-/inquirer-13.2.5.tgz#945fc995f4ee14547753c78fda37e6f9864030e8"
+  integrity sha512-JHvVPgOIre0NrA9o8BGHUBh9rNuKkN1gS1ffbYgy3BuuJmJZhnFy9IHz3pcNbZm9zK6qTYvQ6LN5wl3Xcg4Jkw==
   dependencies:
     "@inquirer/ansi" "^2.0.3"
-    "@inquirer/core" "^11.1.1"
-    "@inquirer/prompts" "^8.2.0"
+    "@inquirer/core" "^11.1.4"
+    "@inquirer/prompts" "^8.2.1"
     "@inquirer/type" "^4.0.3"
     mute-stream "^3.0.0"
     run-async "^4.0.6"
@@ -16200,10 +16231,10 @@ json5@^2.1.2, json5@^2.2.2, json5@^2.2.3:
   resolved "https://registry.npmjs.org/json5/-/json5-2.2.3.tgz#78cd6f1a19bdc12b73db5ad0c61efd66c1e29283"
   integrity sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==
 
-jsonc-eslint-parser@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/jsonc-eslint-parser/-/jsonc-eslint-parser-3.0.0.tgz#513cbf60eb65c85733786d943f7a81ea0a82da65"
-  integrity sha512-LqaIdUCuMcNRjlusHwscrnCsF8wzmRWM/VoTqKwn6agerfJ0LCTOnUJmbiZirc02+b1n+pl+FJfVXDOLDa12+Q==
+jsonc-eslint-parser@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.npmjs.org/jsonc-eslint-parser/-/jsonc-eslint-parser-3.1.0.tgz#ecbd62bdfe8acc299812d0610bff938377987626"
+  integrity sha512-75EA7EWZExL/j+MDKQrRbdzcRI2HOkRlmUw8fZJc1ioqFEOvBsq7Rt+A6yCxOt9w/TYNpkt52gC6nm/g5tFIng==
   dependencies:
     acorn "^8.5.0"
     eslint-visitor-keys "^5.0.0"
@@ -17181,12 +17212,12 @@ minimatch@10.1.1:
   dependencies:
     "@isaacs/brace-expansion" "^5.0.0"
 
-minimatch@10.1.2, minimatch@^10.1.2:
-  version "10.1.2"
-  resolved "https://registry.npmjs.org/minimatch/-/minimatch-10.1.2.tgz#6c3f289f9de66d628fa3feb1842804396a43d81c"
-  integrity sha512-fu656aJ0n2kcXwsnwnv9g24tkU5uSmOlTjd6WyyaKm2Z+h1qmY6bAjrcaIxF/BslFqbZ8UBtbJi7KgQOZD2PTw==
+minimatch@10.2.2, minimatch@^10.2.2:
+  version "10.2.2"
+  resolved "https://registry.npmjs.org/minimatch/-/minimatch-10.2.2.tgz#361603ee323cfb83496fea2ae17cc44ea4e1f99f"
+  integrity sha512-+G4CpNBxa5MprY+04MbgOw1v7So6n5JY166pFi9KfYwT78fxScCeSNQSNzp6dpPSW2rONOps6Ocam1wFhCgoVw==
   dependencies:
-    "@isaacs/brace-expansion" "^5.0.1"
+    brace-expansion "^5.0.2"
 
 minimatch@^3.0.4, minimatch@^3.1.1, minimatch@^3.1.2:
   version "3.1.2"
@@ -17225,6 +17256,11 @@ minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5, minimist@^1.2.6, minimist@^1.
   version "7.1.2"
   resolved "https://registry.npmjs.org/minipass/-/minipass-7.1.2.tgz#93a9626ce5e5e66bd4db86849e7515e92340a707"
   integrity sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==
+
+minipass@^7.1.3:
+  version "7.1.3"
+  resolved "https://registry.npmjs.org/minipass/-/minipass-7.1.3.tgz#79389b4eb1bb2d003a9bba87d492f2bd37bdc65b"
+  integrity sha512-tEBHqDnIoM/1rXME1zgka9g6Q2lcoCkxHLuc7ODJ5BxbP5d4c2Z5cGgtXAku59200Cx7diuHTOYfSBD8n6mm8A==
 
 mkdirp-classic@^0.5.3:
   version "0.5.3"
@@ -18223,10 +18259,10 @@ path-scurry@^1.11.1:
     lru-cache "^10.2.0"
     minipass "^5.0.0 || ^6.0.2 || ^7.0.0"
 
-path-scurry@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/path-scurry/-/path-scurry-2.0.1.tgz#4b6572376cfd8b811fca9cd1f5c24b3cbac0fe10"
-  integrity sha512-oWyT4gICAu+kaA7QWk/jvCHWarMKNs6pXOGWKDTr7cw4IGcUbW+PeTfbaQiLGheFRpjo6O9J0PmyMfQPjH71oA==
+path-scurry@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.npmjs.org/path-scurry/-/path-scurry-2.0.2.tgz#6be0d0ee02a10d9e0de7a98bae65e182c9061f85"
+  integrity sha512-3O/iVVsJAPsOnpwWIeD+d6z/7PmqApyQePUtCndjatj/9I5LylHvt5qluFaBT3I5h3r1ejfR056c+FCv+NnNXg==
   dependencies:
     lru-cache "^11.0.0"
     minipass "^7.1.2"
@@ -18851,14 +18887,14 @@ pretty-ms@^9.2.0:
   dependencies:
     parse-ms "^4.0.0"
 
-prisma@7.4.0:
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/prisma/-/prisma-7.4.0.tgz#f0b75439816769a0f595207ba182b7b78ad493c5"
-  integrity sha512-n2xU9vSaH4uxZF/l2aKoGYtKtC7BL936jM9Q94Syk1zOD39t/5hjDUxMgaPkVRDX5wWEMsIqvzQxoebNIesOKw==
+prisma@7.4.1:
+  version "7.4.1"
+  resolved "https://registry.npmjs.org/prisma/-/prisma-7.4.1.tgz#966bf69e118d0b3a24c21006fb798ad72cca5a6a"
+  integrity sha512-gDKOXwnPiMdB+uYMhMeN8jj4K7Cu3Q2wB/wUsITOoOk446HtVb8T9BZxFJ1Zop6alc89k6PMNdR2FZCpbXp/jw==
   dependencies:
-    "@prisma/config" "7.4.0"
+    "@prisma/config" "7.4.1"
     "@prisma/dev" "0.20.0"
-    "@prisma/engines" "7.4.0"
+    "@prisma/engines" "7.4.1"
     "@prisma/studio-core" "0.13.1"
     mysql2 "3.15.3"
     postgres "3.4.7"
@@ -22569,15 +22605,6 @@ wrap-ansi@^9.0.0:
   version "9.0.0"
   resolved "https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-9.0.0.tgz#1a3dc8b70d85eeb8398ddfb1e4a02cd186e58b3e"
   integrity sha512-G8ura3S+3Z2G+mkgNRq8dqaFZAuxfsxpBB8OCTGRTCtp+l/v9nbFNmCUP1BZMts3G1142MsZfn6eeUKrr4PD1Q==
-  dependencies:
-    ansi-styles "^6.2.1"
-    string-width "^7.0.0"
-    strip-ansi "^7.1.0"
-
-wrap-ansi@^9.0.2:
-  version "9.0.2"
-  resolved "https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-9.0.2.tgz#956832dea9494306e6d209eb871643bb873d7c98"
-  integrity sha512-42AtmgqjV+X1VpdOfyTGOYRi0/zsoLqtXQckTmqTeybT+BDIbM/Guxo7x3pE2vtpr1ok6xRqM9OpBe+Jyoqyww==
   dependencies:
     ansi-styles "^6.2.1"
     string-width "^7.0.0"
