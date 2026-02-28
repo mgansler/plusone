@@ -7608,14 +7608,14 @@
   dependencies:
     "@tanstack/query-core" "5.90.20"
 
-"@tanstack/react-router@1.162.8":
-  version "1.162.8"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.162.8.tgz#0ef84dd38fd3798e0d7313bbb2fa48f6671f13b1"
-  integrity sha512-WunoknGI5ielJ833yl/F7Vq4nv/OWzrJVBsMgyxX16Db1DwVvX/B5zTg8EMjdZUOJ7ONpvur3t4aq7KQiYRagQ==
+"@tanstack/react-router@1.163.2":
+  version "1.163.2"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.163.2.tgz#33219f6b49d340017b72369f0b135ae4e7b17be6"
+  integrity sha512-1LosUlpL2mRMWxUZXmkEg5+Br5P5j9TrLngqRgHVbZoFkjnbcj1x9fQN2OVLrBv9Npw97NRsHeJljnAH/c7oSw==
   dependencies:
     "@tanstack/history" "1.161.4"
     "@tanstack/react-store" "^0.9.1"
-    "@tanstack/router-core" "1.162.6"
+    "@tanstack/router-core" "1.163.2"
     isbot "^5.1.22"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
@@ -7628,10 +7628,10 @@
     "@tanstack/store" "0.9.1"
     use-sync-external-store "^1.6.0"
 
-"@tanstack/router-core@1.162.6":
-  version "1.162.6"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.162.6.tgz#6f4078d2e5f2762cc40c103af43b8860b6fc20af"
-  integrity sha512-WFMNysDsDtnlM0G0L4LPWJuvpGatlPvBLGlPnieWYKem/Ed4mRHu7Hqw78MR/CMuFSRi9Gvv91/h8F3EVswAJw==
+"@tanstack/router-core@1.163.2":
+  version "1.163.2"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.163.2.tgz#bcb52b778c5ba61b8e2a9b599bef0fe7cbb043ec"
+  integrity sha512-mD0Pav6kcpS317XSJN+wCZaxLLngDhlwgzPNca56dWCp8YKPEvhhj/Zdl+LdRlJQ2VJ5BOy7FbOV1hErc9Nj5Q==
   dependencies:
     "@tanstack/history" "1.161.4"
     "@tanstack/store" "^0.9.1"
@@ -7641,12 +7641,12 @@
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
 
-"@tanstack/router-generator@1.162.6":
-  version "1.162.6"
-  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.162.6.tgz#71b1efe7ea2b4af543b5296be35f6bd79ca56c7b"
-  integrity sha512-mzkD3kfPW50xgX1hI8YrQx76+hshsUmpI9fVvS741L0cRQKH7bCIYTvcNHkz3sftZwmjt/lh+k7arV1AMLaWhA==
+"@tanstack/router-generator@1.163.2":
+  version "1.163.2"
+  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.163.2.tgz#5cad8512a304cd121dca47202b6575c65d84eeb8"
+  integrity sha512-6LjU3+8iKEgt8iOaYCmCnQCs0jsOhc7z8fa1yAYlj3s82uYWv3g5CB9mwv8wZXblXBQWOl+hW4PI6WNjP/CK9w==
   dependencies:
-    "@tanstack/router-core" "1.162.6"
+    "@tanstack/router-core" "1.163.2"
     "@tanstack/router-utils" "1.161.4"
     "@tanstack/virtual-file-routes" "1.161.4"
     prettier "^3.5.0"
@@ -7655,10 +7655,10 @@
     tsx "^4.19.2"
     zod "^3.24.2"
 
-"@tanstack/router-plugin@1.162.8":
-  version "1.162.8"
-  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.162.8.tgz#bcf8cb7a036341b5c9b12767f3cffb50ff6caf87"
-  integrity sha512-u6ZqYEjIA8jXge6JSl5UFFYPzVRciee0vwDwtkIF1Sb+G4cDdDaEjYQ4aN1/va8D7n3LptYvSMU8SeGkX+9slA==
+"@tanstack/router-plugin@1.163.2":
+  version "1.163.2"
+  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.163.2.tgz#88adaacdd1a88478d43ae9616eefffdd8e159d5b"
+  integrity sha512-SrVILMz/c15RYWxIMG+bf/glLbP/O9DUxOg0E7bo9pooBxGPvgWSlEzHNjhVekLhK5l7fiuQZzKsfksVeIEqDA==
   dependencies:
     "@babel/core" "^7.28.5"
     "@babel/plugin-syntax-jsx" "^7.27.1"
@@ -7666,8 +7666,8 @@
     "@babel/template" "^7.27.2"
     "@babel/traverse" "^7.28.5"
     "@babel/types" "^7.28.5"
-    "@tanstack/router-core" "1.162.6"
-    "@tanstack/router-generator" "1.162.6"
+    "@tanstack/router-core" "1.163.2"
+    "@tanstack/router-generator" "1.163.2"
     "@tanstack/router-utils" "1.161.4"
     "@tanstack/virtual-file-routes" "1.161.4"
     chokidar "^3.6.0"
@@ -11540,10 +11540,10 @@ csstype@^3.2.2, csstype@^3.2.3:
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz#ec48c0f3e993e50648c86da559e2610995cf989a"
   integrity sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==
 
-cypress@15.10.0:
-  version "15.10.0"
-  resolved "https://registry.npmjs.org/cypress/-/cypress-15.10.0.tgz#06bed98a690fad1b98a21010613f9c8c7fa9f639"
-  integrity sha512-OtUh7OMrfEjKoXydlAD1CfG2BvKxIqgWGY4/RMjrqQ3BKGBo5JFKoYNH+Tpcj4xKxWH4XK0Xri+9y8WkxhYbqQ==
+cypress@15.11.0:
+  version "15.11.0"
+  resolved "https://registry.npmjs.org/cypress/-/cypress-15.11.0.tgz#7402d0a2bb4573b6c6655191ad170cff1985ff3f"
+  integrity sha512-NXDE6/fqZuzh1Zr53nyhCCa4lcANNTYWQNP9fJO+tzD3qVTDaTUni5xXMuigYjMujQ7CRiT9RkJJONmPQSsDFw==
   dependencies:
     "@cypress/request" "^3.0.10"
     "@cypress/xvfb" "^1.2.4"
@@ -11582,9 +11582,10 @@ cypress@15.10.0:
     proxy-from-env "1.0.0"
     request-progress "^3.0.0"
     supports-color "^8.1.1"
-    systeminformation "^5.27.14"
+    systeminformation "^5.31.1"
     tmp "~0.2.4"
     tree-kill "1.2.2"
+    tslib "1.14.1"
     untildify "^4.0.0"
     yauzl "^2.10.0"
 
@@ -13264,11 +13265,17 @@ fast-wrap-ansi@^0.2.0:
   dependencies:
     fast-string-width "^3.0.2"
 
-fast-xml-parser@5.3.8:
-  version "5.3.8"
-  resolved "https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-5.3.8.tgz#b5bc2045620d1b9cf342a2aa4d72391ef0b36a9e"
-  integrity sha512-53jIF4N6u/pxvaL1eb/hEZts/cFLWZ92eCfLrNyCI0k38lettCG/Bs40W9pPwoPXyHQlKu2OUbQtiEIZK/J6Vw==
+fast-xml-builder@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/fast-xml-builder/-/fast-xml-builder-1.0.0.tgz#a485d7e8381f1db983cf006f849d1066e2935241"
+  integrity sha512-fpZuDogrAgnyt9oDDz+5DBz0zgPdPZz6D4IR7iESxRXElrlGTRkHJ9eEt+SACRJwT0FNFrt71DFQIUFBJfX/uQ==
+
+fast-xml-parser@5.4.1:
+  version "5.4.1"
+  resolved "https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-5.4.1.tgz#0c81b8ecfb3021e5ad83aa3df904af19a05bc601"
+  integrity sha512-BQ30U1mKkvXQXXkAGcuyUA/GA26oEB7NzOtsxCDtyu62sjGw5QraKFhx2Em3WQNjPw9PG6MQ9yuIIgkSDfGu5A==
   dependencies:
+    fast-xml-builder "^1.0.0"
     strnum "^2.1.2"
 
 fastq@^1.6.0:
@@ -14587,10 +14594,10 @@ i18next-browser-languagedetector@8.2.1:
   dependencies:
     "@babel/runtime" "^7.23.2"
 
-i18next-cli@1.43.0:
-  version "1.43.0"
-  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.43.0.tgz#17ff8093cb8ae8c4b3d1699d8f04616a79cf29c3"
-  integrity sha512-qCh/qRVndNfW7CQP9BmyfZX82Cx1Tzs0cIR2fBIiExlpj6ucN7aunl5iQQOI3ixr1x1P8GcaEhzsLR58ovKhXA==
+i18next-cli@1.45.0:
+  version "1.45.0"
+  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.45.0.tgz#abc38825824d59db4cd3283ff09194fe93d0426e"
+  integrity sha512-RtzQaKoqBkiJZM9dwek2RwCvFCmXwKWDBj2Vqxx6YALhFtOg/WRaTN+6Ovg/QcF4pkU3YMh6W9z+q1aHLhyNow==
   dependencies:
     "@croct/json5-parser" "0.2.2"
     "@swc/core" "1.15.11"
@@ -21140,10 +21147,10 @@ synckit@^0.11.8:
   dependencies:
     "@pkgr/core" "^0.2.4"
 
-systeminformation@^5.27.14:
-  version "5.28.3"
-  resolved "https://registry.npmjs.org/systeminformation/-/systeminformation-5.28.3.tgz#2a929e0800bc41e12497fb93b792a62049fb6805"
-  integrity sha512-crbaZrBH3TpTbqc0PKFqnUFHdAJOxV9UhF3KCGSrf+YP+SkoMHmxU2Nr9yIG2xgCr4645Z9Ec4GHQQQ7kGX/HA==
+systeminformation@^5.31.1:
+  version "5.31.1"
+  resolved "https://registry.npmjs.org/systeminformation/-/systeminformation-5.31.1.tgz#5f88aa1db7470af87b6288baf1738603cafd1c4a"
+  integrity sha512-6pRwxoGeV/roJYpsfcP6tN9mep6pPeCtXbUOCdVa0nme05Brwcwdge/fVNhIZn2wuUitAKZm4IYa7QjnRIa9zA==
 
 tagged-tag@^1.0.0:
   version "1.0.0"
@@ -21576,6 +21583,11 @@ tsconfig-paths@^4.1.2:
     json5 "^2.2.2"
     minimist "^1.2.6"
     strip-bom "^3.0.0"
+
+tslib@1.14.1:
+  version "1.14.1"
+  resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
+  integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
 tslib@2.8.1, tslib@^2.0.0, tslib@^2.0.1, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.3.1, tslib@^2.4.0, tslib@^2.5.0, tslib@^2.6.2, tslib@^2.6.3, tslib@^2.8.0, tslib@^2.8.1:
   version "2.8.1"
