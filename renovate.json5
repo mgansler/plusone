@@ -12,5 +12,50 @@
       matchDatasources: ['npm'],
       minimumReleaseAge: '3 days',
     },
+    {
+      matchPackageNames: ['@typescript-eslint/rule-tester/ajv', 'eslint/ajv'],
+      allowedVersions: '6.x',
+    },
+    {
+      matchPackageNames: [
+        '@angular-devkit/core/ajv',
+        '@microsoft/tsdoc-config/ajv',
+        '@rushstack/node-core-library/ajv',
+      ],
+      allowedVersions: '8.x',
+    },
+    {
+      matchPackageNames: [
+        'eslint/minimatch',
+        'eslint-plugin-import/minimatch',
+        '@eslint/eslintrc/minimatch',
+        '@eslint/config-array/minimatch',
+        '@microsoft/api-extractor/minimatch',
+        'find-cypress-specs/minimatch',
+        'test-exclude/minimatch',
+        'fork-ts-checker-webpack-plugin/minimatch',
+        'jake/minimatch',
+      ],
+      allowedVersions: '3.x',
+    },
+    {
+      matchPackageNames: ['mocha/minimatch', 'filelist/minimatch', 'readdir-glob/minimatch'],
+      allowedVersions: '5.x',
+    },
+    {
+      matchPackageNames: ['@vue/language-core/minimatch'],
+      allowedVersions: '9.x',
+    },
+    {
+      matchPackageNames: [
+        '@nx/devkit/minimatch',
+        '@nx/jest/minimatch',
+        '@nx/react/minimatch',
+        'nx/minimatch',
+        '@typescript-eslint/typescript-estree/minimatch',
+        'glob/minimatch',
+      ],
+      allowedVersions: '10.x',
+    },
   ],
 }
