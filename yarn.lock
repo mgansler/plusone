@@ -7550,14 +7550,14 @@
   dependencies:
     "@tanstack/query-core" "5.90.20"
 
-"@tanstack/react-router@1.163.2":
-  version "1.163.2"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.163.2.tgz#33219f6b49d340017b72369f0b135ae4e7b17be6"
-  integrity sha512-1LosUlpL2mRMWxUZXmkEg5+Br5P5j9TrLngqRgHVbZoFkjnbcj1x9fQN2OVLrBv9Npw97NRsHeJljnAH/c7oSw==
+"@tanstack/react-router@1.163.3":
+  version "1.163.3"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.163.3.tgz#e414a11107c6c046c7d1ae32816c88cf0f162885"
+  integrity sha512-hheBbFVb+PbxtrWp8iy6+TTRTbhx3Pn6hKo8Tv/sWlG89ZMcD1xpQWzx8ukHN9K8YWbh5rdzt4kv6u8X4kB28Q==
   dependencies:
     "@tanstack/history" "1.161.4"
     "@tanstack/react-store" "^0.9.1"
-    "@tanstack/router-core" "1.163.2"
+    "@tanstack/router-core" "1.163.3"
     isbot "^5.1.22"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
@@ -7570,10 +7570,10 @@
     "@tanstack/store" "0.9.1"
     use-sync-external-store "^1.6.0"
 
-"@tanstack/router-core@1.163.2":
-  version "1.163.2"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.163.2.tgz#bcb52b778c5ba61b8e2a9b599bef0fe7cbb043ec"
-  integrity sha512-mD0Pav6kcpS317XSJN+wCZaxLLngDhlwgzPNca56dWCp8YKPEvhhj/Zdl+LdRlJQ2VJ5BOy7FbOV1hErc9Nj5Q==
+"@tanstack/router-core@1.163.3":
+  version "1.163.3"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.163.3.tgz#095e7b623caa3e06b15ec22633259141c808f6e4"
+  integrity sha512-jPptiGq/w3nuPzcMC7RNa79aU+b6OjaDzWJnBcV2UAwL4ThJamRS4h42TdhJE+oF5yH9IEnCOGQdfnbw45LbfA==
   dependencies:
     "@tanstack/history" "1.161.4"
     "@tanstack/store" "^0.9.1"
@@ -7583,12 +7583,12 @@
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
 
-"@tanstack/router-generator@1.163.2":
-  version "1.163.2"
-  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.163.2.tgz#5cad8512a304cd121dca47202b6575c65d84eeb8"
-  integrity sha512-6LjU3+8iKEgt8iOaYCmCnQCs0jsOhc7z8fa1yAYlj3s82uYWv3g5CB9mwv8wZXblXBQWOl+hW4PI6WNjP/CK9w==
+"@tanstack/router-generator@1.163.3":
+  version "1.163.3"
+  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.163.3.tgz#4d287b8058dcad731228214c70a786ed06662297"
+  integrity sha512-i2rWRtqY/yCYUDXva1li4zeDP20oFjMt/wh9RnGJCrKSLWrvEGnxAOSyXgiOsoJnU96TTQ0mUDbGfXsSTupeZQ==
   dependencies:
-    "@tanstack/router-core" "1.163.2"
+    "@tanstack/router-core" "1.163.3"
     "@tanstack/router-utils" "1.161.4"
     "@tanstack/virtual-file-routes" "1.161.4"
     prettier "^3.5.0"
@@ -7597,10 +7597,10 @@
     tsx "^4.19.2"
     zod "^3.24.2"
 
-"@tanstack/router-plugin@1.163.2":
-  version "1.163.2"
-  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.163.2.tgz#88adaacdd1a88478d43ae9616eefffdd8e159d5b"
-  integrity sha512-SrVILMz/c15RYWxIMG+bf/glLbP/O9DUxOg0E7bo9pooBxGPvgWSlEzHNjhVekLhK5l7fiuQZzKsfksVeIEqDA==
+"@tanstack/router-plugin@1.163.3":
+  version "1.163.3"
+  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.163.3.tgz#ab6f1fd9f61bfb3d181f7b1962cce4dd11d9c5a3"
+  integrity sha512-JOUYuUX2N9ZHnmkmvmiGzXGbkvrur/5BfW/+vpiZzuifSyvdc0XsfwkTpjvwWx9ymp4ZshSVKiQQKQi09YweIw==
   dependencies:
     "@babel/core" "^7.28.5"
     "@babel/plugin-syntax-jsx" "^7.27.1"
@@ -7608,8 +7608,8 @@
     "@babel/template" "^7.27.2"
     "@babel/traverse" "^7.28.5"
     "@babel/types" "^7.28.5"
-    "@tanstack/router-core" "1.163.2"
-    "@tanstack/router-generator" "1.163.2"
+    "@tanstack/router-core" "1.163.3"
+    "@tanstack/router-generator" "1.163.3"
     "@tanstack/router-utils" "1.161.4"
     "@tanstack/virtual-file-routes" "1.161.4"
     chokidar "^3.6.0"
@@ -8083,10 +8083,10 @@
   dependencies:
     undici-types "~6.20.0"
 
-"@types/node@24.10.15":
-  version "24.10.15"
-  resolved "https://registry.npmjs.org/@types/node/-/node-24.10.15.tgz#83e016a4c3dbf4e672dc257cf4c941527f1a3aa3"
-  integrity sha512-BgjLoRuSr0MTI5wA6gMw9Xy0sFudAaUuvrnjgGx9wZ522fYYLA5SYJ+1Y30vTcJEG+DRCyDHx/gzQVfofYzSdg==
+"@types/node@24.11.0":
+  version "24.11.0"
+  resolved "https://registry.npmjs.org/@types/node/-/node-24.11.0.tgz#34e8f9603ada03fdc36a532faefdb8e1bb3693a0"
+  integrity sha512-fPxQqz4VTgPI/IQ+lj9r0h+fDR66bzoeMGHp8ASee+32OSGIkeASsoZuJixsQoVef1QJbeubcPBxKk22QVoWdw==
   dependencies:
     undici-types "~7.16.0"
 
@@ -14520,10 +14520,10 @@ i18next-browser-languagedetector@8.2.1:
   dependencies:
     "@babel/runtime" "^7.23.2"
 
-i18next-cli@1.46.1:
-  version "1.46.1"
-  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.46.1.tgz#fe3995ac6542f51054d083b01a0bfdd5d44bb6dc"
-  integrity sha512-4o2nYSm6rM9ZJNpu+JIMnG2eGOJKJJ7oMqEMIWt1G7FQCZEOGmOwHLAhIQLlh5kXLPUDJS/vYpey4I0pKexxTw==
+i18next-cli@1.46.2:
+  version "1.46.2"
+  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.46.2.tgz#679f28437b7c9f06a0d066ab36ae3f1f913a08e1"
+  integrity sha512-0tJE1qoDvZosnab6NXHz6FUU5JssA052N4dWf/0A9V+7rYv1147Z4bNieOdpAqfaJSL2HF9v4wiDJhmdKviJtQ==
   dependencies:
     "@croct/json5-parser" "0.2.2"
     "@swc/core" "1.15.17"
@@ -17277,7 +17277,7 @@ minimalistic-assert@^1.0.0:
   resolved "https://registry.npmjs.org/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz#2e194de044626d4a10e7f7fbc00ce73e83e4d5c7"
   integrity sha512-UtJcAD4yEaGtjPezWuO9wC4nwUnVH/8/Im3yEHQP4b67cXlD/Qr9hdITCU1xDbSEXg2XKNaP8jsReV7vQd00/A==
 
-minimatch@10.2.1, minimatch@10.2.4, minimatch@^10.2.2, minimatch@^3.1.1, minimatch@^5.0.1, minimatch@^9.0.4, minimatch@^9.0.5:
+minimatch@10.2.1, minimatch@10.2.4, minimatch@^10.2.2, minimatch@^3.1.1, minimatch@^5.0.1, minimatch@^9.0.4:
   version "10.2.4"
   resolved "https://registry.npmjs.org/minimatch/-/minimatch-10.2.4.tgz#465b3accbd0218b8281f5301e27cedc697f96fde"
   integrity sha512-oRjTw/97aTBN0RHbYCdtF1MQfvusSIBQM0IZEgzl6426+8jSC0nF1a/GmnVLpfB9yyr6g6FTqWqiZVbxrtaCIg==
@@ -17298,7 +17298,7 @@ minimatch@5.1.9, minimatch@^5.1.0:
   dependencies:
     brace-expansion "^2.0.1"
 
-minimatch@9.0.9, minimatch@^9.0.3:
+minimatch@9.0.9, minimatch@^9.0.3, minimatch@^9.0.5:
   version "9.0.9"
   resolved "https://registry.npmjs.org/minimatch/-/minimatch-9.0.9.tgz#9b0cb9fcb78087f6fd7eababe2511c4d3d60574e"
   integrity sha512-OBwBN9AL4dqmETlpS2zasx+vTeWclWzkblfZk7KTA5j3jeOONz/tRCnZomUyvNg83wL5Zv9Ss6HMJXAgL8R2Yg==
