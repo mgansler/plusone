@@ -14589,10 +14589,10 @@ i18next-browser-languagedetector@8.2.1:
   dependencies:
     "@babel/runtime" "^7.23.2"
 
-i18next-cli@1.46.4:
-  version "1.46.4"
-  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.46.4.tgz#8e10cf126a91f08039a07e835871ebf9b9c850af"
-  integrity sha512-ajnBR3QUXyCf9uUzmkhywrwsmOAy3jEb37APxBigUvP02whRjkSELYzkdMQACmEP/ZopvZqat7fbp1oVbZ7Y6w==
+i18next-cli@1.47.0:
+  version "1.47.0"
+  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.47.0.tgz#9148e59af397221ecbd2b48e1ebf2a5b2ae4bbff"
+  integrity sha512-nR8vDbxOtHXO+h6835ED+usJXCVsK5/RgpbANsiWSOKiW+yeZpgHOcHtQzfHxHGhNZvrmeSCmafI2oi9pIl4uw==
   dependencies:
     "@croct/json5-parser" "0.2.2"
     "@swc/core" "1.15.17"
@@ -14604,6 +14604,7 @@ i18next-cli@1.46.4:
     inquirer "13.3.0"
     jiti "2.6.1"
     jsonc-parser "3.3.1"
+    magic-string "0.30.12"
     minimatch "10.2.4"
     ora "9.3.0"
     react "^19.2.4"
@@ -17092,6 +17093,13 @@ lz-string@^1.5.0:
   version "1.5.0"
   resolved "https://registry.npmjs.org/lz-string/-/lz-string-1.5.0.tgz#c1ab50f77887b712621201ba9fd4e3a6ed099941"
   integrity sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==
+
+magic-string@0.30.12:
+  version "0.30.12"
+  resolved "https://registry.npmjs.org/magic-string/-/magic-string-0.30.12.tgz#9eb11c9d072b9bcb4940a5b2c2e1a217e4ee1a60"
+  integrity sha512-Ea8I3sQMVXr8JhN4z+H/d8zwo+tYDgHE9+5G4Wnrwhs0gaK9fXTKx0Tw5Xwsd/bCPTTZNRAdpyzvoeORe9LYpw==
+  dependencies:
+    "@jridgewell/sourcemap-codec" "^1.5.0"
 
 magic-string@0.30.17, magic-string@^0.30.17, magic-string@^0.30.3:
   version "0.30.17"
