@@ -2249,7 +2249,7 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@babel/runtime@^7.23.2", "@babel/runtime@^7.28.4":
+"@babel/runtime@^7.23.2":
   version "7.28.4"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.28.4.tgz#a70226016fabe25c5783b2f22d3e1c9bc5ca3326"
   integrity sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==
@@ -7492,7 +7492,7 @@
   resolved "https://registry.npmjs.org/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.15.21.tgz#4878cd851b4f98033e19fca78953201aef736edd"
   integrity sha512-zUyWso7OOENB6e1N1hNuNn8vbvLsTdKQ5WKLgt/JcBNfJhKy/6jmBmqI3GXk/MyvQKd5SLvP7A0F36p7TeDqvw==
 
-"@swc/core@1.15.21":
+"@swc/core@1.15.21", "@swc/core@^1.15.21":
   version "1.15.21"
   resolved "https://registry.npmjs.org/@swc/core/-/core-1.15.21.tgz#84e1a2dded1372efda7036a86749ded817d05ea2"
   integrity sha512-fkk7NJcBscrR3/F8jiqlMptRHP650NxqDnspBMrRe5d8xOoCy9MLL5kOBLFXjFLfMo3KQQHhk+/jUULOMlR1uQ==
@@ -7677,29 +7677,29 @@
   resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.161.6.tgz#9011182f021ef7c9a6a30148570e2b1b99a12d2d"
   integrity sha512-NaOGLRrddszbQj9upGat6HG/4TKvXLvu+osAIgfxPYA+eIvYKv8GKDJOrY2D3/U9MRnKfMWD7bU4jeD4xmqyIg==
 
-"@tanstack/query-core@5.94.5":
-  version "5.94.5"
-  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.94.5.tgz#4857cb0b0add6089ad69a894afde019ad7aa17d4"
-  integrity sha512-Vx1JJiBURW/wdNGP45afjrqn0LfxYwL7K/bSrQvNRtyLGF1bxQPgUXCpzscG29e+UeFOh9hz1KOVala0N+bZiA==
+"@tanstack/query-core@5.95.0":
+  version "5.95.0"
+  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.95.0.tgz#a489fd6f9db05e18682d164e830d5368e60e0ebb"
+  integrity sha512-H1/CWCe8tGL3YIVeo770Z6kPbt0B3M1d/iQXIIK1qlFiFt6G2neYdkHgLapOC8uMYNt9DmHjmGukEKgdMk1P+A==
 
-"@tanstack/query-devtools@5.94.5":
-  version "5.94.5"
-  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.94.5.tgz#e6fc8e74b6f8c5201d840a0e8bb5bb4596e15366"
-  integrity sha512-rjn7mdo9wdB9AhthaOkwT3uLn15DrkDOI9Nyg6vU8BXi8/VsQSUvv1g0L0AdAaFH/4VDaBDe7SQSxqlTwMu1Mw==
+"@tanstack/query-devtools@5.95.0":
+  version "5.95.0"
+  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.95.0.tgz#c58eb57298e5ccbfc7f57123927cb83645d907c0"
+  integrity sha512-i8IzjIsZSE9y9XGndeVYeUusrZpKyhOnOPIzWKao8iAVzmk8ZesPe5URt02aLwC5A0Rg72N+vgqolXXCXm4fFg==
 
-"@tanstack/react-query-devtools@5.94.5":
-  version "5.94.5"
-  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.94.5.tgz#3d446a718592edf5fa4825e95d575efa7aeb31c9"
-  integrity sha512-KAe2yuN+K/uMivV0XnldEc/rgpTyxxFaEG1oPulQONOX/xq4DRxQqDTa3nvKEdqESQ42dbTAwi2XAph6ZsI/qQ==
+"@tanstack/react-query-devtools@5.95.0":
+  version "5.95.0"
+  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.95.0.tgz#a29b70d37c7defa07dc684907d0cfae7db413a1d"
+  integrity sha512-w4lYQTuyGM6l8C32UDIvxeodCrOwbw0JGSK6sQXYlF24CJnTcNmCxvfvrW2L3f3NObyvEQYcGTfjOr0Vw8jaWA==
   dependencies:
-    "@tanstack/query-devtools" "5.94.5"
+    "@tanstack/query-devtools" "5.95.0"
 
-"@tanstack/react-query@5.94.5":
-  version "5.94.5"
-  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.94.5.tgz#69f45ecae33e775e71fab212ff5aa72b570fd9da"
-  integrity sha512-1wmrxKFkor+q8l+ygdHmv0Sq5g84Q3p4xvuJ7AdSIAhQQ7udOt+ZSZ19g1Jea3mHqtlTslLGJsmC4vHFgP0P3A==
+"@tanstack/react-query@5.95.0":
+  version "5.95.0"
+  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.95.0.tgz#675474f3d4e2020a4eb83bfeed3aeb5b7bddb4b0"
+  integrity sha512-EMP8B+BK9zvnAemT8M/y3z/WO0NjZ7fIUY3T3wnHYK6AA3qK/k33i7tPgCXCejhX0cd4I6bJIXN2GmjrHjDBzg==
   dependencies:
-    "@tanstack/query-core" "5.94.5"
+    "@tanstack/query-core" "5.95.0"
 
 "@tanstack/react-router@1.168.2":
   version "1.168.2"
@@ -13337,10 +13337,10 @@ file-entry-cache@^8.0.0:
   dependencies:
     flat-cache "^4.0.0"
 
-file-type@21.3.2, file-type@21.3.3, file-type@^19.0.0:
-  version "21.3.3"
-  resolved "https://registry.npmjs.org/file-type/-/file-type-21.3.3.tgz#af49dfd82c1b3666920a2e23074389bd427b66b9"
-  integrity sha512-pNwbwz8c3aZ+GvbJnIsCnDjKvgCZLHxkFWLEFxU3RMa+Ey++ZSEfisvsWQMcdys6PpxQjWUOIDi1fifXsW3YRg==
+file-type@21.3.2, file-type@21.3.4, file-type@^19.0.0:
+  version "21.3.4"
+  resolved "https://registry.npmjs.org/file-type/-/file-type-21.3.4.tgz#e3f902faee8ec4aa152909fc902a7a77f9c06725"
+  integrity sha512-Ievi/yy8DS3ygGvT47PjSfdFoX+2isQueoYP1cntFW1JLYAuS4GD7NUPGg4zv2iZfV52uDyk5w5Z0TdpRS6Q1g==
   dependencies:
     "@tokenizer/inflate" "^0.4.1"
     strtok3 "^10.3.4"
@@ -14510,13 +14510,13 @@ i18next-browser-languagedetector@8.2.1:
   dependencies:
     "@babel/runtime" "^7.23.2"
 
-i18next-cli@1.50.3:
-  version "1.50.3"
-  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.50.3.tgz#aaecaeeaefbe1a6a5b9e4281be373b067a107db4"
-  integrity sha512-sXyEydTInPfWDGzbGEpSTIrIe0vNl0aLd4qw6lqk+g21CNImZ9t+eTPSkDRRBReBUOdgGC+TS2myqxZmwCPYIA==
+i18next-cli@1.50.4:
+  version "1.50.4"
+  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.50.4.tgz#dd6ffa3fa3a2b0f7bb136cbe96c90d4793b08d7a"
+  integrity sha512-BlE3KIGtFu5pBfL/SWWek7ugpkTrF429cL+Jo0b+bIUF+6CP2owIUTSKH/K+QOs5z+3FwAj4WkF8XJ0KnxSphA==
   dependencies:
     "@croct/json5-parser" "^0.2.2"
-    "@swc/core" "^1.15.18"
+    "@swc/core" "^1.15.21"
     chokidar "^5.0.0"
     commander "^14.0.3"
     execa "^9.6.1"
@@ -14529,8 +14529,8 @@ i18next-cli@1.50.3:
     minimatch "^10.2.4"
     ora "^9.3.0"
     react "^19.2.4"
-    react-i18next "^16.5.8"
-    yaml "^2.8.2"
+    react-i18next "^16.6.1"
+    yaml "^2.8.3"
 
 i18next-http-backend@3.0.2:
   version "3.0.2"
@@ -18412,20 +18412,10 @@ picocolors@1.1.1, picocolors@^1.0.0, picocolors@^1.0.1, picocolors@^1.1.0, picoc
   resolved "https://registry.npmjs.org/picocolors/-/picocolors-1.1.1.tgz#3d321af3eab939b083c8f929a1d12cda81c26b6b"
   integrity sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==
 
-picomatch@4.0.2, picomatch@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.npmjs.org/picomatch/-/picomatch-4.0.2.tgz#77c742931e8f3b8820946c76cd0c1f13730d1dab"
-  integrity sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==
-
-picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2, picomatch@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.npmjs.org/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
-  integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
-
-picomatch@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.npmjs.org/picomatch/-/picomatch-4.0.3.tgz#796c76136d1eead715db1e7bad785dedd695a042"
-  integrity sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==
+picomatch@4.0.2, picomatch@4.0.4, picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2, picomatch@^2.3.1, picomatch@^4.0.2, picomatch@^4.0.3:
+  version "4.0.4"
+  resolved "https://registry.npmjs.org/picomatch/-/picomatch-4.0.4.tgz#fd6f5e00a143086e074dffe4c924b8fb293b0589"
+  integrity sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==
 
 pify@^2.2.0, pify@^2.3.0:
   version "2.3.0"
@@ -19158,12 +19148,12 @@ react-i18next@16.6.1:
     html-parse-stringify "^3.0.1"
     use-sync-external-store "^1.6.0"
 
-react-i18next@^16.5.8:
-  version "16.5.8"
-  resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-16.5.8.tgz#fa598be2670f842749d4db9929b939b3a9526e21"
-  integrity sha512-2ABeHHlakxVY+LSirD+OiERxFL6+zip0PaHo979bgwzeHg27Sqc82xxXWIrSFmfWX0ZkrvXMHwhsi/NGUf5VQg==
+react-i18next@^16.6.1:
+  version "16.6.6"
+  resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-16.6.6.tgz#046bbf651ab4837ba505a5995189c1d42b8956c7"
+  integrity sha512-ZgL2HUoW34UKUkOV7uSQFE1CDnRPD+tCR3ywSuWH7u2iapnz86U8Bi3Vrs620qNDzCf1F47NxglCEkchCTDOHw==
   dependencies:
-    "@babel/runtime" "^7.28.4"
+    "@babel/runtime" "^7.29.2"
     html-parse-stringify "^3.0.1"
     use-sync-external-store "^1.6.0"
 
@@ -22752,29 +22742,14 @@ yallist@^4.0.0:
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
 yaml@^1.10.0:
-  version "1.10.2"
-  resolved "https://registry.npmjs.org/yaml/-/yaml-1.10.2.tgz#2301c5ffbf12b467de8da2333a459e29e7920e4b"
-  integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
+  version "1.10.3"
+  resolved "https://registry.npmjs.org/yaml/-/yaml-1.10.3.tgz#76e407ed95c42684fb8e14641e5de62fe65bbcb3"
+  integrity sha512-vIYeF1u3CjlhAFekPPAk2h/Kv4T3mAkMox5OymRiJQB0spDP10LHvt+K7G9Ny6NuuMAb25/6n1qyUjAcGNf/AA==
 
-yaml@^2.2.2, yaml@^2.3.1, yaml@^2.6.0:
-  version "2.6.1"
-  resolved "https://registry.npmjs.org/yaml/-/yaml-2.6.1.tgz#42f2b1ba89203f374609572d5349fb8686500773"
-  integrity sha512-7r0XPzioN/Q9kXBro/XPnA6kznR73DHq+GXh5ON7ZozRO6aMjbmiBuKste2wslTFkC5d1dw0GooOCepZXJ2SAg==
-
-yaml@^2.8.0:
-  version "2.8.0"
-  resolved "https://registry.npmjs.org/yaml/-/yaml-2.8.0.tgz#15f8c9866211bdc2d3781a0890e44d4fa1a5fff6"
-  integrity sha512-4lLa/EcQCB0cJkyts+FpIRx5G/llPxfP6VQU5KByHEhLxY3IJCH0f0Hy1MHI8sClTvsIb8qwRJ6R/ZdlDJ/leQ==
-
-yaml@^2.8.1:
-  version "2.8.1"
-  resolved "https://registry.npmjs.org/yaml/-/yaml-2.8.1.tgz#1870aa02b631f7e8328b93f8bc574fac5d6c4d79"
-  integrity sha512-lcYcMxX2PO9XMGvAJkJ3OsNMw+/7FKes7/hgerGUYWIoWu5j/+YQqcZr5JnPZWzOsEBgMbSbiSTn/dv/69Mkpw==
-
-yaml@^2.8.2:
-  version "2.8.2"
-  resolved "https://registry.npmjs.org/yaml/-/yaml-2.8.2.tgz#5694f25eca0ce9c3e7a9d9e00ce0ddabbd9e35c5"
-  integrity sha512-mplynKqc1C2hTVYxd0PU2xQAc22TI1vShAYGksCCfxbn/dFwnHTNi1bvYsBTkhdUNtGIf5xNOg938rrSSYvS9A==
+yaml@^2.2.2, yaml@^2.3.1, yaml@^2.6.0, yaml@^2.8.0, yaml@^2.8.1, yaml@^2.8.2, yaml@^2.8.3:
+  version "2.8.3"
+  resolved "https://registry.npmjs.org/yaml/-/yaml-2.8.3.tgz#a0d6bd2efb3dd03c59370223701834e60409bd7d"
+  integrity sha512-AvbaCLOO2Otw/lW5bmh9d/WEdcDFdQp2Z2ZUH3pX9U2ihyUY0nvLv7J6TrWowklRGPYbB/IuIMfYgxaCPg5Bpg==
 
 yargs-parser@21.1.1, yargs-parser@^21.1.1:
   version "21.1.1"
