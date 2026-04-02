@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
 import { firstValueFrom } from 'rxjs'
 import { z } from 'zod'
-import { AxiosError } from 'axios'
+import { AxiosError, AxiosHeaders } from 'axios'
 
 // https://nominatim.org/release-docs/develop/api/Reverse/#result-restriction
 enum ZoomLevel {
@@ -51,15 +51,14 @@ export class OsmService {
     longitude,
   }: ReverseLookupArgs): Promise<z.infer<typeof addressResponseSchema>> {
     try {
+      const url = `https://nominatim.openstreetmap.org/reverse?addressdetails=1&format=json&lat=${latitude}&lon=${longitude}&zoom=${ZoomLevel.State}`
       const response = await firstValueFrom(
-        this.httpService.get(
-          `https://nominatim.openstreetmap.org/reverse?addressdetails=1&format=json&lat=${latitude}&lon=${longitude}&zoom=${ZoomLevel.State}`,
-          // {
-          //   headers: new AxiosHeaders({
-          //     'Accept-Language': 'en-US',
-          //   }),
-          // },
-        ),
+        this.httpService.get(url, {
+          headers: new AxiosHeaders({
+            //     'Accept-Language': 'en-US',
+            'User-Agent': 'stgtrails',
+          }),
+        }),
       )
       return addressResponseSchema.parse(response.data?.address)
     } catch (error: unknown) {
