@@ -5524,13 +5524,13 @@
   resolved "https://registry.npmjs.org/@nestjs/axios/-/axios-4.0.1.tgz#7ff73f47727b67dc04410ac6e9b3329401ebbb65"
   integrity sha512-68pFJgu+/AZbWkGu65Z3r55bTsCPlgyKaV4BSG8yUAD72q1PPuyVRgUwFv6BxdnibTUHlyxm06FmYWNC+bjN7A==
 
-"@nestjs/common@11.1.17":
-  version "11.1.17"
-  resolved "https://registry.npmjs.org/@nestjs/common/-/common-11.1.17.tgz#58a330f3f6748cf92b0a244a2a232cfddba1bfd2"
-  integrity sha512-hLODw5Abp8OQgA+mUO4tHou4krKgDtUcM9j5Ihxncst9XeyxYBTt2bwZm4e4EQr5E352S4Fyy6V3iFx9ggxKAg==
+"@nestjs/common@11.1.18":
+  version "11.1.18"
+  resolved "https://registry.npmjs.org/@nestjs/common/-/common-11.1.18.tgz#329b214aadea5a4a1b12b4eee61c32b9c5b5082c"
+  integrity sha512-0sLq8Z+TIjLnz1Tqp0C/x9BpLbqpt1qEu0VcH4/fkE0y3F5JxhfK1AdKQ/SPbKhKgwqVDoY4gS8GQr2G6ujaWg==
   dependencies:
     uid "2.0.2"
-    file-type "21.3.2"
+    file-type "21.3.4"
     iterare "1.2.1"
     load-esm "1.0.3"
     tslib "2.8.1"
@@ -5544,16 +5544,16 @@
     dotenv-expand "12.0.3"
     lodash "4.17.23"
 
-"@nestjs/core@11.1.17":
-  version "11.1.17"
-  resolved "https://registry.npmjs.org/@nestjs/core/-/core-11.1.17.tgz#524b91bf07fec3c52cdd02a85faa1170af58a597"
-  integrity sha512-lD5mAYekTTurF3vDaa8C2OKPnjiz4tsfxIc5XlcSUzOhkwWf6Ay3HKvt6FmvuWQam6uIIHX52Clg+e6tAvf/cg==
+"@nestjs/core@11.1.18":
+  version "11.1.18"
+  resolved "https://registry.npmjs.org/@nestjs/core/-/core-11.1.18.tgz#cf3585bc34fd5fd62d3903b89a5512c456b66eef"
+  integrity sha512-wR3DtGyk/LUAiPtbXDuWJJwVkWElKBY0sqnTzf9d4uM3+X18FRZhK7WFc47czsIGOdWuRsMeLYV+1Z9dO4zDEQ==
   dependencies:
     uid "2.0.2"
     "@nuxt/opencollective" "0.4.1"
     fast-safe-stringify "2.1.1"
     iterare "1.2.1"
-    path-to-regexp "8.3.0"
+    path-to-regexp "8.4.2"
     tslib "2.8.1"
 
 "@nestjs/jwt@11.0.2":
@@ -5574,15 +5574,15 @@
   resolved "https://registry.npmjs.org/@nestjs/passport/-/passport-11.0.5.tgz#dd3e506c2fb7ddc80fd1321c01cc1a0ca6d6b609"
   integrity sha512-ulQX6mbjlws92PIM15Naes4F4p2JoxGnIJuUsdXQPT+Oo2sqQmENEZXM7eYuimocfHnKlcfZOuyzbA33LwUlOQ==
 
-"@nestjs/platform-express@11.1.17":
-  version "11.1.17"
-  resolved "https://registry.npmjs.org/@nestjs/platform-express/-/platform-express-11.1.17.tgz#a979128c5cb742ec354636c2ad6b99f1e9165cf6"
-  integrity sha512-mAf4eOsSBsTOn/VbrUO1gsjW6dVh91qqXPMXun4dN8SnNjf7PTQagM9o8d6ab8ZBpNe6UdZftdrZoDetU+n4Qg==
+"@nestjs/platform-express@11.1.18":
+  version "11.1.18"
+  resolved "https://registry.npmjs.org/@nestjs/platform-express/-/platform-express-11.1.18.tgz#2af7285227c3afd359ea9474681d2ca67039db63"
+  integrity sha512-s6GdHMTa3qx0fJewR74Xa30ysPHfBEqxIwZ7BGSTLoAEQ1vTP24urNl+b6+s49NFLEIOyeNho5fN/9/I17QlOw==
   dependencies:
     cors "2.8.6"
     express "5.2.1"
     multer "2.1.1"
-    path-to-regexp "8.3.0"
+    path-to-regexp "8.4.2"
     tslib "2.8.1"
 
 "@nestjs/schedule@6.1.1":
@@ -5641,10 +5641,10 @@
     boxen "5.1.2"
     check-disk-space "3.4.0"
 
-"@nestjs/testing@11.1.17":
-  version "11.1.17"
-  resolved "https://registry.npmjs.org/@nestjs/testing/-/testing-11.1.17.tgz#f72d234462aaf6ad73423cee80d7bad72ec1dfff"
-  integrity sha512-lNffw+z+2USewmw4W0tsK+Rq94A2N4PiHbcqoRUu5y8fnqxQeIWGHhjo5BFCqj7eivqJBhT7WdRydxVq4rAHzg==
+"@nestjs/testing@11.1.18":
+  version "11.1.18"
+  resolved "https://registry.npmjs.org/@nestjs/testing/-/testing-11.1.18.tgz#9130fed7ce92b913c5d1389a27e0c98f7695bff3"
+  integrity sha512-frzwNlpBgtAzI3hp/qo57DZoRO4RMTH1wST3QUYEhRTHyfPkLpzkWz3jV/mhApXjD0yT56Ptlzn6zuYPLh87Lw==
   dependencies:
     tslib "2.8.1"
 
@@ -7729,29 +7729,29 @@
   resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.161.6.tgz#9011182f021ef7c9a6a30148570e2b1b99a12d2d"
   integrity sha512-NaOGLRrddszbQj9upGat6HG/4TKvXLvu+osAIgfxPYA+eIvYKv8GKDJOrY2D3/U9MRnKfMWD7bU4jeD4xmqyIg==
 
-"@tanstack/query-core@5.96.1":
-  version "5.96.1"
-  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.96.1.tgz#464b74fd735f2f736aa6391f3e71b1a8f26ff191"
-  integrity sha512-u1yBgtavSy+N8wgtW3PiER6UpxcplMje65yXnnVgiHTqiMwLlxiw4WvQDrXyn+UD6lnn8kHaxmerJUzQcV/MMg==
+"@tanstack/query-core@5.96.2":
+  version "5.96.2"
+  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.96.2.tgz#766dab253476afd0b27959b66abb606d8d2dd9f5"
+  integrity sha512-hzI6cTVh4KNRk8UtoIBS7Lv9g6BnJPXvBKsvYH1aGWvv0347jT3BnSvztOE+kD76XGvZnRC/t6qdW1CaIfwCeA==
 
-"@tanstack/query-devtools@5.96.1":
-  version "5.96.1"
-  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.96.1.tgz#d2435560ce6cc5b24ecc7bb2071a9ae24b8c626d"
-  integrity sha512-A4+uQTWbiqZDgrLeyjpFYLfMaWaKWpkwTkR1cUfocVj6vPYgym7QTG2se9A01WSxceDdmgxOqvn1ivcTvgWD8w==
+"@tanstack/query-devtools@5.96.2":
+  version "5.96.2"
+  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.96.2.tgz#6301662b95d4a7a8b9b53e53d3a9091ae45e4d25"
+  integrity sha512-vBTB1Qhbm3nHSbEUtQwks/EdcAtFfEapr1WyBW4w2ExYKuXVi3jIxUIHf5MlSltiHuL7zNyUuanqT/7sI2sb6g==
 
-"@tanstack/react-query-devtools@5.96.1":
-  version "5.96.1"
-  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.96.1.tgz#78af7eaa23d76a8785b1bba0218c2de2300a291f"
-  integrity sha512-3ZZ58fupIXtJFM0evj8YvWrauaZPUrQEqRYaq9e4ER/WPqTKeWEucqWCXn+KJLgWlcot5JIIUtQNynbovGjTTA==
+"@tanstack/react-query-devtools@5.96.2":
+  version "5.96.2"
+  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.96.2.tgz#b44a19f1ebdb45a3e59fcf4e4361ff37500f382c"
+  integrity sha512-nTFKLGuTOFvmFRvcyZ3ArWC/DnMNPoBh6h/2yD6rsf7TCTJCQt+oUWOp2uKPTIuEPtF/vN9Kw5tl5mD1Kbposw==
   dependencies:
-    "@tanstack/query-devtools" "5.96.1"
+    "@tanstack/query-devtools" "5.96.2"
 
-"@tanstack/react-query@5.96.1":
-  version "5.96.1"
-  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.96.1.tgz#4eb55ba7e11265dc5cc843710cf66ae749706fb5"
-  integrity sha512-2X7KYK5KKWUKGeWCVcqxXAkYefJtrKB7tSKWgeG++b0H6BRHxQaLSSi8AxcgjmUnnosHuh9WsFZqvE16P1WCzA==
+"@tanstack/react-query@5.96.2":
+  version "5.96.2"
+  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.96.2.tgz#a164abfb80eb5e7772bbcddfa7240f3fd8d0d7be"
+  integrity sha512-sYyzzJT4G0g02azzJ8o55VFFV31XvFpdUpG+unxS0vSaYsJnSPKGoI6WdPwUucJL1wpgGfwfmntNX/Ub1uOViA==
   dependencies:
-    "@tanstack/query-core" "5.96.1"
+    "@tanstack/query-core" "5.96.2"
 
 "@tanstack/react-router@1.168.10":
   version "1.168.10"
@@ -8276,10 +8276,10 @@
   dependencies:
     undici-types "~6.20.0"
 
-"@types/node@24.12.0":
-  version "24.12.0"
-  resolved "https://registry.npmjs.org/@types/node/-/node-24.12.0.tgz#6222e028210e5322e4f4f6767f8d88e5ea3b33d2"
-  integrity sha512-GYDxsZi3ChgmckRT9HPU0WEhKLP08ev/Yfcq2AstjrDASOYCSXeyjDsHg4v5t4jOj7cyDX3vmprafKlWIG9MXQ==
+"@types/node@24.12.2":
+  version "24.12.2"
+  resolved "https://registry.npmjs.org/@types/node/-/node-24.12.2.tgz#353cb161dbf1785ea25e8829ba7ec574c5c629ac"
+  integrity sha512-A1sre26ke7HDIuY/M23nd9gfB+nrmhtYyMINbjI1zHJxYteKR6qSMX56FsmjMcDb3SMcjJg5BiRRgOCC/yBD0g==
   dependencies:
     undici-types "~7.16.0"
 
@@ -13405,7 +13405,7 @@ file-entry-cache@^8.0.0:
   dependencies:
     flat-cache "^4.0.0"
 
-file-type@21.3.2, file-type@22.0.0, file-type@^21.3.0:
+file-type@21.3.4, file-type@22.0.0, file-type@^21.3.0:
   version "22.0.0"
   resolved "https://registry.npmjs.org/file-type/-/file-type-22.0.0.tgz#437d427c49bdee4d7ecb1e9b70a0e4ab2d8e0b36"
   integrity sha512-cmBmnYo8Zymabm2+qAP7jTFbKF10bQpYmxoGfuZbRFRcq00BRddJdGNH/P7GA1EMpJy5yQbqa9B7yROb3z8Ziw==
@@ -14595,10 +14595,10 @@ i18next-browser-languagedetector@8.2.1:
   dependencies:
     "@babel/runtime" "^7.23.2"
 
-i18next-cli@1.51.5:
-  version "1.51.5"
-  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.51.5.tgz#24a119edd0b1f9cab11fb2ce3f000769b76ec894"
-  integrity sha512-WjNfP2D61NjxH9KNpsCq0dg6PRcSo4ZWxEx6MawiX/ZXIB8QeKVQEMFGe+5mP+1QN88Wz5Zgopjll1WXB4g/kg==
+i18next-cli@1.51.6:
+  version "1.51.6"
+  resolved "https://registry.npmjs.org/i18next-cli/-/i18next-cli-1.51.6.tgz#ed6cd37e972591d961334bd7528bd1e9032a1973"
+  integrity sha512-s1eBAvWiDqABtpG54balm5oyTtWaqmjfgMNJHX+7OdB9th9Nnn0DLQpkZr/j3bVuO8dumfGiAl/oCRYQd6aNoQ==
   dependencies:
     "@croct/json5-parser" "^0.2.2"
     "@swc/core" "^1.15.21"
@@ -14611,10 +14611,10 @@ i18next-cli@1.51.5:
     jiti "^2.6.1"
     jsonc-parser "^3.3.1"
     magic-string "^0.30.21"
-    minimatch "^10.2.4"
+    minimatch "^10.2.5"
     ora "^9.3.0"
     react "^19.2.4"
-    react-i18next "^17.0.1"
+    react-i18next "^17.0.2"
     yaml "^2.8.3"
 
 i18next-http-backend@3.0.4:
@@ -17350,7 +17350,7 @@ minimalistic-assert@^1.0.0:
   resolved "https://registry.npmjs.org/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz#2e194de044626d4a10e7f7fbc00ce73e83e4d5c7"
   integrity sha512-UtJcAD4yEaGtjPezWuO9wC4nwUnVH/8/Im3yEHQP4b67cXlD/Qr9hdITCU1xDbSEXg2XKNaP8jsReV7vQd00/A==
 
-minimatch@10.2.4, minimatch@10.2.5, minimatch@^10.2.2, minimatch@^3.1.1, minimatch@^5.0.1, minimatch@^9.0.4, minimatch@^9.0.5:
+minimatch@10.2.4, minimatch@10.2.5, minimatch@^10.2.2, minimatch@^10.2.5, minimatch@^3.1.1, minimatch@^5.0.1, minimatch@^9.0.4, minimatch@^9.0.5:
   version "10.2.5"
   resolved "https://registry.npmjs.org/minimatch/-/minimatch-10.2.5.tgz#bd48687a0be38ed2961399105600f832095861d1"
   integrity sha512-MULkVLfKGYDFYejP07QOurDLLQpcjk7Fw+7jXS2R2czRQzR56yHRveU5NDJEOviH+hETZKSkIk5c+T23GjFUMg==
@@ -17378,7 +17378,7 @@ minimatch@9.0.9, minimatch@^9.0.3:
   dependencies:
     brace-expansion "^2.0.2"
 
-minimatch@^10.0.0, minimatch@^10.2.4:
+minimatch@^10.0.0:
   version "10.2.4"
   resolved "https://registry.npmjs.org/minimatch/-/minimatch-10.2.4.tgz#465b3accbd0218b8281f5301e27cedc697f96fde"
   integrity sha512-oRjTw/97aTBN0RHbYCdtF1MQfvusSIBQM0IZEgzl6426+8jSC0nF1a/GmnVLpfB9yyr6g6FTqWqiZVbxrtaCIg==
@@ -19228,12 +19228,12 @@ react-error-boundary@6.1.1:
   resolved "https://registry.npmjs.org/react-error-boundary/-/react-error-boundary-6.1.1.tgz#491d655e86c32434ede852755bb649119fdddd89"
   integrity sha512-BrYwPOdXi5mqkk5lw+Uvt0ThHx32rCt3BkukS4X23A2AIWDPSGX6iaWTc0y9TU/mHDA/6qOSGel+B2ERkOvD1w==
 
-react-hook-form@7.72.0:
-  version "7.72.0"
-  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.72.0.tgz#995a655b894249fd8798f36383e43f55ed66ae25"
-  integrity sha512-V4v6jubaf6JAurEaVnT9aUPKFbNtDgohj5CIgVGyPHvT9wRx5OZHVjz31GsxnPNI278XMu+ruFz+wGOscHaLKw==
+react-hook-form@7.72.1:
+  version "7.72.1"
+  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.72.1.tgz#19a8bbeaf685934f4c9fc422294cc730ade2780e"
+  integrity sha512-RhwBoy2ygeVZje+C+bwJ8g0NjTdBmDlJvAUHTxRjTmSUKPYsKfMphkS2sgEMotsY03bP358yEYlnUeZy//D9Ig==
 
-react-i18next@17.0.2, react-i18next@^17.0.1:
+react-i18next@17.0.2, react-i18next@^17.0.2:
   version "17.0.2"
   resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-17.0.2.tgz#78968f74d9a51b5c4ccee14431f26496d8c122f8"
   integrity sha512-shBftH2vaTWK2Bsp7FiL+cevx3xFJlvFxmsDFQSrJc+6twHkP0tv/bGa01VVWzpreUVVwU+3Hev5iFqRg65RwA==
