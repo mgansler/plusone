@@ -11,5 +11,5 @@ export class CommandResponseDto extends CommandRequestDto {
   hash: string
 
   @ApiProperty({ type: () => [ActionResponseDto] })
-  actions: Array<ActionResponseDto>
+  declare actions: Array<ActionResponseDto>
 }
