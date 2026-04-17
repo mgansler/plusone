@@ -1,4 +1,4 @@
-FROM node:24.14.1-alpine3.22
+FROM node:24.15.0-alpine3.22
 RUN apk add --no-cache avahi avahi-tools curl openssl tzdata
 
 WORKDIR /usr/elgato
