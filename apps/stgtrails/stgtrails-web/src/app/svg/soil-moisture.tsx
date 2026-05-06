@@ -84,7 +84,7 @@ export function SoilMoisture({ weather, sliderIndex, moistureThreshold }: Readon
         )}
         y={getYForMoisture(weather[sliderIndex].soilMoisture0To1cm, isDesktop) - 5}
       >
-        {t(['svg.soilMoisture'], { amount: weather[sliderIndex].soilMoisture0To1cm.toFixed(2) })}
+        {t(['svg.soilMoisture'], { amount: Math.round(weather[sliderIndex].soilMoisture0To1cm * 100) })}
       </text>
     </Fragment>
   )
