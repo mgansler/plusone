@@ -19,12 +19,10 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
 
   const { data: bootInfo } = useValidatedBootInfo()
 
-  useEffect(() => {
-    const currentIndex = articles.findIndex((article) => article.article.id === selectedArticle)
-    if (currentIndex === -1) {
-      setSelectedArticle(articles[0]?.article.id)
-    }
-  }, [articles, selectedArticle])
+  const isSelectedInList = articles.some((article) => article.article.id === selectedArticle)
+  if (!isSelectedInList && articles.length > 0) {
+    setSelectedArticle(articles[0].article.id)
+  }
 
   useEffect(() => {
     const handleKeyDown = async (event: KeyboardEvent) => {

@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
-import { useCallback } from 'react'
 import { throttle } from 'lodash'
 import { convert } from 'colvertize'
 
@@ -23,8 +22,7 @@ function DeviceDetailsComponent() {
   const { mutate } = useTransitionToColor({
     mutation: { onSuccess: () => queryClient.invalidateQueries({ queryKey }) },
   })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const transitionToColor = useCallback(throttle(mutate, 1200), [])
+  const transitionToColor = throttle(mutate, 1200)
 
   const setStripColor = (color: string) => {
     const { h, s, l } = convert(color, 'hsl')

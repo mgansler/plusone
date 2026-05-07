@@ -7,7 +7,7 @@ export default {
   displayName: 'elgato-backend',
   preset: '../../../jest.preset.js',
   testEnvironment: 'node',
-  transformIgnorePatterns: ['node_modules/(?!(until-async|rettime|msw|tslib))'],
+  transformIgnorePatterns: ['node_modules/(?!(until-async|rettime|msw|@open-draft/deferred-promise|tslib))'],
   transform: {
     '^.+\\.mjs$': ['babel-jest', { configFile: path.resolve(__dirname, '../../../babel-jest.config.json') }],
     '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
