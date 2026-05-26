@@ -12,7 +12,6 @@ module.exports = {
           name: 'customAxiosInstance',
         },
         query: {
-          useQuery: true,
           useInfinite: true,
           useInfiniteQueryParam: 'cursor',
         },

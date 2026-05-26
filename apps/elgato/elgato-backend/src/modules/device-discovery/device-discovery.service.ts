@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
-import Bonjour, { Browser, Service } from 'bonjour-service'
+import Bonjour from 'bonjour-service'
 
 import { DiscoveredDevice, Prisma, PrismaService } from '@plusone/elgato-persistence'
 
@@ -14,7 +14,7 @@ import DiscoveredDeviceCreateInput = Prisma.DiscoveredDeviceCreateInput
 export class DeviceDiscoveryService implements OnModuleInit {
   private logger = new Logger(DeviceDiscoveryService.name)
   #bonjour: Bonjour
-  #browser: Browser
+  #browser: InstanceType<typeof Bonjour.Browser>
 
   constructor(
     private readonly prismaService: PrismaService,
@@ -25,7 +25,7 @@ export class DeviceDiscoveryService implements OnModuleInit {
     this.#bonjour = new Bonjour()
     this.#browser = this.#bonjour.find({ type: 'elg' })
 
-    this.#browser.on('up', async (service: Service) => {
+    this.#browser.on('up', async (service: InstanceType<typeof Bonjour.Service>) => {
       this.logger.log(`Possible new device discovered: ${service.name} (${service.host})`)
     })
   }
