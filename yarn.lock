@@ -2169,10 +2169,10 @@
     protobufjs "^7.5.3"
     yargs "^17.7.2"
 
-"@hono/node-server@1.19.11", "@hono/node-server@2.0.3":
-  version "2.0.3"
-  resolved "https://registry.npmjs.org/@hono/node-server/-/node-server-2.0.3.tgz#dad65cb117a72f18c0ffcd6eb47721e11110e5c1"
-  integrity sha512-a0jV+/HRe3G5zjFID3zObAQFdkl6zpxTuqktdDDXS3MJKcrZIkB8OkLpNBlY/WXFqv2HF4a0takPej+aNFczWA==
+"@hono/node-server@1.19.11", "@hono/node-server@2.0.4":
+  version "2.0.4"
+  resolved "https://registry.npmjs.org/@hono/node-server/-/node-server-2.0.4.tgz#22d7ae19fb961eaf189916014c707529fd667eca"
+  integrity sha512-Ut3y0dMMPWy6bZ2kVfx25EOVbZlm15dhF4mOsezMlhpNHy+4MkU1qN9Y6lnruYi4wPmFzimGX2X7LF/FwHli4A==
 
 "@humanfs/core@^0.19.2":
   version "0.19.2"
@@ -5456,62 +5456,143 @@
   resolved "https://registry.npmjs.org/@swc/core-darwin-arm64/-/core-darwin-arm64-1.15.33.tgz#d84134fb80417d41128739f0b9014542e3ed9dd3"
   integrity sha512-N+L0uXhuO7FIfzqwgxmzv0zIpV0qEp8wPX3QQs2p4atjMoywup2JTeDlXPw+z9pWJGCae3JjM+tZ6myclI+2gA==
 
+"@swc/core-darwin-arm64@1.15.40":
+  version "1.15.40"
+  resolved "https://registry.npmjs.org/@swc/core-darwin-arm64/-/core-darwin-arm64-1.15.40.tgz#b05d715b04c4fd47baf59288233da85a683cc0bc"
+  integrity sha512-PaYyclfmQ++77D8ityYvmmVzHv9aG8ROwt2GfG6/ccloy4Hgf80qtOnzb9VYvPsUT7Ty1uhuDRhv3XYpf62qhQ==
+
 "@swc/core-darwin-x64@1.15.33":
   version "1.15.33"
   resolved "https://registry.npmjs.org/@swc/core-darwin-x64/-/core-darwin-x64-1.15.33.tgz#0badb9834071f1c6005986571d4a96359c1d7cd0"
   integrity sha512-/Il4QHSOhV4FekbsDtkrNmKbsX26oSysvgrRswa/RYOHXAkwXDbB4jaeKq6PsJLSPkzJ2KzQ061gtBnk0vNHfA==
+
+"@swc/core-darwin-x64@1.15.40":
+  version "1.15.40"
+  resolved "https://registry.npmjs.org/@swc/core-darwin-x64/-/core-darwin-x64-1.15.40.tgz#3180daef5c1e47b435f8edd084509e0a5c0d883b"
+  integrity sha512-HbbPzvfLBUXjIB1Ezks+//lNUjmLjfyd63XSwprJgrZaXYdm70kohXPJUWdqKZozolFxbPaO+xtBaiUp6BoueA==
 
 "@swc/core-linux-arm-gnueabihf@1.15.33":
   version "1.15.33"
   resolved "https://registry.npmjs.org/@swc/core-linux-arm-gnueabihf/-/core-linux-arm-gnueabihf-1.15.33.tgz#b7577a825b59d98b6a9a5c991d842046efe1c34a"
   integrity sha512-C64hBnBxq4viOPQ8hlx+2lJ23bzZBGnjw7ryALmS+0Q3zHmwO8lw1/DArLENw4Q18/0w5wdEO1k3m1wWNtKGqQ==
 
+"@swc/core-linux-arm-gnueabihf@1.15.40":
+  version "1.15.40"
+  resolved "https://registry.npmjs.org/@swc/core-linux-arm-gnueabihf/-/core-linux-arm-gnueabihf-1.15.40.tgz#18fcd3c70e48fdfae07c9f18751b1409ce1e5e84"
+  integrity sha512-SlRZsCjOCPR2LvFs0Ri/Xrx/5o5TCt8vl4gW6mX1hEZOG0a625RxzRHpHdAQNGykmAN/7IeaFAJG+QnNmxlHcA==
+
 "@swc/core-linux-arm64-gnu@1.15.33":
   version "1.15.33"
   resolved "https://registry.npmjs.org/@swc/core-linux-arm64-gnu/-/core-linux-arm64-gnu-1.15.33.tgz#304c48321494a18c67b2913c273b08674ee70d8c"
   integrity sha512-TRJfnJbX3jqpxRDRoieMzRiCBS5jOmXNb3iQXmcgjFEHKLnAgK1RZRU8Cq1MsPqO4jAJp/ld1G4O3fXuxv85uw==
+
+"@swc/core-linux-arm64-gnu@1.15.40":
+  version "1.15.40"
+  resolved "https://registry.npmjs.org/@swc/core-linux-arm64-gnu/-/core-linux-arm64-gnu-1.15.40.tgz#26304933922f2a8e3194770e404403fc25a19c89"
+  integrity sha512-Q8byxJt2fh8CR3EUX6snBpy47AoBVm+In/+Z3rjDHMjC38ZvR9/gtUUNCT0tfrn4EdVsO8/QPi59nxrxvqxvBQ==
 
 "@swc/core-linux-arm64-musl@1.15.33":
   version "1.15.33"
   resolved "https://registry.npmjs.org/@swc/core-linux-arm64-musl/-/core-linux-arm64-musl-1.15.33.tgz#d116cbc04ccb4f4ee810da6bca79d4423605dbcd"
   integrity sha512-il7tYM+CpUNzieQbwAjFT1P8zqAhmGWNAGhQZBnxurXZ0aNn+5nqYFTEUKNZl7QibtT0uQXzTZrNGHCIj6Y1Og==
 
+"@swc/core-linux-arm64-musl@1.15.40":
+  version "1.15.40"
+  resolved "https://registry.npmjs.org/@swc/core-linux-arm64-musl/-/core-linux-arm64-musl-1.15.40.tgz#3402dfba04ba7b8ea81f243e2f8fa2c336b54d03"
+  integrity sha512-4z0MgHU+7M0pZDqBN1El7mFXDI1SBwinfcUkAyA4v8QrhOIUOZltySt2aStQLZGrdXVXM4Y4ylfiTC04ED+MoQ==
+
 "@swc/core-linux-ppc64-gnu@1.15.33":
   version "1.15.33"
   resolved "https://registry.npmjs.org/@swc/core-linux-ppc64-gnu/-/core-linux-ppc64-gnu-1.15.33.tgz#f5354dba36db9414305bab344c817d57b8b457c2"
   integrity sha512-ZtNBwN0Z7CFj9Il0FcPaKdjgP7URyKu/3RfH46vq+0paOBqLj4NYldD6Qo//Duif/7IOtAraUfDOmp0PLAufog==
+
+"@swc/core-linux-ppc64-gnu@1.15.40":
+  version "1.15.40"
+  resolved "https://registry.npmjs.org/@swc/core-linux-ppc64-gnu/-/core-linux-ppc64-gnu-1.15.40.tgz#b3df9065cad352328c1eeef08a28fc9fe98785aa"
+  integrity sha512-fLI4iUgeSZu0eRWUXwe6YzPFx9gHbFiPkl8Rp3mJfP8OpNR3nTQCGPvHdDh9xniW7mVvgMY4ni7A4VzqI1KrpA==
 
 "@swc/core-linux-s390x-gnu@1.15.33":
   version "1.15.33"
   resolved "https://registry.npmjs.org/@swc/core-linux-s390x-gnu/-/core-linux-s390x-gnu-1.15.33.tgz#016df9f4c9d7fd65b85ca9c558c5aec341f06da0"
   integrity sha512-De1IyajoOmhOYYjw/lx66bKlyDpHZTueqwpDrWgf5O7T6d1ODeJJO9/OqMBmrBQc5C+dNnlmIufHsp4QVCWufA==
 
+"@swc/core-linux-s390x-gnu@1.15.40":
+  version "1.15.40"
+  resolved "https://registry.npmjs.org/@swc/core-linux-s390x-gnu/-/core-linux-s390x-gnu-1.15.40.tgz#58e5b601f641dde81b30626ef66a668701ec918f"
+  integrity sha512-YqeKMAb7d4nQSGMJQ454IlaCENpzcDqhvBE9+CPfdnYpnUXxd+BSrB6Xk0YjW8UyoEhUj4p6quATCxbsp6J3jg==
+
 "@swc/core-linux-x64-gnu@1.15.33":
   version "1.15.33"
   resolved "https://registry.npmjs.org/@swc/core-linux-x64-gnu/-/core-linux-x64-gnu-1.15.33.tgz#49f36558ede072e71999aa37f123367daed2a662"
   integrity sha512-mGTH0YxmUN+x6vRN/I6NOk5X0ogNktkwPnJ94IMvR7QjhRDwL0O8RXEDhyUM0YtwWrryBOqaJQBX4zruxEPRGw==
+
+"@swc/core-linux-x64-gnu@1.15.40":
+  version "1.15.40"
+  resolved "https://registry.npmjs.org/@swc/core-linux-x64-gnu/-/core-linux-x64-gnu-1.15.40.tgz#cf057dce0c148c53f2d30152baaf60ea29e5d59c"
+  integrity sha512-7HOuS1iGcme/j/TuL1TfmmLGiMQrjv/GmjyZeydl00FKPtpGXEldwqfI56xgd1YzrzoB2svWjxbGGyQ0TEASxg==
 
 "@swc/core-linux-x64-musl@1.15.33":
   version "1.15.33"
   resolved "https://registry.npmjs.org/@swc/core-linux-x64-musl/-/core-linux-x64-musl-1.15.33.tgz#b096665f5cfeee2612325f301da5c1590b10d8f3"
   integrity sha512-hj628ZkSEJf6zMf5VMbYrG2O6QqyTIp2qwY6VlCjvIa9lAEZ5c2lfPblCLVGYubTeLJDxadLB/CxqQYOQABeEQ==
 
+"@swc/core-linux-x64-musl@1.15.40":
+  version "1.15.40"
+  resolved "https://registry.npmjs.org/@swc/core-linux-x64-musl/-/core-linux-x64-musl-1.15.40.tgz#21fb1a4d0193e9bbcd1469ecd36166d2e96e4006"
+  integrity sha512-h4kZYHc7dpc9P9u4brRJaS8Pl7tPVHAeiLSzw7T5RfIJgAoSdaCMKzI/2Uay9gFhaw8uyCDl0L5q37r0EpAfIA==
+
 "@swc/core-win32-arm64-msvc@1.15.33":
   version "1.15.33"
   resolved "https://registry.npmjs.org/@swc/core-win32-arm64-msvc/-/core-win32-arm64-msvc-1.15.33.tgz#f3101263a0dbaa173ec47638c9719d0b89838bd2"
   integrity sha512-GV2oohtN2/5+KSccl86VULu3aT+LrISC8uzgSq0FRnikpD+Zwc+sBlXmoKQ+Db6jI57ITUOIB8jRkdGMABC29g==
+
+"@swc/core-win32-arm64-msvc@1.15.40":
+  version "1.15.40"
+  resolved "https://registry.npmjs.org/@swc/core-win32-arm64-msvc/-/core-win32-arm64-msvc-1.15.40.tgz#1dba23b2b0db86b3d6d65da2abd627cc607a1fbc"
+  integrity sha512-+mQgKZXSj6mV38Zh05QaxSjUDmGP/R2JWlXZTDLSPkDzHU6p3GxN9eeSf5dfyDVU86946fmCvSzyl/ucImx8+A==
 
 "@swc/core-win32-ia32-msvc@1.15.33":
   version "1.15.33"
   resolved "https://registry.npmjs.org/@swc/core-win32-ia32-msvc/-/core-win32-ia32-msvc-1.15.33.tgz#eb981ef5613d42c9220559bdb0c8bc58cf6c3eb9"
   integrity sha512-gtyvzSNR8DHKfFEA2uqb8Ld1myqi6uEg2jyeUq3ikn5ytYs7H8RpZYC8mdy4NXr8hfcdJfCLXPlYaqqfBXpoEQ==
 
+"@swc/core-win32-ia32-msvc@1.15.40":
+  version "1.15.40"
+  resolved "https://registry.npmjs.org/@swc/core-win32-ia32-msvc/-/core-win32-ia32-msvc-1.15.40.tgz#b2da1e33165d469467b1046a2189db468da488eb"
+  integrity sha512-yvwdPLGd25mcj/mNatjNQ0lZujtQD6psH3v9PNmMb+fSzjbNG8KIDxjFWrcV+fsFVLOkyOmdJsFmX7NAFjVyPw==
+
 "@swc/core-win32-x64-msvc@1.15.33":
   version "1.15.33"
   resolved "https://registry.npmjs.org/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.15.33.tgz#a2fed9956933027ceb368857bac4bb4ee203d47c"
   integrity sha512-d6fRqQSkJI+kmMEBWaDQ7TMl8+YjLYbwRUPZQ9DY0ORBJeTzOrG0twvfvlZ2xgw6jA0ScQKgfBm4vHLSLl5Hqg==
 
-"@swc/core@1.15.33", "@swc/core@^1.15.18", "@swc/core@^1.15.26":
+"@swc/core-win32-x64-msvc@1.15.40":
+  version "1.15.40"
+  resolved "https://registry.npmjs.org/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.15.40.tgz#3563f7e8ce8708f5fda43eb8e0956ef11e0da320"
+  integrity sha512-OXtKsLU1bVtInzzDEAY2sYiF/rl4tvAnLLLpuMp3HzAOQZ5A+i69AKDhA1YLQTaMAqO3vzyYNVAYVRMPtSYD4w==
+
+"@swc/core@1.15.40":
+  version "1.15.40"
+  resolved "https://registry.npmjs.org/@swc/core/-/core-1.15.40.tgz#941c949aa88c0d8d291f102f519f3c2c77701b90"
+  integrity sha512-2kwzJikRvgtNAG7MwVZY2vEzZjTxKIq5jXOihuSV/8U+Hej8Va22t65aKnJZs3P+NwojZvR8Mf8kyM7O+V8sQg==
+  dependencies:
+    "@swc/counter" "^0.1.3"
+    "@swc/types" "^0.1.26"
+  optionalDependencies:
+    "@swc/core-darwin-arm64" "1.15.40"
+    "@swc/core-darwin-x64" "1.15.40"
+    "@swc/core-linux-arm-gnueabihf" "1.15.40"
+    "@swc/core-linux-arm64-gnu" "1.15.40"
+    "@swc/core-linux-arm64-musl" "1.15.40"
+    "@swc/core-linux-ppc64-gnu" "1.15.40"
+    "@swc/core-linux-s390x-gnu" "1.15.40"
+    "@swc/core-linux-x64-gnu" "1.15.40"
+    "@swc/core-linux-x64-musl" "1.15.40"
+    "@swc/core-win32-arm64-msvc" "1.15.40"
+    "@swc/core-win32-ia32-msvc" "1.15.40"
+    "@swc/core-win32-x64-msvc" "1.15.40"
+
+"@swc/core@^1.15.18", "@swc/core@^1.15.26":
   version "1.15.33"
   resolved "https://registry.npmjs.org/@swc/core/-/core-1.15.33.tgz#2a6571c8aca961925f14beae52b3f43c18370fc6"
   integrity sha512-jOlwnFV2xhuuZeAUILGFULeR6vDPfijEJ57evfocwznQldLU3w2cZ9bSDryY9ip+AsM3r1NJKzf47V2NXebkeQ==
@@ -5663,38 +5744,38 @@
   resolved "https://registry.npmjs.org/@tanstack/history/-/history-1.162.0.tgz#5e12a52edd82a5d6d3b081255ec899ccca335443"
   integrity sha512-79pf/RkhteYZTRgcR4F9kbk84P2N8rugQJswxfIqovlbRiT3yI7eBE+5QorIrZaOKktsgzRlXh1l/du/xpl4iA==
 
-"@tanstack/query-core@5.100.13":
-  version "5.100.13"
-  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.100.13.tgz#24a5a407cb70db306826e101b8560cba26e61a5e"
-  integrity sha512-mlKVKMTzZWGTKAC1CKOgt7axAjJ921emkEvYIp27I/PdP1yEYL/BteLY8iK35gn8hoYeKB4mgJ/ve3lrDI6/Fw==
+"@tanstack/query-core@5.100.14":
+  version "5.100.14"
+  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.100.14.tgz#6bf11c9a6a33dbbbba21f05d880b93930d80000c"
+  integrity sha512-5X41dGpxgeaHISCRW2oYwcSycZeULZzAunaudXT9ov1KOTj9xwt0CH6hbwqP1/z74ZWF7rYFnDpyYH07XFcZew==
 
-"@tanstack/query-devtools@5.100.13":
-  version "5.100.13"
-  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.100.13.tgz#f34c6a98406a81ccbe9d68a0f83633e2ea9c0b0e"
-  integrity sha512-mxAw1auaysPQK6EoMHs9hMuyJ1IMAE/ZmGGs9i5YveGg2RUnOGdJfefQJwWYSf2KcIu/XiPXIjuFu9Yr/tSAwA==
+"@tanstack/query-devtools@5.100.14":
+  version "5.100.14"
+  resolved "https://registry.npmjs.org/@tanstack/query-devtools/-/query-devtools-5.100.14.tgz#1555c8e1e4ea74db85dd2faaea2b7b50e135faf1"
+  integrity sha512-g96SmSSQecYTYcyuAMRXr895GplJv01UGt7qttQWPOUyZ5EGz5tbRc589bMc2m5BsPFD6O0PCEAHdbDYNP6UBw==
 
-"@tanstack/react-query-devtools@5.100.13":
-  version "5.100.13"
-  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.100.13.tgz#513f8084d2e3fd4c179d0dd756aa54f11fa5a37f"
-  integrity sha512-+haoLtUQvQ40pWtY5NbQ+iVvoptGXb6F7j9NFPaSo1jqhpzZQIKuBuwkbFd6xWLCocyvVIvWkt3mkNvCGcd/og==
+"@tanstack/react-query-devtools@5.100.14":
+  version "5.100.14"
+  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.100.14.tgz#0774021fdc0b417a86b67b196d5ffb9820cff10c"
+  integrity sha512-JkP5VDgKOw3t/QSA1OABRHEqx8BuNs5MfvZRooNqdvN57SzTuGq3fKR1a2IH5rqa5HDLUm+FOXUEnB9ueHiLzg==
   dependencies:
-    "@tanstack/query-devtools" "5.100.13"
+    "@tanstack/query-devtools" "5.100.14"
 
-"@tanstack/react-query@5.100.13":
-  version "5.100.13"
-  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.100.13.tgz#58736d35c43e120f93a665254629509d5bc16d48"
-  integrity sha512-HSBr8CycQEAoXsJR7KNDawBnINJEJ96Eme8oE0hCXjyodE2I97vg3IDzDJBDu18LsbzpVVJcKo80eqLfVCykxw==
+"@tanstack/react-query@5.100.14":
+  version "5.100.14"
+  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.100.14.tgz#799fe305421fd84bf2f6df40930c859c945b42ab"
+  integrity sha512-oOr6aRdSFEwWhzxEkD/9ZcItM3+LjBSkeVmadWKwUssAHTsqd/7bOjWrX4AbvEkoEhgAxzN0Xk6H/aYzXiYBAw==
   dependencies:
-    "@tanstack/query-core" "5.100.13"
+    "@tanstack/query-core" "5.100.14"
 
-"@tanstack/react-router@1.170.7":
-  version "1.170.7"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.170.7.tgz#ac73aa0c477487e7fe87446dae6282300a836059"
-  integrity sha512-4Q8M8Q9sGobhyt72yW+vxzUOSPfrCAHwjPOCb7+ocReQnFQ37t9Qh4RNG4+7zsFQ4tW9C8LpllRe49aK2RYy2Q==
+"@tanstack/react-router@1.170.8":
+  version "1.170.8"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.170.8.tgz#75ecbcbfe550de4abd3210d6f9af316d00a56925"
+  integrity sha512-Qw2ju6jjnIsMpuW+VrnHZWHuugqs592PWsnI56sG28qNhg14CgRLahOcNajfuJR9P4MxKGP94WVzmFKSYUz/ig==
   dependencies:
     "@tanstack/history" "1.162.0"
     "@tanstack/react-store" "^0.9.3"
-    "@tanstack/router-core" "1.171.5"
+    "@tanstack/router-core" "1.171.6"
     isbot "^5.1.22"
 
 "@tanstack/react-store@^0.9.3":
@@ -5705,23 +5786,23 @@
     "@tanstack/store" "0.9.3"
     use-sync-external-store "^1.6.0"
 
-"@tanstack/router-core@1.171.5":
-  version "1.171.5"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.171.5.tgz#2f1bd59ed7bc0aac5850b261e17c9d43491a51a6"
-  integrity sha512-BfilbQqqWiQwJn68cD8wmk1ajEWIO3IlEA1zVuWslWbiVc23CDn+6ACO5tfPAcc96ED37hxela5ij3VBvAtusw==
+"@tanstack/router-core@1.171.6":
+  version "1.171.6"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.171.6.tgz#5b1355bab1413cd6f0490368d0567072a52eb41d"
+  integrity sha512-Ol6DQ+j6rf/rPVELIzo8LHwOQV2KL+zry3b+39kL/GKrt7YId52WJRAFMzuseY4XceSW+PU7sG/Cc1QkwJr0hg==
   dependencies:
     "@tanstack/history" "1.162.0"
     cookie-es "^3.0.0"
     seroval "^1.5.4"
     seroval-plugins "^1.5.4"
 
-"@tanstack/router-generator@1.167.9":
-  version "1.167.9"
-  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.167.9.tgz#2e99105c5806994a6447039f09ce999f3aba87f7"
-  integrity sha512-B2MiJVYyI/C+5O7Hzu9owZPHuXCxKKFweUdMLToAZLg2H7iYoXYzgqAFISUBBlL8jKWugEVwNMUE3ajBGZep4w==
+"@tanstack/router-generator@1.167.10":
+  version "1.167.10"
+  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.167.10.tgz#249b3eeccf960e9ae1c9bda54bc2fcb2e8bb513f"
+  integrity sha512-CjbjWRSo6djLU/C7ncb9IbKUcf4IwpdqhLGngkwKkXaVFXGxEAafA/uhvOCv/UEUVR7NI3tJqqQmxYXGcJPbjw==
   dependencies:
     "@babel/types" "^7.28.5"
-    "@tanstack/router-core" "1.171.5"
+    "@tanstack/router-core" "1.171.6"
     "@tanstack/router-utils" "1.162.1"
     "@tanstack/virtual-file-routes" "1.162.0"
     jiti "^2.7.0"
@@ -5729,10 +5810,10 @@
     prettier "^3.5.0"
     zod "^4.4.3"
 
-"@tanstack/router-plugin@1.168.10":
-  version "1.168.10"
-  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.168.10.tgz#2b6445c6a2567336abfec9d514a7b3ad18d5debd"
-  integrity sha512-s3bWi8pT+p8D70aev6CBwCQp/2SlkO16wxXDtK6a9JAQYK7ARemp3qdzX5EDnVmB9Mc6ex5f9eyrN6eL/V+tLg==
+"@tanstack/router-plugin@1.168.11":
+  version "1.168.11"
+  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.168.11.tgz#f98fd8b9b0a2639e7d7b5e0fcbb2db86d9c90cb2"
+  integrity sha512-b2eom/8xCWL/OiWxKub8kYsr8p+kvmB/eXwYGqCWG8vilcJo+eQCSyp54nKt0AZ5k/ET1+eINc+4mwL3bVeAgg==
   dependencies:
     "@babel/core" "^7.28.5"
     "@babel/plugin-syntax-jsx" "^7.27.1"
@@ -5740,8 +5821,8 @@
     "@babel/template" "^7.27.2"
     "@babel/traverse" "^7.28.5"
     "@babel/types" "^7.28.5"
-    "@tanstack/router-core" "1.171.5"
-    "@tanstack/router-generator" "1.167.9"
+    "@tanstack/router-core" "1.171.6"
+    "@tanstack/router-generator" "1.167.10"
     "@tanstack/router-utils" "1.162.1"
     "@tanstack/virtual-file-routes" "1.162.0"
     chokidar "^5.0.0"
@@ -11407,10 +11488,10 @@ homedir-polyfill@^1.0.1:
   dependencies:
     parse-passwd "^1.0.0"
 
-hono@4.12.22, hono@^4.12.8:
-  version "4.12.22"
-  resolved "https://registry.npmjs.org/hono/-/hono-4.12.22.tgz#bf5ca1473cc9211fd9cb107ebcbc23862bdbf974"
-  integrity sha512-7fvVPbB92zNRsQke+uiRGwtTuef0tB2Dg4hWxYfFNvkQhIltWoyi0ONReM5LWA+jJWS3nfT5lTq+qbsIpX0IQw==
+hono@4.12.23, hono@^4.12.8:
+  version "4.12.23"
+  resolved "https://registry.npmjs.org/hono/-/hono-4.12.23.tgz#998b91651686149f0e6edbb8564d604da04f3cf8"
+  integrity sha512-eIaZ9qDgu7XV0pxOCrg7/WhnQ6Ivm22UcxhXx/A3dcbqbbYgBEkc6e/J/s7j2tS96zoB0S9VBdLwQNCWwUo4LA==
 
 hpack.js@^2.1.6:
   version "2.1.6"
@@ -15887,10 +15968,10 @@ react-dom@19.2.6:
   dependencies:
     scheduler "^0.27.0"
 
-react-error-boundary@6.1.1:
-  version "6.1.1"
-  resolved "https://registry.npmjs.org/react-error-boundary/-/react-error-boundary-6.1.1.tgz#491d655e86c32434ede852755bb649119fdddd89"
-  integrity sha512-BrYwPOdXi5mqkk5lw+Uvt0ThHx32rCt3BkukS4X23A2AIWDPSGX6iaWTc0y9TU/mHDA/6qOSGel+B2ERkOvD1w==
+react-error-boundary@6.1.2:
+  version "6.1.2"
+  resolved "https://registry.npmjs.org/react-error-boundary/-/react-error-boundary-6.1.2.tgz#d213780329ceb3678cec7813a76a00e2a7584f48"
+  integrity sha512-3DpCr5HVdZ0caUjYE/kIHBEJN0mNP3ZCgf16c48uJ5TbWjorKVp+YG8W3XqlJ7vJAVNw6wNIImyPXmFydwmyng==
 
 react-hook-form@7.76.1:
   version "7.76.1"
