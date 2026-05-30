@@ -4046,30 +4046,30 @@
   dependencies:
     flatbuffers "^25.9.23"
 
-"@orval/angular@8.12.3":
-  version "8.12.3"
-  resolved "https://registry.npmjs.org/@orval/angular/-/angular-8.12.3.tgz#493e97cf97e98537a89c5c65c5640f299d7cc275"
-  integrity sha512-NKICGEFYivnKKJYKcI1iCuG37nEn08pia91bfucSf4Pe36e2MJsfIWdM27s/ly+M0mgLz6L28SCXWaIwnvShbQ==
+"@orval/angular@8.13.0":
+  version "8.13.0"
+  resolved "https://registry.npmjs.org/@orval/angular/-/angular-8.13.0.tgz#decdf6c29e0b054c0ef66956791288baf3fe7355"
+  integrity sha512-fZ91YvDOcKMHLF92mMJ+dGxsmGEz6QHqsQuc/RjF5XPCXraYxu4ItDmpSF6nM4Fv3Q0F8nNGorOTECThr7F3qg==
   dependencies:
-    "@orval/core" "8.12.3"
+    "@orval/core" "8.13.0"
 
-"@orval/axios@8.12.3":
-  version "8.12.3"
-  resolved "https://registry.npmjs.org/@orval/axios/-/axios-8.12.3.tgz#7fe6a87372a6bb3f545f5343626015159a100f88"
-  integrity sha512-zl3PNqfJCucfQXdZzkRYaj0F6ktkZOoZbCTyzo5yWAmsZqKYrx2MdIe9uJCR++0xhhSCRuEenT4ZubeFA/bOvQ==
+"@orval/axios@8.13.0":
+  version "8.13.0"
+  resolved "https://registry.npmjs.org/@orval/axios/-/axios-8.13.0.tgz#0128fb8dfb68b161f3159eff419b46fbf2264fbb"
+  integrity sha512-6aUwhQ8HmoOlMFQ6sJhjOTUmlQFIFqoETeavDmmxnmsWte2ge2yG+Q1WKsXuusnRG7wbIXpVfeQhcny5jC9New==
   dependencies:
-    "@orval/core" "8.12.3"
+    "@orval/core" "8.13.0"
 
-"@orval/core@8.12.3":
-  version "8.12.3"
-  resolved "https://registry.npmjs.org/@orval/core/-/core-8.12.3.tgz#c0c175b1c16d24674ef686cde1144586d32d0c46"
-  integrity sha512-Y0Spgcy9EvBQfdBg0UIBsh1f5Rvu5rGFwa/fuhrZwxfXXsK8hVAYJuMKfzj97y18xqu5amx10FEpzb3DZAkfUQ==
+"@orval/core@8.13.0":
+  version "8.13.0"
+  resolved "https://registry.npmjs.org/@orval/core/-/core-8.13.0.tgz#0787d041bf355377c31936b8b32729f517d902bb"
+  integrity sha512-ckWI+cErC7WPAVHo/OQvybcYzc1QlrkZvXtoUZEJIKxakqdwhR4DwmQ29k948Hc64UdL1s4s23FVSNK2Y50eAw==
   dependencies:
     "@scalar/openapi-types" "0.8.0"
     acorn "^8.15.0"
     compare-versions "^6.1.1"
     debug "^4.4.3"
-    esbuild "^0.27.4"
+    esbuild "^0.28.0"
     esutils "2.0.3"
     fs-extra "^11.3.2"
     jiti "^2.6.1"
@@ -4077,72 +4077,72 @@
     tinyglobby "^0.2.16"
     typedoc "^0.28.19"
 
-"@orval/fetch@8.12.3":
-  version "8.12.3"
-  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-8.12.3.tgz#4d1deee8ceae895e6558a8cb7550728589abdbed"
-  integrity sha512-BfY0rWpaUFQ4O5Dp5dVTfSuihzEuqDSBxRijSsQUAJa0ML/botXiVMWmqgyuszXDzNvVpxNao/vrIAoteYO9fQ==
+"@orval/fetch@8.13.0":
+  version "8.13.0"
+  resolved "https://registry.npmjs.org/@orval/fetch/-/fetch-8.13.0.tgz#19c57c72d93a6577a7cd9c1327ba17980332af55"
+  integrity sha512-oqw3tdjJy0HGGwEk6/SDkl+1WCwM67mPaEIu/0MIn7flyM84ePpNXhCM5R+EPOLJAGZcfYU51JIxhaannqvIfw==
   dependencies:
-    "@orval/core" "8.12.3"
+    "@orval/core" "8.13.0"
     "@scalar/openapi-types" "0.8.0"
 
-"@orval/hono@8.12.3":
-  version "8.12.3"
-  resolved "https://registry.npmjs.org/@orval/hono/-/hono-8.12.3.tgz#cd165c38f7808c603a435b22c45e00ba111374cb"
-  integrity sha512-ZDTWOBn4UJKJasaETXZuuja8KzUPOuqpzcbZ3KhVVwSolWqMvDQA/zqsYeXcPpQua38dO2Z4XRBThV2bKIduGQ==
+"@orval/hono@8.13.0":
+  version "8.13.0"
+  resolved "https://registry.npmjs.org/@orval/hono/-/hono-8.13.0.tgz#92b788341d5657e4d7d5b4ea9f5b7801605220ad"
+  integrity sha512-EEaWAW4PCirypP3x8qR9tYAXu4d0KCQbHabx210mc75y6Fr14vQX/eZ/V96s+i90hKoSximRzp1/MbtKTAlNJg==
   dependencies:
-    "@orval/core" "8.12.3"
-    "@orval/zod" "8.12.3"
+    "@orval/core" "8.13.0"
+    "@orval/zod" "8.13.0"
     fs-extra "^11.3.2"
     remeda "^2.33.6"
 
-"@orval/mcp@8.12.3":
-  version "8.12.3"
-  resolved "https://registry.npmjs.org/@orval/mcp/-/mcp-8.12.3.tgz#3087fe3263cf00f8e51c7a9a40777350fd1a8d18"
-  integrity sha512-JN9wZEJg5QiAlk1W9wnk4x4AvMMOz9fO2IC8+Df106TpzOCK7Cw0am/JGCUmokrpRK+t1Iok9iXoUpb8jzKwnA==
+"@orval/mcp@8.13.0":
+  version "8.13.0"
+  resolved "https://registry.npmjs.org/@orval/mcp/-/mcp-8.13.0.tgz#62ce27b57497f3f2c6fdd231a12e35bd31af09a6"
+  integrity sha512-a7qpvRfSRlR/3VhO+1eLm5OgMZUyi69KiZ4yjI0WlsrCDHght563zuVho6+t9c08swmCUUnvktLER7xymErxfQ==
   dependencies:
-    "@orval/core" "8.12.3"
-    "@orval/fetch" "8.12.3"
-    "@orval/zod" "8.12.3"
+    "@orval/core" "8.13.0"
+    "@orval/fetch" "8.13.0"
+    "@orval/zod" "8.13.0"
 
-"@orval/mock@8.12.3":
-  version "8.12.3"
-  resolved "https://registry.npmjs.org/@orval/mock/-/mock-8.12.3.tgz#aad16fa7e7ab94233a104a9157d20a83e1af943a"
-  integrity sha512-2lUxUFk0ZiIiM7OrCV+wcF4F4BaZzPXcKDbLw2c0ojZO3YsoFXKyYSYIS/iGCCAsBsxQ9cV8fwwi+/s6CrggMg==
+"@orval/mock@8.13.0":
+  version "8.13.0"
+  resolved "https://registry.npmjs.org/@orval/mock/-/mock-8.13.0.tgz#98ae9264722a18f5986f1c9b4ec04dbb31613760"
+  integrity sha512-wbqdozlRORzBwJK0ttJx3lhMcojfKNeMUyAXLIgum7yz4/N3VRhTKszxwunXajPyzy4zDGKyyAm0KMCpYkX/zQ==
   dependencies:
-    "@orval/core" "8.12.3"
+    "@orval/core" "8.13.0"
     remeda "^2.33.6"
 
-"@orval/query@8.12.3":
-  version "8.12.3"
-  resolved "https://registry.npmjs.org/@orval/query/-/query-8.12.3.tgz#59e6c576c12c66a67fa2a01521f1a83ab8c1aa5a"
-  integrity sha512-aIjxqfBPfEw5CNU7qO/GY6WsgWO0h5tRAgbAG+wJ5QksD4sgB3VoX19v/0rEiSBKCGXvC5fCRcn2MTrQ2AMDCA==
+"@orval/query@8.13.0":
+  version "8.13.0"
+  resolved "https://registry.npmjs.org/@orval/query/-/query-8.13.0.tgz#ad6ae0dbe92c1190e0da5791fdacdf0f060b4edc"
+  integrity sha512-kCq0I5e0IjjV+ZFRKQYSl0F2lH5ZIMDZ5tKdEuX24GI+lvYPVXBbQMJOihZhKfvf/OU6GbNVhy/L8U/ZvjI9fA==
   dependencies:
-    "@orval/core" "8.12.3"
-    "@orval/fetch" "8.12.3"
+    "@orval/core" "8.13.0"
+    "@orval/fetch" "8.13.0"
     remeda "^2.33.6"
 
-"@orval/solid-start@8.12.3":
-  version "8.12.3"
-  resolved "https://registry.npmjs.org/@orval/solid-start/-/solid-start-8.12.3.tgz#a36cb3f2f37df9eb26b5621b4b9bf72d69458cc3"
-  integrity sha512-65/WtaBLQvuzO2u/wT0/iKi7/VHF7nXeQ5j5rYHhdKL9XaAaiEKim6kbmlpiBDTdAZI9bIXa8JnW8ScBBV3DaA==
+"@orval/solid-start@8.13.0":
+  version "8.13.0"
+  resolved "https://registry.npmjs.org/@orval/solid-start/-/solid-start-8.13.0.tgz#1602e687b25fc89fb8d031c9c6e582a528cd13c8"
+  integrity sha512-9fEXjcK9G1xKlaRsCJZ4OOROMazV5zVLqCj3AjysNbuHtm5I0QLCMr9oW+gXJnGRgXwmNv1Hst0R77O36KDjsw==
   dependencies:
-    "@orval/core" "8.12.3"
+    "@orval/core" "8.13.0"
     "@scalar/openapi-types" "0.8.0"
 
-"@orval/swr@8.12.3":
-  version "8.12.3"
-  resolved "https://registry.npmjs.org/@orval/swr/-/swr-8.12.3.tgz#9982213b87b81cb18d621038a0a6fb1f0c4e943f"
-  integrity sha512-WRBYmcn++Kfcp/wHIv6WsqxYt7tl72zpoAHq9UShA8s3kW48StsAFbf8TXVvwsbh6asa5IaNuqvil3tR3dzumw==
+"@orval/swr@8.13.0":
+  version "8.13.0"
+  resolved "https://registry.npmjs.org/@orval/swr/-/swr-8.13.0.tgz#9622b69b5eb76dabf14346442ae62c69de9e0a14"
+  integrity sha512-Q7eaXX9Pep5cVmJTUbfVRe31/8b6yuDLDsmCymuw0lWOKckC8QVdEnA2M+XIv2WsEkp+ZXBZEu5DVmU5nn5cYg==
   dependencies:
-    "@orval/core" "8.12.3"
-    "@orval/fetch" "8.12.3"
+    "@orval/core" "8.13.0"
+    "@orval/fetch" "8.13.0"
 
-"@orval/zod@8.12.3":
-  version "8.12.3"
-  resolved "https://registry.npmjs.org/@orval/zod/-/zod-8.12.3.tgz#dae9db045692aed86f6d5ca8949832cee67c3a94"
-  integrity sha512-DZk8ihSJWGtkbPqjgdKKLIsDyXqABXjBjHEOQWmhj5ISpyep+ZJboLHdjjiwa/6muppUE0jfoHD9UkH4X877Sw==
+"@orval/zod@8.13.0":
+  version "8.13.0"
+  resolved "https://registry.npmjs.org/@orval/zod/-/zod-8.13.0.tgz#9ba50f94433abcf2cc3e70e7ef5017880fd3e45c"
+  integrity sha512-5hRLsnZUYA5IH0t30nuK2OlHET2yDi1TW1enJw+ziWAJDJ3xlNIiwDiDy7sD25lFlGnYGnhMT8ULzX8HkwOLHA==
   dependencies:
-    "@orval/core" "8.12.3"
+    "@orval/core" "8.13.0"
     remeda "^2.33.6"
 
 "@oxc-project/types@=0.132.0":
@@ -5126,26 +5126,12 @@
   resolved "https://registry.npmjs.org/@rtsao/scc/-/scc-1.1.0.tgz#927dd2fae9bc3361403ac2c7a00c32ddce9ad7e8"
   integrity sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==
 
-"@scalar/helpers@0.5.2":
-  version "0.5.2"
-  resolved "https://registry.npmjs.org/@scalar/helpers/-/helpers-0.5.2.tgz#7771c5f03dd4b014071d9d321069113fed438720"
-  integrity sha512-Pi1GAl8jO6ungmGj2sjDfCfqiBNrKW6HXDZmminV94ybGU/KtRLOqHwd0n9FIhY3j0RYGpGC0VCuniCICfQPHg==
-
 "@scalar/helpers@0.8.0":
   version "0.8.0"
   resolved "https://registry.npmjs.org/@scalar/helpers/-/helpers-0.8.0.tgz#05bdd9ee966bb62dcb91e374b4a2603ed2a178ef"
   integrity sha512-gmOC6VravNB9VDl6wnt/GOj4K/hn48tj5bpW4AM4MhH8Ubil6uu7g1DSoKHwltu8Ks79KEtR6JmOrROi9R7jaQ==
 
-"@scalar/json-magic@0.12.8":
-  version "0.12.8"
-  resolved "https://registry.npmjs.org/@scalar/json-magic/-/json-magic-0.12.8.tgz#52967e8708f4d7a72034033790a434eb8df1b5c9"
-  integrity sha512-a559iO8tmFeA90JJAAM3U5x1Asf3mr0Z8uDC1PmyLTDjdSOfajP7EY9VzNoXE2cM48ilf9qrjmkbw/d4VCFjQw==
-  dependencies:
-    "@scalar/helpers" "0.5.2"
-    pathe "^2.0.3"
-    yaml "^2.8.0"
-
-"@scalar/json-magic@^0.12.8":
+"@scalar/json-magic@0.12.14", "@scalar/json-magic@^0.12.8":
   version "0.12.14"
   resolved "https://registry.npmjs.org/@scalar/json-magic/-/json-magic-0.12.14.tgz#6b2b25cb1434dc1c127eecdbd18c5403c1b8aae3"
   integrity sha512-dWrCy3ew1r7OQ1pu2r4ZjiKEVy0yVd66kXdmsl41bteOG2F2I2IBlPjmPV6p8ckjImQHxtNBIntFaQfNrdBhJg==
@@ -5154,33 +5140,38 @@
     pathe "^2.0.3"
     yaml "^2.8.3"
 
-"@scalar/openapi-parser@^0.25.12":
-  version "0.25.12"
-  resolved "https://registry.npmjs.org/@scalar/openapi-parser/-/openapi-parser-0.25.12.tgz#802b6a98f127f859e944a7019c841ad58b53c3cc"
-  integrity sha512-1hajBAbc7cbEcsSZEQxaPXZyCjMf6h6hObV+SO32jkC6rrxinPXQIucDu9HTu/jm/FaaMnNhc8/XDWz5/E49cQ==
+"@scalar/openapi-parser@^0.28.5":
+  version "0.28.5"
+  resolved "https://registry.npmjs.org/@scalar/openapi-parser/-/openapi-parser-0.28.5.tgz#7517c198133851e2bf80551e5315ae99bc7091db"
+  integrity sha512-W8uS5p4dR5Ri4Zqra6c/KaL54R5qkLJAwXCm/QTYvzsLw/NT4N6NdbqHQLHpJeLMG9c0dkA70S/KZKkFZgDRTg==
   dependencies:
-    "@scalar/helpers" "0.5.2"
-    "@scalar/json-magic" "0.12.8"
-    "@scalar/openapi-types" "0.8.0"
-    "@scalar/openapi-upgrader" "0.2.6"
+    "@scalar/helpers" "0.8.0"
+    "@scalar/json-magic" "0.12.14"
+    "@scalar/openapi-types" "0.9.0"
+    "@scalar/openapi-upgrader" "0.2.8"
     ajv "^8.17.1"
     ajv-draft-04 "^1.0.0"
     ajv-formats "^3.0.1"
     jsonpointer "^5.0.1"
     leven "^4.0.0"
-    yaml "^2.8.0"
+    yaml "^2.8.3"
 
 "@scalar/openapi-types@0.8.0":
   version "0.8.0"
   resolved "https://registry.npmjs.org/@scalar/openapi-types/-/openapi-types-0.8.0.tgz#155f303802a44215adb7f29d692a785561b93d94"
   integrity sha512-WmaxVSfvY5K/TwcG2B2TU1WOe1As1uc2s7myswtP6dBlcjU3hM08SApxv/jmyGaCE8t4gO5BBhmHY4pDUfmr2g==
 
-"@scalar/openapi-upgrader@0.2.6":
-  version "0.2.6"
-  resolved "https://registry.npmjs.org/@scalar/openapi-upgrader/-/openapi-upgrader-0.2.6.tgz#a0ae4578b5a87dbda5ae58b9504c66630b6021b1"
-  integrity sha512-pvEmfSCDNYR4+lygidUqfo+shzyp4OSh9+UgK110rzA8Oot6WbJBM03Fuq3M255G7G6R9iXyfsebB7MBUocPkw==
+"@scalar/openapi-types@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.npmjs.org/@scalar/openapi-types/-/openapi-types-0.9.0.tgz#7e4816d097bd216b66c2d5a2a0778e90c7f77d96"
+  integrity sha512-XGuYegItO8iJbEy5hHxS04vyxoFIuERy3D/twt1hGPya6KJljg9iO0geZ/X5vjDKmSKYAuMNkGqYO5Jjp4NLUA==
+
+"@scalar/openapi-upgrader@0.2.8":
+  version "0.2.8"
+  resolved "https://registry.npmjs.org/@scalar/openapi-upgrader/-/openapi-upgrader-0.2.8.tgz#b0ba76b4c5d0c8b9c6b898ab41bba8842cfc466c"
+  integrity sha512-/SDb3+SIFuScKwrNRTFd7bklGDkayo81cHZlajXfUaT22Oc4VUlOUvyMXBLPa0miOfZTExYTM1I0BWW7Nujugw==
   dependencies:
-    "@scalar/openapi-types" "0.8.0"
+    "@scalar/openapi-types" "0.9.0"
 
 "@scarf/scarf@=1.4.0":
   version "1.4.0"
@@ -9810,7 +9801,7 @@ es-to-primitive@^1.3.0:
     is-date-object "^1.0.5"
     is-symbol "^1.0.4"
 
-esbuild@^0.27.0, esbuild@^0.27.4:
+esbuild@^0.27.0:
   version "0.27.7"
   resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.27.7.tgz#bcadce22b2f3fd76f257e3a64f83a64986fea11f"
   integrity sha512-IxpibTjyVnmrIQo5aqNpCgoACA/dTKLTlhMHihVHhdkxKyPO1uBBthumT0rdHmcsk9uMonIWS0m4FljWzILh3w==
@@ -9842,7 +9833,7 @@ esbuild@^0.27.0, esbuild@^0.27.4:
     "@esbuild/win32-ia32" "0.27.7"
     "@esbuild/win32-x64" "0.27.7"
 
-esbuild@~0.28.0:
+esbuild@^0.28.0, esbuild@~0.28.0:
   version "0.28.0"
   resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.28.0.tgz#5dee347ffb3e3874212a35a69836b077b1ce6d96"
   integrity sha512-sNR9MHpXSUV/XB4zmsFKN+QgVG82Cc7+/aaxJ8Adi8hyOac+EXptIp45QBPaVyX3N70664wRbTcLTOemCAnyqw==
@@ -14391,25 +14382,25 @@ ora@^9.3.0:
     stdin-discarder "^0.3.2"
     string-width "^8.1.0"
 
-orval@8.12.3:
-  version "8.12.3"
-  resolved "https://registry.npmjs.org/orval/-/orval-8.12.3.tgz#117027fd7b5717d10e673007e38eabcfc7b8255b"
-  integrity sha512-j9kGaPcI2ufzE2kflj0oDXKAqnayZU7Dlm2mqDR0pxVLsJE+pCSKgwQ2iiGI/fo2O3IlQpIR77hlr78OmU3PoA==
+orval@8.13.0:
+  version "8.13.0"
+  resolved "https://registry.npmjs.org/orval/-/orval-8.13.0.tgz#4f9b6b6c8c66aebe27ef2853b700546be352d853"
+  integrity sha512-C9m2sVk5UKiTCRu//e6Nv2GIombd34NEsWRjmMk8SSYen44jNRoHZ3vkS/UTp74ktktpaClrAMNtCossDiuaZQ==
   dependencies:
     "@commander-js/extra-typings" "^14.0.0"
-    "@orval/angular" "8.12.3"
-    "@orval/axios" "8.12.3"
-    "@orval/core" "8.12.3"
-    "@orval/fetch" "8.12.3"
-    "@orval/hono" "8.12.3"
-    "@orval/mcp" "8.12.3"
-    "@orval/mock" "8.12.3"
-    "@orval/query" "8.12.3"
-    "@orval/solid-start" "8.12.3"
-    "@orval/swr" "8.12.3"
-    "@orval/zod" "8.12.3"
+    "@orval/angular" "8.13.0"
+    "@orval/axios" "8.13.0"
+    "@orval/core" "8.13.0"
+    "@orval/fetch" "8.13.0"
+    "@orval/hono" "8.13.0"
+    "@orval/mcp" "8.13.0"
+    "@orval/mock" "8.13.0"
+    "@orval/query" "8.13.0"
+    "@orval/solid-start" "8.13.0"
+    "@orval/swr" "8.13.0"
+    "@orval/zod" "8.13.0"
     "@scalar/json-magic" "^0.12.8"
-    "@scalar/openapi-parser" "^0.25.12"
+    "@scalar/openapi-parser" "^0.28.5"
     "@scalar/openapi-types" "0.8.0"
     chokidar "^5.0.0"
     commander "^14.0.2"
@@ -18744,7 +18735,7 @@ yallist@^3.0.2:
   resolved "https://registry.npmjs.org/yallist/-/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
   integrity sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
 
-yaml@2.9.0, yaml@^2.2.2, yaml@^2.3.1, yaml@^2.8.0, yaml@^2.8.2, yaml@^2.8.3, yaml@^2.8.4:
+yaml@2.9.0, yaml@^2.2.2, yaml@^2.3.1, yaml@^2.8.2, yaml@^2.8.3, yaml@^2.8.4:
   version "2.9.0"
   resolved "https://registry.npmjs.org/yaml/-/yaml-2.9.0.tgz#78274afd93598a1dfdd6130df6a566defcbf9aa4"
   integrity sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA==
