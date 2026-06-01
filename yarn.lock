@@ -5613,14 +5613,14 @@
   dependencies:
     "@tanstack/query-core" "5.100.14"
 
-"@tanstack/react-router@1.170.8":
-  version "1.170.8"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.170.8.tgz#75ecbcbfe550de4abd3210d6f9af316d00a56925"
-  integrity sha512-Qw2ju6jjnIsMpuW+VrnHZWHuugqs592PWsnI56sG28qNhg14CgRLahOcNajfuJR9P4MxKGP94WVzmFKSYUz/ig==
+"@tanstack/react-router@1.170.9":
+  version "1.170.9"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.170.9.tgz#40db6e8a23daead3f655c9ea5da0b494e5e5fe61"
+  integrity sha512-rXXztp6GyXFwResQR0jdvkf52wy/sAQqze3OR08+8uNM7nHir1P46qBrwg2TL5EEtX+0WUho4BZ/nMpAgQVB6A==
   dependencies:
     "@tanstack/history" "1.162.0"
     "@tanstack/react-store" "^0.9.3"
-    "@tanstack/router-core" "1.171.6"
+    "@tanstack/router-core" "1.171.7"
     isbot "^5.1.22"
 
 "@tanstack/react-store@^0.9.3":
@@ -5631,23 +5631,23 @@
     "@tanstack/store" "0.9.3"
     use-sync-external-store "^1.6.0"
 
-"@tanstack/router-core@1.171.6":
-  version "1.171.6"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.171.6.tgz#5b1355bab1413cd6f0490368d0567072a52eb41d"
-  integrity sha512-Ol6DQ+j6rf/rPVELIzo8LHwOQV2KL+zry3b+39kL/GKrt7YId52WJRAFMzuseY4XceSW+PU7sG/Cc1QkwJr0hg==
+"@tanstack/router-core@1.171.7":
+  version "1.171.7"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.171.7.tgz#ff2edaa37e25cd8954d0e92d81534b493c7f3df7"
+  integrity sha512-AboyQD0OPIu0adJi6HeCupTU9Wx7zr4q4ceJYQdBL3mLH18m4M57XXdzJdtzOg/twl8DtWej0RGJ12ma8CV1iQ==
   dependencies:
     "@tanstack/history" "1.162.0"
     cookie-es "^3.0.0"
     seroval "^1.5.4"
     seroval-plugins "^1.5.4"
 
-"@tanstack/router-generator@1.167.10":
-  version "1.167.10"
-  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.167.10.tgz#249b3eeccf960e9ae1c9bda54bc2fcb2e8bb513f"
-  integrity sha512-CjbjWRSo6djLU/C7ncb9IbKUcf4IwpdqhLGngkwKkXaVFXGxEAafA/uhvOCv/UEUVR7NI3tJqqQmxYXGcJPbjw==
+"@tanstack/router-generator@1.167.11":
+  version "1.167.11"
+  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.167.11.tgz#4e41820461ec19007cfb0d58e3f4d70a165af6a0"
+  integrity sha512-Wnom12QTx0lreBQEL3zE2N88SDIT6xferScd46dnPCEYR8u+AkBBGRzlzZEpniIm+eF3byvIKBjYQgemdadoFg==
   dependencies:
     "@babel/types" "^7.28.5"
-    "@tanstack/router-core" "1.171.6"
+    "@tanstack/router-core" "1.171.7"
     "@tanstack/router-utils" "1.162.1"
     "@tanstack/virtual-file-routes" "1.162.0"
     jiti "^2.7.0"
@@ -5655,10 +5655,10 @@
     prettier "^3.5.0"
     zod "^4.4.3"
 
-"@tanstack/router-plugin@1.168.11":
-  version "1.168.11"
-  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.168.11.tgz#f98fd8b9b0a2639e7d7b5e0fcbb2db86d9c90cb2"
-  integrity sha512-b2eom/8xCWL/OiWxKub8kYsr8p+kvmB/eXwYGqCWG8vilcJo+eQCSyp54nKt0AZ5k/ET1+eINc+4mwL3bVeAgg==
+"@tanstack/router-plugin@1.168.12":
+  version "1.168.12"
+  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.168.12.tgz#36c1bcda9fd1b60cbfcc232bb2717837e175d84a"
+  integrity sha512-DqeJs+/LinTsTc6gIsloauHdCjePk6pmhpmcqrNWbNi8dS+QMj2UZ4HgU9JgOiYGznkd49i8BeQJFUxzASmr7Q==
   dependencies:
     "@babel/core" "^7.28.5"
     "@babel/plugin-syntax-jsx" "^7.27.1"
@@ -5666,8 +5666,8 @@
     "@babel/template" "^7.27.2"
     "@babel/traverse" "^7.28.5"
     "@babel/types" "^7.28.5"
-    "@tanstack/router-core" "1.171.6"
-    "@tanstack/router-generator" "1.167.10"
+    "@tanstack/router-core" "1.171.7"
+    "@tanstack/router-generator" "1.167.11"
     "@tanstack/router-utils" "1.162.1"
     "@tanstack/virtual-file-routes" "1.162.0"
     chokidar "^5.0.0"
@@ -15531,17 +15531,17 @@ react-refresh@^0.18.0:
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.18.0.tgz#2dce97f4fe932a4d8142fa1630e475c1729c8062"
   integrity sha512-QgT5//D3jfjJb6Gsjxv0Slpj23ip+HtOpnNgnb2S5zU3CB26G/IDPGoy4RJB42wzFE46DRsstbW6tKHoKbhAxw==
 
-react-router-dom@7.15.1:
-  version "7.15.1"
-  resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-7.15.1.tgz#cf5aee65a44e407a17a2e9718d5350482b1e281f"
-  integrity sha512-AzF62gjY6U9rkMq4RfP/r2EVtQ7DMfNMjyOp/flLTCrtRylLiK4wT4pSq6O8rOXZ2eXdZYJPEYe+ifomiv+Igg==
+react-router-dom@7.16.0:
+  version "7.16.0"
+  resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-7.16.0.tgz#284a7cd021052aa7d0a9240dca4a02eec24eceb5"
+  integrity sha512-kMUAbimWB5FVbF4Bce4bJsiKJWLIUHq/mEG8+CFDnCSgltptBiG5nguducmsJeGKytlCvQud9Qhzpn49iduTlA==
   dependencies:
-    react-router "7.15.1"
+    react-router "7.16.0"
 
-react-router@7.15.1:
-  version "7.15.1"
-  resolved "https://registry.npmjs.org/react-router/-/react-router-7.15.1.tgz#0a12fece05887a47c54970480745385c793bcaac"
-  integrity sha512-R8rl9HhgikFYoPJymnUtPXWbnDb3oget6lQnfIoupbt61aT9aOhRkDsY2XRhZRyX1Z/8a5sL74fXmFNm3NRK5A==
+react-router@7.16.0:
+  version "7.16.0"
+  resolved "https://registry.npmjs.org/react-router/-/react-router-7.16.0.tgz#fb41536aef2ccc2c7be12ea6be819a1e56eb6343"
+  integrity sha512-wArC8lVyJb3+jM9OpDyW6hLCizACWkvQR/sSGqSs+o5uEXEtGlqdZ4v8hENR3Jad6i+LRkK93q/+bQAcvl6V1A==
   dependencies:
     cookie "^1.0.1"
     set-cookie-parser "^2.6.0"
