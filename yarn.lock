@@ -13126,15 +13126,15 @@ linkify-it@^5.0.1:
   dependencies:
     uc.micro "^2.0.0"
 
-lint-staged@17.0.6:
-  version "17.0.6"
-  resolved "https://registry.npmjs.org/lint-staged/-/lint-staged-17.0.6.tgz#f3ae5d7518a179e8fe93e92564205ac27255d52c"
-  integrity sha512-xTowloQX5tfs9TC6SUHnKuBSx/TUx+9w39zRTbVrB70DxUJZh3OZWnOa0LbejxVX9adYuioGJoP4dpQ04QHehg==
+lint-staged@17.0.7:
+  version "17.0.7"
+  resolved "https://registry.npmjs.org/lint-staged/-/lint-staged-17.0.7.tgz#2ed5ffb49d283425778125386278bb4d7ce24d22"
+  integrity sha512-JrSobt+tW3rH8IOMi8tDZd3foorM5yPEkLD/V2NxobgHrFfHWGee4MOLVuZeScgxftEwbHrPHIFA/ZL+nUJeuA==
   dependencies:
     listr2 "^10.2.1"
     picomatch "^4.0.4"
     string-argv "^0.3.2"
-    tinyexec "1.2.2"
+    tinyexec "^1.2.4"
   optionalDependencies:
     yaml "^2.9.0"
 
@@ -15496,10 +15496,10 @@ react-error-boundary@6.1.2:
   resolved "https://registry.npmjs.org/react-error-boundary/-/react-error-boundary-6.1.2.tgz#d213780329ceb3678cec7813a76a00e2a7584f48"
   integrity sha512-3DpCr5HVdZ0caUjYE/kIHBEJN0mNP3ZCgf16c48uJ5TbWjorKVp+YG8W3XqlJ7vJAVNw6wNIImyPXmFydwmyng==
 
-react-hook-form@7.76.1:
-  version "7.76.1"
-  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.76.1.tgz#0ef905eae5c17e32b6edc2ac628921917e87aafa"
-  integrity sha512-rYM7tPiWlu3nZchkR/ex7piyzui2vFPyaLnXnI/RnblB/L4qfMmyses8llJVtF1NpE9WBBsJlGtcSZzPCXW1qQ==
+react-hook-form@7.77.0:
+  version "7.77.0"
+  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.77.0.tgz#af7e1d90d00c0418a98cf00b6f9bd5b85587c6fb"
+  integrity sha512-Sslh9YDYc0GDlWT/lxasnIduNo4v3yyvqRGvmGKUre5AFjDs/HV9/OafHGD8d+sB2yoL4UIL9L8X9i0WlZZebg==
 
 react-i18next@17.0.8, react-i18next@^17.0.7:
   version "17.0.8"
@@ -17422,10 +17422,15 @@ tinybench@^2.9.0:
   resolved "https://registry.npmjs.org/tinybench/-/tinybench-2.9.0.tgz#103c9f8ba6d7237a47ab6dd1dcff77251863426b"
   integrity sha512-0+DUvqWMValLmha6lr4kD8iAMK1HzV0/aKnCtWb9v9641TnP/MFb7Pc2bxoxQjTXAErryXVgUOfv2YqNllqGeg==
 
-tinyexec@1.2.2, tinyexec@^1.0.2:
+tinyexec@^1.0.2:
   version "1.2.2"
   resolved "https://registry.npmjs.org/tinyexec/-/tinyexec-1.2.2.tgz#b66edf362dcad61174bc9ce4f3ee279e2448a721"
   integrity sha512-M/Q0B2cp4K7kynaT/vnED1j8TlLY+Pp7C6Wl2bl/7u/F0mUVwdyOpwomQb8JpYLitHUssAJRmLZdMCGsrx7i+g==
+
+tinyexec@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.npmjs.org/tinyexec/-/tinyexec-1.2.4.tgz#ae45bb2edebda94c70f4ea897e0f1243e470db71"
+  integrity sha512-SHf/r48b7vOrjve9PxJo3MN5v5yuyjHvdUcrQffT3WXMUfnGmHDVbC4k3sHJaJTgZCwpUplIaAo5ANtMyp3YHg==
 
 tinyglobby@^0.2.12, tinyglobby@^0.2.13, tinyglobby@^0.2.15, tinyglobby@^0.2.16:
   version "0.2.16"
