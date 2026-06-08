@@ -1074,7 +1074,7 @@
     "@babel/parser" "^7.29.7"
     "@babel/types" "^7.29.7"
 
-"@babel/traverse@^7.16.0", "@babel/traverse@^7.23.7", "@babel/traverse@^7.26.10", "@babel/traverse@^7.28.5", "@babel/traverse@^7.29.7":
+"@babel/traverse@^7.16.0", "@babel/traverse@^7.23.7", "@babel/traverse@^7.26.10", "@babel/traverse@^7.29.7":
   version "7.29.7"
   resolved "https://registry.npmjs.org/@babel/traverse/-/traverse-7.29.7.tgz#c47b07a41b95da0907d026b5dd894d98de7d2f2d"
   integrity sha512-EhlfNQtZ+NK22w5BM61ciuiq1m58ed33Wr1Xan//ZRTy6hgjnwyCffRYwzsGXdASJSUJ1guZILsErh1eQcl+zw==
@@ -5621,14 +5621,14 @@
   dependencies:
     "@tanstack/query-core" "5.101.0"
 
-"@tanstack/react-router@1.170.11":
-  version "1.170.11"
-  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.170.11.tgz#0dc401bb1101d18d5197c12002f3b64b586eb508"
-  integrity sha512-gP2vzdyaI8Ow/Uz/MRPfK2wN09YwRI0Y/oF74Wuy9R3KmjbfJv2tLrkM+Onu1xWklSn3ugZarMPJXRE0kzrJTA==
+"@tanstack/react-router@1.170.13":
+  version "1.170.13"
+  resolved "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.170.13.tgz#3b48d5b577ade1d2e763a36e0387d6db96dd6dc0"
+  integrity sha512-acCHtMDzTm+EB7S6OBjRIgbiTdN/+Wn56he+F4l+GhhFOpsopHmnhvd+fW6jTscGWd3kq6oeP/FUpLG+mCx8tQ==
   dependencies:
     "@tanstack/history" "1.162.0"
     "@tanstack/react-store" "^0.9.3"
-    "@tanstack/router-core" "1.171.9"
+    "@tanstack/router-core" "1.171.11"
     isbot "^5.1.22"
 
 "@tanstack/react-store@^0.9.3":
@@ -5639,55 +5639,50 @@
     "@tanstack/store" "0.9.3"
     use-sync-external-store "^1.6.0"
 
-"@tanstack/router-core@1.171.9":
-  version "1.171.9"
-  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.171.9.tgz#ce8afe0e6c9c0b3713a9697ffcb0380a0756239f"
-  integrity sha512-QM5ZwLT9c5ZcTJW0QQZRRIBC4qjImUyUCXCVyuYVOF9xr76XLsJSX4F2dOxr9VptAv+W+TkWNOYdX8VaO9kdgA==
+"@tanstack/router-core@1.171.11":
+  version "1.171.11"
+  resolved "https://registry.npmjs.org/@tanstack/router-core/-/router-core-1.171.11.tgz#621b375f1015d523e25565a4c85bb95edce5667a"
+  integrity sha512-yIhaarrDBKuvjUaugZm7u28qztESMIaR5ZAZ8ZMQHynv1Jrgw+TrBQQXZvdfR7ggfyvi985dnvf754D9UigpDg==
   dependencies:
     "@tanstack/history" "1.162.0"
     cookie-es "^3.0.0"
     seroval "^1.5.4"
     seroval-plugins "^1.5.4"
 
-"@tanstack/router-generator@1.167.13":
-  version "1.167.13"
-  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.167.13.tgz#ea84cc2d57728044a258f787b285d91afd67b80a"
-  integrity sha512-DldbCjA8S/CXQBuoyQqr76xqZe9k+H1ymV+ugj2IBHFi4yRzx4z4f2nSsPYlLdpXD2Cf/MEjLncaG7ceY5H5ig==
+"@tanstack/router-generator@1.167.15":
+  version "1.167.15"
+  resolved "https://registry.npmjs.org/@tanstack/router-generator/-/router-generator-1.167.15.tgz#e932dfb0d70748295f62b1aa5e14231b7e4e4e78"
+  integrity sha512-BxRzEkULCHP2nbzCn2g2D1j5fPDG/tF7lR938vgnAZKCApoMQepwNiXMXZFU50T0Rh/EkaLwkSYCbFg3AXhdrQ==
   dependencies:
     "@babel/types" "^7.28.5"
-    "@tanstack/router-core" "1.171.9"
-    "@tanstack/router-utils" "1.162.1"
+    "@tanstack/router-core" "1.171.11"
+    "@tanstack/router-utils" "1.162.2"
     "@tanstack/virtual-file-routes" "1.162.0"
     jiti "^2.7.0"
     magic-string "^0.30.21"
     prettier "^3.5.0"
     zod "^4.4.3"
 
-"@tanstack/router-plugin@1.168.14":
-  version "1.168.14"
-  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.168.14.tgz#c8a6343d8d30fd2f07225973356de86b8ddf503b"
-  integrity sha512-z+3vYJ7ouNnMzBIC1hsNWsxaQFu9Gf0WSdE3jBHWa326ipnONqDD5KeCqWGczq0HMdZY4UsDjyfvjucxXhrb0A==
+"@tanstack/router-plugin@1.168.16":
+  version "1.168.16"
+  resolved "https://registry.npmjs.org/@tanstack/router-plugin/-/router-plugin-1.168.16.tgz#4d4928435fabd5bc3456fa6398ace0ff176350f4"
+  integrity sha512-C3RVFZpcsdRhKw0jQoEWB4Din9yB9U7bXM6cH/oyjkI7cjJ3ugtuKJKjZtXmWFugDrR98z4vu1P7LTekp4NIKw==
   dependencies:
     "@babel/core" "^7.28.5"
-    "@babel/plugin-syntax-jsx" "^7.27.1"
-    "@babel/plugin-syntax-typescript" "^7.27.1"
     "@babel/template" "^7.27.2"
-    "@babel/traverse" "^7.28.5"
     "@babel/types" "^7.28.5"
-    "@tanstack/router-core" "1.171.9"
-    "@tanstack/router-generator" "1.167.13"
-    "@tanstack/router-utils" "1.162.1"
-    "@tanstack/virtual-file-routes" "1.162.0"
+    "@tanstack/router-core" "1.171.11"
+    "@tanstack/router-generator" "1.167.15"
+    "@tanstack/router-utils" "1.162.2"
     chokidar "^5.0.0"
     unplugin "^3.0.0"
     zod "^4.4.3"
 
-"@tanstack/router-utils@1.162.1":
-  version "1.162.1"
-  resolved "https://registry.npmjs.org/@tanstack/router-utils/-/router-utils-1.162.1.tgz#b0b99912f0e4ab53fb475052b3bedb5df3aa0777"
-  integrity sha512-62layyTGmclHDQS/eidwKRfN1hhCKwViG7iEBcVmL0MXgcAB3OOucWCEcDDGd9Cu11H6b4QQ5oOo47MWIqwz0A==
+"@tanstack/router-utils@1.162.2":
+  version "1.162.2"
+  resolved "https://registry.npmjs.org/@tanstack/router-utils/-/router-utils-1.162.2.tgz#8d37c5d233758ee0ae97bedd9556e35e3812a2a0"
+  integrity sha512-hTWqJtqIFFdvuCl8WXNyrodp2L9zo2G37xKRrcVmVRWpAB2h+U1LuRAfS4tsFTiWOIoE/B+WDVFB8JpoEdw6jQ==
   dependencies:
-    "@babel/core" "^7.28.5"
     "@babel/generator" "^7.28.5"
     "@babel/parser" "^7.28.5"
     "@babel/types" "^7.28.5"
@@ -6079,10 +6074,10 @@
   dependencies:
     undici-types ">=7.24.0 <7.24.7"
 
-"@types/node@24.13.0":
-  version "24.13.0"
-  resolved "https://registry.npmjs.org/@types/node/-/node-24.13.0.tgz#8d357bbaeafccd6369d9de428467d69befdccb19"
-  integrity sha512-5vtOqGQr4NJKeEzV441FcOi2MeG9UTWq9LqVLGneDdu4vlX17H8kQ2PA2UmNwCUGPVDj4oBjNhS7ReVEIWJJrg==
+"@types/node@24.13.1":
+  version "24.13.1"
+  resolved "https://registry.npmjs.org/@types/node/-/node-24.13.1.tgz#890e6a3832959d8181a11c4c91c3a0de8410e697"
+  integrity sha512-RSpUJGmvsJ1ZeBehQZFhIdpsz+bIpES0nIQXko4Ybq+N+kX6XvOq3Jo+iJ82FWLdblFq85AsMikd3m35jgezYg==
   dependencies:
     undici-types "~7.18.0"
 
@@ -6172,10 +6167,10 @@
   resolved "https://registry.npmjs.org/@types/react-transition-group/-/react-transition-group-4.4.12.tgz#b5d76568485b02a307238270bfe96cb51ee2a044"
   integrity sha512-8TV6R3h2j7a91c+1DXdJi3Syo69zzIZbz7Lg5tORM5LEJG7X/E6a1V3drRyBRZq7/utz7A+c4OgYLiLcYGHG6w==
 
-"@types/react@19.2.16":
-  version "19.2.16"
-  resolved "https://registry.npmjs.org/@types/react/-/react-19.2.16.tgz#9868b153fd9e34e0117afcd5d7e372b8179337e1"
-  integrity sha512-esJiCAnl0kfpNdE69f3So4WJUXy95dLZydX0KwK46riIHDzHM7O9Vtf9xCHW0PXIqvgqNrswl522kA/5yx+F4w==
+"@types/react@19.2.17":
+  version "19.2.17"
+  resolved "https://registry.npmjs.org/@types/react/-/react-19.2.17.tgz#dccac365baa0f1734ec270ff4b51c89465e8dc7f"
+  integrity sha512-MXfmqaVPEVgkBT/aY0aGCkRWWtByiYQXo3xdQ8r5RzuFrPiRn8Gar2tQdXSUQ2GKV3bkXckek89V8wQBY2Q/Aw==
   dependencies:
     csstype "^3.2.2"
 
@@ -12290,7 +12285,12 @@ isarray@~1.0.0:
   resolved "https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
   integrity sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==
 
-isbot@5.1.40, isbot@^5.1.22:
+isbot@5.1.41:
+  version "5.1.41"
+  resolved "https://registry.npmjs.org/isbot/-/isbot-5.1.41.tgz#24f44b4260fdda32d3bf34460e3f3195224d5288"
+  integrity sha512-9WFV/Vhh0FEj6CQ7MoHweEL9/vLKPjeoD2I2htbAjX7kbW7VJs3OCpWOVyd+JraNTWVU6/DRx2MZy2KaUNXHcg==
+
+isbot@^5.1.22:
   version "5.1.40"
   resolved "https://registry.npmjs.org/isbot/-/isbot-5.1.40.tgz#2878f52e9e4118b4466c268aaf7502dcfd38375b"
   integrity sha512-yNeeynhhtIVRBk12tBV4eHNxwB42HzR4Q3Ea7vCOiJhImGaAIdIMrbJtacQlBizGLjUPw+akkFI5Dn9T70XoVQ==
