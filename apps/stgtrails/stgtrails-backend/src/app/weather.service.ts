@@ -59,47 +59,55 @@ export class WeatherService {
     this.logger.log(`Updating weather data for ${trailAreas.length} trail areas.`)
 
     for (const trailArea of trailAreas) {
-      const weatherData = await this.weatherApi.fetchWeatherData(
-        {
-          latitude: trailArea.latitude,
-          longitude: trailArea.longitude,
-        },
-        isNewArea ? 7 : 2,
-      )
+      this.logger.log(`Updating weather data for trail area '${trailArea.name} (${trailArea.id})'.`)
+      try {
+        const weatherData = await this.weatherApi.fetchWeatherData(
+          {
+            latitude: trailArea.latitude,
+            longitude: trailArea.longitude,
+          },
+          isNewArea ? 7 : 2,
+        )
 
-      const transformedData: Array<WeatherDataCreateManyInput> = weatherData.time.reduce(
-        (previousValue, currentValue, currentIndex) => {
-          return [
-            ...previousValue,
-            {
-              trailAreaId: trailArea.id,
-              time: currentValue,
-              temperature2m: weatherData.temperature2m[currentIndex],
-              rain: weatherData.rain[currentIndex],
-              snowfall: weatherData.snowfall[currentIndex],
-              snowDepth: weatherData.snowDepth[currentIndex],
-              soilMoisture0To1cm: weatherData.soilMoisture0To1cm[currentIndex],
-              soilMoisture1To3cm: weatherData.soilMoisture1To3cm[currentIndex],
-              soilMoisture3To9cm: weatherData.soilMoisture3To9cm[currentIndex],
-              soilMoisture9To27cm: weatherData.soilMoisture9To27cm[currentIndex],
-              soilTemperature0cm: weatherData.soilTemperature0cm[currentIndex],
-              soilTemperature6cm: weatherData.soilTemperature6cm[currentIndex],
-              windGusts10m: weatherData.windGusts10m[currentIndex],
-            },
-          ]
-        },
-        [],
-      )
+        const transformedData: Array<WeatherDataCreateManyInput> = weatherData.time.reduce(
+          (previousValue, currentValue, currentIndex) => {
+            return [
+              ...previousValue,
+              {
+                trailAreaId: trailArea.id,
+                time: currentValue,
+                temperature2m: weatherData.temperature2m[currentIndex],
+                rain: weatherData.rain[currentIndex],
+                snowfall: weatherData.snowfall[currentIndex],
+                snowDepth: weatherData.snowDepth[currentIndex],
+                soilMoisture0To1cm: weatherData.soilMoisture0To1cm[currentIndex],
+                soilMoisture1To3cm: weatherData.soilMoisture1To3cm[currentIndex],
+                soilMoisture3To9cm: weatherData.soilMoisture3To9cm[currentIndex],
+                soilMoisture9To27cm: weatherData.soilMoisture9To27cm[currentIndex],
+                soilTemperature0cm: weatherData.soilTemperature0cm[currentIndex],
+                soilTemperature6cm: weatherData.soilTemperature6cm[currentIndex],
+                windGusts10m: weatherData.windGusts10m[currentIndex],
+              },
+            ]
+          },
+          [],
+        )
 
-      await this.prisma.$transaction(
-        transformedData.map((weatherData) =>
-          this.prisma.weatherData.upsert({
-            where: { trailAreaId_time: { trailAreaId: trailArea.id, time: weatherData.time } },
-            update: weatherData,
-            create: weatherData,
-          }),
-        ),
-      )
+        await this.prisma.$transaction(
+          transformedData.map((weatherData) =>
+            this.prisma.weatherData.upsert({
+              where: { trailAreaId_time: { trailAreaId: trailArea.id, time: weatherData.time } },
+              update: weatherData,
+              create: weatherData,
+            }),
+          ),
+        )
+        this.logger.log(`Successfully updated weather data for trail area '${trailArea.name} (${trailArea.id})'.`)
+      } catch (e) {
+        this.logger.error(
+          `Error while updating weather data for trail area '${trailArea.name} (${trailArea.id})': ${e}`,
+        )
+      }
     }
   }
 

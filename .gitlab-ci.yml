@@ -74,6 +74,7 @@ lint-and-format:
   stage: static
   extends:
     - .distributed
+  retry: 2
   script:
     - time yarn nx format:check --base=$NX_BASE --head=$NX_HEAD
     - time yarn nx affected --base=$NX_BASE --head=$NX_HEAD -t lint --parallel=8
