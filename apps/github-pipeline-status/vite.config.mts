@@ -13,11 +13,17 @@ export default defineConfig({
     commonjsOptions: {
       transformMixedEsModules: true,
     },
-    rollupOptions: {
+    rolldownOptions: {
+      // External packages that should not be bundled into your library.
+      external: [],
       output: {
-        manualChunks: {
-          octokit: ['@octokit/core', '@plusone/github-schema'],
-          mui: ['@mui/material', '@mui/icons-material'],
+        codeSplitting: {
+          groups: [
+            {
+              name: 'mui',
+              test: /node_modules[\\/]@mui[\\/](material|icons-material)/,
+            },
+          ],
         },
       },
     },
@@ -49,7 +55,6 @@ export default defineConfig({
   //  plugins: [ nxViteTsPaths() ],
   // },
 
-  // @ts-expect-error vitest needs this
   test: {
     reporters: ['default', 'junit'],
     outputFile: '../../reports/test/github-pipeline-status.xml',

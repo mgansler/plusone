@@ -33,7 +33,6 @@ export default defineConfig({
   //  plugins: [ nxViteTsPaths() ],
   // },
 
-  // @ts-expect-error vitest needs this
   test: {
     watch: false,
     reporters: ['default', 'junit'],
