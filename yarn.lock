@@ -10470,7 +10470,7 @@ env-paths@^3.0.0:
   resolved "https://registry.npmjs.org/env-paths/-/env-paths-3.0.0.tgz#2f1e89c2f6dbd3408e1b1711dd82d62e317f58da"
   integrity sha512-dtJUTepzMW3Lm/NPxRf3wP4642UWhjL2sQxc+ym2YMj1m/H2zDNQOlezafzkHwn6sMstjHTwG6iQQsctDW/b1A==
 
-envinfo@^7.14.0:
+envinfo@^7.21.0:
   version "7.21.0"
   resolved "https://registry.npmjs.org/envinfo/-/envinfo-7.21.0.tgz#04a251be79f92548541f37d13c8b6f22940c3bae"
   integrity sha512-Lw7I8Zp5YKHFCXL7+Dz95g4CcbMEpgvqZNNq3AmlT5XAV6CgAAk6gyAMqn2zjw08K9BHfcNuKrMiCPLByGafow==
@@ -12364,10 +12364,10 @@ i18next-resources-for-ts@^2.1.0:
     chokidar "^5.0.0"
     yaml "^2.8.2"
 
-i18next@26.3.2:
-  version "26.3.2"
-  resolved "https://registry.npmjs.org/i18next/-/i18next-26.3.2.tgz#1800dd8cbeddd47ee87208c47aeb7f7816b51a6d"
-  integrity sha512-QQkXAM1sPDHqhxMQuBeHVMUn6mJchF+wdpOoQerciLAFqO3ZYdxO0EUbeEhruyutnNwpUQIITDVzLjwnNL0T1w==
+i18next@26.3.3:
+  version "26.3.3"
+  resolved "https://registry.npmjs.org/i18next/-/i18next-26.3.3.tgz#acab67bb8608deaf01886a1d573dbd6f2c201b9b"
+  integrity sha512-aYVegyBdXSO93CMMihvr47jI7GHSOcIahMpJX+qzUXDzW4xDJf2uenIA+45vDU+YhiVdcfsql70AC9RVdMNrHg==
 
 i18next@^26.3.1:
   version "26.3.1"
@@ -12445,7 +12445,7 @@ import-from@4.0.0:
   resolved "https://registry.npmjs.org/import-from/-/import-from-4.0.0.tgz#2710b8d66817d232e16f4166e319248d3d5492e2"
   integrity sha512-P9J71vT5nLlDeV8FHs5nNxaLbrpfAV5cF5srvbZfpwpcJoM/xZR3hiv+q+SAnuSmuGbXMWud063iIMx/V/EWZQ==
 
-import-local@^3.0.2, import-local@^3.2.0:
+import-local@^3.2.0:
   version "3.2.0"
   resolved "https://registry.npmjs.org/import-local/-/import-local-3.2.0.tgz#c3d5c745798c02a6f8b897726aba5100186ee260"
   integrity sha512-2SPlun1JUPWoM6t3F0dw0FkCF/jWY8kttcY4f599GLTSjh2OCuuhdTkJQsEcZzBqbXZGKMK2OqW1oZsjtf/gQA==
@@ -15975,10 +15975,10 @@ prelude-ls@^1.2.1:
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-prettier@3.8.4:
-  version "3.8.4"
-  resolved "https://registry.npmjs.org/prettier/-/prettier-3.8.4.tgz#f334f013ac04a96676f24dabc23c1c4ae1bae411"
-  integrity sha512-N2MylSdi48+5N/6S5j+maeHbUSIzzZ5uOcX5Hm4QpV8Dkb1HFjfAKTKX6yNPJQD9AhcT3ifHNB66tWTTJDi11Q==
+prettier@3.8.5:
+  version "3.8.5"
+  resolved "https://registry.npmjs.org/prettier/-/prettier-3.8.5.tgz#81cf9de0cf46db973fa85103ff06dfcdb0d9bc39"
+  integrity sha512-zxcTTCedNGJM4R8sj/Cq/F0W/c4iE0afWBcBwMTRtw4WHYP9TWkYjdiH3npPRUYsXQCPR0hTU9yjovOu+E6EQA==
 
 prettier@^3.5.0:
   version "3.8.3"
@@ -18958,16 +18958,16 @@ webpack-bundle-analyzer@4.10.2:
     sirv "^2.0.3"
     ws "^7.3.1"
 
-webpack-cli@7.0.3:
-  version "7.0.3"
-  resolved "https://registry.npmjs.org/webpack-cli/-/webpack-cli-7.0.3.tgz#62d3374b424bb4fabb27d088d8b2a9685b325b02"
-  integrity sha512-2E2C6A1e2El7791zQgTH7LPIuwLjRliow9OHS/qlJc9pwhZlCoL/uiwqd/1WSlXT83wJfmfDbkcqHXuXoPJZ3g==
+webpack-cli@7.1.0:
+  version "7.1.0"
+  resolved "https://registry.npmjs.org/webpack-cli/-/webpack-cli-7.1.0.tgz#0ce9fe20b611c47877ff14c5d70d16d2ea13b99f"
+  integrity sha512-pSJ5p5PkXRD88sfCq5Wo+coc42QykwRu5Md0DyESj0rT6PPPA2wTNabpHPKgqH8EMkfTDo3IWx3iiNXMu8XDBQ==
   dependencies:
     "@discoveryjs/json-ext" "^1.1.0"
     commander "^14.0.3"
     cross-spawn "^7.0.6"
-    envinfo "^7.14.0"
-    import-local "^3.0.2"
+    envinfo "^7.21.0"
+    import-local "^3.2.0"
     interpret "^3.1.1"
     rechoir "^0.8.0"
     webpack-merge "^6.0.1"
@@ -19089,10 +19089,10 @@ webpack@5.105.2:
     watchpack "^2.5.1"
     webpack-sources "^3.3.3"
 
-webpack@5.108.0:
-  version "5.108.0"
-  resolved "https://registry.npmjs.org/webpack/-/webpack-5.108.0.tgz#f8bb9b554f25374e8dfa3e1b137b0791a56d7614"
-  integrity sha512-Ln1JuYGPRTXcHECapSFSvACtHmWEN5sQqFJeLLGQ0057S7qzT2eXUz0MZUedtmIrNy3nJgnITSubIYKGED9jSQ==
+webpack@5.108.1:
+  version "5.108.1"
+  resolved "https://registry.npmjs.org/webpack/-/webpack-5.108.1.tgz#cd5856f9a88e55f344d64a6623c09bf34446cc9d"
+  integrity sha512-UUCihHQK3O7483Woa0SulNLDeAiOhHI2PN2PAPU4fVWJqbzhv04EJ8FaWtB9WWh3i8fRt28543U7VfuJTOrpgQ==
   dependencies:
     "@types/estree" "^1.0.8"
     "@types/json-schema" "^7.0.15"
