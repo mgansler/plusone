@@ -3679,6 +3679,15 @@
     "@jsonjoy.com/fs-node-utils" "4.57.3"
     thingies "^2.5.0"
 
+"@jsonjoy.com/fs-core@4.57.8":
+  version "4.57.8"
+  resolved "https://registry.npmjs.org/@jsonjoy.com/fs-core/-/fs-core-4.57.8.tgz#3e399ca856968194b0be73aa4b6fc943bf313bb8"
+  integrity sha512-YzVbwggV9452VCeHgo0bjsTaUt1O7JE0XpEsPar93nn/+RAwXk0mb1Y+f5EDJ3TRtRCFe+Ck5RuojdfB4jeHVw==
+  dependencies:
+    "@jsonjoy.com/fs-node-builtins" "4.57.8"
+    "@jsonjoy.com/fs-node-utils" "4.57.8"
+    thingies "^2.5.0"
+
 "@jsonjoy.com/fs-fsa@4.57.3":
   version "4.57.3"
   resolved "https://registry.npmjs.org/@jsonjoy.com/fs-fsa/-/fs-fsa-4.57.3.tgz#097106d9688d9384419e3bac893b71e41a71f05d"
@@ -3689,10 +3698,25 @@
     "@jsonjoy.com/fs-node-utils" "4.57.3"
     thingies "^2.5.0"
 
+"@jsonjoy.com/fs-fsa@4.57.8":
+  version "4.57.8"
+  resolved "https://registry.npmjs.org/@jsonjoy.com/fs-fsa/-/fs-fsa-4.57.8.tgz#26a1688ff5c8d1189d32e76bfe2364e0763b6737"
+  integrity sha512-vmClyvCQMxgqz7uamDiGtRfp4MjzOznk3pcQjCxlIwJcw7TWeyr+bF30hI0x8NxdtNOGMg1pHM74VDIXOeyjuw==
+  dependencies:
+    "@jsonjoy.com/fs-core" "4.57.8"
+    "@jsonjoy.com/fs-node-builtins" "4.57.8"
+    "@jsonjoy.com/fs-node-utils" "4.57.8"
+    thingies "^2.5.0"
+
 "@jsonjoy.com/fs-node-builtins@4.57.3":
   version "4.57.3"
   resolved "https://registry.npmjs.org/@jsonjoy.com/fs-node-builtins/-/fs-node-builtins-4.57.3.tgz#b6b34ed532554916e186977d00c19ffcafb3515f"
   integrity sha512-JAI3PqNuY8BR7ovy4h0bADLrqJLIcUauONNZfyTxUnj3Wf3tpTYe39eJ6z7FzYyA+tdMt33VpiQQUikGr3QOBw==
+
+"@jsonjoy.com/fs-node-builtins@4.57.8":
+  version "4.57.8"
+  resolved "https://registry.npmjs.org/@jsonjoy.com/fs-node-builtins/-/fs-node-builtins-4.57.8.tgz#ba350bf262571e38d3c195f5346eddec07c1d053"
+  integrity sha512-mxXSXw8zZwRVakcjLqR2I/psy4gURFSASZS10kKJ2kJw05GC2nXGroGrWVHxwgkxXgQLsFQnB74QaLzsxzdL/w==
 
 "@jsonjoy.com/fs-node-to-fsa@4.57.3":
   version "4.57.3"
@@ -3703,12 +3727,28 @@
     "@jsonjoy.com/fs-node-builtins" "4.57.3"
     "@jsonjoy.com/fs-node-utils" "4.57.3"
 
+"@jsonjoy.com/fs-node-to-fsa@4.57.8":
+  version "4.57.8"
+  resolved "https://registry.npmjs.org/@jsonjoy.com/fs-node-to-fsa/-/fs-node-to-fsa-4.57.8.tgz#4372e75e7a6a76b4d8ac91dc2d93edfa8587599f"
+  integrity sha512-AWZcT/4+H+iDl4XCukbXrarvwEgOrf/prFI5/7eg4ix9FxqVsZysIDJd1Kjd+AjlCeHKHJOaRqjLd5HiGSCJEw==
+  dependencies:
+    "@jsonjoy.com/fs-fsa" "4.57.8"
+    "@jsonjoy.com/fs-node-builtins" "4.57.8"
+    "@jsonjoy.com/fs-node-utils" "4.57.8"
+
 "@jsonjoy.com/fs-node-utils@4.57.3":
   version "4.57.3"
   resolved "https://registry.npmjs.org/@jsonjoy.com/fs-node-utils/-/fs-node-utils-4.57.3.tgz#25fb8dbf0406c1cd5a9e0a22274f1e45bf6d460c"
   integrity sha512-quCil8AvfcOxob4pn0drGdcQWpkPVgkt9q1+EjeyXXT40/L3l5lvYrr6hR8LmHu0eg+DNNaUwqjLT6Hr7V4sdQ==
   dependencies:
     "@jsonjoy.com/fs-node-builtins" "4.57.3"
+
+"@jsonjoy.com/fs-node-utils@4.57.8":
+  version "4.57.8"
+  resolved "https://registry.npmjs.org/@jsonjoy.com/fs-node-utils/-/fs-node-utils-4.57.8.tgz#a1a15d587fff235b616d5ea775e0f9a88f387a56"
+  integrity sha512-E/bJ7sQAb4pu9nbeJhbULU3WnqWrswte4N9Js/oHt7aHB746S8/XBqKlcbrqIgnD3095XluovNEZuu5ONT230g==
+  dependencies:
+    "@jsonjoy.com/fs-node-builtins" "4.57.8"
 
 "@jsonjoy.com/fs-node@4.57.3":
   version "4.57.3"
@@ -3723,12 +3763,33 @@
     glob-to-regex.js "^1.0.0"
     thingies "^2.5.0"
 
+"@jsonjoy.com/fs-node@4.57.8":
+  version "4.57.8"
+  resolved "https://registry.npmjs.org/@jsonjoy.com/fs-node/-/fs-node-4.57.8.tgz#d16b418d2179f7092f9fe5daeb18d31a5835a19b"
+  integrity sha512-IPEOlDYSnTDYpjQlQg2F8h+eqxKQN3sdbroI0WrteRiQZ462HzVpBo9ZZX485njz4nAacoe3fd4iDiIhk+k5Hg==
+  dependencies:
+    "@jsonjoy.com/fs-core" "4.57.8"
+    "@jsonjoy.com/fs-node-builtins" "4.57.8"
+    "@jsonjoy.com/fs-node-utils" "4.57.8"
+    "@jsonjoy.com/fs-print" "4.57.8"
+    "@jsonjoy.com/fs-snapshot" "4.57.8"
+    glob-to-regex.js "^1.0.0"
+    thingies "^2.5.0"
+
 "@jsonjoy.com/fs-print@4.57.3":
   version "4.57.3"
   resolved "https://registry.npmjs.org/@jsonjoy.com/fs-print/-/fs-print-4.57.3.tgz#b282395741a226a74550a7b6c14c9c81f57484d8"
   integrity sha512-ITwaLZpGIqD9jHndwMvDFZDIvbVzGRsJZDQ5HKln0vyMculu1c1nb7zbEBgY8BVSBZ9S2xO138OWIBGeRsrF3Q==
   dependencies:
     "@jsonjoy.com/fs-node-utils" "4.57.3"
+    tree-dump "^1.1.0"
+
+"@jsonjoy.com/fs-print@4.57.8":
+  version "4.57.8"
+  resolved "https://registry.npmjs.org/@jsonjoy.com/fs-print/-/fs-print-4.57.8.tgz#5ff6b2e0dd3f85aa7563f66cd36b4de1f0ce89a3"
+  integrity sha512-DfzhOBpmvNu5P/KSe4NNQaOnvNliTdcf0qrh/4EReErF/XUQXYkd0vZl/OiJCm/qjEEo8DWRstliw2/JNS84dA==
+  dependencies:
+    "@jsonjoy.com/fs-node-utils" "4.57.8"
     tree-dump "^1.1.0"
 
 "@jsonjoy.com/fs-snapshot@4.57.3":
@@ -3738,6 +3799,16 @@
   dependencies:
     "@jsonjoy.com/buffers" "^17.65.0"
     "@jsonjoy.com/fs-node-utils" "4.57.3"
+    "@jsonjoy.com/json-pack" "^17.65.0"
+    "@jsonjoy.com/util" "^17.65.0"
+
+"@jsonjoy.com/fs-snapshot@4.57.8":
+  version "4.57.8"
+  resolved "https://registry.npmjs.org/@jsonjoy.com/fs-snapshot/-/fs-snapshot-4.57.8.tgz#65b317f7698816c7196dbebc73e9d43e06f143be"
+  integrity sha512-L+eqKaWOHLDaiMv1dh/EWQ4hA+o6xAhWSumTo3Teg7OM18jU/KE13/e8Mfal+eAZ/pSl4wIhKHcDiwapJzC8Wg==
+  dependencies:
+    "@jsonjoy.com/buffers" "^17.65.0"
+    "@jsonjoy.com/fs-node-utils" "4.57.8"
     "@jsonjoy.com/json-pack" "^17.65.0"
     "@jsonjoy.com/util" "^17.65.0"
 
@@ -6676,7 +6747,7 @@
   resolved "https://registry.npmjs.org/@types/estree/-/estree-1.0.9.tgz#cf3f0e876d7bee15a93ab925b82bf570a3904a24"
   integrity sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==
 
-"@types/express-serve-static-core@*", "@types/express-serve-static-core@^5.0.0":
+"@types/express-serve-static-core@*", "@types/express-serve-static-core@^5.0.0", "@types/express-serve-static-core@^5.1.1":
   version "5.1.1"
   resolved "https://registry.npmjs.org/@types/express-serve-static-core/-/express-serve-static-core-5.1.1.tgz#1a77faffee9572d39124933259be2523837d7eaa"
   integrity sha512-v4zIMr/cX7/d2BpAEX3KNKL/JrT1s43s96lLvvdTmza1oEvDudCqK9aF/djc/SWgy8Yh0h30TZx5VpzqFCxk5A==
@@ -6696,7 +6767,7 @@
     "@types/range-parser" "*"
     "@types/send" "*"
 
-"@types/express@*", "@types/express@5.0.6":
+"@types/express@*", "@types/express@5.0.6", "@types/express@^5.0.6":
   version "5.0.6"
   resolved "https://registry.npmjs.org/@types/express/-/express-5.0.6.tgz#2d724b2c990dcb8c8444063f3580a903f6d500cc"
   integrity sha512-sKYVuV7Sv9fbPIt/442koC7+IIwK5olP1KWeD88e/idgoJqDm3JV/YUiPwkoKK92ylff2MGxSz1CSjsXelx0YA==
@@ -6965,7 +7036,7 @@
     "@types/node" "*"
     "@types/send" "<1"
 
-"@types/serve-static@^2":
+"@types/serve-static@^2", "@types/serve-static@^2.2.0":
   version "2.2.0"
   resolved "https://registry.npmjs.org/@types/serve-static/-/serve-static-2.2.0.tgz#d4a447503ead0d1671132d1ab6bd58b805d8de6a"
   integrity sha512-8mam4H1NHLtu7nmtalF7eyBH14QyOASmcxHhSfEoRyr0nP/YdoesEtU+uSRvMe96TW/HPTtkoKqQLl53N7UXMQ==
@@ -8644,7 +8715,7 @@ body-parser@~1.20.5:
     type-is "~1.6.18"
     unpipe "~1.0.0"
 
-bonjour-service@1.4.2:
+bonjour-service@1.4.2, bonjour-service@^1.3.0:
   version "1.4.2"
   resolved "https://registry.npmjs.org/bonjour-service/-/bonjour-service-1.4.2.tgz#33ce18eddf13047e5eeb08939018b20bae1a1473"
   integrity sha512-lMskhnsW70yWHr4PhPeh2rvaIkLSaDpp+nmtbXBZaNKTXwxL73QOkW6HhbzqTImXjevn9TreGT4GACGBCGP9nQ==
@@ -9995,7 +10066,7 @@ default-browser-id@^5.0.0:
   resolved "https://registry.npmjs.org/default-browser-id/-/default-browser-id-5.0.1.tgz#f7a7ccb8f5104bf8e0f71ba3b1ccfa5eafdb21e8"
   integrity sha512-x1VCxdX4t+8wVfd1so/9w+vQ4vx7lKd2Qp5tDRutErwmR85OgmfX7RlLRMWafRMY7hbEiXIbudNrjOAPa/hL8Q==
 
-default-browser@^5.2.1:
+default-browser@^5.2.1, default-browser@^5.4.0:
   version "5.5.0"
   resolved "https://registry.npmjs.org/default-browser/-/default-browser-5.5.0.tgz#2792e886f2422894545947cc80e1a444496c5976"
   integrity sha512-H9LMLr5zwIbSxrmvikGuI/5KGhZ8E2zH3stkMgM5LpOWDutGM2JZaj460Udnf1a+946zc7YBgrqEWwbk7zHvGw==
@@ -11101,7 +11172,7 @@ expect@30.4.1, expect@^30.0.0:
     jest-mock "30.4.1"
     jest-util "30.4.1"
 
-express@5.2.1:
+express@5.2.1, express@^5.2.1:
   version "5.2.1"
   resolved "https://registry.npmjs.org/express/-/express-5.2.1.tgz#8f21d15b6d327f92b4794ecf8cb08a72f956ac04"
   integrity sha512-hIS4idWWai69NezIdRt2xFVofaF4j+6INOpJlVOLDO8zXGpUVEVzIYk12UUi2JzjEzWL3IOAxcTubgz9Po0yXw==
@@ -12242,7 +12313,7 @@ http-parser-js@>=0.5.1:
   resolved "https://registry.npmjs.org/http-parser-js/-/http-parser-js-0.5.10.tgz#b3277bd6d7ed5588e20ea73bf724fcbe44609075"
   integrity sha512-Pysuw9XpUq5dVc/2SMHpuTY01RFl8fttgcyunjL7eEMhGM3cI4eOmiCycJDVCo/7O7ClfQD3SaI6ftDzqOXYMA==
 
-http-proxy-middleware@4.1.1, http-proxy-middleware@^2.0.9, http-proxy-middleware@^3.0.5:
+http-proxy-middleware@4.1.1, http-proxy-middleware@^2.0.9, http-proxy-middleware@^3.0.5, http-proxy-middleware@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npmjs.org/http-proxy-middleware/-/http-proxy-middleware-4.1.1.tgz#d1155140b540fc47fce16a6c98a75a643e992b90"
   integrity sha512-KX5ZofGXLFXqFAkQoOWZ+rTtaLTut7m0gyL+QzJrdejtIZ+F4bPPDoe7reISg2+v0CAz5OfVwEJEhty7X+e57g==
@@ -12568,7 +12639,7 @@ ipaddr.js@1.9.1:
   resolved "https://registry.npmjs.org/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ipaddr.js@^2.1.0:
+ipaddr.js@^2.1.0, ipaddr.js@^2.3.0:
   version "2.4.0"
   resolved "https://registry.npmjs.org/ipaddr.js/-/ipaddr.js-2.4.0.tgz#038e9ceaf8219efc5bb76347b7eb787875d5095b"
   integrity sha512-9VGk3HGanVE6JoZXHiCpnGy5X0jYDnN4EA4lntFPj+1vIWlFhIylq2CrrCOJH9EAhc5CYhq18F2Av2tgoAPsYQ==
@@ -12714,6 +12785,11 @@ is-glob@4.0.3, is-glob@^4.0.0, is-glob@^4.0.1, is-glob@^4.0.3, is-glob@~4.0.1:
   dependencies:
     is-extglob "^2.1.1"
 
+is-in-ssh@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/is-in-ssh/-/is-in-ssh-1.0.0.tgz#8eb73c1cabba77748d389588eeea132a63057622"
+  integrity sha512-jYa6Q9rH90kR1vKB6NM7qqd1mge3Fx4Dhw5TVlK1MUBqhEOuCagrEHMevNuCcbECmXZ0ThXkRm+Ymr51HwEPAw==
+
 is-inside-container@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/is-inside-container/-/is-inside-container-1.0.0.tgz#e81fba699662eb31dbdaf26766a61d4814717ea4"
@@ -12761,7 +12837,7 @@ is-negative-zero@^2.0.3:
   resolved "https://registry.npmjs.org/is-negative-zero/-/is-negative-zero-2.0.3.tgz#ced903a027aca6381b777a5743069d7376a49747"
   integrity sha512-5KoIu2Ngpyek75jXodFvnafB6DJgr3u8uuK0LEZJjrU19DrMD3EVERaR8sjz8CCGgpZvxPl9SuE1GMVPFHx1mw==
 
-is-network-error@^1.0.0:
+is-network-error@^1.0.0, is-network-error@^1.3.0:
   version "1.3.2"
   resolved "https://registry.npmjs.org/is-network-error/-/is-network-error-1.3.2.tgz#9460bc30f8419a4bca77114f4de88a3ee5e0c519"
   integrity sha512-PhBY86zaxNZUuWP6h13Vu5oFe0XY6/UlKzQnYFELzGVHygP3MxmvTfYSG7GN3aIab/iWudSMgjSnG9Dq+nHrgA==
@@ -13743,7 +13819,7 @@ language-tags@^1.0.9:
   dependencies:
     language-subtag-registry "^0.3.20"
 
-launch-editor@^2.6.1:
+launch-editor@^2.14.1, launch-editor@^2.6.1:
   version "2.14.1"
   resolved "https://registry.npmjs.org/launch-editor/-/launch-editor-2.14.1.tgz#f7e0da3f58aaea03fea01074d840b5f739ed7ddc"
   integrity sha512-QWBrQsMpH7gPr965dsKD/3cKWiNoTjpATQf++Xq63N6sKRGMwlVXz41O1IZTMfZQgBctD/K5Zt06+/I6pP6+HA==
@@ -14303,6 +14379,26 @@ memfs@^4.43.1:
     "@jsonjoy.com/fs-node-utils" "4.57.3"
     "@jsonjoy.com/fs-print" "4.57.3"
     "@jsonjoy.com/fs-snapshot" "4.57.3"
+    "@jsonjoy.com/json-pack" "^1.11.0"
+    "@jsonjoy.com/util" "^1.9.0"
+    glob-to-regex.js "^1.0.1"
+    thingies "^2.5.0"
+    tree-dump "^1.0.3"
+    tslib "^2.0.0"
+
+memfs@^4.56.10:
+  version "4.57.8"
+  resolved "https://registry.npmjs.org/memfs/-/memfs-4.57.8.tgz#b9c1995040307c60a1503e65a3e5902ad3927628"
+  integrity sha512-bApYhn8BLpFAnAQmFfEl/NPN+8qx5Ar3V4Qt3ek23mVwBEElzV7c6XoPkb/PCG8ZFpowCEpHcPwMFTwHS7tSMA==
+  dependencies:
+    "@jsonjoy.com/fs-core" "4.57.8"
+    "@jsonjoy.com/fs-fsa" "4.57.8"
+    "@jsonjoy.com/fs-node" "4.57.8"
+    "@jsonjoy.com/fs-node-builtins" "4.57.8"
+    "@jsonjoy.com/fs-node-to-fsa" "4.57.8"
+    "@jsonjoy.com/fs-node-utils" "4.57.8"
+    "@jsonjoy.com/fs-print" "4.57.8"
+    "@jsonjoy.com/fs-snapshot" "4.57.8"
     "@jsonjoy.com/json-pack" "^1.11.0"
     "@jsonjoy.com/util" "^1.9.0"
     glob-to-regex.js "^1.0.1"
@@ -15044,6 +15140,18 @@ open@^10.0.3:
     is-inside-container "^1.0.0"
     wsl-utils "^0.1.0"
 
+open@^11.0.0:
+  version "11.0.0"
+  resolved "https://registry.npmjs.org/open/-/open-11.0.0.tgz#897e6132f994d3554cbcf72e0df98f176a7e5f62"
+  integrity sha512-smsWv2LzFjP03xmvFoJ331ss6h+jixfA4UUV/Bsiyuu4YJPfN+FIQGOIiv4w9/+MoHkfkJ22UIaQWRVFRfH6Vw==
+  dependencies:
+    default-browser "^5.4.0"
+    define-lazy-prop "^3.0.0"
+    is-in-ssh "^1.0.0"
+    is-inside-container "^1.0.0"
+    powershell-utils "^0.1.0"
+    wsl-utils "^0.3.0"
+
 openapi-types@12.1.3:
   version "12.1.3"
   resolved "https://registry.npmjs.org/openapi-types/-/openapi-types-12.1.3.tgz#471995eb26c4b97b7bd356aacf7b91b73e777dd3"
@@ -15245,6 +15353,13 @@ p-retry@^6.2.0:
     "@types/retry" "0.12.2"
     is-network-error "^1.0.0"
     retry "^0.13.1"
+
+p-retry@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.npmjs.org/p-retry/-/p-retry-8.0.0.tgz#1505faf14942326e18d4091f5d605bae65634e7b"
+  integrity sha512-kFVqH1HxOHp8LupNsOys7bSV09VYTRLxarH/mokO4Rqhk6wGi70E0jh4VzvVGXfEVNggHoHLAMWsQqHyU1Ey9A==
+  dependencies:
+    is-network-error "^1.3.0"
 
 p-timeout@^6.1.2:
   version "6.1.4"
@@ -15987,6 +16102,11 @@ postgres@3.4.7:
   version "3.4.7"
   resolved "https://registry.npmjs.org/postgres/-/postgres-3.4.7.tgz#122f460a808fe300cae53f592108b9906e625345"
   integrity sha512-Jtc2612XINuBjIl/QTWsV5UvE8UHuNblcO3vVADSrKsrc6RqGX6lOW1cEo3CM2v0XG4Nat8nI+YM7/f26VxXLw==
+
+powershell-utils@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/powershell-utils/-/powershell-utils-0.1.0.tgz#5a42c9a824fb4f2f251ccb41aaae73314f5d6ac2"
+  integrity sha512-dM0jVuXJPsDN6DvRpea484tCUaMiXWjuCn++HGTqUWzGDjv5tZkEZldAJ/UMlqRYGFrD/etByo4/xOuC/snX2A==
 
 prebuild-install@^7.1.1:
   version "7.1.3"
@@ -17080,7 +17200,7 @@ seroval@^1.5.4:
   resolved "https://registry.npmjs.org/seroval/-/seroval-1.5.4.tgz#9d0cedae244f8213bbbbbcc99c497eb7c945d961"
   integrity sha512-46uFvgrXTVxZcUorgSSRZ4y+ieqLLQRMlG4bnCZKW3qI6BZm7Rg4ntMW4p1mILEEBZWrFlcpp0AyIIlM6jD9iw==
 
-serve-index@^1.9.1:
+serve-index@^1.9.1, serve-index@^1.9.2:
   version "1.9.2"
   resolved "https://registry.npmjs.org/serve-index/-/serve-index-1.9.2.tgz#2988e3612106d78a5e4849ddff552ce7bd3d9bcb"
   integrity sha512-KDj11HScOaLmrPxl70KYNW1PksP4Nb/CLL2yvC+Qd2kHMPEEpfc4Re2e4FOay+bC/+XQl/7zAcWON3JVo5v3KQ==
@@ -19020,7 +19140,49 @@ webpack-dev-middleware@^7.4.2:
     range-parser "^1.2.1"
     schema-utils "^4.0.0"
 
-webpack-dev-server@5.2.5, webpack-dev-server@^5.1.0:
+webpack-dev-middleware@^8.0.3:
+  version "8.0.3"
+  resolved "https://registry.npmjs.org/webpack-dev-middleware/-/webpack-dev-middleware-8.0.3.tgz#5f246bf8024069bbe2cf7d9bded55ca1aeafe9fe"
+  integrity sha512-zWrde9VZDiRaFuWsjHO40wm9LxxtXEk8DdzFXdU7eU5ZpiANnZZDBbZgN3guxbEoKqUHd9YupBmynyioz42nkA==
+  dependencies:
+    memfs "^4.56.10"
+    mime-types "^3.0.2"
+    on-finished "^2.4.1"
+    range-parser "^1.2.1"
+    schema-utils "^4.3.3"
+
+webpack-dev-server@6.0.0:
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/webpack-dev-server/-/webpack-dev-server-6.0.0.tgz#af30f80cd4bc1c5b2c6224e4c7903adcd9514dcd"
+  integrity sha512-q9SD4ItOGhZLeU6EGT10caDZdHjF50Pz1DtkRZZOPsfluMXOkacWKKOtSBSLVkPqKiF67eFUC0rI88U/tSFPEw==
+  dependencies:
+    "@types/bonjour" "^3.5.13"
+    "@types/connect-history-api-fallback" "^1.5.4"
+    "@types/express" "^5.0.6"
+    "@types/express-serve-static-core" "^5.1.1"
+    "@types/serve-index" "^1.9.4"
+    "@types/serve-static" "^2.2.0"
+    "@types/ws" "^8.18.1"
+    ansi-html-community "^0.0.8"
+    bonjour-service "^1.3.0"
+    chokidar "^5.0.0"
+    compression "^1.8.1"
+    connect-history-api-fallback "^2.0.0"
+    express "^5.2.1"
+    graceful-fs "^4.2.11"
+    http-proxy-middleware "^4.1.1"
+    ipaddr.js "^2.3.0"
+    launch-editor "^2.14.1"
+    open "^11.0.0"
+    p-retry "^8.0.0"
+    schema-utils "^4.3.3"
+    selfsigned "^5.5.0"
+    serve-index "^1.9.2"
+    tinyglobby "^0.2.15"
+    webpack-dev-middleware "^8.0.3"
+    ws "^8.20.0"
+
+webpack-dev-server@^5.1.0:
   version "5.2.5"
   resolved "https://registry.npmjs.org/webpack-dev-server/-/webpack-dev-server-5.2.5.tgz#648fceaac6a5736b0935e5c1e55d6aa1d0626119"
   integrity sha512-4wZtCquSuv9CKX8oybo+mqxtxZqWz47uM1Ch94lxowBztOhWCbhqvRbfC/mODOwxgV2brY+JGZpHq58/SuVFYg==
@@ -19384,6 +19546,14 @@ wsl-utils@^0.1.0:
   integrity sha512-h3Fbisa2nKGPxCpm89Hk33lBLsnaGBvctQopaBSOW/uIs6FTe1ATyAnKFJrzVs9vpGdsTe73WF3V4lIsk4Gacw==
   dependencies:
     is-wsl "^3.1.0"
+
+wsl-utils@^0.3.0:
+  version "0.3.1"
+  resolved "https://registry.npmjs.org/wsl-utils/-/wsl-utils-0.3.1.tgz#9479836ddf03be267aad3abfc3cb1f6e0c9f1ed1"
+  integrity sha512-g/eziiSUNBSsdDJtCLB8bdYEUMj4jR7AGeUo96p/3dTafgjHhpF4RiCFPiRILwjQoDXx5MqkBr4fwWtR3Ky4Wg==
+  dependencies:
+    is-wsl "^3.1.0"
+    powershell-utils "^0.1.0"
 
 xml-name-validator@^5.0.0:
   version "5.0.0"
