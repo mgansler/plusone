@@ -11,9 +11,10 @@ export function buildValidatedUseQueryWrapper<
   return ((...args: Array<any>): UseQueryResult => {
     const useQueryResult = useQueryWrapper(...args)
 
+    let data: unknown
     if (Object.hasOwn(useQueryResult, 'hasNextPage')) {
       // Handle infinite queries
-      useQueryResult.data = useQueryResult.isSuccess
+      data = useQueryResult.isSuccess
         ? {
             pagesParams: (useQueryResult.data as InfiniteData<unknown, unknown>).pageParams,
             pages: (useQueryResult.data as InfiniteData<unknown, unknown>).pages.map((page) => schema.parse(page)),
@@ -21,9 +22,11 @@ export function buildValidatedUseQueryWrapper<
         : undefined
     } else {
       // Handle regular queries
-      useQueryResult.data = useQueryResult.isSuccess ? schema.parse(useQueryResult.data) : undefined
+      data = useQueryResult.isSuccess ? schema.parse(useQueryResult.data) : undefined
     }
 
-    return useQueryResult
+    // The generated hooks expose their fields (including `data`) as getter-only
+    // properties, so we must return a copy instead of mutating the result.
+    return { ...useQueryResult, data } as UseQueryResult
   }) as UseQueryWrapper
 }
