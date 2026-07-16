@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 
-yarn install
+yarn install --immutable
 yarn start

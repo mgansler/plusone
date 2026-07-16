@@ -65,6 +65,14 @@
         }
       ]
     },
+    "complete-lockfile": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "dependsOn": ["build"],
+      "options": {
+        "command": "sh tools/scripts/prepare-deployment-lockfile.sh dist/apps/feeds/feeds-backend"
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "continuous": true,

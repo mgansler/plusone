@@ -3,7 +3,6 @@ RUN apk add --no-cache avahi avahi-tools curl openssl tzdata
 RUN corepack enable
 
 WORKDIR /usr/elgato
-RUN printf 'nodeLinker: node-modules\nenableScripts: true\n' > .yarnrc.yml
 CMD ["sh", "./entrypoint.sh"]
 EXPOSE 3101/tcp
 

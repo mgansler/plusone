@@ -9,8 +9,23 @@ stages:
   - build
   - deploy
 
+# Shared, project-local Yarn cache (enableGlobalCache is disabled in .yarnrc.yml).
+# Keyed on yarn.lock so packages are reused across jobs and pipelines instead of
+# being re-downloaded every time, which avoids flaky fetch-step failures under load.
+# Read-only by default; the cache is primed once by lint-and-format (pull-push).
+.yarn-cache:
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - .yarn/cache
+    policy: pull
+
 .distributed:
   interruptible: true
+  extends:
+    - .yarn-cache
   tags:
     - docker
   rules:
@@ -74,6 +89,14 @@ lint-and-format:
   stage: static
   extends:
     - .distributed
+  # Primes the shared Yarn cache for the rest of the pipeline.
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - .yarn/cache
+    policy: pull-push
   retry: 2
   script:
     - time yarn nx format:check --base=$NX_BASE --head=$NX_HEAD
@@ -199,6 +222,8 @@ package:
     expire_in: 1 hour
 
 .deploy:
+  extends:
+    - .yarn-cache
   needs:
     - package
   rules:

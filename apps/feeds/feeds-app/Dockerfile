@@ -3,7 +3,6 @@ RUN apk add --no-cache curl openssl
 RUN corepack enable
 
 WORKDIR /usr/feeds
-RUN printf 'nodeLinker: node-modules\nenableScripts: true\n' > .yarnrc.yml
 CMD ["sh", "./entrypoint.sh"]
 EXPOSE 3333/tcp
 
