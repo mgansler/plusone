@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 
-yarn install --frozen lockfile
+yarn install
 yarn start
