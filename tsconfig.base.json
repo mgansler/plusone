@@ -31,7 +31,12 @@
       "@plusone/stgtrails-api-client": ["libs/stgtrails/api-client/src/index.ts"],
       "@plusone/stgtrails-persistence": ["libs/stgtrails/persistence/src/index.ts"],
       "@plusone/validated-query-factory": ["libs/validated-query-factory/src/index.ts"]
-    }
+    },
+    "strict": false,
+    "noUncheckedSideEffectImports": false,
+    "types": ["*"],
+    "esModuleInterop": false,
+    "ignoreDeprecations": "6.0"
   },
   "exclude": ["node_modules", "tmp"]
 }
