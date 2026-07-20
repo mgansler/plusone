@@ -34,7 +34,7 @@ stages:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: on_success
   before_script:
-    - yarn install --immutable
+    - sh tools/scripts/yarn-install.sh
     - NX_HEAD=$CI_COMMIT_SHA
     - NX_BASE=${CI_MERGE_REQUEST_DIFF_BASE_SHA:-$CI_COMMIT_BEFORE_SHA}
 
@@ -234,7 +234,7 @@ package:
       when: never
   before_script:
     - source ~/.nvm/nvm.sh
-    - yarn install --immutable
+    - sh tools/scripts/yarn-install.sh
     - NX_HEAD=$CI_COMMIT_SHA
     - NX_BASE=${CI_MERGE_REQUEST_DIFF_BASE_SHA:-$CI_COMMIT_BEFORE_SHA}
     - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" ${CI_REGISTRY}
