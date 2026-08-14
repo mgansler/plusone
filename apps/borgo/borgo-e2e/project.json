@@ -18,11 +18,27 @@
         "ci": {
           "devServerTarget": "borgo-web:serve-static"
         },
-        "watch": { "watch": true }
+        "watch": {
+          "watch": true
+        }
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint"
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
     }
   }
 }

@@ -23,7 +23,7 @@ export const useLocalStorage = <ItemType>({
 
   const setItem = useCallback(
     (newValue: ItemType): void => {
-      setValue((prev) => {
+      setValue(() => {
         try {
           localStorage.setItem(key, JSON.stringify(newValue))
         } catch {

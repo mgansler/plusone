@@ -48,7 +48,7 @@ export class SunriseSunsetApiService {
       return sunriseSunsetApiResponseSchema.parse(sunriseSunsetData.data).results
     } catch (e) {
       this.logger.error(e)
-      throw new Error('Could not validate location data.')
+      throw new Error('Could not validate location data.', e)
     }
   }
 

@@ -7,9 +7,6 @@
   "targets": {
     "generate-api-client": {
       "executor": "nx:run-commands",
-      "options": {
-        "command": "yarn orval --config libs/feeds/api-client/orval.config.ts"
-      },
       "cache": true,
       "inputs": [
         {
@@ -20,11 +17,27 @@
         "!{projectRoot}/src/gen/*",
         "{workspaceRoot}/apps/feeds/feeds-backend/feeds-internal.json"
       ],
-      "outputs": ["{projectRoot}/src/gen/*"]
+      "outputs": ["{projectRoot}/src/gen/*"],
+      "options": {
+        "command": "yarn orval --config libs/feeds/api-client/orval.config.ts"
+      }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
     }
   }
 }

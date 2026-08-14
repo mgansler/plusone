@@ -8,19 +8,7 @@
   "targets": {
     "e2e": {
       "executor": "@nx/cypress:cypress",
-      "options": {
-        "cypressConfig": "apps/feeds/feeds-e2e/cypress.config.ts",
-        "devServerTarget": "",
-        "testingType": "e2e"
-      },
       "defaultConfiguration": "production",
-      "configurations": {
-        "development": {},
-        "production": {},
-        "watch": {
-          "watch": true
-        }
-      },
       "dependsOn": [
         {
           "target": "serve",
@@ -29,7 +17,19 @@
         {
           "target": "wait"
         }
-      ]
+      ],
+      "options": {
+        "cypressConfig": "apps/feeds/feeds-e2e/cypress.config.ts",
+        "devServerTarget": "",
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "development": {},
+        "production": {},
+        "watch": {
+          "watch": true
+        }
+      }
     },
     "wait": {
       "executor": "nx:run-commands",
@@ -38,8 +38,21 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
     }
   }
 }

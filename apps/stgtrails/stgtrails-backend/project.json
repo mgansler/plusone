@@ -10,6 +10,16 @@
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        },
+        {
+          "target": "build",
+          "projects": ["stgtrails-web"]
+        }
+      ],
       "options": {
         "assets": ["apps/stgtrails/stgtrails-backend/src/assets"],
         "compiler": "tsc",
@@ -53,17 +63,7 @@
             }
           ]
         }
-      },
-      "dependsOn": [
-        {
-          "target": "prisma-generate",
-          "dependencies": true
-        },
-        {
-          "target": "build",
-          "projects": ["stgtrails-web"]
-        }
-      ]
+      }
     },
     "complete-lockfile": {
       "executor": "nx:run-commands",
@@ -76,6 +76,16 @@
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        },
+        {
+          "target": "prisma-deploy",
+          "dependencies": true
+        }
+      ],
       "options": {
         "buildTarget": "stgtrails-backend:build"
       },
@@ -86,24 +96,10 @@
         "production": {
           "buildTarget": "stgtrails-backend:build:production"
         }
-      },
-      "dependsOn": [
-        {
-          "target": "prisma-generate",
-          "dependencies": true
-        },
-        {
-          "target": "prisma-deploy",
-          "dependencies": true
-        }
-      ]
+      }
     },
     "generate-api-spec": {
       "executor": "@nx/js:node",
-      "options": {
-        "buildTarget": "stgtrails-backend:build:api-spec",
-        "watch": false
-      },
       "dependsOn": [
         {
           "target": "prisma-generate",
@@ -113,14 +109,38 @@
           "target": "prisma-deploy",
           "dependencies": true
         }
-      ]
+      ],
+      "options": {
+        "buildTarget": "stgtrails-backend:build:api-spec",
+        "watch": false
+      }
     },
     "lint": {
-      "executor": "@nx/eslint:lint"
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        }
+      ],
       "options": {
         "jestConfig": "apps/stgtrails/stgtrails-backend/jest.config.ts",
         "codeCoverage": true
@@ -129,13 +149,7 @@
         "watch": {
           "watch": true
         }
-      },
-      "dependsOn": [
-        {
-          "target": "prisma-generate",
-          "dependencies": true
-        }
-      ]
+      }
     }
   }
 }

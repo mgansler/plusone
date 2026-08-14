@@ -147,5 +147,45 @@
   "parallel": 1,
   "defaultBase": "main",
   "useInferencePlugins": false,
-  "analytics": false
+  "analytics": false,
+  "plugins": [
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      },
+      "include": [
+        "apps/borgo/borgo-e2e/**/*",
+        "apps/borgo/borgo-web/**/*",
+        "apps/elgato/elgato-backend/**/*",
+        "apps/elgato/elgato-e2e/**/*",
+        "apps/elgato/elgato-web/**/*",
+        "apps/feeds/feeds-backend/**/*",
+        "apps/feeds/feeds-dummy-rss-server/**/*",
+        "apps/feeds/feeds-e2e/**/*",
+        "apps/feeds/feeds-web/**/*",
+        "apps/github-pipeline-status/**/*",
+        "apps/github-pipeline-status-e2e/**/*",
+        "apps/stgtrails/stgtrails-backend/**/*",
+        "apps/stgtrails/stgtrails-e2e/**/*",
+        "apps/stgtrails/stgtrails-web/**/*",
+        "libs/components/**/*",
+        "libs/dark-mode-theme-provider/**/*",
+        "libs/dom-utils/**/*",
+        "libs/elgato/api-client/**/*",
+        "libs/elgato/persistence/**/*",
+        "libs/feeds/api-client/**/*",
+        "libs/feeds/persistence/**/*",
+        "libs/fritzbox-client/**/*",
+        "libs/github-hooks/**/*",
+        "libs/hooks/**/*",
+        "libs/nestjs-services/**/*",
+        "libs/packages/cypress-graphql/**/*",
+        "libs/plugins/nx-prisma/**/*",
+        "libs/stgtrails/api-client/**/*",
+        "libs/stgtrails/persistence/**/*",
+        "libs/validated-query-factory/**/*"
+      ]
+    }
+  ]
 }

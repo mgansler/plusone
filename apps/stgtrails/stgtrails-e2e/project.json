@@ -8,6 +8,16 @@
   "targets": {
     "e2e": {
       "executor": "@nx/cypress:cypress",
+      "dependsOn": [
+        {
+          "target": "setup-db",
+          "projects": ["stgtrails-e2e"]
+        },
+        {
+          "target": "build",
+          "projects": ["stgtrails-web"]
+        }
+      ],
       "options": {
         "cypressConfig": "apps/stgtrails/stgtrails-e2e/cypress.config.ts",
         "testingType": "e2e",
@@ -22,17 +32,7 @@
           "baseUrl": "http://localhost:4104",
           "watch": true
         }
-      },
-      "dependsOn": [
-        {
-          "target": "setup-db",
-          "projects": ["stgtrails-e2e"]
-        },
-        {
-          "target": "build",
-          "projects": ["stgtrails-web"]
-        }
-      ]
+      }
     },
     "setup-db": {
       "executor": "nx:run-commands",
@@ -50,7 +50,21 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint"
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
     }
   }
 }

@@ -10,6 +10,16 @@
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        },
+        {
+          "target": "build",
+          "projects": ["elgato-web"]
+        }
+      ],
       "options": {
         "assets": ["apps/elgato/elgato-backend/src/assets"],
         "compiler": "tsc",
@@ -53,17 +63,7 @@
             }
           ]
         }
-      },
-      "dependsOn": [
-        {
-          "target": "prisma-generate",
-          "dependencies": true
-        },
-        {
-          "target": "build",
-          "projects": ["elgato-web"]
-        }
-      ]
+      }
     },
     "complete-lockfile": {
       "executor": "nx:run-commands",
@@ -76,6 +76,16 @@
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        },
+        {
+          "target": "prisma-deploy",
+          "dependencies": true
+        }
+      ],
       "options": {
         "buildTarget": "elgato-backend:build"
       },
@@ -86,24 +96,10 @@
         "production": {
           "buildTarget": "elgato-backend:build:production"
         }
-      },
-      "dependsOn": [
-        {
-          "target": "prisma-generate",
-          "dependencies": true
-        },
-        {
-          "target": "prisma-deploy",
-          "dependencies": true
-        }
-      ]
+      }
     },
     "generate-api-spec": {
       "executor": "@nx/js:node",
-      "options": {
-        "buildTarget": "elgato-backend:build:api-spec",
-        "watch": false
-      },
       "dependsOn": [
         {
           "target": "prisma-generate",
@@ -113,15 +109,38 @@
           "target": "prisma-deploy",
           "dependencies": true
         }
-      ]
+      ],
+      "options": {
+        "buildTarget": "elgato-backend:build:api-spec",
+        "watch": false
+      }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        }
+      ],
       "options": {
         "jestConfig": "apps/elgato/elgato-backend/jest.config.ts",
         "codeCoverage": true
@@ -130,13 +149,7 @@
         "watch": {
           "watch": true
         }
-      },
-      "dependsOn": [
-        {
-          "target": "prisma-generate",
-          "dependencies": true
-        }
-      ]
+      }
     }
   }
 }

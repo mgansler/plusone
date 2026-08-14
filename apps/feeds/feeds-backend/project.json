@@ -10,6 +10,16 @@
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "projects": ["feeds-persistence"]
+        },
+        {
+          "target": "build",
+          "projects": ["feeds-web"]
+        }
+      ],
       "options": {
         "assets": ["apps/feeds/feeds-backend/src/assets"],
         "compiler": "tsc",
@@ -53,17 +63,7 @@
             }
           ]
         }
-      },
-      "dependsOn": [
-        {
-          "target": "prisma-generate",
-          "projects": ["feeds-persistence"]
-        },
-        {
-          "target": "build",
-          "projects": ["feeds-web"]
-        }
-      ]
+      }
     },
     "complete-lockfile": {
       "executor": "nx:run-commands",
@@ -77,6 +77,16 @@
       "executor": "@nx/js:node",
       "continuous": true,
       "defaultConfiguration": "development",
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "projects": ["feeds-persistence"]
+        },
+        {
+          "target": "prisma-deploy",
+          "projects": ["feeds-persistence"]
+        }
+      ],
       "options": {
         "buildTarget": "feeds-backend:build"
       },
@@ -87,38 +97,47 @@
         "production": {
           "buildTarget": "feeds-backend:build:production"
         }
-      },
-      "dependsOn": [
-        {
-          "target": "prisma-generate",
-          "projects": ["feeds-persistence"]
-        },
-        {
-          "target": "prisma-deploy",
-          "projects": ["feeds-persistence"]
-        }
-      ]
+      }
     },
-
     "generate-api-spec": {
       "executor": "@nx/js:node",
-      "options": {
-        "buildTarget": "feeds-backend:build:api-spec",
-        "watch": false
-      },
       "dependsOn": [
         {
           "target": "prisma-generate",
           "dependencies": true
         }
-      ]
+      ],
+      "options": {
+        "buildTarget": "feeds-backend:build:api-spec",
+        "watch": false
+      }
     },
     "lint": {
-      "executor": "@nx/eslint:lint"
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/feeds/feeds-backend"],
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        }
+      ],
       "options": {
         "jestConfig": "apps/feeds/feeds-backend/jest.config.ts",
         "codeCoverage": true
@@ -127,13 +146,7 @@
         "watch": {
           "watch": true
         }
-      },
-      "dependsOn": [
-        {
-          "target": "prisma-generate",
-          "dependencies": true
-        }
-      ]
+      }
     }
   }
 }
