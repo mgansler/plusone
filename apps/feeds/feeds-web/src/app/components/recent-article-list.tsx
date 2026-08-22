@@ -67,7 +67,7 @@ export function RecentlyReadArticleList({ articles }: ArticleListProps) {
   const scrollTargetRef = useRef<HTMLDivElement>(null)
 
   return (
-    <Stack style={{ maxHeight: '100%', overflow: 'scroll' }} gap={1} ref={containerRef}>
+    <Stack style={{ maxHeight: '100%', overflow: 'scroll' }} spacing={1} ref={containerRef}>
       {articles.map((article) => (
         <Article
           key={article.article.id}

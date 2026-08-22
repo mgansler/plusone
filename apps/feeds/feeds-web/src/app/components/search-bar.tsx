@@ -30,19 +30,21 @@ export function SearchBar() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <TextField
         id={'search-input'}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position={'start'}>
-              <Search />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position={'end'}>
-              <IconButton onClick={() => setSearchParams({})} onMouseDown={(e) => e.preventDefault()} edge={'end'}>
-                <Cancel />
-              </IconButton>
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position={'start'}>
+                <Search />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position={'end'}>
+                <IconButton onClick={() => setSearchParams({})} onMouseDown={(e) => e.preventDefault()} edge={'end'}>
+                  <Cancel />
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
         }}
         {...register('search')}
         required={true}

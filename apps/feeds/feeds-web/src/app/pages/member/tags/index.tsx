@@ -25,7 +25,7 @@ function AddTag() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack gap={1}>
+      <Stack spacing={1}>
         <TextField
           label={'Tag Name'}
           {...register('name', {
@@ -73,7 +73,7 @@ export function Tags() {
 
   return (
     <Container maxWidth={'md'}>
-      <Stack gap={2}>
+      <Stack spacing={2}>
         <MuiLink component={Link} to={'../feeds'}>
           back
         </MuiLink>

@@ -55,7 +55,7 @@ export function Articles() {
 
   return (
     <>
-      <Stack direction={'row'} gap={2}>
+      <Stack direction={'row'} spacing={2}>
         <SearchBar />
         <FeedSettingsBar />
         <Button onClick={markAllRead}>Mark all read</Button>

@@ -16,7 +16,7 @@ export function RecentArticles() {
 
   return (
     <>
-      <Stack direction={'row'} gap={2}>
+      <Stack direction={'row'} spacing={2}>
         <SearchBar />
         <FeedSettingsBar />
       </Stack>

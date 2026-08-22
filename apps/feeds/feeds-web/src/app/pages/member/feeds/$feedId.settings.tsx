@@ -9,7 +9,7 @@ export function FeedIdSettings() {
 
   return (
     <Container maxWidth={'md'} key={feedId}>
-      <Stack gap={2}>
+      <Stack spacing={2}>
         <MuiLink to={`../${feedId}`} component={Link}>
           Close
         </MuiLink>

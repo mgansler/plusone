@@ -71,7 +71,7 @@ export function FeedTags() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack gap={2}>
+      <Stack spacing={2}>
         <Stack direction={'row'} spacing={1}>
           {currentTags?.map((tag) => (
             <RemovableTag key={tag.id} tag={tag} />

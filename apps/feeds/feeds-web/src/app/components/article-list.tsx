@@ -98,7 +98,7 @@ export function ArticleList({ articles, fetchNextPage }: ArticleListProps) {
   const scrollTargetRef = useRef<HTMLDivElement>(null)
 
   return (
-    <Stack style={{ maxHeight: '100%', overflow: 'scroll' }} gap={1} ref={containerRef}>
+    <Stack style={{ maxHeight: '100%', overflow: 'scroll' }} spacing={1} ref={containerRef}>
       {articles.length === 0 ? <div>No Articles</div> : null}
       {articles.map((article) => (
         <Article

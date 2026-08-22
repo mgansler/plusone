@@ -1,4 +1,4 @@
-import { CheckBoxOutlineBlank, CheckBoxOutlined, OpenInNew, Star, StarOutline } from '@mui/icons-material'
+import { CheckBoxOutlineBlank, CheckBoxOutlined, OpenInNew, Star, StarOutlined } from '@mui/icons-material'
 import { Card, CardContent, CardHeader, Container, IconButton, useTheme } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import type { RefObject } from 'react'
@@ -93,7 +93,7 @@ export function Article({
                 {unread ? <CheckBoxOutlineBlank color={color} /> : <CheckBoxOutlined color={color} />}
               </IconButton>
               <IconButton onClick={() => starArticle(article.id, !starred)} aria-label={starred ? 'Star' : 'Unstar'}>
-                {starred ? <Star /> : <StarOutline />}
+                {starred ? <Star /> : <StarOutlined />}
               </IconButton>
             </>
           }

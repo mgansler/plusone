@@ -46,7 +46,7 @@ export function FeedSettings() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack gap={2}>
+      <Stack spacing={2}>
         <Typography>Feed Settings</Typography>
 
         <TextField aria-readonly={true} disabled={true} label={'Feed Id'} value={currentSettings?.id} />
