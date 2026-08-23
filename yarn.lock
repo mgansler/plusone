@@ -18237,7 +18237,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:26.3.6, i18next@npm:^26.3.6":
+"i18next@npm:26.4.0":
+  version: 26.4.0
+  resolution: "i18next@npm:26.4.0"
+  peerDependencies:
+    typescript: ^5 || ^6 || ^7
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/3edc8b329e61f627278b83668fae9c68d9d5d187fac9d96403b3e69f7afa42cfb7bce8d5bec345dde082483cb57528a837bb2ea3f2a9d377ff23c2b86d6afdcd
+  languageName: node
+  linkType: hard
+
+"i18next@npm:^26.3.6":
   version: 26.3.6
   resolution: "i18next@npm:26.3.6"
   peerDependencies:
@@ -22941,7 +22953,7 @@ __metadata:
     graphql: "npm:17.0.2"
     happy-dom: "npm:20.11.6"
     husky: "npm:9.1.7"
-    i18next: "npm:26.3.6"
+    i18next: "npm:26.4.0"
     i18next-browser-languagedetector: "npm:8.2.1"
     i18next-cli: "npm:1.71.0"
     i18next-http-backend: "npm:4.0.1"
