@@ -9616,18 +9616,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-router@npm:1.170.31":
-  version: 1.170.31
-  resolution: "@tanstack/react-router@npm:1.170.31"
+"@tanstack/react-router@npm:1.170.32":
+  version: 1.170.32
+  resolution: "@tanstack/react-router@npm:1.170.32"
   dependencies:
     "@tanstack/history": "npm:1.162.1"
     "@tanstack/react-store": "npm:^0.9.3"
-    "@tanstack/router-core": "npm:1.171.26"
+    "@tanstack/router-core": "npm:1.171.27"
     isbot: "npm:^5.1.22"
   peerDependencies:
     react: ">=18.0.0 || >=19.0.0"
     react-dom: ">=18.0.0 || >=19.0.0"
-  checksum: 10c0/65c0060538618b17cd363de7852cbd1036122e5dd53dfa0f247973f7cf223e09f2f459882dd8177edbc4c7ab4d6adaf097681368ffee281fe4cbf9964094fd55
+  checksum: 10c0/dd9f5e00959033e68220366abf7656c42f2253a80a77f1b149cc5825aba098f60607907647e66063fc22715e5e259528563ddc532d75515fa4bb17996ab01caa
   languageName: node
   linkType: hard
 
@@ -9644,50 +9644,50 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/router-core@npm:1.171.26":
-  version: 1.171.26
-  resolution: "@tanstack/router-core@npm:1.171.26"
+"@tanstack/router-core@npm:1.171.27":
+  version: 1.171.27
+  resolution: "@tanstack/router-core@npm:1.171.27"
   dependencies:
     "@tanstack/history": "npm:1.162.1"
     cookie-es: "npm:^3.0.0"
     seroval: "npm:^1.6.2"
     seroval-plugins: "npm:^1.6.2"
-  checksum: 10c0/4e5974cf265c373e53d5f9e547c423cbbb2709e8fd6e542182db1756819d47169f8befe40327b6c3041204e6e7ede37d5812f46a11e3af1b997629cba63cfdad
+  checksum: 10c0/408bd236312fd040a3ecb2a0e1dba25ca428c6a7a86749a76596c3a11710f8b19a0002f103f513a702cd19c70b1130bf9a2a220c1d83668228ed5ea769d8782d
   languageName: node
   linkType: hard
 
-"@tanstack/router-generator@npm:1.167.32":
-  version: 1.167.32
-  resolution: "@tanstack/router-generator@npm:1.167.32"
+"@tanstack/router-generator@npm:1.167.33":
+  version: 1.167.33
+  resolution: "@tanstack/router-generator@npm:1.167.33"
   dependencies:
     "@babel/types": "npm:^7.28.5"
-    "@tanstack/router-core": "npm:1.171.26"
+    "@tanstack/router-core": "npm:1.171.27"
     "@tanstack/router-utils": "npm:1.162.2"
     "@tanstack/virtual-file-routes": "npm:1.162.0"
     jiti: "npm:^2.7.0"
     magic-string: "npm:^0.30.21"
     prettier: "npm:^3.5.0"
     zod: "npm:^4.4.3"
-  checksum: 10c0/44174238fe260e89181a669c3fe658a81eaaa526867e1a8c293249dda2ee0605ed996dd455912de924a0d93358c266befa2726a23772712bc4003296cbb8e530
+  checksum: 10c0/a92f5f18462210b73ad976cdc9c770f2d9a7454ef2657b24fb5cbb7a9d366f565ab7cd8837bf72a872febd9e94e9a6deb4472d25c6b4ea8b6132c92a40320d00
   languageName: node
   linkType: hard
 
-"@tanstack/router-plugin@npm:1.168.34":
-  version: 1.168.34
-  resolution: "@tanstack/router-plugin@npm:1.168.34"
+"@tanstack/router-plugin@npm:1.168.35":
+  version: 1.168.35
+  resolution: "@tanstack/router-plugin@npm:1.168.35"
   dependencies:
     "@babel/core": "npm:^7.28.5"
     "@babel/template": "npm:^7.27.2"
     "@babel/types": "npm:^7.28.5"
-    "@tanstack/router-core": "npm:1.171.26"
-    "@tanstack/router-generator": "npm:1.167.32"
+    "@tanstack/router-core": "npm:1.171.27"
+    "@tanstack/router-generator": "npm:1.167.33"
     "@tanstack/router-utils": "npm:1.162.2"
     chokidar: "npm:^5.0.0"
     unplugin: "npm:^3.0.0"
     zod: "npm:^4.4.3"
   peerDependencies:
     "@rsbuild/core": ">=1.0.2 || ^2.0.0"
-    "@tanstack/react-router": ^1.170.31
+    "@tanstack/react-router": ^1.170.32
     vite: ">=5.0.0 || >=6.0.0 || >=7.0.0 || >=8.0.0"
     vite-plugin-solid: ^2.11.10 || ^3.0.0-0
     webpack: ">=5.92.0"
@@ -9702,7 +9702,7 @@ __metadata:
       optional: true
     webpack:
       optional: true
-  checksum: 10c0/f37990d53b66936046e8d454adbd3c8238ad44c9fa4673a4c1a8a6df741c57d03df377171e2cb2d466786cc5a8931b102d0d1c23e3dbc771a3c94bda9be731d4
+  checksum: 10c0/a76922281fce653ea796bb380a070aa741c05a046b8c3ce67c0382fcb853a9e30c393b4b83b39c55e9fcf7f034bd5f89ec38d391ad8bef5a8e63fc4a76b53a4e
   languageName: node
   linkType: hard
 
@@ -15999,18 +15999,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-cypress@npm:7.0.0":
-  version: 7.0.0
-  resolution: "eslint-plugin-cypress@npm:7.0.0"
+"eslint-plugin-cypress@npm:7.0.1":
+  version: 7.0.1
+  resolution: "eslint-plugin-cypress@npm:7.0.1"
   dependencies:
-    globals: "npm:^17.9.0"
+    globals: "npm:^17.11.0"
   peerDependencies:
     "@typescript-eslint/parser": ">=8"
     eslint: ">=10"
   peerDependenciesMeta:
     "@typescript-eslint/parser":
       optional: true
-  checksum: 10c0/d71fd197630ac78c2fca47b163e31d5dea403656ddb39020823e4c7c8c09bf8e9c3df8335048eb7a15a5a7ab5a4c501292121fe74c67d5b08fdeafe0b4b45cb1
+  checksum: 10c0/4bef64cbb6f033bf7fafe274b34bca2403968e1cb784b27d998ccee044690b37d8f70aef857d300df3f05a4bb5fcb2aa0ccedf94eb879cccd6ae88a7022d6a7e
   languageName: node
   linkType: hard
 
@@ -17562,10 +17562,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^17.9.0":
-  version: 17.9.0
-  resolution: "globals@npm:17.9.0"
-  checksum: 10c0/776116bffb916e462d548c26a44c9a5d8f4e551935a883991e9f5d68cbcb21b63e4c688e36bbc564f97d3025e304d8b2bb0a611ecf944825aeee164898dcfbdd
+"globals@npm:^17.11.0":
+  version: 17.11.0
+  resolution: "globals@npm:17.11.0"
+  checksum: 10c0/5e1be3d816e04d4d0d01b1cdd40e46b5fb6b5e9f15aece9a5919b060e0fb1b3f1b9e7327dce97ef19e05513a6d65872e0834999ddea251557556dddd0f5fde30
   languageName: node
   linkType: hard
 
@@ -22898,8 +22898,8 @@ __metadata:
     "@tailwindcss/vite": "npm:4.3.3"
     "@tanstack/react-query": "npm:5.102.0"
     "@tanstack/react-query-devtools": "npm:5.102.0"
-    "@tanstack/react-router": "npm:1.170.31"
-    "@tanstack/router-plugin": "npm:1.168.34"
+    "@tanstack/react-router": "npm:1.170.32"
+    "@tanstack/router-plugin": "npm:1.168.35"
     "@testing-library/cypress": "npm:10.1.3"
     "@testing-library/dom": "npm:10.4.1"
     "@testing-library/jest-dom": "npm:7.0.1"
@@ -22937,7 +22937,7 @@ __metadata:
     dotenv: "npm:17.4.2"
     eslint: "npm:10.9.0"
     eslint-config-prettier: "npm:10.1.8"
-    eslint-plugin-cypress: "npm:7.0.0"
+    eslint-plugin-cypress: "npm:7.0.1"
     eslint-plugin-import: "npm:2.32.0"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-react: "npm:7.37.5"
