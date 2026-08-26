@@ -252,13 +252,13 @@ export const getCreateTrailAreaFromCoordinatesMutationOptions = <TError = unknow
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof createTrailAreaFromCoordinates>>,
     TError,
-    { data: TrailAreaCreateFromCoordinatesDto },
+    CreateTrailAreaFromCoordinatesMutationVariables,
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof createTrailAreaFromCoordinates>>,
   TError,
-  { data: TrailAreaCreateFromCoordinatesDto },
+  CreateTrailAreaFromCoordinatesMutationVariables,
   TContext
 > => {
   const mutationKey = ['createTrailAreaFromCoordinates']
@@ -270,7 +270,7 @@ export const getCreateTrailAreaFromCoordinatesMutationOptions = <TError = unknow
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof createTrailAreaFromCoordinates>>,
-    { data: TrailAreaCreateFromCoordinatesDto }
+    CreateTrailAreaFromCoordinatesMutationVariables
   > = (props) => {
     const { data } = props ?? {}
 
@@ -285,13 +285,14 @@ export type CreateTrailAreaFromCoordinatesMutationResult = NonNullable<
 >
 export type CreateTrailAreaFromCoordinatesMutationBody = TrailAreaCreateFromCoordinatesDto
 export type CreateTrailAreaFromCoordinatesMutationError = unknown
+export type CreateTrailAreaFromCoordinatesMutationVariables = { data: TrailAreaCreateFromCoordinatesDto }
 
 export const useCreateTrailAreaFromCoordinates = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof createTrailAreaFromCoordinates>>,
       TError,
-      { data: TrailAreaCreateFromCoordinatesDto },
+      CreateTrailAreaFromCoordinatesMutationVariables,
       TContext
     >
   },
@@ -299,7 +300,7 @@ export const useCreateTrailAreaFromCoordinates = <TError = unknown, TContext = u
 ): UseMutationResult<
   Awaited<ReturnType<typeof createTrailAreaFromCoordinates>>,
   TError,
-  { data: TrailAreaCreateFromCoordinatesDto },
+  CreateTrailAreaFromCoordinatesMutationVariables,
   TContext
 > => {
   return useMutation(getCreateTrailAreaFromCoordinatesMutationOptions(options), queryClient)
@@ -319,13 +320,13 @@ export const getCreateTrailAreaFromUrlMutationOptions = <TError = unknown, TCont
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof createTrailAreaFromUrl>>,
     TError,
-    { data: TrailAreaCreateFromUrlDto },
+    CreateTrailAreaFromUrlMutationVariables,
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof createTrailAreaFromUrl>>,
   TError,
-  { data: TrailAreaCreateFromUrlDto },
+  CreateTrailAreaFromUrlMutationVariables,
   TContext
 > => {
   const mutationKey = ['createTrailAreaFromUrl']
@@ -337,7 +338,7 @@ export const getCreateTrailAreaFromUrlMutationOptions = <TError = unknown, TCont
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof createTrailAreaFromUrl>>,
-    { data: TrailAreaCreateFromUrlDto }
+    CreateTrailAreaFromUrlMutationVariables
   > = (props) => {
     const { data } = props ?? {}
 
@@ -350,13 +351,14 @@ export const getCreateTrailAreaFromUrlMutationOptions = <TError = unknown, TCont
 export type CreateTrailAreaFromUrlMutationResult = NonNullable<Awaited<ReturnType<typeof createTrailAreaFromUrl>>>
 export type CreateTrailAreaFromUrlMutationBody = TrailAreaCreateFromUrlDto
 export type CreateTrailAreaFromUrlMutationError = unknown
+export type CreateTrailAreaFromUrlMutationVariables = { data: TrailAreaCreateFromUrlDto }
 
 export const useCreateTrailAreaFromUrl = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof createTrailAreaFromUrl>>,
       TError,
-      { data: TrailAreaCreateFromUrlDto },
+      CreateTrailAreaFromUrlMutationVariables,
       TContext
     >
   },
@@ -364,7 +366,7 @@ export const useCreateTrailAreaFromUrl = <TError = unknown, TContext = unknown>(
 ): UseMutationResult<
   Awaited<ReturnType<typeof createTrailAreaFromUrl>>,
   TError,
-  { data: TrailAreaCreateFromUrlDto },
+  CreateTrailAreaFromUrlMutationVariables,
   TContext
 > => {
   return useMutation(getCreateTrailAreaFromUrlMutationOptions(options), queryClient)
@@ -384,13 +386,13 @@ export const getUpdateTrailAreaMutationOptions = <TError = unknown, TContext = u
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateTrailArea>>,
     TError,
-    { trailAreaId: number; data: TrailAreaUpdateDto },
+    UpdateTrailAreaMutationVariables,
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof updateTrailArea>>,
   TError,
-  { trailAreaId: number; data: TrailAreaUpdateDto },
+  UpdateTrailAreaMutationVariables,
   TContext
 > => {
   const mutationKey = ['updateTrailArea']
@@ -400,10 +402,9 @@ export const getUpdateTrailAreaMutationOptions = <TError = unknown, TContext = u
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateTrailArea>>,
-    { trailAreaId: number; data: TrailAreaUpdateDto }
-  > = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateTrailArea>>, UpdateTrailAreaMutationVariables> = (
+    props,
+  ) => {
     const { trailAreaId, data } = props ?? {}
 
     return updateTrailArea(trailAreaId, data)
@@ -415,13 +416,14 @@ export const getUpdateTrailAreaMutationOptions = <TError = unknown, TContext = u
 export type UpdateTrailAreaMutationResult = NonNullable<Awaited<ReturnType<typeof updateTrailArea>>>
 export type UpdateTrailAreaMutationBody = TrailAreaUpdateDto
 export type UpdateTrailAreaMutationError = unknown
+export type UpdateTrailAreaMutationVariables = { trailAreaId: number; data: TrailAreaUpdateDto }
 
 export const useUpdateTrailArea = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof updateTrailArea>>,
       TError,
-      { trailAreaId: number; data: TrailAreaUpdateDto },
+      UpdateTrailAreaMutationVariables,
       TContext
     >
   },
@@ -429,7 +431,7 @@ export const useUpdateTrailArea = <TError = unknown, TContext = unknown>(
 ): UseMutationResult<
   Awaited<ReturnType<typeof updateTrailArea>>,
   TError,
-  { trailAreaId: number; data: TrailAreaUpdateDto },
+  UpdateTrailAreaMutationVariables,
   TContext
 > => {
   return useMutation(getUpdateTrailAreaMutationOptions(options), queryClient)
@@ -440,8 +442,18 @@ export const deleteTrailArea = (trailAreaId: number, signal?: AbortSignal) => {
 }
 
 export const getDeleteTrailAreaMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteTrailArea>>, TError, { trailAreaId: number }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof deleteTrailArea>>, TError, { trailAreaId: number }, TContext> => {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteTrailArea>>,
+    TError,
+    DeleteTrailAreaMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteTrailArea>>,
+  TError,
+  DeleteTrailAreaMutationVariables,
+  TContext
+> => {
   const mutationKey = ['deleteTrailArea']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -449,7 +461,7 @@ export const getDeleteTrailAreaMutationOptions = <TError = unknown, TContext = u
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteTrailArea>>, { trailAreaId: number }> = (
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteTrailArea>>, DeleteTrailAreaMutationVariables> = (
     props,
   ) => {
     const { trailAreaId } = props ?? {}
@@ -463,18 +475,24 @@ export const getDeleteTrailAreaMutationOptions = <TError = unknown, TContext = u
 export type DeleteTrailAreaMutationResult = NonNullable<Awaited<ReturnType<typeof deleteTrailArea>>>
 
 export type DeleteTrailAreaMutationError = unknown
+export type DeleteTrailAreaMutationVariables = { trailAreaId: number }
 
 export const useDeleteTrailArea = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof deleteTrailArea>>,
       TError,
-      { trailAreaId: number },
+      DeleteTrailAreaMutationVariables,
       TContext
     >
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof deleteTrailArea>>, TError, { trailAreaId: number }, TContext> => {
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteTrailArea>>,
+  TError,
+  DeleteTrailAreaMutationVariables,
+  TContext
+> => {
   return useMutation(getDeleteTrailAreaMutationOptions(options), queryClient)
 }
 
@@ -489,18 +507,8 @@ export const createTrail = (trailAreaId: number, trailCreateDto: TrailCreateDto,
 }
 
 export const getCreateTrailMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createTrail>>,
-    TError,
-    { trailAreaId: number; data: TrailCreateDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createTrail>>,
-  TError,
-  { trailAreaId: number; data: TrailCreateDto },
-  TContext
-> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof createTrail>>, TError, CreateTrailMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof createTrail>>, TError, CreateTrailMutationVariables, TContext> => {
   const mutationKey = ['createTrail']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -508,10 +516,9 @@ export const getCreateTrailMutationOptions = <TError = unknown, TContext = unkno
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createTrail>>,
-    { trailAreaId: number; data: TrailCreateDto }
-  > = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof createTrail>>, CreateTrailMutationVariables> = (
+    props,
+  ) => {
     const { trailAreaId, data } = props ?? {}
 
     return createTrail(trailAreaId, data)
@@ -523,23 +530,19 @@ export const getCreateTrailMutationOptions = <TError = unknown, TContext = unkno
 export type CreateTrailMutationResult = NonNullable<Awaited<ReturnType<typeof createTrail>>>
 export type CreateTrailMutationBody = TrailCreateDto
 export type CreateTrailMutationError = unknown
+export type CreateTrailMutationVariables = { trailAreaId: number; data: TrailCreateDto }
 
 export const useCreateTrail = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof createTrail>>,
       TError,
-      { trailAreaId: number; data: TrailCreateDto },
+      CreateTrailMutationVariables,
       TContext
     >
   },
   queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof createTrail>>,
-  TError,
-  { trailAreaId: number; data: TrailCreateDto },
-  TContext
-> => {
+): UseMutationResult<Awaited<ReturnType<typeof createTrail>>, TError, CreateTrailMutationVariables, TContext> => {
   return useMutation(getCreateTrailMutationOptions(options), queryClient)
 }
 
@@ -640,18 +643,8 @@ export const updateTrail = (trailId: number, trailUpdateDto: TrailUpdateDto, sig
 }
 
 export const getUpdateTrailMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateTrail>>,
-    TError,
-    { trailId: number; data: TrailUpdateDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateTrail>>,
-  TError,
-  { trailId: number; data: TrailUpdateDto },
-  TContext
-> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof updateTrail>>, TError, UpdateTrailMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof updateTrail>>, TError, UpdateTrailMutationVariables, TContext> => {
   const mutationKey = ['updateTrail']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -659,10 +652,9 @@ export const getUpdateTrailMutationOptions = <TError = unknown, TContext = unkno
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateTrail>>,
-    { trailId: number; data: TrailUpdateDto }
-  > = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateTrail>>, UpdateTrailMutationVariables> = (
+    props,
+  ) => {
     const { trailId, data } = props ?? {}
 
     return updateTrail(trailId, data)
@@ -674,23 +666,19 @@ export const getUpdateTrailMutationOptions = <TError = unknown, TContext = unkno
 export type UpdateTrailMutationResult = NonNullable<Awaited<ReturnType<typeof updateTrail>>>
 export type UpdateTrailMutationBody = TrailUpdateDto
 export type UpdateTrailMutationError = unknown
+export type UpdateTrailMutationVariables = { trailId: number; data: TrailUpdateDto }
 
 export const useUpdateTrail = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof updateTrail>>,
       TError,
-      { trailId: number; data: TrailUpdateDto },
+      UpdateTrailMutationVariables,
       TContext
     >
   },
   queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof updateTrail>>,
-  TError,
-  { trailId: number; data: TrailUpdateDto },
-  TContext
-> => {
+): UseMutationResult<Awaited<ReturnType<typeof updateTrail>>, TError, UpdateTrailMutationVariables, TContext> => {
   return useMutation(getUpdateTrailMutationOptions(options), queryClient)
 }
 
@@ -699,8 +687,8 @@ export const deleteTrail = (trailId: number, signal?: AbortSignal) => {
 }
 
 export const getDeleteTrailMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteTrail>>, TError, { trailId: number }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof deleteTrail>>, TError, { trailId: number }, TContext> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteTrail>>, TError, DeleteTrailMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof deleteTrail>>, TError, DeleteTrailMutationVariables, TContext> => {
   const mutationKey = ['deleteTrail']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -708,7 +696,9 @@ export const getDeleteTrailMutationOptions = <TError = unknown, TContext = unkno
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteTrail>>, { trailId: number }> = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteTrail>>, DeleteTrailMutationVariables> = (
+    props,
+  ) => {
     const { trailId } = props ?? {}
 
     return deleteTrail(trailId)
@@ -720,13 +710,19 @@ export const getDeleteTrailMutationOptions = <TError = unknown, TContext = unkno
 export type DeleteTrailMutationResult = NonNullable<Awaited<ReturnType<typeof deleteTrail>>>
 
 export type DeleteTrailMutationError = unknown
+export type DeleteTrailMutationVariables = { trailId: number }
 
 export const useDeleteTrail = <TError = unknown, TContext = unknown>(
   options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteTrail>>, TError, { trailId: number }, TContext>
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteTrail>>,
+      TError,
+      DeleteTrailMutationVariables,
+      TContext
+    >
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof deleteTrail>>, TError, { trailId: number }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<typeof deleteTrail>>, TError, DeleteTrailMutationVariables, TContext> => {
   return useMutation(getDeleteTrailMutationOptions(options), queryClient)
 }
 

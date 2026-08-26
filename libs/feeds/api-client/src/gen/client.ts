@@ -383,13 +383,13 @@ export const getMarkArticlesReadMutationOptions = <TError = unknown, TContext = 
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof markArticlesRead>>,
     TError,
-    { params?: MarkArticlesReadParams },
+    MarkArticlesReadMutationVariables,
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof markArticlesRead>>,
   TError,
-  { params?: MarkArticlesReadParams },
+  MarkArticlesReadMutationVariables,
   TContext
 > => {
   const mutationKey = ['markArticlesRead']
@@ -401,7 +401,7 @@ export const getMarkArticlesReadMutationOptions = <TError = unknown, TContext = 
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof markArticlesRead>>,
-    { params?: MarkArticlesReadParams }
+    MarkArticlesReadMutationVariables
   > = (props) => {
     const { params } = props ?? {}
 
@@ -414,13 +414,14 @@ export const getMarkArticlesReadMutationOptions = <TError = unknown, TContext = 
 export type MarkArticlesReadMutationResult = NonNullable<Awaited<ReturnType<typeof markArticlesRead>>>
 
 export type MarkArticlesReadMutationError = unknown
+export type MarkArticlesReadMutationVariables = { params?: MarkArticlesReadParams }
 
 export const useMarkArticlesRead = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof markArticlesRead>>,
       TError,
-      { params?: MarkArticlesReadParams },
+      MarkArticlesReadMutationVariables,
       TContext
     >
   },
@@ -428,7 +429,7 @@ export const useMarkArticlesRead = <TError = unknown, TContext = unknown>(
 ): UseMutationResult<
   Awaited<ReturnType<typeof markArticlesRead>>,
   TError,
-  { params?: MarkArticlesReadParams },
+  MarkArticlesReadMutationVariables,
   TContext
 > => {
   return useMutation(getMarkArticlesReadMutationOptions(options), queryClient)
@@ -452,15 +453,10 @@ export const getToggleUnreadMutationOptions = <TError = unknown, TContext = unkn
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof toggleUnread>>,
     TError,
-    { articleId: string; data: ArticleToggleUnreadDto },
+    ToggleUnreadMutationVariables,
     TContext
   >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof toggleUnread>>,
-  TError,
-  { articleId: string; data: ArticleToggleUnreadDto },
-  TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<typeof toggleUnread>>, TError, ToggleUnreadMutationVariables, TContext> => {
   const mutationKey = ['toggleUnread']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -468,10 +464,9 @@ export const getToggleUnreadMutationOptions = <TError = unknown, TContext = unkn
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof toggleUnread>>,
-    { articleId: string; data: ArticleToggleUnreadDto }
-  > = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof toggleUnread>>, ToggleUnreadMutationVariables> = (
+    props,
+  ) => {
     const { articleId, data } = props ?? {}
 
     return toggleUnread(articleId, data)
@@ -483,23 +478,19 @@ export const getToggleUnreadMutationOptions = <TError = unknown, TContext = unkn
 export type ToggleUnreadMutationResult = NonNullable<Awaited<ReturnType<typeof toggleUnread>>>
 export type ToggleUnreadMutationBody = ArticleToggleUnreadDto
 export type ToggleUnreadMutationError = unknown
+export type ToggleUnreadMutationVariables = { articleId: string; data: ArticleToggleUnreadDto }
 
 export const useToggleUnread = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof toggleUnread>>,
       TError,
-      { articleId: string; data: ArticleToggleUnreadDto },
+      ToggleUnreadMutationVariables,
       TContext
     >
   },
   queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof toggleUnread>>,
-  TError,
-  { articleId: string; data: ArticleToggleUnreadDto },
-  TContext
-> => {
+): UseMutationResult<Awaited<ReturnType<typeof toggleUnread>>, TError, ToggleUnreadMutationVariables, TContext> => {
   return useMutation(getToggleUnreadMutationOptions(options), queryClient)
 }
 
@@ -514,18 +505,8 @@ export const starArticle = (articleId: string, starArticleDto: StarArticleDto, s
 }
 
 export const getStarArticleMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof starArticle>>,
-    TError,
-    { articleId: string; data: StarArticleDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof starArticle>>,
-  TError,
-  { articleId: string; data: StarArticleDto },
-  TContext
-> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof starArticle>>, TError, StarArticleMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof starArticle>>, TError, StarArticleMutationVariables, TContext> => {
   const mutationKey = ['starArticle']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -533,10 +514,9 @@ export const getStarArticleMutationOptions = <TError = unknown, TContext = unkno
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof starArticle>>,
-    { articleId: string; data: StarArticleDto }
-  > = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof starArticle>>, StarArticleMutationVariables> = (
+    props,
+  ) => {
     const { articleId, data } = props ?? {}
 
     return starArticle(articleId, data)
@@ -548,23 +528,19 @@ export const getStarArticleMutationOptions = <TError = unknown, TContext = unkno
 export type StarArticleMutationResult = NonNullable<Awaited<ReturnType<typeof starArticle>>>
 export type StarArticleMutationBody = StarArticleDto
 export type StarArticleMutationError = unknown
+export type StarArticleMutationVariables = { articleId: string; data: StarArticleDto }
 
 export const useStarArticle = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof starArticle>>,
       TError,
-      { articleId: string; data: StarArticleDto },
+      StarArticleMutationVariables,
       TContext
     >
   },
   queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof starArticle>>,
-  TError,
-  { articleId: string; data: StarArticleDto },
-  TContext
-> => {
+): UseMutationResult<Awaited<ReturnType<typeof starArticle>>, TError, StarArticleMutationVariables, TContext> => {
   return useMutation(getStarArticleMutationOptions(options), queryClient)
 }
 
@@ -876,8 +852,8 @@ export const login = (userLoginDto: UserLoginDto, signal?: AbortSignal) => {
 }
 
 export const getLoginMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: UserLoginDto }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: UserLoginDto }, TContext> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext> => {
   const mutationKey = ['login']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -885,7 +861,7 @@ export const getLoginMutationOptions = <TError = unknown, TContext = unknown>(op
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, { data: UserLoginDto }> = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, LoginMutationVariables> = (props) => {
     const { data } = props ?? {}
 
     return login(data)
@@ -897,13 +873,14 @@ export const getLoginMutationOptions = <TError = unknown, TContext = unknown>(op
 export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
 export type LoginMutationBody = UserLoginDto
 export type LoginMutationError = unknown
+export type LoginMutationVariables = { data: UserLoginDto }
 
 export const useLogin = <TError = unknown, TContext = unknown>(
   options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: UserLoginDto }, TContext>
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext>
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof login>>, TError, { data: UserLoginDto }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext> => {
   return useMutation(getLoginMutationOptions(options), queryClient)
 }
 
@@ -983,8 +960,8 @@ export const register = (userRegistrationDto: UserRegistrationDto, signal?: Abor
 }
 
 export const getRegisterMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, { data: UserRegistrationDto }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, { data: UserRegistrationDto }, TContext> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext> => {
   const mutationKey = ['register']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -992,7 +969,7 @@ export const getRegisterMutationOptions = <TError = unknown, TContext = unknown>
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof register>>, { data: UserRegistrationDto }> = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof register>>, RegisterMutationVariables> = (props) => {
     const { data } = props ?? {}
 
     return register(data)
@@ -1004,13 +981,14 @@ export const getRegisterMutationOptions = <TError = unknown, TContext = unknown>
 export type RegisterMutationResult = NonNullable<Awaited<ReturnType<typeof register>>>
 export type RegisterMutationBody = UserRegistrationDto
 export type RegisterMutationError = unknown
+export type RegisterMutationVariables = { data: UserRegistrationDto }
 
 export const useRegister = <TError = unknown, TContext = unknown>(
   options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, { data: UserRegistrationDto }, TContext>
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext>
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof register>>, TError, { data: UserRegistrationDto }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext> => {
   return useMutation(getRegisterMutationOptions(options), queryClient)
 }
 
@@ -1220,8 +1198,8 @@ export const addFeed = (feedInputDto: FeedInputDto, signal?: AbortSignal) => {
 }
 
 export const getAddFeedMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof addFeed>>, TError, { data: FeedInputDto }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof addFeed>>, TError, { data: FeedInputDto }, TContext> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof addFeed>>, TError, AddFeedMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof addFeed>>, TError, AddFeedMutationVariables, TContext> => {
   const mutationKey = ['addFeed']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -1229,7 +1207,7 @@ export const getAddFeedMutationOptions = <TError = unknown, TContext = unknown>(
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof addFeed>>, { data: FeedInputDto }> = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof addFeed>>, AddFeedMutationVariables> = (props) => {
     const { data } = props ?? {}
 
     return addFeed(data)
@@ -1241,13 +1219,14 @@ export const getAddFeedMutationOptions = <TError = unknown, TContext = unknown>(
 export type AddFeedMutationResult = NonNullable<Awaited<ReturnType<typeof addFeed>>>
 export type AddFeedMutationBody = FeedInputDto
 export type AddFeedMutationError = unknown
+export type AddFeedMutationVariables = { data: FeedInputDto }
 
 export const useAddFeed = <TError = unknown, TContext = unknown>(
   options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof addFeed>>, TError, { data: FeedInputDto }, TContext>
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof addFeed>>, TError, AddFeedMutationVariables, TContext>
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof addFeed>>, TError, { data: FeedInputDto }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<typeof addFeed>>, TError, AddFeedMutationVariables, TContext> => {
   return useMutation(getAddFeedMutationOptions(options), queryClient)
 }
 
@@ -1335,10 +1314,10 @@ export const getDiscoverFeedMutationOptions = <TError = unknown, TContext = unkn
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof discoverFeed>>,
     TError,
-    { params: DiscoverFeedParams },
+    DiscoverFeedMutationVariables,
     TContext
   >
-}): UseMutationOptions<Awaited<ReturnType<typeof discoverFeed>>, TError, { params: DiscoverFeedParams }, TContext> => {
+}): UseMutationOptions<Awaited<ReturnType<typeof discoverFeed>>, TError, DiscoverFeedMutationVariables, TContext> => {
   const mutationKey = ['discoverFeed']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -1346,7 +1325,7 @@ export const getDiscoverFeedMutationOptions = <TError = unknown, TContext = unkn
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof discoverFeed>>, { params: DiscoverFeedParams }> = (
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof discoverFeed>>, DiscoverFeedMutationVariables> = (
     props,
   ) => {
     const { params } = props ?? {}
@@ -1360,18 +1339,19 @@ export const getDiscoverFeedMutationOptions = <TError = unknown, TContext = unkn
 export type DiscoverFeedMutationResult = NonNullable<Awaited<ReturnType<typeof discoverFeed>>>
 
 export type DiscoverFeedMutationError = unknown
+export type DiscoverFeedMutationVariables = { params: DiscoverFeedParams }
 
 export const useDiscoverFeed = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof discoverFeed>>,
       TError,
-      { params: DiscoverFeedParams },
+      DiscoverFeedMutationVariables,
       TContext
     >
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof discoverFeed>>, TError, { params: DiscoverFeedParams }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<typeof discoverFeed>>, TError, DiscoverFeedMutationVariables, TContext> => {
   return useMutation(getDiscoverFeedMutationOptions(options), queryClient)
 }
 
@@ -1386,8 +1366,8 @@ export const importFeeds = (feedInputDto: FeedInputDto[], signal?: AbortSignal) 
 }
 
 export const getImportFeedsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof importFeeds>>, TError, { data: FeedInputDto[] }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof importFeeds>>, TError, { data: FeedInputDto[] }, TContext> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof importFeeds>>, TError, ImportFeedsMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof importFeeds>>, TError, ImportFeedsMutationVariables, TContext> => {
   const mutationKey = ['importFeeds']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -1395,7 +1375,9 @@ export const getImportFeedsMutationOptions = <TError = unknown, TContext = unkno
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof importFeeds>>, { data: FeedInputDto[] }> = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof importFeeds>>, ImportFeedsMutationVariables> = (
+    props,
+  ) => {
     const { data } = props ?? {}
 
     return importFeeds(data)
@@ -1407,13 +1389,19 @@ export const getImportFeedsMutationOptions = <TError = unknown, TContext = unkno
 export type ImportFeedsMutationResult = NonNullable<Awaited<ReturnType<typeof importFeeds>>>
 export type ImportFeedsMutationBody = FeedInputDto[]
 export type ImportFeedsMutationError = unknown
+export type ImportFeedsMutationVariables = { data: FeedInputDto[] }
 
 export const useImportFeeds = <TError = unknown, TContext = unknown>(
   options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof importFeeds>>, TError, { data: FeedInputDto[] }, TContext>
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof importFeeds>>,
+      TError,
+      ImportFeedsMutationVariables,
+      TContext
+    >
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof importFeeds>>, TError, { data: FeedInputDto[] }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<typeof importFeeds>>, TError, ImportFeedsMutationVariables, TContext> => {
   return useMutation(getImportFeedsMutationOptions(options), queryClient)
 }
 
@@ -1514,13 +1502,13 @@ export const getUpdateFeedSettingsMutationOptions = <TError = unknown, TContext 
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateFeedSettings>>,
     TError,
-    { id: string; data: UpdateFeedSettingsInputDto },
+    UpdateFeedSettingsMutationVariables,
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof updateFeedSettings>>,
   TError,
-  { id: string; data: UpdateFeedSettingsInputDto },
+  UpdateFeedSettingsMutationVariables,
   TContext
 > => {
   const mutationKey = ['updateFeedSettings']
@@ -1532,7 +1520,7 @@ export const getUpdateFeedSettingsMutationOptions = <TError = unknown, TContext 
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof updateFeedSettings>>,
-    { id: string; data: UpdateFeedSettingsInputDto }
+    UpdateFeedSettingsMutationVariables
   > = (props) => {
     const { id, data } = props ?? {}
 
@@ -1545,13 +1533,14 @@ export const getUpdateFeedSettingsMutationOptions = <TError = unknown, TContext 
 export type UpdateFeedSettingsMutationResult = NonNullable<Awaited<ReturnType<typeof updateFeedSettings>>>
 export type UpdateFeedSettingsMutationBody = UpdateFeedSettingsInputDto
 export type UpdateFeedSettingsMutationError = unknown
+export type UpdateFeedSettingsMutationVariables = { id: string; data: UpdateFeedSettingsInputDto }
 
 export const useUpdateFeedSettings = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof updateFeedSettings>>,
       TError,
-      { id: string; data: UpdateFeedSettingsInputDto },
+      UpdateFeedSettingsMutationVariables,
       TContext
     >
   },
@@ -1559,7 +1548,7 @@ export const useUpdateFeedSettings = <TError = unknown, TContext = unknown>(
 ): UseMutationResult<
   Awaited<ReturnType<typeof updateFeedSettings>>,
   TError,
-  { id: string; data: UpdateFeedSettingsInputDto },
+  UpdateFeedSettingsMutationVariables,
   TContext
 > => {
   return useMutation(getUpdateFeedSettingsMutationOptions(options), queryClient)
@@ -1654,18 +1643,8 @@ export const tagFeed = (id: string, tagFeedInputDto: TagFeedInputDto, signal?: A
 }
 
 export const getTagFeedMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof tagFeed>>,
-    TError,
-    { id: string; data: TagFeedInputDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof tagFeed>>,
-  TError,
-  { id: string; data: TagFeedInputDto },
-  TContext
-> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof tagFeed>>, TError, TagFeedMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof tagFeed>>, TError, TagFeedMutationVariables, TContext> => {
   const mutationKey = ['tagFeed']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -1673,9 +1652,7 @@ export const getTagFeedMutationOptions = <TError = unknown, TContext = unknown>(
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof tagFeed>>, { id: string; data: TagFeedInputDto }> = (
-    props,
-  ) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof tagFeed>>, TagFeedMutationVariables> = (props) => {
     const { id, data } = props ?? {}
 
     return tagFeed(id, data)
@@ -1687,18 +1664,14 @@ export const getTagFeedMutationOptions = <TError = unknown, TContext = unknown>(
 export type TagFeedMutationResult = NonNullable<Awaited<ReturnType<typeof tagFeed>>>
 export type TagFeedMutationBody = TagFeedInputDto
 export type TagFeedMutationError = unknown
+export type TagFeedMutationVariables = { id: string; data: TagFeedInputDto }
 
 export const useTagFeed = <TError = unknown, TContext = unknown>(
   options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof tagFeed>>,
-      TError,
-      { id: string; data: TagFeedInputDto },
-      TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof tagFeed>>, TError, TagFeedMutationVariables, TContext>
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof tagFeed>>, TError, { id: string; data: TagFeedInputDto }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<typeof tagFeed>>, TError, TagFeedMutationVariables, TContext> => {
   return useMutation(getTagFeedMutationOptions(options), queryClient)
 }
 
@@ -1713,18 +1686,8 @@ export const untagFeed = (id: string, tagFeedInputDto: TagFeedInputDto, signal?:
 }
 
 export const getUntagFeedMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof untagFeed>>,
-    TError,
-    { id: string; data: TagFeedInputDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof untagFeed>>,
-  TError,
-  { id: string; data: TagFeedInputDto },
-  TContext
-> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof untagFeed>>, TError, UntagFeedMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof untagFeed>>, TError, UntagFeedMutationVariables, TContext> => {
   const mutationKey = ['untagFeed']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -1732,9 +1695,7 @@ export const getUntagFeedMutationOptions = <TError = unknown, TContext = unknown
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof untagFeed>>, { id: string; data: TagFeedInputDto }> = (
-    props,
-  ) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof untagFeed>>, UntagFeedMutationVariables> = (props) => {
     const { id, data } = props ?? {}
 
     return untagFeed(id, data)
@@ -1746,23 +1707,14 @@ export const getUntagFeedMutationOptions = <TError = unknown, TContext = unknown
 export type UntagFeedMutationResult = NonNullable<Awaited<ReturnType<typeof untagFeed>>>
 export type UntagFeedMutationBody = TagFeedInputDto
 export type UntagFeedMutationError = unknown
+export type UntagFeedMutationVariables = { id: string; data: TagFeedInputDto }
 
 export const useUntagFeed = <TError = unknown, TContext = unknown>(
   options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof untagFeed>>,
-      TError,
-      { id: string; data: TagFeedInputDto },
-      TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof untagFeed>>, TError, UntagFeedMutationVariables, TContext>
   },
   queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof untagFeed>>,
-  TError,
-  { id: string; data: TagFeedInputDto },
-  TContext
-> => {
+): UseMutationResult<Awaited<ReturnType<typeof untagFeed>>, TError, UntagFeedMutationVariables, TContext> => {
   return useMutation(getUntagFeedMutationOptions(options), queryClient)
 }
 
@@ -1842,8 +1794,8 @@ export const addTag = (tagInputDto: TagInputDto, signal?: AbortSignal) => {
 }
 
 export const getAddTagMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof addTag>>, TError, { data: TagInputDto }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof addTag>>, TError, { data: TagInputDto }, TContext> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof addTag>>, TError, AddTagMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof addTag>>, TError, AddTagMutationVariables, TContext> => {
   const mutationKey = ['addTag']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -1851,7 +1803,7 @@ export const getAddTagMutationOptions = <TError = unknown, TContext = unknown>(o
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof addTag>>, { data: TagInputDto }> = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof addTag>>, AddTagMutationVariables> = (props) => {
     const { data } = props ?? {}
 
     return addTag(data)
@@ -1863,13 +1815,14 @@ export const getAddTagMutationOptions = <TError = unknown, TContext = unknown>(o
 export type AddTagMutationResult = NonNullable<Awaited<ReturnType<typeof addTag>>>
 export type AddTagMutationBody = TagInputDto
 export type AddTagMutationError = unknown
+export type AddTagMutationVariables = { data: TagInputDto }
 
 export const useAddTag = <TError = unknown, TContext = unknown>(
   options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof addTag>>, TError, { data: TagInputDto }, TContext>
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof addTag>>, TError, AddTagMutationVariables, TContext>
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof addTag>>, TError, { data: TagInputDto }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<typeof addTag>>, TError, AddTagMutationVariables, TContext> => {
   return useMutation(getAddTagMutationOptions(options), queryClient)
 }
 
@@ -1878,8 +1831,8 @@ export const removeTag = (id: string, signal?: AbortSignal) => {
 }
 
 export const getRemoveTagMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof removeTag>>, TError, { id: string }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof removeTag>>, TError, { id: string }, TContext> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof removeTag>>, TError, RemoveTagMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof removeTag>>, TError, RemoveTagMutationVariables, TContext> => {
   const mutationKey = ['removeTag']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -1887,7 +1840,7 @@ export const getRemoveTagMutationOptions = <TError = unknown, TContext = unknown
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof removeTag>>, { id: string }> = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof removeTag>>, RemoveTagMutationVariables> = (props) => {
     const { id } = props ?? {}
 
     return removeTag(id)
@@ -1899,11 +1852,14 @@ export const getRemoveTagMutationOptions = <TError = unknown, TContext = unknown
 export type RemoveTagMutationResult = NonNullable<Awaited<ReturnType<typeof removeTag>>>
 
 export type RemoveTagMutationError = unknown
+export type RemoveTagMutationVariables = { id: string }
 
 export const useRemoveTag = <TError = unknown, TContext = unknown>(
-  options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof removeTag>>, TError, { id: string }, TContext> },
+  options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof removeTag>>, TError, RemoveTagMutationVariables, TContext>
+  },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof removeTag>>, TError, { id: string }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<typeof removeTag>>, TError, RemoveTagMutationVariables, TContext> => {
   return useMutation(getRemoveTagMutationOptions(options), queryClient)
 }
 
@@ -2085,8 +2041,8 @@ export const deleteUser = (userId: unknown, signal?: AbortSignal) => {
 }
 
 export const getDeleteUserMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError, { userId: unknown }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError, { userId: unknown }, TContext> => {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError, DeleteUserMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError, DeleteUserMutationVariables, TContext> => {
   const mutationKey = ['deleteUser']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -2094,7 +2050,7 @@ export const getDeleteUserMutationOptions = <TError = unknown, TContext = unknow
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUser>>, { userId: unknown }> = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUser>>, DeleteUserMutationVariables> = (props) => {
     const { userId } = props ?? {}
 
     return deleteUser(userId)
@@ -2106,12 +2062,13 @@ export const getDeleteUserMutationOptions = <TError = unknown, TContext = unknow
 export type DeleteUserMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUser>>>
 
 export type DeleteUserMutationError = unknown
+export type DeleteUserMutationVariables = { userId: unknown }
 
 export const useDeleteUser = <TError = unknown, TContext = unknown>(
   options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError, { userId: unknown }, TContext>
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError, DeleteUserMutationVariables, TContext>
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof deleteUser>>, TError, { userId: unknown }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<typeof deleteUser>>, TError, DeleteUserMutationVariables, TContext> => {
   return useMutation(getDeleteUserMutationOptions(options), queryClient)
 }

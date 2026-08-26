@@ -363,8 +363,18 @@ export const addDiscoveredDevice = (deviceId: string, signal?: AbortSignal) => {
 }
 
 export const getAddDiscoveredDeviceMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof addDiscoveredDevice>>, TError, { deviceId: string }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof addDiscoveredDevice>>, TError, { deviceId: string }, TContext> => {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addDiscoveredDevice>>,
+    TError,
+    AddDiscoveredDeviceMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof addDiscoveredDevice>>,
+  TError,
+  AddDiscoveredDeviceMutationVariables,
+  TContext
+> => {
   const mutationKey = ['addDiscoveredDevice']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -372,9 +382,10 @@ export const getAddDiscoveredDeviceMutationOptions = <TError = unknown, TContext
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof addDiscoveredDevice>>, { deviceId: string }> = (
-    props,
-  ) => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof addDiscoveredDevice>>,
+    AddDiscoveredDeviceMutationVariables
+  > = (props) => {
     const { deviceId } = props ?? {}
 
     return addDiscoveredDevice(deviceId)
@@ -386,18 +397,24 @@ export const getAddDiscoveredDeviceMutationOptions = <TError = unknown, TContext
 export type AddDiscoveredDeviceMutationResult = NonNullable<Awaited<ReturnType<typeof addDiscoveredDevice>>>
 
 export type AddDiscoveredDeviceMutationError = unknown
+export type AddDiscoveredDeviceMutationVariables = { deviceId: string }
 
 export const useAddDiscoveredDevice = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof addDiscoveredDevice>>,
       TError,
-      { deviceId: string },
+      AddDiscoveredDeviceMutationVariables,
       TContext
     >
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof addDiscoveredDevice>>, TError, { deviceId: string }, TContext> => {
+): UseMutationResult<
+  Awaited<ReturnType<typeof addDiscoveredDevice>>,
+  TError,
+  AddDiscoveredDeviceMutationVariables,
+  TContext
+> => {
   return useMutation(getAddDiscoveredDeviceMutationOptions(options), queryClient)
 }
 
@@ -406,8 +423,18 @@ export const addManualDevice = (address: string, signal?: AbortSignal) => {
 }
 
 export const getAddManualDeviceMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof addManualDevice>>, TError, { address: string }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof addManualDevice>>, TError, { address: string }, TContext> => {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addManualDevice>>,
+    TError,
+    AddManualDeviceMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof addManualDevice>>,
+  TError,
+  AddManualDeviceMutationVariables,
+  TContext
+> => {
   const mutationKey = ['addManualDevice']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -415,7 +442,9 @@ export const getAddManualDeviceMutationOptions = <TError = unknown, TContext = u
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof addManualDevice>>, { address: string }> = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof addManualDevice>>, AddManualDeviceMutationVariables> = (
+    props,
+  ) => {
     const { address } = props ?? {}
 
     return addManualDevice(address)
@@ -427,13 +456,24 @@ export const getAddManualDeviceMutationOptions = <TError = unknown, TContext = u
 export type AddManualDeviceMutationResult = NonNullable<Awaited<ReturnType<typeof addManualDevice>>>
 
 export type AddManualDeviceMutationError = unknown
+export type AddManualDeviceMutationVariables = { address: string }
 
 export const useAddManualDevice = <TError = unknown, TContext = unknown>(
   options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof addManualDevice>>, TError, { address: string }, TContext>
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof addManualDevice>>,
+      TError,
+      AddManualDeviceMutationVariables,
+      TContext
+    >
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof addManualDevice>>, TError, { address: string }, TContext> => {
+): UseMutationResult<
+  Awaited<ReturnType<typeof addManualDevice>>,
+  TError,
+  AddManualDeviceMutationVariables,
+  TContext
+> => {
   return useMutation(getAddManualDeviceMutationOptions(options), queryClient)
 }
 
@@ -610,13 +650,13 @@ export const getSetDisplayNameMutationOptions = <TError = unknown, TContext = un
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof setDisplayName>>,
     TError,
-    { macAddress: string; data: DeviceDisplayNameRequestDto },
+    SetDisplayNameMutationVariables,
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof setDisplayName>>,
   TError,
-  { macAddress: string; data: DeviceDisplayNameRequestDto },
+  SetDisplayNameMutationVariables,
   TContext
 > => {
   const mutationKey = ['setDisplayName']
@@ -626,10 +666,9 @@ export const getSetDisplayNameMutationOptions = <TError = unknown, TContext = un
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof setDisplayName>>,
-    { macAddress: string; data: DeviceDisplayNameRequestDto }
-  > = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof setDisplayName>>, SetDisplayNameMutationVariables> = (
+    props,
+  ) => {
     const { macAddress, data } = props ?? {}
 
     return setDisplayName(macAddress, data)
@@ -641,23 +680,19 @@ export const getSetDisplayNameMutationOptions = <TError = unknown, TContext = un
 export type SetDisplayNameMutationResult = NonNullable<Awaited<ReturnType<typeof setDisplayName>>>
 export type SetDisplayNameMutationBody = DeviceDisplayNameRequestDto
 export type SetDisplayNameMutationError = unknown
+export type SetDisplayNameMutationVariables = { macAddress: string; data: DeviceDisplayNameRequestDto }
 
 export const useSetDisplayName = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof setDisplayName>>,
       TError,
-      { macAddress: string; data: DeviceDisplayNameRequestDto },
+      SetDisplayNameMutationVariables,
       TContext
     >
   },
   queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof setDisplayName>>,
-  TError,
-  { macAddress: string; data: DeviceDisplayNameRequestDto },
-  TContext
-> => {
+): UseMutationResult<Awaited<ReturnType<typeof setDisplayName>>, TError, SetDisplayNameMutationVariables, TContext> => {
   return useMutation(getSetDisplayNameMutationOptions(options), queryClient)
 }
 
@@ -666,8 +701,13 @@ export const toggleDevice = (macAddress: string, signal?: AbortSignal) => {
 }
 
 export const getToggleDeviceMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { macAddress: string }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { macAddress: string }, TContext> => {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof toggleDevice>>,
+    TError,
+    ToggleDeviceMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, ToggleDeviceMutationVariables, TContext> => {
   const mutationKey = ['toggleDevice']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -675,7 +715,9 @@ export const getToggleDeviceMutationOptions = <TError = unknown, TContext = unkn
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof toggleDevice>>, { macAddress: string }> = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof toggleDevice>>, ToggleDeviceMutationVariables> = (
+    props,
+  ) => {
     const { macAddress } = props ?? {}
 
     return toggleDevice(macAddress)
@@ -687,13 +729,19 @@ export const getToggleDeviceMutationOptions = <TError = unknown, TContext = unkn
 export type ToggleDeviceMutationResult = NonNullable<Awaited<ReturnType<typeof toggleDevice>>>
 
 export type ToggleDeviceMutationError = unknown
+export type ToggleDeviceMutationVariables = { macAddress: string }
 
 export const useToggleDevice = <TError = unknown, TContext = unknown>(
   options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, { macAddress: string }, TContext>
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof toggleDevice>>,
+      TError,
+      ToggleDeviceMutationVariables,
+      TContext
+    >
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof toggleDevice>>, TError, { macAddress: string }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<typeof toggleDevice>>, TError, ToggleDeviceMutationVariables, TContext> => {
   return useMutation(getToggleDeviceMutationOptions(options), queryClient)
 }
 
@@ -715,13 +763,13 @@ export const getDeviceSetPowerStateMutationOptions = <TError = unknown, TContext
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof deviceSetPowerState>>,
     TError,
-    { macAddress: string; data: DevicePowerStateRequestDto },
+    DeviceSetPowerStateMutationVariables,
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof deviceSetPowerState>>,
   TError,
-  { macAddress: string; data: DevicePowerStateRequestDto },
+  DeviceSetPowerStateMutationVariables,
   TContext
 > => {
   const mutationKey = ['deviceSetPowerState']
@@ -733,7 +781,7 @@ export const getDeviceSetPowerStateMutationOptions = <TError = unknown, TContext
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof deviceSetPowerState>>,
-    { macAddress: string; data: DevicePowerStateRequestDto }
+    DeviceSetPowerStateMutationVariables
   > = (props) => {
     const { macAddress, data } = props ?? {}
 
@@ -746,13 +794,14 @@ export const getDeviceSetPowerStateMutationOptions = <TError = unknown, TContext
 export type DeviceSetPowerStateMutationResult = NonNullable<Awaited<ReturnType<typeof deviceSetPowerState>>>
 export type DeviceSetPowerStateMutationBody = DevicePowerStateRequestDto
 export type DeviceSetPowerStateMutationError = unknown
+export type DeviceSetPowerStateMutationVariables = { macAddress: string; data: DevicePowerStateRequestDto }
 
 export const useDeviceSetPowerState = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof deviceSetPowerState>>,
       TError,
-      { macAddress: string; data: DevicePowerStateRequestDto },
+      DeviceSetPowerStateMutationVariables,
       TContext
     >
   },
@@ -760,7 +809,7 @@ export const useDeviceSetPowerState = <TError = unknown, TContext = unknown>(
 ): UseMutationResult<
   Awaited<ReturnType<typeof deviceSetPowerState>>,
   TError,
-  { macAddress: string; data: DevicePowerStateRequestDto },
+  DeviceSetPowerStateMutationVariables,
   TContext
 > => {
   return useMutation(getDeviceSetPowerStateMutationOptions(options), queryClient)
@@ -784,13 +833,13 @@ export const getTransitionToColorMutationOptions = <TError = unknown, TContext =
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof transitionToColor>>,
     TError,
-    { macAddress: string; data: TransitionToColorRequestDto },
+    TransitionToColorMutationVariables,
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof transitionToColor>>,
   TError,
-  { macAddress: string; data: TransitionToColorRequestDto },
+  TransitionToColorMutationVariables,
   TContext
 > => {
   const mutationKey = ['transitionToColor']
@@ -802,7 +851,7 @@ export const getTransitionToColorMutationOptions = <TError = unknown, TContext =
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof transitionToColor>>,
-    { macAddress: string; data: TransitionToColorRequestDto }
+    TransitionToColorMutationVariables
   > = (props) => {
     const { macAddress, data } = props ?? {}
 
@@ -815,13 +864,14 @@ export const getTransitionToColorMutationOptions = <TError = unknown, TContext =
 export type TransitionToColorMutationResult = NonNullable<Awaited<ReturnType<typeof transitionToColor>>>
 export type TransitionToColorMutationBody = TransitionToColorRequestDto
 export type TransitionToColorMutationError = unknown
+export type TransitionToColorMutationVariables = { macAddress: string; data: TransitionToColorRequestDto }
 
 export const useTransitionToColor = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof transitionToColor>>,
       TError,
-      { macAddress: string; data: TransitionToColorRequestDto },
+      TransitionToColorMutationVariables,
       TContext
     >
   },
@@ -829,7 +879,7 @@ export const useTransitionToColor = <TError = unknown, TContext = unknown>(
 ): UseMutationResult<
   Awaited<ReturnType<typeof transitionToColor>>,
   TError,
-  { macAddress: string; data: TransitionToColorRequestDto },
+  TransitionToColorMutationVariables,
   TContext
 > => {
   return useMutation(getTransitionToColorMutationOptions(options), queryClient)
@@ -942,13 +992,13 @@ export const getUpdateDeviceSettingsMutationOptions = <TError = unknown, TContex
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateDeviceSettings>>,
     TError,
-    { macAddress: string; data: DeviceSettingsRequestDto },
+    UpdateDeviceSettingsMutationVariables,
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof updateDeviceSettings>>,
   TError,
-  { macAddress: string; data: DeviceSettingsRequestDto },
+  UpdateDeviceSettingsMutationVariables,
   TContext
 > => {
   const mutationKey = ['updateDeviceSettings']
@@ -960,7 +1010,7 @@ export const getUpdateDeviceSettingsMutationOptions = <TError = unknown, TContex
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof updateDeviceSettings>>,
-    { macAddress: string; data: DeviceSettingsRequestDto }
+    UpdateDeviceSettingsMutationVariables
   > = (props) => {
     const { macAddress, data } = props ?? {}
 
@@ -973,13 +1023,14 @@ export const getUpdateDeviceSettingsMutationOptions = <TError = unknown, TContex
 export type UpdateDeviceSettingsMutationResult = NonNullable<Awaited<ReturnType<typeof updateDeviceSettings>>>
 export type UpdateDeviceSettingsMutationBody = DeviceSettingsRequestDto
 export type UpdateDeviceSettingsMutationError = unknown
+export type UpdateDeviceSettingsMutationVariables = { macAddress: string; data: DeviceSettingsRequestDto }
 
 export const useUpdateDeviceSettings = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof updateDeviceSettings>>,
       TError,
-      { macAddress: string; data: DeviceSettingsRequestDto },
+      UpdateDeviceSettingsMutationVariables,
       TContext
     >
   },
@@ -987,7 +1038,7 @@ export const useUpdateDeviceSettings = <TError = unknown, TContext = unknown>(
 ): UseMutationResult<
   Awaited<ReturnType<typeof updateDeviceSettings>>,
   TError,
-  { macAddress: string; data: DeviceSettingsRequestDto },
+  UpdateDeviceSettingsMutationVariables,
   TContext
 > => {
   return useMutation(getUpdateDeviceSettingsMutationOptions(options), queryClient)
@@ -1083,13 +1134,13 @@ export const getUpdateLocationMutationOptions = <TError = unknown, TContext = un
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateLocation>>,
     TError,
-    { data: LocationUpdateRequestDto },
+    UpdateLocationMutationVariables,
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof updateLocation>>,
   TError,
-  { data: LocationUpdateRequestDto },
+  UpdateLocationMutationVariables,
   TContext
 > => {
   const mutationKey = ['updateLocation']
@@ -1099,7 +1150,7 @@ export const getUpdateLocationMutationOptions = <TError = unknown, TContext = un
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateLocation>>, { data: LocationUpdateRequestDto }> = (
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateLocation>>, UpdateLocationMutationVariables> = (
     props,
   ) => {
     const { data } = props ?? {}
@@ -1113,23 +1164,19 @@ export const getUpdateLocationMutationOptions = <TError = unknown, TContext = un
 export type UpdateLocationMutationResult = NonNullable<Awaited<ReturnType<typeof updateLocation>>>
 export type UpdateLocationMutationBody = LocationUpdateRequestDto
 export type UpdateLocationMutationError = unknown
+export type UpdateLocationMutationVariables = { data: LocationUpdateRequestDto }
 
 export const useUpdateLocation = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof updateLocation>>,
       TError,
-      { data: LocationUpdateRequestDto },
+      UpdateLocationMutationVariables,
       TContext
     >
   },
   queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof updateLocation>>,
-  TError,
-  { data: LocationUpdateRequestDto },
-  TContext
-> => {
+): UseMutationResult<Awaited<ReturnType<typeof updateLocation>>, TError, UpdateLocationMutationVariables, TContext> => {
   return useMutation(getUpdateLocationMutationOptions(options), queryClient)
 }
 
@@ -1296,13 +1343,13 @@ export const getTriggerAppleShortcutsCommandMutationOptions = <TError = void, TC
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>,
     TError,
-    { hash: string },
+    TriggerAppleShortcutsCommandMutationVariables,
     TContext
   >
 }): UseMutationOptions<
   Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>,
   TError,
-  { hash: string },
+  TriggerAppleShortcutsCommandMutationVariables,
   TContext
 > => {
   const mutationKey = ['triggerAppleShortcutsCommand']
@@ -1312,9 +1359,10 @@ export const getTriggerAppleShortcutsCommandMutationOptions = <TError = void, TC
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>, { hash: string }> = (
-    props,
-  ) => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>,
+    TriggerAppleShortcutsCommandMutationVariables
+  > = (props) => {
     const { hash } = props ?? {}
 
     return triggerAppleShortcutsCommand(hash)
@@ -1328,6 +1376,7 @@ export type TriggerAppleShortcutsCommandMutationResult = NonNullable<
 >
 
 export type TriggerAppleShortcutsCommandMutationError = void
+export type TriggerAppleShortcutsCommandMutationVariables = { hash: string }
 
 /**
  * @summary Trigger a predefined command via apple shortcuts.
@@ -1337,12 +1386,17 @@ export const useTriggerAppleShortcutsCommand = <TError = void, TContext = unknow
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>,
       TError,
-      { hash: string },
+      TriggerAppleShortcutsCommandMutationVariables,
       TContext
     >
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>, TError, { hash: string }, TContext> => {
+): UseMutationResult<
+  Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>,
+  TError,
+  TriggerAppleShortcutsCommandMutationVariables,
+  TContext
+> => {
   return useMutation(getTriggerAppleShortcutsCommandMutationOptions(options), queryClient)
 }
 
@@ -1451,10 +1505,10 @@ export const getCreateCommandMutationOptions = <TError = unknown, TContext = unk
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof createCommand>>,
     TError,
-    { data: CommandRequestDto },
+    CreateCommandMutationVariables,
     TContext
   >
-}): UseMutationOptions<Awaited<ReturnType<typeof createCommand>>, TError, { data: CommandRequestDto }, TContext> => {
+}): UseMutationOptions<Awaited<ReturnType<typeof createCommand>>, TError, CreateCommandMutationVariables, TContext> => {
   const mutationKey = ['createCommand']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -1462,7 +1516,7 @@ export const getCreateCommandMutationOptions = <TError = unknown, TContext = unk
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof createCommand>>, { data: CommandRequestDto }> = (
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof createCommand>>, CreateCommandMutationVariables> = (
     props,
   ) => {
     const { data } = props ?? {}
@@ -1476,18 +1530,19 @@ export const getCreateCommandMutationOptions = <TError = unknown, TContext = unk
 export type CreateCommandMutationResult = NonNullable<Awaited<ReturnType<typeof createCommand>>>
 export type CreateCommandMutationBody = CommandRequestDto
 export type CreateCommandMutationError = unknown
+export type CreateCommandMutationVariables = { data: CommandRequestDto }
 
 export const useCreateCommand = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof createCommand>>,
       TError,
-      { data: CommandRequestDto },
+      CreateCommandMutationVariables,
       TContext
     >
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof createCommand>>, TError, { data: CommandRequestDto }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<typeof createCommand>>, TError, CreateCommandMutationVariables, TContext> => {
   return useMutation(getCreateCommandMutationOptions(options), queryClient)
 }
 
@@ -1662,15 +1717,10 @@ export const getUpdateCommandMutationOptions = <TError = unknown, TContext = unk
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateCommand>>,
     TError,
-    { commandId: number; data: CommandRequestDto },
+    UpdateCommandMutationVariables,
     TContext
   >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateCommand>>,
-  TError,
-  { commandId: number; data: CommandRequestDto },
-  TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<typeof updateCommand>>, TError, UpdateCommandMutationVariables, TContext> => {
   const mutationKey = ['updateCommand']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -1678,10 +1728,9 @@ export const getUpdateCommandMutationOptions = <TError = unknown, TContext = unk
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateCommand>>,
-    { commandId: number; data: CommandRequestDto }
-  > = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCommand>>, UpdateCommandMutationVariables> = (
+    props,
+  ) => {
     const { commandId, data } = props ?? {}
 
     return updateCommand(commandId, data)
@@ -1693,23 +1742,19 @@ export const getUpdateCommandMutationOptions = <TError = unknown, TContext = unk
 export type UpdateCommandMutationResult = NonNullable<Awaited<ReturnType<typeof updateCommand>>>
 export type UpdateCommandMutationBody = CommandRequestDto
 export type UpdateCommandMutationError = unknown
+export type UpdateCommandMutationVariables = { commandId: number; data: CommandRequestDto }
 
 export const useUpdateCommand = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof updateCommand>>,
       TError,
-      { commandId: number; data: CommandRequestDto },
+      UpdateCommandMutationVariables,
       TContext
     >
   },
   queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof updateCommand>>,
-  TError,
-  { commandId: number; data: CommandRequestDto },
-  TContext
-> => {
+): UseMutationResult<Awaited<ReturnType<typeof updateCommand>>, TError, UpdateCommandMutationVariables, TContext> => {
   return useMutation(getUpdateCommandMutationOptions(options), queryClient)
 }
 
@@ -1718,8 +1763,13 @@ export const deleteCommand = (commandId: number, signal?: AbortSignal) => {
 }
 
 export const getDeleteCommandMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteCommand>>, TError, { commandId: number }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof deleteCommand>>, TError, { commandId: number }, TContext> => {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteCommand>>,
+    TError,
+    DeleteCommandMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<Awaited<ReturnType<typeof deleteCommand>>, TError, DeleteCommandMutationVariables, TContext> => {
   const mutationKey = ['deleteCommand']
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -1727,7 +1777,9 @@ export const getDeleteCommandMutationOptions = <TError = unknown, TContext = unk
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCommand>>, { commandId: number }> = (props) => {
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCommand>>, DeleteCommandMutationVariables> = (
+    props,
+  ) => {
     const { commandId } = props ?? {}
 
     return deleteCommand(commandId)
@@ -1739,12 +1791,18 @@ export const getDeleteCommandMutationOptions = <TError = unknown, TContext = unk
 export type DeleteCommandMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCommand>>>
 
 export type DeleteCommandMutationError = unknown
+export type DeleteCommandMutationVariables = { commandId: number }
 
 export const useDeleteCommand = <TError = unknown, TContext = unknown>(
   options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteCommand>>, TError, { commandId: number }, TContext>
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteCommand>>,
+      TError,
+      DeleteCommandMutationVariables,
+      TContext
+    >
   },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof deleteCommand>>, TError, { commandId: number }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<typeof deleteCommand>>, TError, DeleteCommandMutationVariables, TContext> => {
   return useMutation(getDeleteCommandMutationOptions(options), queryClient)
 }
