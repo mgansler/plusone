@@ -74,12 +74,13 @@ export const UpdateDeviceSettingsResponse = zod.strictObject({
 })
 
 export const GetHealthStatusResponse = zod.strictObject({
-  status: zod.string().optional(),
+  status: zod.enum(['ok', 'degraded']).optional(),
   info: zod
     .record(
       zod.string(),
       zod.strictObject({
-        status: zod.string(),
+        status: zod.enum(['up', 'degraded', 'down']),
+        responseTime: zod.number().optional().describe('Time the health indicator took to respond, in ms'),
       }),
     )
     .nullish(),
@@ -87,7 +88,8 @@ export const GetHealthStatusResponse = zod.strictObject({
     .record(
       zod.string(),
       zod.strictObject({
-        status: zod.string(),
+        status: zod.enum(['up', 'degraded', 'down']),
+        responseTime: zod.number().optional().describe('Time the health indicator took to respond, in ms'),
       }),
     )
     .nullish(),
@@ -95,7 +97,8 @@ export const GetHealthStatusResponse = zod.strictObject({
     .record(
       zod.string(),
       zod.strictObject({
-        status: zod.string(),
+        status: zod.enum(['up', 'degraded', 'down']),
+        responseTime: zod.number().optional().describe('Time the health indicator took to respond, in ms'),
       }),
     )
     .optional(),

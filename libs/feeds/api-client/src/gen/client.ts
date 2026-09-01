@@ -212,12 +212,18 @@ export type DiscoverFeedParams = {
   url: string
 }
 
+export enum GetHealthStatus200Status {
+  ok = 'ok',
+  degraded = 'degraded',
+}
 /**
  * @nullable
  */
 export type GetHealthStatus200Info = {
   [key: string]: {
-    status: string
+    status: 'up' | 'degraded' | 'down'
+    /** Time the health indicator took to respond, in ms */
+    responseTime?: number
     [key: string]: unknown
   }
 } | null
@@ -227,20 +233,29 @@ export type GetHealthStatus200Info = {
  */
 export type GetHealthStatus200Error = {
   [key: string]: {
-    status: string
+    status: 'up' | 'degraded' | 'down'
+    /** Time the health indicator took to respond, in ms */
+    responseTime?: number
     [key: string]: unknown
   }
 } | null
 
+export enum GetHealthStatus200DetailsStatus {
+  up = 'up',
+  degraded = 'degraded',
+  down = 'down',
+}
 export type GetHealthStatus200Details = {
   [key: string]: {
-    status: string
+    status: GetHealthStatus200DetailsStatus
+    /** Time the health indicator took to respond, in ms */
+    responseTime?: number
     [key: string]: unknown
   }
 }
 
 export type GetHealthStatus200 = {
-  status?: string
+  status?: GetHealthStatus200Status
   /** @nullable */
   info?: GetHealthStatus200Info
   /** @nullable */
@@ -248,12 +263,18 @@ export type GetHealthStatus200 = {
   details?: GetHealthStatus200Details
 }
 
+export enum GetHealthStatus503Status {
+  error = 'error',
+  shutting_down = 'shutting_down',
+}
 /**
  * @nullable
  */
 export type GetHealthStatus503Info = {
   [key: string]: {
-    status: string
+    status: 'up' | 'degraded' | 'down'
+    /** Time the health indicator took to respond, in ms */
+    responseTime?: number
     [key: string]: unknown
   }
 } | null
@@ -263,20 +284,29 @@ export type GetHealthStatus503Info = {
  */
 export type GetHealthStatus503Error = {
   [key: string]: {
-    status: string
+    status: 'up' | 'degraded' | 'down'
+    /** Time the health indicator took to respond, in ms */
+    responseTime?: number
     [key: string]: unknown
   }
 } | null
 
+export enum GetHealthStatus503DetailsStatus {
+  up = 'up',
+  degraded = 'degraded',
+  down = 'down',
+}
 export type GetHealthStatus503Details = {
   [key: string]: {
-    status: string
+    status: GetHealthStatus503DetailsStatus
+    /** Time the health indicator took to respond, in ms */
+    responseTime?: number
     [key: string]: unknown
   }
 }
 
 export type GetHealthStatus503 = {
-  status?: string
+  status?: GetHealthStatus503Status
   /** @nullable */
   info?: GetHealthStatus503Info
   /** @nullable */

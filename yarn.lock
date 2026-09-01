@@ -6461,28 +6461,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/terminus@npm:11.1.1":
-  version: 11.1.1
-  resolution: "@nestjs/terminus@npm:11.1.1"
-  dependencies:
-    boxen: "npm:5.1.2"
-    check-disk-space: "npm:3.4.0"
+"@nestjs/terminus@npm:12.0.0":
+  version: 12.0.0
+  resolution: "@nestjs/terminus@npm:12.0.0"
   peerDependencies:
     "@grpc/grpc-js": "*"
     "@grpc/proto-loader": "*"
     "@mikro-orm/core": "*"
     "@mikro-orm/nestjs": "*"
-    "@nestjs/axios": ^2.0.0 || ^3.0.0 || ^4.0.0
-    "@nestjs/common": ^10.0.0 || ^11.0.0
-    "@nestjs/core": ^10.0.0 || ^11.0.0
-    "@nestjs/microservices": ^10.0.0 || ^11.0.0
-    "@nestjs/mongoose": ^11.0.0
-    "@nestjs/sequelize": ^10.0.0 || ^11.0.0
-    "@nestjs/typeorm": ^10.0.0 || ^11.0.0
+    "@nestjs/axios": ^4.0.0 || ^12.0.0
+    "@nestjs/common": ^11.0.0 || ^12.0.0
+    "@nestjs/core": ^11.0.0 || ^12.0.0
+    "@nestjs/microservices": ^11.0.0 || ^12.0.0
+    "@nestjs/mongoose": ^11.0.0 || ^12.0.0
+    "@nestjs/sequelize": ^11.0.0 || ^12.0.0
+    "@nestjs/swagger": ^11.0.0 || ^12.0.0
+    "@nestjs/typeorm": ^11.0.0 || ^12.0.0
     "@prisma/client": "*"
     mongoose: "*"
-    reflect-metadata: 0.1.x || 0.2.x
-    rxjs: 7.x
+    reflect-metadata: ^0.1.12 || ^0.2.0
+    rxjs: ^7.1.0
     sequelize: "*"
     typeorm: "*"
   peerDependenciesMeta:
@@ -6502,6 +6500,8 @@ __metadata:
       optional: true
     "@nestjs/sequelize":
       optional: true
+    "@nestjs/swagger":
+      optional: true
     "@nestjs/typeorm":
       optional: true
     "@prisma/client":
@@ -6512,7 +6512,7 @@ __metadata:
       optional: true
     typeorm:
       optional: true
-  checksum: 10c0/4ec57d56b43b39496a13173f98aa4fa54847ae8401fedf5106adad4f0c4a41b187138f8e40196bcbd726ebc4ff97a30b854cc05e8c28a3691aa7bd0315b0b3bf
+  checksum: 10c0/8b6d04fb81c6eaf3f957b882af02973add4ebdfd494b0701f1e6eb86610efe96d8d79e45e02bd0f820042a6a55a4c4b4d8a678301049f0a0f88697c5607bac15
   languageName: node
   linkType: hard
 
@@ -11917,15 +11917,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ansi-align@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "ansi-align@npm:3.0.1"
-  dependencies:
-    string-width: "npm:^4.1.0"
-  checksum: 10c0/ad8b755a253a1bc8234eb341e0cec68a857ab18bf97ba2bda529e86f6e30460416523e0ec58c32e5c21f0ca470d779503244892873a5895dbd0c39c788e82467
-  languageName: node
-  linkType: hard
-
 "ansi-colors@npm:4.1.3, ansi-colors@npm:^4.1.1":
   version: 4.1.3
   resolution: "ansi-colors@npm:4.1.3"
@@ -13025,22 +13016,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"boxen@npm:5.1.2":
-  version: 5.1.2
-  resolution: "boxen@npm:5.1.2"
-  dependencies:
-    ansi-align: "npm:^3.0.0"
-    camelcase: "npm:^6.2.0"
-    chalk: "npm:^4.1.0"
-    cli-boxes: "npm:^2.2.1"
-    string-width: "npm:^4.2.2"
-    type-fest: "npm:^0.20.2"
-    widest-line: "npm:^3.1.0"
-    wrap-ansi: "npm:^7.0.0"
-  checksum: 10c0/71f31c2eb3dcacd5fce524ae509e0cc90421752e0bfbd0281fd3352871d106c462a0f810c85f2fdb02f3a9fab2d7a84e9718b4999384d651b76104ebe5d2c024
-  languageName: node
-  linkType: hard
-
 "brace-expansion@npm:5.0.9, brace-expansion@npm:^5.0.8":
   version: 5.0.9
   resolution: "brace-expansion@npm:5.0.9"
@@ -13501,13 +13476,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"check-disk-space@npm:3.4.0":
-  version: 3.4.0
-  resolution: "check-disk-space@npm:3.4.0"
-  checksum: 10c0/cc39c91e1337e974fb5069c2fbd9eb92aceca6e35f3da6863a4eada58f15c1bf6970055bffed1e41c15cde1fd0ad2580bb99bef8275791ed56d69947f8657aa5
-  languageName: node
-  linkType: hard
-
 "cheerio-select@npm:^2.1.0":
   version: 2.1.0
   resolution: "cheerio-select@npm:2.1.0"
@@ -13663,13 +13631,6 @@ __metadata:
   dependencies:
     source-map: "npm:~0.6.0"
   checksum: 10c0/381de7523e23f3762eb180e327dcc0cedafaf8cb1cd8c26b7cc1fc56e0829a92e734729c4f955394d65ed72fb62f82d8baf78af34b33b8a7d41ebad2accdd6fb
-  languageName: node
-  linkType: hard
-
-"cli-boxes@npm:^2.2.1":
-  version: 2.2.1
-  resolution: "cli-boxes@npm:2.2.1"
-  checksum: 10c0/6111352edbb2f62dbc7bfd58f2d534de507afed7f189f13fa894ce5a48badd94b2aa502fda28f1d7dd5f1eb456e7d4033d09a76660013ef50c7f66e7a034f050
   languageName: node
   linkType: hard
 
@@ -23118,7 +23079,7 @@ __metadata:
     "@nestjs/schematics": "npm:12.0.0"
     "@nestjs/serve-static": "npm:12.0.0"
     "@nestjs/swagger": "npm:12.0.1"
-    "@nestjs/terminus": "npm:11.1.1"
+    "@nestjs/terminus": "npm:12.0.0"
     "@nestjs/testing": "npm:12.0.1"
     "@nestjs/throttler": "npm:6.5.0"
     "@nx/cypress": "npm:23.1.2"
@@ -26024,7 +25985,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"string-width-cjs@npm:string-width@^4.2.0, string-width@npm:4.2.3, string-width@npm:^4.0.0, string-width@npm:^4.1.0, string-width@npm:^4.2.0, string-width@npm:^4.2.2, string-width@npm:^4.2.3":
+"string-width-cjs@npm:string-width@^4.2.0, string-width@npm:4.2.3, string-width@npm:^4.1.0, string-width@npm:^4.2.0, string-width@npm:^4.2.3":
   version: 4.2.3
   resolution: "string-width@npm:4.2.3"
   dependencies:
@@ -27218,13 +27179,6 @@ __metadata:
   version: 4.0.8
   resolution: "type-detect@npm:4.0.8"
   checksum: 10c0/8fb9a51d3f365a7de84ab7f73b653534b61b622aa6800aecdb0f1095a4a646d3f5eb295322127b6573db7982afcd40ab492d038cf825a42093a58b1e1353e0bd
-  languageName: node
-  linkType: hard
-
-"type-fest@npm:^0.20.2":
-  version: 0.20.2
-  resolution: "type-fest@npm:0.20.2"
-  checksum: 10c0/dea9df45ea1f0aaa4e2d3bed3f9a0bfe9e5b2592bddb92eb1bf06e50bcf98dbb78189668cd8bc31a0511d3fc25539b4cd5c704497e53e93e2d40ca764b10bfc3
   languageName: node
   linkType: hard
 
@@ -28664,15 +28618,6 @@ __metadata:
   bin:
     why-is-node-running: cli.js
   checksum: 10c0/1cde0b01b827d2cf4cb11db962f3958b9175d5d9e7ac7361d1a7b0e2dc6069a263e69118bd974c4f6d0a890ef4eedfe34cf3d5167ec14203dbc9a18620537054
-  languageName: node
-  linkType: hard
-
-"widest-line@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "widest-line@npm:3.1.0"
-  dependencies:
-    string-width: "npm:^4.0.0"
-  checksum: 10c0/b1e623adcfb9df35350dd7fc61295d6d4a1eaa65a406ba39c4b8360045b614af95ad10e05abf704936ed022569be438c4bfa02d6d031863c4166a238c301119f
   languageName: node
   linkType: hard
 
