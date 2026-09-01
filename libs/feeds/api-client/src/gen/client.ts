@@ -385,10 +385,12 @@ export const login = (userLoginDto: UserLoginDto, signal?: AbortSignal) => {
   })
 }
 
+export const getLoginMutationKey = () => ['login'] as const
+
 export const getLoginMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext> => {
-  const mutationKey = ['login']
+  const mutationKey = getLoginMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -493,10 +495,12 @@ export const register = (userRegistrationDto: UserRegistrationDto, signal?: Abor
   })
 }
 
+export const getRegisterMutationKey = () => ['register'] as const
+
 export const getRegisterMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext> => {
-  const mutationKey = ['register']
+  const mutationKey = getRegisterMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -660,6 +664,8 @@ export const markArticlesRead = (params?: MarkArticlesReadParams, signal?: Abort
   return customAxiosInstance<void>({ url: `/api/article/mark-articles-read`, method: 'POST', params, signal })
 }
 
+export const getMarkArticlesReadMutationKey = () => ['markArticlesRead'] as const
+
 export const getMarkArticlesReadMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof markArticlesRead>>,
@@ -673,7 +679,7 @@ export const getMarkArticlesReadMutationOptions = <TError = unknown, TContext = 
   MarkArticlesReadMutationVariables,
   TContext
 > => {
-  const mutationKey = ['markArticlesRead']
+  const mutationKey = getMarkArticlesReadMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -730,6 +736,8 @@ export const toggleUnread = (
   })
 }
 
+export const getToggleUnreadMutationKey = () => ['toggleUnread'] as const
+
 export const getToggleUnreadMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof toggleUnread>>,
@@ -738,7 +746,7 @@ export const getToggleUnreadMutationOptions = <TError = unknown, TContext = unkn
     TContext
   >
 }): UseMutationOptions<Awaited<ReturnType<typeof toggleUnread>>, TError, ToggleUnreadMutationVariables, TContext> => {
-  const mutationKey = ['toggleUnread']
+  const mutationKey = getToggleUnreadMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -785,10 +793,12 @@ export const starArticle = (articleId: string, starArticleDto: StarArticleDto, s
   })
 }
 
+export const getStarArticleMutationKey = () => ['starArticle'] as const
+
 export const getStarArticleMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof starArticle>>, TError, StarArticleMutationVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof starArticle>>, TError, StarArticleMutationVariables, TContext> => {
-  const mutationKey = ['starArticle']
+  const mutationKey = getStarArticleMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1197,10 +1207,12 @@ export const addFeed = (feedInputDto: FeedInputDto, signal?: AbortSignal) => {
   })
 }
 
+export const getAddFeedMutationKey = () => ['addFeed'] as const
+
 export const getAddFeedMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof addFeed>>, TError, AddFeedMutationVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof addFeed>>, TError, AddFeedMutationVariables, TContext> => {
-  const mutationKey = ['addFeed']
+  const mutationKey = getAddFeedMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1310,6 +1322,8 @@ export const discoverFeed = (params: DiscoverFeedParams, signal?: AbortSignal) =
   return customAxiosInstance<DiscoverResponseDto>({ url: `/api/feed/discover`, method: 'POST', params, signal })
 }
 
+export const getDiscoverFeedMutationKey = () => ['discoverFeed'] as const
+
 export const getDiscoverFeedMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof discoverFeed>>,
@@ -1318,7 +1332,7 @@ export const getDiscoverFeedMutationOptions = <TError = unknown, TContext = unkn
     TContext
   >
 }): UseMutationOptions<Awaited<ReturnType<typeof discoverFeed>>, TError, DiscoverFeedMutationVariables, TContext> => {
-  const mutationKey = ['discoverFeed']
+  const mutationKey = getDiscoverFeedMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1365,10 +1379,12 @@ export const importFeeds = (feedInputDto: FeedInputDto[], signal?: AbortSignal) 
   })
 }
 
+export const getImportFeedsMutationKey = () => ['importFeeds'] as const
+
 export const getImportFeedsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof importFeeds>>, TError, ImportFeedsMutationVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof importFeeds>>, TError, ImportFeedsMutationVariables, TContext> => {
-  const mutationKey = ['importFeeds']
+  const mutationKey = getImportFeedsMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1498,6 +1514,8 @@ export const updateFeedSettings = (
   })
 }
 
+export const getUpdateFeedSettingsMutationKey = () => ['updateFeedSettings'] as const
+
 export const getUpdateFeedSettingsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateFeedSettings>>,
@@ -1511,7 +1529,7 @@ export const getUpdateFeedSettingsMutationOptions = <TError = unknown, TContext 
   UpdateFeedSettingsMutationVariables,
   TContext
 > => {
-  const mutationKey = ['updateFeedSettings']
+  const mutationKey = getUpdateFeedSettingsMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1642,10 +1660,12 @@ export const tagFeed = (id: string, tagFeedInputDto: TagFeedInputDto, signal?: A
   })
 }
 
+export const getTagFeedMutationKey = () => ['tagFeed'] as const
+
 export const getTagFeedMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof tagFeed>>, TError, TagFeedMutationVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof tagFeed>>, TError, TagFeedMutationVariables, TContext> => {
-  const mutationKey = ['tagFeed']
+  const mutationKey = getTagFeedMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1685,10 +1705,12 @@ export const untagFeed = (id: string, tagFeedInputDto: TagFeedInputDto, signal?:
   })
 }
 
+export const getUntagFeedMutationKey = () => ['untagFeed'] as const
+
 export const getUntagFeedMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof untagFeed>>, TError, UntagFeedMutationVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof untagFeed>>, TError, UntagFeedMutationVariables, TContext> => {
-  const mutationKey = ['untagFeed']
+  const mutationKey = getUntagFeedMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1793,10 +1815,12 @@ export const addTag = (tagInputDto: TagInputDto, signal?: AbortSignal) => {
   })
 }
 
+export const getAddTagMutationKey = () => ['addTag'] as const
+
 export const getAddTagMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof addTag>>, TError, AddTagMutationVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof addTag>>, TError, AddTagMutationVariables, TContext> => {
-  const mutationKey = ['addTag']
+  const mutationKey = getAddTagMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1830,10 +1854,12 @@ export const removeTag = (id: string, signal?: AbortSignal) => {
   return customAxiosInstance<void>({ url: `/api/tag/${id}`, method: 'DELETE', signal })
 }
 
+export const getRemoveTagMutationKey = () => ['removeTag'] as const
+
 export const getRemoveTagMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof removeTag>>, TError, RemoveTagMutationVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof removeTag>>, TError, RemoveTagMutationVariables, TContext> => {
-  const mutationKey = ['removeTag']
+  const mutationKey = getRemoveTagMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1943,10 +1969,12 @@ export const forceFetching = (signal?: AbortSignal) => {
   return customAxiosInstance<void>({ url: `/api/scheduling/now`, method: 'POST', signal })
 }
 
+export const getForceFetchingMutationKey = () => ['forceFetching'] as const
+
 export const getForceFetchingMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof forceFetching>>, TError, void, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof forceFetching>>, TError, void, TContext> => {
-  const mutationKey = ['forceFetching']
+  const mutationKey = getForceFetchingMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -2040,10 +2068,12 @@ export const deleteUser = (userId: unknown, signal?: AbortSignal) => {
   return customAxiosInstance<void>({ url: `/api/user/${userId}`, method: 'DELETE', signal })
 }
 
+export const getDeleteUserMutationKey = () => ['deleteUser'] as const
+
 export const getDeleteUserMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError, DeleteUserMutationVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError, DeleteUserMutationVariables, TContext> => {
-  const mutationKey = ['deleteUser']
+  const mutationKey = getDeleteUserMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options

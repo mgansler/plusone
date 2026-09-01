@@ -362,6 +362,8 @@ export const addDiscoveredDevice = (deviceId: string, signal?: AbortSignal) => {
   return customAxiosInstance<void>({ url: `/api/discovery/add-by-id/${deviceId}`, method: 'POST', signal })
 }
 
+export const getAddDiscoveredDeviceMutationKey = () => ['addDiscoveredDevice'] as const
+
 export const getAddDiscoveredDeviceMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof addDiscoveredDevice>>,
@@ -375,7 +377,7 @@ export const getAddDiscoveredDeviceMutationOptions = <TError = unknown, TContext
   AddDiscoveredDeviceMutationVariables,
   TContext
 > => {
-  const mutationKey = ['addDiscoveredDevice']
+  const mutationKey = getAddDiscoveredDeviceMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -422,6 +424,8 @@ export const addManualDevice = (address: string, signal?: AbortSignal) => {
   return customAxiosInstance<void>({ url: `/api/discovery/add-by-address/${address}`, method: 'POST', signal })
 }
 
+export const getAddManualDeviceMutationKey = () => ['addManualDevice'] as const
+
 export const getAddManualDeviceMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof addManualDevice>>,
@@ -435,7 +439,7 @@ export const getAddManualDeviceMutationOptions = <TError = unknown, TContext = u
   AddManualDeviceMutationVariables,
   TContext
 > => {
-  const mutationKey = ['addManualDevice']
+  const mutationKey = getAddManualDeviceMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -646,6 +650,8 @@ export const setDisplayName = (
   })
 }
 
+export const getSetDisplayNameMutationKey = () => ['setDisplayName'] as const
+
 export const getSetDisplayNameMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof setDisplayName>>,
@@ -659,7 +665,7 @@ export const getSetDisplayNameMutationOptions = <TError = unknown, TContext = un
   SetDisplayNameMutationVariables,
   TContext
 > => {
-  const mutationKey = ['setDisplayName']
+  const mutationKey = getSetDisplayNameMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -700,6 +706,8 @@ export const toggleDevice = (macAddress: string, signal?: AbortSignal) => {
   return customAxiosInstance<void>({ url: `/api/devices/${macAddress}/toggle`, method: 'PUT', signal })
 }
 
+export const getToggleDeviceMutationKey = () => ['toggleDevice'] as const
+
 export const getToggleDeviceMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof toggleDevice>>,
@@ -708,7 +716,7 @@ export const getToggleDeviceMutationOptions = <TError = unknown, TContext = unkn
     TContext
   >
 }): UseMutationOptions<Awaited<ReturnType<typeof toggleDevice>>, TError, ToggleDeviceMutationVariables, TContext> => {
-  const mutationKey = ['toggleDevice']
+  const mutationKey = getToggleDeviceMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -759,6 +767,8 @@ export const deviceSetPowerState = (
   })
 }
 
+export const getDeviceSetPowerStateMutationKey = () => ['deviceSetPowerState'] as const
+
 export const getDeviceSetPowerStateMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof deviceSetPowerState>>,
@@ -772,7 +782,7 @@ export const getDeviceSetPowerStateMutationOptions = <TError = unknown, TContext
   DeviceSetPowerStateMutationVariables,
   TContext
 > => {
-  const mutationKey = ['deviceSetPowerState']
+  const mutationKey = getDeviceSetPowerStateMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -829,6 +839,8 @@ export const transitionToColor = (
   })
 }
 
+export const getTransitionToColorMutationKey = () => ['transitionToColor'] as const
+
 export const getTransitionToColorMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof transitionToColor>>,
@@ -842,7 +854,7 @@ export const getTransitionToColorMutationOptions = <TError = unknown, TContext =
   TransitionToColorMutationVariables,
   TContext
 > => {
-  const mutationKey = ['transitionToColor']
+  const mutationKey = getTransitionToColorMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -988,6 +1000,8 @@ export const updateDeviceSettings = (
   })
 }
 
+export const getUpdateDeviceSettingsMutationKey = () => ['updateDeviceSettings'] as const
+
 export const getUpdateDeviceSettingsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateDeviceSettings>>,
@@ -1001,7 +1015,7 @@ export const getUpdateDeviceSettingsMutationOptions = <TError = unknown, TContex
   UpdateDeviceSettingsMutationVariables,
   TContext
 > => {
-  const mutationKey = ['updateDeviceSettings']
+  const mutationKey = getUpdateDeviceSettingsMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1130,6 +1144,8 @@ export const updateLocation = (locationUpdateRequestDto: LocationUpdateRequestDt
   })
 }
 
+export const getUpdateLocationMutationKey = () => ['updateLocation'] as const
+
 export const getUpdateLocationMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateLocation>>,
@@ -1143,7 +1159,7 @@ export const getUpdateLocationMutationOptions = <TError = unknown, TContext = un
   UpdateLocationMutationVariables,
   TContext
 > => {
-  const mutationKey = ['updateLocation']
+  const mutationKey = getUpdateLocationMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1339,6 +1355,8 @@ export const triggerAppleShortcutsCommand = (hash: string, signal?: AbortSignal)
   return customAxiosInstance<void>({ url: `/api/public/apple-shortcuts/${hash}`, method: 'POST', signal })
 }
 
+export const getTriggerAppleShortcutsCommandMutationKey = () => ['triggerAppleShortcutsCommand'] as const
+
 export const getTriggerAppleShortcutsCommandMutationOptions = <TError = void, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof triggerAppleShortcutsCommand>>,
@@ -1352,7 +1370,7 @@ export const getTriggerAppleShortcutsCommandMutationOptions = <TError = void, TC
   TriggerAppleShortcutsCommandMutationVariables,
   TContext
 > => {
-  const mutationKey = ['triggerAppleShortcutsCommand']
+  const mutationKey = getTriggerAppleShortcutsCommandMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1501,6 +1519,8 @@ export const createCommand = (commandRequestDto: CommandRequestDto, signal?: Abo
   })
 }
 
+export const getCreateCommandMutationKey = () => ['createCommand'] as const
+
 export const getCreateCommandMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof createCommand>>,
@@ -1509,7 +1529,7 @@ export const getCreateCommandMutationOptions = <TError = unknown, TContext = unk
     TContext
   >
 }): UseMutationOptions<Awaited<ReturnType<typeof createCommand>>, TError, CreateCommandMutationVariables, TContext> => {
-  const mutationKey = ['createCommand']
+  const mutationKey = getCreateCommandMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1713,6 +1733,8 @@ export const updateCommand = (commandId: number, commandRequestDto: CommandReque
   })
 }
 
+export const getUpdateCommandMutationKey = () => ['updateCommand'] as const
+
 export const getUpdateCommandMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateCommand>>,
@@ -1721,7 +1743,7 @@ export const getUpdateCommandMutationOptions = <TError = unknown, TContext = unk
     TContext
   >
 }): UseMutationOptions<Awaited<ReturnType<typeof updateCommand>>, TError, UpdateCommandMutationVariables, TContext> => {
-  const mutationKey = ['updateCommand']
+  const mutationKey = getUpdateCommandMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -1762,6 +1784,8 @@ export const deleteCommand = (commandId: number, signal?: AbortSignal) => {
   return customAxiosInstance<void>({ url: `/api/commands/${commandId}`, method: 'DELETE', signal })
 }
 
+export const getDeleteCommandMutationKey = () => ['deleteCommand'] as const
+
 export const getDeleteCommandMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof deleteCommand>>,
@@ -1770,7 +1794,7 @@ export const getDeleteCommandMutationOptions = <TError = unknown, TContext = unk
     TContext
   >
 }): UseMutationOptions<Awaited<ReturnType<typeof deleteCommand>>, TError, DeleteCommandMutationVariables, TContext> => {
-  const mutationKey = ['deleteCommand']
+  const mutationKey = getDeleteCommandMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options

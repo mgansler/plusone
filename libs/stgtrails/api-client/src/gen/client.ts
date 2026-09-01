@@ -248,6 +248,8 @@ export const createTrailAreaFromCoordinates = (
   })
 }
 
+export const getCreateTrailAreaFromCoordinatesMutationKey = () => ['createTrailAreaFromCoordinates'] as const
+
 export const getCreateTrailAreaFromCoordinatesMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof createTrailAreaFromCoordinates>>,
@@ -261,7 +263,7 @@ export const getCreateTrailAreaFromCoordinatesMutationOptions = <TError = unknow
   CreateTrailAreaFromCoordinatesMutationVariables,
   TContext
 > => {
-  const mutationKey = ['createTrailAreaFromCoordinates']
+  const mutationKey = getCreateTrailAreaFromCoordinatesMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -316,6 +318,8 @@ export const createTrailAreaFromUrl = (trailAreaCreateFromUrlDto: TrailAreaCreat
   })
 }
 
+export const getCreateTrailAreaFromUrlMutationKey = () => ['createTrailAreaFromUrl'] as const
+
 export const getCreateTrailAreaFromUrlMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof createTrailAreaFromUrl>>,
@@ -329,7 +333,7 @@ export const getCreateTrailAreaFromUrlMutationOptions = <TError = unknown, TCont
   CreateTrailAreaFromUrlMutationVariables,
   TContext
 > => {
-  const mutationKey = ['createTrailAreaFromUrl']
+  const mutationKey = getCreateTrailAreaFromUrlMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -382,6 +386,8 @@ export const updateTrailArea = (trailAreaId: number, trailAreaUpdateDto: TrailAr
   })
 }
 
+export const getUpdateTrailAreaMutationKey = () => ['updateTrailArea'] as const
+
 export const getUpdateTrailAreaMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateTrailArea>>,
@@ -395,7 +401,7 @@ export const getUpdateTrailAreaMutationOptions = <TError = unknown, TContext = u
   UpdateTrailAreaMutationVariables,
   TContext
 > => {
-  const mutationKey = ['updateTrailArea']
+  const mutationKey = getUpdateTrailAreaMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -441,6 +447,8 @@ export const deleteTrailArea = (trailAreaId: number, signal?: AbortSignal) => {
   return customAxiosInstance<void>({ url: `/api/trailAreas/${trailAreaId}`, method: 'DELETE', signal })
 }
 
+export const getDeleteTrailAreaMutationKey = () => ['deleteTrailArea'] as const
+
 export const getDeleteTrailAreaMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof deleteTrailArea>>,
@@ -454,7 +462,7 @@ export const getDeleteTrailAreaMutationOptions = <TError = unknown, TContext = u
   DeleteTrailAreaMutationVariables,
   TContext
 > => {
-  const mutationKey = ['deleteTrailArea']
+  const mutationKey = getDeleteTrailAreaMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -506,10 +514,12 @@ export const createTrail = (trailAreaId: number, trailCreateDto: TrailCreateDto,
   })
 }
 
+export const getCreateTrailMutationKey = () => ['createTrail'] as const
+
 export const getCreateTrailMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof createTrail>>, TError, CreateTrailMutationVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof createTrail>>, TError, CreateTrailMutationVariables, TContext> => {
-  const mutationKey = ['createTrail']
+  const mutationKey = getCreateTrailMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -642,10 +652,12 @@ export const updateTrail = (trailId: number, trailUpdateDto: TrailUpdateDto, sig
   })
 }
 
+export const getUpdateTrailMutationKey = () => ['updateTrail'] as const
+
 export const getUpdateTrailMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof updateTrail>>, TError, UpdateTrailMutationVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof updateTrail>>, TError, UpdateTrailMutationVariables, TContext> => {
-  const mutationKey = ['updateTrail']
+  const mutationKey = getUpdateTrailMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
@@ -686,10 +698,12 @@ export const deleteTrail = (trailId: number, signal?: AbortSignal) => {
   return customAxiosInstance<void>({ url: `/api/trailAreas/trails/${trailId}`, method: 'DELETE', signal })
 }
 
+export const getDeleteTrailMutationKey = () => ['deleteTrail'] as const
+
 export const getDeleteTrailMutationOptions = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteTrail>>, TError, DeleteTrailMutationVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<typeof deleteTrail>>, TError, DeleteTrailMutationVariables, TContext> => {
-  const mutationKey = ['deleteTrail']
+  const mutationKey = getDeleteTrailMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
