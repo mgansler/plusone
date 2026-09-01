@@ -18,18 +18,18 @@ describe('WeatherService', () => {
           provide: PrismaService,
           useValue: {
             trailArea: {
-              findMany: jest.fn().mockResolvedValue([{ id: 1, name: 'TrailAreaOne', latitude: 1, longitude: 2 }]),
+              findMany: vi.fn().mockResolvedValue([{ id: 1, name: 'TrailAreaOne', latitude: 1, longitude: 2 }]),
             },
             weatherData: {
-              upsert: jest.fn(),
+              upsert: vi.fn(),
             },
-            $transaction: jest.fn(),
+            $transaction: vi.fn(),
           },
         },
         {
           provide: WeatherApiService,
           useValue: {
-            fetchWeatherData: jest.fn().mockResolvedValue({
+            fetchWeatherData: vi.fn().mockResolvedValue({
               time: [new Date(1_000), new Date(2_000), new Date(3_000)],
               temperature2m: [10, 11, 12],
               rain: [0, 1, 2],

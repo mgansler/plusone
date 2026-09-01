@@ -31,6 +31,29 @@ export interface AdminStatsResponseDto {
   userCount: number
 }
 
+export interface UserLoginDto {
+  username: string
+  password: string
+}
+
+export interface LoginResponseDto {
+  access_token: string
+  refresh_token: string
+}
+
+export interface UserRegistrationDto {
+  username: string
+  password: string
+}
+
+export interface UserResponseDto {
+  /** @nullable */
+  email?: string | null
+  id: string
+  isAdmin: boolean
+  username: string
+}
+
 export interface ArticleToggleUnreadDto {
   unread: boolean
 }
@@ -69,29 +92,6 @@ export interface PaginatedArticleResponseDto {
   totalCount: number
   unreadCount: number
   lastCursor?: number
-}
-
-export interface UserLoginDto {
-  username: string
-  password: string
-}
-
-export interface LoginResponseDto {
-  access_token: string
-  refresh_token: string
-}
-
-export interface UserRegistrationDto {
-  username: string
-  password: string
-}
-
-export interface UserResponseDto {
-  /** @nullable */
-  email?: string | null
-  id: string
-  isAdmin: boolean
-  username: string
 }
 
 export interface BootInfoDto {
@@ -367,6 +367,287 @@ export function useGetAdminStats<TData = Awaited<ReturnType<typeof getAdminStats
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getGetAdminStatsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
+export const login = (userLoginDto: UserLoginDto, signal?: AbortSignal) => {
+  return customAxiosInstance<LoginResponseDto>({
+    url: `/api/authentication/login`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: userLoginDto,
+    signal,
+  })
+}
+
+export const getLoginMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext> => {
+  const mutationKey = ['login']
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, LoginMutationVariables> = (props) => {
+    const { data } = props ?? {}
+
+    return login(data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
+export type LoginMutationBody = UserLoginDto
+export type LoginMutationError = unknown
+export type LoginMutationVariables = { data: UserLoginDto }
+
+export const useLogin = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext>
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext> => {
+  return useMutation(getLoginMutationOptions(options), queryClient)
+}
+
+export const logout = (signal?: AbortSignal) => {
+  return customAxiosInstance<void>({ url: `/api/authentication/logout`, method: 'GET', signal })
+}
+
+export const getLogoutQueryKey = () => {
+  return [`/api/authentication/logout`] as const
+}
+
+export const getLogoutQueryOptions = <TData = Awaited<ReturnType<typeof logout>>, TError = unknown>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getLogoutQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof logout>>> = ({ signal }) => logout(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof logout>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type LogoutQueryResult = NonNullable<Awaited<ReturnType<typeof logout>>>
+export type LogoutQueryError = unknown
+
+export function useLogout<TData = Awaited<ReturnType<typeof logout>>, TError = unknown>(
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<Awaited<ReturnType<typeof logout>>, TError, Awaited<ReturnType<typeof logout>>>,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useLogout<TData = Awaited<ReturnType<typeof logout>>, TError = unknown>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<Awaited<ReturnType<typeof logout>>, TError, Awaited<ReturnType<typeof logout>>>,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useLogout<TData = Awaited<ReturnType<typeof logout>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useLogout<TData = Awaited<ReturnType<typeof logout>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getLogoutQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
+export const register = (userRegistrationDto: UserRegistrationDto, signal?: AbortSignal) => {
+  return customAxiosInstance<UserResponseDto>({
+    url: `/api/authentication/register`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: userRegistrationDto,
+    signal,
+  })
+}
+
+export const getRegisterMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext> => {
+  const mutationKey = ['register']
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof register>>, RegisterMutationVariables> = (props) => {
+    const { data } = props ?? {}
+
+    return register(data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type RegisterMutationResult = NonNullable<Awaited<ReturnType<typeof register>>>
+export type RegisterMutationBody = UserRegistrationDto
+export type RegisterMutationError = unknown
+export type RegisterMutationVariables = { data: UserRegistrationDto }
+
+export const useRegister = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext>
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext> => {
+  return useMutation(getRegisterMutationOptions(options), queryClient)
+}
+
+export const profile = (signal?: AbortSignal) => {
+  return customAxiosInstance<UserResponseDto>({ url: `/api/authentication/profile`, method: 'GET', signal })
+}
+
+export const getProfileQueryKey = () => {
+  return [`/api/authentication/profile`] as const
+}
+
+export const getProfileQueryOptions = <TData = Awaited<ReturnType<typeof profile>>, TError = unknown>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getProfileQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof profile>>> = ({ signal }) => profile(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof profile>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ProfileQueryResult = NonNullable<Awaited<ReturnType<typeof profile>>>
+export type ProfileQueryError = unknown
+
+export function useProfile<TData = Awaited<ReturnType<typeof profile>>, TError = unknown>(
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<Awaited<ReturnType<typeof profile>>, TError, Awaited<ReturnType<typeof profile>>>,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useProfile<TData = Awaited<ReturnType<typeof profile>>, TError = unknown>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<Awaited<ReturnType<typeof profile>>, TError, Awaited<ReturnType<typeof profile>>>,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useProfile<TData = Awaited<ReturnType<typeof profile>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useProfile<TData = Awaited<ReturnType<typeof profile>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getProfileQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
+export const refresh = (signal?: AbortSignal) => {
+  return customAxiosInstance<LoginResponseDto>({ url: `/api/authentication/refresh`, method: 'GET', signal })
+}
+
+export const getRefreshQueryKey = () => {
+  return [`/api/authentication/refresh`] as const
+}
+
+export const getRefreshQueryOptions = <TData = Awaited<ReturnType<typeof refresh>>, TError = unknown>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getRefreshQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof refresh>>> = ({ signal }) => refresh(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof refresh>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type RefreshQueryResult = NonNullable<Awaited<ReturnType<typeof refresh>>>
+export type RefreshQueryError = unknown
+
+export function useRefresh<TData = Awaited<ReturnType<typeof refresh>>, TError = unknown>(
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<Awaited<ReturnType<typeof refresh>>, TError, Awaited<ReturnType<typeof refresh>>>,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRefresh<TData = Awaited<ReturnType<typeof refresh>>, TError = unknown>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<Awaited<ReturnType<typeof refresh>>, TError, Awaited<ReturnType<typeof refresh>>>,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRefresh<TData = Awaited<ReturnType<typeof refresh>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useRefresh<TData = Awaited<ReturnType<typeof refresh>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getRefreshQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>
@@ -833,287 +1114,6 @@ export function useRecentlyReadArticles<TData = Awaited<ReturnType<typeof recent
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getRecentlyReadArticlesQueryOptions(options)
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>
-  }
-
-  return withQueryKey(query, queryOptions.queryKey)
-}
-
-export const login = (userLoginDto: UserLoginDto, signal?: AbortSignal) => {
-  return customAxiosInstance<LoginResponseDto>({
-    url: `/api/authentication/login`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: userLoginDto,
-    signal,
-  })
-}
-
-export const getLoginMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext> => {
-  const mutationKey = ['login']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
-
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, LoginMutationVariables> = (props) => {
-    const { data } = props ?? {}
-
-    return login(data)
-  }
-
-  return { mutationFn, ...mutationOptions }
-}
-
-export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
-export type LoginMutationBody = UserLoginDto
-export type LoginMutationError = unknown
-export type LoginMutationVariables = { data: UserLoginDto }
-
-export const useLogin = <TError = unknown, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext>
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof login>>, TError, LoginMutationVariables, TContext> => {
-  return useMutation(getLoginMutationOptions(options), queryClient)
-}
-
-export const logout = (signal?: AbortSignal) => {
-  return customAxiosInstance<void>({ url: `/api/authentication/logout`, method: 'GET', signal })
-}
-
-export const getLogoutQueryKey = () => {
-  return [`/api/authentication/logout`] as const
-}
-
-export const getLogoutQueryOptions = <TData = Awaited<ReturnType<typeof logout>>, TError = unknown>(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getLogoutQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof logout>>> = ({ signal }) => logout(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof logout>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type LogoutQueryResult = NonNullable<Awaited<ReturnType<typeof logout>>>
-export type LogoutQueryError = unknown
-
-export function useLogout<TData = Awaited<ReturnType<typeof logout>>, TError = unknown>(
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>> &
-      Pick<
-        DefinedInitialDataOptions<Awaited<ReturnType<typeof logout>>, TError, Awaited<ReturnType<typeof logout>>>,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useLogout<TData = Awaited<ReturnType<typeof logout>>, TError = unknown>(
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>> &
-      Pick<
-        UndefinedInitialDataOptions<Awaited<ReturnType<typeof logout>>, TError, Awaited<ReturnType<typeof logout>>>,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useLogout<TData = Awaited<ReturnType<typeof logout>>, TError = unknown>(
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-export function useLogout<TData = Awaited<ReturnType<typeof logout>>, TError = unknown>(
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getLogoutQueryOptions(options)
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>
-  }
-
-  return withQueryKey(query, queryOptions.queryKey)
-}
-
-export const register = (userRegistrationDto: UserRegistrationDto, signal?: AbortSignal) => {
-  return customAxiosInstance<UserResponseDto>({
-    url: `/api/authentication/register`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: userRegistrationDto,
-    signal,
-  })
-}
-
-export const getRegisterMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext> => {
-  const mutationKey = ['register']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
-
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof register>>, RegisterMutationVariables> = (props) => {
-    const { data } = props ?? {}
-
-    return register(data)
-  }
-
-  return { mutationFn, ...mutationOptions }
-}
-
-export type RegisterMutationResult = NonNullable<Awaited<ReturnType<typeof register>>>
-export type RegisterMutationBody = UserRegistrationDto
-export type RegisterMutationError = unknown
-export type RegisterMutationVariables = { data: UserRegistrationDto }
-
-export const useRegister = <TError = unknown, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext>
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof register>>, TError, RegisterMutationVariables, TContext> => {
-  return useMutation(getRegisterMutationOptions(options), queryClient)
-}
-
-export const profile = (signal?: AbortSignal) => {
-  return customAxiosInstance<UserResponseDto>({ url: `/api/authentication/profile`, method: 'GET', signal })
-}
-
-export const getProfileQueryKey = () => {
-  return [`/api/authentication/profile`] as const
-}
-
-export const getProfileQueryOptions = <TData = Awaited<ReturnType<typeof profile>>, TError = unknown>(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getProfileQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof profile>>> = ({ signal }) => profile(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof profile>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ProfileQueryResult = NonNullable<Awaited<ReturnType<typeof profile>>>
-export type ProfileQueryError = unknown
-
-export function useProfile<TData = Awaited<ReturnType<typeof profile>>, TError = unknown>(
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>> &
-      Pick<
-        DefinedInitialDataOptions<Awaited<ReturnType<typeof profile>>, TError, Awaited<ReturnType<typeof profile>>>,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useProfile<TData = Awaited<ReturnType<typeof profile>>, TError = unknown>(
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>> &
-      Pick<
-        UndefinedInitialDataOptions<Awaited<ReturnType<typeof profile>>, TError, Awaited<ReturnType<typeof profile>>>,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useProfile<TData = Awaited<ReturnType<typeof profile>>, TError = unknown>(
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-export function useProfile<TData = Awaited<ReturnType<typeof profile>>, TError = unknown>(
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getProfileQueryOptions(options)
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>
-  }
-
-  return withQueryKey(query, queryOptions.queryKey)
-}
-
-export const refresh = (signal?: AbortSignal) => {
-  return customAxiosInstance<LoginResponseDto>({ url: `/api/authentication/refresh`, method: 'GET', signal })
-}
-
-export const getRefreshQueryKey = () => {
-  return [`/api/authentication/refresh`] as const
-}
-
-export const getRefreshQueryOptions = <TData = Awaited<ReturnType<typeof refresh>>, TError = unknown>(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getRefreshQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof refresh>>> = ({ signal }) => refresh(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof refresh>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type RefreshQueryResult = NonNullable<Awaited<ReturnType<typeof refresh>>>
-export type RefreshQueryError = unknown
-
-export function useRefresh<TData = Awaited<ReturnType<typeof refresh>>, TError = unknown>(
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>> &
-      Pick<
-        DefinedInitialDataOptions<Awaited<ReturnType<typeof refresh>>, TError, Awaited<ReturnType<typeof refresh>>>,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useRefresh<TData = Awaited<ReturnType<typeof refresh>>, TError = unknown>(
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>> &
-      Pick<
-        UndefinedInitialDataOptions<Awaited<ReturnType<typeof refresh>>, TError, Awaited<ReturnType<typeof refresh>>>,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useRefresh<TData = Awaited<ReturnType<typeof refresh>>, TError = unknown>(
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-export function useRefresh<TData = Awaited<ReturnType<typeof refresh>>, TError = unknown>(
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getRefreshQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>

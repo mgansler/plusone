@@ -15,8 +15,9 @@ describe('TrailAreaController', () => {
   let app: INestApplication
 
   const appServiceMock = {
-    fetchDataForNewArea: jest.fn(),
+    fetchDataForNewArea: vi.fn(),
   }
+
   const osmServiceMock: Pick<OsmService, 'reverseLookup'> = {
     reverseLookup: async (_) => {
       return {
@@ -54,7 +55,7 @@ describe('TrailAreaController', () => {
   const password = process.env[ADMIN_PASSWORD] as string
 
   beforeAll(async () => {
-    const consoleInfoSpy = jest.spyOn(console, 'info').mockImplementation(() => undefined)
+    const consoleInfoSpy = vi.spyOn(console, 'info').mockImplementation(() => undefined)
 
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
@@ -66,7 +67,6 @@ describe('TrailAreaController', () => {
       .overrideProvider(PrismaService)
       .useValue(prismaServiceMock)
       .compile()
-
     app = moduleRef.createNestApplication()
     app.useGlobalPipes(new ValidationPipe())
     app.setGlobalPrefix('api')
@@ -80,7 +80,7 @@ describe('TrailAreaController', () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it('should have set a username and password', () => {
@@ -180,6 +180,7 @@ describe('TrailAreaController', () => {
 
         expect(res.status).toBe(HttpStatus.UNAUTHORIZED)
       })
+
       it('should reject missing properties', async () => {
         const res = await request(app.getHttpServer()).post('/api/trailAreas/fromUrl').auth(username, password).send({})
 

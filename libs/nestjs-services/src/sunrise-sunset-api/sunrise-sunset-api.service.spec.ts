@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios'
 import { Test } from '@nestjs/testing'
 import { of } from 'rxjs'
+import { Mock } from 'vitest'
 
 import { GeographicalCoordinates, SunriseSunsetApiService } from './sunrise-sunset-api.service'
 
@@ -8,17 +9,17 @@ describe('SunriseSunsetApiService', () => {
   let sunriseSunsetApiService: SunriseSunsetApiService
   let httpService: HttpService
 
-  let httpGetSpy: jest.SpyInstance
+  let httpGetSpy: Mock
 
   const coordinates: GeographicalCoordinates = { latitude: 48.77, longitude: 9.16 }
 
   beforeAll(() => {
-    jest.useFakeTimers()
-    jest.setSystemTime(new Date(1970, 0, 1, 1, 0, 0, 0))
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(1970, 0, 1, 1, 0, 0, 0))
   })
 
   afterAll(() => {
-    jest.useRealTimers()
+    vi.useRealTimers()
   })
 
   beforeEach(async () => {
@@ -35,11 +36,11 @@ describe('SunriseSunsetApiService', () => {
     sunriseSunsetApiService = moduleRef.get<SunriseSunsetApiService, SunriseSunsetApiService>(SunriseSunsetApiService)
     httpService = moduleRef.get<HttpService, HttpService>(HttpService)
 
-    httpGetSpy = jest.spyOn(httpService, 'get')
+    httpGetSpy = vi.spyOn(httpService, 'get')
   })
 
   afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   describe('getLocationData', () => {

@@ -133,7 +133,7 @@
       }
     },
     "test": {
-      "executor": "@nx/jest:jest",
+      "executor": "@nx/vitest:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": [
         {
@@ -142,7 +142,7 @@
         }
       ],
       "options": {
-        "jestConfig": "apps/elgato/elgato-backend/jest.config.ts",
+        "configFile": "apps/elgato/elgato-backend/vite.config.mts",
         "codeCoverage": true
       },
       "configurations": {

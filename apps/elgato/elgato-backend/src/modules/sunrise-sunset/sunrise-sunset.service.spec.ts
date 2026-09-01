@@ -1,5 +1,6 @@
 import { SchedulerRegistry } from '@nestjs/schedule'
 import { Test } from '@nestjs/testing'
+import { Mock } from 'vitest'
 
 import { PrismaService } from '@plusone/elgato-persistence'
 
@@ -15,9 +16,9 @@ describe('SunriseSunsetService', () => {
   let schedulerRegistry: SchedulerRegistry
   let prismaService: PrismaService
 
-  let setLightStripScene: jest.Mock
-  let setDevicePowerState: jest.Mock
-  let addCronJobSpy: jest.SpyInstance
+  let setLightStripScene: Mock
+  let setDevicePowerState: Mock
+  let addCronJobSpy: Mock
 
   const device = {
     macAddress: 'ma:ca:dd:re:ss',
@@ -27,19 +28,19 @@ describe('SunriseSunsetService', () => {
   const sunriseSequenceTotalDuration = getTotalDurationInMs(sunrise)
 
   beforeAll(() => {
-    jest.useFakeTimers()
+    vi.useFakeTimers()
   })
 
   afterAll(() => {
-    jest.useRealTimers()
+    vi.useRealTimers()
   })
 
   beforeEach(async () => {
-    jest.setSystemTime(new Date(1970, 0, 1, 1, 0, 0, 0))
+    vi.setSystemTime(new Date(1970, 0, 1, 1, 0, 0, 0))
 
     // Elgato Service
-    setLightStripScene = jest.fn()
-    setDevicePowerState = jest.fn()
+    setLightStripScene = vi.fn()
+    setDevicePowerState = vi.fn()
 
     const moduleRef = await Test.createTestingModule({
       providers: [
@@ -55,14 +56,14 @@ describe('SunriseSunsetService', () => {
           provide: PrismaService,
           useValue: {
             device: {
-              findMany: jest.fn().mockResolvedValue([device]),
+              findMany: vi.fn().mockResolvedValue([device]),
             },
           },
         },
         {
           provide: LocationService,
           useValue: {
-            getLocationData: jest.fn().mockResolvedValue({
+            getLocationData: vi.fn().mockResolvedValue({
               dawn: new Date(1970, 0, 1, 1, 1, 0, 0),
             }),
           },
@@ -75,11 +76,11 @@ describe('SunriseSunsetService', () => {
     schedulerRegistry = moduleRef.get<SchedulerRegistry, SchedulerRegistry>(SchedulerRegistry)
     prismaService = moduleRef.get<PrismaService, PrismaService>(PrismaService)
 
-    addCronJobSpy = jest.spyOn(schedulerRegistry, 'addCronJob')
+    addCronJobSpy = vi.spyOn(schedulerRegistry, 'addCronJob')
   })
 
   afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   describe('setSunriseTimings', () => {
@@ -94,22 +95,22 @@ describe('SunriseSunsetService', () => {
       expect(setLightStripScene).toHaveBeenCalledTimes(0)
 
       // dawn is set to 1 minute after "now"
-      jest.advanceTimersByTime(60_000)
+      vi.advanceTimersByTime(60_000)
 
       // sunrise has been started
       expect(setLightStripScene).toHaveBeenCalledTimes(1)
 
       // advance time to 1 ms before supposed stop time of sequence
-      jest.advanceTimersByTime(sunriseSequenceTotalDuration - 30_000 - 1)
+      vi.advanceTimersByTime(sunriseSequenceTotalDuration - 30_000 - 1)
       expect(setDevicePowerState).toHaveBeenCalledTimes(0)
 
-      jest.advanceTimersByTime(1)
+      vi.advanceTimersByTime(1)
       expect(setDevicePowerState).toHaveBeenCalledTimes(1)
     })
 
     it('should only stop the sequence when we just started the application', async () => {
       // one minute after dawn
-      jest.advanceTimersByTime(120_000)
+      vi.advanceTimersByTime(120_000)
 
       await sunriseSunsetService.setSunriseTimings()
 
@@ -117,16 +118,16 @@ describe('SunriseSunsetService', () => {
       expect(addCronJobSpy).toHaveBeenNthCalledWith(1, 'stop-sunrise', expect.anything())
 
       // advance time to 1 ms before supposed stop time of sequence
-      jest.advanceTimersByTime(sunriseSequenceTotalDuration - 60_000 - 30_000 - 1)
+      vi.advanceTimersByTime(sunriseSequenceTotalDuration - 60_000 - 30_000 - 1)
       expect(setDevicePowerState).toHaveBeenCalledTimes(0)
 
-      jest.advanceTimersByTime(1)
+      vi.advanceTimersByTime(1)
       expect(setDevicePowerState).toHaveBeenCalledTimes(1)
     })
 
     it('should not start anything if dawn and end of sequence are in the future', async () => {
       // advance by 24 hours
-      jest.advanceTimersByTime(24 * 60 * 60 * 1000)
+      vi.advanceTimersByTime(24 * 60 * 60 * 1000)
 
       await sunriseSunsetService.setSunriseTimings()
 
@@ -139,8 +140,8 @@ describe('SunriseSunsetService', () => {
     })
 
     it('should clear existing cronjobs', async () => {
-      jest.spyOn(schedulerRegistry, 'doesExist').mockReturnValue(true)
-      const deleteCronJobSpy = jest.spyOn(schedulerRegistry, 'deleteCronJob').mockImplementation(jest.fn())
+      vi.spyOn(schedulerRegistry, 'doesExist').mockReturnValue(true)
+      const deleteCronJobSpy = vi.spyOn(schedulerRegistry, 'deleteCronJob').mockImplementation(vi.fn())
 
       await sunriseSunsetService.setSunriseTimings()
 
@@ -150,7 +151,7 @@ describe('SunriseSunsetService', () => {
     })
 
     it('should not add cronjobs if no devices are configured', async () => {
-      jest.spyOn(prismaService.device, 'findMany').mockResolvedValue([])
+      vi.spyOn(prismaService.device, 'findMany').mockResolvedValue([])
 
       await sunriseSunsetService.setSunriseTimings()
 

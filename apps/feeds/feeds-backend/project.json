@@ -130,8 +130,8 @@
       }
     },
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/apps/feeds/feeds-backend"],
+      "executor": "@nx/vitest:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": [
         {
           "target": "prisma-generate",
@@ -139,7 +139,7 @@
         }
       ],
       "options": {
-        "jestConfig": "apps/feeds/feeds-backend/jest.config.ts",
+        "configFile": "apps/feeds/feeds-backend/vite.config.mts",
         "codeCoverage": true
       },
       "configurations": {

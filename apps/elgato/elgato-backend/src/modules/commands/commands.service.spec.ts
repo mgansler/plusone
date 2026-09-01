@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing'
+import { Mock } from 'vitest'
 
 import { PrismaService } from '@plusone/elgato-persistence'
 
@@ -11,8 +12,8 @@ describe('CommandsService', () => {
   let deviceService: DeviceService
   let prismaService: PrismaService
 
-  let setPowerStateSpy: jest.SpyInstance
-  let transitionToColorSpy: jest.SpyInstance
+  let setPowerStateSpy: Mock
+  let transitionToColorSpy: Mock
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -20,20 +21,20 @@ describe('CommandsService', () => {
         {
           provide: DeviceService,
           useValue: {
-            setPowerState: jest.fn(),
-            transitionToColor: jest.fn(),
+            setPowerState: vi.fn(),
+            transitionToColor: vi.fn(),
           },
         },
         {
           provide: PrismaService,
           useValue: {
             command: {
-              create: jest.fn(),
-              delete: jest.fn(),
-              findMany: jest.fn(),
-              findUnique: jest.fn(),
-              findUniqueOrThrow: jest.fn(),
-              update: jest.fn(),
+              create: vi.fn(),
+              delete: vi.fn(),
+              findMany: vi.fn(),
+              findUnique: vi.fn(),
+              findUniqueOrThrow: vi.fn(),
+              update: vi.fn(),
             },
           },
         },
@@ -46,17 +47,17 @@ describe('CommandsService', () => {
     prismaService = moduleRef.get<PrismaService, PrismaService>(PrismaService)
 
     // default spy for asserting no calls
-    setPowerStateSpy = jest.spyOn(deviceService, 'setPowerState')
-    transitionToColorSpy = jest.spyOn(deviceService, 'transitionToColor')
+    setPowerStateSpy = vi.spyOn(deviceService, 'setPowerState')
+    transitionToColorSpy = vi.spyOn(deviceService, 'transitionToColor')
   })
 
   afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   describe('createCommand', () => {
     it('should create a command', async () => {
-      const createSpy = jest.spyOn(prismaService.command, 'create').mockResolvedValue({
+      const createSpy = vi.spyOn(prismaService.command, 'create').mockResolvedValue({
         id: 1,
         name: 'new-name',
         hash: 'fa15dcda61725e1a07c0afc636beca67',
@@ -86,7 +87,7 @@ describe('CommandsService', () => {
 
   describe('getCommands', () => {
     it('should return a list of commands', async () => {
-      const findManySpy = jest.spyOn(prismaService.command, 'findMany').mockResolvedValue([])
+      const findManySpy = vi.spyOn(prismaService.command, 'findMany').mockResolvedValue([])
 
       const actual = await commandsService.getCommands()
 
@@ -97,7 +98,7 @@ describe('CommandsService', () => {
 
   describe('getCommand', () => {
     it('should return a list of commands', async () => {
-      const findUniqueSpy = jest.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
+      const findUniqueSpy = vi.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
         id: 1,
         name: 'my-test-command',
         hash: 'md5-hash-of-name',
@@ -112,7 +113,7 @@ describe('CommandsService', () => {
 
   describe('updateCommand', () => {
     it('should update a given command', async () => {
-      const updateSpy = jest.spyOn(prismaService.command, 'update').mockResolvedValue({
+      const updateSpy = vi.spyOn(prismaService.command, 'update').mockResolvedValue({
         id: 1,
         name: 'new-name',
         hash: 'fa15dcda61725e1a07c0afc636beca67',
@@ -144,7 +145,7 @@ describe('CommandsService', () => {
 
   describe('deleteCommand', () => {
     it('should delete a command with the given id', async () => {
-      const deleteSpy = jest.spyOn(prismaService.command, 'delete')
+      const deleteSpy = vi.spyOn(prismaService.command, 'delete')
 
       await commandsService.deleteCommand(1)
 
@@ -154,11 +155,11 @@ describe('CommandsService', () => {
 
   describe('executeCommand', () => {
     it('should turn on devices when powerOnly is true', async () => {
-      // @ts-expect-error actions are a relation and not included in the inferred type
-      jest.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
+      vi.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
         id: 1,
         name: 'my-test-command',
         hash: 'md5-hash-of-name',
+        // @ts-expect-error actions are a relation and not included in the inferred type
         actions: [
           {
             macAddress: 'de:vi:ce',
@@ -171,7 +172,7 @@ describe('CommandsService', () => {
         ],
       })
 
-      const setPowerStateSpy = jest.spyOn(deviceService, 'setPowerState')
+      const setPowerStateSpy = vi.spyOn(deviceService, 'setPowerState')
 
       await commandsService.executeCommand('my-test-command')
 
@@ -180,12 +181,12 @@ describe('CommandsService', () => {
     })
 
     it('should turn on devices when hue/brightness/saturation are null', async () => {
-      // fail-safe, this should not happen as it is checked on input
-      // @ts-expect-error actions are a relation and not included in the inferred type
-      jest.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
+      vi.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
         id: 1,
         name: 'my-test-command',
         hash: 'md5-hash-of-name',
+        // fail-safe, this should not happen as it is checked on input
+        // @ts-expect-error actions are a relation and not included in the inferred type
         actions: [
           {
             macAddress: 'de:vi:ce',
@@ -198,7 +199,7 @@ describe('CommandsService', () => {
         ],
       })
 
-      const setPowerStateSpy = jest.spyOn(deviceService, 'setPowerState')
+      const setPowerStateSpy = vi.spyOn(deviceService, 'setPowerState')
 
       await commandsService.executeCommand('my-test-command')
 
@@ -207,11 +208,11 @@ describe('CommandsService', () => {
     })
 
     it('should turn transition to color when hue/brightness/saturation are set', async () => {
-      // @ts-expect-error actions are a relation and not included in the inferred type
-      jest.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
+      vi.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
         id: 1,
         name: 'my-test-command',
         hash: 'md5-hash-of-name',
+        // @ts-expect-error actions are a relation and not included in the inferred type
         actions: [
           {
             macAddress: 'de:vi:ce',
@@ -224,7 +225,7 @@ describe('CommandsService', () => {
         ],
       })
 
-      const transitionToColorSpy = jest.spyOn(deviceService, 'transitionToColor')
+      const transitionToColorSpy = vi.spyOn(deviceService, 'transitionToColor')
 
       await commandsService.executeCommand('my-test-command')
 
@@ -233,11 +234,11 @@ describe('CommandsService', () => {
     })
 
     it('should hande each device individually', async () => {
-      // @ts-expect-error actions are a relation and not included in the inferred type
-      jest.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
+      vi.spyOn(prismaService.command, 'findUniqueOrThrow').mockResolvedValue({
         id: 1,
         name: 'my-test-command',
         hash: 'md5-hash-of-name',
+        // @ts-expect-error actions are a relation and not included in the inferred type
         actions: [
           {
             macAddress: 'de:vi:c1',
@@ -258,7 +259,7 @@ describe('CommandsService', () => {
         ],
       })
 
-      const transitionToColorSpy = jest.spyOn(deviceService, 'transitionToColor')
+      const transitionToColorSpy = vi.spyOn(deviceService, 'transitionToColor')
 
       await commandsService.executeCommand('my-test-command')
 

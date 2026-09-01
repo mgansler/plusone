@@ -19,12 +19,12 @@ describe('DeviceService', () => {
   const deviceStub = getDevice(DeviceType.LightStrip, lastSeen)
 
   beforeAll(() => {
-    jest.useFakeTimers()
-    jest.setSystemTime(lastSeen)
+    vi.useFakeTimers()
+    vi.setSystemTime(lastSeen)
   })
 
   afterAll(() => {
-    jest.useRealTimers()
+    vi.useRealTimers()
   })
 
   beforeEach(async () => {
@@ -34,20 +34,20 @@ describe('DeviceService', () => {
           provide: PrismaService,
           useValue: {
             device: {
-              findUniqueOrThrow: jest.fn(),
-              update: jest.fn(),
+              findUniqueOrThrow: vi.fn(),
+              update: vi.fn(),
             },
           },
         },
         {
           provide: ElgatoService,
           useValue: {
-            getDeviceAccessoryInfo: jest.fn(),
-            getDeviceState: jest.fn(),
-            setDisplayName: jest.fn(),
-            setDevicePowerState: jest.fn(),
-            setLightStripColor: jest.fn(),
-            setLightStripScene: jest.fn(),
+            getDeviceAccessoryInfo: vi.fn(),
+            getDeviceState: vi.fn(),
+            setDisplayName: vi.fn(),
+            setDevicePowerState: vi.fn(),
+            setLightStripColor: vi.fn(),
+            setLightStripScene: vi.fn(),
           },
         },
         DeviceService,
@@ -58,23 +58,23 @@ describe('DeviceService', () => {
     prismaService = moduleRef.get<PrismaService, PrismaService>(PrismaService)
     elgatoService = moduleRef.get<ElgatoService, ElgatoService>(ElgatoService)
 
-    jest.spyOn(prismaService.device, 'findUniqueOrThrow').mockResolvedValue(deviceStub)
+    vi.spyOn(prismaService.device, 'findUniqueOrThrow').mockResolvedValue(deviceStub)
   })
 
   afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   describe('getDevice', () => {
     it('should return the device including all information', async () => {
-      jest.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockResolvedValue(
+      vi.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockResolvedValue(
         getAccessoryInfoResponseStub({
           productName: 'Elgato Light Strip',
           displayName: 'My Light Strip Device',
         }),
       )
 
-      jest.spyOn(elgatoService, 'getDeviceState').mockResolvedValue({
+      vi.spyOn(elgatoService, 'getDeviceState').mockResolvedValue({
         numberOfLights: 1,
         lights: [{ on: 1, hue: 0, brightness: 100, saturation: 50 }],
       })
@@ -102,8 +102,8 @@ describe('DeviceService', () => {
 
   describe('setDisplayName', () => {
     it('should update the display name', async () => {
-      const setDisplayNameSpy = jest.spyOn(elgatoService, 'setDisplayName')
-      const updateSpy = jest.spyOn(prismaService.device, 'update')
+      const setDisplayNameSpy = vi.spyOn(elgatoService, 'setDisplayName')
+      const updateSpy = vi.spyOn(prismaService.device, 'update')
 
       await deviceService.setDisplayName('aa:bb:cc:dd:ee:ff', { displayName: 'New Display Name' })
 
@@ -119,12 +119,12 @@ describe('DeviceService', () => {
 
   describe('toggle', () => {
     it('should turn a on device off', async () => {
-      jest.spyOn(elgatoService, 'getDeviceState').mockResolvedValue({
+      vi.spyOn(elgatoService, 'getDeviceState').mockResolvedValue({
         numberOfLights: 1,
         lights: [{ on: 1 }],
       })
 
-      const setDevicePowerStateSpy = jest.spyOn(elgatoService, 'setDevicePowerState')
+      const setDevicePowerStateSpy = vi.spyOn(elgatoService, 'setDevicePowerState')
 
       await deviceService.toggle('aa:bb:cc:dd:ee:ff')
 
@@ -132,12 +132,12 @@ describe('DeviceService', () => {
     })
 
     it('should turn a off device on', async () => {
-      jest.spyOn(elgatoService, 'getDeviceState').mockResolvedValue({
+      vi.spyOn(elgatoService, 'getDeviceState').mockResolvedValue({
         numberOfLights: 1,
         lights: [{ on: 0 }],
       })
 
-      const setDevicePowerStateSpy = jest.spyOn(elgatoService, 'setDevicePowerState')
+      const setDevicePowerStateSpy = vi.spyOn(elgatoService, 'setDevicePowerState')
 
       await deviceService.toggle('aa:bb:cc:dd:ee:ff')
 
@@ -147,7 +147,7 @@ describe('DeviceService', () => {
 
   describe('setPowerState', () => {
     it('should turn a device on', async () => {
-      const setDevicePowerStateSpy = jest.spyOn(elgatoService, 'setDevicePowerState')
+      const setDevicePowerStateSpy = vi.spyOn(elgatoService, 'setDevicePowerState')
 
       await deviceService.setPowerState('aa:bb:cc:dd:ee:ff', { on: true })
 
@@ -155,7 +155,7 @@ describe('DeviceService', () => {
     })
 
     it('should turn a device off', async () => {
-      const setDevicePowerStateSpy = jest.spyOn(elgatoService, 'setDevicePowerState')
+      const setDevicePowerStateSpy = vi.spyOn(elgatoService, 'setDevicePowerState')
 
       await deviceService.setPowerState('aa:bb:cc:dd:ee:ff', { on: false })
 
@@ -165,20 +165,20 @@ describe('DeviceService', () => {
 
   describe('transitionToColor', () => {
     it('should transition to the color', async () => {
-      jest.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockResolvedValue(
+      vi.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockResolvedValue(
         getAccessoryInfoResponseStub({
           productName: 'Elgato Light Strip',
           displayName: 'My Light Strip Device',
         }),
       )
 
-      jest.spyOn(elgatoService, 'getDeviceState').mockResolvedValue({
+      vi.spyOn(elgatoService, 'getDeviceState').mockResolvedValue({
         numberOfLights: 1,
         lights: [{ on: 1, hue: 0, brightness: 100, saturation: 50 }],
       })
 
-      const setLightStripSceneSpy = jest.spyOn(elgatoService, 'setLightStripScene')
-      const setLightStripColor = jest.spyOn(elgatoService, 'setLightStripColor')
+      const setLightStripSceneSpy = vi.spyOn(elgatoService, 'setLightStripScene')
+      const setLightStripColor = vi.spyOn(elgatoService, 'setLightStripColor')
 
       await deviceService.transitionToColor('aa:bb:cc:dd:ee:ff', { hue: 100, brightness: 90, saturation: 30 })
 
@@ -212,7 +212,7 @@ describe('DeviceService', () => {
       })
 
       expect(setLightStripColor).not.toHaveBeenCalled()
-      jest.advanceTimersByTime(1_100)
+      vi.advanceTimersByTime(1_100)
       expect(setLightStripColor).toHaveBeenCalledWith(deviceStub, { hue: 100, brightness: 90, saturation: 30 })
     })
   })

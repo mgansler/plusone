@@ -20,7 +20,7 @@ describe('lightsSchema', () => {
     }
 
     expect(() => elgatoSceneRequestSchema.parse(input)).toThrowErrorMatchingInlineSnapshot(`
-      "[
+      [ZodError: [
         {
           "code": "custom",
           "path": [
@@ -30,7 +30,7 @@ describe('lightsSchema', () => {
           ],
           "message": "numberOfSceneElements (1) must match the length of scene array (2)"
         }
-      ]"
+      ]]
     `)
   })
 

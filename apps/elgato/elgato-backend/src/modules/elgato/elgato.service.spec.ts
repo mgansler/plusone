@@ -25,8 +25,8 @@ describe('ElgatoService', () => {
   const server = setupServer()
   let elgatoService: ElgatoService
   let httpService: HttpService
-  let errSpy: jest.SpyInstance
-  let warnSpy: jest.SpyInstance
+  let errSpy: vi.SpyInstance
+  let warnSpy: vi.SpyInstance
 
   beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -50,9 +50,9 @@ describe('ElgatoService', () => {
     elgatoService = new ElgatoService(httpService)
 
     // @ts-expect-error We need to spy on a private member to assert log statements
-    errSpy = jest.spyOn(elgatoService.logger, 'error').mockImplementation()
+    errSpy = vi.spyOn(elgatoService.logger, 'error').mockImplementation()
     // @ts-expect-error We need to spy on a private member to assert log statements
-    warnSpy = jest.spyOn(elgatoService.logger, 'warn').mockImplementation()
+    warnSpy = vi.spyOn(elgatoService.logger, 'warn').mockImplementation()
   })
 
   afterAll(() => {
@@ -72,7 +72,7 @@ describe('ElgatoService', () => {
 
     it('should throw error on unreachable host', async () => {
       // @ts-expect-error We need to spy on a private member to assert log statements
-      elgatoService.logger.error = jest.fn()
+      elgatoService.logger.error = vi.fn()
 
       await expect(
         elgatoService.getDeviceAccessoryInfo({

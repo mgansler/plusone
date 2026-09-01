@@ -3,6 +3,7 @@ import { join } from 'path'
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { ServeStaticModule } from '@nestjs/serve-static'
+import { PassportModule } from '@nestjs/passport'
 
 import { RequestLoggerMiddleware } from '@plusone/nestjs-services'
 
@@ -20,6 +21,7 @@ import { configSchema } from './config'
 
 @Module({
   imports: [
+    PassportModule.register({ global: true }),
     AdminModule,
     ArticleModule,
     AuthenticationModule,

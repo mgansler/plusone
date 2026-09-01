@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
-import { PassportModule } from '@nestjs/passport'
+import { AuthModuleOptions, PassportModule } from '@nestjs/passport'
 
 import { PrismaModule } from '@plusone/feeds-persistence'
 
@@ -15,12 +15,19 @@ import { UsernamePasswordStrategy } from './username-password-strategy.service'
   imports: [PassportModule, JwtModule.register({}), PrismaModule],
   controllers: [AuthenticationController],
   providers: [
+    { provide: AuthModuleOptions, useValue: {} },
     AuthenticationService,
     UsernamePasswordStrategy,
     JwtAccessTokenStrategy,
     JwtRefreshTokenStrategy,
     UserService,
   ],
-  exports: [AuthenticationService],
+  exports: [
+    AuthModuleOptions,
+    AuthenticationService,
+    JwtAccessTokenStrategy,
+    JwtRefreshTokenStrategy,
+    UsernamePasswordStrategy,
+  ],
 })
 export class AuthenticationModule {}

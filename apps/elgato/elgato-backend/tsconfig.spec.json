@@ -3,8 +3,9 @@
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
     "module": "es2022",
+    "moduleResolution": "Bundler",
     "allowJs": true,
-    "types": ["jest", "node"]
+    "types": ["vitest/globals", "vitest/importMeta", "vite/client", "node"]
   },
-  "include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"]
+  "include": ["vite.config.mts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"]
 }

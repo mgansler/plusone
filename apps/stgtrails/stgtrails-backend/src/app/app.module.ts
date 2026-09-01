@@ -31,7 +31,7 @@ import { WeatherService } from './weather.service'
       validate: configSchema.parse,
       envFilePath: ['.local.env'],
     }),
-    PassportModule,
+    PassportModule.register({}),
     ScheduleModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, 'web'),

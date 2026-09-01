@@ -12,6 +12,32 @@ export const GetAdminStatsResponse = zod.strictObject({
   userCount: zod.number(),
 })
 
+export const LoginResponse = zod.strictObject({
+  access_token: zod.string(),
+  refresh_token: zod.string(),
+})
+
+export const LogoutResponse = zod.unknown()
+
+export const RegisterResponse = zod.strictObject({
+  email: zod.string().nullish(),
+  id: zod.string(),
+  isAdmin: zod.boolean(),
+  username: zod.string(),
+})
+
+export const ProfileResponse = zod.strictObject({
+  email: zod.string().nullish(),
+  id: zod.string(),
+  isAdmin: zod.boolean(),
+  username: zod.string(),
+})
+
+export const RefreshResponse = zod.strictObject({
+  access_token: zod.string(),
+  refresh_token: zod.string(),
+})
+
 export const MarkArticlesReadResponse = zod.unknown()
 
 export const ToggleUnreadResponse = zod.strictObject({
@@ -69,32 +95,6 @@ export const RecentlyReadArticlesResponseItem = zod.strictObject({
   unread: zod.boolean(),
 })
 export const RecentlyReadArticlesResponse = zod.array(RecentlyReadArticlesResponseItem)
-
-export const LoginResponse = zod.strictObject({
-  access_token: zod.string(),
-  refresh_token: zod.string(),
-})
-
-export const LogoutResponse = zod.unknown()
-
-export const RegisterResponse = zod.strictObject({
-  email: zod.string().nullish(),
-  id: zod.string(),
-  isAdmin: zod.boolean(),
-  username: zod.string(),
-})
-
-export const ProfileResponse = zod.strictObject({
-  email: zod.string().nullish(),
-  id: zod.string(),
-  isAdmin: zod.boolean(),
-  username: zod.string(),
-})
-
-export const RefreshResponse = zod.strictObject({
-  access_token: zod.string(),
-  refresh_token: zod.string(),
-})
 
 export const bootInfoResponseAppVersionRegExp = new RegExp('^\\d\\.\\d+$')
 

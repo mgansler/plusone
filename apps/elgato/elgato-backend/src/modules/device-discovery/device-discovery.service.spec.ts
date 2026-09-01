@@ -41,12 +41,12 @@ describe('DeviceDiscoveryService', () => {
   const fakeTime = new Date(1970, 0, 1, 1, 0, 0, 0)
 
   beforeAll(() => {
-    jest.useFakeTimers()
-    jest.setSystemTime(fakeTime)
+    vi.useFakeTimers()
+    vi.setSystemTime(fakeTime)
   })
 
   afterAll(() => {
-    jest.useRealTimers()
+    vi.useRealTimers()
   })
 
   beforeEach(async () => {
@@ -57,13 +57,13 @@ describe('DeviceDiscoveryService', () => {
       .overrideProvider(PrismaService)
       .useValue({
         discoveredDevice: {
-          findMany: jest.fn(),
-          findUniqueOrThrow: jest.fn(),
-          update: jest.fn(),
+          findMany: vi.fn(),
+          findUniqueOrThrow: vi.fn(),
+          update: vi.fn(),
         },
         device: {
-          create: jest.fn(),
-          upsert: jest.fn(),
+          create: vi.fn(),
+          upsert: vi.fn(),
         },
       })
       .compile()
@@ -74,19 +74,19 @@ describe('DeviceDiscoveryService', () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   describe('getDiscoveredDevices', () => {
     it('should return an emtpy list', async () => {
-      jest.spyOn(prismaService.discoveredDevice, 'findMany').mockResolvedValue([])
+      vi.spyOn(prismaService.discoveredDevice, 'findMany').mockResolvedValue([])
 
       const actual = await deviceDiscoveryService.getDiscoveredDevices()
       expect(actual).toEqual([])
     })
 
     it('should return a single device', async () => {
-      jest.spyOn(prismaService.discoveredDevice, 'findMany').mockResolvedValue([discoveredDevice])
+      vi.spyOn(prismaService.discoveredDevice, 'findMany').mockResolvedValue([discoveredDevice])
 
       const actual = await deviceDiscoveryService.getDiscoveredDevices()
       expect(actual).toEqual([discoveredDevice])
@@ -95,10 +95,10 @@ describe('DeviceDiscoveryService', () => {
 
   describe('addDiscoveredDevice', () => {
     it('should not fail on adding a already controlled device', async () => {
-      jest.spyOn(prismaService.discoveredDevice, 'findUniqueOrThrow').mockResolvedValue(discoveredDevice)
-      jest.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockResolvedValue(getAccessoryInfoResponseStub({}))
-      const deviceUpsertSpy = jest.spyOn(prismaService.device, 'upsert').mockResolvedValue(device)
-      const discoveredDeviceUpdateSpy = jest
+      vi.spyOn(prismaService.discoveredDevice, 'findUniqueOrThrow').mockResolvedValue(discoveredDevice)
+      vi.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockResolvedValue(getAccessoryInfoResponseStub({}))
+      const deviceUpsertSpy = vi.spyOn(prismaService.device, 'upsert').mockResolvedValue(device)
+      const discoveredDeviceUpdateSpy = vi
         .spyOn(prismaService.discoveredDevice, 'update')
         .mockResolvedValue(discoveredDevice)
 
@@ -123,10 +123,10 @@ describe('DeviceDiscoveryService', () => {
     })
 
     it('should not add a device when accessory info cannot be retrieved', async () => {
-      jest.spyOn(prismaService.discoveredDevice, 'findUniqueOrThrow').mockResolvedValue(discoveredDevice)
-      jest.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockRejectedValue(new Error('Could not connect'))
-      const deviceUpsertSpy = jest.spyOn(prismaService.device, 'upsert')
-      const discoveredDeviceUpdateSpy = jest.spyOn(prismaService.discoveredDevice, 'update')
+      vi.spyOn(prismaService.discoveredDevice, 'findUniqueOrThrow').mockResolvedValue(discoveredDevice)
+      vi.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockRejectedValue(new Error('Could not connect'))
+      const deviceUpsertSpy = vi.spyOn(prismaService.device, 'upsert')
+      const discoveredDeviceUpdateSpy = vi.spyOn(prismaService.discoveredDevice, 'update')
 
       await expect(deviceDiscoveryService.addDiscoveredDevice('de:vi:ce:id')).rejects.toThrow('Could not reach device.')
 
@@ -137,8 +137,8 @@ describe('DeviceDiscoveryService', () => {
 
   describe('addManualDevice', () => {
     it('should add a device manually', async () => {
-      jest.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockResolvedValue(getAccessoryInfoResponseStub({}))
-      const deviceUpsertSpy = jest.spyOn(prismaService.device, 'upsert').mockResolvedValue(device)
+      vi.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockResolvedValue(getAccessoryInfoResponseStub({}))
+      const deviceUpsertSpy = vi.spyOn(prismaService.device, 'upsert').mockResolvedValue(device)
 
       await deviceDiscoveryService.addManualDevice('127.0.0.1')
 
@@ -162,8 +162,8 @@ describe('DeviceDiscoveryService', () => {
     })
 
     it('should not add a device when accessory info cannot be retrieved', async () => {
-      jest.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockRejectedValue(new Error('Could not connect'))
-      const deviceCreateSpy = jest.spyOn(prismaService.device, 'create')
+      vi.spyOn(elgatoService, 'getDeviceAccessoryInfo').mockRejectedValue(new Error('Could not connect'))
+      const deviceCreateSpy = vi.spyOn(prismaService.device, 'create')
 
       await expect(deviceDiscoveryService.addManualDevice('127.0.0.1')).rejects.toThrow('Could not connect')
 
