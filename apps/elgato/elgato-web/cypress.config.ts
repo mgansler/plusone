@@ -8,5 +8,4 @@ export default defineConfig({
     testCaseSwitchClassnameAndName: true,
   },
   component: nxComponentTestingPreset(__filename, { bundler: 'vite' }),
-  experimentalMemoryManagement: true,
 })

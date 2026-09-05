@@ -1,4 +1,4 @@
-image: node:24.20.0
+image: node:24.20.0-trixie
 
 variables:
   GIT_DEPTH: 0
@@ -133,8 +133,9 @@ component-test:
   before_script:
     - !reference [.distributed, before_script]
     - sh tools/scripts/install-cypress-dependencies.sh
+    - sh tools/scripts/install-google-chrome.sh
   script:
-    - time yarn nx affected --base=$NX_BASE --head=$NX_HEAD -t component-test --parallel=1 --configuration=ci
+    - time yarn nx affected --base=$NX_BASE --head=$NX_HEAD -t component-test --parallel=1 --configuration=ci --browser=chrome
   artifacts:
     when: always
     paths:
@@ -150,8 +151,6 @@ e2e:
     - .distributed
     - .dind
   tags:
-    - amd64
-    - chrome
     - docker
   retry: 2
   needs:

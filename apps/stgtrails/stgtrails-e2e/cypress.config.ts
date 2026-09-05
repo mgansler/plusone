@@ -8,6 +8,5 @@ export default defineConfig({
     testCaseSwitchClassnameAndName: true,
   },
   e2e: { ...nxE2EPreset(__filename, { cypressDir: 'src', bundler: 'vite' }), baseUrl: 'http://localhost:3104' },
-  experimentalMemoryManagement: true,
   retries: 2,
 })

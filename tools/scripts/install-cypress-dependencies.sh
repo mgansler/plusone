@@ -2,4 +2,4 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-apt update && apt install -y xvfb libgtk-3-0 libnotify4 libgconf-2-4 libnss3 libxss1 libasound2 libgbm-dev
+apt update && apt install -y libgtk-3-0t64 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb

@@ -10,5 +10,4 @@ export default defineConfig({
   component: nxComponentTestingPreset(__filename, {
     bundler: 'vite',
   }) as Cypress.ConfigOptions['component'],
-  experimentalMemoryManagement: true,
 })
