@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  root: __dirname,
+  root: import.meta.dirname,
   build: {
     outDir: '../../../dist/apps/elgato/elgato-web',
     emptyOutDir: true,

@@ -6,7 +6,7 @@ import * as process from 'process'
 import { defineConfig, searchForWorkspaceRoot } from 'vite'
 
 export default defineConfig({
-  root: __dirname,
+  root: import.meta.dirname,
   build: {
     outDir: '../../dist/apps/github-pipeline-status',
     reportCompressedSize: true,

@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 
 export default defineConfig({
-  root: __dirname,
+  root: import.meta.dirname,
   build: {
     outDir: '../../../dist/apps/stgtrails/stgtrails-web',
     emptyOutDir: true,
