@@ -16,7 +16,7 @@ describe.skip('OsmService', () => {
     osmService = moduleRef.get<OsmService, OsmService>(OsmService)
   })
 
-  it('should return location details for an area in germany', async () => {
+  it('should return location details for an area in Germany', async () => {
     // Kurpfalz Park
     const actual = await osmService.reverseLookup({ latitude: 49.407692, longitude: 8.118681 })
 
@@ -40,7 +40,7 @@ describe.skip('OsmService', () => {
     })
   })
 
-  it('should return location details for an area in italy', async () => {
+  it('should return location details for an area in Italy', async () => {
     // Finale Ligure
     const actual = await osmService.reverseLookup({ latitude: 44.189, longitude: 8.318 })
 
@@ -52,7 +52,7 @@ describe.skip('OsmService', () => {
     })
   })
 
-  it('should return location details for an area in north america', async () => {
+  it('should return location details for an area in North America', async () => {
     // Whistler
     const actual = await osmService.reverseLookup({ latitude: 50.113, longitude: -122.954 })
 
@@ -64,7 +64,7 @@ describe.skip('OsmService', () => {
     })
   })
 
-  it('should return location details for an area in south america', async () => {
+  it('should return location details for an area in South America', async () => {
     const actual = await osmService.reverseLookup({ latitude: -18.836, longitude: -55.755 })
 
     expect(actual).toEqual({
