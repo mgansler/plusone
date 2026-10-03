@@ -1,10 +1,9 @@
 import { Button, Container, Divider, Link as MuiLink, Stack, TextField, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import type { FallbackProps } from 'react-error-boundary'
-import { getErrorMessage, ErrorBoundary } from 'react-error-boundary'
-import type { UseFormReturn } from 'react-hook-form'
+import { ErrorBoundary, getErrorMessage } from 'react-error-boundary'
+import type { UseFormReset, UseFormReturn } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
-import type { UseFormReset } from 'react-hook-form/dist/types/form'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { getGetUserFeedsQueryKey, useAddFeed, useDiscoverFeed, useImportFeeds } from '@plusone/feeds/api-client'

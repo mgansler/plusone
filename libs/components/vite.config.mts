@@ -1,18 +1,17 @@
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/libs/components',
 
-  plugins: [react(), nxViteTsPaths()],
+  plugins: [react(), tsconfigPaths()],
 
   // Uncomment this if you are using workers.
   // worker: {
-  //  plugins: [ nxViteTsPaths() ],
+  //  plugins: [ tsconfigPaths() ],
   // },
 
-  // @ts-expect-error vitest needs this
   test: {
     reporters: ['default', 'junit'],
     outputFile: '../../reports/test/components.xml',

@@ -1,5 +1,4 @@
-import type { AxiosError } from '@nestjs/terminus/dist/errors/axios.error'
-import type { AxiosRequestConfig } from 'axios'
+import type { AxiosError, AxiosRequestConfig } from 'axios'
 import AxiosStatic, { AxiosHeaders } from 'axios'
 
 import type { LoginResponseDto } from './index'

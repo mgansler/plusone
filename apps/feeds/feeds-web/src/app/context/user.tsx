@@ -1,11 +1,11 @@
-import type { AxiosError } from '@nestjs/terminus/dist/errors/axios.error'
 import { useQueryClient } from '@tanstack/react-query'
+import type { AxiosError } from 'axios'
 import type { ReactNode } from 'react'
 import { createContext, useCallback, useContext, useEffect, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { AUTHENTICATION_LOCAL_STORAGE_KEY, useLogout, useValidatedProfile } from '@plusone/feeds/api-client'
 import type { LoginResponseDto, UserResponseDto } from '@plusone/feeds/api-client'
+import { AUTHENTICATION_LOCAL_STORAGE_KEY, useLogout, useValidatedProfile } from '@plusone/feeds/api-client'
 
 type UserContextValue = {
   userInfo?: UserResponseDto

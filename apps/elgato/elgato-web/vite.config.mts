@@ -1,9 +1,8 @@
-/// <reference types="vitest" />
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   root: import.meta.dirname,
@@ -27,14 +26,13 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [tanstackRouter({ target: 'react', autoCodeSplitting: false }), react(), nxViteTsPaths(), tailwindcss()],
+  plugins: [tanstackRouter({ target: 'react', autoCodeSplitting: false }), react(), tsconfigPaths(), tailwindcss()],
 
   // Uncomment this if you are using workers.
   // worker: {
-  //  plugins: [ nxViteTsPaths() ],
+  //  plugins: [ tsconfigPaths() ],
   // },
 
-  // @ts-expect-error vitest needs this
   test: {
     reporters: ['default', 'junit'],
     outputFile: '../../../reports/test/elgato-web.xml',

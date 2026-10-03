@@ -1,11 +1,11 @@
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   root: import.meta.dirname,
   cacheDir: '../../../node_modules/.vite/apps/stgtrails/stgtrails-backend',
 
-  plugins: [nxViteTsPaths()],
+  plugins: [tsconfigPaths()],
 
   test: {
     globals: true,

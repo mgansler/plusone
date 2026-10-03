@@ -1,9 +1,8 @@
-/// <reference types="vitest" />
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
-
 import react from '@vitejs/plugin-react'
 import * as process from 'process'
-import { defineConfig, searchForWorkspaceRoot } from 'vite'
+import { searchForWorkspaceRoot } from 'vite'
+import { defineConfig } from 'vitest/config'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   root: import.meta.dirname,
@@ -38,7 +37,7 @@ export default defineConfig({
     },
   },
 
-  plugins: [react(), nxViteTsPaths()],
+  plugins: [react(), tsconfigPaths()],
 
   resolve: {
     alias: {
@@ -52,7 +51,7 @@ export default defineConfig({
 
   // Uncomment this if you are using workers.
   // worker: {
-  //  plugins: [ nxViteTsPaths() ],
+  //  plugins: [ tsconfigPaths() ],
   // },
 
   test: {
