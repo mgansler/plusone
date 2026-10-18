@@ -78,7 +78,7 @@ export const GetHealthStatusResponse = zod.strictObject({
   info: zod
     .record(
       zod.string(),
-      zod.strictObject({
+      zod.looseObject({
         status: zod.enum(['up', 'degraded', 'down']),
         responseTime: zod.number().optional().describe('Time the health indicator took to respond, in ms'),
       }),
@@ -87,7 +87,7 @@ export const GetHealthStatusResponse = zod.strictObject({
   error: zod
     .record(
       zod.string(),
-      zod.strictObject({
+      zod.looseObject({
         status: zod.enum(['up', 'degraded', 'down']),
         responseTime: zod.number().optional().describe('Time the health indicator took to respond, in ms'),
       }),
@@ -96,7 +96,7 @@ export const GetHealthStatusResponse = zod.strictObject({
   details: zod
     .record(
       zod.string(),
-      zod.strictObject({
+      zod.looseObject({
         status: zod.enum(['up', 'degraded', 'down']),
         responseTime: zod.number().optional().describe('Time the health indicator took to respond, in ms'),
       }),
