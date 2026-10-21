@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
+    "moduleResolution": "Bundler",
     "types": ["vitest/globals", "vitest/importMeta", "vite/client", "node", "vitest", "@testing-library/jest-dom"]
   },
   "include": [

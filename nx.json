@@ -139,6 +139,11 @@
       ],
       "outputs": ["{projectRoot}/src/lib/client/**"],
       "cache": true
+    },
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "workspaceLayout": {
