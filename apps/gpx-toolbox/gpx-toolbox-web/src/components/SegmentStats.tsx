@@ -1,5 +1,14 @@
 import type { TrackPoint } from '@plusone/gpx'
-import { calculateHaversineDistance } from '@plusone/gpx'
+import {
+  calculateTotalDistance,
+  calculateElevationGain,
+  calculateElevationLoss,
+  calculateDuration,
+  calculateAvgSpeed,
+  calculateMaxSpeed,
+  getTimeRange,
+} from '@plusone/gpx'
+import { formatDistance, formatDuration } from '../utils/format'
 
 interface SegmentStatsProps {
   points: TrackPoint[]
@@ -33,87 +42,6 @@ export function SegmentStats({ points }: SegmentStatsProps) {
       <Stat label="Zeit" value={timeRange} />
     </div>
   )
-}
-
-function calculateTotalDistance(points: TrackPoint[]): number {
-  let total = 0
-  for (let i = 1; i < points.length; i++) {
-    total += calculateHaversineDistance(points[i - 1], points[i])
-  }
-  return total
-}
-
-function calculateElevationGain(points: TrackPoint[]): number {
-  let gain = 0
-  for (let i = 1; i < points.length; i++) {
-    const diff = points[i].elevation - points[i - 1].elevation
-    if (diff > 0) gain += diff
-  }
-  return gain
-}
-
-function calculateElevationLoss(points: TrackPoint[]): number {
-  let loss = 0
-  for (let i = 1; i < points.length; i++) {
-    const diff = points[i - 1].elevation - points[i].elevation
-    if (diff > 0) loss += diff
-  }
-  return loss
-}
-
-function calculateDuration(points: TrackPoint[]): number {
-  if (points.length < 2) return 0
-  return (points[points.length - 1].time.getTime() - points[0].time.getTime()) / 1000
-}
-
-function calculateAvgSpeed(distance: number, duration: number): number {
-  if (duration === 0) return 0
-  return Math.round((distance / 1000 / (duration / 3600)) * 10) / 10
-}
-
-function calculateMaxSpeed(points: TrackPoint[]): number {
-  let maxSpeed = 0
-  for (let i = 1; i < points.length; i++) {
-    const dt = (points[i].time.getTime() - points[i - 1].time.getTime()) / 1000
-    if (dt > 0) {
-      const dist = calculateHaversineDistance(points[i - 1], points[i])
-      const speed = dist / 1000 / (dt / 3600)
-      if (speed > maxSpeed) maxSpeed = speed
-    }
-  }
-  return Math.round(maxSpeed * 10) / 10
-}
-
-function getTimeRange(points: TrackPoint[]): string {
-  if (points.length < 2) return ''
-  const start = points[0].time
-  const end = points[points.length - 1].time
-  return `${formatTime(start)} – ${formatTime(end)}`
-}
-
-function formatDistance(meters: number): string {
-  if (meters >= 1000) {
-    return `${(meters / 1000).toFixed(2)} km`
-  }
-  return `${Math.round(meters)} m`
-}
-
-function formatDuration(seconds: number): string {
-  const hours = Math.floor(seconds / 3600)
-  const minutes = Math.floor((seconds % 3600) / 60)
-  const secs = Math.floor(seconds % 60)
-
-  if (hours > 0) {
-    return `${hours}h ${minutes}m ${secs}s`
-  }
-  if (minutes > 0) {
-    return `${minutes}m ${secs}s`
-  }
-  return `${secs}s`
-}
-
-function formatTime(date: Date): string {
-  return date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
 }
 
 interface StatProps {

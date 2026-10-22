@@ -5,10 +5,6 @@ import { join } from 'node:path'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { XMLParser } from 'fast-xml-parser'
 
-// ─────────────────────────────────────────────────────────────────────────────
-// projectPoint
-// ─────────────────────────────────────────────────────────────────────────────
-
 describe('projectPoint', () => {
   it('projects two points symmetrically around the centre latitude', () => {
     const centreLat = 44.0
@@ -28,10 +24,6 @@ describe('projectPoint', () => {
   })
 })
 
-// ─────────────────────────────────────────────────────────────────────────────
-// computeBoundingBox
-// ─────────────────────────────────────────────────────────────────────────────
-
 describe('computeBoundingBox', () => {
   it('returns identity box for empty input', () => {
     expect(computeBoundingBox([])).toEqual({ minX: 0, minY: 0, maxX: 1, maxY: 1 })
@@ -47,10 +39,6 @@ describe('computeBoundingBox', () => {
     expect(bb).toEqual({ minX: 1, minY: 0, maxX: 5, maxY: 10 })
   })
 })
-
-// ─────────────────────────────────────────────────────────────────────────────
-// buildPath
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe('buildPath', () => {
   it('returns empty string for no points', () => {
@@ -87,10 +75,6 @@ describe('buildPath', () => {
   })
 })
 
-// ─────────────────────────────────────────────────────────────────────────────
-// renderSvg (integration)
-// ─────────────────────────────────────────────────────────────────────────────
-
 describe('renderSvg', () => {
   it('uses pixel-space viewBox (0 0 width height)', () => {
     const points = [
@@ -125,7 +109,7 @@ describe('renderSvg', () => {
   })
 
   it('renders an actual GPX file', () => {
-    const gpxPath = join(__dirname, '../../tracks/test.gpx')
+    const gpxPath = join(__dirname, '../../tracks/MdRzA.gpx')
     const fileContent = readFileSync(gpxPath, 'utf-8')
     const parsed = new XMLParser({ ignoreAttributes: false }).parse(fileContent)
 
@@ -139,7 +123,7 @@ describe('renderSvg', () => {
     const result = renderSvg({ points })
 
     // Write SVG alongside the GPX file (same name, .svg extension)
-    const svgPath = join(__dirname, '../../tracks/test.svg')
+    const svgPath = join(__dirname, '../../tracks/MdRzA.svg')
     writeFileSync(svgPath, result.svg, 'utf-8')
 
     expect(result.svg).not.toBe('')
@@ -198,8 +182,6 @@ describe('renderSvg', () => {
     expect(result.svg).toBe('')
     expect(result.viewBox).toBe('')
   })
-
-  // ── Markers ───────────────────────────────────────────────────────────────
 
   it('renders start (green) and end (red) markers by default', () => {
     const points = [
@@ -264,8 +246,6 @@ describe('renderSvg', () => {
     expect(result.svg).toContain('fill="#00ff00"')
   })
 
-  // ── Rotation ──────────────────────────────────────────────────────────────
-
   it('swaps width/height for viewBox when rotate: true', () => {
     const points = [
       { latitude: 44.0, longitude: 8.3, elevation: 100, time: new Date('2026-01-01T10:00:00Z') },
@@ -303,10 +283,6 @@ describe('renderSvg', () => {
     expect(result.viewBox).toBe('0 0 800 600')
   })
 })
-
-// ─────────────────────────────────────────────────────────────────────────────
-// calculateBearing
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe('calculateBearing', () => {
   it('returns ~0° for northward direction', () => {
