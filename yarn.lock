@@ -11828,6 +11828,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/types@npm:^8.56.0":
+  version: 8.72.0
+  resolution: "@typescript-eslint/types@npm:8.72.0"
+  checksum: 10c0/11ee41f1860149f3dcfe6f517840cd7254fbc90f4acaf6098f731bb00a6392f8e5d7d9d0e47e516bd0e5fcd3110e41624ad893036ad79fa6dd6b5a67d6a42aa6
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/typescript-estree@npm:8.60.0":
   version: 8.60.0
   resolution: "@typescript-eslint/typescript-estree@npm:8.60.0"
@@ -14908,6 +14915,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"comment-parser@npm:^1.4.1":
+  version: 1.4.9
+  resolution: "comment-parser@npm:1.4.9"
+  checksum: 10c0/bf81563f8588a9de7f1b49f46c8660899147c8313a01a5c48cc88a89a401c68952004cdd15644f21d9fb10c1f21e63366dc8627468a576d5d3400ee5ca7178a4
+  languageName: node
+  linkType: hard
+
 "common-path-prefix@npm:^3.0.0":
   version: 3.0.0
   resolution: "common-path-prefix@npm:3.0.0"
@@ -16923,6 +16937,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-import-context@npm:^0.1.9":
+  version: 0.1.9
+  resolution: "eslint-import-context@npm:0.1.9"
+  dependencies:
+    get-tsconfig: "npm:^4.10.1"
+    stable-hash-x: "npm:^0.2.0"
+  peerDependencies:
+    unrs-resolver: ^1.0.0
+  peerDependenciesMeta:
+    unrs-resolver:
+      optional: true
+  checksum: 10c0/07851103443b70af681c5988e2702e681ff9b956e055e11d4bd9b2322847fa0d9e8da50c18fc7cb1165106b043f34fbd0384d7011c239465c4645c52132e56f3
+  languageName: node
+  linkType: hard
+
 "eslint-import-resolver-node@npm:^0.3.9":
   version: 0.3.10
   resolution: "eslint-import-resolver-node@npm:0.3.10"
@@ -16958,6 +16987,32 @@ __metadata:
     "@typescript-eslint/parser":
       optional: true
   checksum: 10c0/4105404c3cfe42c72c2ab933759d77de8f7d52db048c44d4c37e1dd5727f9abfee9b4324fdc22e2c85edeccb5627cb4c51f17f44dae3dc166ea8c9af9e93072d
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-import-x@npm:4.17.1":
+  version: 4.17.1
+  resolution: "eslint-plugin-import-x@npm:4.17.1"
+  dependencies:
+    "@typescript-eslint/types": "npm:^8.56.0"
+    comment-parser: "npm:^1.4.1"
+    debug: "npm:^4.4.1"
+    eslint-import-context: "npm:^0.1.9"
+    is-glob: "npm:^4.0.3"
+    minimatch: "npm:^9.0.3 || ^10.1.2"
+    semver: "npm:^7.7.2"
+    stable-hash-x: "npm:^0.2.0"
+    unrs-resolver: "npm:^1.9.2"
+  peerDependencies:
+    "@typescript-eslint/utils": ^8.56.0
+    eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
+    eslint-import-resolver-node: "*"
+  peerDependenciesMeta:
+    "@typescript-eslint/utils":
+      optional: true
+    eslint-import-resolver-node:
+      optional: true
+  checksum: 10c0/4ea2ace22c3d805f2253063912211c438055f112ca9a2124df262311744975fc96443e4526fd80eef0acec7845a48fb6d1da444a4c4b0ff9786927fe2755f2a7
   languageName: node
   linkType: hard
 
@@ -18396,7 +18451,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-tsconfig@npm:^4.14.3":
+"get-tsconfig@npm:^4.10.1, get-tsconfig@npm:^4.14.3":
   version: 4.14.3
   resolution: "get-tsconfig@npm:4.14.3"
   dependencies:
@@ -22336,7 +22391,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.2.4, minimatch@npm:^10.2.6":
+"minimatch@npm:^10.2.4, minimatch@npm:^10.2.6, minimatch@npm:^9.0.3 || ^10.1.2":
   version: 10.2.6
   resolution: "minimatch@npm:10.2.6"
   dependencies:
@@ -24230,6 +24285,7 @@ __metadata:
     eslint-config-prettier: "npm:10.1.8"
     eslint-plugin-cypress: "npm:7.0.2"
     eslint-plugin-import: "npm:2.32.0"
+    eslint-plugin-import-x: "npm:4.17.1"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-react: "npm:7.37.5"
     eslint-plugin-react-hooks: "npm:7.1.1"
@@ -27087,6 +27143,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"stable-hash-x@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "stable-hash-x@npm:0.2.0"
+  checksum: 10c0/c757df58366ee4bb266a9486b8932eab7c1ba730469eaf4b68d2dee404814e9f84089c44c9b5205f8c7d99a0ab036cce2af69139ce5ed44b635923c011a8aea8
+  languageName: node
+  linkType: hard
+
 "stack-utils@npm:^2.0.6":
   version: 2.0.6
   resolution: "stack-utils@npm:2.0.6"
@@ -28830,7 +28893,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unrs-resolver@npm:^1.12.1, unrs-resolver@npm:^1.7.11":
+"unrs-resolver@npm:^1.12.1, unrs-resolver@npm:^1.7.11, unrs-resolver@npm:^1.9.2":
   version: 1.12.2
   resolution: "unrs-resolver@npm:1.12.2"
   dependencies:

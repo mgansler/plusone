@@ -1,5 +1,5 @@
 const nx = require('@nx/eslint-plugin')
-const eslintPluginImport = require('eslint-plugin-import')
+const eslintPluginImport = require('eslint-plugin-import-x')
 
 module.exports = [
   ...nx.configs['flat/base'],
