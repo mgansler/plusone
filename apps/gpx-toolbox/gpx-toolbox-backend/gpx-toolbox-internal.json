@@ -644,6 +644,117 @@
         "summary": "",
         "tags": ["auth"]
       }
+    },
+    "/api/import/strava/routes": {
+      "post": {
+        "operationId": "importStravaRoutes",
+        "parameters": [
+          {
+            "name": "force",
+            "required": false,
+            "in": "query",
+            "description": "Force re-import",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Import results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResultDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["import"]
+      }
+    },
+    "/api/import/strava/activity": {
+      "post": {
+        "operationId": "importStravaActivity",
+        "parameters": [
+          {
+            "name": "activityId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "autoMatch",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Import results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResultDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["import"]
+      }
+    },
+    "/api/import/strava/all-activities": {
+      "post": {
+        "operationId": "importAllStravaActivities",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Import results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResultDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["import"]
+      }
     }
   },
   "info": {
@@ -710,6 +821,24 @@
             "description": "Notes"
           }
         }
+      },
+      "ImportResultDto": {
+        "type": "object",
+        "properties": {
+          "imported": {
+            "type": "number",
+            "description": "Number of routes/activities imported"
+          },
+          "matched": {
+            "type": "number",
+            "description": "Number matched to existing routes"
+          },
+          "newRoutes": {
+            "type": "number",
+            "description": "Number of new routes created"
+          }
+        },
+        "required": ["imported", "matched", "newRoutes"]
       }
     }
   }
