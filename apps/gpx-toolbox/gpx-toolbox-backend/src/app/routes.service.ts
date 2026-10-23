@@ -284,7 +284,7 @@ export class RoutesService {
   /**
    * Create a route from Strava data (called by Strava import service).
    */
-  async createFromStrava(stravaId: string, name: string, gpxContent: string, points: TrackPoint[]) {
+  async createFromStrava(stravaId: string, name: string, gpxContent: string, points: TrackPoint[], userId?: string) {
     const overview = analyzeGpx(gpxContent)
     const polyline: Array<{ lat: number; lng: number }> = points.map((p) => ({
       lat: p.latitude,
@@ -304,6 +304,7 @@ export class RoutesService {
           elevationLoss,
         },
         ratingTags: [],
+        userId,
       },
     })
 
@@ -313,7 +314,13 @@ export class RoutesService {
   /**
    * Create a route from Strava Route API.
    */
-  async createStravaRoute(stravaId: string, name: string, description?: string, polylinePoints?: string) {
+  async createStravaRoute(
+    stravaId: string,
+    name: string,
+    description?: string,
+    polylinePoints?: string,
+    userId?: string,
+  ) {
     return this.prismaService.route.create({
       data: {
         name,
@@ -324,6 +331,7 @@ export class RoutesService {
         polyline: polylinePoints ? { points: polylinePoints } : { points: '[]' },
         stats: { distance: 0, elevationGain: 0, elevationLoss: 0 },
         ratingTags: [],
+        userId,
       },
     })
   }

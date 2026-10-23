@@ -755,6 +755,346 @@
         "summary": "",
         "tags": ["import"]
       }
+    },
+    "/api/routes/{routeId}/fahrten": {
+      "get": {
+        "operationId": "listFahrten",
+        "parameters": [
+          {
+            "name": "routeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dateFrom",
+            "required": false,
+            "in": "query",
+            "description": "Filter by date range start",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dateTo",
+            "required": false,
+            "in": "query",
+            "description": "Filter by date range end",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Sort field",
+            "schema": {
+              "default": "riddenAt",
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "Sort order",
+            "schema": {
+              "default": "DESC",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Page size",
+            "schema": {
+              "default": 50,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Filter by date range start",
+            "required": false,
+            "name": "dateFrom",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by date range end",
+            "required": false,
+            "name": "dateTo",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Sort field",
+            "required": false,
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "default": "riddenAt",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Sort order",
+            "required": false,
+            "name": "order",
+            "in": "query",
+            "schema": {
+              "default": "DESC",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Page number",
+            "required": false,
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Page size",
+            "required": false,
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "default": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of fahrten",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FahrtResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["rides"]
+      },
+      "post": {
+        "operationId": "createFahrt",
+        "parameters": [
+          {
+            "name": "routeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFahrtDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Fahrt created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FahrtResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["rides"]
+      }
+    },
+    "/api/routes/{routeId}/fahrten/{id}": {
+      "get": {
+        "operationId": "getFahrt",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fahrt details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FahrtResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["rides"]
+      },
+      "put": {
+        "operationId": "updateFahrt",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFahrtDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Fahrt updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FahrtResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["rides"]
+      },
+      "delete": {
+        "operationId": "deleteFahrt",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fahrt deleted successfully"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["rides"]
+      }
+    },
+    "/api/routes/{routeId}/fahrten/{id}/weather": {
+      "get": {
+        "operationId": "getFahrtWeather",
+        "parameters": [
+          {
+            "name": "routeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "required": false,
+            "in": "query",
+            "description": "Date to fetch weather for (ISO 8601)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Weather forecast for the ride date"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["rides"]
+      }
     }
   },
   "info": {
@@ -839,6 +1179,114 @@
           }
         },
         "required": ["imported", "matched", "newRoutes"]
+      },
+      "FahrtResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Fahrt ID"
+          },
+          "routeId": {
+            "type": "string",
+            "description": "Route ID"
+          },
+          "riddenAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Ridden date and time"
+          },
+          "duration": {
+            "type": "object",
+            "description": "Duration in seconds"
+          },
+          "avgHr": {
+            "type": "object",
+            "description": "Average heart rate"
+          },
+          "maxHr": {
+            "type": "object",
+            "description": "Maximum heart rate"
+          },
+          "notes": {
+            "type": "object",
+            "description": "Personal notes"
+          },
+          "weather": {
+            "type": "object",
+            "description": "Weather conditions summary"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Created at"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Updated at"
+          }
+        },
+        "required": ["id", "routeId", "riddenAt", "createdAt", "updatedAt"]
+      },
+      "CreateFahrtDto": {
+        "type": "object",
+        "properties": {
+          "riddenAt": {
+            "type": "string",
+            "description": "Date and time of the ride (ISO 8601)"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration in seconds"
+          },
+          "avgHr": {
+            "type": "number",
+            "description": "Average heart rate"
+          },
+          "maxHr": {
+            "type": "number",
+            "description": "Maximum heart rate"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Personal notes"
+          },
+          "weather": {
+            "type": "string",
+            "description": "Weather conditions summary"
+          }
+        },
+        "required": ["riddenAt"]
+      },
+      "UpdateFahrtDto": {
+        "type": "object",
+        "properties": {
+          "riddenAt": {
+            "type": "string",
+            "description": "Date and time of the ride (ISO 8601)"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration in seconds"
+          },
+          "avgHr": {
+            "type": "number",
+            "description": "Average heart rate"
+          },
+          "maxHr": {
+            "type": "number",
+            "description": "Maximum heart rate"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Personal notes"
+          },
+          "weather": {
+            "type": "string",
+            "description": "Weather conditions summary"
+          }
+        }
       }
     }
   }

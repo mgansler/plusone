@@ -16,6 +16,7 @@ import { HealthController } from './health.controller'
 import { RoutesModule } from './routes.module'
 import { AuthModule } from './auth.module'
 import { ImportModule } from './import.module'
+import { RidesModule } from './rides.module'
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { ImportModule } from './import.module'
     RoutesModule,
     AuthModule,
     ImportModule,
+    RidesModule,
   ],
   controllers: [HealthController],
   providers: [AppService],

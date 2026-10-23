@@ -11,7 +11,7 @@ import { PrismaModule } from '@plusone/gpx-toolbox-persistence'
     PrismaModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET ?? 'change-me-in-production',
-      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN ?? '7d' },
+      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN ?? '7d' } as any,
     }),
   ],
   controllers: [ImportController],
