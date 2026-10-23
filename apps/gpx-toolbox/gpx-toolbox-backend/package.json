@@ -1,0 +1,12 @@
+{
+  "name": "gpx-toolbox-backend",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "prisma migrate deploy && node main.js"
+  },
+  "dependencies": {
+    "prisma": "7.10.1",
+    "@nestjs/platform-express": "12.2.0",
+    "class-transformer": "0.5.1"
+  }
+}

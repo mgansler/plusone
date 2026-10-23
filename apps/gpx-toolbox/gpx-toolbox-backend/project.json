@@ -1,0 +1,155 @@
+{
+  "name": "gpx-toolbox-backend",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/gpx-toolbox/gpx-toolbox-backend/src",
+  "projectType": "application",
+  "tags": [],
+  "implicitDependencies": ["gpx-toolbox-web"],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        },
+        {
+          "target": "build",
+          "projects": ["gpx-toolbox-web"]
+        }
+      ],
+      "options": {
+        "assets": ["apps/gpx-toolbox/gpx-toolbox-backend/src/assets"],
+        "compiler": "tsc",
+        "generatePackageJson": true,
+        "main": "apps/gpx-toolbox/gpx-toolbox-backend/src/main.ts",
+        "outputPath": "dist/apps/gpx-toolbox/gpx-toolbox-backend",
+        "target": "node",
+        "tsConfig": "apps/gpx-toolbox/gpx-toolbox-backend/tsconfig.app.json",
+        "webpackConfig": "apps/gpx-toolbox/gpx-toolbox-backend/webpack.config.js"
+      },
+      "configurations": {
+        "api-spec": {
+          "main": "apps/gpx-toolbox/gpx-toolbox-backend/src/generate-openapi-spec.ts"
+        },
+        "development": {},
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "assets": [
+            "apps/gpx-toolbox/gpx-toolbox-backend/src/assets",
+            {
+              "input": "libs/gpx-toolbox/persistence/",
+              "glob": "prisma.config.ts",
+              "output": ""
+            },
+            {
+              "input": "libs/gpx-toolbox/persistence/",
+              "glob": "schema.prisma",
+              "output": ""
+            },
+            {
+              "input": "libs/gpx-toolbox/persistence/",
+              "glob": "migrations",
+              "output": "migrations"
+            },
+            {
+              "input": "dist/apps/gpx-toolbox/gpx-toolbox-web",
+              "glob": "**",
+              "output": "web"
+            }
+          ]
+        }
+      }
+    },
+    "complete-lockfile": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "dependsOn": ["build"],
+      "options": {
+        "command": "sh tools/scripts/prepare-deployment-lockfile.sh dist/apps/gpx-toolbox/gpx-toolbox-backend"
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        },
+        {
+          "target": "prisma-deploy",
+          "dependencies": true
+        }
+      ],
+      "options": {
+        "buildTarget": "gpx-toolbox-backend:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "gpx-toolbox-backend:build:development"
+        },
+        "production": {
+          "buildTarget": "gpx-toolbox-backend:build:production"
+        }
+      }
+    },
+    "generate-api-spec": {
+      "executor": "@nx/js:node",
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        },
+        {
+          "target": "prisma-deploy",
+          "dependencies": true
+        }
+      ],
+      "options": {
+        "buildTarget": "gpx-toolbox-backend:build:api-spec",
+        "watch": false
+      }
+    },
+    "lint": {
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        }
+      ],
+      "options": {
+        "configFile": "apps/gpx-toolbox/gpx-toolbox-backend/vite.config.mts",
+        "codeCoverage": true
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
+      }
+    }
+  }
+}

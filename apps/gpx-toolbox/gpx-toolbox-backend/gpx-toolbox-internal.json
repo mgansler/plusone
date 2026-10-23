@@ -1,0 +1,649 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/health": {
+      "get": {
+        "operationId": "getHealthStatus",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Health status of the application.\n\nThe Health Check is successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["ok", "degraded"],
+                      "example": "ok"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up",
+                          "responseTime": 12
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": ["status"],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": ["up", "degraded", "down"]
+                          },
+                          "responseTime": {
+                            "type": "number",
+                            "description": "Time the health indicator took to respond, in ms"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {},
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": ["status"],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": ["up", "degraded", "down"]
+                          },
+                          "responseTime": {
+                            "type": "number",
+                            "description": "Time the health indicator took to respond, in ms"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up",
+                          "responseTime": 12
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": ["status"],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": ["up", "degraded", "down"]
+                          },
+                          "responseTime": {
+                            "type": "number",
+                            "description": "Time the health indicator took to respond, in ms"
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The Health Check is not successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["error", "shutting_down"],
+                      "example": "error"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up",
+                          "responseTime": 12
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": ["status"],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": ["up", "degraded", "down"]
+                          },
+                          "responseTime": {
+                            "type": "number",
+                            "description": "Time the health indicator took to respond, in ms"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect",
+                          "responseTime": 3005
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": ["status"],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": ["up", "degraded", "down"]
+                          },
+                          "responseTime": {
+                            "type": "number",
+                            "description": "Time the health indicator took to respond, in ms"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up",
+                          "responseTime": 12
+                        },
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect",
+                          "responseTime": 3005
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": ["status"],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": ["up", "degraded", "down"]
+                          },
+                          "responseTime": {
+                            "type": "number",
+                            "description": "Time the health indicator took to respond, in ms"
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": ["health"]
+      }
+    },
+    "/api/routes": {
+      "post": {
+        "operationId": "importGpx",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["file"],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "GPX file to import"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Route name (optional, extracted from GPX if not provided)"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Route description"
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": ["stravaRoute", "stravaActivity", "manualImport"],
+                    "default": "manualImport"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Route imported successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportGpxResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": ["routes"]
+      },
+      "get": {
+        "operationId": "listRoutes",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Filter by status",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "source",
+            "required": false,
+            "in": "query",
+            "description": "Filter by source",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Sort field",
+            "schema": {
+              "default": "createdAt",
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "Sort order",
+            "schema": {
+              "default": "DESC",
+              "type": "string"
+            }
+          },
+          {
+            "name": "minDistance",
+            "required": false,
+            "in": "query",
+            "description": "Minimum distance in meters",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxDistance",
+            "required": false,
+            "in": "query",
+            "description": "Maximum distance in meters",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "minElevation",
+            "required": false,
+            "in": "query",
+            "description": "Minimum elevation gain in meters",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxElevation",
+            "required": false,
+            "in": "query",
+            "description": "Maximum elevation gain in meters",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Page size",
+            "schema": {
+              "default": 50,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Filter by status",
+            "required": false,
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by source",
+            "required": false,
+            "name": "source",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Sort field",
+            "required": false,
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "default": "createdAt",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Sort order",
+            "required": false,
+            "name": "order",
+            "in": "query",
+            "schema": {
+              "default": "DESC",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Minimum distance in meters",
+            "required": false,
+            "name": "minDistance",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "description": "Maximum distance in meters",
+            "required": false,
+            "name": "maxDistance",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "description": "Minimum elevation gain in meters",
+            "required": false,
+            "name": "minElevation",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "description": "Maximum elevation gain in meters",
+            "required": false,
+            "name": "maxElevation",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "description": "Page number",
+            "required": false,
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Page size",
+            "required": false,
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "default": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of routes"
+          }
+        },
+        "summary": "",
+        "tags": ["routes"]
+      }
+    },
+    "/api/routes/{id}": {
+      "get": {
+        "operationId": "getRoute",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Route details"
+          }
+        },
+        "summary": "",
+        "tags": ["routes"]
+      },
+      "put": {
+        "operationId": "updateRoute",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRouteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Route updated successfully"
+          }
+        },
+        "summary": "",
+        "tags": ["routes"]
+      },
+      "delete": {
+        "operationId": "deleteRoute",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Route deleted successfully"
+          }
+        },
+        "summary": "",
+        "tags": ["routes"]
+      }
+    },
+    "/api/routes/{id}/export": {
+      "get": {
+        "operationId": "exportRoute",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "GPX file content"
+          }
+        },
+        "summary": "",
+        "tags": ["routes"]
+      }
+    },
+    "/api/routes/nearby": {
+      "get": {
+        "operationId": "findNearbyRoutes",
+        "parameters": [
+          {
+            "name": "lat",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "lng",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "radius",
+            "required": true,
+            "in": "query",
+            "description": "Radius in kilometers",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Routes within radius"
+          }
+        },
+        "summary": "",
+        "tags": ["routes"]
+      }
+    }
+  },
+  "info": {
+    "title": "GPX Toolbox API",
+    "description": "",
+    "version": "0.1",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "ImportGpxResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Created route ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Route name"
+          },
+          "totalDistance": {
+            "type": "number",
+            "description": "Total distance in meters"
+          },
+          "elevationGain": {
+            "type": "number",
+            "description": "Elevation gain in meters"
+          },
+          "elevationLoss": {
+            "type": "number",
+            "description": "Elevation loss in meters"
+          }
+        },
+        "required": ["id", "name", "totalDistance", "elevationGain", "elevationLoss"]
+      },
+      "UpdateRouteDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Route name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Route description"
+          },
+          "status": {
+            "type": "string",
+            "description": "Route status",
+            "enum": ["planned", "ridden", "foundOnline"]
+          },
+          "ratingTags": {
+            "description": "Rating tags",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string",
+            "description": "Notes"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+services:
+  app:
+    image: ${DOCKER_IMAGE_NAME}
+    restart: on-failure
+    environment:
+      TZ: 'Europe/Berlin'
+      GPX_TOOLBOX_DATABASE_URL: 'file:/usr/gpx-toolbox/sqlite/gpx-toolbox.db'
+      STRAVA_CLIENT_ID: ${STRAVA_CLIENT_ID}
+      STRAVA_CLIENT_SECRET: ${STRAVA_CLIENT_SECRET}
+      STRAVA_REDIRECT_URI: ${STRAVA_REDIRECT_URI}
+      JWT_SECRET: ${JWT_SECRET}
+    volumes:
+      - sqlite:/usr/gpx-toolbox/sqlite/
+    labels:
+      - 'traefik.http.services.gpx-toolbox-app.loadbalancer.server.port=3333'
+      - 'traefik.http.routers.gpx-toolbox-app.rule=Host(`gpx.martingansler.de`)'
+      - 'traefik.http.routers.gpx-toolbox-app.tls=true'
+      - 'traefik.http.routers.gpx-toolbox-app.tls.certresolver=letsencrypt'
+      - 'traefik.http.routers.gpx-toolbox-app.ruleSyntax=v3'
+
+volumes:
+  sqlite:
+    driver: local
