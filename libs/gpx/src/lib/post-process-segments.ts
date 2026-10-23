@@ -1,3 +1,4 @@
+import { type TrackPoint } from './types'
 import { calculateHaversineDistance } from './haversine-distance'
 import { calculateAverageHeartRate } from './calculate-avarage-heart-rate'
 
@@ -84,7 +85,7 @@ export function postProcessSegments(segments: Array<Segment>): Array<Segment> {
   // ──────────────────────────────────────────────
 
   segments.forEach((seg) => {
-    seg.averageHeartRate = calculateAverageHeartRate(seg.points)
+    seg.averageHeartRate = calculateAverageHeartRate(seg.points) ?? undefined
   })
 
   return result

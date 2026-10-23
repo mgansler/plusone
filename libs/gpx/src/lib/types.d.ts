@@ -1,4 +1,4 @@
-type TrackPoint = {
+export type TrackPoint = {
   latitude: number
   longitude: number
   elevation: number

@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { renderSvg, buildPath, projectPoint, computeBoundingBox } from './render-svg'
+import { describe, expect, it } from 'vitest'
+import { buildPath, computeBoundingBox, projectPoint, renderSvg } from './render-svg'
 import { calculateBearing } from './haversine-distance'
 import { join } from 'node:path'
 import { readFileSync, writeFileSync } from 'node:fs'
@@ -147,6 +147,31 @@ describe('renderSvg', () => {
     expect(result.viewBox).not.toBe('')
   })
 
+  it('renders a rotated SVG from MdRzA.gpx', () => {
+    const gpxPath = join(__dirname, '../../tracks/MdRzA.gpx')
+    const fileContent = readFileSync(gpxPath, 'utf-8')
+    const parsed = new XMLParser({ ignoreAttributes: false }).parse(fileContent)
+
+    const points = parsed.gpx.trk.trkseg.trkpt.map((trkpt: any) => ({
+      latitude: parseFloat(trkpt['@_lat']),
+      longitude: parseFloat(trkpt['@_lon']),
+      elevation: parseFloat(trkpt.ele),
+      time: new Date(trkpt.time),
+    }))
+
+    const result = renderSvg({ points, width: 800, height: 400, rotate: true, markers: true })
+
+    // Rotation → portrait output (swapped dimensions)
+    expect(result.viewBox).toBe('0 0 400 800')
+    expect(result.svg).toContain('<svg')
+    expect(result.svg).toContain('<path')
+    expect(result.svg).toContain('<rect') // markers enabled when rotate + markers: true
+
+    // Write SVG alongside the GPX file
+    const svgPath = join(__dirname, '../../tracks/MdRzA.svg')
+    writeFileSync(svgPath, result.svg, 'utf-8')
+  })
+
   it('respects custom options', () => {
     const points = [
       { latitude: 44.0, longitude: 8.3, elevation: 100, time: new Date('2026-01-01T10:00:00Z') },
@@ -285,34 +310,22 @@ describe('renderSvg', () => {
 
 describe('calculateBearing', () => {
   it('returns ~0° for northward direction', () => {
-    const bearing = calculateBearing(
-      { latitude: 44.0, longitude: 8.3 },
-      { latitude: 44.01, longitude: 8.3 },
-    )
+    const bearing = calculateBearing({ latitude: 44.0, longitude: 8.3 }, { latitude: 44.01, longitude: 8.3 })
     expect(bearing).toBeCloseTo(0, 1)
   })
 
   it('returns ~90° for eastward direction', () => {
-    const bearing = calculateBearing(
-      { latitude: 44.0, longitude: 8.3 },
-      { latitude: 44.0, longitude: 8.31 },
-    )
+    const bearing = calculateBearing({ latitude: 44.0, longitude: 8.3 }, { latitude: 44.0, longitude: 8.31 })
     expect(bearing).toBeCloseTo(90, 1)
   })
 
   it('returns ~180° for southward direction', () => {
-    const bearing = calculateBearing(
-      { latitude: 44.01, longitude: 8.3 },
-      { latitude: 44.0, longitude: 8.3 },
-    )
+    const bearing = calculateBearing({ latitude: 44.01, longitude: 8.3 }, { latitude: 44.0, longitude: 8.3 })
     expect(bearing).toBeCloseTo(180, 1)
   })
 
   it('returns ~270° for westward direction', () => {
-    const bearing = calculateBearing(
-      { latitude: 44.0, longitude: 8.31 },
-      { latitude: 44.0, longitude: 8.3 },
-    )
+    const bearing = calculateBearing({ latitude: 44.0, longitude: 8.31 }, { latitude: 44.0, longitude: 8.3 })
     expect(bearing).toBeCloseTo(270, 1)
   })
 })

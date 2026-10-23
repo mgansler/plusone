@@ -1,0 +1,91 @@
+{
+  "name": "gpx-toolbox-web",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/gpx-toolbox/gpx-toolbox-web/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/gpx-toolbox/gpx-toolbox-web"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "gpx-toolbox-web:build",
+        "host": "0.0.0.0",
+        "port": 4250
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "gpx-toolbox-web:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "gpx-toolbox-web:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "gpx-toolbox-web:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "gpx-toolbox-web:build:development"
+        },
+        "production": {
+          "buildTarget": "gpx-toolbox-web:build:production"
+        }
+      }
+    },
+    "lint": {
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "gpx-toolbox-web:build",
+        "spa": true
+      }
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "coverage": true,
+        "reportsDirectory": "{projectRoot}/../../../coverage/apps/gpx-toolbox/gpx-toolbox-web"
+      }
+    }
+  }
+}

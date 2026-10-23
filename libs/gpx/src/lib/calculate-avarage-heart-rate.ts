@@ -1,3 +1,4 @@
+import { type TrackPoint } from './types'
 export function calculateAverageHeartRate(segment: Array<TrackPoint>): number | null {
   if (segment.length < 2) {
     // A single point has no duration, so no average can be calculated

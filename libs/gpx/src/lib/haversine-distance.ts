@@ -1,4 +1,7 @@
-export function calculateHaversineDistance(start: { latitude: number; longitude: number }, end: { latitude: number; longitude: number }) {
+export function calculateHaversineDistance(
+  start: { latitude: number; longitude: number },
+  end: { latitude: number; longitude: number },
+) {
   const R = 6_371_000 // radius of the Earth in meters
 
   const degreeToRadians = (degree: number) => (degree * Math.PI) / 180
@@ -23,7 +26,10 @@ export function calculateHaversineDistance(start: { latitude: number; longitude:
  *
  * Returns a value in [0, 360) where 0° = north, 90° = east, etc.
  */
-export function calculateBearing(start: { latitude: number; longitude: number }, end: { latitude: number; longitude: number }): number {
+export function calculateBearing(
+  start: { latitude: number; longitude: number },
+  end: { latitude: number; longitude: number },
+): number {
   const toRad = (deg: number) => (deg * Math.PI) / 180
   const toDeg = (rad: number) => (rad * 180) / Math.PI
 

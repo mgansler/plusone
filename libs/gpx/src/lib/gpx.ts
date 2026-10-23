@@ -1,13 +1,12 @@
 import { XMLParser } from 'fast-xml-parser'
-import { readFileSync } from 'node:fs'
+import { type TrackPoint } from './types'
 import { calculateHaversineDistance } from './haversine-distance'
 import { postProcessSegments } from './post-process-segments'
 import { calculateAverageHeartRate } from './calculate-avarage-heart-rate'
 
 const xmlParser = new XMLParser({ ignoreAttributes: false })
 
-export function gpx(path: string): string {
-  const fileContent = readFileSync(path, 'utf-8')
+export function gpx(fileContent: string): string {
   const parsed = xmlParser.parse(fileContent)
 
   const normalized = parsed.gpx.trk.trkseg.trkpt.map((trkpt: any) => ({
