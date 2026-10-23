@@ -14,6 +14,7 @@ import { AppService } from './app.service'
 import { configSchema } from './config'
 import { HealthController } from './health.controller'
 import { RoutesModule } from './routes.module'
+import { AuthModule } from './auth.module'
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { RoutesModule } from './routes.module'
     TerminusModule,
     PrismaModule,
     RoutesModule,
+    AuthModule,
   ],
   controllers: [HealthController],
   providers: [AppService],

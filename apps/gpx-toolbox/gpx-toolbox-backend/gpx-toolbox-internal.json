@@ -577,6 +577,73 @@
         "summary": "",
         "tags": ["routes"]
       }
+    },
+    "/api/auth/strava": {
+      "get": {
+        "operationId": "stravaAuthUrl",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Strava authorization URL"
+          }
+        },
+        "summary": "",
+        "tags": ["auth"]
+      }
+    },
+    "/api/auth/strava/callback": {
+      "get": {
+        "operationId": "stravaCallback",
+        "parameters": [
+          {
+            "name": "state",
+            "required": false,
+            "in": "query",
+            "description": "OAuth state parameter",
+            "schema": {}
+          },
+          {
+            "name": "code",
+            "required": false,
+            "in": "query",
+            "description": "Strava authorization code",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "",
+        "tags": ["auth"]
+      }
+    },
+    "/api/auth/status": {
+      "get": {
+        "operationId": "authStatus",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Authentication status"
+          }
+        },
+        "summary": "",
+        "tags": ["auth"]
+      }
+    },
+    "/api/auth/refresh": {
+      "post": {
+        "operationId": "refreshStravaToken",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Token refreshed successfully"
+          }
+        },
+        "summary": "",
+        "tags": ["auth"]
+      }
     }
   },
   "info": {
