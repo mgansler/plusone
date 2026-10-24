@@ -57,9 +57,28 @@ export function App() {
   return (
     <div style={styles.container}>
       <div style={styles.topbar}>
-        <span style={styles.brand}>GPX-Toolbox</span>
+        <a href="/" style={styles.brand}>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ marginRight: 6 }}
+          >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          GPX-Toolbox
+        </a>
         <div style={styles.topbarRight}>
           {user?.name && <span style={styles.userName}>{user.name}</span>}
+          <a href="/routes" style={styles.topbarLink}>
+            Routen
+          </a>
           <a href="/nearby" style={styles.topbarLink}>
             In der Nähe
           </a>
@@ -153,6 +172,10 @@ const styles = {
     fontSize: 15,
     fontWeight: 600,
     color: '#f8fafc',
+    textDecoration: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
   } as const,
   topbarRight: {
     display: 'flex',

@@ -7,7 +7,7 @@ import { GLOBAL_PREFIX, setupApi, writeApiSpec } from './setup-api'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe({ transform: true }))
 
   const document = setupApi(app)
   if (process.env.NODE_ENV === 'development') {
