@@ -1,5 +1,5 @@
 import { Controller, Get, Logger, Query, Req, UnauthorizedException, UseGuards } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { Request } from 'express'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
@@ -38,7 +38,6 @@ export class DebugController {
     required: true,
     description: 'Strava API endpoint (e.g. /athlete, /athletes/me/stats, /routes)',
   })
-  @ApiOkResponse({ description: 'Raw Strava API response' })
   async stravaRequest(@Req() req: Request & { user: JwtPayload }, @Query('endpoint') endpoint: string) {
     const user = await this.prisma.user.findUnique({
       where: { id: req.user.sub },

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, type RefObject } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import type L from 'leaflet'
 
-import { apiFetch } from '../lib/api-client'
+import { useFindNearbyRoutes } from '@plusone/gpx-toolbox-api-client'
 import { Map } from '../components/Map'
 
 type NearbyRoute = {
@@ -12,7 +12,7 @@ type NearbyRoute = {
   distanceKm: string
   status: string
   source: string
-  stats: Record<string, any> | null
+  stats: Record<string, unknown> | null
 }
 
 const sourceColors: Record<string, string> = {
@@ -36,62 +36,15 @@ function NearbySearch() {
   const [lat, setLat] = useState<number | null>(null)
   const [lng, setLng] = useState<number | null>(null)
   const [radius, setRadius] = useState<number>(50)
-  const [loading, setLoading] = useState(false)
-  const [results, setResults] = useState<Array<NearbyRoute>>([])
-  const [error, setError] = useState<string | null>(null)
-  const [usingGPS, setUsingGPS] = useState(false)
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null)
+  const [usingGPS, setUsingGPS] = useState(false)
 
-  // Get current location via GPS
-  const handleGPS = () => {
-    if (!navigator.geolocation) {
-      setError('Geolocation nicht unterstützt')
-      return
-    }
-    setUsingGPS(true)
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setLat(pos.coords.latitude)
-        setLng(pos.coords.longitude)
-        setUsingGPS(false)
-        setError(null)
-      },
-      () => {
-        setError('GPS-Position nicht verfügbar')
-        setUsingGPS(false)
-      },
-      { enableHighAccuracy: true, timeout: 10000 },
-    )
-  }
-
-  // Search for nearby routes via API
-  const handleSearch = async () => {
-    if (lat == null || lng == null) {
-      setError('Koordinaten eingeben oder GPS verwenden')
-      return
-    }
-    setLoading(true)
-    setError(null)
-    try {
-      const res = await apiFetch(`/api/routes/nearby?lat=${lat}&lng=${lng}&radius=${radius}`)
-      if (!res.ok) throw new Error('API request failed')
-      const data: Array<NearbyRoute> = await res.json()
-      setResults(data)
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Unbekannter Fehler'
-      setError(message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // Auto-search when params change
-  useEffect(() => {
-    if (lat != null && lng != null) {
-      handleSearch()
-    }
-    // lat, lng, radius are the only intentional deps
-  }, [lat, lng, radius])
+  const {
+    data: results,
+    isLoading: loading,
+    error,
+    isError,
+  } = useFindNearbyRoutes({ lat: lat ?? 0, lng: lng ?? 0, radius }, { query: { enabled: lat != null && lng != null } })
 
   // Fly to location when GPS acquired
   useEffect(() => {
@@ -128,7 +81,23 @@ function NearbySearch() {
             style={styles.input}
             placeholder="9.16"
           />
-          <button onClick={handleGPS} style={styles.gpsButton} disabled={usingGPS}>
+          <button
+            onClick={() => {
+              if (!navigator.geolocation) return
+              setUsingGPS(true)
+              navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                  setLat(pos.coords.latitude)
+                  setLng(pos.coords.longitude)
+                  setUsingGPS(false)
+                },
+                () => setUsingGPS(false),
+                { enableHighAccuracy: true, timeout: 10000 },
+              )
+            }}
+            style={styles.gpsButton}
+            disabled={usingGPS}
+          >
             {usingGPS ? 'GPS...' : 'GPS-Position'}
           </button>
         </div>
@@ -148,11 +117,13 @@ function NearbySearch() {
         </div>
 
         {/* Error */}
-        {error && <div style={styles.error}>{error}</div>}
+        {isError && <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>}
+
+        {/* Loading */}
+        {loading && <div style={styles.loading}>Suche...</div>}
 
         {/* Results */}
-        {loading && <div style={styles.loading}>Suche...</div>}
-        {results.length > 0 && (
+        {results && results.length > 0 && (
           <div style={styles.results}>
             <h3 style={styles.resultCount}>{results.length} Routen gefunden</h3>
             {results.map((r) => (
@@ -186,9 +157,14 @@ function NearbySearch() {
                 </div>
                 {selectedRoute === r.id && r.stats && (
                   <div style={styles.resultStats}>
-                    <div>Strecke: {r.stats.distance ? `${(r.stats.distance / 1000).toFixed(1)} km` : '-'}</div>
-                    <div>Höhenmeter ↑: {r.stats.elevationGain ?? '-'}</div>
-                    <div>Höhenmeter ↓: {r.stats.elevationLoss ?? '-'}</div>
+                    <div>
+                      Strecke:{' '}
+                      {(r.stats as { distance?: number }).distance
+                        ? `${((r.stats as { distance?: number }).distance! / 1000).toFixed(1)} km`
+                        : '-'}
+                    </div>
+                    <div>Höhenmeter ↑: {(r.stats as { elevationGain?: number }).elevationGain ?? '-'}</div>
+                    <div>Höhenmeter ↓: {(r.stats as { elevationLoss?: number }).elevationLoss ?? '-'}</div>
                   </div>
                 )}
               </div>

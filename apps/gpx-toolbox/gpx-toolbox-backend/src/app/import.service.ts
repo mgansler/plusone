@@ -17,8 +17,8 @@ export class ImportService {
   /**
    * Import all Strava routes for the authenticated user.
    */
-  async importStravaRoutes(accessToken: string, userId: string, force = false) {
-    const stravaRoutes = await this.stravaService.getRoutes(accessToken)
+  async importStravaRoutes(accessToken: string, userId: string, athleteId: number, force = false) {
+    const stravaRoutes = await this.stravaService.getRoutes(accessToken, athleteId)
     let imported = 0
     let newRoutes = 0
     let matched = 0
@@ -38,9 +38,22 @@ export class ImportService {
       }
 
       try {
-        const routeDetail = await this.stravaService.getRoute(accessToken, String(route.id))
+        if (route.id === undefined) {
+          this.logger.warn(`Skipping route without id: ${route.id}`)
+          return
+        }
 
-        const gpxContent = routeDetail.map?.gpx?.[0]?.xmlBody ?? ''
+        const routeDetail = (await this.stravaService.getRoute(accessToken, route.id)) as { distance?: number }
+
+        // Fetch GPX via dedicated endpoint (route map doesn't include GPX content)
+        let gpxContent = ''
+        try {
+          const gpxBlob = await this.stravaService.downloadRouteGPX(accessToken, route.id)
+          gpxContent = await gpxBlob.text()
+        } catch {
+          this.logger.warn(`No GPX available for route ${route.id}`)
+        }
+
         const points = gpxContent ? parseGpx(gpxContent) : []
         const polyline = points.map((p) => ({ lat: p.latitude, lng: p.longitude }))
 
@@ -68,7 +81,7 @@ export class ImportService {
         } else {
           await this.prisma.route.create({
             data: {
-              name: route.name,
+              name: route.name ?? `Route ${route.id}`,
               description: routeDetail.distance ? `${(routeDetail.distance / 1000).toFixed(1)} km` : undefined,
               gpxContent,
               polyline: { points: JSON.stringify(polyline) },
@@ -129,7 +142,9 @@ export class ImportService {
       }
 
       // Create new route
-      const activityDetail = await this.stravaService.getActivity(accessToken, activityId)
+      const activityDetail = (await this.stravaService.getActivity(accessToken, Number(activityId))) as Awaited<
+        ReturnType<typeof this.stravaService.getActivity>
+      > & { name?: string; distance?: number }
 
       await this.prisma.route.create({
         data: {

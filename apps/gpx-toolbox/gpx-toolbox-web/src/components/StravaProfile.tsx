@@ -1,71 +1,15 @@
 import { useState, useCallback } from 'react'
 
 import { useAuth } from '../lib/auth-context'
-import { apiFetch } from '../lib/api-client'
-
-/** Athlete profile returned from GET /api/athlete */
-type AthleteProfile = {
-  id: number
-  firstname: string
-  lastname: string
-  username: string
-  profile: string | null
-  city: string | null
-  state: string | null
-  country: string | null
-  gender: string
-  weight: number | null
-  friend: number | null
-  follower: number | null
-  athleteType: string
-  badges: Array<{ type: string; name: string }>
-  clubs: Array<{ name: string; profile: string }>
-  premium: boolean
-  premiumExpiryAt: string | null
-  created_at: string
-  updated_at: string
-  amount_rides: number
-  badges_count: number
-  follower_count: number
-  friend_count: number
-  member_type: string
-  weight_unit: string
-  profile_medium: string | null
-  routes_count: number
-  rides_count: number
-  runs_count: number
-  swims_count: number
-  recent_rides_count: number
-  all_rides_count: number
-  all_ride_distances: number
-  all_ride_elevations: number
-  localStats: {
-    routeCount: number
-    rideCount: number
-    totalDistanceM: number
-    totalElevationM: number
-  }
-}
+import { useStravaAthlete } from '@plusone/gpx-toolbox-api-client'
 
 export function StravaProfile() {
-  const [profile, setProfile] = useState<AthleteProfile | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { logout } = useAuth()
+  const { data: profile, isLoading: loading, error, isError, refetch } = useStravaAthlete()
 
   const fetchProfile = useCallback(async () => {
-    setLoading(true)
-    setError(null)
-    try {
-      const response = await apiFetch('/api/auth/athlete', { method: 'GET' })
-      if (!response.ok) throw new Error('Fehler beim Laden des Profils')
-      const data = await response.json()
-      setProfile(data)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unbekannter Fehler')
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+    await refetch()
+  }, [refetch])
 
   return (
     <div style={styles.section}>
@@ -73,12 +17,14 @@ export function StravaProfile() {
         {loading ? '⏳' : profile ? '🔄' : '🚴'} {loading ? 'Lädt...' : profile ? 'Aktualisieren' : 'Strava Profil'}
       </button>
 
-      {error && <p style={styles.error}>{error}</p>}
+      {isError && <p style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</p>}
 
       {profile && (
         <div style={styles.profileCard}>
           <div style={styles.avatarRow}>
-            {profile.profile && <img src={profile.profile} alt={profile.firstname} style={styles.avatar} />}
+            {profile.profile_medium && (
+              <img src={profile.profile_medium as unknown as string} alt={profile.firstname} style={styles.avatar} />
+            )}
             <div style={styles.nameSection}>
               <div style={styles.name}>
                 {profile.firstname} {profile.lastname}
@@ -86,26 +32,36 @@ export function StravaProfile() {
               <div style={styles.handle}>@{profile.username}</div>
               {(profile.city || profile.state || profile.country) && (
                 <div style={styles.location}>
-                  {[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}
+                  {[
+                    (profile.city as { name?: string })?.name,
+                    (profile.state as { name?: string })?.name,
+                    (profile.country as { name?: string })?.name,
+                  ]
+                    .filter(Boolean)
+                    .join(', ')}
                 </div>
               )}
             </div>
           </div>
 
           <div style={styles.statsGrid}>
-            <StatItem label="Routen" value={profile.localStats.routeCount} />
-            <StatItem label="Fahrten" value={profile.localStats.rideCount} />
-            <StatItem label="Follower" value={profile.follower_count ?? profile.follower ?? 0} />
-            <StatItem label="Freunde" value={profile.friend_count ?? profile.friend ?? 0} />
+            <StatItem label="Routen" value={(profile.localStats as { routeCount?: number }).routeCount ?? 0} />
+            <StatItem label="Fahrten" value={(profile.localStats as { rideCount?: number }).rideCount ?? 0} />
+            <StatItem label="Follower" value={profile.follower_count ?? 0} />
+            <StatItem label="Freunde" value={profile.friend_count ?? 0} />
           </div>
 
           <div style={styles.totalStats}>
             <div style={styles.totalStatItem}>
-              <span style={styles.totalStatValue}>{formatDistance(profile.localStats.totalDistanceM)}</span>
+              <span style={styles.totalStatValue}>
+                {formatDistance((profile.localStats as { totalDistanceM?: number }).totalDistanceM ?? 0)}
+              </span>
               <span style={styles.totalStatLabel}>Distanz gesamt</span>
             </div>
             <div style={styles.totalStatItem}>
-              <span style={styles.totalStatValue}>{formatElevation(profile.localStats.totalElevationM)}</span>
+              <span style={styles.totalStatValue}>
+                {formatElevation((profile.localStats as { totalElevationM?: number }).totalElevationM ?? 0)}
+              </span>
               <span style={styles.totalStatLabel}>Höhenmeter</span>
             </div>
           </div>

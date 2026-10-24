@@ -1,32 +1,16 @@
-import { useState, useEffect, useRef, type RefObject } from 'react'
+import { useState, useRef, type RefObject } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import type L from 'leaflet'
 
-import { apiFetch } from '../../lib/api-client'
+import {
+  useCreateFahrt,
+  useDeleteFahrt,
+  useGetRoute,
+  getGetRouteQueryKey,
+  getListFahrtenQueryKey,
+} from '@plusone/gpx-toolbox-api-client'
+import { useQueryClient } from '@tanstack/react-query'
 import { Map } from '../../components/Map'
-
-type RouteDetail = {
-  id: string
-  name: string
-  description: string | null
-  source: string
-  status: string
-  ratingTags: Array<string>
-  notes: string | null
-  stats: { distance?: number; elevationGain?: number; elevationLoss?: number } | null
-  polyline: unknown
-  fahrten: Array<{
-    id: string
-    riddenAt: string
-    duration: number | null
-    avgHr: number | null
-    maxHr: number | null
-    notes: string | null
-    weather: string | null
-  }>
-  createdAt: string
-  updatedAt: string
-}
 
 const sourceLabels: Record<string, string> = {
   stravaRoute: 'Strava Route',
@@ -47,9 +31,7 @@ export const Route = createFileRoute('/routes/$routeId')({
 function RouteDetailPage() {
   const mapRef: RefObject<L.Map | null> = useRef(null)
   const { routeId } = Route.useParams()
-  const [route, setRoute] = useState<RouteDetail | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const queryClient = useQueryClient()
   const [showForm, setShowForm] = useState(false)
   const [formRiddenAt, setFormRiddenAt] = useState(new Date().toISOString().slice(0, 16))
   const [formDuration, setFormDuration] = useState('')
@@ -59,51 +41,44 @@ function RouteDetailPage() {
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
 
-  useEffect(() => {
-    let cancelled = false
-    async function load() {
-      setLoading(true)
-      setError(null)
-      try {
-        const res = await apiFetch(`/api/routes/${routeId}`)
-        if (!res.ok) throw new Error('API request failed')
-        const data: RouteDetail = await res.json()
-        if (!cancelled) setRoute(data)
-      } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : 'Unbekannter Fehler')
-      } finally {
-        if (!cancelled) setLoading(false)
-      }
-    }
-    load()
-    return () => {
-      cancelled = true
-    }
-  }, [routeId])
+  const { data: route, isLoading, error, isError } = useGetRoute(routeId)
+
+  const createFahrtMutation = useCreateFahrt({
+    mutation: {
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: getGetRouteQueryKey(routeId) })
+        void queryClient.invalidateQueries({ queryKey: getListFahrtenQueryKey(routeId) })
+        setShowForm(false)
+        setFormRiddenAt(new Date().toISOString().slice(0, 16))
+        setFormDuration('')
+        setFormAvgHr('')
+        setFormMaxHr('')
+        setFormNotes('')
+        setFormError(null)
+      },
+    },
+  })
+
+  const deleteFahrtMutation = useDeleteFahrt({
+    mutation: {
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: getGetRouteQueryKey(routeId) })
+        void queryClient.invalidateQueries({ queryKey: getListFahrtenQueryKey(routeId) })
+      },
+    },
+  })
 
   async function handleCreateFahrt(e: React.FormEvent) {
     e.preventDefault()
     setFormSubmitting(true)
     setFormError(null)
     try {
-      const body: Record<string, any> = { riddenAt: formRiddenAt }
+      const body: Record<string, unknown> = { riddenAt: formRiddenAt }
       if (formDuration) body.duration = parseInt(formDuration, 10)
       if (formAvgHr) body.avgHr = parseInt(formAvgHr, 10)
       if (formMaxHr) body.maxHr = parseInt(formMaxHr, 10)
       if (formNotes) body.notes = formNotes
-      const res = await apiFetch(`/api/routes/${routeId}/fahrten`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
-      if (!res.ok) throw new Error('Fahrt erstellen fehlgeschlagen')
-      setShowForm(false)
-      // Reload route
-      const reloadRes = await apiFetch(`/api/routes/${routeId}`)
-      if (reloadRes.ok) {
-        const data: RouteDetail = await reloadRes.json()
-        setRoute(data)
-      }
+      await createFahrtMutation.mutateAsync({ routeId, data: body as never })
     } catch (err) {
       setFormError(err instanceof Error ? err.message : 'Unbekannter Fehler')
     } finally {
@@ -114,24 +89,17 @@ function RouteDetailPage() {
   async function handleDeleteFahrt(fahrtId: string) {
     if (!confirm('Fahrt wirklich löschen?')) return
     try {
-      const res = await apiFetch(`/api/routes/${routeId}/fahrten/${fahrtId}`, { method: 'DELETE' })
-      if (!res.ok) throw new Error('Fahrt löschen fehlgeschlagen')
-      // Reload route
-      const reloadRes = await apiFetch(`/api/routes/${routeId}`)
-      if (reloadRes.ok) {
-        const data: RouteDetail = await reloadRes.json()
-        setRoute(data)
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unbekannter Fehler')
+      await deleteFahrtMutation.mutateAsync({ routeId, id: fahrtId })
+    } catch {
+      // Error handled by mutation
     }
   }
 
-  if (loading) return <div style={styles.loading}>Lade...</div>
-  if (error) return <div style={styles.error}>{error}</div>
+  if (isLoading) return <div style={styles.loading}>Lade...</div>
+  if (isError) return <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>
   if (!route) return <div style={styles.error}>Route nicht gefunden</div>
 
-  const stats = route.stats as { distance?: number; elevationGain?: number; elevationLoss?: number } | null
+  const fahrten = route.fahrten ?? []
 
   return (
     <div style={styles.container}>
@@ -153,26 +121,32 @@ function RouteDetailPage() {
           </span>
         </div>
 
-        {stats && (
+        {route.stats && (
           <div style={styles.stats}>
             <div style={styles.statRow}>
               <span style={styles.statLabel}>Distanz</span>
-              <span style={styles.statValue}>{formatDistance(stats.distance ?? 0)}</span>
+              <span style={styles.statValue}>
+                {formatDistance((route.stats as { distance?: number } | null)?.distance ?? 0)}
+              </span>
             </div>
             <div style={styles.statRow}>
               <span style={styles.statLabel}>Höhenmeter ↑</span>
-              <span style={styles.statValue}>{formatElevation(stats.elevationGain ?? 0)}</span>
+              <span style={styles.statValue}>
+                {formatElevation((route.stats as { elevationGain?: number } | null)?.elevationGain ?? 0)}
+              </span>
             </div>
             <div style={styles.statRow}>
               <span style={styles.statLabel}>Höhenmeter ↓</span>
-              <span style={styles.statValue}>{formatElevation(stats.elevationLoss ?? 0)}</span>
+              <span style={styles.statValue}>
+                {formatElevation((route.stats as { elevationLoss?: number } | null)?.elevationLoss ?? 0)}
+              </span>
             </div>
           </div>
         )}
 
         {route.ratingTags && route.ratingTags.length > 0 && (
           <div style={styles.tags}>
-            {route.ratingTags.map((tag) => (
+            {(route.ratingTags as string[]).map((tag) => (
               <span key={tag} style={styles.tag}>
                 {tag}
               </span>
@@ -185,7 +159,7 @@ function RouteDetailPage() {
         {/* Fahrten */}
         <div style={styles.fahrtenSection}>
           <div style={styles.fahrtenHeader}>
-            <h3 style={styles.fahrtenHeading}>Fahrten ({route.fahrten.length})</h3>
+            <h3 style={styles.fahrtenHeading}>Fahrten ({fahrten.length})</h3>
             <button onClick={() => setShowForm(!showForm)} style={styles.addButton}>
               + Fahrt
             </button>
@@ -241,7 +215,7 @@ function RouteDetailPage() {
           )}
 
           {/* Fahrten Liste */}
-          {route.fahrten.map((f) => (
+          {fahrten.map((f) => (
             <div key={f.id} style={styles.fahrtCard}>
               <div style={styles.fahrtHeader}>
                 <span style={styles.fahrtDate}>{new Date(f.riddenAt).toLocaleDateString('de-DE')}</span>
@@ -250,11 +224,11 @@ function RouteDetailPage() {
                 </button>
               </div>
               <div style={styles.fahrtStats}>
-                {f.duration && <span>{formatDuration(f.duration)}</span>}
-                {f.avgHr && <span>Ø HR {f.avgHr}</span>}
-                {f.maxHr && <span>Max HR {f.maxHr}</span>}
+                {f.duration && <span>{formatDuration(f.duration as number)}</span>}
+                {f.avgHr && <span>Ø HR {f.avgHr as number}</span>}
+                {f.maxHr && <span>Max HR {f.maxHr as number}</span>}
               </div>
-              {f.notes && <div style={styles.fahrtNotes}>{f.notes}</div>}
+              {f.notes && <div style={styles.fahrtNotes}>{f.notes as string}</div>}
               {f.weather && (
                 <div style={styles.fahrtWeather}>
                   {(() => {

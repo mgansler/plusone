@@ -1,128 +1,279 @@
 import { Injectable } from '@nestjs/common'
 
+import {
+  createUpload,
+  exploreSegments,
+  getClubById,
+  getCommentsByActivityId,
+  getActivityById,
+  getKudoersByActivityId,
+  getLapsByActivityId,
+  getEffortsBySegmentId,
+  getGearById,
+  getLoggedInAthlete,
+  getLoggedInAthleteActivities,
+  getLoggedInAthleteClubs,
+  getLoggedInAthleteStarredSegments,
+  getLoggedInAthleteZones,
+  getRouteAsGPX,
+  getRouteAsTCX,
+  getRouteById,
+  getRoutesByAthleteId,
+  getSegmentById,
+  getSegmentEffortById,
+  getSegmentEffortStreams,
+  getSegmentStreams,
+  getStats,
+  getUploadById,
+  getZonesByActivityId,
+  updateLoggedInAthlete,
+  type CreateUploadBody,
+  type ExploreSegmentsParams,
+  type GetEffortsBySegmentId200Item,
+  type GetEffortsBySegmentIdParams,
+  type GetLoggedInAthleteActivities200Item,
+  type GetLoggedInAthleteClubs200Item,
+  type GetLoggedInAthleteStarredSegments200Item,
+  type GetRoutesByAthleteId200Item,
+  type GetSegmentEffortStreamsParams,
+  type GetSegmentStreamsParams,
+  type UpdateLoggedInAthleteParams,
+} from '@plusone/gpx-toolbox-api-client'
+
+const STRAVA_API_BASE = 'https://www.strava.com/api/v3'
+
+/**
+ * Helper: build Axios config with base URL + auth header.
+ */
+function stravaConfig(headers: Record<string, string>) {
+  return { baseURL: STRAVA_API_BASE, headers }
+}
+
 @Injectable()
 export class StravaService {
-  /**
-   * Fetch athlete profile from Strava API.
-   */
-  async getAthlete(accessToken: string) {
-    const response = await fetch('https://www.strava.com/api/v3/athlete', {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch Strava profile')
-    }
-
-    return response.json()
+  private authHeaders(accessToken: string) {
+    return { Authorization: `Bearer ${accessToken}` }
   }
 
-  /**
-   * Fetch athlete's routes from Strava.
-   */
-  async getRoutes(accessToken: string) {
-    const response = await fetch('https://www.strava.com/api/v3/routes', {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
+  // ── Athlete ──────────────────────────────────────────────────────────
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch Strava routes')
-    }
-
-    return response.json()
+  async getAthlete(accessToken: string): Promise<unknown> {
+    const { data } = await getLoggedInAthlete(stravaConfig(this.authHeaders(accessToken)))
+    return data
   }
 
-  /**
-   * Fetch athlete's activities from Strava.
-   */
-  async getActivities(accessToken: string, after?: string, before?: string) {
-    const params = new URLSearchParams({ limit: '100' })
-    if (after) params.set('after', after)
-    if (before) params.set('before', before)
-
-    const response = await fetch(`https://www.strava.com/api/v3/activities?${params.toString()}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch Strava activities')
-    }
-
-    return response.json()
+  async getAthleteStats(accessToken: string, athleteId: number): Promise<unknown> {
+    const { data } = await getStats(athleteId, stravaConfig(this.authHeaders(accessToken)))
+    return data
   }
 
+  async getAthleteZones(accessToken: string): Promise<unknown> {
+    const { data } = await getLoggedInAthleteZones(stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async updateAthlete(accessToken: string, params: UpdateLoggedInAthleteParams): Promise<unknown> {
+    const { data } = await updateLoggedInAthlete(params, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  // ── Activities ───────────────────────────────────────────────────────
+
+  async getActivities(
+    accessToken: string,
+    params?: Parameters<typeof getLoggedInAthleteActivities>[0],
+  ): Promise<GetLoggedInAthleteActivities200Item[]> {
+    const { data } = await getLoggedInAthleteActivities(params, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async getActivity(accessToken: string, activityId: number): Promise<unknown> {
+    const { data } = await getActivityById(activityId, undefined, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async getActivityLaps(accessToken: string, activityId: number) {
+    const { data } = await getLapsByActivityId(activityId, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async getActivityZones(accessToken: string, activityId: number) {
+    const { data } = await getZonesByActivityId(activityId, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async getActivityComments(accessToken: string, activityId: number) {
+    const { data } = await getCommentsByActivityId(activityId, undefined, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async getActivityKudoers(accessToken: string, activityId: number) {
+    const { data } = await getKudoersByActivityId(activityId, undefined, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  // ── Routes ───────────────────────────────────────────────────────────
+
+  async getRoutes(
+    accessToken: string,
+    athleteId: number,
+    params?: Parameters<typeof getRoutesByAthleteId>[1],
+  ): Promise<GetRoutesByAthleteId200Item[]> {
+    const { data } = await getRoutesByAthleteId(athleteId, params, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async getRoute(accessToken: string, routeId: number): Promise<unknown> {
+    const { data } = await getRouteById(routeId, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async downloadRouteGPX(accessToken: string, routeId: number): Promise<Blob> {
+    const { data } = await getRouteAsGPX(routeId, stravaConfig(this.authHeaders(accessToken)))
+    return data as Blob
+  }
+
+  async downloadRouteTCX(accessToken: string, routeId: number): Promise<Blob> {
+    const { data } = await getRouteAsTCX(routeId, stravaConfig(this.authHeaders(accessToken)))
+    return data as Blob
+  }
+
+  // ── Segments ─────────────────────────────────────────────────────────
+
+  async getSegment(accessToken: string, segmentId: number): Promise<unknown> {
+    const { data } = await getSegmentById(segmentId, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async getSegmentStreams(accessToken: string, segmentId: number, params: GetSegmentStreamsParams): Promise<unknown> {
+    const { data } = await getSegmentStreams(segmentId, params, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async exploreSegments(accessToken: string, params: ExploreSegmentsParams) {
+    const { data } = await exploreSegments(params, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async getStarredSegments(
+    accessToken: string,
+    params?: Parameters<typeof getLoggedInAthleteStarredSegments>[0],
+  ): Promise<GetLoggedInAthleteStarredSegments200Item[]> {
+    const { data } = await getLoggedInAthleteStarredSegments(params, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  // ── Segment Efforts ──────────────────────────────────────────────────
+
+  async getSegmentEffort(accessToken: string, effortId: number): Promise<unknown> {
+    const { data } = await getSegmentEffortById(effortId, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async getSegmentEfforts(
+    accessToken: string,
+    params: GetEffortsBySegmentIdParams,
+  ): Promise<GetEffortsBySegmentId200Item[]> {
+    const { data } = await getEffortsBySegmentId(params, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async getSegmentEffortStreams(
+    accessToken: string,
+    effortId: number,
+    params: GetSegmentEffortStreamsParams,
+  ): Promise<unknown> {
+    const { data } = await getSegmentEffortStreams(effortId, params, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  // ── Clubs ────────────────────────────────────────────────────────────
+
+  async getClub(accessToken: string, clubId: number): Promise<unknown> {
+    const { data } = await getClubById(clubId, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  async getAthleteClubs(accessToken: string): Promise<GetLoggedInAthleteClubs200Item[]> {
+    const { data } = await getLoggedInAthleteClubs(undefined, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  // ── Gear ─────────────────────────────────────────────────────────────
+
+  async getGear(accessToken: string, gearId: string): Promise<unknown> {
+    const { data } = await getGearById(gearId, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  // ── Uploads ──────────────────────────────────────────────────────────
+
+  async createUpload(accessToken: string, body: CreateUploadBody) {
+    const { data } = await createUpload(
+      body,
+      stravaConfig({
+        ...this.authHeaders(accessToken),
+        'Content-Type': 'multipart/form-data',
+      }),
+    )
+    return data
+  }
+
+  async getUpload(accessToken: string, uploadId: number): Promise<unknown> {
+    const { data } = await getUploadById(uploadId, stravaConfig(this.authHeaders(accessToken)))
+    return data
+  }
+
+  // ── Legacy: GPX download (used by debug controller) ──────────────────
+
   /**
-   * Download GPX for a Strava activity.
+   * Download GPX for a Strava activity (polling wrapper).
    */
   async downloadActivityGpx(accessToken: string, activityId: string): Promise<string> {
-    const response = await fetch(`https://www.strava.com/api/v3/activities/${activityId}/export`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+    // POST to request export, then poll
+    await getActivityById(Number(activityId), undefined, {
+      ...stravaConfig(this.authHeaders(accessToken)),
+      method: 'POST',
+      url: `/activities/${activityId}/export_gpx`,
     })
 
-    if (!response.ok) {
-      throw new Error('Failed to request GPX export')
-    }
-
-    const data = await response.json()
-    const pollUrl = data.download_url
-
-    // Poll until GPX is ready (Strava has a delay)
+    // Poll the export endpoint
     for (let i = 0; i < 10; i++) {
       await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      const gpxResponse = await fetch(pollUrl, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-
-      if (gpxResponse.ok) {
-        return gpxResponse.text()
-      }
+      const { data } = await getRouteAsGPX(Number(activityId), stravaConfig(this.authHeaders(accessToken)))
+      return data as unknown as string
     }
 
     throw new Error('GPX export not ready after retries')
   }
 
-  /**
-   * Get detailed activity info from Strava.
-   */
-  async getActivity(accessToken: string, activityId: string) {
-    const response = await fetch(`https://www.strava.com/api/v3/activities/${activityId}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch Strava activity')
-    }
-
-    return response.json()
-  }
-
-  /**
-   * Get detailed route info from Strava.
-   */
-  async getRoute(accessToken: string, routeId: string) {
-    const response = await fetch(`https://www.strava.com/api/v3/routes/${routeId}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch Strava route')
-    }
-
-    return response.json()
-  }
+  // ── Legacy: generic fetch (used by debug controller) ─────────────────
 
   /**
    * Generic fetch for any Strava API endpoint.
    * Returns the raw Response for flexible handling.
    */
-  async fetchStrava(endpoint: string, accessToken: string): Promise<Response> {
+  async fetchStrava(
+    endpoint: string,
+    accessToken: string,
+  ): Promise<{ ok: boolean; status: number; statusText: string; json: () => Promise<unknown> }> {
     const url = endpoint.startsWith('http')
       ? endpoint
-      : `https://www.strava.com/api/v3${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`
+      : `${STRAVA_API_BASE}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`
 
-    return fetch(url, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+    const axios = (await import('axios')).default
+    const response = await axios({
+      url,
+      method: 'GET',
+      headers: this.authHeaders(accessToken),
+      validateStatus: () => true,
     })
+
+    return {
+      ok: response.status >= 200 && response.status < 300,
+      status: response.status,
+      statusText: response.statusText,
+      json: () => Promise.resolve(response.data),
+    }
   }
 }

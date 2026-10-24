@@ -415,7 +415,17 @@
         ],
         "responses": {
           "200": {
-            "description": "List of routes"
+            "description": "List of routes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListRoutesResponseDto"
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -442,7 +452,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Route details"
+            "description": "Route details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouteResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -573,7 +590,17 @@
         ],
         "responses": {
           "200": {
-            "description": "Routes within radius"
+            "description": "Routes within radius",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NearbyRouteResponseDto"
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -632,7 +659,14 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Strava athlete profile with local stats"
+            "description": "Strava athlete profile with local stats",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StravaAthleteProfileDto"
+                }
+              }
+            }
           }
         },
         "summary": "",
@@ -1132,7 +1166,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Raw Strava API response"
+            "description": ""
           }
         },
         "security": [
@@ -1181,6 +1215,90 @@
         },
         "required": ["name"]
       },
+      "ListRoutesResponseDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "description": "Total number of routes",
+            "example": 42
+          },
+          "page": {
+            "type": "number",
+            "description": "Current page number",
+            "example": 1
+          },
+          "limit": {
+            "type": "number",
+            "description": "Items per page",
+            "example": 50
+          },
+          "totalPages": {
+            "type": "number",
+            "description": "Total number of pages",
+            "example": 1
+          },
+          "items": {
+            "type": "array",
+            "description": "List of routes"
+          }
+        },
+        "required": ["total", "page", "limit", "totalPages", "items"]
+      },
+      "RouteResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Route ID",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Route name",
+            "example": "Schwäbische Alb Tour"
+          },
+          "description": {
+            "type": "object",
+            "description": "Route description"
+          },
+          "source": {
+            "type": "string",
+            "description": "Route source",
+            "example": "stravaRoute"
+          },
+          "status": {
+            "type": "string",
+            "description": "Route status",
+            "example": "planned"
+          },
+          "ratingTags": {
+            "type": "array",
+            "description": "Rating tags"
+          },
+          "notes": {
+            "type": "object",
+            "description": "Route notes"
+          },
+          "stats": {
+            "type": "object",
+            "description": "Route statistics"
+          },
+          "fahrten": {
+            "type": "array",
+            "description": "List of rides"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Last update timestamp"
+          }
+        },
+        "required": ["id", "name", "source", "status", "createdAt", "updatedAt"]
+      },
       "UpdateRouteDto": {
         "type": "object",
         "properties": {
@@ -1209,6 +1327,136 @@
             "description": "Notes"
           }
         }
+      },
+      "NearbyRouteResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Route ID",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Route name",
+            "example": "Schwäbische Alb Tour"
+          },
+          "distance": {
+            "type": "number",
+            "description": "Distance in meters",
+            "example": 15000
+          },
+          "distanceKm": {
+            "type": "string",
+            "description": "Formatted distance",
+            "example": "15.0 km"
+          },
+          "status": {
+            "type": "string",
+            "description": "Route status",
+            "example": "planned"
+          },
+          "source": {
+            "type": "string",
+            "description": "Route source",
+            "example": "stravaRoute"
+          },
+          "stats": {
+            "type": "object",
+            "description": "Route statistics"
+          }
+        },
+        "required": ["id", "name", "distance", "distanceKm", "status", "source"]
+      },
+      "StravaAthleteProfileDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 123456
+          },
+          "firstname": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "username": {
+            "type": "string",
+            "example": "johndoe"
+          },
+          "profile": {
+            "type": "object"
+          },
+          "profile_medium": {
+            "type": "object"
+          },
+          "city": {
+            "type": "object"
+          },
+          "state": {
+            "type": "object"
+          },
+          "country": {
+            "type": "object"
+          },
+          "gender": {
+            "type": "string",
+            "example": "M"
+          },
+          "weight": {
+            "type": "object"
+          },
+          "friend": {
+            "type": "object"
+          },
+          "follower": {
+            "type": "object"
+          },
+          "athleteType": {
+            "type": "string",
+            "example": "cyclist"
+          },
+          "premium": {
+            "type": "boolean"
+          },
+          "summit": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "follower_count": {
+            "type": "number"
+          },
+          "friend_count": {
+            "type": "number"
+          },
+          "measurement_preference": {
+            "type": "string"
+          },
+          "ftp": {
+            "type": "object"
+          },
+          "clubs": {
+            "type": "object"
+          },
+          "bikes": {
+            "type": "object"
+          },
+          "shoes": {
+            "type": "object"
+          },
+          "localStats": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "firstname", "lastname", "username", "gender", "athleteType"]
       },
       "ImportResultDto": {
         "type": "object",

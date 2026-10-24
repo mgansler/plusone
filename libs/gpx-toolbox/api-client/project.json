@@ -5,9 +5,19 @@
   "projectType": "library",
   "tags": [],
   "targets": {
+    "fetch-strava-spec": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": ["{projectRoot}/scripts/fetch-strava-spec.ts"],
+      "outputs": ["{projectRoot}/strava.preprocessed.json"],
+      "options": {
+        "command": "tsx libs/gpx-toolbox/api-client/scripts/fetch-strava-spec.ts"
+      }
+    },
     "generate-api-client": {
       "executor": "nx:run-commands",
       "cache": true,
+      "dependsOn": ["fetch-strava-spec"],
       "inputs": [
         {
           "externalDependencies": ["orval"]
@@ -15,7 +25,8 @@
         "{projectRoot}/orval.config.ts",
         "{projectRoot}/src/**/*",
         "!{projectRoot}/src/gen/*",
-        "{workspaceRoot}/apps/gpx-toolbox/gpx-toolbox-backend/gpx-toolbox-internal.json"
+        "{workspaceRoot}/apps/gpx-toolbox/gpx-toolbox-backend/gpx-toolbox-internal.json",
+        "{projectRoot}/strava.preprocessed.json"
       ],
       "outputs": ["{projectRoot}/src/gen/*"],
       "options": {

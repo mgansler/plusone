@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 
-import { apiFetch } from '../../lib/api-client'
+import { useDebugStravaRequest } from '@plusone/gpx-toolbox-api-client'
 import { type StravaEndpointGroup, stravaEndpointGroups } from '../../lib/strava-endpoints'
 
 export const Route = createFileRoute('/debug/')({
@@ -11,10 +11,17 @@ export const Route = createFileRoute('/debug/')({
 function DebugPage() {
   const [selectedEndpoint, setSelectedEndpoint] = useState<string | null>(null)
   const [customEndpoint, setCustomEndpoint] = useState('')
-  const [response, setResponse] = useState<Record<string, unknown> | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({})
+
+  const endpoint = customEndpoint || selectedEndpoint || ''
+
+  const {
+    data: response,
+    isLoading: loading,
+    error,
+    isError,
+    refetch,
+  } = useDebugStravaRequest({ endpoint }, { query: { enabled: endpoint.length > 0 } })
 
   const toggleGroup = useCallback((groupName: string) => {
     setExpandedGroups((prev) => ({ ...prev, [groupName]: !prev[groupName] }))
@@ -24,28 +31,6 @@ function DebugPage() {
     setSelectedEndpoint(path)
     setCustomEndpoint(path)
   }, [])
-
-  const handleExecute = useCallback(async () => {
-    const endpoint = customEndpoint || selectedEndpoint
-    if (!endpoint) {
-      setError('Bitte einen Endpoint eingeben')
-      return
-    }
-
-    setLoading(true)
-    setError(null)
-    setResponse(null)
-
-    try {
-      const res = await apiFetch(`/api/debug/strava?endpoint=${encodeURIComponent(endpoint)}`)
-      const data = await res.json()
-      setResponse(data)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unbekannter Fehler')
-    } finally {
-      setLoading(false)
-    }
-  }, [customEndpoint, selectedEndpoint])
 
   return (
     <div style={styles.container}>
@@ -100,18 +85,18 @@ function DebugPage() {
         </div>
 
         {/* Execute button */}
-        <button onClick={handleExecute} disabled={loading} style={styles.button}>
+        <button onClick={() => void refetch()} disabled={loading} style={styles.button}>
           {loading ? '⏳' : '▶'} {loading ? 'Anfrage...' : 'Anfrage senden'}
         </button>
 
         {/* Error */}
-        {error && <div style={styles.error}>{error}</div>}
+        {isError && <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>}
       </div>
 
       {/* Response */}
       <div style={styles.responseArea}>
         {response ? (
-          <pre style={styles.json}>{JSON.stringify(response, null, 2)}</pre>
+          <pre style={styles.json}>{JSON.stringify(response as Record<string, unknown>, null, 2)}</pre>
         ) : (
           <div style={styles.placeholder}>
             {loading ? 'Lade...' : 'Wähle einen Endpoint und klicke "Anfrage senden"'}
@@ -214,14 +199,6 @@ const styles = {
     fontSize: 13,
     fontWeight: 500,
     color: '#555',
-  } as const,
-  select: {
-    width: '100%',
-    padding: '8px 12px',
-    fontSize: 13,
-    border: '1px solid #ccc',
-    borderRadius: 4,
-    backgroundColor: '#fff',
   } as const,
   input: {
     width: '100%',

@@ -2,30 +2,8 @@ import { useState, useEffect, useRef, type RefObject } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import type L from 'leaflet'
 
-import { apiFetch } from '../../lib/api-client'
+import { useListRoutes } from '@plusone/gpx-toolbox-api-client'
 import { Map } from '../../components/Map'
-
-type RouteItem = {
-  id: string
-  name: string
-  description: string | null
-  source: string
-  status: string
-  ratingTags: Array<string>
-  notes: string | null
-  stats: { distance?: number; elevationGain?: number; elevationLoss?: number } | null
-  createdAt: string
-  updatedAt: string
-  fahrten: Array<{ id: string; riddenAt: string }>
-}
-
-type PaginatedRoutes = {
-  items: Array<RouteItem>
-  total: number
-  page: number
-  limit: number
-  totalPages: number
-}
 
 const sourceLabels: Record<string, string> = {
   stravaRoute: 'Strava Route',
@@ -45,53 +23,26 @@ export const Route = createFileRoute('/routes/')({
 
 function RoutesPage() {
   const mapRef: RefObject<L.Map | null> = useRef(null)
-  const [routes, setRoutes] = useState<Array<RouteItem>>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-  const [total, setTotal] = useState(0)
   const [statusFilter, setStatusFilter] = useState<string>('')
   const [sourceFilter, setSourceFilter] = useState<string>('')
   const [sortBy, setSortBy] = useState('createdAt')
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null)
 
-  useEffect(() => {
-    let cancelled = false
-    async function load() {
-      setLoading(true)
-      setError(null)
-      try {
-        const params = new URLSearchParams({ page: String(page), limit: '50', sortBy })
-        if (statusFilter) params.set('status', statusFilter)
-        if (sourceFilter) params.set('source', sourceFilter)
-        const res = await apiFetch(`/api/routes?${params.toString()}`)
-        if (!res.ok) throw new Error('API request failed')
-        const data: PaginatedRoutes = await res.json()
-        if (!cancelled) {
-          setRoutes(data.items)
-          setTotalPages(data.totalPages)
-          setTotal(data.total)
-        }
-      } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : 'Unbekannter Fehler')
-      } finally {
-        if (!cancelled) setLoading(false)
-      }
-    }
-    load()
-    return () => {
-      cancelled = true
-    }
-  }, [page, statusFilter, sourceFilter, sortBy])
+  const { data, isLoading, error, isError } = useListRoutes({
+    page,
+    limit: 50,
+    sortBy,
+    ...(statusFilter && { status: statusFilter }),
+    ...(sourceFilter && { source: sourceFilter }),
+  })
 
-  function handleRouteClick(route: RouteItem) {
+  const routes = data?.items ?? []
+  const totalPages = data?.totalPages ?? 1
+  const total = data?.total ?? 0
+
+  function handleRouteClick(route: (typeof routes)[number]) {
     setSelectedRoute(selectedRoute === route.id ? null : route.id)
-    const stats = route.stats as { distance?: number; elevationGain?: number; elevationLoss?: number } | null
-    if (stats?.distance != null) {
-      // Fly to center of route stats if available — we don't have coords in the list response
-      // but we can center on the user's location as fallback
-    }
   }
 
   const stats = routes.map((r) => (r.stats as { distance?: number } | null)?.distance ?? 0)
@@ -153,10 +104,10 @@ function RoutesPage() {
         </div>
 
         {/* Error */}
-        {error && <div style={styles.error}>{error}</div>}
+        {isError && <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>}
 
         {/* Loading */}
-        {loading && <div style={styles.loading}>Lade...</div>}
+        {isLoading && <div style={styles.loading}>Lade...</div>}
 
         {/* Routes */}
         {routes.length > 0 && (

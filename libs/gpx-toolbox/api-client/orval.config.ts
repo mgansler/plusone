@@ -45,4 +45,19 @@ module.exports = {
       afterAllFilesWrite: 'nx format --files libs/gpx-toolbox/api-client/src/zod.ts',
     },
   },
+  strava: {
+    input: {
+      target: './strava.preprocessed.json',
+      parserOptions: {
+        externalRefs: {
+          allow: ['*'],
+        },
+      },
+    },
+    output: {
+      mode: 'tags',
+      client: 'axios-functions',
+      target: './src/gen/strava',
+    },
+  },
 }

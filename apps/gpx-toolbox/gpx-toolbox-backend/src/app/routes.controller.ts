@@ -20,6 +20,8 @@ import { Response, Request } from 'express'
 
 import { RoutesService } from './routes.service'
 import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
+import { NearbyRouteResponseDto } from './dto/nearby-route-response.dto'
+import { ListRoutesResponseDto, RouteResponseDto } from './dto/list-routes-response.dto'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { JwtPayload } from './jwt.strategy'
 
@@ -61,7 +63,7 @@ export class RoutesController {
   @ApiOperation({ operationId: 'listRoutes' })
   @ApiBearerAuth()
   @ApiQuery({ type: QueryRouteDto, required: false })
-  @ApiOkResponse({ description: 'List of routes' })
+  @ApiOkResponse({ type: [ListRoutesResponseDto], description: 'List of routes' })
   async findAll(@Req() req: Request & { user: JwtPayload }, @Query() query: QueryRouteDto) {
     return this.routesService.findAll(query, req.user.sub)
   }
@@ -69,7 +71,7 @@ export class RoutesController {
   @Get(':id')
   @ApiOperation({ operationId: 'getRoute' })
   @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Route details' })
+  @ApiOkResponse({ type: RouteResponseDto, description: 'Route details' })
   async findOne(@Req() req: Request & { user: JwtPayload }, @Param('id', ParseUUIDPipe) id: string) {
     return this.routesService.findById(id, req.user.sub)
   }
@@ -117,7 +119,7 @@ export class RoutesController {
   @ApiQuery({ name: 'lat', type: Number })
   @ApiQuery({ name: 'lng', type: Number })
   @ApiQuery({ name: 'radius', type: Number, description: 'Radius in kilometers' })
-  @ApiOkResponse({ description: 'Routes within radius' })
+  @ApiOkResponse({ type: [NearbyRouteResponseDto], description: 'Routes within radius' })
   async findNearby(
     @Req() req: Request & { user: JwtPayload },
     @Query('lat') latitude: number,

@@ -7,6 +7,7 @@ import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { AuthService } from './auth.service'
 import { StravaService } from './strava.service'
+import { StravaAthleteProfileDto } from './dto/strava-athlete-profile.dto'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -59,7 +60,12 @@ export class AuthController {
       const { access_token, refresh_token } = tokenData
 
       // Fetch athlete profile
-      const profile = await this.stravaService.getAthlete(access_token)
+      const profile = (await this.stravaService.getAthlete(access_token)) as {
+        id?: string
+        firstname?: string
+        lastname?: string
+        profile?: string
+      }
 
       // Upsert user and issue JWT
       const user = await this.prisma.user.upsert({
@@ -67,13 +73,13 @@ export class AuthController {
         update: {
           accessToken: access_token,
           refreshToken: refresh_token,
-          name: profile.firstname ?? profile.lastname ?? profile.name ?? null,
+          name: profile.firstname ?? profile.lastname ?? null,
         },
         create: {
           stravaId: String(profile.id),
           accessToken: access_token,
           refreshToken: refresh_token,
-          name: profile.firstname ?? profile.lastname ?? profile.name ?? null,
+          name: profile.firstname ?? profile.lastname ?? null,
           avatarUrl: profile.profile,
         },
       })
@@ -91,7 +97,7 @@ export class AuthController {
 
   @Get('athlete')
   @ApiOperation({ operationId: 'stravaAthlete' })
-  @ApiOkResponse({ description: 'Strava athlete profile with local stats' })
+  @ApiOkResponse({ type: StravaAthleteProfileDto, description: 'Strava athlete profile with local stats' })
   async getStravaAthlete(@Req() req: Request) {
     const auth = req.headers['authorization']?.replace('Bearer ', '')
     if (!auth) throw new UnauthorizedException()
@@ -103,7 +109,29 @@ export class AuthController {
     })
     if (!user?.accessToken) throw new UnauthorizedException('No Strava token')
 
-    const athlete = await this.stravaService.getAthlete(user.accessToken)
+    const athlete = (await this.stravaService.getAthlete(user.accessToken)) as {
+      id?: string
+      firstname?: string
+      lastname?: string
+      profile?: string
+      profile_medium?: string
+      city?: string
+      state?: string
+      country?: string
+      sex?: string
+      weight?: number
+      premium?: boolean
+      summit?: boolean
+      created_at?: string
+      updated_at?: string
+      follower_count?: number
+      friend_count?: number
+      measurement_preference?: string
+      ftp?: number
+      clubs?: unknown
+      bikes?: unknown
+      shoes?: unknown
+    }
 
     // Aggregate local stats from database
     const [routeCount, rideCount, routesWithPolyline] = await Promise.all([
@@ -129,34 +157,24 @@ export class AuthController {
       id: athlete.id,
       firstname: athlete.firstname,
       lastname: athlete.lastname,
-      username: athlete.username,
       profile: athlete.profile,
       profile_medium: athlete.profile_medium,
       city: athlete.city,
       state: athlete.state,
       country: athlete.country,
-      gender: athlete.gender,
+      gender: athlete.sex,
       weight: athlete.weight,
       premium: athlete.premium,
-      membership: athlete.membership,
+      summit: athlete.summit,
       created_at: athlete.created_at,
       updated_at: athlete.updated_at,
       follower_count: athlete.follower_count,
       friend_count: athlete.friend_count,
-      rides_count: athlete.rides_count,
-      routes_count: athlete.routes_count,
-      runs_count: athlete.runs_count,
-      swims_count: athlete.swims_count,
-      recent_rides_count: athlete.recent_rides_count,
-      all_rides_count: athlete.all_rides_count,
-      all_ride_counts: athlete.all_ride_counts,
-      all_ride_distances: athlete.all_ride_distances,
-      all_ride_elevations: athlete.all_ride_elevations,
-      weight_unit: athlete.weight_unit,
       measurement_preference: athlete.measurement_preference,
       ftp: athlete.ftp,
       clubs: athlete.clubs,
-      badges: athlete.badges,
+      bikes: athlete.bikes,
+      shoes: athlete.shoes,
       // Local database stats (fallback when Strava Premium stats are unavailable)
       localStats: {
         routeCount,
