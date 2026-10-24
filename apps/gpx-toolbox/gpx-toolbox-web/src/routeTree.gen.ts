@@ -13,6 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CallbackRouteImport } from './routes/callback'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as NearbyRouteImport } from './routes/nearby'
+import { Route as DebugIndexRouteImport } from './routes/debug/index'
+import { Route as RoutesIndexRouteImport } from './routes/routes/index'
+import { Route as RoutesRouteIdRouteImport } from './routes/routes/$routeId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +37,39 @@ const NearbyRoute = NearbyRouteImport.update({
   path: '/nearby',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DebugIndexRoute = DebugIndexRouteImport.update({
+  id: '/debug/',
+  path: '/debug/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoutesIndexRoute = RoutesIndexRouteImport.update({
+  id: '/routes/',
+  path: '/routes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoutesRouteIdRoute = RoutesRouteIdRouteImport.update({
+  id: '/routes/$routeId',
+  path: '/routes/$routeId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/callback': typeof CallbackRoute
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
+  '/routes/$routeId': typeof RoutesRouteIdRoute
+  '/debug/': typeof DebugIndexRoute
+  '/routes/': typeof RoutesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/callback': typeof CallbackRoute
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
+  '/routes/$routeId': typeof RoutesRouteIdRoute
+  '/debug': typeof DebugIndexRoute
+  '/routes': typeof RoutesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +77,38 @@ export interface FileRoutesById {
   '/callback': typeof CallbackRoute
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
+  '/routes/$routeId': typeof RoutesRouteIdRoute
+  '/debug/': typeof DebugIndexRoute
+  '/routes/': typeof RoutesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/callback' | '/login' | '/nearby'
+  fullPaths:
+    | '/'
+    | '/callback'
+    | '/login'
+    | '/nearby'
+    | '/routes/$routeId'
+    | '/debug/'
+    | '/routes/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/callback' | '/login' | '/nearby'
-  id: '__root__' | '/' | '/callback' | '/login' | '/nearby'
+  to:
+    | '/'
+    | '/callback'
+    | '/login'
+    | '/nearby'
+    | '/routes/$routeId'
+    | '/debug'
+    | '/routes'
+  id:
+    | '__root__'
+    | '/'
+    | '/callback'
+    | '/login'
+    | '/nearby'
+    | '/routes/$routeId'
+    | '/debug/'
+    | '/routes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +116,9 @@ export interface RootRouteChildren {
   CallbackRoute: typeof CallbackRoute
   LoginRoute: typeof LoginRoute
   NearbyRoute: typeof NearbyRoute
+  RoutesRouteIdRoute: typeof RoutesRouteIdRoute
+  DebugIndexRoute: typeof DebugIndexRoute
+  RoutesIndexRoute: typeof RoutesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +151,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NearbyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/debug/': {
+      id: '/debug/'
+      path: '/debug'
+      fullPath: '/debug/'
+      preLoaderRoute: typeof DebugIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/routes/': {
+      id: '/routes/'
+      path: '/routes'
+      fullPath: '/routes/'
+      preLoaderRoute: typeof RoutesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/routes/$routeId': {
+      id: '/routes/$routeId'
+      path: '/routes/$routeId'
+      fullPath: '/routes/$routeId'
+      preLoaderRoute: typeof RoutesRouteIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +180,9 @@ const rootRouteChildren: RootRouteChildren = {
   CallbackRoute: CallbackRoute,
   LoginRoute: LoginRoute,
   NearbyRoute: NearbyRoute,
+  RoutesRouteIdRoute: RoutesRouteIdRoute,
+  DebugIndexRoute: DebugIndexRoute,
+  RoutesIndexRoute: RoutesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

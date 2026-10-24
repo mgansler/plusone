@@ -1115,6 +1115,34 @@
         "summary": "",
         "tags": ["rides"]
       }
+    },
+    "/api/debug/strava": {
+      "get": {
+        "operationId": "debugStravaRequest",
+        "parameters": [
+          {
+            "name": "endpoint",
+            "required": true,
+            "in": "query",
+            "description": "Strava API endpoint (e.g. /athlete, /athletes/me/stats, /routes)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Raw Strava API response"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["debug"]
+      }
     }
   },
   "info": {

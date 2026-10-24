@@ -82,6 +82,9 @@ export function App() {
           <a href="/nearby" style={styles.topbarLink}>
             In der Nähe
           </a>
+          <a href="/debug" style={styles.topbarLink}>
+            Debug
+          </a>
           <button onClick={logout} style={styles.logoutButton}>
             Abmelden
           </button>

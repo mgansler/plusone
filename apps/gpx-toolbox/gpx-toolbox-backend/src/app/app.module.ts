@@ -18,6 +18,7 @@ import { AuthModule } from './auth.module'
 import { ImportModule } from './import.module'
 import { RidesModule } from './rides.module'
 import { JwtStrategy } from './jwt.strategy'
+import { DebugModule } from './debug.module'
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { JwtStrategy } from './jwt.strategy'
     AuthModule,
     ImportModule,
     RidesModule,
+    DebugModule,
   ],
   controllers: [HealthController],
   providers: [AppService, JwtStrategy],

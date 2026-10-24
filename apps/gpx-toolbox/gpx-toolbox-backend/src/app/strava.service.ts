@@ -111,4 +111,18 @@ export class StravaService {
 
     return response.json()
   }
+
+  /**
+   * Generic fetch for any Strava API endpoint.
+   * Returns the raw Response for flexible handling.
+   */
+  async fetchStrava(endpoint: string, accessToken: string): Promise<Response> {
+    const url = endpoint.startsWith('http')
+      ? endpoint
+      : `https://www.strava.com/api/v3${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`
+
+    return fetch(url, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+  }
 }
