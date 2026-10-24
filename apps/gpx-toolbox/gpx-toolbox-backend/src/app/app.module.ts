@@ -17,6 +17,7 @@ import { RoutesModule } from './routes.module'
 import { AuthModule } from './auth.module'
 import { ImportModule } from './import.module'
 import { RidesModule } from './rides.module'
+import { JwtStrategy } from './jwt.strategy'
 
 @Module({
   imports: [
@@ -39,7 +40,7 @@ import { RidesModule } from './rides.module'
     RidesModule,
   ],
   controllers: [HealthController],
-  providers: [AppService],
+  providers: [AppService, JwtStrategy],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

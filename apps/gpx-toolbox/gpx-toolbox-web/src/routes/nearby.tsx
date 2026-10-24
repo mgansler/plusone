@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, type RefObject } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import L from 'leaflet'
+import { apiFetch } from '../lib/api-client'
 import { Map } from '../components/Map'
 
 interface NearbyRoute {
@@ -62,7 +63,7 @@ function NearbySearch() {
     )
   }
 
-  // Search for nearby routes
+  // Search for nearby routes via API
   const handleSearch = async () => {
     if (lat == null || lng == null) {
       setError('Koordinaten eingeben oder GPS verwenden')
@@ -71,9 +72,8 @@ function NearbySearch() {
     setLoading(true)
     setError(null)
     try {
-      const baseUrl = window.location.origin
-      const res = await fetch(`${baseUrl}/api/routes/nearby?lat=${lat}&lng=${lng}&radius=${radius}`)
-      if (!res.ok) throw new Error(await res.text())
+      const res = await apiFetch(`/api/routes/nearby?lat=${lat}&lng=${lng}&radius=${radius}`)
+      if (!res.ok) throw new Error('API request failed')
       const data: NearbyRoute[] = await res.json()
       setResults(data)
     } catch (err: unknown) {
@@ -212,7 +212,7 @@ function NearbySearch() {
 const styles = {
   container: {
     display: 'flex',
-    height: '100vh',
+    height: 'calc(100vh - 48px)',
     width: '100%',
   } as const,
   sidebar: {

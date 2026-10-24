@@ -1,34 +1,29 @@
 import { Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
-import { JwtService } from '@nestjs/jwt'
 import type { Request } from 'express'
 
 import { ImportService } from './import.service'
 import { ImportResultDto } from './dto/import.dto'
-
-type JwtPayload = { sub: string }
+import { JwtAuthGuard } from './jwt-auth.guard'
+import type { JwtPayload } from './jwt.strategy'
 
 @ApiTags('import')
 @Controller('import')
+@UseGuards(JwtAuthGuard)
 export class ImportController {
-  constructor(
-    private readonly importService: ImportService,
-    private readonly jwtService: JwtService,
-  ) {}
+  constructor(private readonly importService: ImportService) {}
 
   @Post('strava/routes')
   @ApiOperation({ operationId: 'importStravaRoutes' })
   @ApiBearerAuth()
   @ApiQuery({ name: 'force', required: false, description: 'Force re-import' })
   @ApiOkResponse({ description: 'Import results', type: ImportResultDto })
-  async importStravaRoutes(@Req() req: Request, @Query('force') force: string) {
-    const auth = req.headers['authorization']?.replace('Bearer ', '')
-    if (!auth) throw new Error('No access token provided')
-
-    const { sub: userId } = this.jwtService.decode(auth) as JwtPayload
-    if (!userId) throw new Error('Invalid token')
-
-    return this.importService.importStravaRoutes(auth, userId, force === 'true')
+  async importStravaRoutes(@Req() req: Request & { user: JwtPayload }, @Query('force') force: string) {
+    return this.importService.importStravaRoutes(
+      req.headers['authorization']!.replace('Bearer ', ''),
+      req.user.sub,
+      force === 'true',
+    )
   }
 
   @Post('strava/activity')
@@ -36,31 +31,28 @@ export class ImportController {
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'Import results', type: ImportResultDto })
   async importStravaActivity(
-    @Req() req: Request,
+    @Req() req: Request & { user: JwtPayload },
     @Query('activityId') activityId: string,
     @Query('autoMatch') autoMatch: string,
   ) {
-    const auth = req.headers['authorization']?.replace('Bearer ', '')
-    if (!auth) throw new Error('No access token provided')
-
-    const { sub: userId } = this.jwtService.decode(auth) as JwtPayload
-    if (!userId) throw new Error('Invalid token')
-
-    return this.importService.importStravaActivity(auth, userId, activityId, autoMatch !== 'false')
+    return this.importService.importStravaActivity(
+      req.headers['authorization']!.replace('Bearer ', ''),
+      req.user.sub,
+      activityId,
+      autoMatch !== 'false',
+    )
   }
 
   @Post('strava/all-activities')
   @ApiOperation({ operationId: 'importAllStravaActivities' })
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'Import results', type: ImportResultDto })
-  async importAllActivities(@Req() req: Request, @Query('limit') limit: string) {
-    const auth = req.headers['authorization']?.replace('Bearer ', '')
-    if (!auth) throw new Error('No access token provided')
-
-    const { sub: userId } = this.jwtService.decode(auth) as JwtPayload
-    if (!userId) throw new Error('Invalid token')
-
+  async importAllActivities(@Req() req: Request & { user: JwtPayload }, @Query('limit') limit: string) {
     const limitNum = parseInt(limit) || 100
-    return this.importService.importAllActivities(auth, userId, limitNum)
+    return this.importService.importAllActivities(
+      req.headers['authorization']!.replace('Bearer ', ''),
+      req.user.sub,
+      limitNum,
+    )
   }
 }

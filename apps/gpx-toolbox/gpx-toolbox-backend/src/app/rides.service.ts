@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
-import { PrismaService } from '@plusone/gpx-toolbox-persistence'
+import { PrismaService, Prisma } from '@plusone/gpx-toolbox-persistence'
 import { firstValueFrom } from 'rxjs'
 import { CreateFahrtDto, UpdateFahrtDto, QueryFahrtDto } from './dto/ride.dto'
 
@@ -29,6 +29,7 @@ export class RidesService {
   async findAll(
     routeId: string,
     query: QueryFahrtDto,
+    userId: string,
   ): Promise<{
     items: any[]
     total: number
@@ -38,13 +39,13 @@ export class RidesService {
   }> {
     const { dateFrom, dateTo, sortBy = 'riddenAt', order = 'DESC', page = 1, limit = 50 } = query
 
-    // Verify route exists
-    const route = await this.prisma.route.findUnique({ where: { id: routeId } })
+    // Verify route exists and belongs to user
+    const route = await this.prisma.route.findUnique({ where: { id: routeId, userId } })
     if (!route) {
       throw new NotFoundException(`Route with ID ${routeId} not found`)
     }
 
-    const where: { routeId: string; riddenAt?: { gte?: Date; lte?: Date } } = { routeId }
+    const where: { routeId: string; riddenAt?: { gte?: Date; lte?: Date }; userId: string } = { routeId, userId }
     if (dateFrom || dateTo) {
       where.riddenAt = {}
       if (dateFrom) where.riddenAt.gte = new Date(dateFrom)
@@ -53,7 +54,7 @@ export class RidesService {
 
     const all = await this.prisma.fahrt.findMany({
       where,
-      orderBy: { [sortBy]: order },
+      orderBy: { [sortBy]: order === 'ASC' ? Prisma.SortOrder.asc : Prisma.SortOrder.desc },
     })
 
     const total = all.length
@@ -71,8 +72,8 @@ export class RidesService {
   /**
    * Get a single Fahrt by ID.
    */
-  async findOne(id: string): Promise<any> {
-    const fahrt = await this.prisma.fahrt.findUnique({ where: { id } })
+  async findOne(id: string, userId: string): Promise<any> {
+    const fahrt = await this.prisma.fahrt.findUnique({ where: { id, userId } })
 
     if (!fahrt) {
       throw new NotFoundException(`Fahrt with ID ${id} not found`)
@@ -84,9 +85,9 @@ export class RidesService {
   /**
    * Create a new Fahrt for a route.
    */
-  async create(routeId: string, dto: CreateFahrtDto, userId?: string): Promise<any> {
-    // Verify route exists
-    const route = await this.prisma.route.findUnique({ where: { id: routeId } })
+  async create(routeId: string, dto: CreateFahrtDto, userId: string): Promise<any> {
+    // Verify route exists and belongs to user
+    const route = await this.prisma.route.findUnique({ where: { id: routeId, userId } })
     if (!route) {
       throw new NotFoundException(`Route with ID ${routeId} not found`)
     }
@@ -115,14 +116,14 @@ export class RidesService {
   /**
    * Update a Fahrt.
    */
-  async update(id: string, dto: UpdateFahrtDto): Promise<any> {
-    const existing = await this.prisma.fahrt.findUnique({ where: { id } })
+  async update(id: string, dto: UpdateFahrtDto, userId: string): Promise<any> {
+    const existing = await this.prisma.fahrt.findUnique({ where: { id, userId } })
     if (!existing) {
       throw new NotFoundException(`Fahrt with ID ${id} not found`)
     }
 
     const fahrt = await this.prisma.fahrt.update({
-      where: { id },
+      where: { id, userId },
       data: dto,
       include: { route: true },
     })
@@ -134,13 +135,13 @@ export class RidesService {
   /**
    * Delete a Fahrt.
    */
-  async remove(id: string): Promise<void> {
-    const existing = await this.prisma.fahrt.findUnique({ where: { id } })
+  async remove(id: string, userId: string): Promise<void> {
+    const existing = await this.prisma.fahrt.findUnique({ where: { id, userId } })
     if (!existing) {
       throw new NotFoundException(`Fahrt with ID ${id} not found`)
     }
 
-    await this.prisma.fahrt.delete({ where: { id } })
+    await this.prisma.fahrt.delete({ where: { id, userId } })
     this.logger.log(`Deleted Fahrt #${id}`)
   }
 

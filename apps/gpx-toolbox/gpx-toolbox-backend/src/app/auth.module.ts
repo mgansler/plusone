@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { PassportModule } from '@nestjs/passport'
 import { JwtModule } from '@nestjs/jwt'
-import { ConfigModule } from '@nestjs/config'
+import { Strategy } from 'passport-jwt'
 
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
@@ -20,6 +20,6 @@ import { PrismaModule } from '@plusone/gpx-toolbox-persistence'
   ],
   controllers: [AuthController],
   providers: [AuthService, StravaService, StravaStrategy],
-  exports: [StravaService],
+  exports: [AuthService, StravaService],
 })
 export class AuthModule {}

@@ -55,6 +55,7 @@ export class RoutesService {
   async importGpx(
     gpxContent: string,
     dto: CreateRouteDto,
+    userId: string,
   ): Promise<{
     id: string
     name: string
@@ -97,6 +98,7 @@ export class RoutesService {
           elevationLoss,
         },
         ratingTags: [],
+        userId,
       },
     })
 
@@ -114,9 +116,9 @@ export class RoutesService {
   /**
    * Get a route by ID with its fahrten relation.
    */
-  async findById(id: string): Promise<FormattedRoute> {
+  async findById(id: string, userId: string): Promise<FormattedRoute> {
     const route = await this.prismaService.route.findUnique({
-      where: { id },
+      where: { id, userId },
       include: { fahrten: { orderBy: { riddenAt: 'desc' } } },
     })
 
@@ -133,7 +135,10 @@ export class RoutesService {
    * Note: JSON field filters (distance, elevation) are applied in-memory
    * because SQLite/Prisma JSON path filtering has limited support.
    */
-  async findAll(query: QueryRouteDto): Promise<{
+  async findAll(
+    query: QueryRouteDto,
+    userId: string,
+  ): Promise<{
     items: FormattedRoute[]
     total: number
     page: number
@@ -154,7 +159,7 @@ export class RoutesService {
     } = query
 
     // Build Prisma where clause (only non-JSON fields)
-    const where: Prisma.RouteWhereInput = {}
+    const where: Prisma.RouteWhereInput = { userId }
 
     if (status) {
       where.status = status
@@ -207,9 +212,9 @@ export class RoutesService {
   /**
    * Update a route.
    */
-  async update(id: string, dto: UpdateRouteDto): Promise<FormattedRoute> {
+  async update(id: string, dto: UpdateRouteDto, userId: string): Promise<FormattedRoute> {
     const route = await this.prismaService.route.update({
-      where: { id },
+      where: { id, userId },
       data: dto,
       include: { fahrten: { orderBy: { riddenAt: 'desc' } } },
     })
@@ -220,9 +225,9 @@ export class RoutesService {
   /**
    * Delete a route.
    */
-  async remove(id: string): Promise<void> {
+  async remove(id: string, userId: string): Promise<void> {
     await this.prismaService.route.delete({
-      where: { id },
+      where: { id, userId },
     })
     this.logger.log(`Deleted route ${id}`)
   }
@@ -230,9 +235,9 @@ export class RoutesService {
   /**
    * Export a route as GPX XML.
    */
-  async exportGpx(id: string): Promise<string> {
+  async exportGpx(id: string, userId: string): Promise<string> {
     const route = await this.prismaService.route.findUnique({
-      where: { id },
+      where: { id, userId },
       select: { gpxContent: true, name: true },
     })
 
@@ -247,8 +252,9 @@ export class RoutesService {
    * Find routes within a radius of a point.
    * Uses Haversine distance to calculate distance from center to route midpoint.
    */
-  async findNearby(latitude: number, longitude: number, radiusKm: number) {
+  async findNearby(latitude: number, longitude: number, radiusKm: number, userId: string) {
     const routes = await this.prismaService.route.findMany({
+      where: { userId },
       orderBy: { createdAt: 'desc' },
     })
 

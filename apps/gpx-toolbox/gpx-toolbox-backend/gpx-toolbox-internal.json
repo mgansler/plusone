@@ -201,46 +201,23 @@
         "requestBody": {
           "required": true,
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
-                "type": "object",
-                "required": ["file"],
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "GPX file to import"
-                  },
-                  "name": {
-                    "type": "string",
-                    "description": "Route name (optional, extracted from GPX if not provided)"
-                  },
-                  "description": {
-                    "type": "string",
-                    "description": "Route description"
-                  },
-                  "source": {
-                    "type": "string",
-                    "enum": ["stravaRoute", "stravaActivity", "manualImport"],
-                    "default": "manualImport"
-                  }
-                }
+                "$ref": "#/components/schemas/CreateRouteDto"
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "Route imported successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportGpxResponseDto"
-                }
-              }
-            }
+          "201": {
+            "description": ""
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "",
         "tags": ["routes"]
       },
@@ -441,6 +418,11 @@
             "description": "List of routes"
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "",
         "tags": ["routes"]
       }
@@ -463,6 +445,11 @@
             "description": "Route details"
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "",
         "tags": ["routes"]
       },
@@ -493,6 +480,11 @@
             "description": "Route updated successfully"
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "",
         "tags": ["routes"]
       },
@@ -513,6 +505,11 @@
             "description": "Route deleted successfully"
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "",
         "tags": ["routes"]
       }
@@ -535,6 +532,11 @@
             "description": "GPX file content"
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "",
         "tags": ["routes"]
       }
@@ -574,6 +576,11 @@
             "description": "Routes within radius"
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "",
         "tags": ["routes"]
       }
@@ -1106,32 +1113,32 @@
   "tags": [],
   "servers": [],
   "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
     "schemas": {
-      "ImportGpxResponseDto": {
+      "CreateRouteDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "Created route ID"
-          },
           "name": {
             "type": "string",
             "description": "Route name"
           },
-          "totalDistance": {
-            "type": "number",
-            "description": "Total distance in meters"
+          "description": {
+            "type": "string",
+            "description": "Route description"
           },
-          "elevationGain": {
-            "type": "number",
-            "description": "Elevation gain in meters"
-          },
-          "elevationLoss": {
-            "type": "number",
-            "description": "Elevation loss in meters"
+          "source": {
+            "type": "string",
+            "description": "Route source",
+            "enum": ["stravaRoute", "stravaActivity", "manualImport"]
           }
         },
-        "required": ["id", "name", "totalDistance", "elevationGain", "elevationLoss"]
+        "required": ["name"]
       },
       "UpdateRouteDto": {
         "type": "object",
