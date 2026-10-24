@@ -732,6 +732,32 @@
         ],
         "summary": "",
         "tags": ["import"]
+      },
+      "get": {
+        "operationId": "listStravaRoutes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of Strava routes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StravaRouteSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["import"]
       }
     },
     "/api/import/strava/activity": {
@@ -792,6 +818,40 @@
         "responses": {
           "200": {
             "description": "Import results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResultDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["import"]
+      }
+    },
+    "/api/import/strava/routes/{stravaRouteId}": {
+      "post": {
+        "operationId": "importSingleStravaRoute",
+        "parameters": [
+          {
+            "name": "stravaRouteId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Import result for single route",
             "content": {
               "application/json": {
                 "schema": {
@@ -1475,6 +1535,36 @@
           }
         },
         "required": ["imported", "matched", "newRoutes"]
+      },
+      "StravaRouteSummaryDto": {
+        "type": "object",
+        "properties": {
+          "stravaId": {
+            "type": "number",
+            "description": "Strava route ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Route name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Route description"
+          },
+          "distance": {
+            "type": "number",
+            "description": "Distance in meters"
+          },
+          "elevationGain": {
+            "type": "number",
+            "description": "Elevation gain in meters"
+          },
+          "imported": {
+            "type": "boolean",
+            "description": "Whether already imported"
+          }
+        },
+        "required": ["stravaId", "name", "imported"]
       },
       "FahrtResponseDto": {
         "type": "object",

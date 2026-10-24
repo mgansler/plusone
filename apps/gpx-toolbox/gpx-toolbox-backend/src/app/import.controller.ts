@@ -1,9 +1,11 @@
-import { Controller, Post, Query, Req, UseGuards } from '@nestjs/common'
+import { Controller, Post, Get, Query, Param, Req, UseGuards, UnauthorizedException } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { Request } from 'express'
 
+import { PrismaService } from '@plusone/gpx-toolbox-persistence'
+
 import { ImportService } from './import.service'
-import { ImportResultDto } from './dto/import.dto'
+import { ImportResultDto, StravaRouteSummaryDto } from './dto/import.dto'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { JwtPayload } from './jwt.strategy'
 import { StravaService } from './strava.service'
@@ -15,7 +17,17 @@ export class ImportController {
   constructor(
     private readonly importService: ImportService,
     private readonly stravaService: StravaService,
+    private readonly prisma: PrismaService,
   ) {}
+
+  private async getStravaToken(req: Request & { user: JwtPayload }): Promise<string> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: req.user.sub },
+      select: { accessToken: true },
+    })
+    if (!user?.accessToken) throw new UnauthorizedException('No Strava access token')
+    return user.accessToken
+  }
 
   @Post('strava/routes')
   @ApiOperation({ operationId: 'importStravaRoutes' })
@@ -23,7 +35,7 @@ export class ImportController {
   @ApiQuery({ name: 'force', required: false, description: 'Force re-import' })
   @ApiOkResponse({ description: 'Import results', type: ImportResultDto })
   async importStravaRoutes(@Req() req: Request & { user: JwtPayload }, @Query('force') force: string) {
-    const accessToken = req.headers['authorization']!.replace('Bearer ', '')
+    const accessToken = await this.getStravaToken(req)
     // Fetch athlete ID first (required by importStravaRoutes)
     const athlete = (await this.stravaService.getAthlete(accessToken)) as { id?: number }
     if (!athlete?.id) throw new Error('Could not retrieve athlete ID from Strava')
@@ -39,12 +51,8 @@ export class ImportController {
     @Query('activityId') activityId: string,
     @Query('autoMatch') autoMatch: string,
   ) {
-    return this.importService.importStravaActivity(
-      req.headers['authorization']!.replace('Bearer ', ''),
-      req.user.sub,
-      activityId,
-      autoMatch !== 'false',
-    )
+    const accessToken = await this.getStravaToken(req)
+    return this.importService.importStravaActivity(accessToken, req.user.sub, activityId, autoMatch !== 'false')
   }
 
   @Post('strava/all-activities')
@@ -52,11 +60,36 @@ export class ImportController {
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'Import results', type: ImportResultDto })
   async importAllActivities(@Req() req: Request & { user: JwtPayload }, @Query('limit') limit: string) {
+    const accessToken = await this.getStravaToken(req)
     const limitNum = parseInt(limit) || 100
-    return this.importService.importAllActivities(
-      req.headers['authorization']!.replace('Bearer ', ''),
-      req.user.sub,
-      limitNum,
-    )
+    return this.importService.importAllActivities(accessToken, req.user.sub, limitNum)
+  }
+
+  @Get('strava/routes')
+  @ApiOperation({ operationId: 'listStravaRoutes' })
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: [StravaRouteSummaryDto], description: 'List of Strava routes' })
+  async listStravaRoutes(@Req() req: Request & { user: JwtPayload }) {
+    const accessToken = await this.getStravaToken(req)
+    const athlete = (await this.stravaService.getAthlete(accessToken)) as { id?: number }
+    if (!athlete?.id) throw new Error('Could not retrieve athlete ID from Strava')
+    return this.importService.listStravaRoutes(accessToken, req.user.sub, athlete.id!)
+  }
+
+  @Post('strava/routes/:stravaRouteId')
+  @ApiOperation({ operationId: 'importSingleStravaRoute' })
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: ImportResultDto, description: 'Import result for single route' })
+  async importSingleStravaRoute(
+    @Req() req: Request & { user: JwtPayload },
+    @Param('stravaRouteId') stravaRouteId: string,
+  ) {
+    const accessToken = await this.getStravaToken(req)
+    const result = await this.importService.importSingleStravaRoute(accessToken, req.user.sub, stravaRouteId)
+    return {
+      imported: result.imported ? 1 : 0,
+      matched: result.matched ? 1 : 0,
+      newRoutes: result.newRoutes ? 1 : 0,
+    }
   }
 }

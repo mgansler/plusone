@@ -324,23 +324,35 @@ export class RoutesService {
 
   /**
    * Create a route from Strava Route API.
+   * Downloads GPX from Strava, parses it, and stores both GPX content and polyline.
    */
-  async createStravaRoute(
-    stravaId: string,
-    name: string,
-    description?: string,
-    polylinePoints?: string,
-    userId?: string,
-  ) {
+  async createStravaRoute(stravaId: string, name: string, gpxContent: string, userId?: string) {
+    const points = gpxContent ? parseGpx(gpxContent) : []
+    const polyline: Array<{ lat: number; lng: number }> = points.map((p) => ({
+      lat: p.latitude,
+      lng: p.longitude,
+    }))
+
+    const stats = gpxContent
+      ? (() => {
+          const overview = analyzeGpx(gpxContent)
+          const elevationLoss = this.calculateElevationLoss(points)
+          return {
+            distance: overview.totalDistance,
+            elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
+            elevationLoss,
+          }
+        })()
+      : { distance: 0, elevationGain: 0, elevationLoss: 0 }
+
     return this.prismaService.route.create({
       data: {
         name,
-        description,
         source: 'stravaRoute',
         stravaRouteId: stravaId,
-        gpxContent: '',
-        polyline: polylinePoints ? { points: polylinePoints } : { points: '[]' },
-        stats: { distance: 0, elevationGain: 0, elevationLoss: 0 },
+        gpxContent,
+        polyline: { points: JSON.stringify(polyline) },
+        stats,
         ratingTags: [],
         userId,
       },

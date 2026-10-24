@@ -16,6 +16,7 @@ import { Route as NearbyRouteImport } from './routes/nearby'
 import { Route as DebugIndexRouteImport } from './routes/debug/index'
 import { Route as RoutesIndexRouteImport } from './routes/routes/index'
 import { Route as RoutesRouteIdRouteImport } from './routes/routes/$routeId'
+import { Route as RoutesSyncRouteImport } from './routes/routes/sync'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,11 @@ const RoutesRouteIdRoute = RoutesRouteIdRouteImport.update({
   path: '/routes/$routeId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RoutesSyncRoute = RoutesSyncRouteImport.update({
+  id: '/routes/sync',
+  path: '/routes/sync',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
+  '/routes/sync': typeof RoutesSyncRoute
   '/debug/': typeof DebugIndexRoute
   '/routes/': typeof RoutesIndexRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
+  '/routes/sync': typeof RoutesSyncRoute
   '/debug': typeof DebugIndexRoute
   '/routes': typeof RoutesIndexRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
+  '/routes/sync': typeof RoutesSyncRoute
   '/debug/': typeof DebugIndexRoute
   '/routes/': typeof RoutesIndexRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/nearby'
     | '/routes/$routeId'
+    | '/routes/sync'
     | '/debug/'
     | '/routes/'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/nearby'
     | '/routes/$routeId'
+    | '/routes/sync'
     | '/debug'
     | '/routes'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/nearby'
     | '/routes/$routeId'
+    | '/routes/sync'
     | '/debug/'
     | '/routes/'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   NearbyRoute: typeof NearbyRoute
   RoutesRouteIdRoute: typeof RoutesRouteIdRoute
+  RoutesSyncRoute: typeof RoutesSyncRoute
   DebugIndexRoute: typeof DebugIndexRoute
   RoutesIndexRoute: typeof RoutesIndexRoute
 }
@@ -172,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoutesRouteIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/routes/sync': {
+      id: '/routes/sync'
+      path: '/routes/sync'
+      fullPath: '/routes/sync'
+      preLoaderRoute: typeof RoutesSyncRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   NearbyRoute: NearbyRoute,
   RoutesRouteIdRoute: RoutesRouteIdRoute,
+  RoutesSyncRoute: RoutesSyncRoute,
   DebugIndexRoute: DebugIndexRoute,
   RoutesIndexRoute: RoutesIndexRoute,
 }

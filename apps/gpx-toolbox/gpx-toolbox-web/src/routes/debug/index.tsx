@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 
 import { useDebugStravaRequest } from '@plusone/gpx-toolbox-api-client'
@@ -12,6 +12,7 @@ function DebugPage() {
   const [selectedEndpoint, setSelectedEndpoint] = useState<string | null>(null)
   const [customEndpoint, setCustomEndpoint] = useState('')
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({})
+  const [copied, setCopied] = useState(false)
 
   const endpoint = customEndpoint || selectedEndpoint || ''
 
@@ -31,6 +32,19 @@ function DebugPage() {
     setSelectedEndpoint(path)
     setCustomEndpoint(path)
   }, [])
+
+  const responseJson = useMemo(() => (response ? JSON.stringify(response, null, 2) : null), [response])
+
+  const handleCopy = useCallback(async () => {
+    if (!responseJson) return
+    try {
+      await navigator.clipboard.writeText(responseJson)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    } catch {
+      // ignore
+    }
+  }, [responseJson])
 
   return (
     <div style={styles.container}>
@@ -95,8 +109,16 @@ function DebugPage() {
 
       {/* Response */}
       <div style={styles.responseArea}>
-        {response ? (
-          <pre style={styles.json}>{JSON.stringify(response as Record<string, unknown>, null, 2)}</pre>
+        {responseJson ? (
+          <>
+            <div style={styles.responseHeader}>
+              <span style={styles.responseLabel}>Response</span>
+              <button onClick={handleCopy} style={styles.copyButton}>
+                {copied ? '✓ Kopiert' : '📋 Kopieren'}
+              </button>
+            </div>
+            <pre style={styles.json}>{responseJson}</pre>
+          </>
         ) : (
           <div style={styles.placeholder}>
             {loading ? 'Lade...' : 'Wähle einen Endpoint und klicke "Anfrage senden"'}
@@ -129,6 +151,30 @@ const styles = {
     overflow: 'auto',
     backgroundColor: '#1e293b',
     padding: 16,
+    display: 'flex',
+    flexDirection: 'column' as const,
+  } as const,
+  responseHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  } as const,
+  responseLabel: {
+    fontSize: 13,
+    fontWeight: 600,
+    color: '#94a3b8',
+    textTransform: 'uppercase' as const,
+  } as const,
+  copyButton: {
+    padding: '4px 10px',
+    fontSize: 12,
+    fontWeight: 500,
+    backgroundColor: 'transparent',
+    color: '#94a3b8',
+    border: '1px solid #475569',
+    borderRadius: 4,
+    cursor: 'pointer',
   } as const,
   heading: {
     margin: 0,

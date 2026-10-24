@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
-import { parseGpx, analyzeGpx, segmentTrack, calculateHaversineDistance, TrackPoint } from '@plusone/gpx'
+import { analyzeGpx, calculateHaversineDistance, parseGpx, segmentTrack, TrackPoint } from '@plusone/gpx'
 
 import { StravaService } from './strava.service'
 
@@ -15,6 +15,118 @@ export class ImportService {
   ) {}
 
   /**
+   * List Strava routes without importing (summary only).
+   */
+  async listStravaRoutes(
+    accessToken: string,
+    userId: string,
+    athleteId: number,
+  ): Promise<
+    Array<{
+      stravaId: number
+      stravaIdStr: string
+      name: string
+      description?: string
+      distance?: number
+      elevationGain?: number
+      imported: boolean
+      stravaRouteId?: string
+    }>
+  > {
+    const stravaRoutes = await this.stravaService.getRoutes(accessToken, athleteId)
+    const existing = await this.prisma.route.findMany({
+      where: { userId, source: 'stravaRoute' },
+      select: { id: true, stravaRouteId: true },
+    })
+    const existingMap = new Map(existing.map((r) => [r.stravaRouteId!, r.id]))
+
+    return stravaRoutes.map((route) => ({
+      stravaId: route.id ?? 0,
+      stravaIdStr: route.id_str ?? String(route.id),
+      name: route.name ?? `Route ${route.id}`,
+      description: route.description,
+      distance: route.distance,
+      elevationGain: route.elevation_gain,
+      imported: existingMap.has(route.id_str ?? String(route.id)),
+    }))
+  }
+
+  /**
+   * Import a single Strava route by its Strava ID string.
+   */
+  async importSingleStravaRoute(
+    accessToken: string,
+    userId: string,
+    stravaIdStr: string,
+  ): Promise<{ imported: boolean; matched: boolean; newRoutes: boolean }> {
+    const existing = await this.prisma.route.findFirst({
+      where: { stravaRouteId: stravaIdStr },
+    })
+
+    try {
+      // Fetch route detail (name + distance) and GPX content
+      const stravaRouteDetail = (await this.stravaService.getRoute(accessToken, stravaIdStr)) as {
+        name?: string
+        distance?: number
+      }
+      const routeName = stravaRouteDetail?.name ?? `Route ${stravaIdStr}`
+
+      let gpxContent = ''
+      try {
+        gpxContent = await this.stravaService.downloadRouteGPX(accessToken, stravaIdStr)
+      } catch {
+        this.logger.warn(`No GPX available for route ${stravaIdStr}`)
+      }
+
+      const points = gpxContent ? parseGpx(gpxContent) : []
+      const polyline = points.map((p) => ({ lat: p.latitude, lng: p.longitude }))
+
+      const stats = gpxContent
+        ? (() => {
+            const overview = analyzeGpx(gpxContent)
+            const elevationLoss = this.calculateElevationLoss(points)
+            return {
+              distance: overview.totalDistance,
+              elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
+              elevationLoss,
+            }
+          })()
+        : { distance: 0, elevationGain: 0, elevationLoss: 0 }
+
+      if (existing) {
+        await this.prisma.route.update({
+          where: { id: existing.id },
+          data: {
+            gpxContent,
+            polyline: { points: JSON.stringify(polyline) },
+            stats,
+          },
+        })
+        return { imported: true, matched: false, newRoutes: false }
+      }
+
+      await this.prisma.route.create({
+        data: {
+          name: routeName,
+          description: stravaRouteDetail?.distance ? `${(stravaRouteDetail.distance / 1000).toFixed(1)} km` : undefined,
+          gpxContent,
+          polyline: { points: JSON.stringify(polyline) },
+          stats,
+          source: 'stravaRoute',
+          userId,
+          stravaRouteId: stravaIdStr,
+          ratingTags: [],
+        },
+      })
+      this.logger.log(`Imported Strava route ${stravaIdStr}`)
+      return { imported: true, matched: false, newRoutes: true }
+    } catch (error) {
+      this.logger.error(`Failed to import Strava route ${stravaIdStr}: ${error.message}`)
+      throw error
+    }
+  }
+
+  /**
    * Import all Strava routes for the authenticated user.
    */
   async importStravaRoutes(accessToken: string, userId: string, athleteId: number, force = false) {
@@ -24,8 +136,9 @@ export class ImportService {
     let matched = 0
 
     for (const route of stravaRoutes) {
+      const stravaIdStr = route.id_str ?? String(route.id)
       const exists = await this.prisma.route.findFirst({
-        where: { stravaRouteId: String(route.id) },
+        where: { stravaRouteId: stravaIdStr },
       })
 
       if (exists && !force) {
@@ -34,24 +147,23 @@ export class ImportService {
       }
 
       if (exists && force) {
-        this.logger.log(`Re-importing Strava route ${route.id}`)
+        this.logger.log(`Re-importing Strava route ${stravaIdStr}`)
       }
 
       try {
         if (route.id === undefined) {
           this.logger.warn(`Skipping route without id: ${route.id}`)
-          return
+          continue
         }
 
-        const routeDetail = (await this.stravaService.getRoute(accessToken, route.id)) as { distance?: number }
+        const routeDetail = (await this.stravaService.getRoute(accessToken, stravaIdStr)) as { distance?: number }
 
         // Fetch GPX via dedicated endpoint (route map doesn't include GPX content)
         let gpxContent = ''
         try {
-          const gpxBlob = await this.stravaService.downloadRouteGPX(accessToken, route.id)
-          gpxContent = await gpxBlob.text()
+          gpxContent = await this.stravaService.downloadRouteGPX(accessToken, stravaIdStr)
         } catch {
-          this.logger.warn(`No GPX available for route ${route.id}`)
+          this.logger.warn(`No GPX available for route ${stravaIdStr}`)
         }
 
         const points = gpxContent ? parseGpx(gpxContent) : []
@@ -81,7 +193,7 @@ export class ImportService {
         } else {
           await this.prisma.route.create({
             data: {
-              name: route.name ?? `Route ${route.id}`,
+              name: route.name ?? `Route ${stravaIdStr}`,
               description: routeDetail.distance ? `${(routeDetail.distance / 1000).toFixed(1)} km` : undefined,
               gpxContent,
               polyline: { points: JSON.stringify(polyline) },

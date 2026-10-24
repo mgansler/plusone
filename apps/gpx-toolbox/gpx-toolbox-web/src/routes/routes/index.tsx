@@ -55,7 +55,12 @@ function RoutesPage() {
   return (
     <div style={styles.container}>
       <div style={styles.sidebar}>
-        <h2 style={styles.heading}>Routen ({total})</h2>
+        <div style={styles.headingRow}>
+          <h2 style={styles.heading}>Routen ({total})</h2>
+          <Link to="/routes/sync" style={styles.syncButton}>
+            📥 Sync
+          </Link>
+        </div>
 
         {/* Summary */}
         <div style={styles.summary}>
@@ -213,10 +218,28 @@ const styles = {
     position: 'relative',
     minWidth: 0,
   } as const,
+  headingRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  } as const,
   heading: {
     margin: '0 0 12px',
     fontSize: 20,
     fontWeight: 600,
+  } as const,
+  syncButton: {
+    padding: '6px 14px',
+    fontSize: 13,
+    fontWeight: 500,
+    backgroundColor: '#fff',
+    color: '#3b82f6',
+    border: '1px solid #3b82f6',
+    borderRadius: 6,
+    cursor: 'pointer',
+    textDecoration: 'none',
+    display: 'inline-block',
   } as const,
   summary: {
     display: 'flex',

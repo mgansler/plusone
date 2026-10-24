@@ -2,42 +2,42 @@ import { Injectable } from '@nestjs/common'
 
 import {
   createUpload,
+  CreateUploadBody,
   exploreSegments,
+  ExploreSegmentsParams,
+  getActivityById,
   getClubById,
   getCommentsByActivityId,
-  getActivityById,
+  getEffortsBySegmentId,
+  GetEffortsBySegmentId200Item,
+  GetEffortsBySegmentIdParams,
+  getGearById,
   getKudoersByActivityId,
   getLapsByActivityId,
-  getEffortsBySegmentId,
-  getGearById,
   getLoggedInAthlete,
   getLoggedInAthleteActivities,
+  GetLoggedInAthleteActivities200Item,
   getLoggedInAthleteClubs,
+  GetLoggedInAthleteClubs200Item,
   getLoggedInAthleteStarredSegments,
+  GetLoggedInAthleteStarredSegments200Item,
   getLoggedInAthleteZones,
   getRouteAsGPX,
   getRouteAsTCX,
   getRouteById,
   getRoutesByAthleteId,
+  GetRoutesByAthleteId200Item,
   getSegmentById,
   getSegmentEffortById,
   getSegmentEffortStreams,
+  GetSegmentEffortStreamsParams,
   getSegmentStreams,
+  GetSegmentStreamsParams,
   getStats,
   getUploadById,
   getZonesByActivityId,
   updateLoggedInAthlete,
-  type CreateUploadBody,
-  type ExploreSegmentsParams,
-  type GetEffortsBySegmentId200Item,
-  type GetEffortsBySegmentIdParams,
-  type GetLoggedInAthleteActivities200Item,
-  type GetLoggedInAthleteClubs200Item,
-  type GetLoggedInAthleteStarredSegments200Item,
-  type GetRoutesByAthleteId200Item,
-  type GetSegmentEffortStreamsParams,
-  type GetSegmentStreamsParams,
-  type UpdateLoggedInAthleteParams,
+  UpdateLoggedInAthleteParams,
 } from '@plusone/gpx-toolbox-api-client'
 
 const STRAVA_API_BASE = 'https://www.strava.com/api/v3'
@@ -82,7 +82,7 @@ export class StravaService {
   async getActivities(
     accessToken: string,
     params?: Parameters<typeof getLoggedInAthleteActivities>[0],
-  ): Promise<GetLoggedInAthleteActivities200Item[]> {
+  ): Promise<Array<GetLoggedInAthleteActivities200Item>> {
     const { data } = await getLoggedInAthleteActivities(params, stravaConfig(this.authHeaders(accessToken)))
     return data
   }
@@ -118,24 +118,34 @@ export class StravaService {
     accessToken: string,
     athleteId: number,
     params?: Parameters<typeof getRoutesByAthleteId>[1],
-  ): Promise<GetRoutesByAthleteId200Item[]> {
+  ): Promise<Array<GetRoutesByAthleteId200Item>> {
     const { data } = await getRoutesByAthleteId(athleteId, params, stravaConfig(this.authHeaders(accessToken)))
+    console.log()
     return data
   }
 
-  async getRoute(accessToken: string, routeId: number): Promise<unknown> {
-    const { data } = await getRouteById(routeId, stravaConfig(this.authHeaders(accessToken)))
-    return data
+  async getRoute(accessToken: string, routeId: string | number): Promise<unknown> {
+    // Always use string ID to avoid JS number precision loss with large IDs
+    const id = String(routeId)
+    const response = await this.fetchStrava(`/routes/${id}`, accessToken)
+    return response.json()
   }
 
-  async downloadRouteGPX(accessToken: string, routeId: number): Promise<Blob> {
-    const { data } = await getRouteAsGPX(routeId, stravaConfig(this.authHeaders(accessToken)))
-    return data as Blob
+  async downloadRouteGPX(accessToken: string, routeId: string | number): Promise<Blob> {
+    // Always use string ID to avoid JS number precision loss with large IDs
+    const id = String(routeId)
+    const response = await this.fetchStrava(`/routes/${id}/export_gpx`, accessToken)
+    if (!response.ok) throw new Error(`GPX download failed: ${response.status}`)
+    // fetchStrava uses axios — for non-JSON (GPX XML) it returns the raw data
+    return response.json() as unknown as Blob
   }
 
-  async downloadRouteTCX(accessToken: string, routeId: number): Promise<Blob> {
-    const { data } = await getRouteAsTCX(routeId, stravaConfig(this.authHeaders(accessToken)))
-    return data as Blob
+  async downloadRouteTCX(accessToken: string, routeId: string | number): Promise<Blob> {
+    // Always use string ID to avoid JS number precision loss with large IDs
+    const id = String(routeId)
+    const response = await this.fetchStrava(`/routes/${id}/export_tcx`, accessToken)
+    if (!response.ok) throw new Error(`TCX download failed: ${response.status}`)
+    return response.json() as unknown as Blob
   }
 
   // ── Segments ─────────────────────────────────────────────────────────
@@ -158,7 +168,7 @@ export class StravaService {
   async getStarredSegments(
     accessToken: string,
     params?: Parameters<typeof getLoggedInAthleteStarredSegments>[0],
-  ): Promise<GetLoggedInAthleteStarredSegments200Item[]> {
+  ): Promise<Array<GetLoggedInAthleteStarredSegments200Item>> {
     const { data } = await getLoggedInAthleteStarredSegments(params, stravaConfig(this.authHeaders(accessToken)))
     return data
   }
@@ -173,7 +183,7 @@ export class StravaService {
   async getSegmentEfforts(
     accessToken: string,
     params: GetEffortsBySegmentIdParams,
-  ): Promise<GetEffortsBySegmentId200Item[]> {
+  ): Promise<Array<GetEffortsBySegmentId200Item>> {
     const { data } = await getEffortsBySegmentId(params, stravaConfig(this.authHeaders(accessToken)))
     return data
   }
@@ -194,7 +204,7 @@ export class StravaService {
     return data
   }
 
-  async getAthleteClubs(accessToken: string): Promise<GetLoggedInAthleteClubs200Item[]> {
+  async getAthleteClubs(accessToken: string): Promise<Array<GetLoggedInAthleteClubs200Item>> {
     const { data } = await getLoggedInAthleteClubs(undefined, stravaConfig(this.authHeaders(accessToken)))
     return data
   }
