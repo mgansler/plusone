@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsInt, IsBoolean, IsDateString, Min, Max } from 'class-validator'
+import { IsOptional, IsString, IsInt, IsDateString, Min, Max } from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class CreateFahrtDto {

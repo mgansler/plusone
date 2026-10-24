@@ -17,7 +17,7 @@ import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@
 import { RidesService } from './rides.service'
 import { CreateFahrtDto, UpdateFahrtDto, QueryFahrtDto, FahrtResponseDto } from './dto/ride.dto'
 import { JwtAuthGuard } from './jwt-auth.guard'
-import type { JwtPayload } from './jwt.strategy'
+import { JwtPayload } from './jwt.strategy'
 
 @ApiTags('rides')
 @ApiBearerAuth()

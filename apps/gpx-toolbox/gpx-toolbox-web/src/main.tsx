@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
+
 import { routeTree } from './routeTree.gen'
 import { handleOAuthCallback } from './lib/auth-context'
 import './styles.css'
@@ -27,6 +28,7 @@ const router = createRouter({
   ),
 })
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- interface required to avoid duplicate identifier with TanStack Router
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router

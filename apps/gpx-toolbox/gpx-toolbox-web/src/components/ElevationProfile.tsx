@@ -1,17 +1,23 @@
 import { useMemo } from 'react'
+
 import type { TrackPoint } from '@plusone/gpx'
 import { calculateHaversineDistance } from '@plusone/gpx'
 
-interface ElevationProfileProps {
-  points: TrackPoint[]
+type ElevationProfileProps = {
+  points: Array<TrackPoint>
   range: [number, number]
 }
 
 /** Simple polyline elevation profile — no Catmull-Rom, clean & fast */
 export function ElevationProfile({ points, range }: ElevationProfileProps) {
-  const { profile, minE, maxE, totalDist } = useMemo(() => {
+  const {
+    profile,
+    minE,
+    maxE,
+    totalDist: _totalDist,
+  } = useMemo(() => {
     // Cumulative distances
-    const dists: number[] = [0]
+    const dists: Array<number> = [0]
     for (let i = 1; i < points.length; i++) {
       dists.push(dists[i - 1] + calculateHaversineDistance(points[i - 1], points[i]))
     }
@@ -32,7 +38,14 @@ export function ElevationProfile({ points, range }: ElevationProfileProps) {
     }
   }, [points])
 
-  const { startIdx, endIdx, startEle, endEle, segMinE, segMaxE } = useMemo(() => {
+  const {
+    startIdx,
+    endIdx,
+    startEle,
+    endEle,
+    segMinE: _segMinE,
+    segMaxE: _segMaxE,
+  } = useMemo(() => {
     const s = Math.round((range[0] / 100) * (points.length - 1))
     const e = Math.round((range[1] / 100) * (points.length - 1))
     const seg = points.slice(s, e + 1)

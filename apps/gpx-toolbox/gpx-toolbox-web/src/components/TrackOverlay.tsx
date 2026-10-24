@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react'
 import L from 'leaflet'
+
 import type { TrackPoint } from '@plusone/gpx'
 import { calculateHaversineDistance } from '@plusone/gpx'
 
-interface TrackOverlayProps {
-  points: TrackPoint[]
+type TrackOverlayProps = {
+  points: Array<TrackPoint>
   mapInstance: L.Map
   onPointClick?: (point: TrackPoint, event: L.LeafletMouseEvent) => void
 }
@@ -17,7 +18,7 @@ export function TrackOverlay({ points, mapInstance, onPointClick }: TrackOverlay
 
     const layer = L.layerGroup()
 
-    const coords: [number, number][] = points.map((p) => [p.latitude, p.longitude] as [number, number])
+    const coords: Array<[number, number]> = points.map((p) => [p.latitude, p.longitude] as [number, number])
 
     const polyline = L.polyline(coords, {
       color: '#2563eb',

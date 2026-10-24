@@ -587,11 +587,11 @@
     },
     "/api/auth/strava": {
       "get": {
-        "operationId": "stravaAuthUrl",
+        "operationId": "stravaAuthRedirect",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Strava authorization URL"
+            "description": "Redirects to Strava authorization page"
           }
         },
         "summary": "",
@@ -620,6 +620,19 @@
         "responses": {
           "200": {
             "description": ""
+          }
+        },
+        "summary": "",
+        "tags": ["auth"]
+      }
+    },
+    "/api/auth/athlete": {
+      "get": {
+        "operationId": "stravaAthlete",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Strava athlete profile with local stats"
           }
         },
         "summary": "",

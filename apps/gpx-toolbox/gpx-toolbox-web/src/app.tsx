@@ -1,4 +1,5 @@
 import { Outlet, useLocation } from '@tanstack/react-router'
+
 import { useAuth } from './lib/auth-context'
 
 /** Public routes that don't require authentication. */

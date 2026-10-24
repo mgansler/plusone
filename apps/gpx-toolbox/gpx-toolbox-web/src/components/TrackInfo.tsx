@@ -1,8 +1,8 @@
 import type { TrackPoint } from '@plusone/gpx'
 import { calculateHaversineDistance } from '@plusone/gpx'
 
-interface TrackInfoProps {
-  points: TrackPoint[]
+type TrackInfoProps = {
+  points: Array<TrackPoint>
 }
 
 export function TrackInfo({ points }: TrackInfoProps) {
@@ -28,7 +28,7 @@ export function TrackInfo({ points }: TrackInfoProps) {
   )
 }
 
-function calculateTotalDistance(points: TrackPoint[]): number {
+function calculateTotalDistance(points: Array<TrackPoint>): number {
   let total = 0
   for (let i = 1; i < points.length; i++) {
     total += calculateHaversineDistance(points[i - 1], points[i])
@@ -36,7 +36,7 @@ function calculateTotalDistance(points: TrackPoint[]): number {
   return total
 }
 
-function calculateElevationGain(points: TrackPoint[]): number {
+function calculateElevationGain(points: Array<TrackPoint>): number {
   let gain = 0
   for (let i = 1; i < points.length; i++) {
     const diff = points[i].elevation - points[i - 1].elevation
@@ -45,7 +45,7 @@ function calculateElevationGain(points: TrackPoint[]): number {
   return gain
 }
 
-function calculateDuration(points: TrackPoint[]): number {
+function calculateDuration(points: Array<TrackPoint>): number {
   if (points.length < 2) return 0
   return (points[points.length - 1].time.getTime() - points[0].time.getTime()) / 1000
 }
@@ -55,7 +55,7 @@ function calculateAvgSpeed(distance: number, duration: number): number {
   return Math.round((distance / 1000 / (duration / 3600)) * 10) / 10
 }
 
-function calculateMaxSpeed(points: TrackPoint[]): number {
+function calculateMaxSpeed(points: Array<TrackPoint>): number {
   let maxSpeed = 0
   for (let i = 1; i < points.length; i++) {
     const dt = (points[i].time.getTime() - points[i - 1].time.getTime()) / 1000
@@ -68,7 +68,7 @@ function calculateMaxSpeed(points: TrackPoint[]): number {
   return Math.round(maxSpeed * 10) / 10
 }
 
-function getTimeRange(points: TrackPoint[]): string {
+function getTimeRange(points: Array<TrackPoint>): string {
   if (points.length < 2) return ''
   const start = points[0].time
   const end = points[points.length - 1].time
@@ -100,7 +100,7 @@ function formatTime(date: Date): string {
   return date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
 }
 
-interface StatProps {
+type StatProps = {
   label: string
   value: string
 }

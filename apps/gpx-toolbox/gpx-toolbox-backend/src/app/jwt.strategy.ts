@@ -5,7 +5,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
 /**
  * JWT payload extracted from the authorization header.
  */
-export interface JwtPayload {
+export type JwtPayload = {
   sub: string // user id
   stravaId: string // Strava external id
 }
@@ -13,9 +13,9 @@ export interface JwtPayload {
 /**
  * Extended request with the verified JWT payload attached.
  */
-export interface AuthenticatedRequest extends Express.Request {
+export type AuthenticatedRequest = {
   user: JwtPayload
-}
+} & Express.Request
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

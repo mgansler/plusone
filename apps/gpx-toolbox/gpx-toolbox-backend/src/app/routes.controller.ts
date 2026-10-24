@@ -8,22 +8,20 @@ import {
   Query,
   Body,
   Req,
-  UseInterceptors,
+  UseGuards,
+  Logger,
+  BadRequestException,
+  ParseUUIDPipe,
   UploadedFile,
   Res,
-  BadRequestException,
-  Logger,
-  ParseUUIDPipe,
-  UseGuards,
 } from '@nestjs/common'
-import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
-import type { Response, Request } from 'express'
+import { Response, Request } from 'express'
 
 import { RoutesService } from './routes.service'
-import { CreateRouteDto, QueryRouteDto, UpdateRouteDto, ImportGpxResponseDto } from './dto/route.dto'
+import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
 import { JwtAuthGuard } from './jwt-auth.guard'
-import type { JwtPayload } from './jwt.strategy'
+import { JwtPayload } from './jwt.strategy'
 
 @ApiTags('routes')
 @Controller('routes')

@@ -13,7 +13,7 @@ const tileLayers: Record<string, string> = {
   Topografisch: 'https://tile.opentopomap.org/{z}/{x}/{y}.png',
 }
 
-interface MapProps {
+type MapProps = {
   children?: ReactNode
   center?: [number, number]
   zoom?: number
@@ -30,6 +30,7 @@ export function Map({ children, center, zoom = 12, mapRef }: MapProps) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => setInitCenter([pos.coords.latitude, pos.coords.longitude] as [number, number]),
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => {},
         { timeout: 3000 },
       )

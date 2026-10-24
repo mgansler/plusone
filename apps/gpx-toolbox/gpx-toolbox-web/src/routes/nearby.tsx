@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef, type RefObject } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import L from 'leaflet'
+import type L from 'leaflet'
+
 import { apiFetch } from '../lib/api-client'
 import { Map } from '../components/Map'
 
-interface NearbyRoute {
+type NearbyRoute = {
   id: string
   name: string
   distance: number
@@ -36,7 +37,7 @@ function NearbySearch() {
   const [lng, setLng] = useState<number | null>(null)
   const [radius, setRadius] = useState<number>(50)
   const [loading, setLoading] = useState(false)
-  const [results, setResults] = useState<NearbyRoute[]>([])
+  const [results, setResults] = useState<Array<NearbyRoute>>([])
   const [error, setError] = useState<string | null>(null)
   const [usingGPS, setUsingGPS] = useState(false)
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null)
@@ -74,7 +75,7 @@ function NearbySearch() {
     try {
       const res = await apiFetch(`/api/routes/nearby?lat=${lat}&lng=${lng}&radius=${radius}`)
       if (!res.ok) throw new Error('API request failed')
-      const data: NearbyRoute[] = await res.json()
+      const data: Array<NearbyRoute> = await res.json()
       setResults(data)
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Unbekannter Fehler'
@@ -89,7 +90,7 @@ function NearbySearch() {
     if (lat != null && lng != null) {
       handleSearch()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // lat, lng, radius are the only intentional deps
   }, [lat, lng, radius])
 
   // Fly to location when GPS acquired

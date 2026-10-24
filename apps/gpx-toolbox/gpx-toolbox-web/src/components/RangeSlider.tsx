@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 
-interface RangeSliderProps {
+type RangeSliderProps = {
   value: [number, number] // 0-100 range
   onChange: (value: [number, number]) => void
 }

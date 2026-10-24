@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import L from 'leaflet'
-import type { TrackPoint } from '@plusone/gpx'
-import { calculateHaversineDistance } from '@plusone/gpx'
 
-interface SegmentOverlayProps {
-  points: TrackPoint[]
+import { type TrackPoint } from '@plusone/gpx'
+
+type SegmentOverlayProps = {
+  points: Array<TrackPoint>
   mapInstance: L.Map
   /** 0-100 range, [start%, end%] of the track */
   range: [number, number]
@@ -14,7 +14,7 @@ interface SegmentOverlayProps {
 }
 
 export function SegmentOverlay({ points, mapInstance, range, fitBounds = false, children }: SegmentOverlayProps) {
-  const [selectedPoints] = useState(() => {
+  const [_selectedPoints] = useState(() => {
     const startIdx = Math.round((range[0] / 100) * (points.length - 1))
     const endIdx = Math.round((range[1] / 100) * (points.length - 1))
     return { selected: points.slice(startIdx, endIdx + 1), startIdx, endIdx }
@@ -32,7 +32,7 @@ export function SegmentOverlay({ points, mapInstance, range, fitBounds = false, 
     const layer = L.layerGroup()
 
     // ── Full track (greyed out) ──────────────────────────────────────────
-    const fullCoords: [number, number][] = points.map((p) => [p.latitude, p.longitude] as [number, number])
+    const fullCoords: Array<[number, number]> = points.map((p) => [p.latitude, p.longitude] as [number, number])
     L.polyline(fullCoords, {
       color: '#94a3b8',
       weight: 2,
@@ -40,7 +40,7 @@ export function SegmentOverlay({ points, mapInstance, range, fitBounds = false, 
     }).addTo(layer)
 
     // ── Selected segment (highlighted) ───────────────────────────────────
-    const selectedCoords: [number, number][] = selected.map((p) => [p.latitude, p.longitude] as [number, number])
+    const selectedCoords: Array<[number, number]> = selected.map((p) => [p.latitude, p.longitude] as [number, number])
     L.polyline(selectedCoords, {
       color: '#2563eb',
       weight: 4,

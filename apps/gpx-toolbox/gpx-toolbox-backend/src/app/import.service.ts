@@ -1,7 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common'
+
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
+import { parseGpx, analyzeGpx, segmentTrack, calculateHaversineDistance, TrackPoint } from '@plusone/gpx'
+
 import { StravaService } from './strava.service'
-import { parseGpx, analyzeGpx, segmentTrack, calculateHaversineDistance, type TrackPoint } from '@plusone/gpx'
 
 @Injectable()
 export class ImportService {
@@ -154,7 +156,7 @@ export class ImportService {
   /**
    * Import all Strava activities (paginated).
    */
-  async importAllActivities(accessToken: string, userId: string, limit = 100) {
+  async importAllActivities(accessToken: string, userId: string, _limit = 100) {
     const activities = await this.stravaService.getActivities(accessToken)
     let imported = 0
     let matched = 0
@@ -174,7 +176,10 @@ export class ImportService {
   /**
    * Find the best matching route for a new activity track using Modified Hausdorff Distance.
    */
-  async findBestMatch(points: TrackPoint[], userId: string): Promise<{ routeId: string; routeName: string } | null> {
+  async findBestMatch(
+    points: Array<TrackPoint>,
+    userId: string,
+  ): Promise<{ routeId: string; routeName: string } | null> {
     const existingRoutes = await this.prisma.route.findMany({
       where: {
         userId,
@@ -194,7 +199,7 @@ export class ImportService {
       const polyline = JSON.parse(route.polyline as string) as Array<{ lat: number; lng: number }>
       if (polyline.length === 0) continue
 
-      const routePoints: TrackPoint[] = polyline.map((p) => ({
+      const routePoints: Array<TrackPoint> = polyline.map((p) => ({
         latitude: p.lat,
         longitude: p.lng,
         elevation: 0,
@@ -225,8 +230,8 @@ export class ImportService {
    * Uses the average of directed Hausdorff distances between matching segments.
    */
   private computeModifiedHausdorffDistance(
-    segmentsA: Array<{ points: TrackPoint[] }>,
-    segmentsB: Array<{ points: TrackPoint[] }>,
+    segmentsA: Array<{ points: Array<TrackPoint> }>,
+    segmentsB: Array<{ points: Array<TrackPoint> }>,
   ): number {
     let totalDistance = 0
     let matchCount = 0
@@ -250,12 +255,12 @@ export class ImportService {
    * Compute Hausdorff distance between two point arrays.
    * Uses a simplified approach: compare points at equivalent normalized positions.
    */
-  private computeHausdorffDistance(pointsA: TrackPoint[], pointsB: TrackPoint[]): number {
+  private computeHausdorffDistance(pointsA: Array<TrackPoint>, pointsB: Array<TrackPoint>): number {
     if (pointsA.length === 0 || pointsB.length === 0) return Infinity
 
     // Downsample to same number of points for comparison
     const maxPoints = 100
-    const downsample = (points: TrackPoint[], n: number): TrackPoint[] => {
+    const downsample = (points: Array<TrackPoint>, n: number): Array<TrackPoint> => {
       const step = Math.max(1, Math.floor(points.length / n))
       return points.filter((_, i) => i % step === 0).slice(0, n)
     }
@@ -281,7 +286,7 @@ export class ImportService {
   /**
    * Calculate total elevation loss from track points.
    */
-  private calculateElevationLoss(points: TrackPoint[]): number {
+  private calculateElevationLoss(points: Array<TrackPoint>): number {
     let loss = 0
     for (let i = 1; i < points.length; i++) {
       const diff = points[i - 1].elevation - points[i].elevation

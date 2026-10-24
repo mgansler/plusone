@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common'
 import { PassportModule } from '@nestjs/passport'
 import { JwtModule } from '@nestjs/jwt'
-import { Strategy } from 'passport-jwt'
+
+import { PrismaModule } from '@plusone/gpx-toolbox-persistence'
 
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { StravaService } from './strava.service'
 import { StravaStrategy } from './strava.strategy'
-import { PrismaModule } from '@plusone/gpx-toolbox-persistence'
 
 @Module({
   imports: [

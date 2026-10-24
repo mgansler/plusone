@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
 
 /** User profile returned from the auth status endpoint. */
-export interface UserProfile {
+export type UserProfile = {
   id: string
   stravaId: string
   name: string | null
@@ -9,7 +9,7 @@ export interface UserProfile {
 }
 
 /** Response from GET /api/auth/status. */
-interface AuthStatusResponse {
+type AuthStatusResponse = {
   authenticated: boolean
   user?: UserProfile | null
 }
@@ -17,7 +17,7 @@ interface AuthStatusResponse {
 const TOKEN_KEY = 'gpx-toolbox-jwt'
 const STATUS_URL = '/api/auth/status'
 
-interface AuthContextValue {
+type AuthContextValue = {
   /** Whether the user is authenticated. */
   isAuthenticated: boolean
   /** Current user profile, or null. */
@@ -56,12 +56,16 @@ function clearToken(): void {
   }
 }
 
+const noop = () => {
+  /* noop */
+}
+
 const AuthContext = createContext<AuthContextValue>({
   isAuthenticated: false,
   user: null,
   token: null,
-  login: () => {},
-  logout: () => {},
+  login: noop,
+  logout: noop,
   isLoading: false,
 })
 
@@ -117,6 +121,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [token])
 
   const login = useCallback(() => {
+    // Navigate directly to the OAuth authorization URL
+    // The backend redirects to Strava, which then redirects back to the callback
     window.location.href = '/api/auth/strava'
   }, [])
 
@@ -160,4 +166,67 @@ export function handleOAuthCallback(): boolean {
     return true
   }
   return false
+}
+
+/** Strava athlete profile returned from GET /api/auth/strava/profile. */
+export type StravaAthlete = {
+  id: number
+  username: string
+  firstname: string
+  lastname: string
+  bio: string | null
+  city: string | null
+  state: string | null
+  country: string | null
+  sex: string
+  weight: number | null
+  profile: string
+  profile_medium: string
+  follower_count: number
+  friend_count: number
+  measurement_preference: 'feet' | 'meters'
+  ftp: number | null
+}
+
+const STRAVA_PROFILE_URL = '/api/auth/strava/profile'
+
+/**
+ * Hook to fetch the current user's Strava athlete profile.
+ * Automatically fetches on mount when authenticated.
+ */
+export function useStravaProfile() {
+  const { token } = useAuth()
+  const [profile, setProfile] = useState<StravaAthlete | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
+
+  const fetchProfile = useCallback(async () => {
+    if (!token) {
+      setProfile(null)
+      return
+    }
+
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const response = await fetch(STRAVA_PROFILE_URL, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (!response.ok) throw new Error('Failed to fetch Strava profile')
+      const data = await response.json()
+      setProfile(data)
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error(String(err)))
+    } finally {
+      setIsLoading(false)
+    }
+    // token is the only intentional dep
+  }, [token])
+
+  useEffect(() => {
+    fetchProfile()
+  }, [fetchProfile])
+
+  return { profile, isLoading, error, refresh: fetchProfile }
 }

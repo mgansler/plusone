@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 
+import { PrismaModule } from '@plusone/gpx-toolbox-persistence'
+
 import { ImportController } from './import.controller'
 import { ImportService } from './import.service'
 import { StravaService } from './strava.service'
-import { PrismaModule } from '@plusone/gpx-toolbox-persistence'
 
 @Module({
   imports: [

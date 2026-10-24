@@ -1,11 +1,11 @@
-import { Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common'
+import { Controller, Post, Query, Req, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
-import type { Request } from 'express'
+import { Request } from 'express'
 
 import { ImportService } from './import.service'
 import { ImportResultDto } from './dto/import.dto'
 import { JwtAuthGuard } from './jwt-auth.guard'
-import type { JwtPayload } from './jwt.strategy'
+import { JwtPayload } from './jwt.strategy'
 
 @ApiTags('import')
 @Controller('import')

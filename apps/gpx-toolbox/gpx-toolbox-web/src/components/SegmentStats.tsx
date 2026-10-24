@@ -8,10 +8,11 @@ import {
   calculateMaxSpeed,
   getTimeRange,
 } from '@plusone/gpx'
+
 import { formatDistance, formatDuration } from '../utils/format'
 
-interface SegmentStatsProps {
-  points: TrackPoint[]
+type SegmentStatsProps = {
+  points: Array<TrackPoint>
 }
 
 export function SegmentStats({ points }: SegmentStatsProps) {
@@ -44,7 +45,7 @@ export function SegmentStats({ points }: SegmentStatsProps) {
   )
 }
 
-interface StatProps {
+type StatProps = {
   label: string
   value: string
 }

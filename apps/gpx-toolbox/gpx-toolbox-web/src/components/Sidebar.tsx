@@ -1,8 +1,8 @@
 import { useState, type DragEvent, type ChangeEvent } from 'react'
 import { XMLParser } from 'fast-xml-parser'
+
 import type { TrackPoint } from '@plusone/gpx'
 import {
-  calculateHaversineDistance,
   renderSvg,
   calculateTotalDistance,
   calculateElevationGain,
@@ -12,19 +12,26 @@ import {
   calculateMaxSpeed,
   getTimeRange,
 } from '@plusone/gpx'
+
+import { formatDistance, formatDuration } from '../utils/format'
+
 import { RangeSlider } from './RangeSlider'
 import { SegmentStats } from './SegmentStats'
 import { ElevationProfile } from './ElevationProfile'
-import { formatDistance, formatDuration } from '../utils/format'
+import { StravaProfile } from './StravaProfile'
 
-interface SidebarProps {
-  onFileLoad?: (points: TrackPoint[], fileName: string) => void
-  points?: TrackPoint[]
+const noop = () => {
+  /* noop */
+}
+
+type SidebarProps = {
+  onFileLoad?: (points: Array<TrackPoint>, fileName: string) => void
+  points?: Array<TrackPoint>
   fileName?: string
   segmentRange?: [number, number]
   onSegmentRangeChange?: (range: [number, number]) => void
-  onExportGpx?: (points: TrackPoint[]) => void
-  onExportSvg?: (points: TrackPoint[]) => void
+  onExportGpx?: (points: Array<TrackPoint>) => void
+  onExportSvg?: (points: Array<TrackPoint>) => void
 }
 
 export function Sidebar({
@@ -50,7 +57,7 @@ export function Sidebar({
         return
       }
 
-      const trackPoints: TrackPoint[] = track.map((trkpt: any) => ({
+      const trackPoints: Array<TrackPoint> = track.map((trkpt: any) => ({
         latitude: parseFloat(trkpt['@_lat']),
         longitude: parseFloat(trkpt['@_lon']),
         elevation: parseFloat(trkpt.ele ?? '0'),
@@ -90,6 +97,10 @@ export function Sidebar({
       </div>
 
       <div style={styles.content}>
+        <StravaProfile />
+
+        <div style={styles.divider} />
+
         <FileUpload
           dragging={dragging}
           onDragOver={(e) => {
@@ -126,7 +137,7 @@ export function Sidebar({
   )
 }
 
-interface FileUploadProps {
+type FileUploadProps = {
   dragging: boolean
   onDragOver: (e: DragEvent<HTMLDivElement>) => void
   onDragLeave: () => void
@@ -158,15 +169,15 @@ function FileUpload({ dragging, onDragOver, onDragLeave, onDrop, onFileInput }: 
   )
 }
 
-interface TrackInfoProps {
-  points: TrackPoint[]
+type TrackInfoProps = {
+  points: Array<TrackPoint>
   fileName?: string
   range: [number, number]
-  onExportGpx?: (points: TrackPoint[]) => void
-  onExportSvg?: (points: TrackPoint[]) => void
+  onExportGpx?: (points: Array<TrackPoint>) => void
+  onExportSvg?: (points: Array<TrackPoint>) => void
 }
 
-function TrackInfo({ points, fileName, range, onExportGpx, onExportSvg }: TrackInfoProps) {
+function TrackInfo({ points, range, onExportGpx: _onExportGpx, onExportSvg: _onExportSvg, fileName }: TrackInfoProps) {
   const totalDistance = calculateTotalDistance(points)
   const elevationGain = calculateElevationGain(points)
   const elevationLoss = calculateElevationLoss(points)
@@ -256,15 +267,21 @@ function TrackInfo({ points, fileName, range, onExportGpx, onExportSvg }: TrackI
   )
 }
 
-interface SegmentControlsProps {
-  points: TrackPoint[]
+type SegmentControlsProps = {
+  points: Array<TrackPoint>
   range: [number, number]
   onRangeChange: ((range: [number, number]) => void) | undefined
-  onExportGpx?: (points: TrackPoint[]) => void
-  onExportSvg?: (points: TrackPoint[]) => void
+  onExportGpx?: (points: Array<TrackPoint>) => void
+  onExportSvg?: (points: Array<TrackPoint>) => void
 }
 
-function SegmentControls({ points, range, onRangeChange, onExportGpx, onExportSvg }: SegmentControlsProps) {
+function SegmentControls({
+  points,
+  range,
+  onRangeChange,
+  onExportGpx: _onExportGpx,
+  onExportSvg: _onExportSvg,
+}: SegmentControlsProps) {
   const [exportingGpx, setExportingGpx] = useState(false)
   const [exportingSvg, setExportingSvg] = useState(false)
 
@@ -315,7 +332,7 @@ function SegmentControls({ points, range, onRangeChange, onExportGpx, onExportSv
     <div style={styles.infoSection}>
       <h3 style={styles.infoTitle}>Segment</h3>
 
-      <RangeSlider value={range} onChange={onRangeChange ?? (() => {})} />
+      <RangeSlider value={range} onChange={onRangeChange ?? noop} />
       <SegmentStats points={segmentPoints} />
 
       <div style={styles.exportRow}>
@@ -346,7 +363,7 @@ function SegmentControls({ points, range, onRangeChange, onExportGpx, onExportSv
   )
 }
 
-function buildGpx(points: TrackPoint[], fileName: string): string {
+function buildGpx(points: Array<TrackPoint>, _fileName: string): string {
   const trkpts = points
     .map(
       (p) =>
@@ -367,7 +384,7 @@ ${trkpts}
 </gpx>`
 }
 
-interface StatProps {
+type StatProps = {
   label: string
   value: string
 }

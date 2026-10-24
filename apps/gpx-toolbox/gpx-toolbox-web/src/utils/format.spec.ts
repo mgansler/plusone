@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+
 import { formatDistance, formatDuration } from './format'
 
 describe('formatDistance', () => {

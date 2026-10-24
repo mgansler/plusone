@@ -1,17 +1,19 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
-import { PrismaService, Prisma } from '@plusone/gpx-toolbox-persistence'
 import { firstValueFrom } from 'rxjs'
+
+import { PrismaService, Prisma } from '@plusone/gpx-toolbox-persistence'
+
 import { CreateFahrtDto, UpdateFahrtDto, QueryFahrtDto } from './dto/ride.dto'
 
 /**
  * Weather forecast response for a route.
  */
-type WeatherForecast = {
-  time: Date[]
-  temperature2m: number[]
-  rain: number[]
-  windGusts10m: number[]
+type _WeatherForecast = {
+  time: Array<Date>
+  temperature2m: Array<number>
+  rain: Array<number>
+  windGusts10m: Array<number>
 }
 
 @Injectable()
@@ -31,7 +33,7 @@ export class RidesService {
     query: QueryFahrtDto,
     userId: string,
   ): Promise<{
-    items: any[]
+    items: Array<any>
     total: number
     page: number
     limit: number

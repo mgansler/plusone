@@ -7,12 +7,10 @@ import {
   IsOptional,
   IsPositive,
   IsString,
-  IsUrl,
   Max,
   Min,
   MinLength,
 } from 'class-validator'
-
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class CreateRouteDto {
@@ -55,7 +53,7 @@ export class UpdateRouteDto {
   @IsArray()
   @IsString({ each: true })
   @ArrayMaxSize(10)
-  ratingTags?: string[]
+  ratingTags?: Array<string>
 
   @ApiPropertyOptional({ description: 'Notes' })
   @IsOptional()

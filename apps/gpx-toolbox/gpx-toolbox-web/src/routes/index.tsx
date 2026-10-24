@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+
 import { GPXViewer } from '../components/GPXViewer'
 
 export const Route = createFileRoute('/')({

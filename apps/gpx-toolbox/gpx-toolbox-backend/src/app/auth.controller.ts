@@ -1,11 +1,12 @@
-import { Controller, Get, Post, Query, Req, Res } from '@nestjs/common'
+import { Controller, Get, Post, Req, Res, UnauthorizedException } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { JwtService } from '@nestjs/jwt'
-import type { Request, Response } from 'express'
+import { Request, Response } from 'express'
+
+import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { AuthService } from './auth.service'
 import { StravaService } from './strava.service'
-import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -18,10 +19,11 @@ export class AuthController {
   ) {}
 
   @Get('strava')
-  @ApiOperation({ operationId: 'stravaAuthUrl' })
-  @ApiOkResponse({ description: 'Strava authorization URL' })
-  stravaAuth() {
-    return this.authService.getAuthorizationUrl()
+  @ApiOperation({ operationId: 'stravaAuthRedirect' })
+  @ApiOkResponse({ description: 'Redirects to Strava authorization page' })
+  stravaAuth(@Res({ passthrough: true }) res: Response) {
+    const { authorizationUrl } = this.authService.getAuthorizationUrl()
+    res.redirect(authorizationUrl)
   }
 
   @Get('strava/callback')
@@ -82,8 +84,86 @@ export class AuthController {
       // Redirect frontend with JWT in URL fragment (SPA-friendly)
       const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173'
       res.redirect(`${frontendUrl}#token=${jwtToken}`)
-    } catch (error) {
+    } catch {
       res.status(500).json({ error: 'Authentication failed' })
+    }
+  }
+
+  @Get('athlete')
+  @ApiOperation({ operationId: 'stravaAthlete' })
+  @ApiOkResponse({ description: 'Strava athlete profile with local stats' })
+  async getStravaAthlete(@Req() req: Request) {
+    const auth = req.headers['authorization']?.replace('Bearer ', '')
+    if (!auth) throw new UnauthorizedException()
+
+    const payload = this.jwtService.verify(auth)
+    const user = await this.prisma.user.findUnique({
+      where: { id: payload.sub },
+      select: { accessToken: true },
+    })
+    if (!user?.accessToken) throw new UnauthorizedException('No Strava token')
+
+    const athlete = await this.stravaService.getAthlete(user.accessToken)
+
+    // Aggregate local stats from database
+    const [routeCount, rideCount, routesWithPolyline] = await Promise.all([
+      this.prisma.route.count({ where: { userId: payload.sub } }),
+      this.prisma.fahrt.count({ where: { userId: payload.sub } }),
+      this.prisma.route.findMany({
+        where: { userId: payload.sub },
+        select: { stats: true },
+      }),
+    ])
+
+    const totalDistance = routesWithPolyline.reduce((sum, r) => {
+      const stats = r.stats as { distance?: number } | null
+      return sum + (stats?.distance ?? 0)
+    }, 0)
+
+    const totalElevation = routesWithPolyline.reduce((sum, r) => {
+      const stats = r.stats as { elevationGain?: number } | null
+      return sum + (stats?.elevationGain ?? 0)
+    }, 0)
+
+    return {
+      id: athlete.id,
+      firstname: athlete.firstname,
+      lastname: athlete.lastname,
+      username: athlete.username,
+      profile: athlete.profile,
+      profile_medium: athlete.profile_medium,
+      city: athlete.city,
+      state: athlete.state,
+      country: athlete.country,
+      gender: athlete.gender,
+      weight: athlete.weight,
+      premium: athlete.premium,
+      membership: athlete.membership,
+      created_at: athlete.created_at,
+      updated_at: athlete.updated_at,
+      follower_count: athlete.follower_count,
+      friend_count: athlete.friend_count,
+      rides_count: athlete.rides_count,
+      routes_count: athlete.routes_count,
+      runs_count: athlete.runs_count,
+      swims_count: athlete.swims_count,
+      recent_rides_count: athlete.recent_rides_count,
+      all_rides_count: athlete.all_rides_count,
+      all_ride_counts: athlete.all_ride_counts,
+      all_ride_distances: athlete.all_ride_distances,
+      all_ride_elevations: athlete.all_ride_elevations,
+      weight_unit: athlete.weight_unit,
+      measurement_preference: athlete.measurement_preference,
+      ftp: athlete.ftp,
+      clubs: athlete.clubs,
+      badges: athlete.badges,
+      // Local database stats (fallback when Strava Premium stats are unavailable)
+      localStats: {
+        routeCount,
+        rideCount,
+        totalDistanceM: totalDistance,
+        totalElevationM: totalElevation,
+      },
     }
   }
 

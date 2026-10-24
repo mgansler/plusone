@@ -1,8 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
+
 import { Prisma } from '@plusone/gpx-toolbox-persistence'
-
-import { analyzeGpx, parseGpx, type TrackPoint } from '@plusone/gpx'
-
+import { analyzeGpx, parseGpx, TrackPoint } from '@plusone/gpx'
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
@@ -139,7 +138,7 @@ export class RoutesService {
     query: QueryRouteDto,
     userId: string,
   ): Promise<{
-    items: FormattedRoute[]
+    items: Array<FormattedRoute>
     total: number
     page: number
     limit: number
@@ -201,7 +200,7 @@ export class RoutesService {
     const paginated = filtered.slice((page - 1) * limit, page * limit)
 
     return {
-      items: paginated.map((r) => this.formatRouteBase(r)) as FormattedRoute[],
+      items: paginated.map((r) => this.formatRouteBase(r)) as Array<FormattedRoute>,
       total,
       page,
       limit,
@@ -290,7 +289,13 @@ export class RoutesService {
   /**
    * Create a route from Strava data (called by Strava import service).
    */
-  async createFromStrava(stravaId: string, name: string, gpxContent: string, points: TrackPoint[], userId?: string) {
+  async createFromStrava(
+    stravaId: string,
+    name: string,
+    gpxContent: string,
+    points: Array<TrackPoint>,
+    userId?: string,
+  ) {
     const overview = analyzeGpx(gpxContent)
     const polyline: Array<{ lat: number; lng: number }> = points.map((p) => ({
       lat: p.latitude,
@@ -400,7 +405,7 @@ export class RoutesService {
     return typeof field === 'string' ? JSON.parse(field) : field
   }
 
-  private calculateElevationLoss(points: TrackPoint[]): number {
+  private calculateElevationLoss(points: Array<TrackPoint>): number {
     let loss = 0
     for (let i = 1; i < points.length; i++) {
       const diff = points[i - 1].elevation - points[i].elevation

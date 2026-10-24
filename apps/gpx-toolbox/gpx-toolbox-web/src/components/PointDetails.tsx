@@ -1,6 +1,6 @@
 import type { TrackPoint } from '@plusone/gpx'
 
-interface PointDetailsProps {
+type PointDetailsProps = {
   point: TrackPoint
 }
 
@@ -27,7 +27,7 @@ export function PointDetails({ point }: PointDetailsProps) {
   )
 }
 
-interface StatProps {
+type StatProps = {
   label: string
   value: string
 }

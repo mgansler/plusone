@@ -1,20 +1,22 @@
 import { useRef, useState, useEffect } from 'react'
-import type { TrackPoint } from '@plusone/gpx'
-import { calculateHaversineDistance } from '@plusone/gpx'
 import L from 'leaflet'
+
+import type { TrackPoint } from '@plusone/gpx'
+import { calculateHaversineDistance, renderSvg } from '@plusone/gpx'
+
 import { Map } from './Map'
 import { SegmentOverlay } from './SegmentOverlay'
 import { Sidebar } from './Sidebar'
 import { PointDetails } from './PointDetails'
 
 export function GPXViewer() {
-  const [points, setPoints] = useState<TrackPoint[]>([])
+  const [points, setPoints] = useState<Array<TrackPoint>>([])
   const [fileName, setFileName] = useState<string>()
   const mapRef = useRef<L.Map | null>(null)
   const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
   const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 100])
 
-  function handleLoad(trackPoints: TrackPoint[], name: string) {
+  function handleLoad(trackPoints: Array<TrackPoint>, name: string) {
     setPoints(trackPoints)
     setFileName(name)
     setSelectedPoint(null)
@@ -28,7 +30,7 @@ export function GPXViewer() {
     })
   }
 
-  function handleExportGpx(trackPoints: TrackPoint[]) {
+  function handleExportGpx(trackPoints: Array<TrackPoint>) {
     const trkpts = trackPoints
       .map(
         (p) =>
@@ -59,20 +61,17 @@ ${trkpts}
     URL.revokeObjectURL(url)
   }
 
-  function handleExportSvg(trackPoints: TrackPoint[]) {
-    // Dynamically import renderSvg to avoid SSR issues
-    import('@plusone/gpx').then(({ renderSvg }) => {
-      const { svg } = renderSvg({ points: trackPoints, rotate: true })
-      const blob = new Blob([svg], { type: 'image/svg+xml' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'segment.svg'
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
-    })
+  function handleExportSvg(trackPoints: Array<TrackPoint>) {
+    const { svg } = renderSvg({ points: trackPoints, rotate: true })
+    const blob = new Blob([svg], { type: 'image/svg+xml' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'segment.svg'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
   }
 
   return (
@@ -118,7 +117,7 @@ function TrackClickHandler({
   mapInstance,
   onPointClick,
 }: {
-  points: TrackPoint[]
+  points: Array<TrackPoint>
   range: [number, number]
   mapInstance: L.Map
   onPointClick: (point: TrackPoint, event: L.LeafletMouseEvent) => void
@@ -134,7 +133,7 @@ function TrackClickHandler({
 
     const layer = L.layerGroup()
 
-    const coords: [number, number][] = visiblePoints.map((p) => [p.latitude, p.longitude] as [number, number])
+    const coords: Array<[number, number]> = visiblePoints.map((p) => [p.latitude, p.longitude] as [number, number])
 
     const clickable = L.polyline(coords, {
       color: '#fff',

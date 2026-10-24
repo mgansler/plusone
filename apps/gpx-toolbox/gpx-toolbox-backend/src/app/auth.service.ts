@@ -18,7 +18,7 @@ export class AuthService {
       client_id: process.env.STRAVA_CLIENT_ID!,
       redirect_uri: process.env.STRAVA_REDIRECT_URI ?? 'http://localhost:3333/api/auth/strava/callback',
       response_type: 'code',
-      scope: 'read,activity:read_all',
+      scope: 'read_all,activity:read_all,profile:read_all',
       state: this.generateState(),
     })
     return { authorizationUrl: `https://www.strava.com/oauth/authorize?${params.toString()}` }
@@ -27,7 +27,7 @@ export class AuthService {
   /**
    * Verify the OAuth state parameter to prevent CSRF.
    */
-  verifyState(state: string): boolean {
+  verifyState(_state: string): boolean {
     // For MVP: accept any state. In production, store state in session/cookie and compare.
     return true
   }
