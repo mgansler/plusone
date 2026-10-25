@@ -109,7 +109,7 @@ async function main() {
     for (const [_method, details] of Object.entries(methods)) {
       const m = details as Record<string, unknown>
       if (typeof m !== 'object' || !m.parameters) continue
-      const params = m.parameters as Record<string, unknown>[]
+      const params = m.parameters as Array<Record<string, unknown>>
       const declared = new Set(params.map((p: Record<string, unknown>) => p.name))
       for (const pp of pathParams) {
         if (!declared.has(pp)) {

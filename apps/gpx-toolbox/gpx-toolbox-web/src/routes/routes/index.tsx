@@ -1,9 +1,13 @@
-import { useState, useEffect, useRef, type RefObject } from 'react'
+import { type RefObject, useEffect, useRef, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import type L from 'leaflet'
+import L from 'leaflet'
 
+import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx'
 import { useListRoutes } from '@plusone/gpx-toolbox-api-client'
+
 import { Map } from '../../components/Map'
+import { SegmentOverlay } from '../../components/SegmentOverlay'
+import { PointDetails } from '../../components/PointDetails'
 
 const sourceLabels: Record<string, string> = {
   stravaRoute: 'Strava Route',
@@ -27,7 +31,9 @@ function RoutesPage() {
   const [statusFilter, setStatusFilter] = useState<string>('')
   const [sourceFilter, setSourceFilter] = useState<string>('')
   const [sortBy, setSortBy] = useState('createdAt')
-  const [selectedRoute, setSelectedRoute] = useState<string | null>(null)
+  const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null)
+  const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
+  const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 100])
 
   const { data, isLoading, error, isError } = useListRoutes({
     page,
@@ -37,12 +43,83 @@ function RoutesPage() {
     ...(sourceFilter && { source: sourceFilter }),
   })
 
-  const routes = data?.items ?? []
-  const totalPages = data?.totalPages ?? 1
-  const total = data?.total ?? 0
+  type RouteListResponse = {
+    items: Array<{
+      id: string
+      name: string
+      description?: string | null
+      source: string
+      status: string
+      stats?: Record<string, unknown>
+      ratingTags?: Array<unknown>
+      notes?: string | null
+      fahrten?: Array<{ id: string }>
+      createdAt: string
+      updatedAt: string
+    }>
+    total: number
+    page: number
+    limit: number
+    totalPages: number
+  }
+
+  const routes = ((data as unknown as RouteListResponse | undefined)?.items ?? []) as Array<{
+    id: string
+    name: string
+    source: string
+    status: string
+    stats?: Record<string, unknown>
+  }>
+  const totalPages = (data as unknown as RouteListResponse | undefined)?.totalPages ?? 1
+  const total = (data as unknown as RouteListResponse | undefined)?.total ?? 0
+
+  // Fetch GPX content for selected route using direct fetch
+  const [gpxText, setGpxText] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!selectedRouteId) return
+    setGpxText(null)
+
+    // Get auth token (same key as auth-context.tsx)
+    const token = localStorage.getItem('gpx-toolbox-jwt')
+    if (!token) {
+      console.error('[RoutesPage] No auth token found (key: gpx-toolbox-jwt)')
+      return
+    }
+
+    fetch(`/api/routes/${selectedRouteId}/export`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorText = await response.text()
+          console.error('[RoutesPage] HTTP error:', response.status, errorText)
+          return
+        }
+        const text = await response.text()
+        setGpxText(text)
+      })
+      .catch((err) => {
+        console.error('[RoutesPage] Fetch error:', err)
+      })
+    return () => {
+      // No cleanup needed for fetch
+    }
+  }, [selectedRouteId])
+
+  const points = gpxText ? parseGpx(gpxText) : []
 
   function handleRouteClick(route: (typeof routes)[number]) {
-    setSelectedRoute(selectedRoute === route.id ? null : route.id)
+    setSelectedRouteId(route.id)
+    setSelectedPoint(null)
+    setSegmentRange([0, 100])
+  }
+
+  function handlePointClick(point: TrackPoint, event: L.LeafletMouseEvent) {
+    setSelectedPoint((prev) => {
+      if (prev?.point === point) return null
+      return { point, event }
+    })
   }
 
   const stats = routes.map((r) => (r.stats as { distance?: number } | null)?.distance ?? 0)
@@ -125,7 +202,7 @@ function RoutesPage() {
                 onClick={() => handleRouteClick(r)}
                 style={{
                   ...styles.routeCard,
-                  backgroundColor: selectedRoute === r.id ? '#e3f2fd' : '#fff',
+                  backgroundColor: selectedRouteId === r.id ? '#e3f2fd' : '#fff',
                 }}
               >
                 <div style={styles.routeName}>{r.name}</div>
@@ -169,12 +246,95 @@ function RoutesPage() {
         )}
       </div>
 
-      {/* Map */}
+      {/* Map — same mechanism as home page */}
       <div style={styles.mapArea}>
-        <Map mapRef={mapRef} />
+        <Map mapRef={mapRef}>
+          {points.length > 1 && segmentRange[1] - segmentRange[0] >= 1 && mapRef.current && (
+            <>
+              <SegmentOverlay
+                points={points}
+                mapInstance={mapRef.current}
+                range={segmentRange}
+                fitBounds={segmentRange[0] === 0 && segmentRange[1] === 100}
+              >
+                <TrackClickHandler
+                  points={points}
+                  range={segmentRange}
+                  mapInstance={mapRef.current}
+                  onPointClick={handlePointClick}
+                />
+              </SegmentOverlay>
+            </>
+          )}
+        </Map>
       </div>
+      {selectedPoint && <PointDetails point={selectedPoint.point} />}
     </div>
   )
+}
+
+/** Invisible click handler that maps clicks to the nearest track point in the selected range */
+function TrackClickHandler({
+  points,
+  range,
+  mapInstance,
+  onPointClick,
+}: {
+  points: Array<TrackPoint>
+  range: [number, number]
+  mapInstance: L.Map
+  onPointClick: (point: TrackPoint, event: L.LeafletMouseEvent) => void
+}) {
+  const layerRef = useRef<L.LayerGroup | null>(null)
+
+  const startIdx = Math.round((range[0] / 100) * (points.length - 1))
+  const endIdx = Math.round((range[1] / 100) * (points.length - 1))
+  const visiblePoints = points.slice(startIdx, endIdx + 1)
+
+  useEffect(() => {
+    if (visiblePoints.length < 2) return
+
+    const layer = L.layerGroup()
+
+    const coords: Array<[number, number]> = visiblePoints.map((p) => [p.latitude, p.longitude] as [number, number])
+
+    const clickable = L.polyline(coords, {
+      color: '#fff',
+      weight: 20,
+      interactive: true,
+      opacity: 0,
+    })
+
+    clickable.on('click', (e: L.LeafletMouseEvent) => {
+      const clickLatLng = e.latlng
+      let minDist = Infinity
+      let nearestPoint: TrackPoint | null = null
+      for (const pt of visiblePoints) {
+        const dist = calculateHaversineDistance(
+          { latitude: clickLatLng.lat, longitude: clickLatLng.lng },
+          { latitude: pt.latitude, longitude: pt.longitude },
+        )
+        if (dist < minDist) {
+          minDist = dist
+          nearestPoint = pt
+        }
+      }
+
+      if (nearestPoint) {
+        onPointClick(nearestPoint, e)
+      }
+    })
+
+    clickable.addTo(layer)
+    layerRef.current = layer
+
+    return () => {
+      layer.remove()
+      layerRef.current = null
+    }
+  }, [visiblePoints, mapInstance, onPointClick])
+
+  return null
 }
 
 const sourceColors: Record<string, string> = {

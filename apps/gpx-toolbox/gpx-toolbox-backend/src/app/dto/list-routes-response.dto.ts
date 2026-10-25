@@ -14,7 +14,7 @@ export class ListRoutesResponseDto {
   totalPages: number
 
   @ApiProperty({ description: 'List of routes', type: 'array' })
-  items: RouteResponseDto[]
+  items: Array<RouteResponseDto>
 }
 
 export class RouteResponseDto {
@@ -34,7 +34,7 @@ export class RouteResponseDto {
   status: string
 
   @ApiProperty({ description: 'Rating tags', type: 'array', required: false })
-  ratingTags?: unknown[]
+  ratingTags?: Array<unknown>
 
   @ApiProperty({ description: 'Route notes', required: false })
   notes?: string | null
@@ -58,4 +58,7 @@ export class RouteResponseDto {
 
   @ApiProperty({ description: 'Last update timestamp' })
   updatedAt: string
+
+  @ApiProperty({ description: 'Route polyline coordinates', required: false })
+  polyline?: Array<{ lat: number; lng: number }>
 }

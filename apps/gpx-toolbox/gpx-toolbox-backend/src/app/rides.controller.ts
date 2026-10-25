@@ -1,21 +1,21 @@
 import {
+  Body,
   Controller,
+  Delete,
   Get,
+  Logger,
+  Param,
+  ParseUUIDPipe,
   Post,
   Put,
-  Delete,
-  Param,
   Query,
-  Body,
   Req,
   UseGuards,
-  Logger,
-  ParseUUIDPipe,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { RidesService } from './rides.service'
-import { CreateFahrtDto, UpdateFahrtDto, QueryFahrtDto, FahrtResponseDto } from './dto/ride.dto'
+import { CreateFahrtDto, FahrtResponseDto, QueryFahrtDto, UpdateFahrtDto } from './dto/ride.dto'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { JwtPayload } from './jwt.strategy'
 
@@ -30,7 +30,6 @@ export class RidesController {
 
   @Get()
   @ApiOperation({ operationId: 'listFahrten' })
-  @ApiQuery({ type: QueryFahrtDto, required: false })
   @ApiOkResponse({ description: 'List of fahrten', type: [FahrtResponseDto] })
   async findAll(
     @Req() req: Request & { user: JwtPayload },

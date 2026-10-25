@@ -134,7 +134,7 @@ export const getUpdateActivityByIdUrl = (id: number) => {
 export const getLoggedInAthleteActivities = (
   params?: GetLoggedInAthleteActivitiesParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<GetLoggedInAthleteActivities200Item[]>> => {
+): Promise<AxiosResponse<Array<GetLoggedInAthleteActivities200Item>>> => {
   return axios.default.get(`/athlete/activities`, {
     ...options,
     params: { ...params, ...options?.params },
@@ -159,7 +159,7 @@ export const getGetLoggedInAthleteActivitiesUrl = (params?: GetLoggedInAthleteAc
 export const getLapsByActivityId = (
   id: number,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<GetLapsByActivityId200Item[]>> => {
+): Promise<AxiosResponse<Array<GetLapsByActivityId200Item>>> => {
   return axios.default.get(`/activities/${id}/laps`, options)
 }
 export const getGetLapsByActivityIdUrl = (id: number) => {
@@ -180,7 +180,7 @@ export const getGetLapsByActivityIdUrl = (id: number) => {
 export const getZonesByActivityId = (
   id: number,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<GetZonesByActivityId200Item[]>> => {
+): Promise<AxiosResponse<Array<GetZonesByActivityId200Item>>> => {
   return axios.default.get(`/activities/${id}/zones`, options)
 }
 export const getGetZonesByActivityIdUrl = (id: number) => {
@@ -202,7 +202,7 @@ export const getCommentsByActivityId = (
   id: number,
   params?: GetCommentsByActivityIdParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<GetCommentsByActivityId200Item[]>> => {
+): Promise<AxiosResponse<Array<GetCommentsByActivityId200Item>>> => {
   return axios.default.get(`/activities/${id}/comments`, {
     ...options,
     params: { ...params, ...options?.params },
@@ -228,7 +228,7 @@ export const getKudoersByActivityId = (
   id: number,
   params?: GetKudoersByActivityIdParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<GetKudoersByActivityId200Item[]>> => {
+): Promise<AxiosResponse<Array<GetKudoersByActivityId200Item>>> => {
   return axios.default.get(`/activities/${id}/kudos`, {
     ...options,
     params: { ...params, ...options?.params },
@@ -249,8 +249,8 @@ export const getGetKudoersByActivityIdUrl = (id: number, params?: GetKudoersByAc
 export type CreateActivityResult = AxiosResponse<void>
 export type GetActivityByIdResult = AxiosResponse<void>
 export type UpdateActivityByIdResult = AxiosResponse<void>
-export type GetLoggedInAthleteActivitiesResult = AxiosResponse<GetLoggedInAthleteActivities200Item[]>
-export type GetLapsByActivityIdResult = AxiosResponse<GetLapsByActivityId200Item[]>
-export type GetZonesByActivityIdResult = AxiosResponse<GetZonesByActivityId200Item[]>
-export type GetCommentsByActivityIdResult = AxiosResponse<GetCommentsByActivityId200Item[]>
-export type GetKudoersByActivityIdResult = AxiosResponse<GetKudoersByActivityId200Item[]>
+export type GetLoggedInAthleteActivitiesResult = AxiosResponse<Array<GetLoggedInAthleteActivities200Item>>
+export type GetLapsByActivityIdResult = AxiosResponse<Array<GetLapsByActivityId200Item>>
+export type GetZonesByActivityIdResult = AxiosResponse<Array<GetZonesByActivityId200Item>>
+export type GetCommentsByActivityIdResult = AxiosResponse<Array<GetCommentsByActivityId200Item>>
+export type GetKudoersByActivityIdResult = AxiosResponse<Array<GetKudoersByActivityId200Item>>

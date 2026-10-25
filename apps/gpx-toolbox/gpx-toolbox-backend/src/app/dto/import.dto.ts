@@ -1,5 +1,5 @@
-import { IsOptional, IsString, IsBoolean } from 'class-validator'
-import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger'
+import { IsBoolean, IsOptional, IsString } from 'class-validator'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class StravaRouteSummaryDto {
   @ApiProperty({ description: 'Strava route ID' })

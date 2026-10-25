@@ -23,8 +23,6 @@ import {
   GetLoggedInAthleteStarredSegments200Item,
   getLoggedInAthleteZones,
   getRouteAsGPX,
-  getRouteAsTCX,
-  getRouteById,
   getRoutesByAthleteId,
   GetRoutesByAthleteId200Item,
   getSegmentById,
@@ -120,7 +118,6 @@ export class StravaService {
     params?: Parameters<typeof getRoutesByAthleteId>[1],
   ): Promise<Array<GetRoutesByAthleteId200Item>> {
     const { data } = await getRoutesByAthleteId(athleteId, params, stravaConfig(this.authHeaders(accessToken)))
-    console.log()
     return data
   }
 
@@ -131,21 +128,20 @@ export class StravaService {
     return response.json()
   }
 
-  async downloadRouteGPX(accessToken: string, routeId: string | number): Promise<Blob> {
+  async downloadRouteGPX(accessToken: string, routeId: string | number): Promise<string> {
     // Always use string ID to avoid JS number precision loss with large IDs
     const id = String(routeId)
     const response = await this.fetchStrava(`/routes/${id}/export_gpx`, accessToken)
     if (!response.ok) throw new Error(`GPX download failed: ${response.status}`)
-    // fetchStrava uses axios — for non-JSON (GPX XML) it returns the raw data
-    return response.json() as unknown as Blob
+    return response.json() as unknown as string
   }
 
-  async downloadRouteTCX(accessToken: string, routeId: string | number): Promise<Blob> {
+  async downloadRouteTCX(accessToken: string, routeId: string | number): Promise<string> {
     // Always use string ID to avoid JS number precision loss with large IDs
     const id = String(routeId)
     const response = await this.fetchStrava(`/routes/${id}/export_tcx`, accessToken)
     if (!response.ok) throw new Error(`TCX download failed: ${response.status}`)
-    return response.json() as unknown as Blob
+    return response.json() as unknown as string
   }
 
   // ── Segments ─────────────────────────────────────────────────────────

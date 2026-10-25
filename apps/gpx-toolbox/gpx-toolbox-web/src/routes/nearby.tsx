@@ -1,10 +1,12 @@
-import { useState, useEffect, useRef, type RefObject } from 'react'
+import { type RefObject, useEffect, useRef, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import type L from 'leaflet'
 
 import { useFindNearbyRoutes } from '@plusone/gpx-toolbox-api-client'
+
 import { Map } from '../components/Map'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type NearbyRoute = {
   id: string
   name: string

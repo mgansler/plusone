@@ -1,18 +1,18 @@
 // This file is auto-generated from strava.json — do not edit manually.
 // Run: npx tsx scripts/generate-strava-endpoints.ts
 
-export interface StravaEndpoint {
+export type StravaEndpoint = {
   path: string
   summary: string
-  pathParams: string[]
+  pathParams: Array<string>
 }
 
-export interface StravaEndpointGroup {
+export type StravaEndpointGroup = {
   name: string
-  endpoints: StravaEndpoint[]
+  endpoints: Array<StravaEndpoint>
 }
 
-export const stravaEndpointGroups: StravaEndpointGroup[] = [
+export const stravaEndpointGroups: Array<StravaEndpointGroup> = [
   {
     name: 'Athlete',
     endpoints: [

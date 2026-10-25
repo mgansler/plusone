@@ -35,7 +35,7 @@ export const getGetClubByIdUrl = (id: number) => {
 export const getLoggedInAthleteClubs = (
   params?: GetLoggedInAthleteClubsParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<GetLoggedInAthleteClubs200Item[]>> => {
+): Promise<AxiosResponse<Array<GetLoggedInAthleteClubs200Item>>> => {
   return axios.default.get(`/athlete/clubs`, {
     ...options,
     params: { ...params, ...options?.params },
@@ -54,4 +54,4 @@ export const getGetLoggedInAthleteClubsUrl = (params?: GetLoggedInAthleteClubsPa
     })
 }
 export type GetClubByIdResult = AxiosResponse<void>
-export type GetLoggedInAthleteClubsResult = AxiosResponse<GetLoggedInAthleteClubs200Item[]>
+export type GetLoggedInAthleteClubsResult = AxiosResponse<Array<GetLoggedInAthleteClubs200Item>>

@@ -1,10 +1,8 @@
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 
-import { useAuth } from '../lib/auth-context'
 import { useStravaAthlete } from '@plusone/gpx-toolbox-api-client'
 
 export function StravaProfile() {
-  const { logout } = useAuth()
   const { data: profile, isLoading: loading, error, isError, refetch } = useStravaAthlete()
 
   const fetchProfile = useCallback(async () => {

@@ -317,100 +317,6 @@
               "default": 50,
               "type": "number"
             }
-          },
-          {
-            "description": "Filter by status",
-            "required": false,
-            "name": "status",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Filter by source",
-            "required": false,
-            "name": "source",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Sort field",
-            "required": false,
-            "name": "sortBy",
-            "in": "query",
-            "schema": {
-              "default": "createdAt",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Sort order",
-            "required": false,
-            "name": "order",
-            "in": "query",
-            "schema": {
-              "default": "DESC",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Minimum distance in meters",
-            "required": false,
-            "name": "minDistance",
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "description": "Maximum distance in meters",
-            "required": false,
-            "name": "maxDistance",
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "description": "Minimum elevation gain in meters",
-            "required": false,
-            "name": "minElevation",
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "description": "Maximum elevation gain in meters",
-            "required": false,
-            "name": "maxElevation",
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "description": "Page number",
-            "required": false,
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "default": 1,
-              "type": "number"
-            }
-          },
-          {
-            "description": "Page size",
-            "required": false,
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "default": 50,
-              "type": "number"
-            }
           }
         ],
         "responses": {
@@ -419,13 +325,37 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ListRoutesResponseDto"
-                  }
+                  "$ref": "#/components/schemas/ListRoutesResponseDto"
                 }
               }
             }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["routes"]
+      }
+    },
+    "/api/routes/{id}/export": {
+      "get": {
+        "operationId": "exportRoute",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "GPX file content"
           }
         },
         "security": [
@@ -520,33 +450,6 @@
         "responses": {
           "200": {
             "description": "Route deleted successfully"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": ["routes"]
-      }
-    },
-    "/api/routes/{id}/export": {
-      "get": {
-        "operationId": "exportRoute",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "GPX file content"
           }
         },
         "security": [
@@ -939,64 +842,6 @@
               "default": 50,
               "type": "number"
             }
-          },
-          {
-            "description": "Filter by date range start",
-            "required": false,
-            "name": "dateFrom",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Filter by date range end",
-            "required": false,
-            "name": "dateTo",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Sort field",
-            "required": false,
-            "name": "sortBy",
-            "in": "query",
-            "schema": {
-              "default": "riddenAt",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Sort order",
-            "required": false,
-            "name": "order",
-            "in": "query",
-            "schema": {
-              "default": "DESC",
-              "type": "string"
-            }
-          },
-          {
-            "description": "Page number",
-            "required": false,
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "default": 1,
-              "type": "number"
-            }
-          },
-          {
-            "description": "Page size",
-            "required": false,
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "default": 50,
-              "type": "number"
-            }
           }
         ],
         "responses": {
@@ -1355,6 +1200,13 @@
           "updatedAt": {
             "type": "string",
             "description": "Last update timestamp"
+          },
+          "polyline": {
+            "description": "Route polyline coordinates",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "required": ["id", "name", "source", "status", "createdAt", "updatedAt"]

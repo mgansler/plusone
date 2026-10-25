@@ -1,11 +1,11 @@
 import type { TrackPoint } from '@plusone/gpx'
 import {
-  calculateTotalDistance,
+  calculateAvgSpeed,
+  calculateDuration,
   calculateElevationGain,
   calculateElevationLoss,
-  calculateDuration,
-  calculateAvgSpeed,
   calculateMaxSpeed,
+  calculateTotalDistance,
   getTimeRange,
 } from '@plusone/gpx'
 

@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 
 import type { TrackPoint } from '@plusone/gpx'

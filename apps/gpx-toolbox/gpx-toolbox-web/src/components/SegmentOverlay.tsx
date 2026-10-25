@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { type ReactNode, useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 
 import { type TrackPoint } from '@plusone/gpx'
@@ -27,7 +27,20 @@ export function SegmentOverlay({ points, mapInstance, range, fitBounds = false, 
     const endIdx = Math.round((range[1] / 100) * (points.length - 1))
 
     const selected = points.slice(startIdx, endIdx + 1)
-    if (selected.length < 2) return
+    if (selected.length < 2) {
+      return
+    }
+
+    // Guard: map may have been destroyed (e.g. parent unmount) before this effect runs
+    if ((mapInstance as any).__gpxMapDestroyed) {
+      console.warn('[SegmentOverlay] map destroyed, skipping layer add')
+      return
+    }
+    const container = mapInstance._container
+    if (!container || !document.contains(container) || !container._leaflet_id) {
+      console.warn('[SegmentOverlay] map container not valid, skipping layer add')
+      return
+    }
 
     const layer = L.layerGroup()
 
@@ -66,8 +79,15 @@ export function SegmentOverlay({ points, mapInstance, range, fitBounds = false, 
 
     // ── Fit bounds to full track only on initial load ────────────────────
     if (fitBounds && range[0] === 0 && range[1] === 100) {
-      const bounds = L.latLngBounds(fullCoords)
-      mapInstance.fitBounds(bounds, { padding: [50, 50] })
+      // Delay fitBounds to avoid race condition with map initialization
+      requestAnimationFrame(() => {
+        // Guard: map may have been destroyed (e.g. parent unmount) before RAF fires
+        if ((mapInstance as any).__gpxMapDestroyed) return
+        const c = mapInstance._container
+        if (!c || !document.contains(c) || !c._leaflet_id) return
+        const bounds = L.latLngBounds(fullCoords)
+        mapInstance.fitBounds(bounds, { padding: [50, 50] })
+      })
     }
 
     layer.addTo(mapInstance)

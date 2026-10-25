@@ -1,10 +1,10 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { createRouter, RouterProvider } from '@tanstack/react-router'
 
 import { routeTree } from './routeTree.gen'
 import { handleOAuthCallback } from './lib/auth-context'
+
 import './styles.css'
 
 const queryClient = new QueryClient({
@@ -39,17 +39,14 @@ const router = createRouter({
   ),
 })
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- interface required to avoid duplicate identifier with TanStack Router
 declare module '@tanstack/react-router' {
-  interface Register {
+  type Register = {
     router: typeof router
   }
 }
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  </StrictMode>,
+createRoot(document.getElementById('root') as HTMLElement).render(
+  <QueryClientProvider client={queryClient}>
+    <RouterProvider router={router} />
+  </QueryClientProvider>,
 )

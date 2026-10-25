@@ -1,22 +1,22 @@
 import {
+  BadRequestException,
+  Body,
   Controller,
+  Delete,
   Get,
+  Logger,
+  Param,
+  ParseUUIDPipe,
   Post,
   Put,
-  Delete,
-  Param,
   Query,
-  Body,
   Req,
-  UseGuards,
-  Logger,
-  BadRequestException,
-  ParseUUIDPipe,
-  UploadedFile,
   Res,
+  UploadedFile,
+  UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
-import { Response, Request } from 'express'
+import { Request, Response } from 'express'
 
 import { RoutesService } from './routes.service'
 import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
@@ -62,10 +62,25 @@ export class RoutesController {
   @Get()
   @ApiOperation({ operationId: 'listRoutes' })
   @ApiBearerAuth()
-  @ApiQuery({ type: QueryRouteDto, required: false })
-  @ApiOkResponse({ type: [ListRoutesResponseDto], description: 'List of routes' })
+  @ApiOkResponse({ type: ListRoutesResponseDto, description: 'List of routes' })
   async findAll(@Req() req: Request & { user: JwtPayload }, @Query() query: QueryRouteDto) {
     return this.routesService.findAll(query, req.user.sub)
+  }
+
+  @Get(':id/export')
+  @ApiOperation({ operationId: 'exportRoute' })
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'GPX file content' })
+  async exportGpx(
+    @Req() req: Request & { user: JwtPayload },
+    @Param('id', ParseUUIDPipe) id: string,
+    @Res() response: Response,
+  ) {
+    const gpxContent = await this.routesService.exportGpx(id, req.user.sub)
+
+    response.setHeader('Content-Type', 'application/gpx+xml')
+    response.setHeader('Content-Disposition', 'attachment; filename="route.gpx"')
+    response.send(gpxContent)
   }
 
   @Get(':id')
@@ -95,22 +110,6 @@ export class RoutesController {
   async remove(@Req() req: Request & { user: JwtPayload }, @Param('id', ParseUUIDPipe) id: string) {
     await this.routesService.remove(id, req.user.sub)
     return { deleted: true, id }
-  }
-
-  @Get(':id/export')
-  @ApiOperation({ operationId: 'exportRoute' })
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'GPX file content' })
-  async exportGpx(
-    @Req() req: Request & { user: JwtPayload },
-    @Param('id', ParseUUIDPipe) id: string,
-    @Res() response: Response,
-  ) {
-    const gpxContent = await this.routesService.exportGpx(id, req.user.sub)
-
-    response.setHeader('Content-Type', 'application/gpx+xml')
-    response.setHeader('Content-Disposition', 'attachment; filename="route.gpx"')
-    response.send(gpxContent)
   }
 
   @Get('nearby')

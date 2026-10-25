@@ -2,9 +2,9 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
 import { firstValueFrom } from 'rxjs'
 
-import { PrismaService, Prisma } from '@plusone/gpx-toolbox-persistence'
+import { Prisma, PrismaService } from '@plusone/gpx-toolbox-persistence'
 
-import { CreateFahrtDto, UpdateFahrtDto, QueryFahrtDto } from './dto/ride.dto'
+import { CreateFahrtDto, QueryFahrtDto, UpdateFahrtDto } from './dto/ride.dto'
 
 /**
  * Weather forecast response for a route.
@@ -164,8 +164,6 @@ export class RidesService {
 
     return this.fetchWeatherAtCoordinates(midPoint.lat, midPoint.lng, date)
   }
-
-  // ── Private helpers ──────────────────────────────────────────────
 
   private formatFahrt(fahrt: any): any {
     return {

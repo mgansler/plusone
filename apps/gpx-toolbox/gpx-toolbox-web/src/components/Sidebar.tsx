@@ -1,16 +1,16 @@
-import { useState, type DragEvent, type ChangeEvent } from 'react'
+import { type ChangeEvent, type DragEvent, useState } from 'react'
 import { XMLParser } from 'fast-xml-parser'
 
 import type { TrackPoint } from '@plusone/gpx'
 import {
-  renderSvg,
-  calculateTotalDistance,
+  calculateAvgSpeed,
+  calculateDuration,
   calculateElevationGain,
   calculateElevationLoss,
-  calculateDuration,
-  calculateAvgSpeed,
   calculateMaxSpeed,
+  calculateTotalDistance,
   getTimeRange,
+  renderSvg,
 } from '@plusone/gpx'
 
 import { formatDistance, formatDuration } from '../utils/format'

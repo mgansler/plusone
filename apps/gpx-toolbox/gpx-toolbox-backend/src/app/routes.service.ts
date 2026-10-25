@@ -1,8 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 
-import { Prisma } from '@plusone/gpx-toolbox-persistence'
+import { Prisma, PrismaService } from '@plusone/gpx-toolbox-persistence'
 import { analyzeGpx, parseGpx, TrackPoint } from '@plusone/gpx'
-import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
 
@@ -23,6 +22,7 @@ type FormattedRouteBase = {
   ratingTags: unknown
   notes: string | null
   stats: unknown
+  polyline: unknown
   createdAt: Date
   updatedAt: Date
 }
@@ -369,8 +369,6 @@ export class RoutesService {
     })
   }
 
-  // ── Private helpers ──────────────────────────────────────────────
-
   private formatRouteBase(route: {
     id: string
     name: string
@@ -380,6 +378,7 @@ export class RoutesService {
     ratingTags: unknown
     notes: string | null
     stats: unknown
+    polyline: unknown
     createdAt: Date
     updatedAt: Date
   }): FormattedRouteBase {
@@ -392,6 +391,7 @@ export class RoutesService {
       ratingTags: typeof route.ratingTags === 'string' ? JSON.parse(route.ratingTags) : route.ratingTags,
       notes: route.notes,
       stats: typeof route.stats === 'string' ? JSON.parse(route.stats) : route.stats,
+      polyline: typeof route.polyline === 'string' ? JSON.parse(route.polyline) : route.polyline,
       createdAt: route.createdAt,
       updatedAt: route.updatedAt,
     }
@@ -407,6 +407,7 @@ export class RoutesService {
       ratingTags: typeof route.ratingTags === 'string' ? JSON.parse(route.ratingTags) : route.ratingTags,
       notes: route.notes,
       stats: typeof route.stats === 'string' ? JSON.parse(route.stats) : route.stats,
+      polyline: typeof route.polyline === 'string' ? JSON.parse(route.polyline) : route.polyline,
       createdAt: route.createdAt,
       updatedAt: route.updatedAt,
       fahrten: route.fahrten,

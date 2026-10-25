@@ -40,83 +40,42 @@ export const GetHealthStatusResponse = zod.strictObject({
 export const ImportGpxResponse = zod.void()
 
 export const ListRoutesResponse = zod.strictObject({
-  total: zod.int().describe('Total number of routes'),
-  page: zod.int().describe('Current page number'),
-  limit: zod.int().describe('Items per page'),
-  totalPages: zod.int().describe('Total number of pages'),
-  items: zod
-    .array(
-      zod.strictObject({
-        id: zod.uuid().describe('Route ID'),
-        name: zod.string().describe('Route name'),
-        description: zod.string().nullish().describe('Route description'),
-        source: zod.string().describe('Route source'),
-        status: zod.string().describe('Route status'),
-        ratingTags: zod.array(zod.unknown()).nullish().describe('Rating tags'),
-        notes: zod.string().nullish().describe('Route notes'),
-        stats: zod.record(zod.string(), zod.unknown()).nullish().describe('Route statistics'),
-        fahrten: zod
-          .array(
-            zod.strictObject({
-              id: zod.uuid(),
-              riddenAt: zod.iso.datetime({ offset: true }),
-              duration: zod.int().nullish(),
-              avgHr: zod.int().nullish(),
-              maxHr: zod.int().nullish(),
-              notes: zod.string().nullish(),
-              weather: zod.string().nullish(),
-            }),
-          )
-          .nullish()
-          .describe('List of rides'),
-        createdAt: zod.iso.datetime({ offset: true }),
-        updatedAt: zod.iso.datetime({ offset: true }),
-      }),
-    )
-    .describe('List of routes'),
+  total: zod.number().describe('Total number of routes'),
+  page: zod.number().describe('Current page number'),
+  limit: zod.number().describe('Items per page'),
+  totalPages: zod.number().describe('Total number of pages'),
+  items: zod.array().describe('List of routes'),
 })
 
 export const GetRouteResponse = zod.strictObject({
-  id: zod.uuid().describe('Route ID'),
+  id: zod.string().describe('Route ID'),
   name: zod.string().describe('Route name'),
-  description: zod.string().nullish().describe('Route description'),
+  description: zod.looseObject({}).optional().describe('Route description'),
   source: zod.string().describe('Route source'),
   status: zod.string().describe('Route status'),
-  ratingTags: zod.array(zod.unknown()).nullish().describe('Rating tags'),
-  notes: zod.string().nullish().describe('Route notes'),
-  stats: zod.record(zod.string(), zod.unknown()).nullish().describe('Route statistics'),
-  fahrten: zod
-    .array(
-      zod.strictObject({
-        id: zod.uuid(),
-        riddenAt: zod.iso.datetime({ offset: true }),
-        duration: zod.int().nullish(),
-        avgHr: zod.int().nullish(),
-        maxHr: zod.int().nullish(),
-        notes: zod.string().nullish(),
-        weather: zod.string().nullish(),
-      }),
-    )
-    .nullish()
-    .describe('List of rides'),
-  createdAt: zod.iso.datetime({ offset: true }),
-  updatedAt: zod.iso.datetime({ offset: true }),
+  ratingTags: zod.array().optional().describe('Rating tags'),
+  notes: zod.looseObject({}).optional().describe('Route notes'),
+  stats: zod.looseObject({}).optional().describe('Route statistics'),
+  fahrten: zod.array().optional().describe('List of rides'),
+  createdAt: zod.string().describe('Creation timestamp'),
+  updatedAt: zod.string().describe('Last update timestamp'),
+  polyline: zod.array(zod.string()).optional().describe('Route polyline coordinates'),
 })
 
 export const UpdateRouteResponse = zod.unknown()
 
 export const DeleteRouteResponse = zod.unknown()
 
-export const ExportRouteResponse = zod.unknown()
+export const ExportRouteResponse = zod.string()
 
 export const FindNearbyRoutesResponseItem = zod.strictObject({
-  id: zod.string(),
-  name: zod.string(),
-  distance: zod.number(),
-  distanceKm: zod.string(),
-  status: zod.string(),
-  source: zod.string(),
-  stats: zod.looseObject({}).optional(),
+  id: zod.string().describe('Route ID'),
+  name: zod.string().describe('Route name'),
+  distance: zod.number().describe('Distance in meters'),
+  distanceKm: zod.string().describe('Formatted distance'),
+  status: zod.string().describe('Route status'),
+  source: zod.string().describe('Route source'),
+  stats: zod.looseObject({}).optional().describe('Route statistics'),
 })
 export const FindNearbyRoutesResponse = zod.array(FindNearbyRoutesResponseItem)
 
@@ -150,7 +109,7 @@ export const StravaAthleteResponse = zod.strictObject({
   clubs: zod.looseObject({}).optional(),
   bikes: zod.looseObject({}).optional(),
   shoes: zod.looseObject({}).optional(),
-  localStats: zod.looseObject({}),
+  localStats: zod.looseObject({}).optional(),
 })
 
 export const AuthStatusResponse = zod.unknown()
@@ -163,6 +122,16 @@ export const ImportStravaRoutesResponse = zod.strictObject({
   newRoutes: zod.number().describe('Number of new routes created'),
 })
 
+export const ListStravaRoutesResponseItem = zod.strictObject({
+  stravaId: zod.number().describe('Strava route ID'),
+  name: zod.string().describe('Route name'),
+  description: zod.string().optional().describe('Route description'),
+  distance: zod.number().optional().describe('Distance in meters'),
+  elevationGain: zod.number().optional().describe('Elevation gain in meters'),
+  imported: zod.boolean().describe('Whether already imported'),
+})
+export const ListStravaRoutesResponse = zod.array(ListStravaRoutesResponseItem)
+
 export const ImportStravaActivityResponse = zod.strictObject({
   imported: zod.number().describe('Number of routes/activities imported'),
   matched: zod.number().describe('Number matched to existing routes'),
@@ -170,6 +139,12 @@ export const ImportStravaActivityResponse = zod.strictObject({
 })
 
 export const ImportAllStravaActivitiesResponse = zod.strictObject({
+  imported: zod.number().describe('Number of routes/activities imported'),
+  matched: zod.number().describe('Number matched to existing routes'),
+  newRoutes: zod.number().describe('Number of new routes created'),
+})
+
+export const ImportSingleStravaRouteResponse = zod.strictObject({
   imported: zod.number().describe('Number of routes/activities imported'),
   matched: zod.number().describe('Number matched to existing routes'),
   newRoutes: zod.number().describe('Number of new routes created'),
@@ -232,4 +207,4 @@ export const DeleteFahrtResponse = zod.unknown()
 
 export const GetFahrtWeatherResponse = zod.unknown()
 
-export const DebugStravaRequestResponse = zod.looseObject({})
+export const DebugStravaRequestResponse = zod.unknown()

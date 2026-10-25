@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type ReactNode, type RefObject } from 'react'
+import { type ReactNode, type RefObject, useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import '../lib/L.Control.Locate.min.css'
@@ -18,12 +18,19 @@ type MapProps = {
   center?: [number, number]
   zoom?: number
   mapRef?: RefObject<L.Map | null>
+  onMapReady?: (map: L.Map | null) => void
 }
 
-export function Map({ children, center, zoom = 12, mapRef }: MapProps) {
+export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProps) {
   const [initCenter, setInitCenter] = useState<[number, number] | null>(null)
   const mapDomRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<L.Map | null>(null)
+
+  // Stable refs to prevent map recreation on every render
+  const mapRefRef = useRef(mapRef)
+  mapRefRef.current = mapRef
+  const onMapReadyRef = useRef(onMapReady)
+  onMapReadyRef.current = onMapReady
 
   // Initial centering from browser location
   useEffect(() => {
@@ -39,6 +46,7 @@ export function Map({ children, center, zoom = 12, mapRef }: MapProps) {
 
   const effectiveCenter = center ?? initCenter ?? defaultCenter
 
+  // ── Map creation (runs once per DOM mount) ────────────────────────────────
   useEffect(() => {
     if (!mapDomRef.current || mapInstanceRef.current) return
 
@@ -61,10 +69,10 @@ export function Map({ children, center, zoom = 12, mapRef }: MapProps) {
     baseLayers['OpenStreetMap'].addTo(map)
 
     // Layer switcher
-    ;(L.control as any).layers(baseLayers).addTo(map)
+    L.control.layers(baseLayers).addTo(map)
 
     // Scale control (metric + imperial)
-    ;(L.control as any).scale({ imperial: true, position: 'bottomleft' }).addTo(map)
+    L.control.scale({ imperial: true, position: 'bottomleft' }).addTo(map)
 
     // Locate control (leaflet-locatecontrol plugin)
     ;(L.control as any)
@@ -97,7 +105,9 @@ export function Map({ children, center, zoom = 12, mapRef }: MapProps) {
     }
 
     mapInstanceRef.current = map
-    if (mapRef) mapRef.current = map
+    // ;(map as any).__gpxMapDestroyed = false
+    if (mapRefRef.current) mapRefRef.current.current = map
+    onMapReadyRef.current?.(map)
 
     return () => {
       if ((map as any)._gpxLayer) {
@@ -105,11 +115,17 @@ export function Map({ children, center, zoom = 12, mapRef }: MapProps) {
       }
       map.remove()
       mapInstanceRef.current = null
-      if (mapRef) mapRef.current = null
+      // ;(map as any).__gpxMapDestroyed = true
+      if (mapRefRef.current) mapRefRef.current.current = null
+      onMapReadyRef.current?.(null)
     }
-  }, [effectiveCenter[0], effectiveCenter[1], zoom, mapRef, initCenter, children])
+  }, [mapDomRef.current])
 
-  return <div ref={mapDomRef} style={styles.map} />
+  return (
+    <div ref={mapDomRef} style={styles.map}>
+      {children}
+    </div>
+  )
 }
 
 const styles = {

@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 type RangeSliderProps = {
   value: [number, number] // 0-100 range

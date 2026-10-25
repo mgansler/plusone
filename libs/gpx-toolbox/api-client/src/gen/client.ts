@@ -38,65 +38,6 @@ export interface CreateRouteDto {
   source?: CreateRouteDtoSource
 }
 
-/**
- * Route statistics
- * @nullable
- */
-export type RouteResponseDtoStats = { [key: string]: unknown } | null
-
-export type RouteResponseDtoFahrtenItem = {
-  id: string
-  riddenAt: string
-  /** @nullable */
-  duration?: number | null
-  /** @nullable */
-  avgHr?: number | null
-  /** @nullable */
-  maxHr?: number | null
-  /** @nullable */
-  notes?: string | null
-  /** @nullable */
-  weather?: string | null
-}
-
-export interface RouteResponseDto {
-  /** Route ID */
-  id: string
-  /** Route name */
-  name: string
-  /**
-   * Route description
-   * @nullable
-   */
-  description?: string | null
-  /** Route source */
-  source: string
-  /** Route status */
-  status: string
-  /**
-   * Rating tags
-   * @nullable
-   */
-  ratingTags?: unknown[] | null
-  /**
-   * Route notes
-   * @nullable
-   */
-  notes?: string | null
-  /**
-   * Route statistics
-   * @nullable
-   */
-  stats?: RouteResponseDtoStats
-  /**
-   * List of rides
-   * @nullable
-   */
-  fahrten?: RouteResponseDtoFahrtenItem[] | null
-  createdAt: string
-  updatedAt: string
-}
-
 export interface ListRoutesResponseDto {
   /** Total number of routes */
   total: number
@@ -107,7 +48,49 @@ export interface ListRoutesResponseDto {
   /** Total number of pages */
   totalPages: number
   /** List of routes */
-  items: RouteResponseDto[]
+  items: unknown[]
+}
+
+/**
+ * Route description
+ */
+export type RouteResponseDtoDescription = { [key: string]: unknown }
+
+/**
+ * Route notes
+ */
+export type RouteResponseDtoNotes = { [key: string]: unknown }
+
+/**
+ * Route statistics
+ */
+export type RouteResponseDtoStats = { [key: string]: unknown }
+
+export interface RouteResponseDto {
+  /** Route ID */
+  id: string
+  /** Route name */
+  name: string
+  /** Route description */
+  description?: RouteResponseDtoDescription
+  /** Route source */
+  source: string
+  /** Route status */
+  status: string
+  /** Rating tags */
+  ratingTags?: unknown[]
+  /** Route notes */
+  notes?: RouteResponseDtoNotes
+  /** Route statistics */
+  stats?: RouteResponseDtoStats
+  /** List of rides */
+  fahrten?: unknown[]
+  /** Creation timestamp */
+  createdAt: string
+  /** Last update timestamp */
+  updatedAt: string
+  /** Route polyline coordinates */
+  polyline?: string[]
 }
 
 /**
@@ -131,15 +114,25 @@ export interface UpdateRouteDto {
   notes?: string
 }
 
+/**
+ * Route statistics
+ */
 export type NearbyRouteResponseDtoStats = { [key: string]: unknown }
 
 export interface NearbyRouteResponseDto {
+  /** Route ID */
   id: string
+  /** Route name */
   name: string
+  /** Distance in meters */
   distance: number
+  /** Formatted distance */
   distanceKm: string
+  /** Route status */
   status: string
+  /** Route source */
   source: string
+  /** Route statistics */
   stats?: NearbyRouteResponseDtoStats
 }
 
@@ -195,7 +188,7 @@ export interface StravaAthleteProfileDto {
   clubs?: StravaAthleteProfileDtoClubs
   bikes?: StravaAthleteProfileDtoBikes
   shoes?: StravaAthleteProfileDtoShoes
-  localStats: StravaAthleteProfileDtoLocalStats
+  localStats?: StravaAthleteProfileDtoLocalStats
 }
 
 export interface ImportResultDto {
@@ -205,6 +198,21 @@ export interface ImportResultDto {
   matched: number
   /** Number of new routes created */
   newRoutes: number
+}
+
+export interface StravaRouteSummaryDto {
+  /** Strava route ID */
+  stravaId: number
+  /** Route name */
+  name: string
+  /** Route description */
+  description?: string
+  /** Distance in meters */
+  distance?: number
+  /** Elevation gain in meters */
+  elevationGain?: number
+  /** Whether already imported */
+  imported: boolean
 }
 
 /**
@@ -283,10 +291,6 @@ export interface UpdateFahrtDto {
   notes?: string
   /** Weather conditions summary */
   weather?: string
-}
-
-export interface DebugStravaResponseDto {
-  [key: string]: unknown
 }
 
 export enum GetHealthStatus200Status {
@@ -894,7 +898,7 @@ export const useDeleteRoute = <TError = unknown, TContext = unknown>(
 }
 
 export const exportRoute = (id: string, signal?: AbortSignal) => {
-  return customAxiosInstance<void>({ url: `/api/routes/${id}/export`, method: 'GET', signal })
+  return customAxiosInstance<Blob>({ url: `/api/routes/${id}/export`, method: 'GET', responseType: 'blob', signal })
 }
 
 export const getExportRouteQueryKey = (id: string) => {
@@ -1451,6 +1455,82 @@ export const useImportStravaRoutes = <TError = unknown, TContext = unknown>(
   return useMutation(getImportStravaRoutesMutationOptions(options), queryClient)
 }
 
+export const listStravaRoutes = (signal?: AbortSignal) => {
+  return customAxiosInstance<StravaRouteSummaryDto[]>({ url: `/api/import/strava/routes`, method: 'GET', signal })
+}
+
+export const getListStravaRoutesQueryKey = () => {
+  return [`/api/import/strava/routes`] as const
+}
+
+export const getListStravaRoutesQueryOptions = <
+  TData = Awaited<ReturnType<typeof listStravaRoutes>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaRoutes>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getListStravaRoutesQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listStravaRoutes>>> = ({ signal }) => listStravaRoutes(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listStravaRoutes>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListStravaRoutesQueryResult = NonNullable<Awaited<ReturnType<typeof listStravaRoutes>>>
+export type ListStravaRoutesQueryError = unknown
+
+export function useListStravaRoutes<TData = Awaited<ReturnType<typeof listStravaRoutes>>, TError = unknown>(
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaRoutes>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listStravaRoutes>>,
+          TError,
+          Awaited<ReturnType<typeof listStravaRoutes>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListStravaRoutes<TData = Awaited<ReturnType<typeof listStravaRoutes>>, TError = unknown>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaRoutes>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listStravaRoutes>>,
+          TError,
+          Awaited<ReturnType<typeof listStravaRoutes>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListStravaRoutes<TData = Awaited<ReturnType<typeof listStravaRoutes>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaRoutes>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useListStravaRoutes<TData = Awaited<ReturnType<typeof listStravaRoutes>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaRoutes>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getListStravaRoutesQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
 export const importStravaActivity = (params: ImportStravaActivityParams, signal?: AbortSignal) => {
   return customAxiosInstance<ImportResultDto>({ url: `/api/import/strava/activity`, method: 'POST', params, signal })
 }
@@ -1578,6 +1658,72 @@ export const useImportAllStravaActivities = <TError = unknown, TContext = unknow
   TContext
 > => {
   return useMutation(getImportAllStravaActivitiesMutationOptions(options), queryClient)
+}
+
+export const importSingleStravaRoute = (stravaRouteId: string, signal?: AbortSignal) => {
+  return customAxiosInstance<ImportResultDto>({
+    url: `/api/import/strava/routes/${stravaRouteId}`,
+    method: 'POST',
+    signal,
+  })
+}
+
+export const getImportSingleStravaRouteMutationKey = () => ['importSingleStravaRoute'] as const
+
+export const getImportSingleStravaRouteMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof importSingleStravaRoute>>,
+    TError,
+    ImportSingleStravaRouteMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof importSingleStravaRoute>>,
+  TError,
+  ImportSingleStravaRouteMutationVariables,
+  TContext
+> => {
+  const mutationKey = getImportSingleStravaRouteMutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof importSingleStravaRoute>>,
+    ImportSingleStravaRouteMutationVariables
+  > = (props) => {
+    const { stravaRouteId } = props ?? {}
+
+    return importSingleStravaRoute(stravaRouteId)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type ImportSingleStravaRouteMutationResult = NonNullable<Awaited<ReturnType<typeof importSingleStravaRoute>>>
+
+export type ImportSingleStravaRouteMutationError = unknown
+export type ImportSingleStravaRouteMutationVariables = { stravaRouteId: string }
+
+export const useImportSingleStravaRoute = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof importSingleStravaRoute>>,
+      TError,
+      ImportSingleStravaRouteMutationVariables,
+      TContext
+    >
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof importSingleStravaRoute>>,
+  TError,
+  ImportSingleStravaRouteMutationVariables,
+  TContext
+> => {
+  return useMutation(getImportSingleStravaRouteMutationOptions(options), queryClient)
 }
 
 export const listFahrten = (routeId: string, params?: ListFahrtenParams, signal?: AbortSignal) => {
@@ -1995,7 +2141,7 @@ export function useGetFahrtWeather<TData = Awaited<ReturnType<typeof getFahrtWea
 }
 
 export const debugStravaRequest = (params: DebugStravaRequestParams, signal?: AbortSignal) => {
-  return customAxiosInstance<DebugStravaResponseDto>({ url: `/api/debug/strava`, method: 'GET', params, signal })
+  return customAxiosInstance<void>({ url: `/api/debug/strava`, method: 'GET', params, signal })
 }
 
 export const getDebugStravaRequestQueryKey = (params?: DebugStravaRequestParams) => {

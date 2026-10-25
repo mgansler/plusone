@@ -1,16 +1,20 @@
-import { useState, useRef, type RefObject } from 'react'
+import { type RefObject, useEffect, useRef, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import type L from 'leaflet'
+import L from 'leaflet'
+import { useQueryClient } from '@tanstack/react-query'
 
+import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx'
 import {
+  getGetRouteQueryKey,
+  getListFahrtenQueryKey,
   useCreateFahrt,
   useDeleteFahrt,
   useGetRoute,
-  getGetRouteQueryKey,
-  getListFahrtenQueryKey,
 } from '@plusone/gpx-toolbox-api-client'
-import { useQueryClient } from '@tanstack/react-query'
+
 import { Map } from '../../components/Map'
+import { SegmentOverlay } from '../../components/SegmentOverlay'
+import { PointDetails } from '../../components/PointDetails'
 
 const sourceLabels: Record<string, string> = {
   stravaRoute: 'Strava Route',
@@ -40,8 +44,49 @@ function RouteDetailPage() {
   const [formNotes, setFormNotes] = useState('')
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
+  const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
+  const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 100])
+  const [points, setPoints] = useState<Array<TrackPoint>>([])
 
   const { data: route, isLoading, error, isError } = useGetRoute(routeId)
+
+  // Fetch GPX content for selected route using direct fetch (same as index.tsx)
+  const [gpxText, setGpxText] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!routeId) return
+    setGpxText(null)
+
+    const token = localStorage.getItem('gpx-toolbox-jwt')
+    if (!token) {
+      console.error('[RouteDetailPage] No auth token found (key: gpx-toolbox-jwt)')
+      return
+    }
+
+    fetch(`/api/routes/${routeId}/export`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorText = await response.text()
+          console.error('[RouteDetailPage] HTTP error:', response.status, errorText)
+          return
+        }
+        const text = await response.text()
+        setGpxText(text)
+      })
+      .catch((err) => {
+        console.error('[RouteDetailPage] Fetch error:', err)
+      })
+  }, [routeId])
+
+  useEffect(() => {
+    if (gpxText) {
+      const parsed = parseGpx(gpxText)
+      setPoints(parsed)
+      setSegmentRange([0, 100])
+    }
+  }, [gpxText])
 
   const createFahrtMutation = useCreateFahrt({
     mutation: {
@@ -95,6 +140,13 @@ function RouteDetailPage() {
     }
   }
 
+  function handlePointClick(point: TrackPoint, event: L.LeafletMouseEvent) {
+    setSelectedPoint((prev) => {
+      if (prev?.point === point) return null
+      return { point, event }
+    })
+  }
+
   if (isLoading) return <div style={styles.loading}>Lade...</div>
   if (isError) return <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>
   if (!route) return <div style={styles.error}>Route nicht gefunden</div>
@@ -110,7 +162,7 @@ function RouteDetailPage() {
 
         <h2 style={styles.heading}>{route.name}</h2>
 
-        {route.description && <p style={styles.description}>{route.description}</p>}
+        {route.description && <p style={styles.description}>{(route.description as unknown as string | null) ?? ''}</p>}
 
         <div style={styles.meta}>
           <span style={{ ...styles.badge, backgroundColor: sourceColors[route.source] || '#9e9e9e' }}>
@@ -146,7 +198,7 @@ function RouteDetailPage() {
 
         {route.ratingTags && route.ratingTags.length > 0 && (
           <div style={styles.tags}>
-            {(route.ratingTags as string[]).map((tag) => (
+            {(route.ratingTags as Array<string>).map((tag) => (
               <span key={tag} style={styles.tag}>
                 {tag}
               </span>
@@ -154,7 +206,7 @@ function RouteDetailPage() {
           </div>
         )}
 
-        {route.notes && <p style={styles.notes}>{route.notes}</p>}
+        {route.notes && <p style={styles.notes}>{(route.notes as unknown as string | null) ?? ''}</p>}
 
         {/* Fahrten */}
         <div style={styles.fahrtenSection}>
@@ -215,7 +267,17 @@ function RouteDetailPage() {
           )}
 
           {/* Fahrten Liste */}
-          {fahrten.map((f) => (
+          {(
+            fahrten as Array<{
+              id: string
+              riddenAt: Date
+              duration: number | null
+              avgHr: number | null
+              maxHr: number | null
+              notes: string | null
+              weather: string | null
+            }>
+          ).map((f) => (
             <div key={f.id} style={styles.fahrtCard}>
               <div style={styles.fahrtHeader}>
                 <span style={styles.fahrtDate}>{new Date(f.riddenAt).toLocaleDateString('de-DE')}</span>
@@ -255,12 +317,93 @@ function RouteDetailPage() {
         </div>
       </div>
 
-      {/* Map */}
+      {/* Map — same mechanism as home page */}
       <div style={styles.mapArea}>
-        <Map mapRef={mapRef} />
+        <Map mapRef={mapRef}>
+          {points.length > 1 && segmentRange[1] - segmentRange[0] >= 1 && mapRef.current && (
+            <SegmentOverlay
+              points={points}
+              mapInstance={mapRef.current}
+              range={segmentRange}
+              fitBounds={segmentRange[0] === 0 && segmentRange[1] === 100}
+            >
+              <TrackClickHandler
+                points={points}
+                range={segmentRange}
+                mapInstance={mapRef.current}
+                onPointClick={handlePointClick}
+              />
+            </SegmentOverlay>
+          )}
+        </Map>
       </div>
+      {selectedPoint && <PointDetails point={selectedPoint.point} />}
     </div>
   )
+}
+
+/** Invisible click handler that maps clicks to the nearest track point in the selected range */
+function TrackClickHandler({
+  points,
+  range,
+  mapInstance,
+  onPointClick,
+}: {
+  points: Array<TrackPoint>
+  range: [number, number]
+  mapInstance: L.Map
+  onPointClick: (point: TrackPoint, event: L.LeafletMouseEvent) => void
+}) {
+  const layerRef = useRef<L.LayerGroup | null>(null)
+
+  const startIdx = Math.round((range[0] / 100) * (points.length - 1))
+  const endIdx = Math.round((range[1] / 100) * (points.length - 1))
+  const visiblePoints = points.slice(startIdx, endIdx + 1)
+
+  useEffect(() => {
+    if (visiblePoints.length < 2) return
+
+    const layer = L.layerGroup()
+
+    const coords: Array<[number, number]> = visiblePoints.map((p) => [p.latitude, p.longitude] as [number, number])
+
+    const clickable = L.polyline(coords, {
+      color: '#fff',
+      weight: 20,
+      interactive: true,
+      opacity: 0,
+    })
+
+    clickable.on('click', (e: L.LeafletMouseEvent) => {
+      const clickLatLng = e.latlng
+      let minDist = Infinity
+      let nearestPoint: TrackPoint | null = null
+      for (const pt of visiblePoints) {
+        const dist = calculateHaversineDistance(
+          { latitude: clickLatLng.lat, longitude: clickLatLng.lng },
+          { latitude: pt.latitude, longitude: pt.longitude },
+        )
+        if (dist < minDist) {
+          minDist = dist
+          nearestPoint = pt
+        }
+      }
+
+      if (nearestPoint) {
+        onPointClick(nearestPoint, e)
+      }
+    })
+
+    clickable.addTo(layer)
+    layerRef.current = layer
+
+    return () => {
+      layer.remove()
+      layerRef.current = null
+    }
+  }, [visiblePoints, mapInstance, onPointClick])
+
+  return null
 }
 
 const sourceColors: Record<string, string> = {

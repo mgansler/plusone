@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 
 import { useAuth } from '../../lib/auth-context'
@@ -7,7 +7,7 @@ export const Route = createFileRoute('/routes/sync')({
   component: SyncPage,
 })
 
-interface StravaRouteSummary {
+type StravaRouteSummary = {
   stravaId: number
   stravaIdStr: string
   name: string
@@ -17,7 +17,7 @@ interface StravaRouteSummary {
   imported: boolean
 }
 
-interface ImportResult {
+type ImportResult = {
   imported: number
   matched: number
   newRoutes: number
@@ -35,7 +35,7 @@ function formatElevation(meters: number): string {
 
 function SyncPage() {
   const { token } = useAuth()
-  const [routes, setRoutes] = useState<StravaRouteSummary[]>([])
+  const [routes, setRoutes] = useState<Array<StravaRouteSummary>>([])
   const [loading, setLoading] = useState(false)
   const [importingId, setImportingId] = useState<string | null>(null)
   const [importResult, setImportResult] = useState<ImportResult | null>(null)

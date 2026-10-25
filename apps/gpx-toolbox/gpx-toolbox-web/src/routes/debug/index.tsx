@@ -1,8 +1,9 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 
 import { useDebugStravaRequest } from '@plusone/gpx-toolbox-api-client'
-import { type StravaEndpointGroup, stravaEndpointGroups } from '../../lib/strava-endpoints'
+
+import { stravaEndpointGroups } from '../../lib/strava-endpoints'
 
 export const Route = createFileRoute('/debug/')({
   component: DebugPage,
