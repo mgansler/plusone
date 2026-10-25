@@ -29,7 +29,6 @@ function formatDistance(meters: number): string {
 }
 
 function formatElevation(meters: number): string {
-  if (meters >= 1000) return `${(meters / 1000).toFixed(1)}k hm`
   return `${Math.round(meters)} hm`
 }
 

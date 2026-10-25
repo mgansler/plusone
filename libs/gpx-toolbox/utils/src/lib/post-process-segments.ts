@@ -73,9 +73,12 @@ export function postProcessSegments(segments: Array<Segment>): Array<Segment> {
     seg.elevationGain = Math.round(
       seg.points.reduce((acc, _, i) => {
         if (i === 0) return acc
-        const d = seg.points[i].elevation - seg.points[i - 1].elevation
-        return acc + d
-        // return acc + Math.max(d, 0)
+        // Use smoothed elevation when available (segmenter stores it on every point),
+        // fall back to raw elevation for segments created outside the smoothing pipeline.
+        const ele = (seg.points[i] as { smoothedEle?: number }).smoothedEle ?? seg.points[i].elevation
+        const prevEle = (seg.points[i - 1] as { smoothedEle?: number }).smoothedEle ?? seg.points[i - 1].elevation
+        const d = ele - prevEle
+        return acc + Math.max(d, 0)
       }, 0),
     )
   }

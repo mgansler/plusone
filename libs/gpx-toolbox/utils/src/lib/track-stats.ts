@@ -1,4 +1,4 @@
-import { type ProcessedSegment, type SegmentOverview, type TrackOverview } from './types'
+import { type ProcessedSegment, type SegmentOverview, type TrackOverview, type TrackPoint } from './types'
 import { calculateHaversineDistance } from './haversine-distance'
 import { calculateAverageHeartRate } from './calculate-avarage-heart-rate'
 import { parseGpx } from './gpx-parser'
@@ -162,12 +162,21 @@ export function formatTime(date: Date): string {
  */
 export function analyzeGpx(xml: string, segmentOptions = {}): TrackOverview {
   const allPoints = parseGpx(xml)
+  return analyzePoints(allPoints, segmentOptions)
+}
 
-  if (allPoints.length === 0) {
+/**
+ * Full analysis pipeline from already-parsed track points.
+ *
+ * Equivalent to `analyzeGpx` but skips GPX parsing — useful when the
+ * caller already has `TrackPoint[]` (e.g. the route detail page).
+ */
+export function analyzePoints(points: Array<TrackPoint>, segmentOptions = {}): TrackOverview {
+  if (points.length === 0) {
     return { segments: [], totalDistance: 0, totalDuration: 0, overallAvgHeartRate: null }
   }
 
-  const segments = segmentTrack(allPoints, segmentOptions)
+  const segments = segmentTrack(points, segmentOptions)
   const overview = segments.map(computeSegmentOverview)
 
   const totalDistance = overview.reduce((acc, segment) => acc + segment.distance, 0)

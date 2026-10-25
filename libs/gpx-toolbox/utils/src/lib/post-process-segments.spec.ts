@@ -27,6 +27,20 @@ function seg(type: 'uphill' | 'downhill' | 'flat' | null, elevations: number[], 
   }
 }
 
+/** Build a segment with smoothed elevation values (as the segmenter produces) */
+function segWithSmoothed(
+  type: 'uphill' | 'downhill' | 'flat' | null,
+  elevations: number[],
+  smoothed: number[],
+  hr?: number,
+) {
+  const s = seg(type, elevations, hr)
+  ;(s.points as Array<TrackPoint & { smoothedEle: number }>).forEach((p, i) => {
+    ;(p as any).smoothedEle = smoothed[i]
+  })
+  return s
+}
+
 describe('postProcessSegments', () => {
   it('keeps uphill segments unchanged', () => {
     const segments = [seg('uphill', [100, 120, 150])]
@@ -103,5 +117,21 @@ describe('postProcessSegments', () => {
     expect(result).toHaveLength(2)
     expect(result[0].averageHeartRate).toBe(140)
     expect(result[1].averageHeartRate).toBe(160)
+  })
+
+  it('uses smoothed elevation when available', () => {
+    // Raw elevations have noise that would produce a different gain
+    // than the smoothed values
+    const segments = [segWithSmoothed('uphill', [100, 105, 98, 110, 120], [100, 102, 104, 108, 112])]
+    const result = postProcessSegments(segments)
+    // Smoothed: 100→102(+2)→104(+2)→108(+4)→112(+4) = 12
+    expect(result[0].elevationGain).toBe(12)
+  })
+
+  it('uses raw elevation when no smoothed values present', () => {
+    const segments = [seg('uphill', [100, 110, 105, 130])]
+    const result = postProcessSegments(segments)
+    // Raw: 100→110(+10)→105(0)→130(+25) = 35
+    expect(result[0].elevationGain).toBe(35)
   })
 })

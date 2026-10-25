@@ -15,6 +15,7 @@ import {
 import { Map } from '../../components/Map'
 import { SegmentOverlay } from '../../components/SegmentOverlay'
 import { PointDetails } from '../../components/PointDetails'
+import { RouteSegments } from '../../components/RouteSegments'
 
 const sourceLabels: Record<string, string> = {
   stravaRoute: 'Strava Route',
@@ -188,7 +189,7 @@ function RouteDetailPage() {
               </span>
             </div>
             <div style={styles.statRow}>
-              <span style={styles.statLabel}>Höhenmeter ↓</span>
+              <span style={styles.statLabel}>Abstieg ↓</span>
               <span style={styles.statValue}>
                 {formatElevation((route.stats as { elevationLoss?: number } | null)?.elevationLoss ?? 0)}
               </span>
@@ -207,6 +208,9 @@ function RouteDetailPage() {
         )}
 
         {route.notes && <p style={styles.notes}>{(route.notes as unknown as string | null) ?? ''}</p>}
+
+        {/* Segment overview — same as home page */}
+        {points.length >= 2 && <RouteSegments points={points} routeName={route.name} />}
 
         {/* Fahrten */}
         <div style={styles.fahrtenSection}>
@@ -424,7 +428,6 @@ function formatDistance(meters: number): string {
 }
 
 function formatElevation(meters: number): string {
-  if (meters >= 1000) return `${(meters / 1000).toFixed(1)}k hm`
   return `${Math.round(meters)} hm`
 }
 
