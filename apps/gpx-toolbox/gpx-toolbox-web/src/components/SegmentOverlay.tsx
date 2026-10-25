@@ -31,13 +31,8 @@ export function SegmentOverlay({ points, mapInstance, range, fitBounds = false, 
       return
     }
 
-    // Guard: map may have been destroyed (e.g. parent unmount) before this effect runs
-    if ((mapInstance as any).__gpxMapDestroyed) {
-      console.warn('[SegmentOverlay] map destroyed, skipping layer add')
-      return
-    }
-    const container = mapInstance._container
-    if (!container || !document.contains(container) || !container._leaflet_id) {
+    const container = mapInstance.getContainer()
+    if (!container || !document.contains(container)) {
       console.warn('[SegmentOverlay] map container not valid, skipping layer add')
       return
     }
@@ -81,10 +76,8 @@ export function SegmentOverlay({ points, mapInstance, range, fitBounds = false, 
     if (fitBounds && range[0] === 0 && range[1] === 100) {
       // Delay fitBounds to avoid race condition with map initialization
       requestAnimationFrame(() => {
-        // Guard: map may have been destroyed (e.g. parent unmount) before RAF fires
-        if ((mapInstance as any).__gpxMapDestroyed) return
-        const c = mapInstance._container
-        if (!c || !document.contains(c) || !c._leaflet_id) return
+        const c = mapInstance.getContainer()
+        if (!c || !document.contains(c)) return
         const bounds = L.latLngBounds(fullCoords)
         mapInstance.fitBounds(bounds, { padding: [50, 50] })
       })

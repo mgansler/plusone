@@ -4,6 +4,25 @@ import 'leaflet/dist/leaflet.css'
 import '../lib/L.Control.Locate.min.css'
 import 'leaflet-locatecontrol'
 
+// leaflet-locatecontrol lacks TypeScript definitions
+declare module 'leaflet' {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace control {
+    function locate(
+      options?: Partial<{
+        position: string
+        strings: { title: string }
+        flyTo: boolean
+        flyToZoom: number
+        follow: boolean
+        followMode: 'jump' | 'follow' | 'flip'
+        markerStyle: Record<string, unknown>
+        circleStyle: Record<string, unknown>
+      }>,
+    ): Control
+  }
+}
+
 const defaultCenter: [number, number] = [48.77, 9.16]
 
 /** Basemap tile layers for the layer switcher */
@@ -75,7 +94,7 @@ export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProp
     L.control.scale({ imperial: true, position: 'bottomleft' }).addTo(map)
 
     // Locate control (leaflet-locatecontrol plugin)
-    ;(L.control as any)
+    L.control
       .locate({
         position: 'topleft',
         strings: { title: 'Zu meinem Standort' },
@@ -96,7 +115,7 @@ export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProp
           fillOpacity: 0.1,
           weight: 1,
         },
-      } as any)
+      })
       .addTo(map)
 
     // Children (e.g. track overlays) — rendered by their own React components that directly manipulate the map
@@ -105,17 +124,12 @@ export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProp
     }
 
     mapInstanceRef.current = map
-    // ;(map as any).__gpxMapDestroyed = false
     if (mapRefRef.current) mapRefRef.current.current = map
     onMapReadyRef.current?.(map)
 
     return () => {
-      if ((map as any)._gpxLayer) {
-        map.removeLayer((map as any)._gpxLayer)
-      }
       map.remove()
       mapInstanceRef.current = null
-      // ;(map as any).__gpxMapDestroyed = true
       if (mapRefRef.current) mapRefRef.current.current = null
       onMapReadyRef.current?.(null)
     }

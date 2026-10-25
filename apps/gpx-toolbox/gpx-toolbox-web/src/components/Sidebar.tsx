@@ -1,8 +1,8 @@
 import { type ChangeEvent, type DragEvent, useState } from 'react'
-import { XMLParser } from 'fast-xml-parser'
 
-import type { TrackPoint } from '@plusone/gpx'
 import {
+  type TrackPoint,
+  parseGpx,
   calculateAvgSpeed,
   calculateDuration,
   calculateElevationGain,
@@ -49,26 +49,12 @@ export function Sidebar({
     const reader = new FileReader()
     reader.onload = (event) => {
       const text = event.target?.result as string
-      const parsed = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: '@_' }).parse(text)
-      const track = parsed.gpx?.trk?.trkseg?.trkpt
+      const trackPoints = parseGpx(text)
 
-      if (!track) {
+      if (trackPoints.length === 0) {
         alert('Kein Track in der GPX-Datei gefunden.')
         return
       }
-
-      const trackPoints: Array<TrackPoint> = track.map((trkpt: any) => ({
-        latitude: parseFloat(trkpt['@_lat']),
-        longitude: parseFloat(trkpt['@_lon']),
-        elevation: parseFloat(trkpt.ele ?? '0'),
-        time: new Date(trkpt.time),
-        hr: trkpt?.extensions?.gpxtpx?.TrackPointExtension?.gpxtpx?.hr
-          ? parseInt(trkpt.extensions.gpxtpx.TrackPointExtension.gpxtpx.hr, 10)
-          : undefined,
-        cad: trkpt?.extensions?.gpxtpx?.TrackPointExtension?.gpxtpx?.cad
-          ? parseInt(trkpt.extensions.gpxtpx.TrackPointExtension.gpxtpx.cad, 10)
-          : undefined,
-      }))
 
       onFileLoad?.(trackPoints, file.name.replace(/\.gpx$/i, ''))
     }

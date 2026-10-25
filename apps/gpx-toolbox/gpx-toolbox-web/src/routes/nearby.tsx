@@ -161,12 +161,13 @@ function NearbySearch() {
                   <div style={styles.resultStats}>
                     <div>
                       Strecke:{' '}
-                      {(r.stats as { distance?: number }).distance
-                        ? `${((r.stats as { distance?: number }).distance! / 1000).toFixed(1)} km`
-                        : '-'}
+                      {(() => {
+                        const distance = (r.stats as { distance?: number })?.distance
+                        return distance ? `${(distance / 1000).toFixed(1)} km` : '-'
+                      })()}
                     </div>
-                    <div>Höhenmeter ↑: {(r.stats as { elevationGain?: number }).elevationGain ?? '-'}</div>
-                    <div>Höhenmeter ↓: {(r.stats as { elevationLoss?: number }).elevationLoss ?? '-'}</div>
+                    <div>Höhenmeter ↑: {(r.stats as { elevationGain?: number })?.elevationGain ?? '-'}</div>
+                    <div>Höhenmeter ↓: {(r.stats as { elevationLoss?: number })?.elevationLoss ?? '-'}</div>
                   </div>
                 )}
               </div>
