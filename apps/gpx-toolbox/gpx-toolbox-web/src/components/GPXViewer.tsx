@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 
-import type { TrackPoint } from '@plusone/gpx'
-import { calculateHaversineDistance, renderSvg } from '@plusone/gpx'
+import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
+import { calculateHaversineDistance, renderSvg } from '@plusone/gpx-toolbox-utils'
 
 import { Map } from './Map'
 import { SegmentOverlay } from './SegmentOverlay'

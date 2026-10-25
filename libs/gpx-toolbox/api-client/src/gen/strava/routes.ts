@@ -36,7 +36,7 @@ export const getRoutesByAthleteId = (
   id: number,
   params?: GetRoutesByAthleteIdParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<Array<GetRoutesByAthleteId200Item>>> => {
+): Promise<AxiosResponse<GetRoutesByAthleteId200Item[]>> => {
   return axios.default.get(`/athletes/${id}/routes`, {
     ...options,
     params: { ...params, ...options?.params },
@@ -97,6 +97,6 @@ export const getGetRouteAsTCXUrl = (id: number) => {
     })
 }
 export type GetRouteByIdResult = AxiosResponse<void>
-export type GetRoutesByAthleteIdResult = AxiosResponse<Array<GetRoutesByAthleteId200Item>>
+export type GetRoutesByAthleteIdResult = AxiosResponse<GetRoutesByAthleteId200Item[]>
 export type GetRouteAsGPXResult = AxiosResponse<Blob>
 export type GetRouteAsTCXResult = AxiosResponse<Blob>

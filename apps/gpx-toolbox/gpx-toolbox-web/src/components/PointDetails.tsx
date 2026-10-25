@@ -1,4 +1,4 @@
-import type { TrackPoint } from '@plusone/gpx'
+import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 type PointDetailsProps = {
   point: TrackPoint

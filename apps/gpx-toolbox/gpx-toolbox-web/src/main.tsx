@@ -39,12 +39,6 @@ const router = createRouter({
   ),
 })
 
-declare module '@tanstack/react-router' {
-  type Register = {
-    router: typeof router
-  }
-}
-
 createRoot(document.getElementById('root') as HTMLElement).render(
   <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />

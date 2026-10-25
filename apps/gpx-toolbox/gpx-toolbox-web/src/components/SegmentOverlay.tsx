@@ -1,7 +1,7 @@
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 
-import { type TrackPoint } from '@plusone/gpx'
+import { type TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 type SegmentOverlayProps = {
   points: Array<TrackPoint>

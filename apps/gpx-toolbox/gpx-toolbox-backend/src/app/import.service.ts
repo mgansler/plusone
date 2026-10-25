@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
-import { analyzeGpx, calculateHaversineDistance, parseGpx, segmentTrack, TrackPoint } from '@plusone/gpx'
+import { analyzeGpx, calculateHaversineDistance, parseGpx, segmentTrack, TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 import { StravaService } from './strava.service'
 

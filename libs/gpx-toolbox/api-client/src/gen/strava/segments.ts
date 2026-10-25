@@ -40,7 +40,7 @@ export const getGetSegmentByIdUrl = (id: number) => {
 export const getLoggedInAthleteStarredSegments = (
   params?: GetLoggedInAthleteStarredSegmentsParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<Array<GetLoggedInAthleteStarredSegments200Item>>> => {
+): Promise<AxiosResponse<GetLoggedInAthleteStarredSegments200Item[]>> => {
   return axios.default.get(`/segments/starred`, {
     ...options,
     params: { ...params, ...options?.params },
@@ -111,6 +111,6 @@ export const getExploreSegmentsUrl = (params: ExploreSegmentsParams) => {
     })
 }
 export type GetSegmentByIdResult = AxiosResponse<void>
-export type GetLoggedInAthleteStarredSegmentsResult = AxiosResponse<Array<GetLoggedInAthleteStarredSegments200Item>>
+export type GetLoggedInAthleteStarredSegmentsResult = AxiosResponse<GetLoggedInAthleteStarredSegments200Item[]>
 export type StarSegmentResult = AxiosResponse<void>
 export type ExploreSegmentsResult = AxiosResponse<void>

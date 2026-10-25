@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
 import L from 'leaflet'
 
-import type { TrackPoint } from '@plusone/gpx'
-import { calculateHaversineDistance } from '@plusone/gpx'
+import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
+import { calculateHaversineDistance } from '@plusone/gpx-toolbox-utils'
 
 type TrackOverlayProps = {
   points: Array<TrackPoint>

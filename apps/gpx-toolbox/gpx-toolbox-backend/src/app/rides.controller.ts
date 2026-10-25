@@ -42,7 +42,11 @@ export class RidesController {
   @Get(':id')
   @ApiOperation({ operationId: 'getFahrt' })
   @ApiOkResponse({ description: 'Fahrt details', type: FahrtResponseDto })
-  async findOne(@Req() req: Request & { user: JwtPayload }, @Param('id', ParseUUIDPipe) id: string) {
+  async findOne(
+    @Req() req: Request & { user: JwtPayload },
+    @Param('routeId', ParseUUIDPipe) _routeId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
     return this.ridesService.findOne(id, req.user.sub)
   }
 
@@ -62,6 +66,7 @@ export class RidesController {
   @ApiOkResponse({ description: 'Fahrt updated successfully', type: FahrtResponseDto })
   async update(
     @Req() req: Request & { user: JwtPayload },
+    @Param('routeId', ParseUUIDPipe) _routeId: string,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateFahrtDto,
   ) {
@@ -71,7 +76,11 @@ export class RidesController {
   @Delete(':id')
   @ApiOperation({ operationId: 'deleteFahrt' })
   @ApiOkResponse({ description: 'Fahrt deleted successfully' })
-  async remove(@Req() req: Request & { user: JwtPayload }, @Param('id', ParseUUIDPipe) id: string) {
+  async remove(
+    @Req() req: Request & { user: JwtPayload },
+    @Param('routeId', ParseUUIDPipe) _routeId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
     await this.ridesService.remove(id, req.user.sub)
     return { deleted: true, id }
   }

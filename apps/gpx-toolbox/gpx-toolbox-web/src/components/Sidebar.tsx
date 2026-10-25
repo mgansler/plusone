@@ -11,7 +11,7 @@ import {
   calculateTotalDistance,
   getTimeRange,
   renderSvg,
-} from '@plusone/gpx'
+} from '@plusone/gpx-toolbox-utils'
 
 import { formatDistance, formatDuration } from '../utils/format'
 

@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/libs/gpx',
+  cacheDir: '../../../node_modules/.vite/libs/gpx',
 
   plugins: [nxViteTsPaths()],
 
@@ -13,10 +13,10 @@ export default defineConfig({
     environment: 'node',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default', 'junit'],
-    outputFile: '../../reports/test/gpx.xml',
+    outputFile: '../../../reports/test/gpx-toolbox-utils.xml',
     coverage: {
       include: ['src/**/*.{ts,tsx}'],
-      reportsDirectory: '../../coverage/libs/gpx',
+      reportsDirectory: '../../../coverage/libs/gpx-toolbox-utils',
       provider: 'v8' as const,
     },
   },

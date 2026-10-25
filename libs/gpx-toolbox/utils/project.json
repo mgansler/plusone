@@ -1,0 +1,28 @@
+{
+  "name": "gpx-toolbox-utils",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/gpx-toolbox/utils/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/gpx-toolbox/utils",
+        "tsConfig": "libs/gpx-toolbox/utils/tsconfig.lib.json",
+        "packageJson": "libs/gpx-toolbox/utils/package.json",
+        "main": "libs/gpx-toolbox/utils/src/index.ts",
+        "assets": ["libs/gpx-toolbox/utils/*.md"]
+      }
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "configFile": "libs/gpx-toolbox/utils/vite.config.mts",
+        "codeCoverage": true
+      }
+    }
+  }
+}

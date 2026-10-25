@@ -1,7 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 
 import { Prisma, PrismaService } from '@plusone/gpx-toolbox-persistence'
-import { analyzeGpx, parseGpx, TrackPoint } from '@plusone/gpx'
+import { analyzeGpx, parseGpx, TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
 

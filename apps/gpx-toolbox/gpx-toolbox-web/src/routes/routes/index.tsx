@@ -2,7 +2,7 @@ import { type RefObject, useEffect, useRef, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import L from 'leaflet'
 
-import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx'
+import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 import { useListRoutes } from '@plusone/gpx-toolbox-api-client'
 
 import { Map } from '../../components/Map'

@@ -1,4 +1,4 @@
-import type { TrackPoint } from '@plusone/gpx'
+import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
 import {
   calculateAvgSpeed,
   calculateDuration,
@@ -7,7 +7,7 @@ import {
   calculateMaxSpeed,
   calculateTotalDistance,
   getTimeRange,
-} from '@plusone/gpx'
+} from '@plusone/gpx-toolbox-utils'
 
 import { formatDistance, formatDuration } from '../utils/format'
 

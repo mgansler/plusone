@@ -915,6 +915,14 @@
         "operationId": "getFahrt",
         "parameters": [
           {
+            "name": "routeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "id",
             "required": true,
             "in": "path",
@@ -946,6 +954,14 @@
       "put": {
         "operationId": "updateFahrt",
         "parameters": [
+          {
+            "name": "routeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "id",
             "required": true,
@@ -988,6 +1004,14 @@
       "delete": {
         "operationId": "deleteFahrt",
         "parameters": [
+          {
+            "name": "routeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "id",
             "required": true,

@@ -47,6 +47,8 @@ export const ListRoutesResponse = zod.strictObject({
   items: zod.array().describe('List of routes'),
 })
 
+export const ExportRouteResponse = zod.unknown()
+
 export const GetRouteResponse = zod.strictObject({
   id: zod.string().describe('Route ID'),
   name: zod.string().describe('Route name'),
@@ -65,8 +67,6 @@ export const GetRouteResponse = zod.strictObject({
 export const UpdateRouteResponse = zod.unknown()
 
 export const DeleteRouteResponse = zod.unknown()
-
-export const ExportRouteResponse = zod.string()
 
 export const FindNearbyRoutesResponseItem = zod.strictObject({
   id: zod.string().describe('Route ID'),

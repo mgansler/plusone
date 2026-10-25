@@ -3,7 +3,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import L from 'leaflet'
 import { useQueryClient } from '@tanstack/react-query'
 
-import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx'
+import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 import {
   getGetRouteQueryKey,
   getListFahrtenQueryKey,

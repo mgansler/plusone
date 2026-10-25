@@ -38,7 +38,7 @@
 
 **API Client** (`libs/gpx-toolbox/api-client/`):
 
-- `orval.config.ts`, `src/custom-axios.ts`, `src/validated-client.ts` — von stgtrails kopieren
+- `orval.config.cjs`, `src/custom-axios.ts`, `src/validated-client.ts` — von stgtrails kopieren
 - `project.json`, `eslint.config.js`, `tsconfig.*` — von stgtrails kopieren
 
 ### Dateien modifizieren

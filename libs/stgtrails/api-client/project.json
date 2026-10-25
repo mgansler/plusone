@@ -19,7 +19,7 @@
       ],
       "outputs": ["{projectRoot}/src/gen/*"],
       "options": {
-        "command": "yarn orval --config libs/stgtrails/api-client/orval.config.ts"
+        "command": "yarn orval --config libs/stgtrails/api-client/orval.config.cjs"
       }
     },
     "lint": {

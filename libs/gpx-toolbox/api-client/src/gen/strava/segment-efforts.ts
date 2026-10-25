@@ -17,7 +17,7 @@ import type { GetEffortsBySegmentId200Item, GetEffortsBySegmentIdParams } from '
 export const getEffortsBySegmentId = (
   params: GetEffortsBySegmentIdParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<Array<GetEffortsBySegmentId200Item>>> => {
+): Promise<AxiosResponse<GetEffortsBySegmentId200Item[]>> => {
   return axios.default.get(`/segment_efforts`, {
     ...options,
     params: { ...params, ...options?.params },
@@ -53,5 +53,5 @@ export const getGetSegmentEffortByIdUrl = (id: number) => {
       baseURL: '',
     })
 }
-export type GetEffortsBySegmentIdResult = AxiosResponse<Array<GetEffortsBySegmentId200Item>>
+export type GetEffortsBySegmentIdResult = AxiosResponse<GetEffortsBySegmentId200Item[]>
 export type GetSegmentEffortByIdResult = AxiosResponse<void>

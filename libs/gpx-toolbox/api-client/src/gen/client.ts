@@ -729,6 +729,84 @@ export function useListRoutes<TData = Awaited<ReturnType<typeof listRoutes>>, TE
   return withQueryKey(query, queryOptions.queryKey)
 }
 
+export const exportRoute = (id: string, signal?: AbortSignal) => {
+  return customAxiosInstance<void>({ url: `/api/routes/${id}/export`, method: 'GET', signal })
+}
+
+export const getExportRouteQueryKey = (id: string) => {
+  return [`/api/routes/${id}/export`] as const
+}
+
+export const getExportRouteQueryOptions = <TData = Awaited<ReturnType<typeof exportRoute>>, TError = unknown>(
+  id: string,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof exportRoute>>, TError, TData>> },
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getExportRouteQueryKey(id)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof exportRoute>>> = ({ signal }) => exportRoute(id, signal)
+
+  return { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof exportRoute>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ExportRouteQueryResult = NonNullable<Awaited<ReturnType<typeof exportRoute>>>
+export type ExportRouteQueryError = unknown
+
+export function useExportRoute<TData = Awaited<ReturnType<typeof exportRoute>>, TError = unknown>(
+  id: string,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof exportRoute>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof exportRoute>>,
+          TError,
+          Awaited<ReturnType<typeof exportRoute>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useExportRoute<TData = Awaited<ReturnType<typeof exportRoute>>, TError = unknown>(
+  id: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof exportRoute>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof exportRoute>>,
+          TError,
+          Awaited<ReturnType<typeof exportRoute>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useExportRoute<TData = Awaited<ReturnType<typeof exportRoute>>, TError = unknown>(
+  id: string,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof exportRoute>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useExportRoute<TData = Awaited<ReturnType<typeof exportRoute>>, TError = unknown>(
+  id: string,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof exportRoute>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getExportRouteQueryOptions(id, options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
 export const getRoute = (id: string, signal?: AbortSignal) => {
   return customAxiosInstance<RouteResponseDto>({ url: `/api/routes/${id}`, method: 'GET', signal })
 }
@@ -895,84 +973,6 @@ export const useDeleteRoute = <TError = unknown, TContext = unknown>(
   queryClient?: QueryClient,
 ): UseMutationResult<Awaited<ReturnType<typeof deleteRoute>>, TError, DeleteRouteMutationVariables, TContext> => {
   return useMutation(getDeleteRouteMutationOptions(options), queryClient)
-}
-
-export const exportRoute = (id: string, signal?: AbortSignal) => {
-  return customAxiosInstance<Blob>({ url: `/api/routes/${id}/export`, method: 'GET', responseType: 'blob', signal })
-}
-
-export const getExportRouteQueryKey = (id: string) => {
-  return [`/api/routes/${id}/export`] as const
-}
-
-export const getExportRouteQueryOptions = <TData = Awaited<ReturnType<typeof exportRoute>>, TError = unknown>(
-  id: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof exportRoute>>, TError, TData>> },
-) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getExportRouteQueryKey(id)
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof exportRoute>>> = ({ signal }) => exportRoute(id, signal)
-
-  return { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof exportRoute>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ExportRouteQueryResult = NonNullable<Awaited<ReturnType<typeof exportRoute>>>
-export type ExportRouteQueryError = unknown
-
-export function useExportRoute<TData = Awaited<ReturnType<typeof exportRoute>>, TError = unknown>(
-  id: string,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof exportRoute>>, TError, TData>> &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof exportRoute>>,
-          TError,
-          Awaited<ReturnType<typeof exportRoute>>
-        >,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useExportRoute<TData = Awaited<ReturnType<typeof exportRoute>>, TError = unknown>(
-  id: string,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof exportRoute>>, TError, TData>> &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof exportRoute>>,
-          TError,
-          Awaited<ReturnType<typeof exportRoute>>
-        >,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useExportRoute<TData = Awaited<ReturnType<typeof exportRoute>>, TError = unknown>(
-  id: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof exportRoute>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-export function useExportRoute<TData = Awaited<ReturnType<typeof exportRoute>>, TError = unknown>(
-  id: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof exportRoute>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getExportRouteQueryOptions(id, options)
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>
-  }
-
-  return withQueryKey(query, queryOptions.queryKey)
 }
 
 export const findNearbyRoutes = (params: FindNearbyRoutesParams, signal?: AbortSignal) => {

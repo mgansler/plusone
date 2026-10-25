@@ -1,5 +1,5 @@
-import type { TrackPoint } from '@plusone/gpx'
-import { calculateHaversineDistance } from '@plusone/gpx'
+import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
+import { calculateHaversineDistance } from '@plusone/gpx-toolbox-utils'
 
 type TrackInfoProps = {
   points: Array<TrackPoint>

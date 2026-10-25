@@ -90,13 +90,13 @@ export type GetLoggedInAthleteStarredSegments200Item = {
    * @minItems 2
    * @maxItems 2
    */
-  start_latlng?: Array<number>
+  start_latlng?: number[]
   /**
    * A pair of latitude/longitude coordinates, represented as an array of 2 floating point numbers.
    * @minItems 2
    * @maxItems 2
    */
-  end_latlng?: Array<number>
+  end_latlng?: number[]
   /** The category of the climb [0, 5]. Higher is harder ie. 5 is Hors catégorie, 0 is uncategorized in climb_category. */
   climb_category?: number
   /** The segments's city. */
@@ -198,13 +198,13 @@ export type GetEffortsBySegmentId200Item = {
      * @minItems 2
      * @maxItems 2
      */
-    start_latlng?: Array<number>
+    start_latlng?: number[]
     /**
      * A pair of latitude/longitude coordinates, represented as an array of 2 floating point numbers.
      * @minItems 2
      * @maxItems 2
      */
-    end_latlng?: Array<number>
+    end_latlng?: number[]
     /** The category of the climb [0, 5]. Higher is harder ie. 5 is Hors catégorie, 0 is uncategorized in climb_category. */
     climb_category?: number
     /** The segments's city. */
@@ -264,7 +264,7 @@ export type ExploreSegmentsParams = {
    * @minItems 4
    * @maxItems 4
    */
-  bounds: Array<number>
+  bounds: number[]
   /**
    * Desired activity type.
    */
@@ -615,13 +615,13 @@ export type GetLoggedInAthleteActivities200Item = {
    * @minItems 2
    * @maxItems 2
    */
-  start_latlng?: Array<number>
+  start_latlng?: number[]
   /**
    * A pair of latitude/longitude coordinates, represented as an array of 2 floating point numbers.
    * @minItems 2
    * @maxItems 2
    */
-  end_latlng?: Array<number>
+  end_latlng?: number[]
   /** The number of achievements gained during this activity */
   achievement_count?: number
   /** The number of kudos given for this activity */
@@ -652,7 +652,7 @@ export type GetLoggedInAthleteActivities200Item = {
   /** Whether this activity is a commute */
   commute?: boolean
   /** The activity tags currently applied to this activity */
-  tags?: Array<'WithPet' | 'Recovery' | 'Competition' | 'ForACause' | 'Commute'>
+  tags?: ('WithPet' | 'Recovery' | 'Competition' | 'ForACause' | 'Commute')[]
   /** Whether this activity was created manually */
   manual?: boolean
   /** Whether this activity is private */
@@ -755,7 +755,7 @@ export const GetZonesByActivityId200ItemType = {
 export type GetZonesByActivityId200Item = {
   score?: number
   /** Stores the exclusive ranges representing zones and the time spent in each. */
-  distribution_buckets?: Array<GetZonesByActivityId200ItemDistributionBucketsItem>
+  distribution_buckets?: GetZonesByActivityId200ItemDistributionBucketsItem[]
   type?: GetZonesByActivityId200ItemType
   sensor_based?: boolean
   points?: number
@@ -897,7 +897,7 @@ export type GetLoggedInAthleteClubs200Item = {
   /** Deprecated. Prefer to use activity_types. */
   sport_type?: 'cycling' | 'running' | 'triathlon' | 'other'
   /** The activity types that count for a club. This takes precedence over sport_type. */
-  activity_types?: Array<
+  activity_types?: (
     | 'AlpineSki'
     | 'BackcountrySki'
     | 'Canoeing'
@@ -935,7 +935,7 @@ export type GetLoggedInAthleteClubs200Item = {
     | 'Windsurf'
     | 'Workout'
     | 'Yoga'
-  >
+  )[]
   /** The club's city. */
   city?: string
   /** The club's state or geographical region. */
@@ -1063,13 +1063,13 @@ export type GetRoutesByAthleteId200ItemSegmentsItem = {
    * @minItems 2
    * @maxItems 2
    */
-  start_latlng?: Array<number>
+  start_latlng?: number[]
   /**
    * A pair of latitude/longitude coordinates, represented as an array of 2 floating point numbers.
    * @minItems 2
    * @maxItems 2
    */
-  end_latlng?: Array<number>
+  end_latlng?: number[]
   /** The category of the climb [0, 5]. Higher is harder ie. 5 is Hors catégorie, 0 is uncategorized in climb_category. */
   climb_category?: number
   /** The segments's city. */
@@ -1090,18 +1090,18 @@ export type GetRoutesByAthleteId200ItemWaypointsItem = {
    * @minItems 2
    * @maxItems 2
    */
-  latlng?: Array<number>
+  latlng?: number[]
   /**
    * A pair of latitude/longitude coordinates, represented as an array of 2 floating point numbers.
    * @minItems 2
    * @maxItems 2
    */
-  target_latlng?: Array<number>
+  target_latlng?: number[]
   /**
    * Categories that the waypoint belongs to
    * @minItems 0
    */
-  categories?: Array<string>
+  categories?: string[]
   /** A title for the waypoint */
   title?: string
   /** A description of the waypoint (optional) */
@@ -1142,12 +1142,12 @@ export type GetRoutesByAthleteId200Item = {
   /** Estimated time in seconds for the authenticated athlete to complete route */
   estimated_moving_time?: number
   /** The segments traversed by this route */
-  segments?: Array<GetRoutesByAthleteId200ItemSegmentsItem>
+  segments?: GetRoutesByAthleteId200ItemSegmentsItem[]
   /**
    * The custom waypoints along this route
    * @minItems 0
    */
-  waypoints?: Array<GetRoutesByAthleteId200ItemWaypointsItem>
+  waypoints?: GetRoutesByAthleteId200ItemWaypointsItem[]
 }
 
 /**
@@ -1188,7 +1188,7 @@ export type GetActivityStreamsParams = {
    * Desired stream types.
    * @minItems 1
    */
-  keys: Array<GetActivityStreamsKeysItem>
+  keys: GetActivityStreamsKeysItem[]
   /**
    * Must be true.
    */
@@ -1216,7 +1216,7 @@ export type GetSegmentEffortStreamsParams = {
    * The types of streams to return.
    * @minItems 1
    */
-  keys: Array<GetSegmentEffortStreamsKeysItem>
+  keys: GetSegmentEffortStreamsKeysItem[]
   /**
    * Must be true.
    */
@@ -1245,7 +1245,7 @@ export type GetSegmentStreamsParams = {
    * The types of streams to return.
    * @minItems 1
    */
-  keys: Array<GetSegmentStreamsKeysItem>
+  keys: GetSegmentStreamsKeysItem[]
   /**
    * Must be true.
    */
