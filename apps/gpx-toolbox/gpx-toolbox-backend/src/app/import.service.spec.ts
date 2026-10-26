@@ -456,6 +456,53 @@ describe('ImportService', () => {
       expect(result.matched).toBe(1)
       expect(service['prisma'].fahrt.create).toHaveBeenCalled()
     })
+
+    it('stores valid GPX XML (not stringified JSON) in the gpxContent column', async () => {
+      const streamPoints = [
+        { latitude: 48.0, longitude: 11.0, elevation: 100, time: new Date('2024-01-01T10:00:00Z'), hr: 150, cad: 90 },
+        { latitude: 48.001, longitude: 11.001, elevation: 120, time: new Date('2024-01-01T10:02:00Z'), hr: 160 },
+      ]
+
+      const mockStrava = {
+        downloadActivityStreams: vi.fn().mockResolvedValue(streamPoints),
+        getActivity: vi.fn().mockResolvedValue({ id: 999, name: 'Activity 999', distance: 20000 }),
+      }
+
+      const createRoute = vi.fn().mockResolvedValue({ id: '1', name: 'Activity 999' })
+
+      const module: TestingModule = await Test.createTestingModule({
+        providers: [
+          ImportService,
+          {
+            provide: PrismaService,
+            useValue: {
+              route: {
+                findMany: vi.fn().mockResolvedValue([]), // No matches → a new route is created
+                create: createRoute,
+              },
+              fahrt: {
+                create: vi.fn().mockResolvedValue({ id: 'f1', routeId: '1' }),
+              },
+            },
+          },
+          { provide: StravaService, useValue: mockStrava },
+        ],
+      }).compile()
+
+      service = module.get<ImportService>(ImportService)
+
+      await service.importStravaActivity('token', 'user-1', '999', false)
+
+      // The data passed to route.create is what lands in the DB gpxContent column.
+      const gpxContent = createRoute.mock.calls[0][0].data.gpxContent as string
+
+      // It must be real GPX XML starting with the XML declaration, not the
+      // stringified JSON array the old bug stored (which started with '[').
+      expect(gpxContent).toMatch(/^<\?xml/)
+      expect(gpxContent).toContain('<gpx')
+      expect(gpxContent).toContain('<trkpt')
+      expect(gpxContent.startsWith('[')).toBe(false)
+    })
   })
 
   describe('importStravaRoutes', () => {

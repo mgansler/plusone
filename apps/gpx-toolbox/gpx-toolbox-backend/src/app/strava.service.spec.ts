@@ -150,4 +150,102 @@ describe('StravaService', () => {
       )
     })
   })
+
+  describe('downloadActivityStreams', () => {
+    // getActivityStreams uses axios.default.get() (OpenAPI client pattern)
+    const streamsResponse = {
+      data: {
+        time: { data: [1000, 1001, 1002] },
+        distance: { data: [0, 10, 20] },
+        latlng: {
+          data: [
+            [48.0, 11.0],
+            [48.1, 11.1],
+            [48.2, 11.2],
+          ],
+        },
+        altitude: { data: [100, 110, 120] },
+        heartrate: { data: [140, 150, 160] },
+        cadence: { data: [80, 85, 90] },
+        moving: { data: [true, false, true] },
+      },
+    }
+
+    beforeEach(() => {
+      hoisted.mockFn.get = vi.fn().mockResolvedValue(streamsResponse)
+    })
+
+    it('merges key_by_type streams into track points', async () => {
+      const result = await service.downloadActivityStreams('token', 999)
+
+      expect(result).toEqual([
+        {
+          latitude: 48.0,
+          longitude: 11.0,
+          elevation: 100,
+          time: new Date(1000000),
+          hr: 140,
+          cad: 80,
+          moving: true,
+        },
+        {
+          latitude: 48.1,
+          longitude: 11.1,
+          elevation: 110,
+          time: new Date(1001000),
+          hr: 150,
+          cad: 85,
+          moving: false,
+        },
+        {
+          latitude: 48.2,
+          longitude: 11.2,
+          elevation: 120,
+          time: new Date(1002000),
+          hr: 160,
+          cad: 90,
+          moving: true,
+        },
+      ])
+    })
+
+    it('requests the streams endpoint with all keys and key_by_type', async () => {
+      await service.downloadActivityStreams('token', 999)
+
+      expect(hoisted.mockFn.get).toHaveBeenCalledWith(
+        '/activities/999/streams',
+        expect.objectContaining({
+          baseURL: 'https://www.strava.com/api/v3',
+          params: {
+            keys: 'time,distance,latlng,altitude,heartrate,cadence,moving',
+            key_by_type: true,
+          },
+          headers: { Authorization: 'Bearer token' },
+        }),
+      )
+    })
+
+    it('returns empty array when latlng stream is missing (error response)', async () => {
+      hoisted.mockFn.get.mockResolvedValueOnce({
+        data: { message: 'Activity not found', errors: {} },
+      })
+
+      const result = await service.downloadActivityStreams('token', 999)
+
+      expect(result).toEqual([])
+    })
+
+    it('returns empty array when latlng stream is present but empty', async () => {
+      hoisted.mockFn.get.mockResolvedValueOnce({
+        data: {
+          time: { data: [1000] },
+          latlng: { data: [] },
+        },
+      })
+
+      const result = await service.downloadActivityStreams('token', 999)
+
+      expect(result).toEqual([])
+    })
+  })
 })

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 
-import { PrismaService } from '@plusone/gpx-toolbox-persistence'
+import { PrismaService, RouteStatus } from '@plusone/gpx-toolbox-persistence'
 import {
   analyzeGpx,
   analyzePoints,
@@ -8,9 +8,11 @@ import {
   calculateHaversineDistance,
   parseGpx,
   segmentTrack,
+  serializeGpx,
   TrackPoint,
 } from '@plusone/gpx-toolbox-utils'
 
+import { parsePolyline } from './polyline.util'
 import { StravaService } from './strava.service'
 
 @Injectable()
@@ -248,8 +250,8 @@ export class ImportService {
       }
 
       // Download streams (latlng, altitude, time, heartrate, cadence, moving)
+      this.logger.log(`Downloading streams for Strava activity ${activityId}`)
       const streamPoints = await this.stravaService.downloadActivityStreams(accessToken, Number(activityId))
-      console.log(streamPoints)
 
       if (streamPoints.length === 0) {
         throw new Error('No track points found in activity streams')
@@ -265,8 +267,8 @@ export class ImportService {
         cad: p.cad,
       }))
 
-      // Store raw stream data as JSON (preserves all stream data including moving flag)
-      const gpxContent = JSON.stringify(streamPoints)
+      // Serialize the track points to a valid GPX 1.1 XML string for the gpxContent column.
+      const gpxContent = serializeGpx(points, activityDetail.name ?? 'Imported Activity')
 
       // Compute stats from stream points
       const overview = analyzePoints(points)
@@ -308,6 +310,7 @@ export class ImportService {
             stats,
             source: 'stravaActivity',
             userId,
+            status: RouteStatus.ridden,
             stravaActivityId: String(activityId),
             ratingTags: [],
           },
@@ -386,7 +389,7 @@ export class ImportService {
     let bestMatch: { routeId: string; routeName: string; distance: number } | null = null
 
     for (const route of existingRoutes) {
-      const polyline = JSON.parse(route.polyline as string) as Array<{ lat: number; lng: number }>
+      const polyline = parsePolyline(route.polyline)
       if (polyline.length === 0) continue
 
       const routePoints: Array<TrackPoint> = polyline.map((p) => ({

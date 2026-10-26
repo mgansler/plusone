@@ -58,7 +58,7 @@ export class RoutesController {
     try {
       return await this.routesService.importGpx(gpxContent, dto, req.user.sub)
     } catch (error) {
-      this.logger.error(`Failed to import GPX: ${error.message}`, error.stack)
+      this.logger.error(`Failed to import GPX: ${error.message}`)
       throw new BadRequestException(error.message)
     }
   }

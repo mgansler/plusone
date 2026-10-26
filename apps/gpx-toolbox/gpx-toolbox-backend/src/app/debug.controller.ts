@@ -51,7 +51,6 @@ export class DebugController {
 
     // Replace {id} and {athlete_id} with the authenticated user's Strava ID
     const resolvedEndpoint = endpoint.replace('{id}', user.stravaId).replace('{athlete_id}', user.stravaId)
-    console.log({ resolvedEndpoint, endpoint })
 
     this.logger.log(`Debug Strava request: ${resolvedEndpoint}`)
 

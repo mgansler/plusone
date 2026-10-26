@@ -1,7 +1,8 @@
 export * from './lib/render-svg'
 
-// Parsing & segmentation
+// Parsing & serialization
 export { parseGpx } from './lib/gpx-parser'
+export { serializeGpx } from './lib/gpx-serializer'
 export { segmentTrack } from './lib/segmenter'
 export { analyzeGpx, analyzePoints } from './lib/track-stats'
 

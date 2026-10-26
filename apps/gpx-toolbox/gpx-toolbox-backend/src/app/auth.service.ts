@@ -59,6 +59,8 @@ export class AuthService {
     })
 
     if (!response.ok) {
+      const body = await response.text().catch(() => '(could not read response body)')
+      this.logger.error(`Token refresh failed: ${response.status} ${response.statusText} — ${body.slice(0, 200)}`)
       throw new UnauthorizedException('Failed to refresh Strava token')
     }
 

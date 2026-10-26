@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs'
 import { Prisma, PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { CreateFahrtDto, QueryFahrtDto, UpdateFahrtDto } from './dto/ride.dto'
+import { parsePolyline } from './polyline.util'
 
 /**
  * Weather forecast response for a route.
@@ -156,7 +157,7 @@ export class RidesService {
       throw new NotFoundException(`Route with ID ${routeId} not found`)
     }
 
-    const polyline = JSON.parse(route.polyline as string) as Array<{ lat: number; lng: number }>
+    const polyline = parsePolyline(route.polyline)
     if (polyline.length === 0) return null
 
     const midIndex = Math.floor(polyline.length / 2)
@@ -184,7 +185,7 @@ export class RidesService {
    * Fetch weather data for a ride date using Open-Meteo historical API.
    */
   private async fetchWeatherForRide(route: any, riddenAt: string): Promise<Record<string, any> | null> {
-    const polyline = JSON.parse(route.polyline as string) as Array<{ lat: number; lng: number }>
+    const polyline = parsePolyline(route.polyline)
     if (polyline.length === 0) return null
 
     const midIndex = Math.floor(polyline.length / 2)
@@ -235,7 +236,7 @@ export class RidesService {
         },
       }
     } catch (error) {
-      this.logger.error(`Failed to fetch weather: ${error.message}`)
+      this.logger.error(`Failed to fetch weather for ${latitude},${longitude} on ${date}: ${error.message}`)
       return null
     }
   }

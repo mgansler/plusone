@@ -4,6 +4,7 @@ import { Prisma, PrismaService } from '@plusone/gpx-toolbox-persistence'
 import { analyzeGpx, parseGpx, TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
+import { parsePolyline } from './polyline.util'
 import { StravaService } from './strava.service'
 
 /**
@@ -263,7 +264,7 @@ export class RoutesService {
 
     const results = routes
       .map((route) => {
-        const polyline = JSON.parse(route.polyline as string) as Array<{ lat: number; lng: number }>
+        const polyline = parsePolyline(route.polyline)
         if (polyline.length === 0) return null
 
         // Use route midpoint for distance calculation
@@ -465,7 +466,7 @@ export class RoutesService {
       ratingTags: typeof route.ratingTags === 'string' ? JSON.parse(route.ratingTags) : route.ratingTags,
       notes: route.notes,
       stats: typeof route.stats === 'string' ? JSON.parse(route.stats) : route.stats,
-      polyline: typeof route.polyline === 'string' ? JSON.parse(route.polyline) : route.polyline,
+      polyline: parsePolyline(route.polyline),
       createdAt: route.createdAt,
       updatedAt: route.updatedAt,
     }
@@ -481,7 +482,7 @@ export class RoutesService {
       ratingTags: typeof route.ratingTags === 'string' ? JSON.parse(route.ratingTags) : route.ratingTags,
       notes: route.notes,
       stats: typeof route.stats === 'string' ? JSON.parse(route.stats) : route.stats,
-      polyline: typeof route.polyline === 'string' ? JSON.parse(route.polyline) : route.polyline,
+      polyline: parsePolyline(route.polyline),
       createdAt: route.createdAt,
       updatedAt: route.updatedAt,
       fahrten: route.fahrten,

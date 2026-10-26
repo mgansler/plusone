@@ -113,6 +113,7 @@ describe('AuthService', () => {
         ok: false,
         status: 401,
         statusText: 'Unauthorized',
+        text: vi.fn().mockResolvedValue('invalid_grant'),
       })
 
       await expect(service.refreshToken('invalid-token')).rejects.toThrow('Failed to refresh Strava token')
