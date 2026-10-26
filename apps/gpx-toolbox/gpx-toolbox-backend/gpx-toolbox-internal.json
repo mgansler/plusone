@@ -367,6 +367,24 @@
         "tags": ["routes"]
       }
     },
+    "/api/routes/strava-activities": {
+      "get": {
+        "operationId": "listStravaActivities",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of Strava activities with metadata"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["routes"]
+      }
+    },
     "/api/routes/{id}": {
       "get": {
         "operationId": "getRoute",
@@ -1079,6 +1097,194 @@
         "tags": ["rides"]
       }
     },
+    "/api/fahrten": {
+      "get": {
+        "operationId": "listAllFahrten",
+        "parameters": [
+          {
+            "name": "dateFrom",
+            "required": false,
+            "in": "query",
+            "description": "Filter by date range start",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dateTo",
+            "required": false,
+            "in": "query",
+            "description": "Filter by date range end",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Sort field",
+            "schema": {
+              "default": "riddenAt",
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "Sort order",
+            "schema": {
+              "default": "DESC",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Page size",
+            "schema": {
+              "default": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of fahrten",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FahrtResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["fahrten"]
+      }
+    },
+    "/api/fahrten/{id}": {
+      "get": {
+        "operationId": "getFahrt",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fahrt details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FahrtResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["fahrten"]
+      },
+      "put": {
+        "operationId": "updateFahrt",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFahrtDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Fahrt updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FahrtResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["fahrten"]
+      },
+      "delete": {
+        "operationId": "deleteFahrt",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fahrt deleted successfully"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["fahrten"]
+      }
+    },
     "/api/debug/strava": {
       "get": {
         "operationId": "debugStravaRequest",
@@ -1442,6 +1648,28 @@
         },
         "required": ["stravaId", "name", "imported"]
       },
+      "FahrtRouteResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Route ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Route name"
+          },
+          "status": {
+            "type": "string",
+            "description": "Route status"
+          },
+          "stats": {
+            "type": "object",
+            "description": "Route stats"
+          }
+        },
+        "required": ["id", "name"]
+      },
       "FahrtResponseDto": {
         "type": "object",
         "properties": {
@@ -1487,6 +1715,14 @@
             "format": "date-time",
             "type": "string",
             "description": "Updated at"
+          },
+          "route": {
+            "description": "Parent route",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FahrtRouteResponseDto"
+              }
+            ]
           }
         },
         "required": ["id", "routeId", "riddenAt", "createdAt", "updatedAt"]

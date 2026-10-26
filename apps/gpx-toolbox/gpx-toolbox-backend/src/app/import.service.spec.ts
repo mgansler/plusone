@@ -380,6 +380,9 @@ describe('ImportService', () => {
                 findMany: vi.fn().mockResolvedValue([]), // No matches
                 create: vi.fn().mockResolvedValue({ id: '1', name: 'Activity 999' }),
               },
+              fahrt: {
+                create: vi.fn().mockResolvedValue({ id: 'f1', routeId: '1' }),
+              },
             },
           },
           { provide: StravaService, useValue: mockStrava },
@@ -394,6 +397,7 @@ describe('ImportService', () => {
       expect(result.newRoutes).toBe(1)
       expect(result.matched).toBe(0)
       expect(mockStrava.downloadActivityGpx).toHaveBeenCalledWith('token', '999')
+      expect(service['prisma'].fahrt.create).toHaveBeenCalled()
     })
 
     it('auto-matches to existing route when enabled and a match exists', async () => {
@@ -407,7 +411,15 @@ describe('ImportService', () => {
 
       const mockStrava = {
         downloadActivityGpx: vi.fn().mockResolvedValue(gpxContent),
-        getActivity: vi.fn().mockResolvedValue({ id: 999, name: 'Activity 999', distance: 10000 }),
+        getActivity: vi.fn().mockResolvedValue({
+          id: 999,
+          name: 'Activity 999',
+          distance: 10000,
+          start_date_local: '2024-01-01T10:00:00Z',
+          moving_time: 3600,
+          heart_rate_avg: 150,
+          heart_rate_max: 180,
+        }),
       }
 
       const module: TestingModule = await Test.createTestingModule({
@@ -433,6 +445,9 @@ describe('ImportService', () => {
                 update: vi.fn().mockResolvedValue({ id: '1', stravaActivityId: '999' }),
                 create: vi.fn().mockResolvedValue({ id: '2', name: 'Activity 999' }),
               },
+              fahrt: {
+                create: vi.fn().mockResolvedValue({ id: 'f1', routeId: '1' }),
+              },
             },
           },
           { provide: StravaService, useValue: mockStrava },
@@ -445,6 +460,7 @@ describe('ImportService', () => {
 
       expect(result.imported).toBe(1)
       expect(result.matched).toBe(1)
+      expect(service['prisma'].fahrt.create).toHaveBeenCalled()
     })
   })
 

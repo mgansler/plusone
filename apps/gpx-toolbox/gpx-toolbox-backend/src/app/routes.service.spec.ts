@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { RoutesService } from './routes.service'
+import { StravaService } from './strava.service'
 
 const sampleGpx = `<?xml version="1.0" encoding="UTF-8"?>
 <gpx>
@@ -28,6 +29,7 @@ async function buildModule(mockPrisma: Record<string, unknown>) {
         provide: PrismaService,
         useValue: mockPrisma,
       },
+      { provide: StravaService, useValue: {} },
     ],
   }).compile()
 }

@@ -216,6 +216,22 @@ export interface StravaRouteSummaryDto {
 }
 
 /**
+ * Route stats
+ */
+export type FahrtRouteResponseDtoStats = { [key: string]: unknown }
+
+export interface FahrtRouteResponseDto {
+  /** Route ID */
+  id: string
+  /** Route name */
+  name: string
+  /** Route status */
+  status?: string
+  /** Route stats */
+  stats?: FahrtRouteResponseDtoStats
+}
+
+/**
  * Duration in seconds
  */
 export type FahrtResponseDtoDuration = { [key: string]: unknown }
@@ -261,6 +277,8 @@ export interface FahrtResponseDto {
   createdAt: string
   /** Updated at */
   updatedAt: string
+  /** Parent route */
+  route?: FahrtRouteResponseDto
 }
 
 export interface CreateFahrtDto {
@@ -447,6 +465,20 @@ export type FindNearbyRoutesParams = {
   radius: number
 }
 
+export type ListStravaActivities200Item = {
+  id: number
+  name: string
+  distance?: number
+  elevationGain?: number
+  moving_time?: number
+  elapsed_duration?: number
+  heart_rate_avg?: number
+  heart_rate_max?: number
+  start_date_local: string
+  routeId?: string
+  imported: boolean
+}
+
 export type StravaCallbackParams = {
   /**
    * OAuth state parameter
@@ -506,6 +538,33 @@ export type GetFahrtWeatherParams = {
    * Date to fetch weather for (ISO 8601)
    */
   date?: string
+}
+
+export type ListAllFahrtenParams = {
+  /**
+   * Filter by date range start
+   */
+  dateFrom?: string
+  /**
+   * Filter by date range end
+   */
+  dateTo?: string
+  /**
+   * Sort field
+   */
+  sortBy?: string
+  /**
+   * Sort order
+   */
+  order?: string
+  /**
+   * Page number
+   */
+  page?: number
+  /**
+   * Page size
+   */
+  limit?: number
 }
 
 export type DebugStravaRequestParams = {
@@ -1046,6 +1105,87 @@ export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearby
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getFindNearbyRoutesQueryOptions(params, options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
+export const listStravaActivities = (signal?: AbortSignal) => {
+  return customAxiosInstance<ListStravaActivities200Item[]>({
+    url: `/api/routes/strava-activities`,
+    method: 'GET',
+    signal,
+  })
+}
+
+export const getListStravaActivitiesQueryKey = () => {
+  return [`/api/routes/strava-activities`] as const
+}
+
+export const getListStravaActivitiesQueryOptions = <
+  TData = Awaited<ReturnType<typeof listStravaActivities>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getListStravaActivitiesQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listStravaActivities>>> = ({ signal }) =>
+    listStravaActivities(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listStravaActivities>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListStravaActivitiesQueryResult = NonNullable<Awaited<ReturnType<typeof listStravaActivities>>>
+export type ListStravaActivitiesQueryError = unknown
+
+export function useListStravaActivities<TData = Awaited<ReturnType<typeof listStravaActivities>>, TError = unknown>(
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listStravaActivities>>,
+          TError,
+          Awaited<ReturnType<typeof listStravaActivities>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListStravaActivities<TData = Awaited<ReturnType<typeof listStravaActivities>>, TError = unknown>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listStravaActivities>>,
+          TError,
+          Awaited<ReturnType<typeof listStravaActivities>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListStravaActivities<TData = Awaited<ReturnType<typeof listStravaActivities>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useListStravaActivities<TData = Awaited<ReturnType<typeof listStravaActivities>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getListStravaActivitiesQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>
@@ -2138,6 +2278,267 @@ export function useGetFahrtWeather<TData = Awaited<ReturnType<typeof getFahrtWea
   }
 
   return withQueryKey(query, queryOptions.queryKey)
+}
+
+export const listAllFahrten = (params?: ListAllFahrtenParams, signal?: AbortSignal) => {
+  return customAxiosInstance<FahrtResponseDto[]>({ url: `/api/fahrten`, method: 'GET', params, signal })
+}
+
+export const getListAllFahrtenQueryKey = (params?: ListAllFahrtenParams) => {
+  return [`/api/fahrten`, ...(params ? [params] : [])] as const
+}
+
+export const getListAllFahrtenQueryOptions = <TData = Awaited<ReturnType<typeof listAllFahrten>>, TError = unknown>(
+  params?: ListAllFahrtenParams,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listAllFahrten>>, TError, TData>> },
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getListAllFahrtenQueryKey(params)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listAllFahrten>>> = ({ signal }) =>
+    listAllFahrten(params, signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listAllFahrten>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListAllFahrtenQueryResult = NonNullable<Awaited<ReturnType<typeof listAllFahrten>>>
+export type ListAllFahrtenQueryError = unknown
+
+export function useListAllFahrten<TData = Awaited<ReturnType<typeof listAllFahrten>>, TError = unknown>(
+  params: undefined | ListAllFahrtenParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof listAllFahrten>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listAllFahrten>>,
+          TError,
+          Awaited<ReturnType<typeof listAllFahrten>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListAllFahrten<TData = Awaited<ReturnType<typeof listAllFahrten>>, TError = unknown>(
+  params?: ListAllFahrtenParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listAllFahrten>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listAllFahrten>>,
+          TError,
+          Awaited<ReturnType<typeof listAllFahrten>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListAllFahrten<TData = Awaited<ReturnType<typeof listAllFahrten>>, TError = unknown>(
+  params?: ListAllFahrtenParams,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listAllFahrten>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useListAllFahrten<TData = Awaited<ReturnType<typeof listAllFahrten>>, TError = unknown>(
+  params?: ListAllFahrtenParams,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listAllFahrten>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getListAllFahrtenQueryOptions(params, options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
+export const getFahrt2 = (id: string, signal?: AbortSignal) => {
+  return customAxiosInstance<FahrtResponseDto>({ url: `/api/fahrten/${id}`, method: 'GET', signal })
+}
+
+export const getGetFahrt2QueryKey = (id: string) => {
+  return [`/api/fahrten/${id}`] as const
+}
+
+export const getGetFahrt2QueryOptions = <TData = Awaited<ReturnType<typeof getFahrt2>>, TError = unknown>(
+  id: string,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFahrt2>>, TError, TData>> },
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetFahrt2QueryKey(id)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFahrt2>>> = ({ signal }) => getFahrt2(id, signal)
+
+  return { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getFahrt2>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetFahrt2QueryResult = NonNullable<Awaited<ReturnType<typeof getFahrt2>>>
+export type GetFahrt2QueryError = unknown
+
+export function useGetFahrt2<TData = Awaited<ReturnType<typeof getFahrt2>>, TError = unknown>(
+  id: string,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFahrt2>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<Awaited<ReturnType<typeof getFahrt2>>, TError, Awaited<ReturnType<typeof getFahrt2>>>,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFahrt2<TData = Awaited<ReturnType<typeof getFahrt2>>, TError = unknown>(
+  id: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFahrt2>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFahrt2>>,
+          TError,
+          Awaited<ReturnType<typeof getFahrt2>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFahrt2<TData = Awaited<ReturnType<typeof getFahrt2>>, TError = unknown>(
+  id: string,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFahrt2>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetFahrt2<TData = Awaited<ReturnType<typeof getFahrt2>>, TError = unknown>(
+  id: string,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFahrt2>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetFahrt2QueryOptions(id, options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
+export const updateFahrt2 = (id: string, updateFahrtDto: UpdateFahrtDto, signal?: AbortSignal) => {
+  return customAxiosInstance<FahrtResponseDto>({
+    url: `/api/fahrten/${id}`,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    data: updateFahrtDto,
+    signal,
+  })
+}
+
+export const getUpdateFahrt2MutationKey = () => ['updateFahrt2'] as const
+
+export const getUpdateFahrt2MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateFahrt2>>,
+    TError,
+    UpdateFahrt2MutationVariables,
+    TContext
+  >
+}): UseMutationOptions<Awaited<ReturnType<typeof updateFahrt2>>, TError, UpdateFahrt2MutationVariables, TContext> => {
+  const mutationKey = getUpdateFahrt2MutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateFahrt2>>, UpdateFahrt2MutationVariables> = (
+    props,
+  ) => {
+    const { id, data } = props ?? {}
+
+    return updateFahrt2(id, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type UpdateFahrt2MutationResult = NonNullable<Awaited<ReturnType<typeof updateFahrt2>>>
+export type UpdateFahrt2MutationBody = UpdateFahrtDto
+export type UpdateFahrt2MutationError = unknown
+export type UpdateFahrt2MutationVariables = { id: string; data: UpdateFahrtDto }
+
+export const useUpdateFahrt2 = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof updateFahrt2>>,
+      TError,
+      UpdateFahrt2MutationVariables,
+      TContext
+    >
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<Awaited<ReturnType<typeof updateFahrt2>>, TError, UpdateFahrt2MutationVariables, TContext> => {
+  return useMutation(getUpdateFahrt2MutationOptions(options), queryClient)
+}
+
+export const deleteFahrt2 = (id: string, signal?: AbortSignal) => {
+  return customAxiosInstance<void>({ url: `/api/fahrten/${id}`, method: 'DELETE', signal })
+}
+
+export const getDeleteFahrt2MutationKey = () => ['deleteFahrt2'] as const
+
+export const getDeleteFahrt2MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteFahrt2>>,
+    TError,
+    DeleteFahrt2MutationVariables,
+    TContext
+  >
+}): UseMutationOptions<Awaited<ReturnType<typeof deleteFahrt2>>, TError, DeleteFahrt2MutationVariables, TContext> => {
+  const mutationKey = getDeleteFahrt2MutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteFahrt2>>, DeleteFahrt2MutationVariables> = (
+    props,
+  ) => {
+    const { id } = props ?? {}
+
+    return deleteFahrt2(id)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type DeleteFahrt2MutationResult = NonNullable<Awaited<ReturnType<typeof deleteFahrt2>>>
+
+export type DeleteFahrt2MutationError = unknown
+export type DeleteFahrt2MutationVariables = { id: string }
+
+export const useDeleteFahrt2 = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteFahrt2>>,
+      TError,
+      DeleteFahrt2MutationVariables,
+      TContext
+    >
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<Awaited<ReturnType<typeof deleteFahrt2>>, TError, DeleteFahrt2MutationVariables, TContext> => {
+  return useMutation(getDeleteFahrt2MutationOptions(options), queryClient)
 }
 
 export const debugStravaRequest = (params: DebugStravaRequestParams, signal?: AbortSignal) => {

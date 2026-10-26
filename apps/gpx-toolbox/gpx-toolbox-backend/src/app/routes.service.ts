@@ -4,6 +4,7 @@ import { Prisma, PrismaService } from '@plusone/gpx-toolbox-persistence'
 import { analyzeGpx, parseGpx, TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
+import { StravaService } from './strava.service'
 
 /**
  * Internal route type with fahrten relation, used after querying.
@@ -46,7 +47,10 @@ type FormattedRoute = FormattedRouteBase & {
 export class RoutesService {
   private readonly logger = new Logger(RoutesService.name)
 
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly stravaService: StravaService,
+  ) {}
 
   /**
    * Import a GPX file: parse, compute stats, extract polyline, create route.
@@ -366,6 +370,76 @@ export class RoutesService {
     await this.prismaService.route.update({
       where: { id: routeId },
       data: { stravaActivityId },
+    })
+  }
+
+  /**
+   * Get Strava activities with metadata, enriched with existing route data.
+   * Used by the /fahrten/sync page to list activities for import as Fahrten.
+   */
+  async getStravaActivities(
+    accessToken: string,
+    userId: string,
+  ): Promise<
+    Array<{
+      id: number
+      name: string
+      distance?: number
+      elevationGain?: number
+      moving_time?: number
+      elapsed_duration?: number
+      heart_rate_avg?: number
+      heart_rate_max?: number
+      start_date_local: string
+      routeId?: string
+      imported: boolean
+    }>
+  > {
+    // Fetch all activities from Strava
+    const activities = await this.stravaService.getActivities(accessToken)
+
+    // Fetch existing routes that have stravaActivityId
+    const routes = await this.prismaService.route.findMany({
+      where: { userId, stravaActivityId: { not: null } },
+      select: { id: true, stravaActivityId: true, stats: true, gpxContent: true, polyline: true },
+    })
+    const routeByActivity = new Map(
+      routes.map((r) => [
+        r.stravaActivityId!,
+        {
+          routeId: r.id,
+          stats: r.stats,
+          hasGpx: !!r.gpxContent,
+        },
+      ]),
+    )
+
+    // The Strava summary list does not include heart rate; source it from
+    // already-imported Fahrten (stored from the detailed activity at import time).
+    const fahrten = await this.prismaService.fahrt.findMany({
+      where: { stravaActivityId: { in: activities.map((a) => String(a.id ?? 0)) } },
+      select: { stravaActivityId: true, avgHr: true, maxHr: true },
+    })
+    const fahrtByActivity = new Map(fahrten.map((f) => [f.stravaActivityId!, { avgHr: f.avgHr, maxHr: f.maxHr }]))
+
+    return activities.map((activity) => {
+      const stravaId = activity.id ?? 0
+      const routeInfo = routeByActivity.get(String(stravaId))
+      const fahrtInfo = fahrtByActivity.get(String(stravaId))
+
+      return {
+        id: stravaId,
+        name: activity.name ?? `Aktivität ${stravaId}`,
+        distance: activity.distance,
+        elevationGain: activity.total_elevation_gain,
+        moving_time: activity.moving_time,
+        elapsed_duration: activity.elapsed_time,
+        heart_rate_avg: fahrtInfo?.avgHr ?? undefined,
+        heart_rate_max: fahrtInfo?.maxHr ?? undefined,
+        start_date_local: activity.start_date_local ?? new Date().toISOString(),
+        routeId: routeInfo?.routeId,
+        imported: !!routeInfo?.hasGpx,
+      }
     })
   }
 

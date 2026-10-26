@@ -12,6 +12,7 @@ import {
   Query,
   Req,
   Res,
+  UnauthorizedException,
   UploadedFile,
   UseGuards,
 } from '@nestjs/common'
@@ -24,6 +25,7 @@ import { NearbyRouteResponseDto } from './dto/nearby-route-response.dto'
 import { ListRoutesResponseDto, RouteResponseDto } from './dto/list-routes-response.dto'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { JwtPayload } from './jwt.strategy'
+import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 @ApiTags('routes')
 @Controller('routes')
@@ -31,7 +33,10 @@ import { JwtPayload } from './jwt.strategy'
 export class RoutesController {
   private readonly logger = new Logger(RoutesController.name)
 
-  constructor(private readonly routesService: RoutesService) {}
+  constructor(
+    private readonly routesService: RoutesService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Post()
   @ApiOperation({ operationId: 'importGpx' })
@@ -83,6 +88,15 @@ export class RoutesController {
     response.send(gpxContent)
   }
 
+  @Get('strava-activities')
+  @ApiOperation({ operationId: 'listStravaActivities' })
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'List of Strava activities with metadata' })
+  async listStravaActivities(@Req() req: Request & { user: JwtPayload }) {
+    const accessToken = await this.getStravaToken(req)
+    return this.routesService.getStravaActivities(accessToken, req.user.sub)
+  }
+
   @Get(':id')
   @ApiOperation({ operationId: 'getRoute' })
   @ApiBearerAuth()
@@ -129,5 +143,16 @@ export class RoutesController {
       throw new BadRequestException('lat, lng, and radius are required')
     }
     return this.routesService.findNearby(latitude, longitude, radius, req.user.sub)
+  }
+
+  private async getStravaToken(req: Request & { user: JwtPayload }): Promise<string> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: req.user.sub },
+      select: { accessToken: true },
+    })
+    if (!user?.accessToken) {
+      throw new UnauthorizedException('No Strava access token')
+    }
+    return user.accessToken
   }
 }

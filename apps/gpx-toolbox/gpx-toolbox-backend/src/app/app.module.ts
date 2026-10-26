@@ -17,6 +17,7 @@ import { RoutesModule } from './routes.module'
 import { AuthModule } from './auth.module'
 import { ImportModule } from './import.module'
 import { RidesModule } from './rides.module'
+import { FahrtenModule } from './fahrten.module'
 import { JwtStrategy } from './jwt.strategy'
 import { DebugModule } from './debug.module'
 
@@ -39,6 +40,7 @@ import { DebugModule } from './debug.module'
     AuthModule,
     ImportModule,
     RidesModule,
+    FahrtenModule,
     DebugModule,
   ],
   controllers: [HealthController],

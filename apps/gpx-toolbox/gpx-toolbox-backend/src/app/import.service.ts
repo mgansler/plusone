@@ -1,7 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
-import { analyzeGpx, calculateHaversineDistance, parseGpx, segmentTrack, TrackPoint } from '@plusone/gpx-toolbox-utils'
+import {
+  analyzeGpx,
+  analyzePoints,
+  calculateElevationLoss,
+  calculateHaversineDistance,
+  parseGpx,
+  segmentTrack,
+  TrackPoint,
+} from '@plusone/gpx-toolbox-utils'
 
 import { StravaService } from './strava.service'
 
@@ -84,7 +92,7 @@ export class ImportService {
       const stats = gpxContent
         ? (() => {
             const overview = analyzeGpx(gpxContent)
-            const elevationLoss = this.calculateElevationLoss(points)
+            const elevationLoss = calculateElevationLoss(points)
             return {
               distance: overview.totalDistance,
               elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
@@ -172,7 +180,7 @@ export class ImportService {
         const stats = gpxContent
           ? (() => {
               const overview = analyzeGpx(gpxContent)
-              const elevationLoss = this.calculateElevationLoss(points)
+              const elevationLoss = calculateElevationLoss(points)
               return {
                 distance: overview.totalDistance,
                 elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
@@ -218,26 +226,61 @@ export class ImportService {
 
   /**
    * Import a single Strava activity with auto-match to existing routes.
+   * Creates a Route and a Fahrt (with activity data: duration, HR, elevation).
+   *
+   * Uses the Strava streams API (GET /activities/{id}/streams) to obtain
+   * track points instead of the unreliable GPX export endpoint.
    */
   async importStravaActivity(accessToken: string, userId: string, activityId: string, autoMatch = true) {
     try {
-      // Download GPX
-      const gpxContent = await this.stravaService.downloadActivityGpx(accessToken, activityId)
-      const points = parseGpx(gpxContent)
-
-      if (points.length === 0) {
-        throw new Error('No track points found in GPX')
+      // Fetch activity details (start_date_local, elapsed_duration, heart_rate, elevation)
+      const activityDetail = (await this.stravaService.getActivity(accessToken, Number(activityId))) as {
+        id?: number
+        name?: string
+        distance?: number
+        total_elevation_gain?: number
+        elapsed_duration?: number
+        heart_rate_avg?: number
+        heart_rate_max?: number
+        start_date_local?: string
+        moving_time?: number
+        type?: string
       }
 
-      // Compute stats
-      const overview = analyzeGpx(gpxContent)
+      // Download streams (latlng, altitude, time, heartrate, cadence, moving)
+      const streamPoints = await this.stravaService.downloadActivityStreams(accessToken, Number(activityId))
+      console.log(streamPoints)
+
+      if (streamPoints.length === 0) {
+        throw new Error('No track points found in activity streams')
+      }
+
+      // Convert stream points to TrackPoint type for downstream functions
+      const points: Array<TrackPoint> = streamPoints.map((p) => ({
+        latitude: p.latitude,
+        longitude: p.longitude,
+        elevation: p.elevation,
+        time: p.time,
+        hr: p.hr,
+        cad: p.cad,
+      }))
+
+      // Store raw stream data as JSON (preserves all stream data including moving flag)
+      const gpxContent = JSON.stringify(streamPoints)
+
+      // Compute stats from stream points
+      const overview = analyzePoints(points)
       const polyline = points.map((p) => ({ lat: p.latitude, lng: p.longitude }))
-      const elevationLoss = this.calculateElevationLoss(points)
+      const elevationLoss = calculateElevationLoss(points)
       const stats = {
         distance: overview.totalDistance,
         elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
         elevationLoss,
       }
+
+      let routeId: string | undefined
+      let matched = 0
+      let newRoutes = 0
 
       // Auto-match
       if (autoMatch) {
@@ -249,31 +292,51 @@ export class ImportService {
             data: { stravaActivityId: String(activityId) },
           })
           this.logger.log(`Auto-matched activity ${activityId} to route "${match.routeName}"`)
-          return { imported: 1, matched: 1, newRoutes: 0, matchedRouteId: match.routeId }
+          routeId = match.routeId
+          matched = 1
         }
       }
 
-      // Create new route
-      const activityDetail = (await this.stravaService.getActivity(accessToken, Number(activityId))) as Awaited<
-        ReturnType<typeof this.stravaService.getActivity>
-      > & { name?: string; distance?: number }
+      // Create new route if no match
+      if (!routeId) {
+        const route = await this.prisma.route.create({
+          data: {
+            name: activityDetail.name ?? 'Imported Activity',
+            description: activityDetail.distance ? `${(activityDetail.distance / 1000).toFixed(1)} km` : undefined,
+            gpxContent,
+            polyline: { points: JSON.stringify(polyline) },
+            stats,
+            source: 'stravaActivity',
+            userId,
+            stravaActivityId: String(activityId),
+            ratingTags: [],
+          },
+        })
+        routeId = route.id
+        newRoutes = 1
+        this.logger.log(`Created new route from Strava activity ${activityId}`)
+      }
 
-      await this.prisma.route.create({
+      // Create a Fahrt from the activity data
+      const riddenAt = activityDetail.start_date_local ? new Date(activityDetail.start_date_local) : new Date()
+      const duration = activityDetail.moving_time ?? activityDetail.elapsed_duration ?? null
+      const avgHr = activityDetail.heart_rate_avg ?? null
+      const maxHr = activityDetail.heart_rate_max ?? null
+
+      await this.prisma.fahrt.create({
         data: {
-          name: activityDetail.name ?? 'Imported Activity',
-          description: activityDetail.distance ? `${(activityDetail.distance / 1000).toFixed(1)} km` : undefined,
-          gpxContent,
-          polyline: { points: JSON.stringify(polyline) },
-          stats,
-          source: 'stravaActivity',
+          routeId: routeId!,
           userId,
           stravaActivityId: String(activityId),
-          ratingTags: [],
+          riddenAt,
+          duration,
+          avgHr,
+          maxHr,
         },
       })
+      this.logger.log(`Created Fahrt from Strava activity ${activityId}`)
 
-      this.logger.log(`Created new route from Strava activity ${activityId}`)
-      return { imported: 1, matched: 0, newRoutes: 1 }
+      return { imported: 1, matched, newRoutes }
     } catch (error) {
       this.logger.error(`Failed to import Strava activity ${activityId}: ${error.message}`)
       throw error
@@ -408,17 +471,5 @@ export class ImportService {
     }
 
     return maxDist
-  }
-
-  /**
-   * Calculate total elevation loss from track points.
-   */
-  private calculateElevationLoss(points: Array<TrackPoint>): number {
-    let loss = 0
-    for (let i = 1; i < points.length; i++) {
-      const diff = points[i - 1].elevation - points[i].elevation
-      if (diff > 0) loss += diff
-    }
-    return Math.round(loss)
   }
 }

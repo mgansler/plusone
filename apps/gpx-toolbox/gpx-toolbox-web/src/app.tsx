@@ -79,6 +79,9 @@ export function App() {
           <a href="/routes" style={styles.topbarLink}>
             Routen
           </a>
+          <a href="/fahrten" style={styles.topbarLink}>
+            Fahrten
+          </a>
           <a href="/nearby" style={styles.topbarLink}>
             In der Nähe
           </a>

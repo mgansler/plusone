@@ -1,5 +1,6 @@
 import { IsDateString, IsInt, IsOptional, IsString, Max, Min } from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
 
 export class CreateFahrtDto {
   @ApiProperty({ description: 'Date and time of the ride (ISO 8601)' })
@@ -97,16 +98,39 @@ export class QueryFahrtDto {
 
   @ApiPropertyOptional({ description: 'Page number', default: 1 })
   @IsOptional()
+  @Transform(({ value }) => {
+    const n = parseInt(value, 10)
+    return isNaN(n) ? 1 : n
+  })
   @IsInt()
   @Min(1)
-  page?: number = 1
+  page?: number
 
   @ApiPropertyOptional({ description: 'Page size', default: 50 })
   @IsOptional()
+  @Transform(({ value }) => {
+    let n = parseInt(value, 10)
+    if (isNaN(n)) n = 50
+    return n < 1 ? 1 : n > 200 ? 200 : n
+  })
   @IsInt()
   @Min(1)
   @Max(200)
-  limit?: number = 50
+  limit?: number
+}
+
+export class FahrtRouteResponseDto {
+  @ApiProperty({ description: 'Route ID' })
+  id: string
+
+  @ApiProperty({ description: 'Route name' })
+  name: string
+
+  @ApiPropertyOptional({ description: 'Route status' })
+  status?: string
+
+  @ApiPropertyOptional({ description: 'Route stats' })
+  stats?: Record<string, unknown>
 }
 
 export class FahrtResponseDto {
@@ -139,4 +163,7 @@ export class FahrtResponseDto {
 
   @ApiProperty({ description: 'Updated at' })
   updatedAt: Date
+
+  @ApiPropertyOptional({ description: 'Parent route', type: FahrtRouteResponseDto })
+  route?: FahrtRouteResponseDto
 }

@@ -79,6 +79,21 @@ export const FindNearbyRoutesResponseItem = zod.strictObject({
 })
 export const FindNearbyRoutesResponse = zod.array(FindNearbyRoutesResponseItem)
 
+export const ListStravaActivitiesResponseItem = zod.strictObject({
+  id: zod.int(),
+  name: zod.string(),
+  distance: zod.number().optional(),
+  elevationGain: zod.number().optional(),
+  moving_time: zod.int().optional(),
+  elapsed_duration: zod.int().optional(),
+  heart_rate_avg: zod.int().optional(),
+  heart_rate_max: zod.int().optional(),
+  start_date_local: zod.string(),
+  routeId: zod.string().optional(),
+  imported: zod.boolean(),
+})
+export const ListStravaActivitiesResponse = zod.array(ListStravaActivitiesResponseItem)
+
 export const StravaAuthRedirectResponse = zod.unknown()
 
 export const StravaCallbackResponse = zod.unknown()
@@ -161,6 +176,15 @@ export const ListFahrtenResponseItem = zod.strictObject({
   weather: zod.looseObject({}).optional().describe('Weather conditions summary'),
   createdAt: zod.iso.datetime({ offset: true }).describe('Created at'),
   updatedAt: zod.iso.datetime({ offset: true }).describe('Updated at'),
+  route: zod
+    .strictObject({
+      id: zod.string().describe('Route ID'),
+      name: zod.string().describe('Route name'),
+      status: zod.string().optional().describe('Route status'),
+      stats: zod.looseObject({}).optional().describe('Route stats'),
+    })
+    .optional()
+    .describe('Parent route'),
 })
 export const ListFahrtenResponse = zod.array(ListFahrtenResponseItem)
 
@@ -175,6 +199,15 @@ export const CreateFahrtResponse = zod.strictObject({
   weather: zod.looseObject({}).optional().describe('Weather conditions summary'),
   createdAt: zod.iso.datetime({ offset: true }).describe('Created at'),
   updatedAt: zod.iso.datetime({ offset: true }).describe('Updated at'),
+  route: zod
+    .strictObject({
+      id: zod.string().describe('Route ID'),
+      name: zod.string().describe('Route name'),
+      status: zod.string().optional().describe('Route status'),
+      stats: zod.looseObject({}).optional().describe('Route stats'),
+    })
+    .optional()
+    .describe('Parent route'),
 })
 
 export const GetFahrtResponse = zod.strictObject({
@@ -188,6 +221,15 @@ export const GetFahrtResponse = zod.strictObject({
   weather: zod.looseObject({}).optional().describe('Weather conditions summary'),
   createdAt: zod.iso.datetime({ offset: true }).describe('Created at'),
   updatedAt: zod.iso.datetime({ offset: true }).describe('Updated at'),
+  route: zod
+    .strictObject({
+      id: zod.string().describe('Route ID'),
+      name: zod.string().describe('Route name'),
+      status: zod.string().optional().describe('Route status'),
+      stats: zod.looseObject({}).optional().describe('Route stats'),
+    })
+    .optional()
+    .describe('Parent route'),
 })
 
 export const UpdateFahrtResponse = zod.strictObject({
@@ -201,10 +243,88 @@ export const UpdateFahrtResponse = zod.strictObject({
   weather: zod.looseObject({}).optional().describe('Weather conditions summary'),
   createdAt: zod.iso.datetime({ offset: true }).describe('Created at'),
   updatedAt: zod.iso.datetime({ offset: true }).describe('Updated at'),
+  route: zod
+    .strictObject({
+      id: zod.string().describe('Route ID'),
+      name: zod.string().describe('Route name'),
+      status: zod.string().optional().describe('Route status'),
+      stats: zod.looseObject({}).optional().describe('Route stats'),
+    })
+    .optional()
+    .describe('Parent route'),
 })
 
 export const DeleteFahrtResponse = zod.unknown()
 
 export const GetFahrtWeatherResponse = zod.unknown()
+
+export const ListAllFahrtenResponseItem = zod.strictObject({
+  id: zod.string().describe('Fahrt ID'),
+  routeId: zod.string().describe('Route ID'),
+  riddenAt: zod.iso.datetime({ offset: true }).describe('Ridden date and time'),
+  duration: zod.looseObject({}).optional().describe('Duration in seconds'),
+  avgHr: zod.looseObject({}).optional().describe('Average heart rate'),
+  maxHr: zod.looseObject({}).optional().describe('Maximum heart rate'),
+  notes: zod.looseObject({}).optional().describe('Personal notes'),
+  weather: zod.looseObject({}).optional().describe('Weather conditions summary'),
+  createdAt: zod.iso.datetime({ offset: true }).describe('Created at'),
+  updatedAt: zod.iso.datetime({ offset: true }).describe('Updated at'),
+  route: zod
+    .strictObject({
+      id: zod.string().describe('Route ID'),
+      name: zod.string().describe('Route name'),
+      status: zod.string().optional().describe('Route status'),
+      stats: zod.looseObject({}).optional().describe('Route stats'),
+    })
+    .optional()
+    .describe('Parent route'),
+})
+export const ListAllFahrtenResponse = zod.array(ListAllFahrtenResponseItem)
+
+export const GetFahrt2Response = zod.strictObject({
+  id: zod.string().describe('Fahrt ID'),
+  routeId: zod.string().describe('Route ID'),
+  riddenAt: zod.iso.datetime({ offset: true }).describe('Ridden date and time'),
+  duration: zod.looseObject({}).optional().describe('Duration in seconds'),
+  avgHr: zod.looseObject({}).optional().describe('Average heart rate'),
+  maxHr: zod.looseObject({}).optional().describe('Maximum heart rate'),
+  notes: zod.looseObject({}).optional().describe('Personal notes'),
+  weather: zod.looseObject({}).optional().describe('Weather conditions summary'),
+  createdAt: zod.iso.datetime({ offset: true }).describe('Created at'),
+  updatedAt: zod.iso.datetime({ offset: true }).describe('Updated at'),
+  route: zod
+    .strictObject({
+      id: zod.string().describe('Route ID'),
+      name: zod.string().describe('Route name'),
+      status: zod.string().optional().describe('Route status'),
+      stats: zod.looseObject({}).optional().describe('Route stats'),
+    })
+    .optional()
+    .describe('Parent route'),
+})
+
+export const UpdateFahrt2Response = zod.strictObject({
+  id: zod.string().describe('Fahrt ID'),
+  routeId: zod.string().describe('Route ID'),
+  riddenAt: zod.iso.datetime({ offset: true }).describe('Ridden date and time'),
+  duration: zod.looseObject({}).optional().describe('Duration in seconds'),
+  avgHr: zod.looseObject({}).optional().describe('Average heart rate'),
+  maxHr: zod.looseObject({}).optional().describe('Maximum heart rate'),
+  notes: zod.looseObject({}).optional().describe('Personal notes'),
+  weather: zod.looseObject({}).optional().describe('Weather conditions summary'),
+  createdAt: zod.iso.datetime({ offset: true }).describe('Created at'),
+  updatedAt: zod.iso.datetime({ offset: true }).describe('Updated at'),
+  route: zod
+    .strictObject({
+      id: zod.string().describe('Route ID'),
+      name: zod.string().describe('Route name'),
+      status: zod.string().optional().describe('Route status'),
+      stats: zod.looseObject({}).optional().describe('Route stats'),
+    })
+    .optional()
+    .describe('Parent route'),
+})
+
+export const DeleteFahrt2Response = zod.unknown()
 
 export const DebugStravaRequestResponse = zod.unknown()
