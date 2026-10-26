@@ -57,7 +57,9 @@ export class AuthController {
       }
 
       const tokenData = await tokenResponse.json()
-      const { access_token, refresh_token } = tokenData
+      const { access_token, refresh_token, expires_at } = tokenData
+      // Strava returns expires_at in unix seconds; fall back to a 2h window if absent.
+      const tokenExpiresAt = expires_at ? new Date(expires_at * 1000) : new Date(Date.now() + 2 * 60 * 60 * 1000)
 
       // Fetch athlete profile
       const profile = (await this.stravaService.getAthlete(access_token)) as {
@@ -73,12 +75,14 @@ export class AuthController {
         update: {
           accessToken: access_token,
           refreshToken: refresh_token,
+          tokenExpiresAt,
           name: profile.firstname ?? profile.lastname ?? null,
         },
         create: {
           stravaId: String(profile.id),
           accessToken: access_token,
           refreshToken: refresh_token,
+          tokenExpiresAt,
           name: profile.firstname ?? profile.lastname ?? null,
           avatarUrl: profile.profile,
         },
@@ -103,13 +107,9 @@ export class AuthController {
     if (!auth) throw new UnauthorizedException()
 
     const payload = this.jwtService.verify(auth)
-    const user = await this.prisma.user.findUnique({
-      where: { id: payload.sub },
-      select: { accessToken: true },
-    })
-    if (!user?.accessToken) throw new UnauthorizedException('No Strava token')
+    const accessToken = await this.authService.getValidAccessToken(payload.sub)
 
-    const athlete = (await this.stravaService.getAthlete(user.accessToken)) as {
+    const athlete = (await this.stravaService.getAthlete(accessToken)) as {
       id?: string
       firstname?: string
       lastname?: string
@@ -227,16 +227,8 @@ export class AuthController {
       throw new Error('No refresh token available')
     }
 
-    const newTokens = await this.authService.refreshToken(user.refreshToken)
-
-    // Update stored tokens
-    await this.prisma.user.update({
-      where: { id: user.id },
-      data: {
-        accessToken: newTokens.accessToken,
-        refreshToken: newTokens.refreshToken,
-      },
-    })
+    // Refresh the Strava token and persist the new access/refresh tokens + expiry.
+    await this.authService.refreshAndPersist(user.id, user.refreshToken)
 
     // Issue new JWT
     const jwtPayload = { sub: user.id, stravaId: user.stravaId }

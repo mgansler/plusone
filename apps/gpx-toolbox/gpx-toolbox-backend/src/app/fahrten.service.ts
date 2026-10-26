@@ -1,4 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
+
 import { Prisma, PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { QueryFahrtDto, UpdateFahrtDto } from './dto/ride.dto'

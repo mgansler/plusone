@@ -7,6 +7,7 @@ import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { JwtPayload } from './jwt.strategy'
 import { StravaService } from './strava.service'
+import { AuthService } from './auth.service'
 
 /**
  * Debug endpoint to make direct requests to the Strava API.
@@ -28,6 +29,7 @@ export class DebugController {
   constructor(
     private readonly prisma: PrismaService,
     private readonly stravaService: StravaService,
+    private readonly authService: AuthService,
   ) {}
 
   @Get('strava')
@@ -39,12 +41,13 @@ export class DebugController {
     description: 'Strava API endpoint (e.g. /athlete, /athletes/me/stats, /routes)',
   })
   async stravaRequest(@Req() req: Request & { user: JwtPayload }, @Query('endpoint') endpoint: string) {
+    const accessToken = await this.authService.getValidAccessToken(req.user.sub)
     const user = await this.prisma.user.findUnique({
       where: { id: req.user.sub },
-      select: { accessToken: true, stravaId: true },
+      select: { stravaId: true },
     })
 
-    if (!user?.accessToken) throw new UnauthorizedException('No Strava access token')
+    if (!user?.stravaId) throw new UnauthorizedException('No Strava user')
 
     // Replace {id} and {athlete_id} with the authenticated user's Strava ID
     const resolvedEndpoint = endpoint.replace('{id}', user.stravaId).replace('{athlete_id}', user.stravaId)
@@ -53,7 +56,7 @@ export class DebugController {
     this.logger.log(`Debug Strava request: ${resolvedEndpoint}`)
 
     try {
-      const response = await this.stravaService.fetchStrava(resolvedEndpoint, user.accessToken)
+      const response = await this.stravaService.fetchStrava(resolvedEndpoint, accessToken)
       const data = await response.json()
 
       if (!response.ok) {

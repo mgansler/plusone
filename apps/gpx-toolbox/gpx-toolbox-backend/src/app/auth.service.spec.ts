@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { JwtService } from '@nestjs/jwt'
+import { UnauthorizedException } from '@nestjs/common'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
@@ -8,6 +9,7 @@ import { AuthService } from './auth.service'
 describe('AuthService', () => {
   let service: AuthService
   let jwtService: JwtService
+  let prisma: PrismaService
 
   const originalEnv = process.env
 
@@ -37,10 +39,12 @@ describe('AuthService', () => {
     }).compile()
 
     service = module.get<AuthService>(AuthService)
+    prisma = module.get(PrismaService)
   })
 
   afterEach(() => {
     process.env = originalEnv
+    vi.restoreAllMocks()
   })
 
   describe('getAuthorizationUrl', () => {
@@ -79,12 +83,14 @@ describe('AuthService', () => {
   })
 
   describe('refreshToken', () => {
-    it('returns new access and refresh tokens', async () => {
+    it('returns new access and refresh tokens plus expiry', async () => {
+      const expiresAt = new Date('2030-01-01T00:00:00Z').getTime()
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
         json: vi.fn().mockResolvedValue({
           access_token: 'new-access-token',
           refresh_token: 'new-refresh-token',
+          expires_at: Math.floor(expiresAt / 1000),
         }),
       })
 
@@ -92,6 +98,7 @@ describe('AuthService', () => {
 
       expect(result.accessToken).toBe('new-access-token')
       expect(result.refreshToken).toBe('new-refresh-token')
+      expect(result.expiresAt).toEqual(new Date(expiresAt))
       expect(global.fetch).toHaveBeenCalledWith(
         'https://www.strava.com/oauth/token',
         expect.objectContaining({
@@ -109,6 +116,79 @@ describe('AuthService', () => {
       })
 
       await expect(service.refreshToken('invalid-token')).rejects.toThrow('Failed to refresh Strava token')
+    })
+  })
+
+  describe('getValidAccessToken', () => {
+    it('returns the stored token when it is still valid', async () => {
+      const future = new Date(Date.now() + 60 * 60 * 1000)
+      vi.mocked(prisma.user.findUnique).mockResolvedValue({
+        accessToken: 'valid-token',
+        refreshToken: 'refresh-token',
+        tokenExpiresAt: future,
+      } as never)
+
+      const token = await service.getValidAccessToken('user-1')
+
+      expect(token).toBe('valid-token')
+      // No refresh should be attempted
+      expect(global.fetch).not.toHaveBeenCalled()
+      expect(prisma.user.update).not.toHaveBeenCalled()
+    })
+
+    it('refreshes and persists when the token is expired', async () => {
+      const past = new Date(Date.now() - 60 * 1000)
+      vi.mocked(prisma.user.findUnique).mockResolvedValue({
+        accessToken: 'expired-token',
+        refreshToken: 'refresh-token',
+        tokenExpiresAt: past,
+      } as never)
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: vi.fn().mockResolvedValue({
+          access_token: 'fresh-token',
+          refresh_token: 'fresh-refresh-token',
+          expires_at: Math.floor((Date.now() + 60 * 60 * 1000) / 1000),
+        }),
+      })
+      vi.mocked(prisma.user.update).mockResolvedValue({} as never)
+
+      const token = await service.getValidAccessToken('user-1')
+
+      expect(token).toBe('fresh-token')
+      expect(prisma.user.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 'user-1' },
+          data: expect.objectContaining({ accessToken: 'fresh-token', refreshToken: 'fresh-refresh-token' }),
+        }),
+      )
+    })
+
+    it('refreshes when the expiry is unknown (tokenExpiresAt null)', async () => {
+      vi.mocked(prisma.user.findUnique).mockResolvedValue({
+        accessToken: 'unknown-token',
+        refreshToken: 'refresh-token',
+        tokenExpiresAt: null,
+      } as never)
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: vi.fn().mockResolvedValue({
+          access_token: 'fresh-token',
+          refresh_token: 'fresh-refresh-token',
+          expires_at: Math.floor((Date.now() + 60 * 60 * 1000) / 1000),
+        }),
+      })
+      vi.mocked(prisma.user.update).mockResolvedValue({} as never)
+
+      const token = await service.getValidAccessToken('user-1')
+
+      expect(token).toBe('fresh-token')
+    })
+
+    it('throws when no access token is stored', async () => {
+      vi.mocked(prisma.user.findUnique).mockResolvedValue(null)
+
+      await expect(service.getValidAccessToken('user-1')).rejects.toThrow(UnauthorizedException)
     })
   })
 })

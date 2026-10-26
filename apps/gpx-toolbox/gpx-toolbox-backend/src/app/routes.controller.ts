@@ -12,7 +12,6 @@ import {
   Query,
   Req,
   Res,
-  UnauthorizedException,
   UploadedFile,
   UseGuards,
 } from '@nestjs/common'
@@ -25,7 +24,7 @@ import { NearbyRouteResponseDto } from './dto/nearby-route-response.dto'
 import { ListRoutesResponseDto, RouteResponseDto } from './dto/list-routes-response.dto'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { JwtPayload } from './jwt.strategy'
-import { PrismaService } from '@plusone/gpx-toolbox-persistence'
+import { AuthService } from './auth.service'
 
 @ApiTags('routes')
 @Controller('routes')
@@ -35,7 +34,7 @@ export class RoutesController {
 
   constructor(
     private readonly routesService: RoutesService,
-    private readonly prisma: PrismaService,
+    private readonly authService: AuthService,
   ) {}
 
   @Post()
@@ -146,13 +145,7 @@ export class RoutesController {
   }
 
   private async getStravaToken(req: Request & { user: JwtPayload }): Promise<string> {
-    const user = await this.prisma.user.findUnique({
-      where: { id: req.user.sub },
-      select: { accessToken: true },
-    })
-    if (!user?.accessToken) {
-      throw new UnauthorizedException('No Strava access token')
-    }
-    return user.accessToken
+    // Guarantees a valid token: refreshes transparently if the stored one is expired.
+    return this.authService.getValidAccessToken(req.user.sub)
   }
 }

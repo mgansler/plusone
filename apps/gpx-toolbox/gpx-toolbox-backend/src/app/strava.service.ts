@@ -6,6 +6,7 @@ import {
   exploreSegments,
   ExploreSegmentsParams,
   getActivityById,
+  getActivityStreams,
   getClubById,
   getCommentsByActivityId,
   getEffortsBySegmentId,
@@ -228,6 +229,79 @@ export class StravaService {
   async getUpload(accessToken: string, uploadId: number): Promise<unknown> {
     const { data } = await getUploadById(uploadId, stravaConfig(this.authHeaders(accessToken)))
     return data
+  }
+
+  /**
+   * Download activity streams and return as track points.
+   * Fetches latlng, altitude, time, heartrate, cadence and moving streams,
+   * then merges them into a single array of TrackPoint objects.
+   */
+  async downloadActivityStreams(
+    accessToken: string,
+    activityId: number,
+  ): Promise<
+    Array<{
+      latitude: number
+      longitude: number
+      elevation: number
+      time: Date
+      hr?: number
+      cad?: number
+      moving?: boolean
+    }>
+  > {
+    const { data } = await getActivityStreams(
+      activityId,
+      {
+        keys: ['time', 'distance', 'latlng', 'altitude', 'heartrate', 'cadence', 'moving'],
+      },
+      stravaConfig(this.authHeaders(accessToken)),
+    )
+
+    const streamMap: Record<string, Array<number | boolean>> = (
+      data as unknown as Array<{ type: string; data: Array<number | boolean> }>
+    ).reduce(
+      (acc, stream) => {
+        acc[stream.type] = stream.data
+        return acc
+      },
+      {} as Record<string, Array<number | boolean>>,
+    )
+
+    const latlngs = streamMap.latlng as unknown as Array<[number, number]> | undefined
+    const altitudes = streamMap.altitude as Array<number> | undefined
+    const times = streamMap.time as Array<number> | undefined
+    const heartRates = streamMap.heartrate as Array<number> | undefined
+    const cadences = streamMap.cadence as Array<number> | undefined
+    const movings = streamMap.moving as Array<boolean> | undefined
+
+    if (!latlngs || latlngs.length === 0) {
+      return []
+    }
+
+    const result: Array<{
+      latitude: number
+      longitude: number
+      elevation: number
+      time: Date
+      hr?: number
+      cad?: number
+      moving?: boolean
+    }> = []
+
+    for (let i = 0; i < latlngs.length; i++) {
+      result.push({
+        latitude: latlngs[i][0],
+        longitude: latlngs[i][1],
+        elevation: altitudes?.[i] ?? 0,
+        time: times ? new Date(times[i] * 1000) : new Date(),
+        hr: heartRates?.[i],
+        cad: cadences?.[i],
+        moving: movings?.[i],
+      })
+    }
+
+    return result
   }
 
   // ── Legacy: GPX download (used by debug controller) ──────────────────

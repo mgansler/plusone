@@ -357,16 +357,13 @@ describe('ImportService', () => {
 
   describe('importStravaActivity', () => {
     it('creates a new route from activity GPX', async () => {
-      const gpxContent = `<?xml version="1.0" encoding="UTF-8"?>
-<gpx>
-  <trk><trkseg>
-    <trkpt lat="48.0" lon="11.0"><ele>100</ele><time>2024-01-01T10:00:00Z</time></trkpt>
-    <trkpt lat="48.001" lon="11.001"><ele>120</ele><time>2024-01-01T10:02:00Z</time></trkpt>
-  </trkseg></trk>
-</gpx>`
+      const streamPoints = [
+        { latitude: 48.0, longitude: 11.0, elevation: 100, time: new Date('2024-01-01T10:00:00Z') },
+        { latitude: 48.001, longitude: 11.001, elevation: 120, time: new Date('2024-01-01T10:02:00Z') },
+      ]
 
       const mockStrava = {
-        downloadActivityGpx: vi.fn().mockResolvedValue(gpxContent),
+        downloadActivityStreams: vi.fn().mockResolvedValue(streamPoints),
         getActivity: vi.fn().mockResolvedValue({ id: 999, name: 'Activity 999', distance: 20000 }),
       }
 
@@ -396,21 +393,18 @@ describe('ImportService', () => {
       expect(result.imported).toBe(1)
       expect(result.newRoutes).toBe(1)
       expect(result.matched).toBe(0)
-      expect(mockStrava.downloadActivityGpx).toHaveBeenCalledWith('token', '999')
+      expect(mockStrava.downloadActivityStreams).toHaveBeenCalledWith('token', 999)
       expect(service['prisma'].fahrt.create).toHaveBeenCalled()
     })
 
     it('auto-matches to existing route when enabled and a match exists', async () => {
-      const gpxContent = `<?xml version="1.0" encoding="UTF-8"?>
-<gpx>
-  <trk><trkseg>
-    <trkpt lat="48.0" lon="11.0"><ele>100</ele><time>2024-01-01T10:00:00Z</time></trkpt>
-    <trkpt lat="48.001" lon="11.001"><ele>110</ele><time>2024-01-01T10:01:00Z</time></trkpt>
-  </trkseg></trk>
-</gpx>`
+      const streamPoints = [
+        { latitude: 48.0, longitude: 11.0, elevation: 100, time: new Date('2024-01-01T10:00:00Z') },
+        { latitude: 48.001, longitude: 11.001, elevation: 110, time: new Date('2024-01-01T10:01:00Z') },
+      ]
 
       const mockStrava = {
-        downloadActivityGpx: vi.fn().mockResolvedValue(gpxContent),
+        downloadActivityStreams: vi.fn().mockResolvedValue(streamPoints),
         getActivity: vi.fn().mockResolvedValue({
           id: 999,
           name: 'Activity 999',

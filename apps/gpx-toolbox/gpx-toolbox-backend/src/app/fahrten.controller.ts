@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Logger, Param, ParseUUIDPipe, Put, Query, Req, UseGuards } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { FahrtenService } from './fahrten.service'
 import { FahrtResponseDto, QueryFahrtDto, UpdateFahrtDto } from './dto/ride.dto'

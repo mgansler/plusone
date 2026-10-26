@@ -9,12 +9,13 @@ generator client {
 }
 
 model User {
-  id           String  @id @default(uuid())
-  stravaId     String  @unique
-  accessToken  String
-  refreshToken String?
-  name         String?
-  avatarUrl    String?
+  id             String  @id @default(uuid())
+  stravaId       String  @unique
+  accessToken    String
+  refreshToken   String?
+  tokenExpiresAt DateTime?
+  name           String?
+  avatarUrl      String?
 
   @@map("users")
 }

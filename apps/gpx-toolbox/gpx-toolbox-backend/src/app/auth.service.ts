@@ -1,10 +1,18 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
+/**
+ * Refresh a Strava access token this many milliseconds before it expires, so a
+ * long-running request never hits an expired token mid-flight.
+ */
+const REFRESH_BUFFER_MS = 60_000
+
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name)
+
   constructor(
     private readonly jwtService: JwtService,
     private readonly prisma: PrismaService,
@@ -34,8 +42,11 @@ export class AuthService {
 
   /**
    * Refresh a Strava access token using the refresh token.
+   *
+   * Strava's token endpoint also returns `expires_at` (unix seconds); we keep it
+   * so we know when the *next* token will expire.
    */
-  async refreshToken(refreshToken: string): Promise<{ accessToken: string; refreshToken: string }> {
+  async refreshToken(refreshToken: string): Promise<{ accessToken: string; refreshToken: string; expiresAt: Date }> {
     const response = await fetch('https://www.strava.com/oauth/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -52,7 +63,65 @@ export class AuthService {
     }
 
     const data = await response.json()
-    return { accessToken: data.access_token, refreshToken: data.refresh_token }
+    return {
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token,
+      // Strava returns expires_at in unix seconds; fall back to a 2h window if absent.
+      expiresAt: data.expires_at ? new Date(data.expires_at * 1000) : new Date(Date.now() + 2 * 60 * 60 * 1000),
+    }
+  }
+
+  /**
+   * Refresh the Strava token for a user and persist the new access/refresh
+   * tokens and expiry. Returns the fresh tokens.
+   */
+  async refreshAndPersist(
+    userId: string,
+    refreshToken: string,
+  ): Promise<{ accessToken: string; refreshToken: string; expiresAt: Date }> {
+    const tokens = await this.refreshToken(refreshToken)
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        tokenExpiresAt: tokens.expiresAt,
+      },
+    })
+
+    this.logger.log(`Refreshed Strava token for user ${userId}`)
+    return tokens
+  }
+
+  /**
+   * Return a valid Strava access token for the user, refreshing it first when it
+   * is missing, unknown, or (almost) expired. This is the single chokepoint every
+   * Strava request must go through, so an expired access token is transparently
+   * replaced by a fresh one instead of failing the request.
+   */
+  async getValidAccessToken(userId: string): Promise<string> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { accessToken: true, refreshToken: true, tokenExpiresAt: true },
+    })
+
+    if (!user?.accessToken) {
+      throw new UnauthorizedException('No Strava access token')
+    }
+
+    const needsRefresh = !user.tokenExpiresAt || Date.now() >= user.tokenExpiresAt.getTime() - REFRESH_BUFFER_MS
+
+    if (needsRefresh && user.refreshToken) {
+      const refreshed = await this.refreshAndPersist(userId, user.refreshToken)
+      return refreshed.accessToken
+    }
+
+    if (needsRefresh && !user.refreshToken) {
+      this.logger.warn(`Access token expired for user ${userId} but no refresh token is available`)
+    }
+
+    return user.accessToken
   }
 
   /**
