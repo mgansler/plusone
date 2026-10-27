@@ -620,6 +620,29 @@
         "tags": ["auth"]
       }
     },
+    "/api/auth/refresh-token": {
+      "post": {
+        "operationId": "authenticateWithRefreshToken",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenAuthDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authenticated successfully, returns JWT token"
+          }
+        },
+        "summary": "",
+        "tags": ["auth"]
+      }
+    },
     "/api/import/strava/routes": {
       "post": {
         "operationId": "importStravaRoutes",
@@ -1599,6 +1622,10 @@
           }
         },
         "required": ["id", "firstname", "lastname", "username", "gender", "athleteType"]
+      },
+      "RefreshTokenAuthDto": {
+        "type": "object",
+        "properties": {}
       },
       "ImportResultDto": {
         "type": "object",

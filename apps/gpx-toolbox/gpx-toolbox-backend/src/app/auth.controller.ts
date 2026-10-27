@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Res, UnauthorizedException } from '@nestjs/common'
+import { Controller, Get, Post, Body, Req, Res, UnauthorizedException } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { JwtService } from '@nestjs/jwt'
 import { Request, Response } from 'express'
@@ -8,6 +8,11 @@ import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 import { AuthService } from './auth.service'
 import { StravaService } from './strava.service'
 import { StravaAthleteProfileDto } from './dto/strava-athlete-profile.dto'
+
+/** DTO for manual refresh token authentication. */
+class RefreshTokenAuthDto {
+  refresh_token: string
+}
 
 @ApiTags('auth')
 @Controller('auth')
@@ -235,5 +240,13 @@ export class AuthController {
     const newJwt = this.jwtService.sign(jwtPayload)
 
     return { accessToken: newJwt }
+  }
+
+  @Post('refresh-token')
+  @ApiOperation({ operationId: 'authenticateWithRefreshToken' })
+  @ApiOkResponse({ description: 'Authenticated successfully, returns JWT token' })
+  async authenticateWithRefreshToken(@Body() body: RefreshTokenAuthDto) {
+    const result = await this.authService.authenticateWithRefreshToken(body.refresh_token)
+    return { accessToken: result.jwtToken }
   }
 }

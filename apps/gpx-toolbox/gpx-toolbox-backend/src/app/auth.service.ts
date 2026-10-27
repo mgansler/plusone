@@ -3,6 +3,8 @@ import { JwtService } from '@nestjs/jwt'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
+import { StravaService } from './strava.service'
+
 /**
  * Refresh a Strava access token this many milliseconds before it expires, so a
  * long-running request never hits an expired token mid-flight.
@@ -16,6 +18,7 @@ export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly prisma: PrismaService,
+    private readonly stravaService: StravaService,
   ) {}
 
   /**
@@ -71,6 +74,58 @@ export class AuthService {
       // Strava returns expires_at in unix seconds; fall back to a 2h window if absent.
       expiresAt: data.expires_at ? new Date(data.expires_at * 1000) : new Date(Date.now() + 2 * 60 * 60 * 1000),
     }
+  }
+
+  /**
+   * Authenticate a user by refreshing a Strava refresh token.
+   * Exchanges the token, fetches the athlete profile, upserts the user,
+   * and returns the JWT payload.
+   */
+  async authenticateWithRefreshToken(refreshToken: string): Promise<{
+    userId: string
+    stravaId: string
+    name: string | null
+    avatarUrl: string | null
+    jwtToken: string
+  }> {
+    const tokens = await this.refreshToken(refreshToken)
+
+    // Fetch athlete profile to create/update the user
+    const profile = (await this.stravaService.getAthlete(tokens.accessToken)) as {
+      id?: string
+      firstname?: string
+      lastname?: string
+      profile?: string
+    }
+
+    if (!profile?.id) {
+      throw new UnauthorizedException('Could not fetch Strava profile with provided refresh token')
+    }
+
+    const user = await this.prisma.user.upsert({
+      where: { stravaId: String(profile.id) },
+      update: {
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        tokenExpiresAt: tokens.expiresAt,
+        name: profile.firstname ?? profile.lastname ?? null,
+      },
+      create: {
+        stravaId: String(profile.id),
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        tokenExpiresAt: tokens.expiresAt,
+        name: profile.firstname ?? profile.lastname ?? null,
+        avatarUrl: profile.profile ?? null,
+      },
+    })
+
+    const payload = { sub: user.id, stravaId: user.stravaId }
+    const jwtToken = this.jwtService.sign(payload)
+
+    this.logger.log(`Authenticated user ${user.id} via refresh token`)
+
+    return { userId: user.id, stravaId: user.stravaId, name: user.name, avatarUrl: user.avatarUrl, jwtToken }
   }
 
   /**

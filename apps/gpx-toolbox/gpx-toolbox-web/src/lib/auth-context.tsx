@@ -26,6 +26,8 @@ type AuthContextValue = {
   token: string | null
   /** Redirect to Strava OAuth. */
   login: () => void
+  /** Submit a Strava refresh token to authenticate. */
+  loginWithRefreshToken: (refreshToken: string) => Promise<void>
   /** Clear token and user state. */
   logout: () => void
   /** Whether the auth status is still being checked. */
@@ -65,6 +67,7 @@ const AuthContext = createContext<AuthContextValue>({
   user: null,
   token: null,
   login: noop,
+  loginWithRefreshToken: noop as unknown as (refreshToken: string) => Promise<void>,
   logout: noop,
   isLoading: false,
 })
@@ -126,6 +129,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.location.href = '/api/auth/strava'
   }, [])
 
+  const loginWithRefreshToken = useCallback(async (refreshToken: string) => {
+    const res = await fetch('/api/auth/refresh-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh_token: refreshToken }),
+    })
+    if (!res.ok) throw new Error('Authentication failed')
+    const data = await res.json()
+    setToken(data.accessToken)
+    // Hard reload to / — the JWT is now in localStorage and the app
+    // will re-initialize as authenticated instead of showing /login.
+    // Using window.location.href avoids "setState during render" with
+    // TanStack Router when logging in on the /login page.
+    window.location.href = '/'
+  }, [])
+
   const logout = useCallback(() => {
     clearToken()
     setTokenState(null)
@@ -137,6 +156,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     token,
     login,
+    loginWithRefreshToken,
     logout,
     isLoading,
   }
