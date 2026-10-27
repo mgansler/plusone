@@ -9,6 +9,13 @@ export function formatDistance(meters: number): string {
 }
 
 /**
+ * Format elevation in meters to a human-readable string (rounded to integer).
+ */
+export function formatElevation(meters: number): string {
+  return `${Math.round(meters)} m`
+}
+
+/**
  * Format duration in seconds to a human-readable string.
  */
 export function formatDuration(seconds: number): string {

@@ -248,10 +248,13 @@ function RoutesPage() {
 
       {/* Map — same mechanism as home page */}
       <div style={styles.mapArea}>
-        <Map mapRef={mapRef}>
+        {/* key forces fresh mount on navigation to ensure clean Leaflet lifecycle */}
+        <Map key="routes-list" mapRef={mapRef}>
           {points.length > 1 && segmentRange[1] - segmentRange[0] >= 1 && mapRef.current && (
             <>
+              {/* key forces fresh mount when route/points change */}
               <SegmentOverlay
+                key={`routes-list-${points.length}-${segmentRange[0]}-${segmentRange[1]}`}
                 points={points}
                 mapInstance={mapRef.current}
                 range={segmentRange}

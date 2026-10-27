@@ -385,6 +385,60 @@
         "tags": ["routes"]
       }
     },
+    "/api/routes/nearby": {
+      "get": {
+        "operationId": "findNearbyRoutes",
+        "parameters": [
+          {
+            "name": "lat",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "lng",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "radius",
+            "required": true,
+            "in": "query",
+            "description": "Radius in kilometers",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Routes within radius",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NearbyRouteResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": ["routes"]
+      }
+    },
     "/api/routes/{id}": {
       "get": {
         "operationId": "getRoute",
@@ -468,60 +522,6 @@
         "responses": {
           "200": {
             "description": "Route deleted successfully"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": ["routes"]
-      }
-    },
-    "/api/routes/nearby": {
-      "get": {
-        "operationId": "findNearbyRoutes",
-        "parameters": [
-          {
-            "name": "lat",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "lng",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "radius",
-            "required": true,
-            "in": "query",
-            "description": "Radius in kilometers",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Routes within radius",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NearbyRouteResponseDto"
-                  }
-                }
-              }
-            }
           }
         },
         "security": [
@@ -1380,6 +1380,46 @@
         },
         "required": ["total", "page", "limit", "totalPages", "items"]
       },
+      "NearbyRouteResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Route ID",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Route name",
+            "example": "Schwäbische Alb Tour"
+          },
+          "distance": {
+            "type": "number",
+            "description": "Distance in meters",
+            "example": 15000
+          },
+          "distanceKm": {
+            "type": "string",
+            "description": "Formatted distance",
+            "example": "15.0 km"
+          },
+          "status": {
+            "type": "string",
+            "description": "Route status",
+            "example": "planned"
+          },
+          "source": {
+            "type": "string",
+            "description": "Route source",
+            "example": "stravaRoute"
+          },
+          "stats": {
+            "type": "object",
+            "description": "Route statistics"
+          }
+        },
+        "required": ["id", "name", "distance", "distanceKm", "status", "source"]
+      },
       "RouteResponseDto": {
         "type": "object",
         "properties": {
@@ -1469,46 +1509,6 @@
             "description": "Notes"
           }
         }
-      },
-      "NearbyRouteResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Route ID",
-            "example": "550e8400-e29b-41d4-a716-446655440000"
-          },
-          "name": {
-            "type": "string",
-            "description": "Route name",
-            "example": "Schwäbische Alb Tour"
-          },
-          "distance": {
-            "type": "number",
-            "description": "Distance in meters",
-            "example": 15000
-          },
-          "distanceKm": {
-            "type": "string",
-            "description": "Formatted distance",
-            "example": "15.0 km"
-          },
-          "status": {
-            "type": "string",
-            "description": "Route status",
-            "example": "planned"
-          },
-          "source": {
-            "type": "string",
-            "description": "Route source",
-            "example": "stravaRoute"
-          },
-          "stats": {
-            "type": "object",
-            "description": "Route statistics"
-          }
-        },
-        "required": ["id", "name", "distance", "distanceKm", "status", "source"]
       },
       "StravaAthleteProfileDto": {
         "type": "object",

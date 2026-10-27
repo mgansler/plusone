@@ -133,7 +133,7 @@ export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProp
       if (mapRefRef.current) mapRefRef.current.current = null
       onMapReadyRef.current?.(null)
     }
-  }, [mapDomRef.current])
+  }, [mapDomRef])
 
   return (
     <div ref={mapDomRef} style={styles.map}>

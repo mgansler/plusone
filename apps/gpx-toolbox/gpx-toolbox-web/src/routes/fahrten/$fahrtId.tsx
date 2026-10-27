@@ -182,9 +182,16 @@ function FahrtDetailPage() {
 
       {/* Map */}
       <div style={styles.mapArea}>
-        <Map mapRef={mapRef}>
+        {/* key forces fresh mount on navigation to ensure clean Leaflet lifecycle */}
+        <Map key={fahrtId} mapRef={mapRef}>
           {points.length > 1 && (
-            <SegmentOverlay points={points} mapInstance={mapRef.current!} range={[0, 100]} fitBounds>
+            <SegmentOverlay
+              key={`${fahrtId}-${points.length}`}
+              points={points}
+              mapInstance={mapRef.current!}
+              range={[0, 100]}
+              fitBounds
+            >
               <TrackClickHandler
                 points={points}
                 range={[0, 100]}

@@ -4,11 +4,13 @@ import { defineConfig } from 'vitest/config'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
+const root = import.meta.dirname
+
 export default defineConfig({
-  root: import.meta.dirname,
+  root,
   resolve: {
     alias: {
-      'leaflet-locatecontrol': resolve(import.meta.dirname, 'src/lib/L.Control.Locate.min.js'),
+      'leaflet-locatecontrol': resolve(root, 'src/lib/L.Control.Locate.min.js'),
     },
   },
   build: {
@@ -24,6 +26,9 @@ export default defineConfig({
   server: {
     port: 4250,
     host: 'localhost',
+    fs: {
+      allow: [resolve(root, '../../../node_modules/leaflet/dist')],
+    },
     proxy: {
       '/api': {
         target: 'http://localhost:3333',

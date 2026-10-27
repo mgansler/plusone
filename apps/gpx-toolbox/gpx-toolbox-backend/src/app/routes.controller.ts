@@ -96,6 +96,25 @@ export class RoutesController {
     return this.routesService.getStravaActivities(accessToken, req.user.sub)
   }
 
+  @Get('nearby')
+  @ApiOperation({ operationId: 'findNearbyRoutes' })
+  @ApiBearerAuth()
+  @ApiQuery({ name: 'lat', type: Number })
+  @ApiQuery({ name: 'lng', type: Number })
+  @ApiQuery({ name: 'radius', type: Number, description: 'Radius in kilometers' })
+  @ApiOkResponse({ type: [NearbyRouteResponseDto], description: 'Routes within radius' })
+  async findNearby(
+    @Req() req: Request & { user: JwtPayload },
+    @Query('lat') latitude: number,
+    @Query('lng') longitude: number,
+    @Query('radius') radius: number,
+  ) {
+    if (latitude == null || longitude == null || radius == null) {
+      throw new BadRequestException('lat, lng, and radius are required')
+    }
+    return this.routesService.findNearby(latitude, longitude, radius, req.user.sub)
+  }
+
   @Get(':id')
   @ApiOperation({ operationId: 'getRoute' })
   @ApiBearerAuth()
@@ -123,25 +142,6 @@ export class RoutesController {
   async remove(@Req() req: Request & { user: JwtPayload }, @Param('id', ParseUUIDPipe) id: string) {
     await this.routesService.remove(id, req.user.sub)
     return { deleted: true, id }
-  }
-
-  @Get('nearby')
-  @ApiOperation({ operationId: 'findNearbyRoutes' })
-  @ApiBearerAuth()
-  @ApiQuery({ name: 'lat', type: Number })
-  @ApiQuery({ name: 'lng', type: Number })
-  @ApiQuery({ name: 'radius', type: Number, description: 'Radius in kilometers' })
-  @ApiOkResponse({ type: [NearbyRouteResponseDto], description: 'Routes within radius' })
-  async findNearby(
-    @Req() req: Request & { user: JwtPayload },
-    @Query('lat') latitude: number,
-    @Query('lng') longitude: number,
-    @Query('radius') radius: number,
-  ) {
-    if (latitude == null || longitude == null || radius == null) {
-      throw new BadRequestException('lat, lng, and radius are required')
-    }
-    return this.routesService.findNearby(latitude, longitude, radius, req.user.sub)
   }
 
   private async getStravaToken(req: Request & { user: JwtPayload }): Promise<string> {
