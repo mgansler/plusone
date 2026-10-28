@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 
 type SidebarLayoutProps = {
-  /** Content of the header bar at the top (e.g. app title or back link) */
-  header: ReactNode
+  /** Content of the header bar at the top (e.g. a back link); omitted pages start directly with the content */
+  header?: ReactNode
   children?: ReactNode
 }
 
@@ -12,7 +12,7 @@ type SidebarLayoutProps = {
 export function SidebarLayout({ header, children }: SidebarLayoutProps) {
   return (
     <div style={styles.sidebar}>
-      <div style={styles.header}>{header}</div>
+      {header != null && <div style={styles.header}>{header}</div>}
       <div style={styles.content}>{children}</div>
     </div>
   )

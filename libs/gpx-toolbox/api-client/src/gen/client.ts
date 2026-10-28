@@ -140,12 +140,6 @@ export type StravaAthleteProfileDtoProfile = { [key: string]: unknown }
 
 export type StravaAthleteProfileDtoProfileMedium = { [key: string]: unknown }
 
-export type StravaAthleteProfileDtoCity = { [key: string]: unknown }
-
-export type StravaAthleteProfileDtoState = { [key: string]: unknown }
-
-export type StravaAthleteProfileDtoCountry = { [key: string]: unknown }
-
 export type StravaAthleteProfileDtoWeight = { [key: string]: unknown }
 
 export type StravaAthleteProfileDtoFriend = { [key: string]: unknown }
@@ -166,12 +160,13 @@ export interface StravaAthleteProfileDto {
   id: number
   firstname: string
   lastname: string
-  username: string
+  /** Strava username, not set for every account */
+  username?: string
   profile?: StravaAthleteProfileDtoProfile
   profile_medium?: StravaAthleteProfileDtoProfileMedium
-  city?: StravaAthleteProfileDtoCity
-  state?: StravaAthleteProfileDtoState
-  country?: StravaAthleteProfileDtoCountry
+  city?: string
+  state?: string
+  country?: string
   gender: string
   weight?: StravaAthleteProfileDtoWeight
   friend?: StravaAthleteProfileDtoFriend

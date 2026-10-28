@@ -14,6 +14,15 @@ describe('SidebarLayout', () => {
     expect(screen.getByText('Inhalt')).toBeTruthy()
   })
 
+  it('omits the header bar when no header is given', () => {
+    const { container } = render(
+      <SidebarLayout>
+        <p>Inhalt</p>
+      </SidebarLayout>,
+    )
+    expect((container.firstElementChild as HTMLElement).children).toHaveLength(1)
+  })
+
   it('uses the dark sidebar theme', () => {
     const { container } = render(<SidebarLayout header="Titel" />)
     const sidebar = container.firstElementChild as HTMLElement

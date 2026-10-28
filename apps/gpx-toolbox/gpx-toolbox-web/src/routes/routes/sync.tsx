@@ -90,7 +90,7 @@ function SyncPage() {
   return (
     <div style={styles.container}>
       <div style={styles.sidebar}>
-        <Link to="/routes" style={styles.backLink}>
+        <Link to="/" style={styles.backLink}>
           ← Zurück zur Übersicht
         </Link>
 

@@ -1809,7 +1809,8 @@
           },
           "username": {
             "type": "string",
-            "example": "johndoe"
+            "example": "johndoe",
+            "description": "Strava username, not set for every account"
           },
           "profile": {
             "type": "object"
@@ -1818,13 +1819,13 @@
             "type": "object"
           },
           "city": {
-            "type": "object"
+            "type": "string"
           },
           "state": {
-            "type": "object"
+            "type": "string"
           },
           "country": {
-            "type": "object"
+            "type": "string"
           },
           "gender": {
             "type": "string",
@@ -1884,7 +1885,6 @@
           "id",
           "firstname",
           "lastname",
-          "username",
           "gender",
           "athleteType"
         ]

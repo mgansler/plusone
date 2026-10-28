@@ -1,19 +1,20 @@
-import { useCallback } from 'react'
-
 import { useStravaAthlete } from '@plusone/gpx-toolbox-api-client'
 
+/**
+ * Strava profile card with local stats. Fetches fresh data every time it is mounted
+ * (i.e. whenever the user menu is opened); cached data is shown meanwhile.
+ */
 export function StravaProfile() {
-  const { data: profile, isLoading: loading, error, isError, refetch } = useStravaAthlete()
-
-  const fetchProfile = useCallback(async () => {
-    await refetch()
-  }, [refetch])
+  const {
+    data: profile,
+    isLoading: loading,
+    error,
+    isError,
+  } = useStravaAthlete({ query: { refetchOnMount: 'always' } })
 
   return (
     <div style={styles.section}>
-      <button onClick={fetchProfile} style={styles.button} disabled={loading}>
-        {loading ? '⏳' : profile ? '🔄' : '🚴'} {loading ? 'Lädt...' : profile ? 'Aktualisieren' : 'Strava Profil'}
-      </button>
+      {loading && <p style={styles.loading}>⏳ Lädt...</p>}
 
       {isError && <p style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</p>}
 
@@ -27,18 +28,20 @@ export function StravaProfile() {
               <div style={styles.name}>
                 {profile.firstname} {profile.lastname}
               </div>
-              <div style={styles.handle}>@{profile.username}</div>
+              {profile.username && <div style={styles.handle}>@{profile.username}</div>}
               {(profile.city || profile.state || profile.country) && (
                 <div style={styles.location}>
-                  {[
-                    (profile.city as { name?: string })?.name,
-                    (profile.state as { name?: string })?.name,
-                    (profile.country as { name?: string })?.name,
-                  ]
-                    .filter(Boolean)
-                    .join(', ')}
+                  {[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}
                 </div>
               )}
+              <a
+                href={`https://www.strava.com/athletes/${profile.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={styles.stravaLink}
+              >
+                Profil auf Strava ↗
+              </a>
             </div>
           </div>
 
@@ -64,7 +67,7 @@ export function StravaProfile() {
             </div>
           </div>
 
-          {!profile.premium && (
+          {profile.premium && (
             <div style={styles.premiumBadge}>
               <span style={styles.premiumIcon}>🏆</span> Strava Premium
             </div>
@@ -108,19 +111,10 @@ const styles = {
     flexDirection: 'column',
     gap: '0.5rem',
   },
-  button: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    padding: '0.6rem 1rem',
-    background: 'linear-gradient(135deg, #fc5c2d 0%, #e84a1c 100%)',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontWeight: 500,
+  loading: {
     fontSize: '0.85rem',
-    transition: 'opacity 0.2s',
+    color: '#94a3b8',
+    margin: 0,
   },
   error: {
     color: '#f87171',
@@ -163,6 +157,13 @@ const styles = {
   handle: {
     fontSize: '0.8rem',
     color: '#94a3b8',
+  },
+  stravaLink: {
+    display: 'inline-block',
+    marginTop: '4px',
+    fontSize: '0.8rem',
+    color: '#fc5c2d',
+    textDecoration: 'none',
   },
   location: {
     fontSize: '0.75rem',

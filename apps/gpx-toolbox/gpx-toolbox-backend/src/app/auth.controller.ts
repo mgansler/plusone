@@ -116,6 +116,7 @@ export class AuthController {
 
     const athlete = (await this.stravaService.getAthlete(accessToken)) as {
       id?: string
+      username?: string | null
       firstname?: string
       lastname?: string
       profile?: string
@@ -160,6 +161,7 @@ export class AuthController {
 
     return {
       id: athlete.id,
+      username: athlete.username ?? undefined,
       firstname: athlete.firstname,
       lastname: athlete.lastname,
       profile: athlete.profile,

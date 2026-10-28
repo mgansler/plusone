@@ -3,7 +3,6 @@ import { type ChangeEvent, type DragEvent, useState } from 'react'
 import { parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 import { SidebarDivider, SidebarLayout } from './SidebarLayout'
-import { StravaProfile } from './StravaProfile'
 import { TrackAnalysis } from './TrackAnalysis'
 
 type SidebarProps = {
@@ -49,11 +48,7 @@ export function Sidebar({ onFileLoad, points, fileName, segmentRange = [0, 0], o
   }
 
   return (
-    <SidebarLayout header={<h2 style={styles.logo}>GPX-Toolbox</h2>}>
-      <StravaProfile />
-
-      <SidebarDivider />
-
+    <SidebarLayout>
       <FileUpload
         dragging={dragging}
         onDragOver={(e) => {
@@ -113,13 +108,6 @@ function FileUpload({ dragging, onDragOver, onDragLeave, onDrop, onFileInput }: 
 }
 
 const styles = {
-  logo: {
-    fontSize: '1.1rem',
-    fontWeight: 600,
-    color: '#f8fafc',
-    margin: 0,
-    letterSpacing: '0.02em',
-  },
   dropZone: {
     border: '2px dashed',
     borderRadius: '8px',

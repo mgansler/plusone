@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CallbackRouteImport } from './routes/callback'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as NearbyRouteImport } from './routes/nearby'
+import { Route as UtilsRouteImport } from './routes/utils'
 import { Route as DebugIndexRouteImport } from './routes/debug/index'
 import { Route as FahrtenIndexRouteImport } from './routes/fahrten/index'
 import { Route as FahrtenFahrtIdRouteImport } from './routes/fahrten/$fahrtId'
@@ -39,6 +40,11 @@ const LoginRoute = LoginRouteImport.update({
 const NearbyRoute = NearbyRouteImport.update({
   id: '/nearby',
   path: '/nearby',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UtilsRoute = UtilsRouteImport.update({
+  id: '/utils',
+  path: '/utils',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DebugIndexRoute = DebugIndexRouteImport.update({
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/callback': typeof CallbackRoute
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
+  '/utils': typeof UtilsRoute
   '/fahrten/$fahrtId': typeof FahrtenFahrtIdRoute
   '/fahrten/sync': typeof FahrtenSyncRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByTo {
   '/callback': typeof CallbackRoute
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
+  '/utils': typeof UtilsRoute
   '/fahrten/$fahrtId': typeof FahrtenFahrtIdRoute
   '/fahrten/sync': typeof FahrtenSyncRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
@@ -109,6 +117,7 @@ export interface FileRoutesById {
   '/callback': typeof CallbackRoute
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
+  '/utils': typeof UtilsRoute
   '/fahrten/$fahrtId': typeof FahrtenFahrtIdRoute
   '/fahrten/sync': typeof FahrtenSyncRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
@@ -124,6 +133,7 @@ export interface FileRouteTypes {
     | '/callback'
     | '/login'
     | '/nearby'
+    | '/utils'
     | '/fahrten/$fahrtId'
     | '/fahrten/sync'
     | '/routes/$routeId'
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
     | '/callback'
     | '/login'
     | '/nearby'
+    | '/utils'
     | '/fahrten/$fahrtId'
     | '/fahrten/sync'
     | '/routes/$routeId'
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '/callback'
     | '/login'
     | '/nearby'
+    | '/utils'
     | '/fahrten/$fahrtId'
     | '/fahrten/sync'
     | '/routes/$routeId'
@@ -164,6 +176,7 @@ export interface RootRouteChildren {
   CallbackRoute: typeof CallbackRoute
   LoginRoute: typeof LoginRoute
   NearbyRoute: typeof NearbyRoute
+  UtilsRoute: typeof UtilsRoute
   FahrtenFahrtIdRoute: typeof FahrtenFahrtIdRoute
   FahrtenSyncRoute: typeof FahrtenSyncRoute
   RoutesRouteIdRoute: typeof RoutesRouteIdRoute
@@ -201,6 +214,13 @@ declare module '@tanstack/react-router' {
       path: '/nearby'
       fullPath: '/nearby'
       preLoaderRoute: typeof NearbyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/utils': {
+      id: '/utils'
+      path: '/utils'
+      fullPath: '/utils'
+      preLoaderRoute: typeof UtilsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/debug/': {
@@ -260,6 +280,7 @@ const rootRouteChildren: RootRouteChildren = {
   CallbackRoute: CallbackRoute,
   LoginRoute: LoginRoute,
   NearbyRoute: NearbyRoute,
+  UtilsRoute: UtilsRoute,
   FahrtenFahrtIdRoute: FahrtenFahrtIdRoute,
   FahrtenSyncRoute: FahrtenSyncRoute,
   RoutesRouteIdRoute: RoutesRouteIdRoute,

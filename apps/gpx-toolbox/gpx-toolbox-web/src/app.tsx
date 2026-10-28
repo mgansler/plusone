@@ -2,6 +2,7 @@ import { Outlet, useLocation } from '@tanstack/react-router'
 
 import { useAuth } from './lib/auth-context'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { UserMenu } from './components/UserMenu'
 
 /** Public routes that don't require authentication. */
 const PUBLIC_ROUTES = new Set(['/login', '/callback'])
@@ -54,15 +55,15 @@ export function App() {
             GPX-Toolbox
           </a>
           <div style={styles.topbarRight}>
-            {user?.name && <span style={styles.userName}>{user.name}</span>}
-            <a href="/routes" style={styles.topbarLink}>
-              Routen
-            </a>
+            {user?.name && <UserMenu name={user.name} />}
             <a href="/fahrten" style={styles.topbarLink}>
               Fahrten
             </a>
             <a href="/nearby" style={styles.topbarLink}>
               In der Nähe
+            </a>
+            <a href="/utils" style={styles.topbarLink}>
+              Utils
             </a>
             <a href="/debug" style={styles.topbarLink}>
               Debug
@@ -133,10 +134,6 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: 12,
-  } as const,
-  userName: {
-    fontSize: 13,
-    color: '#94a3b8',
   } as const,
   topbarLink: {
     fontSize: 13,

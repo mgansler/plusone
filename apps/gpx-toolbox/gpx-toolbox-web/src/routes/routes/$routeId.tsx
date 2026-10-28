@@ -144,7 +144,7 @@ function RouteDetailPage() {
     <div style={styles.container}>
       <SidebarLayout
         header={
-          <Link to="/routes" style={styles.backLink}>
+          <Link to="/" style={styles.backLink}>
             ← Zurück zur Übersicht
           </Link>
         }

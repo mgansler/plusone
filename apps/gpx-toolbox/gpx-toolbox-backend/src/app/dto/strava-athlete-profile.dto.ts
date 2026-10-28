@@ -10,8 +10,8 @@ export class StravaAthleteProfileDto {
   @ApiProperty({ example: 'Doe' })
   lastname: string
 
-  @ApiProperty({ example: 'johndoe' })
-  username: string
+  @ApiProperty({ required: false, example: 'johndoe', description: 'Strava username, not set for every account' })
+  username?: string
 
   @ApiProperty({ required: false })
   profile?: Record<string, unknown>
@@ -20,13 +20,13 @@ export class StravaAthleteProfileDto {
   profile_medium?: Record<string, unknown>
 
   @ApiProperty({ required: false })
-  city?: Record<string, unknown>
+  city?: string
 
   @ApiProperty({ required: false })
-  state?: Record<string, unknown>
+  state?: string
 
   @ApiProperty({ required: false })
-  country?: Record<string, unknown>
+  country?: string
 
   @ApiProperty({ example: 'M' })
   gender: string
