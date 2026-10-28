@@ -2,14 +2,16 @@ import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 type PointDetailsProps = {
   point: TrackPoint
+  /** Defaults to reloading the page */
+  onClose?: () => void
 }
 
-export function PointDetails({ point }: PointDetailsProps) {
+export function PointDetails({ point, onClose = () => window.location.reload() }: PointDetailsProps) {
   return (
     <div style={styles.panel}>
       <div style={styles.header}>
         <span style={styles.title}>Track-Punkt</span>
-        <button style={styles.closeBtn} onClick={() => window.location.reload()}>
+        <button style={styles.closeBtn} onClick={onClose}>
           ×
         </button>
       </div>

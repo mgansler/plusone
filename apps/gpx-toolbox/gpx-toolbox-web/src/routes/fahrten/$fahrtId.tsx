@@ -1,9 +1,8 @@
-import { type RefObject, useEffect, useMemo, useRef, useState } from 'react'
-import { createFileRoute, Link, redirect } from '@tanstack/react-router'
+import { useEffect, useMemo, useState } from 'react'
+import { createFileRoute, Link, redirect, useNavigate } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
-import L from 'leaflet'
 
-import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
+import { calculateAvgSpeed, calculateTotalDistance, parseGpx } from '@plusone/gpx-toolbox-utils'
 import {
   getGetFahrt2QueryKey,
   getListAllFahrtenQueryKey,
@@ -11,9 +10,11 @@ import {
   useGetFahrt2,
 } from '@plusone/gpx-toolbox-api-client'
 
-import { Map } from '../../components/Map'
-import { SegmentOverlay } from '../../components/SegmentOverlay'
-import { PointDetails } from '../../components/PointDetails'
+import { SegmentMap } from '../../components/SegmentMap'
+import { SidebarDivider, SidebarLayout } from '../../components/SidebarLayout'
+import { TrackAnalysis } from '../../components/TrackAnalysis'
+import { useSegmentRange } from '../../hooks/useSegmentRange'
+import { formatDistance, formatDuration } from '../../utils/format'
 
 export const Route = createFileRoute('/fahrten/$fahrtId')({
   component: FahrtDetailPage,
@@ -26,12 +27,16 @@ export const Route = createFileRoute('/fahrten/$fahrtId')({
   },
 })
 
+type Weather = {
+  temperature2m?: { min?: number; max?: number }
+  rain?: { sum?: number }
+  windGusts?: { max?: number }
+}
+
 function FahrtDetailPage() {
   const { fahrtId } = Route.useParams()
-  const mapRef: RefObject<L.Map | null> = useRef(null)
+  const navigate = useNavigate()
   const queryClient = useQueryClient()
-
-  const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
 
   const { data: fahrt, isLoading, error, isError } = useGetFahrt2(fahrtId)
 
@@ -40,6 +45,7 @@ function FahrtDetailPage() {
       onSuccess: () => {
         void queryClient.invalidateQueries({ queryKey: getGetFahrt2QueryKey(fahrtId) })
         void queryClient.invalidateQueries({ queryKey: getListAllFahrtenQueryKey() })
+        void navigate({ to: '/fahrten' })
       },
     },
   })
@@ -77,24 +83,8 @@ function FahrtDetailPage() {
       })
   }, [fahrt?.routeId])
 
-  const points = gpxText ? parseGpx(gpxText) : []
-
-  // Total distance in km
-  const totalDist = useMemo(() => {
-    if (points.length < 2) return 0
-    let dist = 0
-    for (let i = 1; i < points.length; i++) {
-      dist += calculateHaversineDistance(points[i - 1], points[i])
-    }
-    return dist / 1000
-  }, [points])
-
-  function handlePointClick(point: TrackPoint, event: L.LeafletMouseEvent) {
-    setSelectedPoint((prev) => {
-      if (prev?.point === point) return null
-      return { point, event }
-    })
-  }
+  const points = useMemo(() => (gpxText ? parseGpx(gpxText) : []), [gpxText])
+  const { totalDistKm, segmentRange, setSegmentRange } = useSegmentRange(points)
 
   async function handleDeleteFahrt() {
     if (!confirm('Fahrt wirklich löschen?')) return
@@ -110,186 +100,104 @@ function FahrtDetailPage() {
   if (!fahrt) return <div style={styles.error}>Fahrt nicht gefunden</div>
 
   const parentRoute = fahrt.route as
-    { name?: string; status?: string; stats?: Record<string, unknown> } | undefined | null
+    { name?: string; status?: string; stats?: { distance?: number; elevationGain?: number } } | undefined | null
+  const duration = fahrt.duration as unknown as number | null
+  const avgHr = fahrt.avgHr as unknown as number | null
+  const maxHr = fahrt.maxHr as unknown as number | null
+  const weather = fahrt.weather as unknown as Weather | null
+  // Prefer the distance of the loaded track, fall back to the stored route stats
+  const distance = points.length > 1 ? calculateTotalDistance(points) : (parentRoute?.stats?.distance ?? null)
 
   return (
     <div style={styles.container}>
-      <div style={styles.sidebar}>
-        <Link to="/fahrten" style={styles.backLink}>
-          ← Zurück zur Übersicht
-        </Link>
-
-        <h2 style={styles.heading}>
-          {fahrt.riddenAt &&
-            new Date(fahrt.riddenAt).toLocaleDateString('de-DE', {
-              weekday: 'long',
-              day: '2-digit',
-              month: 'long',
-              year: 'numeric',
-            })}
-        </h2>
-
-        {fahrt.title && <div style={styles.title}>{fahrt.title}</div>}
-
-        {parentRoute && (
-          <Link to="/routes/$routeId" params={{ routeId: fahrt.routeId }} style={styles.routeLink}>
-            {parentRoute.name}
+      <SidebarLayout
+        header={
+          <Link to="/fahrten" style={styles.backLink}>
+            ← Zurück zur Übersicht
           </Link>
-        )}
+        }
+      >
+        <div>
+          <h2 style={styles.heading}>
+            {fahrt.riddenAt &&
+              new Date(fahrt.riddenAt).toLocaleDateString('de-DE', {
+                weekday: 'long',
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+              })}
+          </h2>
 
-        {/* Stats */}
-        <div style={styles.stats}>
-          {fahrt.duration != null && (
-            <div style={styles.statRow}>
-              <span style={styles.statLabel}>Dauer</span>
-              <span style={styles.statValue}>
-                {formatDuration(fahrt.duration != null ? (fahrt.duration as unknown as number) : 0)}
+          {fahrt.title && <div style={styles.title}>{fahrt.title}</div>}
+
+          {parentRoute && (
+            <Link to="/routes/$routeId" params={{ routeId: fahrt.routeId }} style={styles.routeLink}>
+              {parentRoute.name}
+            </Link>
+          )}
+
+          {parentRoute?.status && (
+            <div style={styles.meta}>
+              <span style={{ ...styles.badge, backgroundColor: statusColors[parentRoute.status] || '#9e9e9e' }}>
+                {statusLabels[parentRoute.status] || parentRoute.status}
               </span>
             </div>
           )}
-          {fahrt.avgHr != null && (
-            <div style={styles.statRow}>
-              <span style={styles.statLabel}>Ø Herzfrequenz</span>
-              <span style={styles.statValue}>{fahrt.avgHr != null ? `${fahrt.avgHr} bpm` : null}</span>
-            </div>
-          )}
-          {fahrt.maxHr != null && (
-            <div style={styles.statRow}>
-              <span style={styles.statLabel}>Max Herzfrequenz</span>
-              <span style={styles.statValue}>{fahrt.maxHr != null ? `${fahrt.maxHr} bpm` : null}</span>
-            </div>
-          )}
-          {parentRoute?.stats && (
-            <>
-              <div style={styles.statRow}>
-                <span style={styles.statLabel}>Distanz Route</span>
-                <span style={styles.statValue}>
-                  {formatDistance((parentRoute.stats as { distance?: number })?.distance ?? 0)}
-                </span>
-              </div>
-              <div style={styles.statRow}>
-                <span style={styles.statLabel}>Höhenmeter ↑</span>
-                <span style={styles.statValue}>
-                  {formatElevation((parentRoute.stats as { elevationGain?: number })?.elevationGain ?? 0)}
-                </span>
-              </div>
-            </>
-          )}
         </div>
 
-        {parentRoute && parentRoute.status && (
-          <div style={styles.meta}>
-            <span style={{ ...styles.badge, backgroundColor: statusColors[parentRoute.status] || '#9e9e9e' }}>
-              {statusLabels[parentRoute.status]}
-            </span>
+        <div style={styles.section}>
+          <h3 style={styles.sectionTitle}>Fahrt</h3>
+          <div style={styles.statsGrid}>
+            {distance != null && <Stat label="Distanz" value={formatDistance(distance)} />}
+            {points.length < 2 && parentRoute?.stats?.elevationGain != null && (
+              <Stat label="Höhenmeter ↑" value={`${Math.round(parentRoute.stats.elevationGain)} hm`} />
+            )}
+            {duration != null && <Stat label="Dauer" value={formatDuration(duration)} />}
+            {duration != null && distance != null && duration > 0 && (
+              <Stat label="Ø Geschw." value={`${calculateAvgSpeed(distance, duration)} km/h`} />
+            )}
+            {avgHr != null && <Stat label="Ø Herzfrequenz" value={`${avgHr} bpm`} />}
+            {maxHr != null && <Stat label="Max Herzfrequenz" value={`${maxHr} bpm`} />}
+            {weather?.temperature2m?.min != null && (
+              <Stat label="Temperatur" value={`${weather.temperature2m.min}° – ${weather.temperature2m.max}°`} />
+            )}
+            {weather?.rain?.sum != null && <Stat label="Regen" value={`${weather.rain.sum} mm`} />}
+            {weather?.windGusts?.max != null && <Stat label="Windböen" value={`${weather.windGusts.max} km/h`} />}
           </div>
+          {fahrt.notes && <p style={styles.notes}>{fahrt.notes as unknown as string}</p>}
+        </div>
+
+        {points.length >= 2 && (
+          <>
+            <SidebarDivider />
+            <TrackAnalysis
+              points={points}
+              range={segmentRange}
+              onRangeChange={setSegmentRange}
+              name={fahrt.title ?? parentRoute?.name}
+            />
+          </>
         )}
 
-        {fahrt.notes && <p style={styles.notes}>{fahrt.notes as unknown as string}</p>}
+        <SidebarDivider />
 
         <button onClick={handleDeleteFahrt} style={styles.deleteButton}>
           🗑 Fahrt löschen
         </button>
-      </div>
+      </SidebarLayout>
 
-      {/* Map */}
-      <div style={styles.mapArea}>
-        {/* key forces fresh mount on navigation to ensure clean Leaflet lifecycle */}
-        <Map key={fahrtId} mapRef={mapRef}>
-          {points.length > 1 && (
-            <SegmentOverlay
-              key={`${fahrtId}-${points.length}`}
-              points={points}
-              mapInstance={mapRef.current!}
-              range={[0, totalDist]}
-              totalDistKm={totalDist}
-              fitBounds
-            >
-              <TrackClickHandler
-                points={points}
-                range={[0, totalDist]}
-                totalDistKm={totalDist}
-                mapInstance={mapRef.current!}
-                onPointClick={handlePointClick}
-              />
-            </SegmentOverlay>
-          )}
-        </Map>
-      </div>
-      {selectedPoint && <PointDetails point={selectedPoint.point} />}
+      <SegmentMap points={points} range={segmentRange} totalDistKm={totalDistKm} />
     </div>
   )
 }
 
-/** Invisible click handler that maps clicks to the nearest track point */
-function TrackClickHandler({
-  points,
-  range: _range,
-  totalDistKm: _totalDistKm,
-  mapInstance,
-  onPointClick,
-}: {
-  points: Array<TrackPoint>
-  range: [number, number]
-  totalDistKm: number
-  mapInstance: L.Map
-  onPointClick: (point: TrackPoint, event: L.LeafletMouseEvent) => void
-}) {
-  const layerRef = useRef<L.LayerGroup | null>(null)
-
-  const startIdx = findClosestIndex(points, 0)
-  const endIdx = findClosestIndex(points, _totalDistKm)
-  const visiblePoints = points.slice(startIdx, endIdx + 1)
-
-  function findClosestIndex(pts: Array<TrackPoint>, targetDistKm: number): number {
-    let dist = 0
-    for (let i = 1; i < pts.length; i++) {
-      if (dist / 1000 >= targetDistKm) return i - 1
-      dist += calculateHaversineDistance(pts[i - 1], pts[i])
-    }
-    return pts.length - 1
-  }
-
-  useEffect(() => {
-    if (visiblePoints.length < 2) return
-
-    const layer = L.layerGroup()
-    const coords: Array<[number, number]> = visiblePoints.map((p) => [p.latitude, p.longitude] as [number, number])
-
-    const clickable = L.polyline(coords, {
-      color: '#fff',
-      weight: 20,
-      interactive: true,
-      opacity: 0,
-    })
-
-    clickable.on('click', (e: L.LeafletMouseEvent) => {
-      const clickLatLng = e.latlng
-      let minDist = Infinity
-      let nearestPoint: TrackPoint | null = null
-      for (const pt of visiblePoints) {
-        const dist = calculateHaversineDistance(
-          { latitude: clickLatLng.lat, longitude: clickLatLng.lng },
-          { latitude: pt.latitude, longitude: pt.longitude },
-        )
-        if (dist < minDist) {
-          minDist = dist
-          nearestPoint = pt
-        }
-      }
-      if (nearestPoint) onPointClick(nearestPoint, e)
-    })
-
-    clickable.addTo(layer)
-    layerRef.current = layer
-
-    return () => {
-      layer.remove()
-      layerRef.current = null
-    }
-  }, [visiblePoints, mapInstance, onPointClick])
-
-  return null
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div style={styles.stat}>
+      <span style={styles.statLabel}>{label}</span>
+      <span style={styles.statValue}>{value}</span>
+    </div>
+  )
 }
 
 const statusLabels: Record<string, string> = {
@@ -304,92 +212,40 @@ const statusColors: Record<string, string> = {
   'found-online': '#ff5722',
 }
 
-function formatDistance(meters: number): string {
-  if (meters >= 1000) return `${(meters / 1000).toFixed(1)} km`
-  return `${Math.round(meters)} m`
-}
-
-function formatElevation(meters: number): string {
-  return `${Math.round(meters)} hm`
-}
-
-function formatDuration(seconds: number): string {
-  if (!seconds) return '–'
-  const h = Math.floor(seconds / 3600)
-  const m = Math.floor((seconds % 3600) / 60)
-  if (h > 0) return `${h}h ${m}m`
-  return `${m}m`
-}
-
 const styles = {
   container: {
     display: 'flex',
     height: '100%',
     width: '100%',
   } as const,
-  sidebar: {
-    width: 400,
-    flexShrink: 0,
-    overflowY: 'auto',
-    borderRight: '1px solid #e0e0e0',
-    padding: 16,
-    backgroundColor: '#fafafa',
-  } as const,
-  mapArea: {
-    flex: 1,
-    position: 'relative',
-    minWidth: 0,
-  } as const,
   backLink: {
     display: 'block',
-    marginBottom: 12,
     fontSize: 13,
-    color: '#3b82f6',
+    color: '#60a5fa',
     textDecoration: 'none',
   } as const,
   heading: {
     margin: '0 0 8px',
     fontSize: 20,
     fontWeight: 600,
-    color: '#1e293b',
+    color: '#f8fafc',
   } as const,
   title: {
     fontSize: 15,
     fontWeight: 500,
-    color: '#1e293b',
+    color: '#e2e8f0',
     marginBottom: 8,
   } as const,
   routeLink: {
     fontSize: 14,
-    color: '#3b82f6',
+    color: '#60a5fa',
     textDecoration: 'none',
     marginBottom: 12,
     display: 'block',
   } as const,
-  stats: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 12,
-  } as const,
-  statRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '4px 0',
-  } as const,
-  statLabel: {
-    fontSize: 13,
-    color: '#64748b',
-  } as const,
-  statValue: {
-    fontSize: 14,
-    fontWeight: 600,
-    color: '#1e293b',
-  } as const,
   meta: {
     display: 'flex',
     gap: 6,
-    marginBottom: 12,
   } as const,
   badge: {
     display: 'inline-block',
@@ -399,11 +255,41 @@ const styles = {
     color: '#fff',
     fontWeight: 500,
   } as const,
+  section: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.75rem',
+  } as const,
+  sectionTitle: {
+    fontSize: '0.95rem',
+    fontWeight: 600,
+    color: '#f8fafc',
+    margin: 0,
+  } as const,
+  statsGrid: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.5rem',
+  } as const,
+  stat: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+  } as const,
+  statLabel: {
+    fontSize: '0.8rem',
+    color: '#94a3b8',
+  } as const,
+  statValue: {
+    fontSize: '0.85rem',
+    fontWeight: 600,
+    color: '#e2e8f0',
+  } as const,
   notes: {
     fontSize: 13,
-    color: '#64748b',
+    color: '#94a3b8',
     fontStyle: 'italic',
-    marginBottom: 12,
+    margin: 0,
   } as const,
   error: {
     padding: '8px 12px',
@@ -421,11 +307,11 @@ const styles = {
   deleteButton: {
     padding: '6px 12px',
     fontSize: 13,
-    backgroundColor: '#fff',
-    color: '#c62828',
-    border: '1px solid #c62828',
+    backgroundColor: 'transparent',
+    color: '#fca5a5',
+    border: '1px solid #f87171',
     borderRadius: 4,
     cursor: 'pointer',
-    marginTop: 8,
+    alignSelf: 'flex-start',
   } as const,
 }

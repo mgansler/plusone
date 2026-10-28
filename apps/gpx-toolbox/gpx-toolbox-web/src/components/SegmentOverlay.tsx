@@ -57,6 +57,7 @@ export function SegmentOverlay({
         color: '#94a3b8',
         weight: 2,
         opacity: 0.4,
+        interactive: false,
       }).addTo(layer)
 
       // ── Selected segment (highlighted) ───────────────────────────────────
@@ -65,6 +66,7 @@ export function SegmentOverlay({
         color: '#2563eb',
         weight: 4,
         opacity: 0.9,
+        interactive: false,
       }).addTo(layer)
 
       // ── Start / End markers for selected segment ─────────────────────────

@@ -1,9 +1,8 @@
-import { type RefObject, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import L from 'leaflet'
 import { useQueryClient } from '@tanstack/react-query'
 
-import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
+import { parseGpx } from '@plusone/gpx-toolbox-utils'
 import {
   getGetRouteQueryKey,
   getListFahrtenQueryKey,
@@ -12,10 +11,10 @@ import {
   useGetRoute,
 } from '@plusone/gpx-toolbox-api-client'
 
-import { Map } from '../../components/Map'
-import { SegmentOverlay } from '../../components/SegmentOverlay'
-import { PointDetails } from '../../components/PointDetails'
-import { RouteSegments } from '../../components/RouteSegments'
+import { SegmentMap } from '../../components/SegmentMap'
+import { SidebarDivider, SidebarLayout } from '../../components/SidebarLayout'
+import { TrackAnalysis } from '../../components/TrackAnalysis'
+import { useSegmentRange } from '../../hooks/useSegmentRange'
 
 const sourceLabels: Record<string, string> = {
   stravaRoute: 'Strava Route',
@@ -34,7 +33,6 @@ export const Route = createFileRoute('/routes/$routeId')({
 })
 
 function RouteDetailPage() {
-  const mapRef: RefObject<L.Map | null> = useRef(null)
   const { routeId } = Route.useParams()
   const queryClient = useQueryClient()
   const [showForm, setShowForm] = useState(false)
@@ -46,10 +44,6 @@ function RouteDetailPage() {
   const [formNotes, setFormNotes] = useState('')
   const [formSubmitting, setFormSubmitting] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
-  const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
-  const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 0])
-  const segmentInitializedRef = useRef(false)
-  const [points, setPoints] = useState<Array<TrackPoint>>([])
 
   const { data: route, isLoading, error, isError } = useGetRoute(routeId)
 
@@ -83,30 +77,8 @@ function RouteDetailPage() {
       })
   }, [routeId])
 
-  useEffect(() => {
-    if (gpxText) {
-      const parsed = parseGpx(gpxText)
-      setPoints(parsed)
-      setSegmentRange([0, 0])
-    }
-  }, [gpxText])
-
-  // Total distance in km
-  const totalDist = useMemo(() => {
-    if (points.length < 2) return 0
-    let dist = 0
-    for (let i = 1; i < points.length; i++) {
-      dist += calculateHaversineDistance(points[i - 1], points[i])
-    }
-    return dist / 1000
-  }, [points])
-
-  useEffect(() => {
-    if (totalDist > 0 && !segmentInitializedRef.current) {
-      segmentInitializedRef.current = true
-      setSegmentRange([0, totalDist])
-    }
-  }, [totalDist])
+  const points = useMemo(() => (gpxText ? parseGpx(gpxText) : []), [gpxText])
+  const { totalDistKm, segmentRange, setSegmentRange } = useSegmentRange(points)
 
   const createFahrtMutation = useCreateFahrt({
     mutation: {
@@ -162,13 +134,6 @@ function RouteDetailPage() {
     }
   }
 
-  function handlePointClick(point: TrackPoint, event: L.LeafletMouseEvent) {
-    setSelectedPoint((prev) => {
-      if (prev?.point === point) return null
-      return { point, event }
-    })
-  }
-
   if (isLoading) return <div style={styles.loading}>Lade...</div>
   if (isError) return <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>
   if (!route) return <div style={styles.error}>Route nicht gefunden</div>
@@ -177,61 +142,73 @@ function RouteDetailPage() {
 
   return (
     <div style={styles.container}>
-      <div style={styles.sidebar}>
-        <Link to="/routes" style={styles.backLink}>
-          ← Zurück zur Übersicht
-        </Link>
+      <SidebarLayout
+        header={
+          <Link to="/routes" style={styles.backLink}>
+            ← Zurück zur Übersicht
+          </Link>
+        }
+      >
+        <div>
+          <h2 style={styles.heading}>{route.name}</h2>
 
-        <h2 style={styles.heading}>{route.name}</h2>
+          {route.description && (
+            <p style={styles.description}>{(route.description as unknown as string | null) ?? ''}</p>
+          )}
 
-        {route.description && <p style={styles.description}>{(route.description as unknown as string | null) ?? ''}</p>}
+          <div style={styles.meta}>
+            <span style={{ ...styles.badge, backgroundColor: sourceColors[route.source] || '#9e9e9e' }}>
+              {sourceLabels[route.source] || route.source}
+            </span>
+            <span style={{ ...styles.badge, backgroundColor: statusColors[route.status] || '#9e9e9e' }}>
+              {statusLabels[route.status] || route.status}
+            </span>
+          </div>
 
-        <div style={styles.meta}>
-          <span style={{ ...styles.badge, backgroundColor: sourceColors[route.source] || '#9e9e9e' }}>
-            {sourceLabels[route.source] || route.source}
-          </span>
-          <span style={{ ...styles.badge, backgroundColor: statusColors[route.status] || '#9e9e9e' }}>
-            {statusLabels[route.status] || route.status}
-          </span>
+          {route.stats && points.length < 2 && (
+            <div style={styles.stats}>
+              <div style={styles.statRow}>
+                <span style={styles.statLabel}>Distanz</span>
+                <span style={styles.statValue}>
+                  {formatDistance((route.stats as { distance?: number } | null)?.distance ?? 0)}
+                </span>
+              </div>
+              <div style={styles.statRow}>
+                <span style={styles.statLabel}>Höhenmeter ↑</span>
+                <span style={styles.statValue}>
+                  {formatElevation((route.stats as { elevationGain?: number } | null)?.elevationGain ?? 0)}
+                </span>
+              </div>
+              <div style={styles.statRow}>
+                <span style={styles.statLabel}>Abstieg ↓</span>
+                <span style={styles.statValue}>
+                  {formatElevation((route.stats as { elevationLoss?: number } | null)?.elevationLoss ?? 0)}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {route.ratingTags && route.ratingTags.length > 0 && (
+            <div style={styles.tags}>
+              {(route.ratingTags as Array<string>).map((tag) => (
+                <span key={tag} style={styles.tag}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {route.notes && <p style={styles.notes}>{(route.notes as unknown as string | null) ?? ''}</p>}
         </div>
 
-        {route.stats && (
-          <div style={styles.stats}>
-            <div style={styles.statRow}>
-              <span style={styles.statLabel}>Distanz</span>
-              <span style={styles.statValue}>
-                {formatDistance((route.stats as { distance?: number } | null)?.distance ?? 0)}
-              </span>
-            </div>
-            <div style={styles.statRow}>
-              <span style={styles.statLabel}>Höhenmeter ↑</span>
-              <span style={styles.statValue}>
-                {formatElevation((route.stats as { elevationGain?: number } | null)?.elevationGain ?? 0)}
-              </span>
-            </div>
-            <div style={styles.statRow}>
-              <span style={styles.statLabel}>Abstieg ↓</span>
-              <span style={styles.statValue}>
-                {formatElevation((route.stats as { elevationLoss?: number } | null)?.elevationLoss ?? 0)}
-              </span>
-            </div>
-          </div>
+        {points.length >= 2 && (
+          <>
+            <SidebarDivider />
+            <TrackAnalysis points={points} range={segmentRange} onRangeChange={setSegmentRange} name={route.name} />
+          </>
         )}
 
-        {route.ratingTags && route.ratingTags.length > 0 && (
-          <div style={styles.tags}>
-            {(route.ratingTags as Array<string>).map((tag) => (
-              <span key={tag} style={styles.tag}>
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {route.notes && <p style={styles.notes}>{(route.notes as unknown as string | null) ?? ''}</p>}
-
-        {/* Segment overview — same as home page */}
-        {points.length >= 2 && <RouteSegments points={points} routeName={route.name} />}
+        <SidebarDivider />
 
         {/* Fahrten */}
         <div style={styles.fahrtenSection}>
@@ -356,110 +333,11 @@ function RouteDetailPage() {
             </div>
           ))}
         </div>
-      </div>
+      </SidebarLayout>
 
-      {/* Map — same mechanism as home page */}
-      <div style={styles.mapArea}>
-        {/* key forces fresh mount on navigation to ensure clean Leaflet lifecycle */}
-        <Map key={routeId} mapRef={mapRef}>
-          {points.length > 1 && segmentRange[1] - segmentRange[0] >= 0.01 && mapRef.current && (
-            <SegmentOverlay
-              key={`${routeId}-${points.length}-${segmentRange[0]}-${segmentRange[1]}`}
-              points={points}
-              mapInstance={mapRef.current}
-              range={segmentRange}
-              totalDistKm={totalDist}
-              fitBounds={segmentRange[0] === 0 && segmentRange[1] >= totalDist}
-            >
-              <TrackClickHandler
-                points={points}
-                range={segmentRange}
-                totalDistKm={totalDist}
-                mapInstance={mapRef.current}
-                onPointClick={handlePointClick}
-              />
-            </SegmentOverlay>
-          )}
-        </Map>
-      </div>
-      {selectedPoint && <PointDetails point={selectedPoint.point} />}
+      <SegmentMap points={points} range={segmentRange} totalDistKm={totalDistKm} />
     </div>
   )
-}
-
-/** Invisible click handler that maps clicks to the nearest track point in the selected range */
-function TrackClickHandler({
-  points,
-  range,
-  totalDistKm: _totalDistKm,
-  mapInstance,
-  onPointClick,
-}: {
-  points: Array<TrackPoint>
-  range: [number, number]
-  totalDistKm: number
-  mapInstance: L.Map
-  onPointClick: (point: TrackPoint, event: L.LeafletMouseEvent) => void
-}) {
-  const layerRef = useRef<L.LayerGroup | null>(null)
-
-  const startIdx = findClosestIndex(points, range[0])
-  const endIdx = findClosestIndex(points, range[1])
-  const visiblePoints = points.slice(startIdx, endIdx + 1)
-
-  function findClosestIndex(pts: Array<TrackPoint>, targetDistKm: number): number {
-    let dist = 0
-    for (let i = 1; i < pts.length; i++) {
-      if (dist / 1000 >= targetDistKm) return i - 1
-      dist += calculateHaversineDistance(pts[i - 1], pts[i])
-    }
-    return pts.length - 1
-  }
-
-  useEffect(() => {
-    if (visiblePoints.length < 2) return
-
-    const layer = L.layerGroup()
-
-    const coords: Array<[number, number]> = visiblePoints.map((p) => [p.latitude, p.longitude] as [number, number])
-
-    const clickable = L.polyline(coords, {
-      color: '#fff',
-      weight: 20,
-      interactive: true,
-      opacity: 0,
-    })
-
-    clickable.on('click', (e: L.LeafletMouseEvent) => {
-      const clickLatLng = e.latlng
-      let minDist = Infinity
-      let nearestPoint: TrackPoint | null = null
-      for (const pt of visiblePoints) {
-        const dist = calculateHaversineDistance(
-          { latitude: clickLatLng.lat, longitude: clickLatLng.lng },
-          { latitude: pt.latitude, longitude: pt.longitude },
-        )
-        if (dist < minDist) {
-          minDist = dist
-          nearestPoint = pt
-        }
-      }
-
-      if (nearestPoint) {
-        onPointClick(nearestPoint, e)
-      }
-    })
-
-    clickable.addTo(layer)
-    layerRef.current = layer
-
-    return () => {
-      layer.remove()
-      layerRef.current = null
-    }
-  }, [visiblePoints, mapInstance, onPointClick])
-
-  return null
 }
 
 const sourceColors: Record<string, string> = {
@@ -496,36 +374,22 @@ const styles = {
     height: '100%',
     width: '100%',
   } as const,
-  sidebar: {
-    width: 400,
-    flexShrink: 0,
-    overflowY: 'auto',
-    borderRight: '1px solid #e0e0e0',
-    padding: 16,
-    backgroundColor: '#fafafa',
-  } as const,
-  mapArea: {
-    flex: 1,
-    position: 'relative',
-    minWidth: 0,
-  } as const,
   backLink: {
     display: 'block',
-    marginBottom: 12,
     fontSize: 13,
-    color: '#3b82f6',
+    color: '#60a5fa',
     textDecoration: 'none',
   } as const,
   heading: {
     margin: '0 0 8px',
     fontSize: 22,
     fontWeight: 600,
-    color: '#1e293b',
+    color: '#f8fafc',
   } as const,
   description: {
     margin: '0 0 12px',
     fontSize: 14,
-    color: '#64748b',
+    color: '#94a3b8',
   } as const,
   meta: {
     display: 'flex',
@@ -541,7 +405,7 @@ const styles = {
     fontWeight: 500,
   } as const,
   stats: {
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
@@ -553,12 +417,12 @@ const styles = {
   } as const,
   statLabel: {
     fontSize: 13,
-    color: '#64748b',
+    color: '#94a3b8',
   } as const,
   statValue: {
     fontSize: 14,
     fontWeight: 600,
-    color: '#1e293b',
+    color: '#e2e8f0',
   } as const,
   tags: {
     display: 'flex',
@@ -570,18 +434,16 @@ const styles = {
     padding: '2px 8px',
     borderRadius: 8,
     fontSize: 11,
-    backgroundColor: '#e0e7ff',
-    color: '#3730a1',
+    backgroundColor: '#312e81',
+    color: '#c7d2fe',
   } as const,
   notes: {
     fontSize: 13,
-    color: '#64748b',
+    color: '#94a3b8',
     fontStyle: 'italic',
     marginBottom: 12,
   } as const,
-  fahrtenSection: {
-    marginTop: 16,
-  } as const,
+  fahrtenSection: {} as const,
   fahrtenHeader: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -592,7 +454,7 @@ const styles = {
     margin: 0,
     fontSize: 16,
     fontWeight: 600,
-    color: '#1e293b',
+    color: '#f8fafc',
   } as const,
   addButton: {
     padding: '4px 12px',
@@ -604,7 +466,7 @@ const styles = {
     cursor: 'pointer',
   } as const,
   form: {
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
@@ -615,13 +477,17 @@ const styles = {
   input: {
     padding: '6px 8px',
     fontSize: 13,
-    border: '1px solid #ccc',
+    border: '1px solid #475569',
+    backgroundColor: '#0f172a',
+    color: '#e2e8f0',
     borderRadius: 4,
   } as const,
   textarea: {
     padding: '6px 8px',
     fontSize: 13,
-    border: '1px solid #ccc',
+    border: '1px solid #475569',
+    backgroundColor: '#0f172a',
+    color: '#e2e8f0',
     borderRadius: 4,
     resize: 'vertical' as const,
     minHeight: 40,
@@ -643,16 +509,16 @@ const styles = {
   cancelButton: {
     padding: '6px 12px',
     fontSize: 13,
-    backgroundColor: '#fff',
-    color: '#666',
-    border: '1px solid #ccc',
+    backgroundColor: 'transparent',
+    color: '#cbd5e1',
+    border: '1px solid #475569',
     borderRadius: 4,
     cursor: 'pointer',
   } as const,
   error: {
     padding: '8px 12px',
-    backgroundColor: '#ffebee',
-    color: '#c62828',
+    backgroundColor: 'rgba(239,68,68,0.15)',
+    color: '#fca5a5',
     borderRadius: 4,
     fontSize: 13,
     marginBottom: 12,
@@ -663,11 +529,11 @@ const styles = {
     color: '#666',
   } as const,
   fahrtCard: {
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 6,
     padding: 10,
     marginBottom: 8,
-    border: '1px solid #e0e0e0',
+    border: '1px solid #334155',
   } as const,
   fahrtHeader: {
     display: 'flex',
@@ -678,7 +544,7 @@ const styles = {
   fahrtDate: {
     fontSize: 13,
     fontWeight: 600,
-    color: '#1e293b',
+    color: '#f8fafc',
   } as const,
   deleteButton: {
     background: 'none',
@@ -691,26 +557,26 @@ const styles = {
     display: 'flex',
     gap: 12,
     fontSize: 12,
-    color: '#64748b',
+    color: '#94a3b8',
     marginBottom: 4,
   } as const,
   fahrtNotes: {
     fontSize: 12,
-    color: '#64748b',
+    color: '#94a3b8',
     fontStyle: 'italic',
     marginTop: 4,
   } as const,
   fahrtTitle: {
     fontSize: 14,
     fontWeight: 600,
-    color: '#1e293b',
+    color: '#f8fafc',
     marginTop: 4,
   } as const,
   fahrtWeather: {
     display: 'flex',
     gap: 8,
     fontSize: 12,
-    color: '#64748b',
+    color: '#94a3b8',
     marginTop: 4,
   } as const,
 }
