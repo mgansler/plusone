@@ -23,7 +23,8 @@ declare module 'leaflet' {
   }
 }
 
-const defaultCenter: [number, number] = [48.77, 9.16]
+/** Fallback center (Stuttgart) when the browser location is unavailable */
+export const defaultCenter: [number, number] = [48.77, 9.16]
 
 /** Basemap tile layers for the layer switcher */
 const tileLayers: Record<string, string> = {

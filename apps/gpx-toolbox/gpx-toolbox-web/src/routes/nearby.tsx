@@ -4,7 +4,7 @@ import L from 'leaflet'
 
 import { useFindNearbyRoutes, useGetRoute } from '@plusone/gpx-toolbox-api-client'
 
-import { Map } from '../components/Map'
+import { defaultCenter, Map } from '../components/Map'
 import { formatElevation } from '../utils/format'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -30,21 +30,100 @@ const statusColors: Record<string, string> = {
   'found-online': '#ff5722',
 }
 
+type GeocodeResult = { id: number; lat: number; lng: number; label: string }
+
 /**
- * Resolve a place name to coordinates via the free, CORS-enabled Open-Meteo
+ * Resolve a place name to candidate coordinates via the free, CORS-enabled Open-Meteo
  * geocoding API (the same provider the project already uses for weather).
+ * Returns up to `count` matches, most relevant first; empty if nothing was found.
  */
-async function geocodePlace(place: string): Promise<{ lat: number; lng: number; label: string } | null> {
-  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(place)}&count=1&language=de&format=json`
+async function geocodePlace(place: string, count = 8): Promise<Array<GeocodeResult>> {
+  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(place)}&count=${count}&language=de&format=json`
   const res = await fetch(url)
-  if (!res.ok) return null
+  if (!res.ok) throw new Error(`Geocoding failed: ${res.status}`)
   const json = (await res.json()) as {
-    results?: Array<{ name: string; latitude: number; longitude: number; admin1?: string; country?: string }>
+    results?: Array<{
+      id: number
+      name: string
+      latitude: number
+      longitude: number
+      admin1?: string
+      admin2?: string
+      country?: string
+    }>
   }
-  const first = json.results?.[0]
-  if (!first) return null
-  const label = [first.name, first.admin1, first.country].filter(Boolean).join(', ')
-  return { lat: first.latitude, lng: first.longitude, label }
+  return (json.results ?? []).map((r) => ({
+    id: r.id,
+    lat: r.latitude,
+    lng: r.longitude,
+    // admin2 (district) helps telling apart places with the same name in one state
+    label: [r.name, r.admin2, r.admin1, r.country].filter(Boolean).join(', '),
+  }))
+}
+
+const DEFAULT_RADIUS_KM = 20
+
+/** 5 decimals ≈ 1 m, more precision is meaningless for a search center */
+const COORDINATE_DECIMALS = 5
+const COORDINATE_PATTERN = new RegExp(`^-?\\d*(\\.\\d{0,${COORDINATE_DECIMALS}})?$`)
+
+function formatCoordinate(value: number | null): string {
+  return value == null ? '' : String(Number(value.toFixed(COORDINATE_DECIMALS)))
+}
+
+/**
+ * Text input for a latitude/longitude limited to `COORDINATE_DECIMALS` decimals.
+ * Keeps the typed text locally so partial input like "48." is not lost, and shows
+ * external changes (map click, GPS, place search) rounded.
+ */
+function CoordinateInput({
+  label,
+  value,
+  onChange,
+  onBlur,
+  placeholder,
+}: {
+  label: string
+  value: number | null
+  onChange: (value: number | null) => void
+  onBlur: () => void
+  placeholder: string
+}) {
+  const [text, setText] = useState(formatCoordinate(value))
+
+  // Sync external changes, but leave the text alone while it already represents the value
+  useEffect(() => {
+    const typed = text === '' || text === '-' ? null : parseFloat(text)
+    const rounded = value == null ? null : Number(value.toFixed(COORDINATE_DECIMALS))
+    if (typed !== rounded) setText(formatCoordinate(value))
+    // Only react to external value changes, not to typing (text is intentionally not a dependency)
+  }, [value])
+
+  return (
+    <label style={styles.coordinateField}>
+      <span style={styles.label}>{label}</span>
+      <input
+        type="text"
+        inputMode="decimal"
+        value={text}
+        onChange={(e) => {
+          const next = e.target.value.replace(',', '.')
+          if (!COORDINATE_PATTERN.test(next)) return
+          setText(next)
+          const parsed = parseFloat(next)
+          onChange(isNaN(parsed) ? null : parsed)
+        }}
+        onBlur={onBlur}
+        style={styles.input}
+        placeholder={placeholder}
+      />
+    </label>
+  )
+}
+
+/** Zoom the map so the whole search circle is visible */
+function fitSearchArea(map: L.Map, lat: number, lng: number, radiusKm: number) {
+  map.fitBounds(L.latLng(lat, lng).toBounds(radiusKm * 2 * 1000), { padding: [16, 16] })
 }
 
 export const Route = createFileRoute('/nearby')({
@@ -56,7 +135,7 @@ function NearbySearch() {
   const [map, setMap] = useState<L.Map | null>(null)
   const [lat, setLat] = useState<number | null>(null)
   const [lng, setLng] = useState<number | null>(null)
-  const [radius, setRadius] = useState<number>(50)
+  const [radius, setRadius] = useState<number>(DEFAULT_RADIUS_KM)
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null)
   const [usingGPS, setUsingGPS] = useState(false)
 
@@ -64,10 +143,15 @@ function NearbySearch() {
   const [place, setPlace] = useState('')
   const [geoLoading, setGeoLoading] = useState(false)
   const [geoError, setGeoError] = useState<string | null>(null)
+  // Several matches for the searched place: let the user pick instead of jumping to the first
+  const [geoCandidates, setGeoCandidates] = useState<Array<GeocodeResult>>([])
 
   // Leaflet layers for the search center (kept across renders, updated in place)
   const markerRef = useRef<L.Marker | null>(null)
   const circleRef = useRef<L.Circle | null>(null)
+  // Latest search center for the deferred layer creation below
+  const centerRef = useRef({ lat, lng, radius })
+  centerRef.current = { lat, lng, radius }
 
   const {
     data: results,
@@ -82,11 +166,55 @@ function NearbySearch() {
     query: { enabled: selectedRoute != null },
   })
 
+  // Request the browser location; `onDone` also runs on failure so callers can fall back
+  function locate(onFound: (lat: number, lng: number) => void, onDone?: () => void) {
+    if (!navigator.geolocation) {
+      onDone?.()
+      return
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        onFound(pos.coords.latitude, pos.coords.longitude)
+        onDone?.()
+      },
+      () => onDone?.(),
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 },
+    )
+  }
+
+  // Start the search at the current location right away (fallback: default center),
+  // so nearby routes show up without clicking "GPS-Position" first.
+  const [initialCenter, setInitialCenter] = useState<[number, number] | null>(null)
+  useEffect(() => {
+    let found = false
+    locate(
+      (foundLat, foundLng) => {
+        found = true
+        setInitialCenter([foundLat, foundLng])
+      },
+      () => {
+        if (!found) setInitialCenter(defaultCenter)
+      },
+    )
+  }, [])
+
+  // Apply the initial center once both it and the map are available
+  // (unless the user already picked a location in the meantime).
+  const initialCenterApplied = useRef(false)
+  useEffect(() => {
+    if (!initialCenter || !map || initialCenterApplied.current) return
+    initialCenterApplied.current = true
+    if (lat != null && lng != null) return
+    setLat(initialCenter[0])
+    setLng(initialCenter[1])
+    fitSearchArea(map, initialCenter[0], initialCenter[1], radius)
+  }, [initialCenter, map, lat, lng, radius])
+
   // Recenter the map only when the user explicitly picks a location
   // (GPS / place / typed coordinates) — not when they click/drag the map,
   // where the view is already where they want it.
-  function centerOn(nextLat: number, nextLng: number, zoom = 12) {
-    mapRef.current?.setView([nextLat, nextLng], zoom)
+  function centerOn(nextLat: number, nextLng: number) {
+    if (mapRef.current) fitSearchArea(mapRef.current, nextLat, nextLng, radius)
   }
 
   // Create the draggable center marker + radius circle once the map is ready,
@@ -97,12 +225,14 @@ function NearbySearch() {
     // The map DOM container may not be in the document yet when this effect
     // runs (onMapReady fires during the same render cycle). Defer to the
     // next macrotask so the browser has committed the layout first.
-    const initLat = lat ?? 48.77
-    const initLng = lng ?? 9.16
     let onMapClick: ((e: L.LeafletMouseEvent) => void) | null = null
 
     setTimeout(() => {
       if (!map) return
+
+      // Read the center at creation time: it may have been set (e.g. by geolocation) meanwhile
+      const initLat = centerRef.current.lat ?? defaultCenter[0]
+      const initLng = centerRef.current.lng ?? defaultCenter[1]
 
       if (!markerRef.current) {
         const marker = L.marker([initLat, initLng], { draggable: true, title: 'Suchzentrum' }).addTo(map)
@@ -116,7 +246,7 @@ function NearbySearch() {
 
       if (!circleRef.current) {
         circleRef.current = L.circle([initLat, initLng], {
-          radius: radius * 1000,
+          radius: centerRef.current.radius * 1000,
           color: '#2196f3',
           weight: 2,
           fillColor: '#2196f3',
@@ -168,20 +298,29 @@ function NearbySearch() {
     if (!place.trim()) return
     setGeoLoading(true)
     setGeoError(null)
+    setGeoCandidates([])
     try {
-      const result = await geocodePlace(place)
-      if (!result) {
+      const results = await geocodePlace(place)
+      if (results.length === 0) {
         setGeoError(`Ort „${place}" nicht gefunden`)
-        return
+      } else if (results.length === 1) {
+        selectPlace(results[0])
+      } else {
+        setGeoCandidates(results)
       }
-      setLat(result.lat)
-      setLng(result.lng)
-      centerOn(result.lat, result.lng, 13)
     } catch {
       setGeoError('Ort konnte nicht aufgelöst werden')
     } finally {
       setGeoLoading(false)
     }
+  }
+
+  function selectPlace(result: GeocodeResult) {
+    setGeoCandidates([])
+    setPlace(result.label)
+    setLat(result.lat)
+    setLng(result.lng)
+    centerOn(result.lat, result.lng)
   }
 
   const center: [number, number] | undefined = lat != null && lng != null ? [lat, lng] : undefined
@@ -214,48 +353,51 @@ function NearbySearch() {
             </button>
           </div>
           {geoError && <div style={styles.geoError}>{geoError}</div>}
+          {geoCandidates.length > 0 && (
+            <div style={styles.candidates}>
+              <div style={styles.candidatesTitle}>Welcher Ort ist gemeint?</div>
+              {geoCandidates.map((candidate) => (
+                <button key={candidate.id} onClick={() => selectPlace(candidate)} style={styles.candidate}>
+                  {candidate.label}
+                </button>
+              ))}
+            </div>
+          )}
           <div style={styles.hint}>Tipp: auf die Karte klicken oder den Marker ziehen, um den Suchort zu setzen.</div>
         </div>
 
         {/* Location input */}
         <div style={styles.section}>
-          <label style={styles.label}>Breitengrad (lat)</label>
-          <input
-            type="number"
-            step="0.0001"
-            value={lat ?? ''}
-            onChange={(e) => setLat(parseFloat(e.target.value) || null)}
-            onBlur={() => {
-              if (lat != null && lng != null) centerOn(lat, lng)
-            }}
-            style={styles.input}
-            placeholder="48.77"
-          />
-          <label style={styles.label}>Längengrad (lng)</label>
-          <input
-            type="number"
-            step="0.0001"
-            value={lng ?? ''}
-            onChange={(e) => setLng(parseFloat(e.target.value) || null)}
-            onBlur={() => {
-              if (lat != null && lng != null) centerOn(lat, lng)
-            }}
-            style={styles.input}
-            placeholder="9.16"
-          />
+          <div style={styles.coordinateRow}>
+            <CoordinateInput
+              label="Breitengrad (lat)"
+              value={lat}
+              onChange={setLat}
+              onBlur={() => {
+                if (lat != null && lng != null) centerOn(lat, lng)
+              }}
+              placeholder="48.77"
+            />
+            <CoordinateInput
+              label="Längengrad (lng)"
+              value={lng}
+              onChange={setLng}
+              onBlur={() => {
+                if (lat != null && lng != null) centerOn(lat, lng)
+              }}
+              placeholder="9.16"
+            />
+          </div>
           <button
             onClick={() => {
-              if (!navigator.geolocation) return
               setUsingGPS(true)
-              navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                  setLat(pos.coords.latitude)
-                  setLng(pos.coords.longitude)
-                  centerOn(pos.coords.latitude, pos.coords.longitude, 15)
-                  setUsingGPS(false)
+              locate(
+                (gpsLat, gpsLng) => {
+                  setLat(gpsLat)
+                  setLng(gpsLng)
+                  centerOn(gpsLat, gpsLng)
                 },
                 () => setUsingGPS(false),
-                { enableHighAccuracy: true, timeout: 10000 },
               )
             }}
             style={styles.gpsButton}
@@ -283,6 +425,7 @@ function NearbySearch() {
         {isError && <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>}
 
         {/* Loading */}
+        {lat == null && <div style={styles.loading}>Standort wird ermittelt...</div>}
         {loading && <div style={styles.loading}>Suche...</div>}
 
         {/* Results */}
@@ -342,7 +485,7 @@ function NearbySearch() {
         <Map mapRef={mapRef} onMapReady={setMap} center={center} />
         {lat != null && lng != null && (
           <div style={styles.centerMarker}>
-            {lat.toFixed(4)}, {lng.toFixed(4)}
+            {lat.toFixed(COORDINATE_DECIMALS)}, {lng.toFixed(COORDINATE_DECIMALS)}
           </div>
         )}
       </div>
@@ -393,6 +536,14 @@ const styles = {
     marginBottom: 8,
     boxSizing: 'border-box',
   } as const,
+  coordinateRow: {
+    display: 'flex',
+    gap: 8,
+  } as const,
+  coordinateField: {
+    flex: 1,
+    minWidth: 0,
+  } as const,
   placeRow: {
     display: 'flex',
     gap: 8,
@@ -415,6 +566,30 @@ const styles = {
     color: '#888',
     marginTop: -4,
     marginBottom: 4,
+  } as const,
+  candidates: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    marginBottom: 8,
+    border: '1px solid #e0e0e0',
+    borderRadius: 4,
+    backgroundColor: '#fff',
+    overflow: 'hidden',
+  } as const,
+  candidatesTitle: {
+    padding: '6px 10px',
+    fontSize: 12,
+    color: '#64748b',
+    borderBottom: '1px solid #e0e0e0',
+  } as const,
+  candidate: {
+    padding: '6px 10px',
+    fontSize: 13,
+    textAlign: 'left' as const,
+    border: 'none',
+    borderBottom: '1px solid #f1f5f9',
+    backgroundColor: 'transparent',
+    cursor: 'pointer',
   } as const,
   geoError: {
     padding: '6px 10px',
