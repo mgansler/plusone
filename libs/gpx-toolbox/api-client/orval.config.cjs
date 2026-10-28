@@ -59,5 +59,8 @@ module.exports = {
       client: 'axios-functions',
       target: './src/gen/strava',
     },
+    hooks: {
+      afterAllFilesWrite: 'nx format --files libs/gpx-toolbox/api-client/src/gen/strava',
+    },
   },
 }
