@@ -1,4 +1,4 @@
-import { IsDateString, IsInt, IsOptional, IsString, Max, Min } from 'class-validator'
+import { IsDateString, IsIn, IsInt, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 
@@ -85,6 +85,10 @@ export class UpdateFahrtDto {
   weather?: string
 }
 
+/** Fahrt columns plus route columns (distance, elevationGain) the Fahrten list can be sorted by */
+export const FAHRT_SORT_FIELDS = ['riddenAt', 'duration', 'avgHr', 'createdAt', 'distance', 'elevationGain'] as const
+export type FahrtSortField = (typeof FAHRT_SORT_FIELDS)[number]
+
 export class QueryFahrtDto {
   @ApiPropertyOptional({ description: 'Filter by date range start' })
   @IsOptional()
@@ -96,10 +100,38 @@ export class QueryFahrtDto {
   @IsDateString()
   dateTo?: string
 
-  @ApiPropertyOptional({ description: 'Sort field', default: 'riddenAt' })
+  @ApiPropertyOptional({ description: 'Minimum route distance in meters' })
   @IsOptional()
-  @IsString()
-  sortBy?: 'riddenAt' | 'duration' | 'avgHr' | 'createdAt'
+  @Transform(({ value }) => (value === '' || value == null ? undefined : Number(value)))
+  @IsNumber()
+  @Min(0)
+  minDistance?: number
+
+  @ApiPropertyOptional({ description: 'Maximum route distance in meters' })
+  @IsOptional()
+  @Transform(({ value }) => (value === '' || value == null ? undefined : Number(value)))
+  @IsNumber()
+  @Min(0)
+  maxDistance?: number
+
+  @ApiPropertyOptional({ description: 'Minimum route elevation gain in meters' })
+  @IsOptional()
+  @Transform(({ value }) => (value === '' || value == null ? undefined : Number(value)))
+  @IsNumber()
+  @Min(0)
+  minElevation?: number
+
+  @ApiPropertyOptional({ description: 'Maximum route elevation gain in meters' })
+  @IsOptional()
+  @Transform(({ value }) => (value === '' || value == null ? undefined : Number(value)))
+  @IsNumber()
+  @Min(0)
+  maxElevation?: number
+
+  @ApiPropertyOptional({ description: 'Sort field', default: 'riddenAt', enum: FAHRT_SORT_FIELDS })
+  @IsOptional()
+  @IsIn(FAHRT_SORT_FIELDS)
+  sortBy?: FahrtSortField
 
   @ApiPropertyOptional({ description: 'Sort order', default: 'DESC' })
   @IsOptional()

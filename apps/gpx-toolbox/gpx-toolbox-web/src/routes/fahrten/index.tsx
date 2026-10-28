@@ -3,7 +3,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import L from 'leaflet'
 
 import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
-import { useListAllFahrten } from '@plusone/gpx-toolbox-api-client'
+import { ListAllFahrtenSortBy, useListAllFahrten } from '@plusone/gpx-toolbox-api-client'
 
 import { Map } from '../../components/Map'
 import { SegmentOverlay } from '../../components/SegmentOverlay'
@@ -18,16 +18,26 @@ function FahrtenPage() {
   const [page, setPage] = useState(1)
   const [dateFrom, setDateFrom] = useState('')
   const [dateTo, setDateTo] = useState('')
-  const [sortBy, setSortBy] = useState('riddenAt')
+  const [distanceKm, setDistanceKm] = useState<NumberRange>(emptyRange)
+  const [elevationM, setElevationM] = useState<NumberRange>(emptyRange)
+  const [sortBy, setSortBy] = useState<ListAllFahrtenSortBy>(ListAllFahrtenSortBy.riddenAt)
+  const [order, setOrder] = useState<'ASC' | 'DESC'>('DESC')
   const [selectedFahrtId, setSelectedFahrtId] = useState<string | null>(null)
   const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
+
+  // Number inputs fire on every keystroke; wait until typing pauses before querying
+  const debouncedDistanceKm = useDebouncedValue(distanceKm, 400)
+  const debouncedElevationM = useDebouncedValue(elevationM, 400)
 
   const { data, isLoading, error, isError } = useListAllFahrten({
     page,
     limit: 50,
     sortBy,
+    order,
     ...(dateFrom && { dateFrom }),
     ...(dateTo && { dateTo }),
+    ...rangeParams(debouncedDistanceKm, 'minDistance', 'maxDistance', 1000),
+    ...rangeParams(debouncedElevationM, 'minElevation', 'maxElevation', 1),
   })
 
   type FahrtListResponse = {
@@ -40,7 +50,7 @@ function FahrtenPage() {
       avgHr: number | null
       maxHr: number | null
       notes: string | null
-      route?: { name?: string; status?: string; stats?: { distance?: number } }
+      route?: { name?: string; status?: string; stats?: RouteStats }
     }>
     total?: number
     totalPages?: number
@@ -113,35 +123,16 @@ function FahrtenPage() {
 
   // Compute totals across all displayed fahrten
   const totalDuration = fahrten.reduce((sum, f) => sum + (f.duration ?? 0), 0)
-  const totalDistance = fahrten.reduce((sum, f) => {
-    const route = f.route as { stats?: { distance?: number } } | undefined | null
-    return sum + (route?.stats?.distance ?? 0)
-  }, 0)
+  const totalDistance = fahrten.reduce((sum, f) => sum + (f.route?.stats?.distance ?? 0), 0)
+  const totalElevation = fahrten.reduce((sum, f) => sum + (f.route?.stats?.elevationGain ?? 0), 0)
+  const hasFilters = dateFrom !== '' || dateTo !== '' || !isEmptyRange(distanceKm) || !isEmptyRange(elevationM)
 
   return (
-    <div style={styles.container}>
-      <div style={styles.sidebar}>
-        <div style={styles.headingRow}>
-          <h2 style={styles.heading}>Fahrten ({total})</h2>
-          <Link to="/fahrten/sync" style={styles.syncButton}>
-            📥 Sync
-          </Link>
-        </div>
-
-        {/* Summary */}
-        <div style={styles.summary}>
-          <div style={styles.summaryItem}>
-            <span style={styles.summaryValue}>{formatDuration(totalDuration)}</span>
-            <span style={styles.summaryLabel}>Gesamtdauer</span>
-          </div>
-          <div style={styles.summaryItem}>
-            <span style={styles.summaryValue}>{formatDistance(totalDistance)}</span>
-            <span style={styles.summaryLabel}>Distanz</span>
-          </div>
-        </div>
-
-        {/* Filters */}
-        <div style={styles.filters}>
+    <div style={styles.page}>
+      {/* Filter & sort bar */}
+      <div style={styles.filterBar}>
+        <label style={styles.filterField}>
+          <span style={styles.filterLabel}>Von</span>
           <input
             type="date"
             value={dateFrom}
@@ -150,8 +141,10 @@ function FahrtenPage() {
               setPage(1)
             }}
             style={styles.input}
-            placeholder="Vom"
           />
+        </label>
+        <label style={styles.filterField}>
+          <span style={styles.filterLabel}>Bis</span>
           <input
             type="date"
             value={dateTo}
@@ -160,112 +153,193 @@ function FahrtenPage() {
               setPage(1)
             }}
             style={styles.input}
-            placeholder="Bis"
           />
+        </label>
+        <RangeFilter
+          label="Distanz"
+          unit="km"
+          value={distanceKm}
+          onChange={(range) => {
+            setDistanceKm(range)
+            setPage(1)
+          }}
+        />
+        <RangeFilter
+          label="Höhenmeter"
+          unit="hm"
+          value={elevationM}
+          onChange={(range) => {
+            setElevationM(range)
+            setPage(1)
+          }}
+        />
+        {hasFilters && (
+          <button
+            onClick={() => {
+              setDateFrom('')
+              setDateTo('')
+              setDistanceKm(emptyRange)
+              setElevationM(emptyRange)
+              setPage(1)
+            }}
+            style={styles.resetButton}
+          >
+            Filter zurücksetzen
+          </button>
+        )}
+
+        <div style={styles.filterSpacer} />
+
+        <label style={styles.filterField}>
+          <span style={styles.filterLabel}>Sortieren nach</span>
           <select
             value={sortBy}
             onChange={(e) => {
-              setSortBy(e.target.value)
+              setSortBy(e.target.value as ListAllFahrtenSortBy)
               setPage(1)
             }}
-            style={styles.select}
+            style={styles.input}
           >
-            <option value="riddenAt">Neueste zuerst</option>
-            <option value="duration">Längste zuerst</option>
+            {Object.entries(sortLabels).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
           </select>
-        </div>
+        </label>
+        <button
+          onClick={() => {
+            setOrder(order === 'DESC' ? 'ASC' : 'DESC')
+            setPage(1)
+          }}
+          style={styles.orderButton}
+          title={order === 'DESC' ? 'Absteigend' : 'Aufsteigend'}
+        >
+          {order === 'DESC' ? '↓ Absteigend' : '↑ Aufsteigend'}
+        </button>
+      </div>
 
-        {/* Error */}
-        {isError && <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>}
+      <div style={styles.container}>
+        <div style={styles.sidebar}>
+          <div style={styles.headingRow}>
+            <h2 style={styles.heading}>Fahrten ({total})</h2>
+            <Link to="/fahrten/sync" style={styles.syncButton}>
+              📥 Sync
+            </Link>
+          </div>
 
-        {/* Loading */}
-        {isLoading && <div style={styles.loading}>Lade...</div>}
+          {/* Summary */}
+          <div style={styles.summary}>
+            <div style={styles.summaryItem}>
+              <span style={styles.summaryValue}>{formatDuration(totalDuration)}</span>
+              <span style={styles.summaryLabel}>Gesamtdauer</span>
+            </div>
+            <div style={styles.summaryItem}>
+              <span style={styles.summaryValue}>{formatDistance(totalDistance)}</span>
+              <span style={styles.summaryLabel}>Distanz</span>
+            </div>
+            <div style={styles.summaryItem}>
+              <span style={styles.summaryValue}>{formatElevation(totalElevation)}</span>
+              <span style={styles.summaryLabel}>Höhenmeter</span>
+            </div>
+          </div>
 
-        {/* Fahrten */}
-        {fahrten.length > 0 && (
-          <div style={styles.fahrtList}>
-            {fahrten.map((f) => {
-              const route = f.route as { name?: string; status?: string } | undefined | null
-              return (
-                <Link
-                  key={f.id}
-                  to="/fahrten/$fahrtId"
-                  params={{ fahrtId: f.id }}
-                  onClick={() => handleFahrtClick(f)}
-                  style={{
-                    ...styles.fahrtCard,
-                    backgroundColor: selectedFahrtId === f.id ? '#e3f2fd' : '#fff',
-                  }}
-                >
-                  <div style={styles.fahrtDate}>
-                    {new Date(f.riddenAt).toLocaleDateString('de-DE', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                    })}
-                  </div>
-                  {f.title && <div style={styles.fahrtTitle}>{f.title}</div>}
-                  <div style={styles.fahrtStats}>
-                    {f.duration && <span>{formatDuration(f.duration)}</span>}
-                    {f.avgHr && <span>Ø HR {f.avgHr}</span>}
-                    {f.maxHr && <span>Max HR {f.maxHr}</span>}
-                  </div>
-                  {route && (
-                    <div style={styles.fahrtRoute}>
-                      <span style={styles.routeName}>{route.name}</span>
-                      {route.status && (
+          {/* Error */}
+          {isError && <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>}
+
+          {/* Loading */}
+          {isLoading && <div style={styles.loading}>Lade...</div>}
+
+          {/* Fahrten */}
+          {fahrten.length > 0 && (
+            <div style={styles.fahrtList}>
+              {fahrten.map((f) => {
+                const route = f.route
+                const stats = route?.stats
+                return (
+                  <Link
+                    key={f.id}
+                    to="/fahrten/$fahrtId"
+                    params={{ fahrtId: f.id }}
+                    onClick={() => handleFahrtClick(f)}
+                    title={f.notes ?? undefined}
+                    style={{
+                      ...styles.fahrtCard,
+                      backgroundColor: selectedFahrtId === f.id ? '#e3f2fd' : '#fff',
+                    }}
+                  >
+                    {/* Line 1: date, title, route status */}
+                    <div style={styles.fahrtLine}>
+                      <span style={styles.fahrtDate}>
+                        {new Date(f.riddenAt).toLocaleDateString('de-DE', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                        })}
+                      </span>
+                      <span style={styles.fahrtTitle}>{f.title ?? route?.name ?? ''}</span>
+                      {route?.status && (
                         <span style={{ ...styles.badge, backgroundColor: statusColors[route.status] || '#9e9e9e' }}>
                           {statusLabels[route.status]}
                         </span>
                       )}
                     </div>
-                  )}
-                  {f.notes && <div style={styles.fahrtNotes}>{f.notes}</div>}
-                </Link>
-              )
-            })}
-          </div>
-        )}
+                    {/* Line 2: stats and route name */}
+                    <div style={styles.fahrtLine}>
+                      <span style={styles.fahrtStats}>
+                        <span>⏱ {f.duration ? formatDuration(f.duration) : '–'}</span>
+                        <span>↔ {stats?.distance ? formatDistance(stats.distance) : '–'}</span>
+                        <span>↗ {stats?.elevationGain ? formatElevation(stats.elevationGain) : '–'}</span>
+                        {f.avgHr && <span>♥ {f.avgHr}</span>}
+                      </span>
+                      {route?.name && f.title && <span style={styles.routeName}>{route.name}</span>}
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          )}
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div style={styles.pagination}>
-            <button disabled={page === 1} onClick={() => setPage(page - 1)} style={styles.pageButton}>
-              ←
-            </button>
-            <span style={styles.pageInfo}>
-              {page} / {totalPages}
-            </span>
-            <button disabled={page === totalPages} onClick={() => setPage(page + 1)} style={styles.pageButton}>
-              →
-            </button>
-          </div>
-        )}
-      </div>
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div style={styles.pagination}>
+              <button disabled={page === 1} onClick={() => setPage(page - 1)} style={styles.pageButton}>
+                ←
+              </button>
+              <span style={styles.pageInfo}>
+                {page} / {totalPages}
+              </span>
+              <button disabled={page === totalPages} onClick={() => setPage(page + 1)} style={styles.pageButton}>
+                →
+              </button>
+            </div>
+          )}
+        </div>
 
-      {/* Map */}
-      <div style={styles.mapArea}>
-        <Map mapRef={mapRef}>
-          {points.length > 1 && (
-            <SegmentOverlay
-              points={points}
-              mapInstance={mapRef.current!}
-              range={[0, totalDist]}
-              totalDistKm={totalDist}
-              fitBounds
-            >
-              <TrackClickHandler
+        {/* Map */}
+        <div style={styles.mapArea}>
+          <Map mapRef={mapRef}>
+            {points.length > 1 && (
+              <SegmentOverlay
                 points={points}
+                mapInstance={mapRef.current!}
                 range={[0, totalDist]}
                 totalDistKm={totalDist}
-                mapInstance={mapRef.current!}
-                onPointClick={handlePointClick}
-              />
-            </SegmentOverlay>
-          )}
-        </Map>
+                fitBounds
+              >
+                <TrackClickHandler
+                  points={points}
+                  range={[0, totalDist]}
+                  totalDistKm={totalDist}
+                  mapInstance={mapRef.current!}
+                  onPointClick={handlePointClick}
+                />
+              </SegmentOverlay>
+            )}
+          </Map>
+        </div>
+        {selectedPoint && <PointDetails point={selectedPoint.point} />}
       </div>
-      {selectedPoint && <PointDetails point={selectedPoint.point} />}
     </div>
   )
 }
@@ -341,6 +415,90 @@ function TrackClickHandler({
   return null
 }
 
+type RouteStats = { distance?: number; elevationGain?: number }
+
+const sortLabels: Partial<Record<ListAllFahrtenSortBy, string>> = {
+  [ListAllFahrtenSortBy.riddenAt]: 'Datum',
+  [ListAllFahrtenSortBy.duration]: 'Dauer',
+  [ListAllFahrtenSortBy.distance]: 'Distanz',
+  [ListAllFahrtenSortBy.elevationGain]: 'Höhenmeter',
+  [ListAllFahrtenSortBy.avgHr]: 'Ø Herzfrequenz',
+}
+
+/** Min/max as typed into the inputs (empty string = no bound) */
+type NumberRange = { min: string; max: string }
+
+const emptyRange: NumberRange = { min: '', max: '' }
+
+function isEmptyRange(range: NumberRange): boolean {
+  return range.min === '' && range.max === ''
+}
+
+/** Turn a typed range into query params, converting to meters with `factor` */
+function rangeParams<Min extends string, Max extends string>(
+  range: NumberRange,
+  minKey: Min,
+  maxKey: Max,
+  factor: number,
+): Partial<Record<Min | Max, number>> {
+  const params: Partial<Record<Min | Max, number>> = {}
+  const min = parseFloat(range.min)
+  const max = parseFloat(range.max)
+  if (!isNaN(min)) params[minKey] = min * factor
+  if (!isNaN(max)) params[maxKey] = max * factor
+  return params
+}
+
+function useDebouncedValue<T>(value: T, delayMs: number): T {
+  const [debounced, setDebounced] = useState(value)
+  useEffect(() => {
+    const timeout = setTimeout(() => setDebounced(value), delayMs)
+    return () => clearTimeout(timeout)
+  }, [value, delayMs])
+  return debounced
+}
+
+function RangeFilter({
+  label,
+  unit,
+  value,
+  onChange,
+}: {
+  label: string
+  unit: string
+  value: NumberRange
+  onChange: (range: NumberRange) => void
+}) {
+  return (
+    <div style={styles.filterField}>
+      <span style={styles.filterLabel}>
+        {label} ({unit})
+      </span>
+      <div style={styles.rangeInputs}>
+        <input
+          type="number"
+          min={0}
+          placeholder="min"
+          aria-label={`${label} min`}
+          value={value.min}
+          onChange={(e) => onChange({ ...value, min: e.target.value })}
+          style={{ ...styles.input, ...styles.rangeInput }}
+        />
+        <span style={styles.rangeDash}>–</span>
+        <input
+          type="number"
+          min={0}
+          placeholder="max"
+          aria-label={`${label} max`}
+          value={value.max}
+          onChange={(e) => onChange({ ...value, max: e.target.value })}
+          style={{ ...styles.input, ...styles.rangeInput }}
+        />
+      </div>
+    </div>
+  )
+}
+
 const statusLabels: Record<string, string> = {
   planned: 'Geplant',
   ridden: 'Gefahren',
@@ -358,6 +516,10 @@ function formatDistance(meters: number): string {
   return `${Math.round(meters)} m`
 }
 
+function formatElevation(meters: number): string {
+  return `${Math.round(meters)} hm`
+}
+
 function formatDuration(seconds: number): string {
   if (!seconds) return '–'
   const h = Math.floor(seconds / 3600)
@@ -367,13 +529,59 @@ function formatDuration(seconds: number): string {
 }
 
 const styles = {
-  container: {
+  page: {
     display: 'flex',
+    flexDirection: 'column' as const,
     height: '100%',
     width: '100%',
   } as const,
+  filterBar: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    flexWrap: 'wrap' as const,
+    gap: 12,
+    padding: '8px 16px',
+    borderBottom: '1px solid #e0e0e0',
+    backgroundColor: '#fff',
+    flexShrink: 0,
+  } as const,
+  filterField: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: 2,
+  } as const,
+  filterLabel: {
+    fontSize: 11,
+    color: '#64748b',
+    textTransform: 'uppercase' as const,
+  } as const,
+  filterSpacer: {
+    flex: 1,
+  } as const,
+  resetButton: {
+    padding: '6px 10px',
+    fontSize: 13,
+    border: 'none',
+    backgroundColor: 'transparent',
+    color: '#3b82f6',
+    cursor: 'pointer',
+  } as const,
+  orderButton: {
+    padding: '6px 10px',
+    fontSize: 13,
+    border: '1px solid #ccc',
+    borderRadius: 4,
+    backgroundColor: '#fff',
+    cursor: 'pointer',
+  } as const,
+  container: {
+    display: 'flex',
+    flex: 1,
+    minHeight: 0,
+    width: '100%',
+  } as const,
   sidebar: {
-    width: 400,
+    width: 520,
     flexShrink: 0,
     overflowY: 'auto',
     borderRight: '1px solid #e0e0e0',
@@ -431,26 +639,23 @@ const styles = {
     color: '#64748b',
     textTransform: 'uppercase' as const,
   } as const,
-  filters: {
-    display: 'flex',
-    gap: 8,
-    marginBottom: 12,
-  } as const,
   input: {
-    flex: 1,
     padding: '6px 8px',
     fontSize: 13,
     border: '1px solid #ccc',
     borderRadius: 4,
     backgroundColor: '#fff',
   } as const,
-  select: {
-    flex: 1,
-    padding: '6px 8px',
-    fontSize: 13,
-    border: '1px solid #ccc',
-    borderRadius: 4,
-    backgroundColor: '#fff',
+  rangeInputs: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 4,
+  } as const,
+  rangeInput: {
+    width: 72,
+  } as const,
+  rangeDash: {
+    color: '#64748b',
   } as const,
   error: {
     padding: '8px 12px',
@@ -468,10 +673,13 @@ const styles = {
   fahrtList: {
     display: 'flex',
     flexDirection: 'column' as const,
-    gap: 8,
+    gap: 6,
   } as const,
   fahrtCard: {
-    padding: 12,
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: 2,
+    padding: '6px 10px',
     borderRadius: 6,
     cursor: 'pointer',
     border: '1px solid #e0e0e0',
@@ -479,46 +687,49 @@ const styles = {
     textDecoration: 'none',
     color: 'inherit',
   } as const,
+  fahrtLine: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+    minWidth: 0,
+    whiteSpace: 'nowrap' as const,
+  } as const,
   fahrtDate: {
     fontWeight: 600,
-    fontSize: 14,
-    marginBottom: 4,
+    fontSize: 13,
     color: '#1e293b',
+    flexShrink: 0,
   } as const,
   fahrtTitle: {
-    fontSize: 14,
+    flex: 1,
+    fontSize: 13,
     color: '#1e293b',
-    marginBottom: 4,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   } as const,
   fahrtStats: {
     display: 'flex',
     gap: 12,
-    fontSize: 13,
+    fontSize: 12,
     color: '#64748b',
-    marginBottom: 4,
-  } as const,
-  fahrtRoute: {
-    display: 'flex',
-    gap: 4,
-    alignItems: 'center',
+    flexShrink: 0,
   } as const,
   routeName: {
+    flex: 1,
     fontSize: 12,
     color: '#3b82f6',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    textAlign: 'right' as const,
   } as const,
   badge: {
     display: 'inline-block',
-    padding: '2px 8px',
+    padding: '1px 8px',
     borderRadius: 10,
     fontSize: 11,
     color: '#fff',
     fontWeight: 500,
-  } as const,
-  fahrtNotes: {
-    fontSize: 12,
-    color: '#64748b',
-    fontStyle: 'italic',
-    marginTop: 4,
+    flexShrink: 0,
   } as const,
   pagination: {
     display: 'flex',

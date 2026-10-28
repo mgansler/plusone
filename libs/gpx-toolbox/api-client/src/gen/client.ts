@@ -526,9 +526,25 @@ export type ListFahrtenParams = {
    */
   dateTo?: string
   /**
+   * Minimum route distance in meters
+   */
+  minDistance?: number
+  /**
+   * Maximum route distance in meters
+   */
+  maxDistance?: number
+  /**
+   * Minimum route elevation gain in meters
+   */
+  minElevation?: number
+  /**
+   * Maximum route elevation gain in meters
+   */
+  maxElevation?: number
+  /**
    * Sort field
    */
-  sortBy?: string
+  sortBy?: ListFahrtenSortBy
   /**
    * Sort order
    */
@@ -543,6 +559,14 @@ export type ListFahrtenParams = {
   limit?: number
 }
 
+export enum ListFahrtenSortBy {
+  riddenAt = 'riddenAt',
+  duration = 'duration',
+  avgHr = 'avgHr',
+  createdAt = 'createdAt',
+  distance = 'distance',
+  elevationGain = 'elevationGain',
+}
 export type GetFahrtWeatherParams = {
   /**
    * Date to fetch weather for (ISO 8601)
@@ -560,9 +584,25 @@ export type ListAllFahrtenParams = {
    */
   dateTo?: string
   /**
+   * Minimum route distance in meters
+   */
+  minDistance?: number
+  /**
+   * Maximum route distance in meters
+   */
+  maxDistance?: number
+  /**
+   * Minimum route elevation gain in meters
+   */
+  minElevation?: number
+  /**
+   * Maximum route elevation gain in meters
+   */
+  maxElevation?: number
+  /**
    * Sort field
    */
-  sortBy?: string
+  sortBy?: ListAllFahrtenSortBy
   /**
    * Sort order
    */
@@ -577,6 +617,14 @@ export type ListAllFahrtenParams = {
   limit?: number
 }
 
+export enum ListAllFahrtenSortBy {
+  riddenAt = 'riddenAt',
+  duration = 'duration',
+  avgHr = 'avgHr',
+  createdAt = 'createdAt',
+  distance = 'distance',
+  elevationGain = 'elevationGain',
+}
 export type DebugStravaRequestParams = {
   /**
    * Strava API endpoint (e.g. /athlete, /athletes/me/stats, /routes)

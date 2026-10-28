@@ -946,13 +946,57 @@
             }
           },
           {
+            "name": "minDistance",
+            "required": false,
+            "in": "query",
+            "description": "Minimum route distance in meters",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxDistance",
+            "required": false,
+            "in": "query",
+            "description": "Maximum route distance in meters",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "minElevation",
+            "required": false,
+            "in": "query",
+            "description": "Minimum route elevation gain in meters",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxElevation",
+            "required": false,
+            "in": "query",
+            "description": "Maximum route elevation gain in meters",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
             "name": "sortBy",
             "required": false,
             "in": "query",
             "description": "Sort field",
             "schema": {
               "default": "riddenAt",
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "riddenAt",
+                "duration",
+                "avgHr",
+                "createdAt",
+                "distance",
+                "elevationGain"
+              ]
             }
           },
           {
@@ -1256,13 +1300,57 @@
             }
           },
           {
+            "name": "minDistance",
+            "required": false,
+            "in": "query",
+            "description": "Minimum route distance in meters",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxDistance",
+            "required": false,
+            "in": "query",
+            "description": "Maximum route distance in meters",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "minElevation",
+            "required": false,
+            "in": "query",
+            "description": "Minimum route elevation gain in meters",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxElevation",
+            "required": false,
+            "in": "query",
+            "description": "Maximum route elevation gain in meters",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
             "name": "sortBy",
             "required": false,
             "in": "query",
             "description": "Sort field",
             "schema": {
               "default": "riddenAt",
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "riddenAt",
+                "duration",
+                "avgHr",
+                "createdAt",
+                "distance",
+                "elevationGain"
+              ]
             }
           },
           {

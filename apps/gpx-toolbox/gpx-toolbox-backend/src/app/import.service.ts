@@ -14,7 +14,7 @@ import {
 } from '@plusone/gpx-toolbox-utils'
 
 import { parsePolyline } from './polyline.util'
-import { routeGeometryColumns } from './route-geometry.util'
+import { routeFilterColumns } from './route-filter-columns.util'
 import { StravaService } from './strava.service'
 
 /** Routes with a Modified Hausdorff Distance below this value are considered a match. */
@@ -118,7 +118,7 @@ export class ImportService {
           data: {
             gpxContent,
             polyline: { points: JSON.stringify(polyline) },
-            ...routeGeometryColumns(polyline, stats.distance),
+            ...routeFilterColumns(polyline, stats),
             stats,
           },
         })
@@ -131,7 +131,7 @@ export class ImportService {
           description: stravaRouteDetail?.distance ? `${(stravaRouteDetail.distance / 1000).toFixed(1)} km` : undefined,
           gpxContent,
           polyline: { points: JSON.stringify(polyline) },
-          ...routeGeometryColumns(polyline, stats.distance),
+          ...routeFilterColumns(polyline, stats),
           stats,
           source: 'stravaRoute',
           userId,
@@ -208,7 +208,7 @@ export class ImportService {
             data: {
               gpxContent,
               polyline: { points: JSON.stringify(polyline) },
-              ...routeGeometryColumns(polyline, stats.distance),
+              ...routeFilterColumns(polyline, stats),
               stats,
             },
           })
@@ -219,7 +219,7 @@ export class ImportService {
               description: routeDetail.distance ? `${(routeDetail.distance / 1000).toFixed(1)} km` : undefined,
               gpxContent,
               polyline: { points: JSON.stringify(polyline) },
-              ...routeGeometryColumns(polyline, stats.distance),
+              ...routeFilterColumns(polyline, stats),
               stats,
               source: 'stravaRoute',
               userId,
@@ -320,7 +320,7 @@ export class ImportService {
             description: activityDetail.distance ? `${(activityDetail.distance / 1000).toFixed(1)} km` : undefined,
             gpxContent,
             polyline: { points: JSON.stringify(polyline) },
-            ...routeGeometryColumns(polyline, stats.distance),
+            ...routeFilterColumns(polyline, stats),
             stats,
             source: 'stravaActivity',
             userId,

@@ -5,7 +5,7 @@ import { analyzeGpx, parseGpx, TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
 import { parsePolyline } from './polyline.util'
-import { routeGeometryColumns } from './route-geometry.util'
+import { routeFilterColumns } from './route-filter-columns.util'
 import { StravaService } from './strava.service'
 
 /**
@@ -89,6 +89,12 @@ export class RoutesService {
     // Use GPX filename as default if no name provided
     const name = dto.name || this.extractNameFromGpx(gpxContent)
 
+    const stats = {
+      distance: overview.totalDistance,
+      elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
+      elevationLoss,
+    }
+
     // Create route in DB
     const route = await this.prismaService.route.create({
       data: {
@@ -97,12 +103,8 @@ export class RoutesService {
         source: dto.source ?? 'manualImport',
         gpxContent,
         polyline: { points: JSON.stringify(polyline) },
-        ...routeGeometryColumns(polyline, overview.totalDistance),
-        stats: {
-          distance: overview.totalDistance,
-          elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
-          elevationLoss,
-        },
+        ...routeFilterColumns(polyline, stats),
+        stats,
         ratingTags: [],
         userId,
       },
@@ -113,8 +115,8 @@ export class RoutesService {
     return {
       id: route.id,
       name: route.name,
-      totalDistance: overview.totalDistance,
-      elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
+      totalDistance: stats.distance,
+      elevationGain: stats.elevationGain,
       elevationLoss,
     }
   }
@@ -309,6 +311,11 @@ export class RoutesService {
       lng: p.longitude,
     }))
     const elevationLoss = this.calculateElevationLoss(points)
+    const stats = {
+      distance: overview.totalDistance,
+      elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
+      elevationLoss,
+    }
 
     const route = await this.prismaService.route.create({
       data: {
@@ -316,12 +323,8 @@ export class RoutesService {
         source: 'stravaActivity',
         gpxContent,
         polyline: { points: JSON.stringify(polyline) },
-        ...routeGeometryColumns(polyline, overview.totalDistance),
-        stats: {
-          distance: overview.totalDistance,
-          elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
-          elevationLoss,
-        },
+        ...routeFilterColumns(polyline, stats),
+        stats,
         ratingTags: [],
         userId,
       },
@@ -360,7 +363,7 @@ export class RoutesService {
         stravaRouteId: stravaId,
         gpxContent,
         polyline: { points: JSON.stringify(polyline) },
-        ...routeGeometryColumns(polyline, stats.distance),
+        ...routeFilterColumns(polyline, stats),
         stats,
         ratingTags: [],
         userId,

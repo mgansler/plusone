@@ -2,9 +2,10 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
 import { firstValueFrom } from 'rxjs'
 
-import { Prisma, PrismaService } from '@plusone/gpx-toolbox-persistence'
+import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { CreateFahrtDto, QueryFahrtDto, UpdateFahrtDto } from './dto/ride.dto'
+import { buildFahrtListQuery } from './fahrt-list-query.util'
 import { parsePolyline } from './polyline.util'
 
 /**
@@ -40,7 +41,7 @@ export class RidesService {
     limit: number
     totalPages: number
   }> {
-    const { dateFrom, dateTo, sortBy = 'riddenAt', order = 'DESC', page = 1, limit = 50 } = query
+    const { page = 1, limit = 50 } = query
 
     // Verify route exists and belongs to user
     const route = await this.prisma.route.findUnique({ where: { id: routeId, userId } })
@@ -48,16 +49,11 @@ export class RidesService {
       throw new NotFoundException(`Route with ID ${routeId} not found`)
     }
 
-    const where: { routeId: string; riddenAt?: { gte?: Date; lte?: Date }; userId: string } = { routeId, userId }
-    if (dateFrom || dateTo) {
-      where.riddenAt = {}
-      if (dateFrom) where.riddenAt.gte = new Date(dateFrom)
-      if (dateTo) where.riddenAt.lte = new Date(dateTo)
-    }
+    const { where, orderBy } = buildFahrtListQuery(query, { routeId, userId })
 
     const all = await this.prisma.fahrt.findMany({
       where,
-      orderBy: { [sortBy]: order === 'ASC' ? Prisma.SortOrder.asc : Prisma.SortOrder.desc },
+      orderBy,
     })
 
     const total = all.length

@@ -27,8 +27,9 @@ model Route {
   gpxContent       String // Raw GPX XML
   polyline         Json // [{ lat: Float, lng: Float }]
   stats            Json // { distance, elevationGain, elevationLoss }
-  // Denormalized from polyline/stats so candidate routes for auto-matching can be filtered in SQL
+  // Denormalized from polyline/stats so routes can be filtered and sorted in SQL
   distance         Float? // meters
+  elevationGain    Float? // meters
   minLat           Float?
   maxLat           Float?
   minLng           Float?

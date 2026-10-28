@@ -1,8 +1,9 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 
-import { Prisma, PrismaService } from '@plusone/gpx-toolbox-persistence'
+import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { QueryFahrtDto, UpdateFahrtDto } from './dto/ride.dto'
+import { buildFahrtListQuery } from './fahrt-list-query.util'
 
 @Injectable()
 export class FahrtenService {
@@ -23,19 +24,14 @@ export class FahrtenService {
     limit: number
     totalPages: number
   }> {
-    const { dateFrom, dateTo, sortBy = 'riddenAt', order = 'DESC', page = 1, limit = 50 } = query
+    const { page = 1, limit = 50 } = query
 
-    const where: { riddenAt?: { gte?: Date; lte?: Date }; userId: string } = { userId }
-    if (dateFrom || dateTo) {
-      where.riddenAt = {}
-      if (dateFrom) where.riddenAt.gte = new Date(dateFrom)
-      if (dateTo) where.riddenAt.lte = new Date(dateTo)
-    }
+    const { where, orderBy } = buildFahrtListQuery(query, { userId })
 
     const all = await this.prisma.fahrt.findMany({
       where,
       include: { route: true },
-      orderBy: { [sortBy]: order === 'ASC' ? Prisma.SortOrder.asc : Prisma.SortOrder.desc },
+      orderBy,
     })
 
     const total = all.length
