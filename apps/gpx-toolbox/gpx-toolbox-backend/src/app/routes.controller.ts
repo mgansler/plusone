@@ -6,6 +6,7 @@ import {
   Get,
   Logger,
   Param,
+  ParseIntPipe,
   ParseUUIDPipe,
   Post,
   Put,
@@ -90,10 +91,16 @@ export class RoutesController {
   @Get('strava-activities')
   @ApiOperation({ operationId: 'listStravaActivities' })
   @ApiBearerAuth()
+  @ApiQuery({ name: 'page', type: Number, required: false, defaultValue: 1 })
+  @ApiQuery({ name: 'per_page', type: Number, required: false, defaultValue: 50 })
   @ApiOkResponse({ description: 'List of Strava activities with metadata' })
-  async listStravaActivities(@Req() req: Request & { user: JwtPayload }) {
+  async listStravaActivities(
+    @Req() req: Request & { user: JwtPayload },
+    @Query('page', new ParseIntPipe()) page = 1,
+    @Query('per_page', new ParseIntPipe()) per_page = 50,
+  ) {
     const accessToken = await this.getStravaToken(req)
-    return this.routesService.getStravaActivities(accessToken, req.user.sub)
+    return this.routesService.getStravaActivities(accessToken, req.user.sub, page, per_page)
   }
 
   @Get('nearby')

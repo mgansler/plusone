@@ -370,7 +370,26 @@
     "/api/routes/strava-activities": {
       "get": {
         "operationId": "listStravaActivities",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "per_page",
+            "required": false,
+            "in": "query",
+            "defaultValue": 50,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "defaultValue": 1,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of Strava activities with metadata"

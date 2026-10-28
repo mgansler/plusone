@@ -375,14 +375,16 @@ export class RoutesService {
   }
 
   /**
-   * Get Strava activities with metadata, enriched with existing route data.
+   * Get Strava activities with pagination, enriched with existing route data.
    * Used by the /fahrten/sync page to list activities for import as Fahrten.
    */
   async getStravaActivities(
     accessToken: string,
     userId: string,
-  ): Promise<
-    Array<{
+    page = 1,
+    per_page = 50,
+  ): Promise<{
+    items: Array<{
       id: number
       name: string
       distance?: number
@@ -395,9 +397,12 @@ export class RoutesService {
       routeId?: string
       imported: boolean
     }>
-  > {
-    // Fetch all activities from Strava
-    const activities = await this.stravaService.getActivities(accessToken)
+    page: number
+    per_page: number
+    hasMore: boolean
+  }> {
+    // Fetch paginated activities from Strava
+    const activities = await this.stravaService.getActivities(accessToken, { page, per_page })
 
     // Fetch existing routes that have stravaActivityId
     const routes = await this.prismaService.route.findMany({
@@ -423,7 +428,7 @@ export class RoutesService {
     })
     const fahrtByActivity = new Map(fahrten.map((f) => [f.stravaActivityId!, { avgHr: f.avgHr, maxHr: f.maxHr }]))
 
-    return activities.map((activity) => {
+    const items = activities.map((activity) => {
       const stravaId = activity.id ?? 0
       const routeInfo = routeByActivity.get(String(stravaId))
       const fahrtInfo = fahrtByActivity.get(String(stravaId))
@@ -442,6 +447,13 @@ export class RoutesService {
         imported: !!routeInfo?.hasGpx,
       }
     })
+
+    return {
+      page,
+      per_page,
+      hasMore: activities.length === per_page,
+      items,
+    }
   }
 
   private formatRouteBase(route: {

@@ -1,3 +1,4 @@
+export * from './custom-axios'
 export * from './gen/client'
 // validated-client exports stale hooks from regenerated spec — not used by gpx-toolbox
 // export * from './validated-client'

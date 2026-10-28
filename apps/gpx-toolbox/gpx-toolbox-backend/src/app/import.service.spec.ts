@@ -637,4 +637,142 @@ describe('ImportService', () => {
       expect(result.newRoutes).toBe(0)
     })
   })
+
+  describe('importAllActivities', () => {
+    it('respects the limit by paginating through the Strava API', async () => {
+      // Page 1 returns 200 activities (per_page), page 2 returns 5 (remaining)
+      const page1Activities = Array.from({ length: 200 }, (_, i) => ({ id: i + 1 }))
+      const page2Activities = Array.from({ length: 5 }, (_, i) => ({ id: 201 + i }))
+
+      const mockStrava = {
+        getActivities: vi
+          .fn()
+          .mockResolvedValueOnce(page1Activities) // First page
+          .mockResolvedValueOnce(page2Activities), // Second page
+        getActivity: vi.fn().mockResolvedValue({ id: 1, name: 'Activity 1', distance: 10000 }),
+        downloadActivityStreams: vi
+          .fn()
+          .mockResolvedValue([{ latitude: 48.0, longitude: 11.0, elevation: 100, time: new Date(), hr: 150 }]),
+      }
+
+      const createRoute = vi.fn().mockResolvedValue({ id: 'route-1', name: 'Activity 1' })
+
+      const module: TestingModule = await Test.createTestingModule({
+        providers: [
+          ImportService,
+          {
+            provide: PrismaService,
+            useValue: {
+              route: {
+                findMany: vi.fn().mockResolvedValue([]),
+                create: createRoute,
+              },
+              fahrt: {
+                create: vi.fn().mockResolvedValue({ id: 'f1', routeId: 'route-1' }),
+              },
+            },
+          },
+          { provide: StravaService, useValue: mockStrava },
+        ],
+      }).compile()
+
+      service = module.get<ImportService>(ImportService)
+
+      // Request limit of 50 — should only fetch page 1 and slice to 50
+      const _result = await service.importAllActivities('token', 'user-1', 50)
+
+      // Should have made only 1 API call (page 1 with 200 items, then sliced)
+      expect(mockStrava.getActivities).toHaveBeenCalledTimes(1)
+      expect(mockStrava.getActivities).toHaveBeenCalledWith('token', { page: 1, per_page: 200 })
+      // Should have imported exactly 50 (the limit)
+      expect(createRoute).toHaveBeenCalledTimes(50)
+    })
+
+    it('fetches multiple pages when limit exceeds first page', async () => {
+      const page1Activities = Array.from({ length: 200 }, (_, i) => ({ id: i + 1 }))
+      const page2Activities = Array.from({ length: 50 }, (_, i) => ({ id: 201 + i }))
+
+      const mockStrava = {
+        getActivities: vi.fn().mockResolvedValueOnce(page1Activities).mockResolvedValueOnce(page2Activities),
+        getActivity: vi.fn().mockResolvedValue({ id: 1, name: 'Activity 1', distance: 10000 }),
+        downloadActivityStreams: vi
+          .fn()
+          .mockResolvedValue([{ latitude: 48.0, longitude: 11.0, elevation: 100, time: new Date(), hr: 150 }]),
+      }
+
+      const createRoute = vi.fn().mockResolvedValue({ id: 'route-1', name: 'Activity 1' })
+
+      const module: TestingModule = await Test.createTestingModule({
+        providers: [
+          ImportService,
+          {
+            provide: PrismaService,
+            useValue: {
+              route: {
+                findMany: vi.fn().mockResolvedValue([]),
+                create: createRoute,
+              },
+              fahrt: {
+                create: vi.fn().mockResolvedValue({ id: 'f1', routeId: 'route-1' }),
+              },
+            },
+          },
+          { provide: StravaService, useValue: mockStrava },
+        ],
+      }).compile()
+
+      service = module.get<ImportService>(ImportService)
+
+      // Request limit of 250 — page 1 (200) + page 2 (50) = 250
+      const _result = await service.importAllActivities('token', 'user-1', 250)
+
+      expect(mockStrava.getActivities).toHaveBeenCalledTimes(2)
+      expect(mockStrava.getActivities).toHaveBeenNthCalledWith(1, 'token', { page: 1, per_page: 200 })
+      expect(mockStrava.getActivities).toHaveBeenNthCalledWith(2, 'token', { page: 2, per_page: 200 })
+      expect(createRoute).toHaveBeenCalledTimes(250)
+    })
+
+    it('stops fetching when limit is reached mid-page', async () => {
+      const page1Activities = Array.from({ length: 200 }, (_, i) => ({ id: i + 1 }))
+      const page2Activities = Array.from({ length: 200 }, (_, i) => ({ id: 201 + i }))
+
+      const mockStrava = {
+        getActivities: vi.fn().mockResolvedValueOnce(page1Activities).mockResolvedValueOnce(page2Activities), // Would return more, but we should stop
+        getActivity: vi.fn().mockResolvedValue({ id: 1, name: 'Activity 1', distance: 10000 }),
+        downloadActivityStreams: vi
+          .fn()
+          .mockResolvedValue([{ latitude: 48.0, longitude: 11.0, elevation: 100, time: new Date(), hr: 150 }]),
+      }
+
+      const createRoute = vi.fn().mockResolvedValue({ id: 'route-1', name: 'Activity 1' })
+
+      const module: TestingModule = await Test.createTestingModule({
+        providers: [
+          ImportService,
+          {
+            provide: PrismaService,
+            useValue: {
+              route: {
+                findMany: vi.fn().mockResolvedValue([]),
+                create: createRoute,
+              },
+              fahrt: {
+                create: vi.fn().mockResolvedValue({ id: 'f1', routeId: 'route-1' }),
+              },
+            },
+          },
+          { provide: StravaService, useValue: mockStrava },
+        ],
+      }).compile()
+
+      service = module.get<ImportService>(ImportService)
+
+      // Request limit of 250 — page 1 (200) + need 50 from page 2
+      const _result = await service.importAllActivities('token', 'user-1', 250)
+
+      // Should have fetched 2 pages but only used 50 from page 2
+      expect(mockStrava.getActivities).toHaveBeenCalledTimes(2)
+      expect(createRoute).toHaveBeenCalledTimes(250)
+    })
+  })
 })

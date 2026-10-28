@@ -349,13 +349,24 @@ export class ImportService {
   /**
    * Import all Strava activities (paginated).
    */
-  async importAllActivities(accessToken: string, userId: string, _limit = 100) {
-    const activities = await this.stravaService.getActivities(accessToken)
+  async importAllActivities(accessToken: string, userId: string, limit = 100) {
+    let allActivities: Array<{ id?: number }> = []
+    let hasMore = true
+
+    while (hasMore && allActivities.length < limit) {
+      const page = Math.floor(allActivities.length / 200) + 1
+      const newActivities = await this.stravaService.getActivities(accessToken, { page, per_page: 200 })
+      allActivities = [...allActivities, ...newActivities]
+      hasMore = newActivities.length === 200
+    }
+
+    // Respect the limit: only import up to `limit` activities
+    const activitiesToImport = allActivities.slice(0, limit)
     let imported = 0
     let matched = 0
     let newRoutes = 0
 
-    for (const activity of activities) {
+    for (const activity of activitiesToImport) {
       const result = await this.importStravaActivity(accessToken, userId, String(activity.id), true)
       imported += result.imported
       matched += result.matched
