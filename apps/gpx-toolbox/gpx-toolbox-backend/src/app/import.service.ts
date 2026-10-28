@@ -57,7 +57,7 @@ export class ImportService {
       where: { userId, source: 'stravaRoute' },
       select: { id: true, stravaRouteId: true },
     })
-    const existingMap = new Map(existing.map((r) => [r.stravaRouteId!, r.id]))
+    const existingMap = new Map(existing.flatMap((r) => (r.stravaRouteId ? [[r.stravaRouteId, r.id] as const] : [])))
 
     return stravaRoutes.map((route) => ({
       stravaId: route.id ?? 0,
@@ -343,7 +343,7 @@ export class ImportService {
 
       await this.prisma.fahrt.create({
         data: {
-          routeId: routeId!,
+          routeId,
           userId,
           stravaActivityId: String(activityId),
           title: activityDetail.name ?? null,

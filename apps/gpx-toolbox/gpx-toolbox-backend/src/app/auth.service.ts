@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
+import { STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET } from './config'
 import { StravaService } from './strava.service'
 
 /**
@@ -26,7 +27,7 @@ export class AuthService {
    */
   getAuthorizationUrl(): { authorizationUrl: string } {
     const params = new URLSearchParams({
-      client_id: process.env.STRAVA_CLIENT_ID!,
+      client_id: requireEnv(STRAVA_CLIENT_ID),
       redirect_uri: process.env.STRAVA_REDIRECT_URI ?? 'http://localhost:3333/api/auth/strava/callback',
       response_type: 'code',
       scope: 'read_all,activity:read_all,profile:read_all',
@@ -54,8 +55,8 @@ export class AuthService {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        client_id: process.env.STRAVA_CLIENT_ID!,
-        client_secret: process.env.STRAVA_CLIENT_SECRET!,
+        client_id: requireEnv(STRAVA_CLIENT_ID),
+        client_secret: requireEnv(STRAVA_CLIENT_SECRET),
         grant_type: 'refresh_token',
         refresh_token: refreshToken,
       }),
@@ -187,4 +188,11 @@ export class AuthService {
   private generateState(): string {
     return Math.random().toString(36).substring(2)
   }
+}
+
+/** Read a required environment variable; fails loudly instead of sending "undefined" to Strava */
+function requireEnv(name: string): string {
+  const value = process.env[name]
+  if (!value) throw new Error(`Missing environment variable ${name}`)
+  return value
 }

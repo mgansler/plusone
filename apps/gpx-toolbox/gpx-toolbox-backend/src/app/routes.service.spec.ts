@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { Mock } from 'vitest'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
@@ -18,10 +19,12 @@ const sampleGpx = `<?xml version="1.0" encoding="UTF-8"?>
 
 const userId = 'user-1'
 
+type MockPrisma = { route: Record<'create' | 'findUnique' | 'findMany' | 'update' | 'delete', Mock> }
+
 /**
  * Build a fresh testing module with a mutable mock PrismaService.
  */
-async function buildModule(mockPrisma: Record<string, unknown>) {
+async function buildModule(mockPrisma: MockPrisma) {
   return Test.createTestingModule({
     providers: [
       RoutesService,
@@ -36,7 +39,7 @@ async function buildModule(mockPrisma: Record<string, unknown>) {
 
 describe('RoutesService', () => {
   let service: RoutesService
-  let mockPrisma: Record<string, unknown>
+  let mockPrisma: MockPrisma
 
   beforeEach(async () => {
     const routeMock = {
@@ -54,7 +57,7 @@ describe('RoutesService', () => {
   describe('importGpx', () => {
     it('parses GPX and creates a route with computed stats', async () => {
       const mockRoute = { id: 'route-1', name: 'Test Route' }
-      ;(mockPrisma.route as any).create.mockResolvedValue(mockRoute)
+      mockPrisma.route.create.mockResolvedValue(mockRoute)
 
       const result = await service.importGpx(sampleGpx, { name: 'Test Route', source: 'manualImport' }, userId)
 
@@ -73,7 +76,7 @@ describe('RoutesService', () => {
   </trkseg></trk>
 </gpx>`
 
-      ;(mockPrisma.route as any).create.mockResolvedValue({ id: 'r1', name: 'My Named Track' })
+      mockPrisma.route.create.mockResolvedValue({ id: 'r1', name: 'My Named Track' })
 
       const result = await service.importGpx(gpxWithName, { source: 'manualImport', name: 'My Named Track' }, userId)
 
@@ -109,7 +112,7 @@ describe('RoutesService', () => {
         fahrten: [],
       }
 
-      ;(mockPrisma.route as any).findUnique.mockResolvedValue(mockRoute)
+      mockPrisma.route.findUnique.mockResolvedValue(mockRoute)
 
       const result = await service.findById('route-1', userId)
 
@@ -120,7 +123,7 @@ describe('RoutesService', () => {
     })
 
     it('throws NotFoundException when route does not exist', async () => {
-      ;(mockPrisma.route as any).findUnique.mockResolvedValue(null)
+      mockPrisma.route.findUnique.mockResolvedValue(null)
 
       await expect(service.findById('nonexistent', userId)).rejects.toThrow('not found')
     })
@@ -143,7 +146,7 @@ describe('RoutesService', () => {
         fahrten: [],
       }))
 
-      ;(mockPrisma.route as any).findMany.mockResolvedValue(mockRoutes)
+      mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
 
       const result = await service.findAll({ page: 1, limit: 5 }, userId)
 
@@ -185,7 +188,7 @@ describe('RoutesService', () => {
         },
       ]
 
-      ;(mockPrisma.route as any).findMany.mockResolvedValue(mockRoutes)
+      mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
 
       const result = await service.findAll({ minDistance: 5000 }, userId)
 
@@ -225,7 +228,7 @@ describe('RoutesService', () => {
         },
       ]
 
-      ;(mockPrisma.route as any).findMany.mockResolvedValue(mockRoutes)
+      mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
 
       const result = await service.findAll({ maxDistance: 5000 }, userId)
 
@@ -265,7 +268,7 @@ describe('RoutesService', () => {
         },
       ]
 
-      ;(mockPrisma.route as any).findMany.mockResolvedValue(mockRoutes)
+      mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
 
       const result = await service.findAll({ minElevation: 100 }, userId)
 
@@ -301,7 +304,7 @@ describe('RoutesService', () => {
         },
       ]
 
-      ;(mockPrisma.route as any).findMany.mockResolvedValue(mockRoutes)
+      mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
 
       const results = await service.findNearby(48.0, 11.0, 1, userId) // 1km radius
 
@@ -311,7 +314,7 @@ describe('RoutesService', () => {
     })
 
     it('returns empty array when no routes exist', async () => {
-      ;(mockPrisma.route as any).findMany.mockResolvedValue([])
+      mockPrisma.route.findMany.mockResolvedValue([])
 
       const results = await service.findNearby(48.0, 11.0, 10, userId)
 
@@ -319,7 +322,7 @@ describe('RoutesService', () => {
     })
 
     it('returns empty array when route has empty polyline', async () => {
-      ;(mockPrisma.route as any).findMany.mockResolvedValue([
+      mockPrisma.route.findMany.mockResolvedValue([
         {
           id: 'empty-1',
           name: 'Empty Route',
@@ -361,7 +364,7 @@ describe('RoutesService', () => {
         },
       ]
 
-      ;(mockPrisma.route as any).findMany.mockResolvedValue(mockRoutes)
+      mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
 
       const results = await service.findNearby(48.0, 11.0, 10, userId)
 
@@ -373,7 +376,7 @@ describe('RoutesService', () => {
 
   describe('exportGpx', () => {
     it('returns the stored GPX content', async () => {
-      ;(mockPrisma.route as any).findUnique.mockResolvedValue({
+      mockPrisma.route.findUnique.mockResolvedValue({
         gpxContent: sampleGpx,
         name: 'Test Route',
       })
@@ -384,7 +387,7 @@ describe('RoutesService', () => {
     })
 
     it('throws NotFoundException when route does not exist', async () => {
-      ;(mockPrisma.route as any).findUnique.mockResolvedValue(null)
+      mockPrisma.route.findUnique.mockResolvedValue(null)
 
       await expect(service.exportGpx('nonexistent', userId)).rejects.toThrow('not found')
     })
@@ -398,35 +401,35 @@ describe('RoutesService', () => {
         { latitude: 48.001, longitude: 11.001, elevation: 110, time: new Date() },
       ]
 
-      ;(mockPrisma.route as any).create.mockResolvedValue(mockRoute)
+      mockPrisma.route.create.mockResolvedValue(mockRoute)
 
       const result = await service.createFromStrava('strava-123', 'Strava Route', sampleGpx, points, userId)
 
       expect(result.id).toBe('route-1')
-      expect((mockPrisma.route as any).create.mock.calls[0][0].data.source).toBe('stravaActivity')
+      expect(mockPrisma.route.create.mock.calls[0][0].data.source).toBe('stravaActivity')
     })
   })
 
   describe('createStravaRoute', () => {
     it('creates a route with stravaRoute source', async () => {
       const mockRoute = { id: 'route-1', name: 'Strava Route' }
-      ;(mockPrisma.route as any).create.mockResolvedValue(mockRoute)
+      mockPrisma.route.create.mockResolvedValue(mockRoute)
 
       const result = await service.createStravaRoute('strava-123', 'Strava Route', sampleGpx, userId)
 
       expect(result.id).toBe('route-1')
-      expect((mockPrisma.route as any).create.mock.calls[0][0].data.source).toBe('stravaRoute')
-      expect((mockPrisma.route as any).create.mock.calls[0][0].data.stravaRouteId).toBe('strava-123')
+      expect(mockPrisma.route.create.mock.calls[0][0].data.source).toBe('stravaRoute')
+      expect(mockPrisma.route.create.mock.calls[0][0].data.stravaRouteId).toBe('strava-123')
     })
 
     it('handles empty GPX with zeroed stats', async () => {
       const mockRoute = { id: 'route-1', name: 'Empty Route' }
-      ;(mockPrisma.route as any).create.mockResolvedValue(mockRoute)
+      mockPrisma.route.create.mockResolvedValue(mockRoute)
 
       const result = await service.createStravaRoute('strava-123', 'Empty Route', '', userId)
 
       expect(result.id).toBe('route-1')
-      const createData = (mockPrisma.route as any).create.mock.calls[0][0].data
+      const createData = mockPrisma.route.create.mock.calls[0][0].data
       expect(createData.stats.distance).toBe(0)
       expect(createData.stats.elevationGain).toBe(0)
       expect(createData.stats.elevationLoss).toBe(0)
@@ -435,11 +438,11 @@ describe('RoutesService', () => {
 
   describe('linkActivityToRoute', () => {
     it('updates the route with a stravaActivityId', async () => {
-      ;(mockPrisma.route as any).update.mockResolvedValue({ id: 'route-1', stravaActivityId: 'activity-999' })
+      mockPrisma.route.update.mockResolvedValue({ id: 'route-1', stravaActivityId: 'activity-999' })
 
       await service.linkActivityToRoute('route-1', 'activity-999')
 
-      expect((mockPrisma.route as any).update.mock.calls[0][0].data.stravaActivityId).toBe('activity-999')
+      expect(mockPrisma.route.update.mock.calls[0][0].data.stravaActivityId).toBe('activity-999')
     })
   })
 

@@ -13,6 +13,19 @@ describe('RidesService', () => {
     get: vi.fn(),
   }
 
+  const mockPrisma = {
+    route: {
+      findUnique: vi.fn(),
+    },
+    fahrt: {
+      findMany: vi.fn(),
+      findUnique: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    },
+  }
+
   const userId = 'user-1'
 
   beforeEach(async () => {
@@ -23,18 +36,7 @@ describe('RidesService', () => {
         RidesService,
         {
           provide: PrismaService,
-          useValue: {
-            route: {
-              findUnique: vi.fn(),
-            },
-            fahrt: {
-              findMany: vi.fn(),
-              findUnique: vi.fn(),
-              create: vi.fn(),
-              update: vi.fn(),
-              delete: vi.fn(),
-            },
-          },
+          useValue: mockPrisma,
         },
         { provide: HttpService, useValue: mockHttpService },
       ],
@@ -74,8 +76,8 @@ describe('RidesService', () => {
         },
       ]
 
-      ;(service as any).prisma.route.findUnique.mockResolvedValue({ id: 'route-1' })
-      ;(service as any).prisma.fahrt.findMany.mockResolvedValue(mockFahrten)
+      mockPrisma.route.findUnique.mockResolvedValue({ id: 'route-1' })
+      mockPrisma.fahrt.findMany.mockResolvedValue(mockFahrten)
 
       const result = await service.findAll('route-1', { page: 1, limit: 10 }, userId)
 
@@ -85,7 +87,7 @@ describe('RidesService', () => {
     })
 
     it('throws when route does not belong to user', async () => {
-      ;(service as any).prisma.route.findUnique.mockResolvedValue(null)
+      mockPrisma.route.findUnique.mockResolvedValue(null)
 
       await expect(service.findAll('nonexistent-route', {}, userId)).rejects.toThrow('not found')
     })
@@ -107,13 +109,13 @@ describe('RidesService', () => {
         },
       ]
 
-      ;(service as any).prisma.route.findUnique.mockResolvedValue({ id: 'route-1' })
-      ;(service as any).prisma.fahrt.findMany.mockResolvedValue(mockFahrten)
+      mockPrisma.route.findUnique.mockResolvedValue({ id: 'route-1' })
+      mockPrisma.fahrt.findMany.mockResolvedValue(mockFahrten)
 
       await service.findAll('route-1', { dateFrom: '2024-06-01', dateTo: '2024-06-30' }, userId)
 
-      expect((service as any).prisma.fahrt.findMany.mock.calls[0][0].where.riddenAt.gte).toBeDefined()
-      expect((service as any).prisma.fahrt.findMany.mock.calls[0][0].where.riddenAt.lte).toBeDefined()
+      expect(mockPrisma.fahrt.findMany.mock.calls[0][0].where.riddenAt.gte).toBeDefined()
+      expect(mockPrisma.fahrt.findMany.mock.calls[0][0].where.riddenAt.lte).toBeDefined()
     })
   })
 
@@ -133,7 +135,7 @@ describe('RidesService', () => {
         updatedAt: new Date(),
       }
 
-      ;(service as any).prisma.fahrt.findUnique.mockResolvedValue(mockFahrt)
+      mockPrisma.fahrt.findUnique.mockResolvedValue(mockFahrt)
 
       const result = await service.findOne('f1', userId)
 
@@ -146,7 +148,7 @@ describe('RidesService', () => {
     })
 
     it('throws when fahrt not found', async () => {
-      ;(service as any).prisma.fahrt.findUnique.mockResolvedValue(null)
+      mockPrisma.fahrt.findUnique.mockResolvedValue(null)
 
       await expect(service.findOne('nonexistent', userId)).rejects.toThrow('not found')
     })
@@ -163,8 +165,8 @@ describe('RidesService', () => {
         ]),
       }
 
-      ;(service as any).prisma.route.findUnique.mockResolvedValue(mockRoute)
-      ;(service as any).prisma.fahrt.create.mockResolvedValue({
+      mockPrisma.route.findUnique.mockResolvedValue(mockRoute)
+      mockPrisma.fahrt.create.mockResolvedValue({
         id: 'f1',
         routeId: 'route-1',
         riddenAt: new Date('2024-06-01'),
@@ -194,13 +196,11 @@ describe('RidesService', () => {
       const result = await service.create('route-1', { riddenAt: '2024-06-01T10:00:00Z' }, userId)
 
       expect(result.id).toBe('f1')
-      expect((service as any).prisma.fahrt.create.mock.calls[0][0].data.riddenAt).toEqual(
-        new Date('2024-06-01T10:00:00Z'),
-      )
+      expect(mockPrisma.fahrt.create.mock.calls[0][0].data.riddenAt).toEqual(new Date('2024-06-01T10:00:00Z'))
     })
 
     it('throws when route does not belong to user', async () => {
-      ;(service as any).prisma.route.findUnique.mockResolvedValue(null)
+      mockPrisma.route.findUnique.mockResolvedValue(null)
 
       await expect(service.create('nonexistent-route', { riddenAt: '2024-06-01T10:00:00Z' }, userId)).rejects.toThrow(
         'not found',
@@ -226,8 +226,8 @@ describe('RidesService', () => {
       }
       const updated = { ...existing, duration: 4000, notes: 'Updated notes' }
 
-      ;(service as any).prisma.fahrt.findUnique.mockResolvedValue(existing)
-      ;(service as any).prisma.fahrt.update.mockResolvedValue(updated)
+      mockPrisma.fahrt.findUnique.mockResolvedValue(existing)
+      mockPrisma.fahrt.update.mockResolvedValue(updated)
 
       const result = await service.update('f1', { duration: 4000, notes: 'Updated notes' }, userId)
 
@@ -236,7 +236,7 @@ describe('RidesService', () => {
     })
 
     it('throws when fahrt not found', async () => {
-      ;(service as any).prisma.fahrt.findUnique.mockResolvedValue(null)
+      mockPrisma.fahrt.findUnique.mockResolvedValue(null)
 
       await expect(service.update('nonexistent', { duration: 4000 }, userId)).rejects.toThrow('not found')
     })
@@ -257,14 +257,14 @@ describe('RidesService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
       }
-      ;(service as any).prisma.fahrt.findUnique.mockResolvedValue(existing)
-      ;(service as any).prisma.fahrt.delete.mockResolvedValue(undefined)
+      mockPrisma.fahrt.findUnique.mockResolvedValue(existing)
+      mockPrisma.fahrt.delete.mockResolvedValue(undefined)
 
       await expect(service.remove('f1', userId)).resolves.toBeUndefined()
     })
 
     it('throws when fahrt not found', async () => {
-      ;(service as any).prisma.fahrt.findUnique.mockResolvedValue(null)
+      mockPrisma.fahrt.findUnique.mockResolvedValue(null)
 
       await expect(service.remove('nonexistent', userId)).rejects.toThrow('not found')
     })
@@ -280,7 +280,7 @@ describe('RidesService', () => {
         ]),
       }
 
-      ;(service as any).prisma.route.findUnique.mockResolvedValue(mockRoute)
+      mockPrisma.route.findUnique.mockResolvedValue(mockRoute)
       mockHttpService.get.mockReturnValue(
         of({
           data: {
@@ -309,7 +309,7 @@ describe('RidesService', () => {
         polyline: JSON.stringify([]),
       }
 
-      ;(service as any).prisma.route.findUnique.mockResolvedValue(mockRoute)
+      mockPrisma.route.findUnique.mockResolvedValue(mockRoute)
 
       const result = await service.getWeatherForecast('route-1', '2024-06-01')
 
@@ -317,7 +317,7 @@ describe('RidesService', () => {
     })
 
     it('throws when route not found', async () => {
-      ;(service as any).prisma.route.findUnique.mockResolvedValue(null)
+      mockPrisma.route.findUnique.mockResolvedValue(null)
 
       await expect(service.getWeatherForecast('nonexistent', '2024-06-01')).rejects.toThrow('not found')
     })

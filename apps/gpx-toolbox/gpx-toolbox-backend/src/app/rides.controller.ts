@@ -96,7 +96,7 @@ export class RidesController {
     @Query('date') date?: string,
   ) {
     const fahrt = await this.ridesService.findOne(id, req.user.sub)
-    const weatherDate = date ?? fahrt.riddenAt.split('T')[0]
+    const weatherDate = date ?? fahrt.riddenAt.toISOString().split('T')[0]
     return this.ridesService.getWeatherForecast(routeId, weatherDate)
   }
 }

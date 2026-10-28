@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { PassportModule } from '@nestjs/passport'
-import { JwtModule } from '@nestjs/jwt'
+import { JwtModule, JwtSignOptions } from '@nestjs/jwt'
 
 import { PrismaModule } from '@plusone/gpx-toolbox-persistence'
 
@@ -15,7 +15,7 @@ import { StravaStrategy } from './strava.strategy'
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET ?? 'change-me-in-production',
-      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN ?? '7d' } as any,
+      signOptions: { expiresIn: (process.env.JWT_EXPIRES_IN ?? '7d') as JwtSignOptions['expiresIn'] },
     }),
   ],
   controllers: [AuthController],

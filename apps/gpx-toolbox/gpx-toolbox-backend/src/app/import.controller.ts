@@ -34,7 +34,7 @@ export class ImportController {
     // Fetch athlete ID first (required by importStravaRoutes)
     const athlete = (await this.stravaService.getAthlete(accessToken)) as { id?: number }
     if (!athlete?.id) throw new Error('Could not retrieve athlete ID from Strava')
-    return this.importService.importStravaRoutes(accessToken, req.user.sub, athlete.id!, force === 'true')
+    return this.importService.importStravaRoutes(accessToken, req.user.sub, athlete.id, force === 'true')
   }
 
   @Post('strava/activity')
@@ -68,7 +68,7 @@ export class ImportController {
     const accessToken = await this.getStravaToken(req)
     const athlete = (await this.stravaService.getAthlete(accessToken)) as { id?: number }
     if (!athlete?.id) throw new Error('Could not retrieve athlete ID from Strava')
-    return this.importService.listStravaRoutes(accessToken, req.user.sub, athlete.id!)
+    return this.importService.listStravaRoutes(accessToken, req.user.sub, athlete.id)
   }
 
   @Post('strava/routes/:stravaRouteId')

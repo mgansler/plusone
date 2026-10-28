@@ -423,14 +423,11 @@ export class RoutesService {
       select: { id: true, stravaActivityId: true, stats: true, gpxContent: true, polyline: true },
     })
     const routeByActivity = new Map(
-      routes.map((r) => [
-        r.stravaActivityId!,
-        {
-          routeId: r.id,
-          stats: r.stats,
-          hasGpx: !!r.gpxContent,
-        },
-      ]),
+      routes.flatMap((r) =>
+        r.stravaActivityId
+          ? [[r.stravaActivityId, { routeId: r.id, stats: r.stats, hasGpx: !!r.gpxContent }] as const]
+          : [],
+      ),
     )
 
     // The Strava summary list does not include heart rate; source it from
@@ -439,7 +436,11 @@ export class RoutesService {
       where: { stravaActivityId: { in: activities.map((a) => String(a.id ?? 0)) } },
       select: { stravaActivityId: true, avgHr: true, maxHr: true },
     })
-    const fahrtByActivity = new Map(fahrten.map((f) => [f.stravaActivityId!, { avgHr: f.avgHr, maxHr: f.maxHr }]))
+    const fahrtByActivity = new Map(
+      fahrten.flatMap((f) =>
+        f.stravaActivityId ? [[f.stravaActivityId, { avgHr: f.avgHr, maxHr: f.maxHr }] as const] : [],
+      ),
+    )
 
     const items = activities.map((activity) => {
       const stravaId = activity.id ?? 0

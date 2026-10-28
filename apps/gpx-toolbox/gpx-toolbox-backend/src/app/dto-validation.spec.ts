@@ -30,7 +30,7 @@ describe('CreateRouteDto', () => {
   })
 
   it('rejects invalid source', async () => {
-    const dto = plainToInstance(CreateRouteDto, { name: 'Test', source: 'invalid' as any })
+    const dto = plainToInstance(CreateRouteDto, { name: 'Test', source: 'invalid' })
     const errors = await validate(dto)
     expect(errors.length).toBeGreaterThan(0)
   })
@@ -72,7 +72,7 @@ describe('UpdateRouteDto', () => {
   })
 
   it('rejects invalid status', async () => {
-    const dto = plainToInstance(UpdateRouteDto, { status: 'invalid' as any })
+    const dto = plainToInstance(UpdateRouteDto, { status: 'invalid' })
     const errors = await validate(dto)
     expect(errors.length).toBeGreaterThan(0)
   })

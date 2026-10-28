@@ -2,20 +2,22 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
 import { firstValueFrom } from 'rxjs'
 
-import { PrismaService } from '@plusone/gpx-toolbox-persistence'
+import { PrismaService, Route } from '@plusone/gpx-toolbox-persistence'
 
 import { CreateFahrtDto, QueryFahrtDto, UpdateFahrtDto } from './dto/ride.dto'
 import { buildFahrtListQuery } from './fahrt-list-query.util'
+import { FahrtResponse, formatFahrt, PaginatedResponse, WeatherSummary } from './fahrt-response.util'
 import { parsePolyline } from './polyline.util'
 
-/**
- * Weather forecast response for a route.
- */
-type _WeatherForecast = {
-  time: Array<Date>
-  temperature2m: Array<number>
-  rain: Array<number>
-  windGusts10m: Array<number>
+/** Subset of the Open-Meteo `daily` response we request */
+type OpenMeteoDailyResponse = {
+  daily?: {
+    time?: Array<string>
+    temperature_2m_max?: Array<number>
+    temperature_2m_min?: Array<number>
+    rain_sum?: Array<number>
+    wind_gusts_10m_max?: Array<number>
+  }
 }
 
 @Injectable()
@@ -30,17 +32,7 @@ export class RidesService {
   /**
    * List fahrten for a route with optional filters and pagination.
    */
-  async findAll(
-    routeId: string,
-    query: QueryFahrtDto,
-    userId: string,
-  ): Promise<{
-    items: Array<any>
-    total: number
-    page: number
-    limit: number
-    totalPages: number
-  }> {
+  async findAll(routeId: string, query: QueryFahrtDto, userId: string): Promise<PaginatedResponse<FahrtResponse>> {
     const { page = 1, limit = 50 } = query
 
     // Verify route exists and belongs to user
@@ -60,7 +52,7 @@ export class RidesService {
     const paginated = all.slice((page - 1) * limit, page * limit)
 
     return {
-      items: paginated.map((f) => this.formatFahrt(f)),
+      items: paginated.map((f) => formatFahrt(f)),
       total,
       page,
       limit,
@@ -71,20 +63,20 @@ export class RidesService {
   /**
    * Get a single Fahrt by ID.
    */
-  async findOne(id: string, userId: string): Promise<any> {
+  async findOne(id: string, userId: string): Promise<FahrtResponse> {
     const fahrt = await this.prisma.fahrt.findUnique({ where: { id, userId } })
 
     if (!fahrt) {
       throw new NotFoundException(`Fahrt with ID ${id} not found`)
     }
 
-    return this.formatFahrt(fahrt)
+    return formatFahrt(fahrt)
   }
 
   /**
    * Create a new Fahrt for a route.
    */
-  async create(routeId: string, dto: CreateFahrtDto, userId: string): Promise<any> {
+  async create(routeId: string, dto: CreateFahrtDto, userId: string): Promise<FahrtResponse> {
     // Verify route exists and belongs to user
     const route = await this.prisma.route.findUnique({ where: { id: routeId, userId } })
     if (!route) {
@@ -110,13 +102,13 @@ export class RidesService {
     })
 
     this.logger.log(`Created Fahrt #${fahrt.id} for route "${route.name}"`)
-    return this.formatFahrt(fahrt)
+    return formatFahrt(fahrt)
   }
 
   /**
    * Update a Fahrt.
    */
-  async update(id: string, dto: UpdateFahrtDto, userId: string): Promise<any> {
+  async update(id: string, dto: UpdateFahrtDto, userId: string): Promise<FahrtResponse> {
     const existing = await this.prisma.fahrt.findUnique({ where: { id, userId } })
     if (!existing) {
       throw new NotFoundException(`Fahrt with ID ${id} not found`)
@@ -129,7 +121,7 @@ export class RidesService {
     })
 
     this.logger.log(`Updated Fahrt #${id}`)
-    return this.formatFahrt(fahrt)
+    return formatFahrt(fahrt)
   }
 
   /**
@@ -148,7 +140,7 @@ export class RidesService {
   /**
    * Get weather forecast for a route on a specific date.
    */
-  async getWeatherForecast(routeId: string, date: string): Promise<Record<string, any> | null> {
+  async getWeatherForecast(routeId: string, date: string): Promise<WeatherSummary | null> {
     const route = await this.prisma.route.findUnique({ where: { id: routeId } })
     if (!route) {
       throw new NotFoundException(`Route with ID ${routeId} not found`)
@@ -163,26 +155,10 @@ export class RidesService {
     return this.fetchWeatherAtCoordinates(midPoint.lat, midPoint.lng, date)
   }
 
-  private formatFahrt(fahrt: any): any {
-    return {
-      id: fahrt.id,
-      routeId: fahrt.routeId,
-      title: fahrt.title,
-      riddenAt: fahrt.riddenAt,
-      duration: fahrt.duration,
-      avgHr: fahrt.avgHr,
-      maxHr: fahrt.maxHr,
-      notes: fahrt.notes,
-      weather: typeof fahrt.weather === 'string' ? JSON.parse(fahrt.weather) : fahrt.weather,
-      createdAt: fahrt.createdAt,
-      updatedAt: fahrt.updatedAt,
-    }
-  }
-
   /**
    * Fetch weather data for a ride date using Open-Meteo historical API.
    */
-  private async fetchWeatherForRide(route: any, riddenAt: string): Promise<Record<string, any> | null> {
+  private async fetchWeatherForRide(route: Pick<Route, 'polyline'>, riddenAt: string): Promise<WeatherSummary | null> {
     const polyline = parsePolyline(route.polyline)
     if (polyline.length === 0) return null
 
@@ -202,7 +178,7 @@ export class RidesService {
     latitude: number,
     longitude: number,
     date: string,
-  ): Promise<Record<string, any> | null> {
+  ): Promise<WeatherSummary | null> {
     try {
       const params = new URLSearchParams({
         latitude: latitude.toString(),
@@ -214,7 +190,7 @@ export class RidesService {
       })
 
       const response = await firstValueFrom(
-        this.httpService.get(`https://api.open-meteo.com/v1/forecast?${params.toString()}`),
+        this.httpService.get<OpenMeteoDailyResponse>(`https://api.open-meteo.com/v1/forecast?${params.toString()}`),
       )
 
       const daily = response.data.daily

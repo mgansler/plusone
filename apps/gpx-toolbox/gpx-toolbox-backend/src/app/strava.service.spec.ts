@@ -6,7 +6,8 @@ import { StravaService } from './strava.service'
 
 // ── Mock axios (vi.hoisted keeps it available during hoisted vi.mock) ────────
 const hoisted = vi.hoisted(() => {
-  const mockFn = vi.fn()
+  // axios is called directly (fetchStrava) and via axios.get (generated OpenAPI client)
+  const mockFn = Object.assign(vi.fn(), { get: vi.fn() })
   return { mockFn }
 })
 

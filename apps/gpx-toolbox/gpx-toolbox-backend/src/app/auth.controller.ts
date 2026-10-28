@@ -37,7 +37,7 @@ export class AuthController {
   @ApiQuery({ name: 'code', required: false, description: 'Strava authorization code' })
   @ApiQuery({ name: 'state', required: false, description: 'OAuth state parameter' })
   async stravaCallback(@Req() req: Request, @Res() res: Response) {
-    const { code, state } = req.query as any
+    const { code, state } = req.query as { code?: string; state?: string }
 
     // Verify state if present
     if (state && !this.authService.verifyState(state)) {

@@ -4,6 +4,7 @@ import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { QueryFahrtDto, UpdateFahrtDto } from './dto/ride.dto'
 import { buildFahrtListQuery } from './fahrt-list-query.util'
+import { FahrtWithRouteResponse, formatFahrtWithRoute, PaginatedResponse } from './fahrt-response.util'
 
 @Injectable()
 export class FahrtenService {
@@ -14,16 +15,7 @@ export class FahrtenService {
   /**
    * List all fahrten across all routes with optional date range filters and pagination.
    */
-  async findAll(
-    query: QueryFahrtDto,
-    userId: string,
-  ): Promise<{
-    items: Array<any>
-    total: number
-    page: number
-    limit: number
-    totalPages: number
-  }> {
+  async findAll(query: QueryFahrtDto, userId: string): Promise<PaginatedResponse<FahrtWithRouteResponse>> {
     const { page = 1, limit = 50 } = query
 
     const { where, orderBy } = buildFahrtListQuery(query, { userId })
@@ -38,7 +30,7 @@ export class FahrtenService {
     const paginated = all.slice((page - 1) * limit, page * limit)
 
     return {
-      items: paginated.map((f) => this.formatFahrt(f)),
+      items: paginated.map((f) => formatFahrtWithRoute(f)),
       total,
       page,
       limit,
@@ -49,7 +41,7 @@ export class FahrtenService {
   /**
    * Get a single Fahrt by ID, including route info.
    */
-  async findOne(id: string, userId: string): Promise<any> {
+  async findOne(id: string, userId: string): Promise<FahrtWithRouteResponse> {
     const fahrt = await this.prisma.fahrt.findUnique({
       where: { id, userId },
       include: { route: true },
@@ -59,13 +51,13 @@ export class FahrtenService {
       throw new NotFoundException(`Fahrt with ID ${id} not found`)
     }
 
-    return this.formatFahrt(fahrt)
+    return formatFahrtWithRoute(fahrt)
   }
 
   /**
    * Update a Fahrt.
    */
-  async update(id: string, dto: UpdateFahrtDto, userId: string): Promise<any> {
+  async update(id: string, dto: UpdateFahrtDto, userId: string): Promise<FahrtWithRouteResponse> {
     const fahrt = await this.prisma.fahrt.update({
       where: { id, userId },
       data: dto,
@@ -73,7 +65,7 @@ export class FahrtenService {
     })
 
     this.logger.log(`Updated Fahrt #${id}`)
-    return this.formatFahrt(fahrt)
+    return formatFahrtWithRoute(fahrt)
   }
 
   /**
@@ -87,25 +79,5 @@ export class FahrtenService {
 
     await this.prisma.fahrt.delete({ where: { id, userId } })
     this.logger.log(`Deleted Fahrt #${id}`)
-  }
-
-  private formatFahrt(fahrt: any): any {
-    return {
-      id: fahrt.id,
-      routeId: fahrt.routeId,
-      routeName: fahrt.route?.name,
-      route: fahrt.route
-        ? { id: fahrt.route.id, name: fahrt.route.name, status: fahrt.route.status, stats: fahrt.route.stats }
-        : undefined,
-      title: fahrt.title,
-      riddenAt: fahrt.riddenAt,
-      duration: fahrt.duration,
-      avgHr: fahrt.avgHr,
-      maxHr: fahrt.maxHr,
-      notes: fahrt.notes,
-      weather: typeof fahrt.weather === 'string' ? JSON.parse(fahrt.weather) : fahrt.weather,
-      createdAt: fahrt.createdAt,
-      updatedAt: fahrt.updatedAt,
-    }
   }
 }

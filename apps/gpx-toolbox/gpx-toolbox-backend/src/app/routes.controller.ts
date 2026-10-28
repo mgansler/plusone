@@ -41,7 +41,11 @@ export class RoutesController {
   @Post()
   @ApiOperation({ operationId: 'importGpx' })
   @ApiBearerAuth()
-  async importGpx(@Req() req: Request & { user: JwtPayload }, @UploadedFile() file: any, @Body() dto: CreateRouteDto) {
+  async importGpx(
+    @Req() req: Request & { user: JwtPayload },
+    @UploadedFile() file: UploadedGpxFile | undefined,
+    @Body() dto: CreateRouteDto,
+  ) {
     if (!file) {
       throw new BadRequestException('No GPX file provided')
     }
@@ -178,3 +182,6 @@ function toEpochSeconds(value: string | undefined, name: string): number | undef
   }
   return Math.floor(time / 1000)
 }
+
+/** The parts of the multer upload the GPX import uses */
+type UploadedGpxFile = { buffer: Buffer; originalname?: string; size: number }
