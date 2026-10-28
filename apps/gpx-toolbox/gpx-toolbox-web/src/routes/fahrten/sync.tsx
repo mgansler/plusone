@@ -215,7 +215,9 @@ function SyncPage() {
         )}
 
         {/* Error */}
-        {error && <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>}
+        {error != null && (
+          <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>
+        )}
 
         {/* Import result toast */}
         {importAllMutation.isSuccess && importAllMutation.variables?.params?.limit && (

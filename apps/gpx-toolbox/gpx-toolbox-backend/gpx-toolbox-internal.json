@@ -375,7 +375,7 @@
             "name": "per_page",
             "required": false,
             "in": "query",
-            "defaultValue": 50,
+            "description": "Items per page (default: 50)",
             "schema": {
               "type": "number"
             }
@@ -384,7 +384,7 @@
             "name": "page",
             "required": false,
             "in": "query",
-            "defaultValue": 1,
+            "description": "Page number (default: 1)",
             "schema": {
               "type": "number"
             }
@@ -1732,6 +1732,11 @@
             "type": "string",
             "description": "Ridden date and time"
           },
+          "title": {
+            "type": "string",
+            "description": "Activity title",
+            "nullable": true
+          },
           "duration": {
             "type": "object",
             "description": "Duration in seconds"
@@ -1780,6 +1785,10 @@
             "type": "string",
             "description": "Date and time of the ride (ISO 8601)"
           },
+          "title": {
+            "type": "string",
+            "description": "Activity title"
+          },
           "duration": {
             "type": "number",
             "description": "Duration in seconds"
@@ -1806,6 +1815,10 @@
       "UpdateFahrtDto": {
         "type": "object",
         "properties": {
+          "title": {
+            "type": "string",
+            "description": "Activity title"
+          },
           "riddenAt": {
             "type": "string",
             "description": "Date and time of the ride (ISO 8601)"

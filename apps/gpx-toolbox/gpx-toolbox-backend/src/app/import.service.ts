@@ -235,15 +235,15 @@ export class ImportService {
    */
   async importStravaActivity(accessToken: string, userId: string, activityId: string, autoMatch = true) {
     try {
-      // Fetch activity details (start_date_local, elapsed_duration, heart_rate, elevation)
+      // Fetch activity details (start_date_local, elapsed_time, heart rate, elevation)
       const activityDetail = (await this.stravaService.getActivity(accessToken, Number(activityId))) as {
         id?: number
         name?: string
         distance?: number
         total_elevation_gain?: number
-        elapsed_duration?: number
-        heart_rate_avg?: number
-        heart_rate_max?: number
+        elapsed_time?: number
+        average_heartrate?: number
+        max_heartrate?: number
         start_date_local?: string
         moving_time?: number
         type?: string
@@ -322,15 +322,17 @@ export class ImportService {
 
       // Create a Fahrt from the activity data
       const riddenAt = activityDetail.start_date_local ? new Date(activityDetail.start_date_local) : new Date()
-      const duration = activityDetail.moving_time ?? activityDetail.elapsed_duration ?? null
-      const avgHr = activityDetail.heart_rate_avg ?? null
-      const maxHr = activityDetail.heart_rate_max ?? null
+      const duration = activityDetail.moving_time ?? activityDetail.elapsed_time ?? null
+      // Strava reports heart rate as floats; the Fahrt columns are integers
+      const avgHr = activityDetail.average_heartrate != null ? Math.round(activityDetail.average_heartrate) : null
+      const maxHr = activityDetail.max_heartrate != null ? Math.round(activityDetail.max_heartrate) : null
 
       await this.prisma.fahrt.create({
         data: {
           routeId: routeId!,
           userId,
           stravaActivityId: String(activityId),
+          title: activityDetail.name ?? null,
           riddenAt,
           duration,
           avgHr,

@@ -411,8 +411,8 @@ describe('ImportService', () => {
           distance: 10000,
           start_date_local: '2024-01-01T10:00:00Z',
           moving_time: 3600,
-          heart_rate_avg: 150,
-          heart_rate_max: 180,
+          average_heartrate: 150.4,
+          max_heartrate: 180,
         }),
       }
 
@@ -454,7 +454,9 @@ describe('ImportService', () => {
 
       expect(result.imported).toBe(1)
       expect(result.matched).toBe(1)
-      expect(service['prisma'].fahrt.create).toHaveBeenCalled()
+      expect(service['prisma'].fahrt.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({ duration: 3600, avgHr: 150, maxHr: 180 }),
+      })
     })
 
     it('stores valid GPX XML (not stringified JSON) in the gpxContent column', async () => {

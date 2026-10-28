@@ -52,6 +52,28 @@ export interface ListRoutesResponseDto {
 }
 
 /**
+ * Route statistics
+ */
+export type NearbyRouteResponseDtoStats = { [key: string]: unknown }
+
+export interface NearbyRouteResponseDto {
+  /** Route ID */
+  id: string
+  /** Route name */
+  name: string
+  /** Distance in meters */
+  distance: number
+  /** Formatted distance */
+  distanceKm: string
+  /** Route status */
+  status: string
+  /** Route source */
+  source: string
+  /** Route statistics */
+  stats?: NearbyRouteResponseDtoStats
+}
+
+/**
  * Route description
  */
 export type RouteResponseDtoDescription = { [key: string]: unknown }
@@ -114,28 +136,6 @@ export interface UpdateRouteDto {
   notes?: string
 }
 
-/**
- * Route statistics
- */
-export type NearbyRouteResponseDtoStats = { [key: string]: unknown }
-
-export interface NearbyRouteResponseDto {
-  /** Route ID */
-  id: string
-  /** Route name */
-  name: string
-  /** Distance in meters */
-  distance: number
-  /** Formatted distance */
-  distanceKm: string
-  /** Route status */
-  status: string
-  /** Route source */
-  source: string
-  /** Route statistics */
-  stats?: NearbyRouteResponseDtoStats
-}
-
 export type StravaAthleteProfileDtoProfile = { [key: string]: unknown }
 
 export type StravaAthleteProfileDtoProfileMedium = { [key: string]: unknown }
@@ -189,6 +189,10 @@ export interface StravaAthleteProfileDto {
   bikes?: StravaAthleteProfileDtoBikes
   shoes?: StravaAthleteProfileDtoShoes
   localStats?: StravaAthleteProfileDtoLocalStats
+}
+
+export interface RefreshTokenAuthDto {
+  [key: string]: unknown
 }
 
 export interface ImportResultDto {
@@ -263,6 +267,11 @@ export interface FahrtResponseDto {
   routeId: string
   /** Ridden date and time */
   riddenAt: string
+  /**
+   * Activity title
+   * @nullable
+   */
+  title?: string | null
   /** Duration in seconds */
   duration?: FahrtResponseDtoDuration
   /** Average heart rate */
@@ -284,6 +293,8 @@ export interface FahrtResponseDto {
 export interface CreateFahrtDto {
   /** Date and time of the ride (ISO 8601) */
   riddenAt: string
+  /** Activity title */
+  title?: string
   /** Duration in seconds */
   duration?: number
   /** Average heart rate */
@@ -297,6 +308,8 @@ export interface CreateFahrtDto {
 }
 
 export interface UpdateFahrtDto {
+  /** Activity title */
+  title?: string
   /** Date and time of the ride (ISO 8601) */
   riddenAt?: string
   /** Duration in seconds */
@@ -456,6 +469,17 @@ export type ListRoutesParams = {
   limit?: number
 }
 
+export type ListStravaActivitiesParams = {
+  /**
+   * Items per page (default: 50)
+   */
+  per_page?: number
+  /**
+   * Page number (default: 1)
+   */
+  page?: number
+}
+
 export type FindNearbyRoutesParams = {
   lat: number
   lng: number
@@ -463,20 +487,6 @@ export type FindNearbyRoutesParams = {
    * Radius in kilometers
    */
   radius: number
-}
-
-export type ListStravaActivities200Item = {
-  id: number
-  name: string
-  distance?: number
-  elevationGain?: number
-  moving_time?: number
-  elapsed_duration?: number
-  heart_rate_avg?: number
-  heart_rate_max?: number
-  start_date_local: string
-  routeId?: string
-  imported: boolean
 }
 
 export type StravaCallbackParams = {
@@ -866,6 +876,167 @@ export function useExportRoute<TData = Awaited<ReturnType<typeof exportRoute>>, 
   return withQueryKey(query, queryOptions.queryKey)
 }
 
+export const listStravaActivities = (params?: ListStravaActivitiesParams, signal?: AbortSignal) => {
+  return customAxiosInstance<void>({ url: `/api/routes/strava-activities`, method: 'GET', params, signal })
+}
+
+export const getListStravaActivitiesQueryKey = (params?: ListStravaActivitiesParams) => {
+  return [`/api/routes/strava-activities`, ...(params ? [params] : [])] as const
+}
+
+export const getListStravaActivitiesQueryOptions = <
+  TData = Awaited<ReturnType<typeof listStravaActivities>>,
+  TError = unknown,
+>(
+  params?: ListStravaActivitiesParams,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>> },
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getListStravaActivitiesQueryKey(params)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listStravaActivities>>> = ({ signal }) =>
+    listStravaActivities(params, signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listStravaActivities>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListStravaActivitiesQueryResult = NonNullable<Awaited<ReturnType<typeof listStravaActivities>>>
+export type ListStravaActivitiesQueryError = unknown
+
+export function useListStravaActivities<TData = Awaited<ReturnType<typeof listStravaActivities>>, TError = unknown>(
+  params: undefined | ListStravaActivitiesParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listStravaActivities>>,
+          TError,
+          Awaited<ReturnType<typeof listStravaActivities>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListStravaActivities<TData = Awaited<ReturnType<typeof listStravaActivities>>, TError = unknown>(
+  params?: ListStravaActivitiesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listStravaActivities>>,
+          TError,
+          Awaited<ReturnType<typeof listStravaActivities>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListStravaActivities<TData = Awaited<ReturnType<typeof listStravaActivities>>, TError = unknown>(
+  params?: ListStravaActivitiesParams,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useListStravaActivities<TData = Awaited<ReturnType<typeof listStravaActivities>>, TError = unknown>(
+  params?: ListStravaActivitiesParams,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getListStravaActivitiesQueryOptions(params, options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
+export const findNearbyRoutes = (params: FindNearbyRoutesParams, signal?: AbortSignal) => {
+  return customAxiosInstance<NearbyRouteResponseDto[]>({ url: `/api/routes/nearby`, method: 'GET', params, signal })
+}
+
+export const getFindNearbyRoutesQueryKey = (params?: FindNearbyRoutesParams) => {
+  return [`/api/routes/nearby`, ...(params ? [params] : [])] as const
+}
+
+export const getFindNearbyRoutesQueryOptions = <TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
+  params: FindNearbyRoutesParams,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> },
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getFindNearbyRoutesQueryKey(params)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof findNearbyRoutes>>> = ({ signal }) =>
+    findNearbyRoutes(params, signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof findNearbyRoutes>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type FindNearbyRoutesQueryResult = NonNullable<Awaited<ReturnType<typeof findNearbyRoutes>>>
+export type FindNearbyRoutesQueryError = unknown
+
+export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
+  params: FindNearbyRoutesParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findNearbyRoutes>>,
+          TError,
+          Awaited<ReturnType<typeof findNearbyRoutes>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
+  params: FindNearbyRoutesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findNearbyRoutes>>,
+          TError,
+          Awaited<ReturnType<typeof findNearbyRoutes>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
+  params: FindNearbyRoutesParams,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
+  params: FindNearbyRoutesParams,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getFindNearbyRoutesQueryOptions(params, options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
 export const getRoute = (id: string, signal?: AbortSignal) => {
   return customAxiosInstance<RouteResponseDto>({ url: `/api/routes/${id}`, method: 'GET', signal })
 }
@@ -1032,166 +1203,6 @@ export const useDeleteRoute = <TError = unknown, TContext = unknown>(
   queryClient?: QueryClient,
 ): UseMutationResult<Awaited<ReturnType<typeof deleteRoute>>, TError, DeleteRouteMutationVariables, TContext> => {
   return useMutation(getDeleteRouteMutationOptions(options), queryClient)
-}
-
-export const findNearbyRoutes = (params: FindNearbyRoutesParams, signal?: AbortSignal) => {
-  return customAxiosInstance<NearbyRouteResponseDto[]>({ url: `/api/routes/nearby`, method: 'GET', params, signal })
-}
-
-export const getFindNearbyRoutesQueryKey = (params?: FindNearbyRoutesParams) => {
-  return [`/api/routes/nearby`, ...(params ? [params] : [])] as const
-}
-
-export const getFindNearbyRoutesQueryOptions = <TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
-  params: FindNearbyRoutesParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> },
-) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getFindNearbyRoutesQueryKey(params)
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof findNearbyRoutes>>> = ({ signal }) =>
-    findNearbyRoutes(params, signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof findNearbyRoutes>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type FindNearbyRoutesQueryResult = NonNullable<Awaited<ReturnType<typeof findNearbyRoutes>>>
-export type FindNearbyRoutesQueryError = unknown
-
-export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
-  params: FindNearbyRoutesParams,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof findNearbyRoutes>>,
-          TError,
-          Awaited<ReturnType<typeof findNearbyRoutes>>
-        >,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
-  params: FindNearbyRoutesParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof findNearbyRoutes>>,
-          TError,
-          Awaited<ReturnType<typeof findNearbyRoutes>>
-        >,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
-  params: FindNearbyRoutesParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
-  params: FindNearbyRoutesParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getFindNearbyRoutesQueryOptions(params, options)
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>
-  }
-
-  return withQueryKey(query, queryOptions.queryKey)
-}
-
-export const listStravaActivities = (signal?: AbortSignal) => {
-  return customAxiosInstance<ListStravaActivities200Item[]>({
-    url: `/api/routes/strava-activities`,
-    method: 'GET',
-    signal,
-  })
-}
-
-export const getListStravaActivitiesQueryKey = () => {
-  return [`/api/routes/strava-activities`] as const
-}
-
-export const getListStravaActivitiesQueryOptions = <
-  TData = Awaited<ReturnType<typeof listStravaActivities>>,
-  TError = unknown,
->(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getListStravaActivitiesQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof listStravaActivities>>> = ({ signal }) =>
-    listStravaActivities(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof listStravaActivities>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ListStravaActivitiesQueryResult = NonNullable<Awaited<ReturnType<typeof listStravaActivities>>>
-export type ListStravaActivitiesQueryError = unknown
-
-export function useListStravaActivities<TData = Awaited<ReturnType<typeof listStravaActivities>>, TError = unknown>(
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>> &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof listStravaActivities>>,
-          TError,
-          Awaited<ReturnType<typeof listStravaActivities>>
-        >,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useListStravaActivities<TData = Awaited<ReturnType<typeof listStravaActivities>>, TError = unknown>(
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>> &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof listStravaActivities>>,
-          TError,
-          Awaited<ReturnType<typeof listStravaActivities>>
-        >,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useListStravaActivities<TData = Awaited<ReturnType<typeof listStravaActivities>>, TError = unknown>(
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-export function useListStravaActivities<TData = Awaited<ReturnType<typeof listStravaActivities>>, TError = unknown>(
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listStravaActivities>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getListStravaActivitiesQueryOptions(options)
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>
-  }
-
-  return withQueryKey(query, queryOptions.queryKey)
 }
 
 export const stravaAuthRedirect = (signal?: AbortSignal) => {
@@ -1531,6 +1542,76 @@ export const useRefreshStravaToken = <TError = unknown, TContext = unknown>(
   queryClient?: QueryClient,
 ): UseMutationResult<Awaited<ReturnType<typeof refreshStravaToken>>, TError, void, TContext> => {
   return useMutation(getRefreshStravaTokenMutationOptions(options), queryClient)
+}
+
+export const authenticateWithRefreshToken = (refreshTokenAuthDto: RefreshTokenAuthDto, signal?: AbortSignal) => {
+  return customAxiosInstance<void>({
+    url: `/api/auth/refresh-token`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: refreshTokenAuthDto,
+    signal,
+  })
+}
+
+export const getAuthenticateWithRefreshTokenMutationKey = () => ['authenticateWithRefreshToken'] as const
+
+export const getAuthenticateWithRefreshTokenMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authenticateWithRefreshToken>>,
+    TError,
+    AuthenticateWithRefreshTokenMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof authenticateWithRefreshToken>>,
+  TError,
+  AuthenticateWithRefreshTokenMutationVariables,
+  TContext
+> => {
+  const mutationKey = getAuthenticateWithRefreshTokenMutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof authenticateWithRefreshToken>>,
+    AuthenticateWithRefreshTokenMutationVariables
+  > = (props) => {
+    const { data } = props ?? {}
+
+    return authenticateWithRefreshToken(data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type AuthenticateWithRefreshTokenMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authenticateWithRefreshToken>>
+>
+export type AuthenticateWithRefreshTokenMutationBody = RefreshTokenAuthDto
+export type AuthenticateWithRefreshTokenMutationError = unknown
+export type AuthenticateWithRefreshTokenMutationVariables = { data: RefreshTokenAuthDto }
+
+export const useAuthenticateWithRefreshToken = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof authenticateWithRefreshToken>>,
+      TError,
+      AuthenticateWithRefreshTokenMutationVariables,
+      TContext
+    >
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof authenticateWithRefreshToken>>,
+  TError,
+  AuthenticateWithRefreshTokenMutationVariables,
+  TContext
+> => {
+  return useMutation(getAuthenticateWithRefreshTokenMutationOptions(options), queryClient)
 }
 
 export const importStravaRoutes = (params?: ImportStravaRoutesParams, signal?: AbortSignal) => {

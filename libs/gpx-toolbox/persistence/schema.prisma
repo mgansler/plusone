@@ -59,6 +59,7 @@ model Fahrt {
   routeId          String
   userId           String? // Strava user ID (nullable for manual imports)
   stravaActivityId String?  @unique
+  title            String?  // Activity title (from Strava or manual entry)
   riddenAt         DateTime
   duration         Int? // seconds
   avgHr            Int?

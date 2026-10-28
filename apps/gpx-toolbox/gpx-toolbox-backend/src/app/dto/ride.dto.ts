@@ -7,6 +7,11 @@ export class CreateFahrtDto {
   @IsDateString()
   riddenAt: string
 
+  @ApiPropertyOptional({ description: 'Activity title' })
+  @IsOptional()
+  @IsString()
+  title?: string
+
   @ApiPropertyOptional({ description: 'Duration in seconds' })
   @IsOptional()
   @IsInt()
@@ -39,6 +44,11 @@ export class CreateFahrtDto {
 }
 
 export class UpdateFahrtDto {
+  @ApiPropertyOptional({ description: 'Activity title' })
+  @IsOptional()
+  @IsString()
+  title?: string
+
   @ApiPropertyOptional({ description: 'Date and time of the ride (ISO 8601)' })
   @IsOptional()
   @IsDateString()
@@ -142,6 +152,9 @@ export class FahrtResponseDto {
 
   @ApiProperty({ description: 'Ridden date and time' })
   riddenAt: Date
+
+  @ApiPropertyOptional({ description: 'Activity title', type: String, nullable: true })
+  title: string | null
 
   @ApiPropertyOptional({ description: 'Duration in seconds' })
   duration: number | null

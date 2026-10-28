@@ -98,6 +98,10 @@ export class FahrtenService {
       id: fahrt.id,
       routeId: fahrt.routeId,
       routeName: fahrt.route?.name,
+      route: fahrt.route
+        ? { id: fahrt.route.id, name: fahrt.route.name, status: fahrt.route.status, stats: fahrt.route.stats }
+        : undefined,
+      title: fahrt.title,
       riddenAt: fahrt.riddenAt,
       duration: fahrt.duration,
       avgHr: fahrt.avgHr,

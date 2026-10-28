@@ -35,6 +35,7 @@ function FahrtenPage() {
       id: string
       routeId: string
       riddenAt: string
+      title?: string | null
       duration: number | null
       avgHr: number | null
       maxHr: number | null
@@ -203,6 +204,7 @@ function FahrtenPage() {
                       year: 'numeric',
                     })}
                   </div>
+                  {f.title && <div style={styles.fahrtTitle}>{f.title}</div>}
                   <div style={styles.fahrtStats}>
                     {f.duration && <span>{formatDuration(f.duration)}</span>}
                     {f.avgHr && <span>Ø HR {f.avgHr}</span>}
@@ -482,6 +484,11 @@ const styles = {
     fontSize: 14,
     marginBottom: 4,
     color: '#1e293b',
+  } as const,
+  fahrtTitle: {
+    fontSize: 14,
+    color: '#1e293b',
+    marginBottom: 4,
   } as const,
   fahrtStats: {
     display: 'flex',

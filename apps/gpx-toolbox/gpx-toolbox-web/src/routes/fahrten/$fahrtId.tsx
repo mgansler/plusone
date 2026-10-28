@@ -129,6 +129,8 @@ function FahrtDetailPage() {
             })}
         </h2>
 
+        {fahrt.title && <div style={styles.title}>{fahrt.title}</div>}
+
         {parentRoute && (
           <Link to="/routes/$routeId" params={{ routeId: fahrt.routeId }} style={styles.routeLink}>
             {parentRoute.name}
@@ -350,6 +352,12 @@ const styles = {
     fontSize: 20,
     fontWeight: 600,
     color: '#1e293b',
+  } as const,
+  title: {
+    fontSize: 15,
+    fontWeight: 500,
+    color: '#1e293b',
+    marginBottom: 8,
   } as const,
   routeLink: {
     fontSize: 14,

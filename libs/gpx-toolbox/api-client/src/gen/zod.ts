@@ -49,6 +49,19 @@ export const ListRoutesResponse = zod.strictObject({
 
 export const ExportRouteResponse = zod.unknown()
 
+export const ListStravaActivitiesResponse = zod.unknown()
+
+export const FindNearbyRoutesResponseItem = zod.strictObject({
+  id: zod.string().describe('Route ID'),
+  name: zod.string().describe('Route name'),
+  distance: zod.number().describe('Distance in meters'),
+  distanceKm: zod.string().describe('Formatted distance'),
+  status: zod.string().describe('Route status'),
+  source: zod.string().describe('Route source'),
+  stats: zod.looseObject({}).optional().describe('Route statistics'),
+})
+export const FindNearbyRoutesResponse = zod.array(FindNearbyRoutesResponseItem)
+
 export const GetRouteResponse = zod.strictObject({
   id: zod.string().describe('Route ID'),
   name: zod.string().describe('Route name'),
@@ -67,32 +80,6 @@ export const GetRouteResponse = zod.strictObject({
 export const UpdateRouteResponse = zod.unknown()
 
 export const DeleteRouteResponse = zod.unknown()
-
-export const FindNearbyRoutesResponseItem = zod.strictObject({
-  id: zod.string().describe('Route ID'),
-  name: zod.string().describe('Route name'),
-  distance: zod.number().describe('Distance in meters'),
-  distanceKm: zod.string().describe('Formatted distance'),
-  status: zod.string().describe('Route status'),
-  source: zod.string().describe('Route source'),
-  stats: zod.looseObject({}).optional().describe('Route statistics'),
-})
-export const FindNearbyRoutesResponse = zod.array(FindNearbyRoutesResponseItem)
-
-export const ListStravaActivitiesResponseItem = zod.strictObject({
-  id: zod.int(),
-  name: zod.string(),
-  distance: zod.number().optional(),
-  elevationGain: zod.number().optional(),
-  moving_time: zod.int().optional(),
-  elapsed_duration: zod.int().optional(),
-  heart_rate_avg: zod.int().optional(),
-  heart_rate_max: zod.int().optional(),
-  start_date_local: zod.string(),
-  routeId: zod.string().optional(),
-  imported: zod.boolean(),
-})
-export const ListStravaActivitiesResponse = zod.array(ListStravaActivitiesResponseItem)
 
 export const StravaAuthRedirectResponse = zod.unknown()
 
@@ -130,6 +117,8 @@ export const StravaAthleteResponse = zod.strictObject({
 export const AuthStatusResponse = zod.unknown()
 
 export const RefreshStravaTokenResponse = zod.unknown()
+
+export const AuthenticateWithRefreshTokenResponse = zod.unknown()
 
 export const ImportStravaRoutesResponse = zod.strictObject({
   imported: zod.number().describe('Number of routes/activities imported'),
@@ -169,6 +158,7 @@ export const ListFahrtenResponseItem = zod.strictObject({
   id: zod.string().describe('Fahrt ID'),
   routeId: zod.string().describe('Route ID'),
   riddenAt: zod.iso.datetime({ offset: true }).describe('Ridden date and time'),
+  title: zod.string().nullish().describe('Activity title'),
   duration: zod.looseObject({}).optional().describe('Duration in seconds'),
   avgHr: zod.looseObject({}).optional().describe('Average heart rate'),
   maxHr: zod.looseObject({}).optional().describe('Maximum heart rate'),
@@ -192,6 +182,7 @@ export const CreateFahrtResponse = zod.strictObject({
   id: zod.string().describe('Fahrt ID'),
   routeId: zod.string().describe('Route ID'),
   riddenAt: zod.iso.datetime({ offset: true }).describe('Ridden date and time'),
+  title: zod.string().nullish().describe('Activity title'),
   duration: zod.looseObject({}).optional().describe('Duration in seconds'),
   avgHr: zod.looseObject({}).optional().describe('Average heart rate'),
   maxHr: zod.looseObject({}).optional().describe('Maximum heart rate'),
@@ -214,6 +205,7 @@ export const GetFahrtResponse = zod.strictObject({
   id: zod.string().describe('Fahrt ID'),
   routeId: zod.string().describe('Route ID'),
   riddenAt: zod.iso.datetime({ offset: true }).describe('Ridden date and time'),
+  title: zod.string().nullish().describe('Activity title'),
   duration: zod.looseObject({}).optional().describe('Duration in seconds'),
   avgHr: zod.looseObject({}).optional().describe('Average heart rate'),
   maxHr: zod.looseObject({}).optional().describe('Maximum heart rate'),
@@ -236,6 +228,7 @@ export const UpdateFahrtResponse = zod.strictObject({
   id: zod.string().describe('Fahrt ID'),
   routeId: zod.string().describe('Route ID'),
   riddenAt: zod.iso.datetime({ offset: true }).describe('Ridden date and time'),
+  title: zod.string().nullish().describe('Activity title'),
   duration: zod.looseObject({}).optional().describe('Duration in seconds'),
   avgHr: zod.looseObject({}).optional().describe('Average heart rate'),
   maxHr: zod.looseObject({}).optional().describe('Maximum heart rate'),
@@ -262,6 +255,7 @@ export const ListAllFahrtenResponseItem = zod.strictObject({
   id: zod.string().describe('Fahrt ID'),
   routeId: zod.string().describe('Route ID'),
   riddenAt: zod.iso.datetime({ offset: true }).describe('Ridden date and time'),
+  title: zod.string().nullish().describe('Activity title'),
   duration: zod.looseObject({}).optional().describe('Duration in seconds'),
   avgHr: zod.looseObject({}).optional().describe('Average heart rate'),
   maxHr: zod.looseObject({}).optional().describe('Maximum heart rate'),
@@ -285,6 +279,7 @@ export const GetFahrt2Response = zod.strictObject({
   id: zod.string().describe('Fahrt ID'),
   routeId: zod.string().describe('Route ID'),
   riddenAt: zod.iso.datetime({ offset: true }).describe('Ridden date and time'),
+  title: zod.string().nullish().describe('Activity title'),
   duration: zod.looseObject({}).optional().describe('Duration in seconds'),
   avgHr: zod.looseObject({}).optional().describe('Average heart rate'),
   maxHr: zod.looseObject({}).optional().describe('Maximum heart rate'),
@@ -307,6 +302,7 @@ export const UpdateFahrt2Response = zod.strictObject({
   id: zod.string().describe('Fahrt ID'),
   routeId: zod.string().describe('Route ID'),
   riddenAt: zod.iso.datetime({ offset: true }).describe('Ridden date and time'),
+  title: zod.string().nullish().describe('Activity title'),
   duration: zod.looseObject({}).optional().describe('Duration in seconds'),
   avgHr: zod.looseObject({}).optional().describe('Average heart rate'),
   maxHr: zod.looseObject({}).optional().describe('Maximum heart rate'),

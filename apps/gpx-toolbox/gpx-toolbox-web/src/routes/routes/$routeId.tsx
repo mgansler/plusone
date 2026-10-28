@@ -39,6 +39,7 @@ function RouteDetailPage() {
   const queryClient = useQueryClient()
   const [showForm, setShowForm] = useState(false)
   const [formRiddenAt, setFormRiddenAt] = useState(new Date().toISOString().slice(0, 16))
+  const [formTitle, setFormTitle] = useState('')
   const [formDuration, setFormDuration] = useState('')
   const [formAvgHr, setFormAvgHr] = useState('')
   const [formMaxHr, setFormMaxHr] = useState('')
@@ -114,6 +115,7 @@ function RouteDetailPage() {
         void queryClient.invalidateQueries({ queryKey: getListFahrtenQueryKey(routeId) })
         setShowForm(false)
         setFormRiddenAt(new Date().toISOString().slice(0, 16))
+        setFormTitle('')
         setFormDuration('')
         setFormAvgHr('')
         setFormMaxHr('')
@@ -138,6 +140,7 @@ function RouteDetailPage() {
     setFormError(null)
     try {
       const body: Record<string, unknown> = { riddenAt: formRiddenAt }
+      if (formTitle) body.title = formTitle
       if (formDuration) body.duration = parseInt(formDuration, 10)
       if (formAvgHr) body.avgHr = parseInt(formAvgHr, 10)
       if (formMaxHr) body.maxHr = parseInt(formMaxHr, 10)
@@ -250,6 +253,13 @@ function RouteDetailPage() {
                 style={styles.input}
               />
               <input
+                type="text"
+                placeholder="Titel"
+                value={formTitle}
+                onChange={(e) => setFormTitle(e.target.value)}
+                style={styles.input}
+              />
+              <input
                 type="number"
                 placeholder="Dauer (Sek)"
                 value={formDuration}
@@ -281,7 +291,14 @@ function RouteDetailPage() {
                 <button type="submit" disabled={formSubmitting} style={styles.submitButton}>
                   {formSubmitting ? 'Speichern...' : 'Speichern'}
                 </button>
-                <button type="button" onClick={() => setShowForm(false)} style={styles.cancelButton}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowForm(false)
+                    setFormTitle('')
+                  }}
+                  style={styles.cancelButton}
+                >
                   Abbrechen
                 </button>
               </div>
@@ -293,6 +310,7 @@ function RouteDetailPage() {
             fahrten as Array<{
               id: string
               riddenAt: Date
+              title: string | null
               duration: number | null
               avgHr: number | null
               maxHr: number | null
@@ -312,6 +330,7 @@ function RouteDetailPage() {
                 {f.avgHr && <span>Ø HR {f.avgHr as number}</span>}
                 {f.maxHr && <span>Max HR {f.maxHr as number}</span>}
               </div>
+              {f.title && <div style={styles.fahrtTitle}>{f.title as string}</div>}
               {f.notes && <div style={styles.fahrtNotes}>{f.notes as string}</div>}
               {f.weather && (
                 <div style={styles.fahrtWeather}>
@@ -679,6 +698,12 @@ const styles = {
     fontSize: 12,
     color: '#64748b',
     fontStyle: 'italic',
+    marginTop: 4,
+  } as const,
+  fahrtTitle: {
+    fontSize: 14,
+    fontWeight: 600,
+    color: '#1e293b',
     marginTop: 4,
   } as const,
   fahrtWeather: {

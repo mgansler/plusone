@@ -91,8 +91,8 @@ export class RoutesController {
   @Get('strava-activities')
   @ApiOperation({ operationId: 'listStravaActivities' })
   @ApiBearerAuth()
-  @ApiQuery({ name: 'page', type: Number, required: false, defaultValue: 1 })
-  @ApiQuery({ name: 'per_page', type: Number, required: false, defaultValue: 50 })
+  @ApiQuery({ name: 'page', type: Number, required: false, description: 'Page number (default: 1)' })
+  @ApiQuery({ name: 'per_page', type: Number, required: false, description: 'Items per page (default: 50)' })
   @ApiOkResponse({ description: 'List of Strava activities with metadata' })
   async listStravaActivities(
     @Req() req: Request & { user: JwtPayload },

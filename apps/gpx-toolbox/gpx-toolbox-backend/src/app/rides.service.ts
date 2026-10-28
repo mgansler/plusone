@@ -102,6 +102,7 @@ export class RidesService {
       data: {
         routeId,
         userId,
+        title: dto.title,
         riddenAt: new Date(dto.riddenAt),
         duration: dto.duration,
         avgHr: dto.avgHr,
@@ -170,6 +171,7 @@ export class RidesService {
     return {
       id: fahrt.id,
       routeId: fahrt.routeId,
+      title: fahrt.title,
       riddenAt: fahrt.riddenAt,
       duration: fahrt.duration,
       avgHr: fahrt.avgHr,
