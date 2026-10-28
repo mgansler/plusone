@@ -119,11 +119,14 @@ export class StravaService {
 
   async getActivities(
     accessToken: string,
-    params?: { page?: number; per_page?: number },
+    params?: { page?: number; per_page?: number; after?: number; before?: number },
   ): Promise<Array<GetLoggedInAthleteActivities200Item>> {
-    const { page = 1, per_page = 200 } = params ?? {}
+    const { page = 1, per_page = 200, after, before } = params ?? {}
     const { data } = await this.withStravaLogging('getActivities', () =>
-      getLoggedInAthleteActivities({ page, per_page }, stravaConfig(this.authHeaders(accessToken))),
+      getLoggedInAthleteActivities(
+        { page, per_page, ...(after != null && { after }), ...(before != null && { before }) },
+        stravaConfig(this.authHeaders(accessToken)),
+      ),
     )
     return data
   }

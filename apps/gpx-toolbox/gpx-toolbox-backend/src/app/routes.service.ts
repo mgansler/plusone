@@ -384,12 +384,15 @@ export class RoutesService {
   /**
    * Get Strava activities with pagination, enriched with existing route data.
    * Used by the /fahrten/sync page to list activities for import as Fahrten.
+   *
+   * `after` / `before` (epoch seconds) are the only filters the Strava API supports here.
    */
   async getStravaActivities(
     accessToken: string,
     userId: string,
     page = 1,
     per_page = 50,
+    range: { after?: number; before?: number } = {},
   ): Promise<{
     items: Array<{
       id: number
@@ -401,6 +404,9 @@ export class RoutesService {
       heart_rate_avg?: number
       heart_rate_max?: number
       start_date_local: string
+      sport_type?: string
+      trainer?: boolean
+      summary_polyline?: string
       routeId?: string
       imported: boolean
     }>
@@ -409,7 +415,7 @@ export class RoutesService {
     hasMore: boolean
   }> {
     // Fetch paginated activities from Strava
-    const activities = await this.stravaService.getActivities(accessToken, { page, per_page })
+    const activities = await this.stravaService.getActivities(accessToken, { page, per_page, ...range })
 
     // Fetch existing routes that have stravaActivityId
     const routes = await this.prismaService.route.findMany({
@@ -450,6 +456,10 @@ export class RoutesService {
         heart_rate_avg: fahrtInfo?.avgHr ?? undefined,
         heart_rate_max: fahrtInfo?.maxHr ?? undefined,
         start_date_local: activity.start_date_local ?? new Date().toISOString(),
+        sport_type: activity.sport_type,
+        trainer: activity.trainer,
+        // Encoded, simplified track for a quick preview before importing
+        summary_polyline: activity.map?.summary_polyline,
         routeId: routeInfo?.routeId,
         imported: !!routeInfo?.hasGpx,
       }

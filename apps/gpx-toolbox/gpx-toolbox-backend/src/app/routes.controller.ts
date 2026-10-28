@@ -93,14 +93,26 @@ export class RoutesController {
   @ApiBearerAuth()
   @ApiQuery({ name: 'page', type: Number, required: false, description: 'Page number (default: 1)' })
   @ApiQuery({ name: 'per_page', type: Number, required: false, description: 'Items per page (default: 50)' })
+  @ApiQuery({ name: 'after', type: String, required: false, description: 'Only activities after this time (ISO 8601)' })
+  @ApiQuery({
+    name: 'before',
+    type: String,
+    required: false,
+    description: 'Only activities before this time (ISO 8601)',
+  })
   @ApiOkResponse({ description: 'List of Strava activities with metadata' })
   async listStravaActivities(
     @Req() req: Request & { user: JwtPayload },
     @Query('page', new ParseIntPipe()) page = 1,
     @Query('per_page', new ParseIntPipe()) per_page = 50,
+    @Query('after') after?: string,
+    @Query('before') before?: string,
   ) {
     const accessToken = await this.getStravaToken(req)
-    return this.routesService.getStravaActivities(accessToken, req.user.sub, page, per_page)
+    return this.routesService.getStravaActivities(accessToken, req.user.sub, page, per_page, {
+      after: toEpochSeconds(after, 'after'),
+      before: toEpochSeconds(before, 'before'),
+    })
   }
 
   @Get('nearby')
@@ -155,4 +167,14 @@ export class RoutesController {
     // Guarantees a valid token: refreshes transparently if the stored one is expired.
     return this.authService.getValidAccessToken(req.user.sub)
   }
+}
+
+/** Convert an optional ISO 8601 query parameter to epoch seconds as expected by the Strava API. */
+function toEpochSeconds(value: string | undefined, name: string): number | undefined {
+  if (!value) return undefined
+  const time = new Date(value).getTime()
+  if (isNaN(time)) {
+    throw new BadRequestException(`${name} must be an ISO 8601 date`)
+  }
+  return Math.floor(time / 1000)
 }

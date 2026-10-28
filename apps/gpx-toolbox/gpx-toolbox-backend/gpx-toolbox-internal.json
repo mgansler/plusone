@@ -422,6 +422,24 @@
         "operationId": "listStravaActivities",
         "parameters": [
           {
+            "name": "after",
+            "required": false,
+            "in": "query",
+            "description": "Only activities after this time (ISO 8601)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before",
+            "required": false,
+            "in": "query",
+            "description": "Only activities before this time (ISO 8601)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "per_page",
             "required": false,
             "in": "query",

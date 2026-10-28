@@ -72,7 +72,9 @@ export function App() {
             </button>
           </div>
         </div>
-        <Outlet />
+        <main style={styles.content}>
+          <Outlet />
+        </main>
       </div>
     </ProtectedRoute>
   )
@@ -99,6 +101,13 @@ const styles = {
     width: '100%',
     display: 'flex',
     flexDirection: 'column' as const,
+    overflow: 'hidden',
+  } as const,
+  /** Remaining height below the topbar; pages with `height: 100%` fill exactly this, so the topbar never scrolls away */
+  content: {
+    flex: 1,
+    minHeight: 0,
+    overflow: 'auto',
   } as const,
   topbar: {
     display: 'flex',

@@ -471,6 +471,14 @@ export type ListRoutesParams = {
 
 export type ListStravaActivitiesParams = {
   /**
+   * Only activities after this time (ISO 8601)
+   */
+  after?: string
+  /**
+   * Only activities before this time (ISO 8601)
+   */
+  before?: string
+  /**
    * Items per page (default: 50)
    */
   per_page?: number

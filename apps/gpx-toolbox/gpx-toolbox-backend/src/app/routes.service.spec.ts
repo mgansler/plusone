@@ -442,4 +442,46 @@ describe('RoutesService', () => {
       expect((mockPrisma.route as any).update.mock.calls[0][0].data.stravaActivityId).toBe('activity-999')
     })
   })
+
+  describe('getStravaActivities', () => {
+    it('passes the date range to Strava and returns sport type and trainer flag', async () => {
+      const getActivities = vi.fn().mockResolvedValue([
+        {
+          id: 1,
+          name: 'Zwift',
+          sport_type: 'VirtualRide',
+          trainer: true,
+          start_date_local: '2026-10-01T08:00:00Z',
+          map: { summary_polyline: '_p~iF~ps|U' },
+        },
+      ])
+      const module = await Test.createTestingModule({
+        providers: [
+          RoutesService,
+          {
+            provide: PrismaService,
+            useValue: {
+              route: { findMany: vi.fn().mockResolvedValue([]) },
+              fahrt: { findMany: vi.fn().mockResolvedValue([]) },
+            },
+          },
+          { provide: StravaService, useValue: { getActivities } },
+        ],
+      }).compile()
+
+      const result = await module
+        .get<RoutesService>(RoutesService)
+        .getStravaActivities('token', userId, 2, 25, { after: 1_700_000_000, before: 1_800_000_000 })
+
+      expect(getActivities).toHaveBeenCalledWith('token', {
+        page: 2,
+        per_page: 25,
+        after: 1_700_000_000,
+        before: 1_800_000_000,
+      })
+      expect(result.items[0]).toEqual(
+        expect.objectContaining({ sport_type: 'VirtualRide', trainer: true, summary_polyline: '_p~iF~ps|U' }),
+      )
+    })
+  })
 })

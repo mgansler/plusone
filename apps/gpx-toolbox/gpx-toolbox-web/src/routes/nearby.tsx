@@ -353,7 +353,7 @@ function NearbySearch() {
 const styles = {
   container: {
     display: 'flex',
-    height: 'calc(100vh - 48px)',
+    height: '100%',
     width: '100%',
   } as const,
   sidebar: {

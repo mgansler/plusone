@@ -23,4 +23,5 @@ export { computeModifiedHausdorffDistance, resampleTrack } from './lib/track-sim
 export type { GeoPoint, TrackSimilarityOptions } from './lib/track-similarity'
 export { computeBoundingBox, expandBoundingBox } from './lib/bounding-box'
 export type { BoundingBox } from './lib/bounding-box'
+export { decodePolyline } from './lib/encoded-polyline'
 export * from './lib/track-stats'

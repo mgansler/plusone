@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
+import L from 'leaflet'
 
-import { useImportAllStravaActivities, useImportStravaActivity } from '@plusone/gpx-toolbox-api-client'
+import { useImportStravaActivity } from '@plusone/gpx-toolbox-api-client'
 import { customAxiosInstance } from '@plusone/gpx-toolbox-api-client'
+import { decodePolyline } from '@plusone/gpx-toolbox-utils'
+
+import { Map } from '../../components/Map'
 
 export const Route = createFileRoute('/fahrten/sync')({
   component: SyncPage,
@@ -41,8 +45,46 @@ type PaginatedStravaActivity = {
   heart_rate_avg?: number
   heart_rate_max?: number
   start_date_local: string
+  sport_type?: string
+  trainer?: boolean
+  /** Encoded (Google polyline format), simplified track from the Strava summary */
+  summary_polyline?: string
   routeId?: string
   imported: boolean
+}
+
+/** Strava `after`/`before` as ISO timestamps; "Bis" includes the whole selected day (local time) */
+function dateRangeParams({ dateFrom, dateTo }: { dateFrom: string; dateTo: string }): Record<string, string> {
+  const params: Record<string, string> = {}
+  if (dateFrom) params.after = new Date(`${dateFrom}T00:00:00`).toISOString()
+  if (dateTo) {
+    const end = new Date(`${dateTo}T00:00:00`)
+    end.setDate(end.getDate() + 1)
+    params.before = end.toISOString()
+  }
+  return params
+}
+
+/** Indoor trainer rides: flagged as trainer, or virtual rides (Zwift etc.) which don't always set the flag */
+function isIndoorRide(activity: { trainer?: boolean; sport_type?: string }): boolean {
+  return activity.trainer === true || activity.sport_type === 'VirtualRide'
+}
+
+const sportTypeLabels: Record<string, string> = {
+  Ride: 'Radfahrt',
+  GravelRide: 'Gravel',
+  MountainBikeRide: 'MTB',
+  EMountainBikeRide: 'E-MTB',
+  EBikeRide: 'E-Bike',
+  VirtualRide: 'Virtuell',
+  Velomobile: 'Velomobil',
+  Handcycle: 'Handbike',
+  Run: 'Laufen',
+  TrailRun: 'Trailrun',
+  Walk: 'Gehen',
+  Hike: 'Wandern',
+  Swim: 'Schwimmen',
+  Workout: 'Workout',
 }
 
 type StravaActivitiesResponse = {
@@ -54,8 +96,17 @@ type StravaActivitiesResponse = {
 
 function SyncPage() {
   const [searchQuery, setSearchQuery] = useState('')
-  const [limit, setLimit] = useState(100)
   const [importingId, setImportingId] = useState<number | null>(null)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [map, setMap] = useState<L.Map | null>(null)
+
+  // Date range is passed to Strava (after/before); the other filters only apply to loaded activities
+  const [dateFrom, setDateFrom] = useState('')
+  const [dateTo, setDateTo] = useState('')
+  const [onlyOpen, setOnlyOpen] = useState(false)
+  const [hideTrainer, setHideTrainer] = useState(false)
+  const [minDistanceKm, setMinDistanceKm] = useState('')
+  const [hiddenSportTypes, setHiddenSportTypes] = useState<Set<string>>(new Set())
 
   // Pagination state
   const [page, setPage] = useState(1)
@@ -68,6 +119,8 @@ function SyncPage() {
   // Refs to avoid stale closures in async handlers
   const pageRef = useRef(page)
   const perPageRef = useRef(perPage)
+  const dateRangeRef = useRef({ dateFrom, dateTo })
+  dateRangeRef.current = { dateFrom, dateTo }
   useEffect(() => {
     pageRef.current = page
   }, [page])
@@ -81,8 +134,9 @@ function SyncPage() {
     setError(null)
     try {
       const response = await customAxiosInstance<StravaActivitiesResponse>({
-        url: `/api/routes/strava-activities?page=${pageNum}&per_page=${effectivePerPage}`,
+        url: '/api/routes/strava-activities',
         method: 'GET',
+        params: { page: pageNum, per_page: effectivePerPage, ...dateRangeParams(dateRangeRef.current) },
       })
 
       if (append) {
@@ -109,18 +163,9 @@ function SyncPage() {
   }
 
   const handleLimitChange = (newLimit: number) => {
-    setLimit(newLimit)
     // Pass newLimit directly to avoid stale closure
     void loadActivities(1, false, newLimit)
   }
-
-  const importAllMutation = useImportAllStravaActivities({
-    mutation: {
-      onSuccess: () => {
-        void handleRefresh()
-      },
-    },
-  })
 
   const importActivityMutation = useImportStravaActivity({
     mutation: {
@@ -141,108 +186,216 @@ function SyncPage() {
     }
   }
 
-  const handleImportAll = async () => {
-    await importAllMutation.mutateAsync({ params: { limit: String(limit) } })
+  const minDistance = parseFloat(minDistanceKm) * 1000
+  const filtered = activities.filter(
+    (a) =>
+      a.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      (!onlyOpen || !a.imported) &&
+      (!hideTrainer || !isIndoorRide(a)) &&
+      (isNaN(minDistance) || (a.distance ?? 0) >= minDistance) &&
+      !hiddenSportTypes.has(a.sport_type ?? ''),
+  )
+  const importedCount = activities.filter((a) => a.imported).length
+  const sportTypes = [...new Set(activities.map((a) => a.sport_type ?? ''))].sort()
+  const hasLocalFilters =
+    searchQuery !== '' || onlyOpen || hideTrainer || minDistanceKm !== '' || hiddenSportTypes.size > 0
+
+  const toggleSportType = (sportType: string) => {
+    setHiddenSportTypes((prev) => {
+      const next = new Set(prev)
+      if (next.has(sportType)) next.delete(sportType)
+      else next.add(sportType)
+      return next
+    })
   }
 
-  const filtered = activities.filter((a) => a.name.toLowerCase().includes(searchQuery.toLowerCase()))
-  const importedCount = activities.filter((a) => a.imported).length
+  const selectedActivity = activities.find((a) => a.id === selectedId) ?? null
 
-  // Load initial data on mount
+  // Preview the selected activity's track on the map
+  useEffect(() => {
+    if (!map || !selectedActivity?.summary_polyline) return
+    const coords = decodePolyline(selectedActivity.summary_polyline).map(
+      (p) => [p.latitude, p.longitude] as [number, number],
+    )
+    if (coords.length < 2) return
+
+    const line = L.polyline(coords, { color: '#e11d48', weight: 4, opacity: 0.9 }).addTo(map)
+    map.fitBounds(line.getBounds(), { padding: [24, 24] })
+    return () => {
+      line.remove()
+    }
+  }, [map, selectedActivity])
+
+  // Load on mount and whenever the date range changes
   useEffect(() => {
     void loadActivities(1)
-  }, [])
+  }, [dateFrom, dateTo, loadActivities])
 
   return (
-    <div style={styles.container}>
-      <div style={styles.sidebar}>
-        <Link to="/fahrten" style={styles.backLink}>
-          ← Zurück zur Übersicht
-        </Link>
-
-        <h2 style={styles.heading}>Strava Sync</h2>
-
-        {/* Stats bar */}
-        {activities.length > 0 && (
-          <div style={styles.statsBar}>
-            <span style={styles.statText}>{activities.length} Aktivitäten gesamt</span>
-            <span style={styles.statText}>{importedCount} importiert</span>
-            <span style={{ ...styles.statText, color: activities.length - importedCount > 0 ? '#22c55e' : '#64748b' }}>
-              {activities.length - importedCount} offen
-            </span>
-          </div>
-        )}
-
-        {/* Search */}
-        <input
-          type="text"
-          placeholder="Aktivitäten durchsuchen..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          style={styles.searchInput}
-        />
-
-        {/* Limit selector */}
-        <div style={styles.limitRow}>
-          <label style={styles.limitLabel}>Pro Seite:</label>
-          <select
-            value={perPage}
-            onChange={(e) => handleLimitChange(Number(e.target.value))}
-            style={styles.limitSelect}
-          >
+    <div style={styles.page}>
+      {/* Filter & action bar */}
+      <div style={styles.filterBar}>
+        <label style={styles.filterField}>
+          <span style={styles.filterLabel}>Suche</span>
+          <input
+            type="text"
+            placeholder="Name der Aktivität"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ ...styles.input, ...styles.searchInput }}
+          />
+        </label>
+        <label style={styles.filterField}>
+          <span style={styles.filterLabel}>Von</span>
+          <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} style={styles.input} />
+        </label>
+        <label style={styles.filterField}>
+          <span style={styles.filterLabel}>Bis</span>
+          <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} style={styles.input} />
+        </label>
+        <label style={styles.filterField}>
+          <span style={styles.filterLabel}>Min. Distanz (km)</span>
+          <input
+            type="number"
+            min={0}
+            value={minDistanceKm}
+            onChange={(e) => setMinDistanceKm(e.target.value)}
+            style={{ ...styles.input, ...styles.numberInput }}
+          />
+        </label>
+        <div style={styles.checkboxGroup}>
+          <label style={styles.checkboxLabel}>
+            <input type="checkbox" checked={onlyOpen} onChange={(e) => setOnlyOpen(e.target.checked)} />
+            Nur offene
+          </label>
+          <label style={styles.checkboxLabel}>
+            <input type="checkbox" checked={hideTrainer} onChange={(e) => setHideTrainer(e.target.checked)} />
+            Ohne Rollentrainer
+          </label>
+        </div>
+        <label style={styles.filterField}>
+          <span style={styles.filterLabel}>Pro Seite</span>
+          <select value={perPage} onChange={(e) => handleLimitChange(Number(e.target.value))} style={styles.input}>
             <option value={25}>25</option>
             <option value={50}>50</option>
             <option value={100}>100</option>
             <option value={200}>200</option>
           </select>
-        </div>
+        </label>
 
-        {/* Buttons */}
-        <div style={styles.buttonRow}>
-          <button onClick={handleRefresh} disabled={isLoadingActivities} style={styles.loadButton}>
-            {isLoadingActivities && !hasMore ? '⏳ Lade...' : '📥 Syncen'}
-          </button>
-          <button onClick={handleImportAll} disabled={importAllMutation.isPending} style={styles.batchButton}>
-            {importAllMutation.isPending ? '⏳ Sync...' : '📥 Alle syncen'}
-          </button>
-        </div>
-
-        {/* Load more button */}
-        {hasMore && (
-          <button onClick={handleLoadMore} disabled={isLoadingActivities} style={styles.loadMoreButton}>
-            {isLoadingActivities ? '⏳ Lade...' : `Mehr laden (${perPage} weitere)`}
+        {(hasLocalFilters || dateFrom !== '' || dateTo !== '') && (
+          <button
+            onClick={() => {
+              setSearchQuery('')
+              setDateFrom('')
+              setDateTo('')
+              setOnlyOpen(false)
+              setHideTrainer(false)
+              setMinDistanceKm('')
+              setHiddenSportTypes(new Set())
+            }}
+            style={styles.resetButton}
+          >
+            Filter zurücksetzen
           </button>
         )}
 
-        {/* Error */}
-        {error != null && (
-          <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>
-        )}
+        <div style={styles.filterSpacer} />
 
-        {/* Import result toast */}
-        {importAllMutation.isSuccess && importAllMutation.variables?.params?.limit && (
-          <div style={styles.toast}>✓ Sync abgeschlossen</div>
-        )}
+        <button onClick={handleRefresh} disabled={isLoadingActivities} style={styles.loadButton}>
+          {isLoadingActivities && !hasMore ? '⏳ Lade...' : '🔄 Aktualisieren'}
+        </button>
+      </div>
 
-        {/* Results */}
-        {filtered.length > 0 && (
-          <div style={styles.activityList}>
-            {filtered.map((activity) => (
-              <div
-                key={activity.id}
-                style={{
-                  ...styles.activityCard,
-                  backgroundColor: activity.imported ? '#f0fdf4' : '#fff',
-                }}
+      <div style={styles.container}>
+        <div style={styles.sidebar}>
+          <div style={styles.headingRow}>
+            <h2 style={styles.heading}>Strava Sync</h2>
+            <Link to="/fahrten" style={styles.backLink}>
+              ← Zur Übersicht
+            </Link>
+          </div>
+
+          {/* Stats bar */}
+          {activities.length > 0 && (
+            <div style={styles.statsBar}>
+              <span style={styles.statText}>{activities.length} geladen</span>
+              <span style={styles.statText}>{importedCount} importiert</span>
+              <span
+                style={{ ...styles.statText, color: activities.length - importedCount > 0 ? '#22c55e' : '#64748b' }}
               >
-                <div style={styles.activityHeader}>
-                  <span style={styles.activityName}>
-                    {activity.imported && '✓ '}
-                    {activity.name}
-                  </span>
+                {activities.length - importedCount} offen
+              </span>
+            </div>
+          )}
+
+          {/* Sport types of the loaded activities, click to hide/show */}
+          {sportTypes.length > 1 && (
+            <div style={styles.chipRow}>
+              {sportTypes.map((sportType) => {
+                const hidden = hiddenSportTypes.has(sportType)
+                return (
                   <button
-                    onClick={() => void handleImport(activity.id)}
+                    key={sportType}
+                    onClick={() => toggleSportType(sportType)}
+                    style={{ ...styles.chip, ...(hidden ? styles.chipHidden : {}) }}
+                    title={hidden ? 'Einblenden' : 'Ausblenden'}
+                  >
+                    {sportTypeLabels[sportType] ?? (sportType || 'Unbekannt')}
+                  </button>
+                )
+              })}
+            </div>
+          )}
+
+          {hasLocalFilters && activities.length > 0 && (
+            <div style={styles.filterHint}>
+              {filtered.length} von {activities.length} geladenen Aktivitäten angezeigt
+            </div>
+          )}
+
+          {/* Error */}
+          {error != null && (
+            <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>
+          )}
+
+          {/* Results */}
+          {filtered.length > 0 && (
+            <div style={styles.activityList}>
+              {filtered.map((activity) => (
+                <div
+                  key={activity.id}
+                  onClick={() => setSelectedId(activity.id)}
+                  style={{
+                    ...styles.activityCard,
+                    backgroundColor: activity.imported ? '#f0fdf4' : '#fff',
+                    ...(selectedId === activity.id && styles.activityCardSelected),
+                  }}
+                >
+                  <div style={styles.activityText}>
+                    {/* Line 1: date and name */}
+                    <div style={styles.activityLine}>
+                      <span style={styles.activityDate}>{formatDateLocal(activity.start_date_local)}</span>
+                      <span style={styles.activityName} title={activity.name}>
+                        {activity.name}
+                      </span>
+                    </div>
+                    {/* Line 2: stats */}
+                    <div style={styles.activityStats}>
+                      <span>⏱ {activity.moving_time ? formatDuration(activity.moving_time) : '–'}</span>
+                      <span>↔ {activity.distance != null ? formatDistance(activity.distance) : '–'}</span>
+                      <span>↗ {activity.elevationGain != null ? `${Math.round(activity.elevationGain)} hm` : '–'}</span>
+                      {activity.heart_rate_avg && <span>♥ {activity.heart_rate_avg}</span>}
+                    </div>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      // Importing must not also select the entry
+                      e.stopPropagation()
+                      void handleImport(activity.id)
+                    }}
                     disabled={importingId === activity.id || activity.imported}
+                    title={activity.imported ? 'Bereits importiert' : 'Importieren'}
                     style={{
                       ...styles.importButton,
                       opacity: activity.imported || importingId === activity.id ? 0.5 : 1,
@@ -251,33 +404,33 @@ function SyncPage() {
                     {importingId === activity.id ? '⏳' : activity.imported ? '✓' : '📥'}
                   </button>
                 </div>
+              ))}
+            </div>
+          )}
 
-                <div style={styles.activityStats}>
-                  {activity.distance != null && <span>{formatDistance(activity.distance)}</span>}
-                  {activity.moving_time && <span>{formatDuration(activity.moving_time)}</span>}
-                  {activity.heart_rate_avg && <span>Ø {activity.heart_rate_avg} bpm</span>}
-                  {activity.heart_rate_max && <span>Max {activity.heart_rate_max} bpm</span>}
-                </div>
+          {/* Load more button */}
+          {hasMore && (
+            <button onClick={handleLoadMore} disabled={isLoadingActivities} style={styles.loadMoreButton}>
+              {isLoadingActivities ? '⏳ Lade...' : `Mehr laden (${perPage} weitere)`}
+            </button>
+          )}
 
-                <div style={styles.activityDate}>{formatDateLocal(activity.start_date_local)}</div>
-              </div>
-            ))}
-          </div>
-        )}
+          {/* Empty state */}
+          {!isLoadingActivities && activities.length === 0 && !error && (
+            <div style={styles.placeholder}>
+              Klicke "Aktualisieren" um deine Strava-Aktivitäten als Fahrten zu importieren
+            </div>
+          )}
+        </div>
 
-        {/* Empty state */}
-        {!isLoadingActivities && activities.length === 0 && !error && (
-          <div style={styles.placeholder}>Klicke "Syncen" um deine Strava-Aktivitäten als Fahrten zu importieren</div>
-        )}
-      </div>
-
-      {/* Map area (empty, sync overview) */}
-      <div style={styles.mapArea}>
-        <div style={styles.mapPlaceholder}>
-          {activities.length > 0 ? (
-            <span style={styles.countBadge}>{activities.length}</span>
-          ) : (
-            <span style={styles.mapText}>Strava-Aktivitäten importieren</span>
+        {/* Map: preview of the selected activity */}
+        <div style={styles.mapArea}>
+          <Map onMapReady={setMap} />
+          {!selectedActivity && activities.length > 0 && (
+            <div style={styles.mapHint}>Aktivität anklicken, um die Strecke anzuzeigen</div>
+          )}
+          {selectedActivity && !selectedActivity.summary_polyline && (
+            <div style={styles.mapHint}>Für diese Aktivität liefert Strava keine Strecke (z. B. Indoor)</div>
           )}
         </div>
       </div>
@@ -286,13 +439,101 @@ function SyncPage() {
 }
 
 const styles = {
-  container: {
+  page: {
     display: 'flex',
+    flexDirection: 'column' as const,
     height: '100%',
     width: '100%',
   } as const,
+  filterBar: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    flexWrap: 'wrap' as const,
+    gap: 12,
+    padding: '8px 16px',
+    borderBottom: '1px solid #e0e0e0',
+    backgroundColor: '#fff',
+    flexShrink: 0,
+  } as const,
+  filterField: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: 2,
+  } as const,
+  filterLabel: {
+    fontSize: 11,
+    color: '#64748b',
+    textTransform: 'uppercase' as const,
+  } as const,
+  filterSpacer: {
+    flex: 1,
+  } as const,
+  input: {
+    padding: '6px 8px',
+    fontSize: 13,
+    border: '1px solid #ccc',
+    borderRadius: 4,
+    backgroundColor: '#fff',
+  } as const,
+  searchInput: {
+    width: 200,
+  } as const,
+  numberInput: {
+    width: 80,
+  } as const,
+  checkboxGroup: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: 2,
+    fontSize: 13,
+    color: '#1e293b',
+  } as const,
+  checkboxLabel: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 4,
+    cursor: 'pointer',
+  } as const,
+  resetButton: {
+    padding: '6px 10px',
+    fontSize: 13,
+    border: 'none',
+    backgroundColor: 'transparent',
+    color: '#3b82f6',
+    cursor: 'pointer',
+  } as const,
+  chipRow: {
+    display: 'flex',
+    flexWrap: 'wrap' as const,
+    gap: 6,
+  } as const,
+  chip: {
+    padding: '2px 10px',
+    fontSize: 12,
+    borderRadius: 12,
+    border: '1px solid #3b82f6',
+    backgroundColor: '#eff6ff',
+    color: '#1d4ed8',
+    cursor: 'pointer',
+  } as const,
+  chipHidden: {
+    border: '1px solid #cbd5e1',
+    backgroundColor: '#fff',
+    color: '#94a3b8',
+    textDecoration: 'line-through',
+  } as const,
+  filterHint: {
+    fontSize: 12,
+    color: '#64748b',
+  } as const,
+  container: {
+    display: 'flex',
+    flex: 1,
+    minHeight: 0,
+    width: '100%',
+  } as const,
   sidebar: {
-    width: 420,
+    width: 520,
     flexShrink: 0,
     overflowY: 'auto',
     borderRight: '1px solid #e0e0e0',
@@ -300,37 +541,33 @@ const styles = {
     backgroundColor: '#fafafa',
     display: 'flex',
     flexDirection: 'column' as const,
-    gap: 12,
+    gap: 8,
   } as const,
   mapArea: {
     flex: 1,
     position: 'relative',
     minWidth: 0,
-    backgroundColor: '#e8f5e9',
   } as const,
-  mapPlaceholder: {
+  mapHint: {
+    position: 'absolute' as const,
+    top: 12,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: 1000,
+    padding: '6px 12px',
+    fontSize: 13,
+    color: '#1e293b',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 6,
+    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.2)',
+    pointerEvents: 'none' as const,
+  } as const,
+  headingRow: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    position: 'relative' as const,
-  } as const,
-  mapText: {
-    fontSize: 14,
-    color: '#64748b',
-  } as const,
-  countBadge: {
-    fontSize: 48,
-    fontWeight: 700,
-    color: '#16a34a',
-    backgroundColor: '#fff',
-    borderRadius: 24,
-    padding: '16px 32px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
   } as const,
   backLink: {
-    display: 'block',
-    marginBottom: 4,
     fontSize: 13,
     color: '#3b82f6',
     textDecoration: 'none',
@@ -354,56 +591,11 @@ const styles = {
   statText: {
     fontWeight: 500,
   } as const,
-  searchInput: {
-    width: '100%',
-    padding: '8px 12px',
-    fontSize: 13,
-    border: '1px solid #ccc',
-    borderRadius: 6,
-    boxSizing: 'border-box' as const,
-  } as const,
-  limitRow: {
-    display: 'flex',
-    gap: 8,
-    alignItems: 'center',
-  } as const,
-  limitLabel: {
-    fontSize: 13,
-    color: '#64748b',
-  } as const,
-  limitSelect: {
-    flex: 1,
-    padding: '6px 8px',
-    fontSize: 13,
-    border: '1px solid #ccc',
-    borderRadius: 4,
-    backgroundColor: '#fff',
-  } as const,
-  buttonRow: {
-    display: 'flex',
-    gap: 8,
-  } as const,
   loadButton: {
-    flex: 1,
-    padding: '10px 16px',
-    fontSize: 14,
+    padding: '6px 14px',
+    fontSize: 13,
     fontWeight: 500,
     backgroundColor: '#3b82f6',
-    color: '#fff',
-    border: 'none',
-    borderRadius: 6,
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-  } as const,
-  batchButton: {
-    flex: 1,
-    padding: '10px 16px',
-    fontSize: 14,
-    fontWeight: 500,
-    backgroundColor: '#16a34a',
     color: '#fff',
     border: 'none',
     borderRadius: 6,
@@ -438,27 +630,54 @@ const styles = {
   activityList: {
     display: 'flex',
     flexDirection: 'column' as const,
-    gap: 8,
+    gap: 6,
   } as const,
   activityCard: {
-    padding: 12,
-    borderRadius: 8,
-    border: '1px solid #e0e0e0',
-  } as const,
-  activityHeader: {
     display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     gap: 8,
+    padding: '6px 10px',
+    borderRadius: 6,
+    border: '1px solid #e0e0e0',
+    cursor: 'pointer',
+  } as const,
+  activityCardSelected: {
+    border: '1px solid #e11d48',
+    boxShadow: 'inset 3px 0 0 #e11d48',
+  } as const,
+  activityText: {
+    flex: 1,
+    minWidth: 0,
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: 2,
+  } as const,
+  activityLine: {
+    display: 'flex',
+    alignItems: 'baseline',
+    gap: 8,
+    minWidth: 0,
+    whiteSpace: 'nowrap' as const,
+  } as const,
+  activityDate: {
+    fontWeight: 600,
+    fontSize: 13,
+    color: '#1e293b',
+    flexShrink: 0,
   } as const,
   activityName: {
-    fontWeight: 600,
-    fontSize: 14,
-    color: '#1e293b',
     flex: 1,
+    fontSize: 13,
+    color: '#1e293b',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
+  } as const,
+  activityStats: {
+    display: 'flex',
+    gap: 12,
+    fontSize: 12,
+    color: '#64748b',
+    whiteSpace: 'nowrap' as const,
   } as const,
   importButton: {
     padding: '4px 10px',
@@ -468,27 +687,6 @@ const styles = {
     borderRadius: 4,
     cursor: 'pointer',
     flexShrink: 0,
-  } as const,
-  activityStats: {
-    display: 'flex',
-    gap: 12,
-    fontSize: 12,
-    color: '#64748b',
-    marginTop: 4,
-  } as const,
-  activityDate: {
-    fontSize: 12,
-    color: '#94a3b8',
-    marginTop: 2,
-  } as const,
-  toast: {
-    padding: '10px 16px',
-    backgroundColor: '#dcfce7',
-    color: '#166534',
-    borderRadius: 6,
-    fontSize: 13,
-    fontWeight: 500,
-    border: '1px solid #bbf7d0',
   } as const,
   placeholder: {
     padding: 32,
