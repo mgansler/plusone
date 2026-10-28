@@ -19,4 +19,8 @@ export type {
 
 // Utilities
 export { calculateHaversineDistance, calculateBearing } from './lib/haversine-distance'
+export { computeModifiedHausdorffDistance, resampleTrack } from './lib/track-similarity'
+export type { GeoPoint, TrackSimilarityOptions } from './lib/track-similarity'
+export { computeBoundingBox, expandBoundingBox } from './lib/bounding-box'
+export type { BoundingBox } from './lib/bounding-box'
 export * from './lib/track-stats'

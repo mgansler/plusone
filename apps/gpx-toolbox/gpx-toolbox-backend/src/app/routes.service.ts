@@ -5,6 +5,7 @@ import { analyzeGpx, parseGpx, TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
 import { parsePolyline } from './polyline.util'
+import { routeGeometryColumns } from './route-geometry.util'
 import { StravaService } from './strava.service'
 
 /**
@@ -96,6 +97,7 @@ export class RoutesService {
         source: dto.source ?? 'manualImport',
         gpxContent,
         polyline: { points: JSON.stringify(polyline) },
+        ...routeGeometryColumns(polyline, overview.totalDistance),
         stats: {
           distance: overview.totalDistance,
           elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
@@ -314,6 +316,7 @@ export class RoutesService {
         source: 'stravaActivity',
         gpxContent,
         polyline: { points: JSON.stringify(polyline) },
+        ...routeGeometryColumns(polyline, overview.totalDistance),
         stats: {
           distance: overview.totalDistance,
           elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
@@ -357,6 +360,7 @@ export class RoutesService {
         stravaRouteId: stravaId,
         gpxContent,
         polyline: { points: JSON.stringify(polyline) },
+        ...routeGeometryColumns(polyline, stats.distance),
         stats,
         ratingTags: [],
         userId,

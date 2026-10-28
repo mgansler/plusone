@@ -15,7 +15,10 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "enum": ["ok", "degraded"],
+                      "enum": [
+                        "ok",
+                        "degraded"
+                      ],
                       "example": "ok"
                     },
                     "info": {
@@ -28,11 +31,17 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": ["status"],
+                        "required": [
+                          "status"
+                        ],
                         "properties": {
                           "status": {
                             "type": "string",
-                            "enum": ["up", "degraded", "down"]
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ]
                           },
                           "responseTime": {
                             "type": "number",
@@ -48,11 +57,17 @@
                       "example": {},
                       "additionalProperties": {
                         "type": "object",
-                        "required": ["status"],
+                        "required": [
+                          "status"
+                        ],
                         "properties": {
                           "status": {
                             "type": "string",
-                            "enum": ["up", "degraded", "down"]
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ]
                           },
                           "responseTime": {
                             "type": "number",
@@ -73,11 +88,17 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": ["status"],
+                        "required": [
+                          "status"
+                        ],
                         "properties": {
                           "status": {
                             "type": "string",
-                            "enum": ["up", "degraded", "down"]
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ]
                           },
                           "responseTime": {
                             "type": "number",
@@ -101,7 +122,10 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "enum": ["error", "shutting_down"],
+                      "enum": [
+                        "error",
+                        "shutting_down"
+                      ],
                       "example": "error"
                     },
                     "info": {
@@ -114,11 +138,17 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": ["status"],
+                        "required": [
+                          "status"
+                        ],
                         "properties": {
                           "status": {
                             "type": "string",
-                            "enum": ["up", "degraded", "down"]
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ]
                           },
                           "responseTime": {
                             "type": "number",
@@ -140,11 +170,17 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": ["status"],
+                        "required": [
+                          "status"
+                        ],
                         "properties": {
                           "status": {
                             "type": "string",
-                            "enum": ["up", "degraded", "down"]
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ]
                           },
                           "responseTime": {
                             "type": "number",
@@ -170,11 +206,17 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": ["status"],
+                        "required": [
+                          "status"
+                        ],
                         "properties": {
                           "status": {
                             "type": "string",
-                            "enum": ["up", "degraded", "down"]
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ]
                           },
                           "responseTime": {
                             "type": "number",
@@ -191,7 +233,9 @@
           }
         },
         "summary": "",
-        "tags": ["health"]
+        "tags": [
+          "health"
+        ]
       }
     },
     "/api/routes": {
@@ -219,7 +263,9 @@
           }
         ],
         "summary": "",
-        "tags": ["routes"]
+        "tags": [
+          "routes"
+        ]
       },
       "get": {
         "operationId": "listRoutes",
@@ -337,7 +383,9 @@
           }
         ],
         "summary": "",
-        "tags": ["routes"]
+        "tags": [
+          "routes"
+        ]
       }
     },
     "/api/routes/{id}/export": {
@@ -364,7 +412,9 @@
           }
         ],
         "summary": "",
-        "tags": ["routes"]
+        "tags": [
+          "routes"
+        ]
       }
     },
     "/api/routes/strava-activities": {
@@ -401,7 +451,9 @@
           }
         ],
         "summary": "",
-        "tags": ["routes"]
+        "tags": [
+          "routes"
+        ]
       }
     },
     "/api/routes/nearby": {
@@ -455,7 +507,9 @@
           }
         ],
         "summary": "",
-        "tags": ["routes"]
+        "tags": [
+          "routes"
+        ]
       }
     },
     "/api/routes/{id}": {
@@ -489,7 +543,9 @@
           }
         ],
         "summary": "",
-        "tags": ["routes"]
+        "tags": [
+          "routes"
+        ]
       },
       "put": {
         "operationId": "updateRoute",
@@ -524,7 +580,9 @@
           }
         ],
         "summary": "",
-        "tags": ["routes"]
+        "tags": [
+          "routes"
+        ]
       },
       "delete": {
         "operationId": "deleteRoute",
@@ -549,7 +607,9 @@
           }
         ],
         "summary": "",
-        "tags": ["routes"]
+        "tags": [
+          "routes"
+        ]
       }
     },
     "/api/auth/strava": {
@@ -562,7 +622,9 @@
           }
         },
         "summary": "",
-        "tags": ["auth"]
+        "tags": [
+          "auth"
+        ]
       }
     },
     "/api/auth/strava/callback": {
@@ -590,7 +652,9 @@
           }
         },
         "summary": "",
-        "tags": ["auth"]
+        "tags": [
+          "auth"
+        ]
       }
     },
     "/api/auth/athlete": {
@@ -610,7 +674,9 @@
           }
         },
         "summary": "",
-        "tags": ["auth"]
+        "tags": [
+          "auth"
+        ]
       }
     },
     "/api/auth/status": {
@@ -623,7 +689,9 @@
           }
         },
         "summary": "",
-        "tags": ["auth"]
+        "tags": [
+          "auth"
+        ]
       }
     },
     "/api/auth/refresh": {
@@ -636,7 +704,9 @@
           }
         },
         "summary": "",
-        "tags": ["auth"]
+        "tags": [
+          "auth"
+        ]
       }
     },
     "/api/auth/refresh-token": {
@@ -659,7 +729,9 @@
           }
         },
         "summary": "",
-        "tags": ["auth"]
+        "tags": [
+          "auth"
+        ]
       }
     },
     "/api/import/strava/routes": {
@@ -694,7 +766,9 @@
           }
         ],
         "summary": "",
-        "tags": ["import"]
+        "tags": [
+          "import"
+        ]
       },
       "get": {
         "operationId": "listStravaRoutes",
@@ -720,7 +794,9 @@
           }
         ],
         "summary": "",
-        "tags": ["import"]
+        "tags": [
+          "import"
+        ]
       }
     },
     "/api/import/strava/activity": {
@@ -762,7 +838,9 @@
           }
         ],
         "summary": "",
-        "tags": ["import"]
+        "tags": [
+          "import"
+        ]
       }
     },
     "/api/import/strava/all-activities": {
@@ -796,7 +874,9 @@
           }
         ],
         "summary": "",
-        "tags": ["import"]
+        "tags": [
+          "import"
+        ]
       }
     },
     "/api/import/strava/routes/{stravaRouteId}": {
@@ -830,7 +910,9 @@
           }
         ],
         "summary": "",
-        "tags": ["import"]
+        "tags": [
+          "import"
+        ]
       }
     },
     "/api/routes/{routeId}/fahrten": {
@@ -925,7 +1007,9 @@
           }
         ],
         "summary": "",
-        "tags": ["rides"]
+        "tags": [
+          "rides"
+        ]
       },
       "post": {
         "operationId": "createFahrt",
@@ -967,7 +1051,9 @@
           }
         ],
         "summary": "",
-        "tags": ["rides"]
+        "tags": [
+          "rides"
+        ]
       }
     },
     "/api/routes/{routeId}/fahrten/{id}": {
@@ -1009,7 +1095,9 @@
           }
         ],
         "summary": "",
-        "tags": ["rides"]
+        "tags": [
+          "rides"
+        ]
       },
       "put": {
         "operationId": "updateFahrt",
@@ -1059,7 +1147,9 @@
           }
         ],
         "summary": "",
-        "tags": ["rides"]
+        "tags": [
+          "rides"
+        ]
       },
       "delete": {
         "operationId": "deleteFahrt",
@@ -1092,7 +1182,9 @@
           }
         ],
         "summary": "",
-        "tags": ["rides"]
+        "tags": [
+          "rides"
+        ]
       }
     },
     "/api/routes/{routeId}/fahrten/{id}/weather": {
@@ -1136,7 +1228,9 @@
           }
         ],
         "summary": "",
-        "tags": ["rides"]
+        "tags": [
+          "rides"
+        ]
       }
     },
     "/api/fahrten": {
@@ -1223,7 +1317,9 @@
           }
         ],
         "summary": "",
-        "tags": ["fahrten"]
+        "tags": [
+          "fahrten"
+        ]
       }
     },
     "/api/fahrten/{id}": {
@@ -1257,7 +1353,9 @@
           }
         ],
         "summary": "",
-        "tags": ["fahrten"]
+        "tags": [
+          "fahrten"
+        ]
       },
       "put": {
         "operationId": "updateFahrt",
@@ -1299,7 +1397,9 @@
           }
         ],
         "summary": "",
-        "tags": ["fahrten"]
+        "tags": [
+          "fahrten"
+        ]
       },
       "delete": {
         "operationId": "deleteFahrt",
@@ -1324,7 +1424,9 @@
           }
         ],
         "summary": "",
-        "tags": ["fahrten"]
+        "tags": [
+          "fahrten"
+        ]
       }
     },
     "/api/debug/strava": {
@@ -1352,7 +1454,9 @@
           }
         ],
         "summary": "",
-        "tags": ["debug"]
+        "tags": [
+          "debug"
+        ]
       }
     }
   },
@@ -1387,10 +1491,16 @@
           "source": {
             "type": "string",
             "description": "Route source",
-            "enum": ["stravaRoute", "stravaActivity", "manualImport"]
+            "enum": [
+              "stravaRoute",
+              "stravaActivity",
+              "manualImport"
+            ]
           }
         },
-        "required": ["name"]
+        "required": [
+          "name"
+        ]
       },
       "ListRoutesResponseDto": {
         "type": "object",
@@ -1420,7 +1530,13 @@
             "description": "List of routes"
           }
         },
-        "required": ["total", "page", "limit", "totalPages", "items"]
+        "required": [
+          "total",
+          "page",
+          "limit",
+          "totalPages",
+          "items"
+        ]
       },
       "NearbyRouteResponseDto": {
         "type": "object",
@@ -1460,7 +1576,14 @@
             "description": "Route statistics"
           }
         },
-        "required": ["id", "name", "distance", "distanceKm", "status", "source"]
+        "required": [
+          "id",
+          "name",
+          "distance",
+          "distanceKm",
+          "status",
+          "source"
+        ]
       },
       "RouteResponseDto": {
         "type": "object",
@@ -1521,7 +1644,14 @@
             }
           }
         },
-        "required": ["id", "name", "source", "status", "createdAt", "updatedAt"]
+        "required": [
+          "id",
+          "name",
+          "source",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ]
       },
       "UpdateRouteDto": {
         "type": "object",
@@ -1537,7 +1667,11 @@
           "status": {
             "type": "string",
             "description": "Route status",
-            "enum": ["planned", "ridden", "foundOnline"]
+            "enum": [
+              "planned",
+              "ridden",
+              "foundOnline"
+            ]
           },
           "ratingTags": {
             "description": "Rating tags",
@@ -1640,7 +1774,14 @@
             "type": "object"
           }
         },
-        "required": ["id", "firstname", "lastname", "username", "gender", "athleteType"]
+        "required": [
+          "id",
+          "firstname",
+          "lastname",
+          "username",
+          "gender",
+          "athleteType"
+        ]
       },
       "RefreshTokenAuthDto": {
         "type": "object",
@@ -1662,7 +1803,11 @@
             "description": "Number of new routes created"
           }
         },
-        "required": ["imported", "matched", "newRoutes"]
+        "required": [
+          "imported",
+          "matched",
+          "newRoutes"
+        ]
       },
       "StravaRouteSummaryDto": {
         "type": "object",
@@ -1692,7 +1837,11 @@
             "description": "Whether already imported"
           }
         },
-        "required": ["stravaId", "name", "imported"]
+        "required": [
+          "stravaId",
+          "name",
+          "imported"
+        ]
       },
       "FahrtRouteResponseDto": {
         "type": "object",
@@ -1714,7 +1863,10 @@
             "description": "Route stats"
           }
         },
-        "required": ["id", "name"]
+        "required": [
+          "id",
+          "name"
+        ]
       },
       "FahrtResponseDto": {
         "type": "object",
@@ -1776,7 +1928,13 @@
             ]
           }
         },
-        "required": ["id", "routeId", "riddenAt", "createdAt", "updatedAt"]
+        "required": [
+          "id",
+          "routeId",
+          "riddenAt",
+          "createdAt",
+          "updatedAt"
+        ]
       },
       "CreateFahrtDto": {
         "type": "object",
@@ -1810,7 +1968,9 @@
             "description": "Weather conditions summary"
           }
         },
-        "required": ["riddenAt"]
+        "required": [
+          "riddenAt"
+        ]
       },
       "UpdateFahrtDto": {
         "type": "object",

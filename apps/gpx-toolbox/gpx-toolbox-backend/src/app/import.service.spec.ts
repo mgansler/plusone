@@ -314,6 +314,31 @@ describe('ImportService', () => {
       expect(result).toBeNull()
     })
 
+    it('pre-filters candidates in SQL by bounding box and distance', async () => {
+      const findMany = vi.fn().mockResolvedValue([])
+      const module: TestingModule = await Test.createTestingModule({
+        providers: [
+          ImportService,
+          { provide: PrismaService, useValue: { route: { findMany } } },
+          { provide: StravaService, useValue: {} },
+        ],
+      }).compile()
+
+      service = module.get<ImportService>(ImportService)
+
+      const points = Array.from({ length: 20 }, (_, i) => makePoint(i, 100, 48.0, 11.0))
+      await service.findBestMatch(points, 'user-1', 10_000)
+
+      const { where } = findMany.mock.calls[0][0]
+      expect(where.userId).toBe('user-1')
+      expect(where.distance).toEqual({ gte: 8_000, lte: 12_000 })
+      // Activity spans 48.0000–48.0019; the search box is grown by 200 m (~0.0018°)
+      expect(where.minLat.lte).toBeCloseTo(48.0019 + 0.0018, 4)
+      expect(where.maxLat.gte).toBeCloseTo(48.0 - 0.0018, 4)
+      expect(where.minLng.lte).toBeGreaterThan(11.0019)
+      expect(where.maxLng.gte).toBeLessThan(11.0)
+    })
+
     it('only considers manualImport and stravaRoute sources', async () => {
       const findManySpy = vi.fn().mockImplementation(({ where }: { where: { source?: { in: Array<string> } } }) => {
         // Simulate Prisma filtering: only return routes matching the source filter
@@ -454,6 +479,10 @@ describe('ImportService', () => {
 
       expect(result.imported).toBe(1)
       expect(result.matched).toBe(1)
+      expect(service['prisma'].route.update).toHaveBeenCalledWith({
+        where: { id: '1' },
+        data: { stravaActivityId: '999', status: 'ridden' },
+      })
       expect(service['prisma'].fahrt.create).toHaveBeenCalledWith({
         data: expect.objectContaining({ duration: 3600, avgHr: 150, maxHr: 180 }),
       })

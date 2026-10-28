@@ -27,6 +27,12 @@ model Route {
   gpxContent       String // Raw GPX XML
   polyline         Json // [{ lat: Float, lng: Float }]
   stats            Json // { distance, elevationGain, elevationLoss }
+  // Denormalized from polyline/stats so candidate routes for auto-matching can be filtered in SQL
+  distance         Float? // meters
+  minLat           Float?
+  maxLat           Float?
+  minLng           Float?
+  maxLng           Float?
   source           RouteSource
   status           RouteStatus @default(planned)
   ratingTags       Json // ["Nochmal fahren", "Anpassung nötig", ...]
@@ -39,6 +45,7 @@ model Route {
 
   fahrten Fahrt[]
 
+  @@index([userId, minLat, maxLat])
   @@map("routes")
 }
 

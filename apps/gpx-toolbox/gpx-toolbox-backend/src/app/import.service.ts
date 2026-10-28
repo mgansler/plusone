@@ -5,15 +5,24 @@ import {
   analyzeGpx,
   analyzePoints,
   calculateElevationLoss,
-  calculateHaversineDistance,
+  computeBoundingBox,
+  computeModifiedHausdorffDistance,
+  expandBoundingBox,
   parseGpx,
-  segmentTrack,
   serializeGpx,
   TrackPoint,
 } from '@plusone/gpx-toolbox-utils'
 
 import { parsePolyline } from './polyline.util'
+import { routeGeometryColumns } from './route-geometry.util'
 import { StravaService } from './strava.service'
+
+/** Routes with a Modified Hausdorff Distance below this value are considered a match. */
+const MATCH_THRESHOLD_METER = 200
+/** Only routes whose length differs by at most this fraction from the activity are compared. */
+const MATCH_DISTANCE_TOLERANCE = 0.2
+/** Sample spacing for the cheap first comparison pass. */
+const COARSE_SAMPLE_SPACING_METER = 200
 
 @Injectable()
 export class ImportService {
@@ -109,6 +118,7 @@ export class ImportService {
           data: {
             gpxContent,
             polyline: { points: JSON.stringify(polyline) },
+            ...routeGeometryColumns(polyline, stats.distance),
             stats,
           },
         })
@@ -121,6 +131,7 @@ export class ImportService {
           description: stravaRouteDetail?.distance ? `${(stravaRouteDetail.distance / 1000).toFixed(1)} km` : undefined,
           gpxContent,
           polyline: { points: JSON.stringify(polyline) },
+          ...routeGeometryColumns(polyline, stats.distance),
           stats,
           source: 'stravaRoute',
           userId,
@@ -197,6 +208,7 @@ export class ImportService {
             data: {
               gpxContent,
               polyline: { points: JSON.stringify(polyline) },
+              ...routeGeometryColumns(polyline, stats.distance),
               stats,
             },
           })
@@ -207,6 +219,7 @@ export class ImportService {
               description: routeDetail.distance ? `${(routeDetail.distance / 1000).toFixed(1)} km` : undefined,
               gpxContent,
               polyline: { points: JSON.stringify(polyline) },
+              ...routeGeometryColumns(polyline, stats.distance),
               stats,
               source: 'stravaRoute',
               userId,
@@ -286,12 +299,12 @@ export class ImportService {
 
       // Auto-match
       if (autoMatch) {
-        const match = await this.findBestMatch(points, userId)
+        const match = await this.findBestMatch(points, userId, stats.distance)
         if (match) {
-          // Link activity to existing route
+          // Link activity to existing route and mark it as ridden
           await this.prisma.route.update({
             where: { id: match.routeId },
-            data: { stravaActivityId: String(activityId) },
+            data: { stravaActivityId: String(activityId), status: RouteStatus.ridden },
           })
           this.logger.log(`Auto-matched activity ${activityId} to route "${match.routeName}"`)
           routeId = match.routeId
@@ -307,6 +320,7 @@ export class ImportService {
             description: activityDetail.distance ? `${(activityDetail.distance / 1000).toFixed(1)} km` : undefined,
             gpxContent,
             polyline: { points: JSON.stringify(polyline) },
+            ...routeGeometryColumns(polyline, stats.distance),
             stats,
             source: 'stravaActivity',
             userId,
@@ -381,111 +395,65 @@ export class ImportService {
 
   /**
    * Find the best matching route for a new activity track using Modified Hausdorff Distance.
+   *
+   * Candidates are pre-filtered in SQL by bounding box and length, so only routes in the
+   * same area with a similar distance have their polyline loaded and compared.
+   *
+   * @param distance Length of the activity in meters, computed the same way as `Route.distance`.
    */
   async findBestMatch(
     points: Array<TrackPoint>,
     userId: string,
+    distance = analyzePoints(points).totalDistance,
   ): Promise<{ routeId: string; routeName: string } | null> {
-    const existingRoutes = await this.prisma.route.findMany({
+    const activityBox = computeBoundingBox(points)
+    if (!activityBox || points.length < 2) return null
+
+    const searchBox = expandBoundingBox(activityBox, MATCH_THRESHOLD_METER)
+    const candidates = await this.prisma.route.findMany({
       where: {
         userId,
         source: { in: ['manualImport', 'stravaRoute'] as const },
+        // Bounding boxes overlap (activity box grown by the match threshold)
+        minLat: { lte: searchBox.maxLat },
+        maxLat: { gte: searchBox.minLat },
+        minLng: { lte: searchBox.maxLng },
+        maxLng: { gte: searchBox.minLng },
+        distance: {
+          gte: distance * (1 - MATCH_DISTANCE_TOLERANCE),
+          lte: distance * (1 + MATCH_DISTANCE_TOLERANCE),
+        },
       },
       select: { id: true, name: true, polyline: true },
     })
 
-    if (existingRoutes.length === 0) return null
-
-    const activitySegments = segmentTrack(points)
-    if (activitySegments.length === 0) return null
-
     let bestMatch: { routeId: string; routeName: string; distance: number } | null = null
 
-    for (const route of existingRoutes) {
-      const polyline = parsePolyline(route.polyline)
-      if (polyline.length === 0) continue
+    for (const route of candidates) {
+      const routePoints = parsePolyline(route.polyline).map((p) => ({ latitude: p.lat, longitude: p.lng }))
+      if (routePoints.length < 2) continue
 
-      const routePoints: Array<TrackPoint> = polyline.map((p) => ({
-        latitude: p.lat,
-        longitude: p.lng,
-        elevation: 0,
-        time: new Date(),
-      }))
-      const routeSegments = segmentTrack(routePoints)
-      if (routeSegments.length === 0) continue
+      // Only distances below the current best (or the threshold) can change the result
+      const limit = bestMatch?.distance ?? MATCH_THRESHOLD_METER
 
-      // Compare using Modified Hausdorff Distance
-      const mhd = this.computeModifiedHausdorffDistance(activitySegments, routeSegments)
+      // Coarse pass first: cheap, and a real match stays well below twice the limit
+      const coarse = computeModifiedHausdorffDistance(points, routePoints, {
+        sampleSpacingMeter: COARSE_SAMPLE_SPACING_METER,
+        maxDistanceMeter: 2 * limit,
+      })
+      if (coarse === Infinity) continue
 
-      // Threshold: routes with MHD < 200m are considered a match
-      const threshold = 200 // meters
-      if (mhd < threshold && (!bestMatch || mhd < bestMatch.distance)) {
+      const mhd = computeModifiedHausdorffDistance(points, routePoints, { maxDistanceMeter: limit })
+      if (mhd < limit) {
         bestMatch = { routeId: route.id, routeName: route.name, distance: mhd }
       }
     }
 
     if (bestMatch) {
       this.logger.log(`Best match: "${bestMatch.routeName}" with MHD ${Math.round(bestMatch.distance)}m`)
+      return { routeId: bestMatch.routeId, routeName: bestMatch.routeName }
     }
 
-    return bestMatch
-  }
-
-  /**
-   * Compute Modified Hausdorff Distance between two track segment sets.
-   * Uses the average of directed Hausdorff distances between matching segments.
-   */
-  private computeModifiedHausdorffDistance(
-    segmentsA: Array<{ points: Array<TrackPoint> }>,
-    segmentsB: Array<{ points: Array<TrackPoint> }>,
-  ): number {
-    let totalDistance = 0
-    let matchCount = 0
-
-    for (const segA of segmentsA) {
-      let bestDist = Infinity
-      for (const segB of segmentsB) {
-        const dist = this.computeHausdorffDistance(segA.points, segB.points)
-        if (dist < bestDist) bestDist = dist
-      }
-      if (bestDist < Infinity) {
-        totalDistance += bestDist
-        matchCount++
-      }
-    }
-
-    return matchCount > 0 ? totalDistance / matchCount : Infinity
-  }
-
-  /**
-   * Compute Hausdorff distance between two point arrays.
-   * Uses a simplified approach: compare points at equivalent normalized positions.
-   */
-  private computeHausdorffDistance(pointsA: Array<TrackPoint>, pointsB: Array<TrackPoint>): number {
-    if (pointsA.length === 0 || pointsB.length === 0) return Infinity
-
-    // Downsample to same number of points for comparison
-    const maxPoints = 100
-    const downsample = (points: Array<TrackPoint>, n: number): Array<TrackPoint> => {
-      const step = Math.max(1, Math.floor(points.length / n))
-      return points.filter((_, i) => i % step === 0).slice(0, n)
-    }
-
-    const sampledA = downsample(pointsA, maxPoints)
-    const sampledB = downsample(pointsB, maxPoints)
-
-    // Interpolate to same length
-    const length = Math.min(sampledA.length, sampledB.length)
-    let maxDist = 0
-
-    for (let i = 0; i < length; i++) {
-      const dist = calculateHaversineDistance(
-        { latitude: sampledA[i].latitude, longitude: sampledA[i].longitude },
-        { latitude: sampledB[i].latitude, longitude: sampledB[i].longitude },
-      )
-      if (dist > maxDist) maxDist = dist
-    }
-
-    return maxDist
+    return null
   }
 }
