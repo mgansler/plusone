@@ -97,7 +97,7 @@ export class AuthController {
       const jwtToken = this.jwtService.sign(payload)
 
       // Redirect frontend with JWT in URL fragment (SPA-friendly)
-      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173'
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4250'
       res.redirect(`${frontendUrl}#token=${jwtToken}`)
     } catch {
       res.status(500).json({ error: 'Authentication failed' })

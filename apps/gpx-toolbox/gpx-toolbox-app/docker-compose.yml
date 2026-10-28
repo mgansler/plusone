@@ -8,7 +8,9 @@ services:
       STRAVA_CLIENT_ID: ${STRAVA_CLIENT_ID}
       STRAVA_CLIENT_SECRET: ${STRAVA_CLIENT_SECRET}
       STRAVA_REDIRECT_URI: ${STRAVA_REDIRECT_URI}
-      JWT_SECRET: ${JWT_SECRET}
+      # Where the Strava OAuth callback sends the browser back to (same host as the Traefik rule)
+      FRONTEND_URL: 'https://gpx.martingansler.de'
+      JWT_SECRET: ${GPX_TOOLBOX_JWT_SECRET}
     volumes:
       - sqlite:/usr/gpx-toolbox/sqlite/
     labels:
