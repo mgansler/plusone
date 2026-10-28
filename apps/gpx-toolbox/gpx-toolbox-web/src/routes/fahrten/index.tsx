@@ -1,4 +1,4 @@
-import { type RefObject, useEffect, useRef, useState } from 'react'
+import { type RefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import L from 'leaflet'
 
@@ -87,6 +87,16 @@ function FahrtenPage() {
   }, [selectedFahrtId, fahrten])
 
   const points = gpxText ? parseGpx(gpxText) : []
+
+  // Total distance in km
+  const totalDist = useMemo(() => {
+    if (points.length < 2) return 0
+    let dist = 0
+    for (let i = 1; i < points.length; i++) {
+      dist += calculateHaversineDistance(points[i - 1], points[i])
+    }
+    return dist / 1000
+  }, [points])
 
   function handleFahrtClick(fahrt: (typeof fahrten)[number]) {
     setSelectedFahrtId(fahrt.id)
@@ -235,10 +245,17 @@ function FahrtenPage() {
       <div style={styles.mapArea}>
         <Map mapRef={mapRef}>
           {points.length > 1 && (
-            <SegmentOverlay points={points} mapInstance={mapRef.current!} range={[0, 100]} fitBounds>
+            <SegmentOverlay
+              points={points}
+              mapInstance={mapRef.current!}
+              range={[0, totalDist]}
+              totalDistKm={totalDist}
+              fitBounds
+            >
               <TrackClickHandler
                 points={points}
-                range={[0, 100]}
+                range={[0, totalDist]}
+                totalDistKm={totalDist}
                 mapInstance={mapRef.current!}
                 onPointClick={handlePointClick}
               />
@@ -254,20 +271,31 @@ function FahrtenPage() {
 /** Invisible click handler that maps clicks to the nearest track point */
 function TrackClickHandler({
   points,
-  range,
+  range: _range,
+  totalDistKm: _totalDistKm,
   mapInstance,
   onPointClick,
 }: {
   points: Array<TrackPoint>
   range: [number, number]
+  totalDistKm: number
   mapInstance: L.Map
   onPointClick: (point: TrackPoint, event: L.LeafletMouseEvent) => void
 }) {
   const layerRef = useRef<L.LayerGroup | null>(null)
 
-  const startIdx = Math.round((range[0] / 100) * (points.length - 1))
-  const endIdx = Math.round((range[1] / 100) * (points.length - 1))
+  const startIdx = findClosestIndex(points, 0)
+  const endIdx = findClosestIndex(points, _totalDistKm)
   const visiblePoints = points.slice(startIdx, endIdx + 1)
+
+  function findClosestIndex(pts: Array<TrackPoint>, targetDistKm: number): number {
+    let dist = 0
+    for (let i = 1; i < pts.length; i++) {
+      if (dist / 1000 >= targetDistKm) return i - 1
+      dist += calculateHaversineDistance(pts[i - 1], pts[i])
+    }
+    return pts.length - 1
+  }
 
   useEffect(() => {
     if (visiblePoints.length < 2) return

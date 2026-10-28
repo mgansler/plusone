@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import L from 'leaflet'
 
 import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
@@ -14,13 +14,30 @@ export function GPXViewer() {
   const [fileName, setFileName] = useState<string>()
   const mapRef = useRef<L.Map | null>(null)
   const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
-  const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 100])
+  const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 0])
+  const initializedRef = useRef(false)
+
+  // Total distance in km
+  const totalDist = useMemo(() => {
+    let dist = 0
+    for (let i = 1; i < points.length; i++) {
+      dist += calculateHaversineDistance(points[i - 1], points[i])
+    }
+    return dist / 1000
+  }, [points])
+
+  useEffect(() => {
+    if (totalDist > 0 && !initializedRef.current) {
+      initializedRef.current = true
+      setSegmentRange([0, totalDist])
+    }
+  }, [totalDist])
 
   function handleLoad(trackPoints: Array<TrackPoint>, name: string) {
     setPoints(trackPoints)
     setFileName(name)
     setSelectedPoint(null)
-    setSegmentRange([0, 100])
+    setSegmentRange([0, 0])
   }
 
   function handlePointClick(point: TrackPoint, event: L.LeafletMouseEvent) {
@@ -84,20 +101,23 @@ ${trkpts}
         onSegmentRangeChange={setSegmentRange}
         onExportGpx={handleExportGpx}
         onExportSvg={handleExportSvg}
+        totalDist={totalDist}
       />
       <div style={styles.mapArea}>
         <Map mapRef={mapRef} />
-        {points.length > 1 && segmentRange[1] - segmentRange[0] >= 1 && mapRef.current && (
+        {points.length > 1 && segmentRange[1] - segmentRange[0] >= 0.01 && mapRef.current && (
           <SegmentOverlay
             points={points}
             mapInstance={mapRef.current}
             range={segmentRange}
-            fitBounds={segmentRange[0] === 0 && segmentRange[1] === 100}
+            totalDistKm={totalDist}
+            fitBounds={segmentRange[0] === 0 && segmentRange[1] >= totalDist}
           >
-            {segmentRange[1] - segmentRange[0] >= 1 && (
+            {segmentRange[1] - segmentRange[0] >= 0.01 && (
               <TrackClickHandler
                 points={points}
                 range={segmentRange}
+                totalDistKm={totalDist}
                 mapInstance={mapRef.current}
                 onPointClick={handlePointClick}
               />
@@ -114,18 +134,20 @@ ${trkpts}
 function TrackClickHandler({
   points,
   range,
+  totalDistKm: _totalDistKm,
   mapInstance,
   onPointClick,
 }: {
   points: Array<TrackPoint>
   range: [number, number]
+  totalDistKm: number
   mapInstance: L.Map
   onPointClick: (point: TrackPoint, event: L.LeafletMouseEvent) => void
 }) {
   const layerRef = useRef<L.LayerGroup | null>(null)
 
-  const startIdx = Math.round((range[0] / 100) * (points.length - 1))
-  const endIdx = Math.round((range[1] / 100) * (points.length - 1))
+  const startIdx = findClosestIndex(points, range[0])
+  const endIdx = findClosestIndex(points, range[1])
   const visiblePoints = points.slice(startIdx, endIdx + 1)
 
   useEffect(() => {
@@ -172,6 +194,15 @@ function TrackClickHandler({
   }, [visiblePoints, mapInstance, onPointClick])
 
   return null
+}
+
+function findClosestIndex(points: Array<TrackPoint>, targetDistKm: number): number {
+  let dist = 0
+  for (let i = 1; i < points.length; i++) {
+    if (dist / 1000 >= targetDistKm) return i - 1
+    dist += calculateHaversineDistance(points[i - 1], points[i])
+  }
+  return points.length - 1
 }
 
 const styles = {

@@ -1,12 +1,17 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
-import { analyzePoints, calculateElevationLoss, renderSvg } from '@plusone/gpx-toolbox-utils'
+import {
+  analyzePoints,
+  calculateElevationLoss,
+  calculateHaversineDistance,
+  renderSvg,
+} from '@plusone/gpx-toolbox-utils'
 
 import { formatDistance, formatDuration } from '../utils/format'
 
+import { DistanceRangeSlider } from './DistanceRangeSlider'
 import { ElevationProfile } from './ElevationProfile'
-import { RangeSlider } from './RangeSlider'
 import { SegmentStats } from './SegmentStats'
 
 type RouteSegmentsProps = {
@@ -15,7 +20,25 @@ type RouteSegmentsProps = {
 }
 
 export function RouteSegments({ points, routeName }: RouteSegmentsProps) {
-  const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 100])
+  // Total distance in km
+  const totalDist = useMemo(() => {
+    const dists: Array<number> = [0]
+    for (let i = 1; i < points.length; i++) {
+      dists.push(dists[i - 1] + calculateHaversineDistance(points[i - 1], points[i]))
+    }
+    return dists[dists.length - 1] / 1000
+  }, [points])
+
+  const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 0])
+  const initializedRef = useRef(false)
+
+  useEffect(() => {
+    if (totalDist > 0 && !initializedRef.current) {
+      initializedRef.current = true
+      setSegmentRange([0, totalDist])
+    }
+  }, [totalDist])
+
   const [exportingTotalGpx, setExportingTotalGpx] = useState(false)
   const [exportingTotalSvg, setExportingTotalSvg] = useState(false)
   const [exportingSegmentGpx, setExportingSegmentGpx] = useState(false)
@@ -29,9 +52,9 @@ export function RouteSegments({ points, routeName }: RouteSegmentsProps) {
 
   if (points.length < 2) return null
 
-  // Compute visible segment points
-  const startIdx = Math.round((segmentRange[0] / 100) * (points.length - 1))
-  const endIdx = Math.round((segmentRange[1] / 100) * (points.length - 1))
+  // Compute visible segment points by distance
+  const startIdx = findClosestIndex(points, segmentRange[0])
+  const endIdx = findClosestIndex(points, segmentRange[1])
   const segmentPoints = points.slice(startIdx, endIdx + 1)
 
   const baseName = (routeName || 'route').replace(/[^a-zA-Z0-9äöüÄÖÜß\-_ ]/g, '').replace(/\s+/g, '_')
@@ -188,7 +211,7 @@ ${trkpts}
       {/* Segment */}
       <div style={styles.section}>
         <h3 style={styles.title}>Segment</h3>
-        <RangeSlider value={segmentRange} onChange={setSegmentRange} />
+        <DistanceRangeSlider points={points} value={segmentRange} onChange={setSegmentRange} />
         {segmentPoints.length >= 2 && <SegmentStats points={segmentPoints} />}
         <div style={styles.exportRow}>
           <button
@@ -226,6 +249,15 @@ function Stat({ label, value }: { label: string; value: string }) {
       <span style={styles.value}>{value}</span>
     </div>
   )
+}
+
+function findClosestIndex(points: Array<TrackPoint>, targetDistKm: number): number {
+  let dist = 0
+  for (let i = 1; i < points.length; i++) {
+    if (dist / 1000 >= targetDistKm) return i - 1
+    dist += calculateHaversineDistance(points[i - 1], points[i])
+  }
+  return points.length - 1
 }
 
 const styles = {

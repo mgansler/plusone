@@ -3,7 +3,6 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 
 import {
-  getImportStravaActivityMutationKey,
   getImportStravaRoutesMutationKey,
   getListStravaActivitiesQueryKey,
   useImportAllStravaActivities,
@@ -14,12 +13,6 @@ import {
 export const Route = createFileRoute('/fahrten/sync')({
   component: SyncPage,
 })
-
-type ImportResult = {
-  imported: number
-  matched: number
-  newRoutes: number
-}
 
 function formatDistance(meters: number): string {
   if (meters >= 1000) return `${(meters / 1000).toFixed(1)} km`

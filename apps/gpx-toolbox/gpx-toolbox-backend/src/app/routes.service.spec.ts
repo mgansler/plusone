@@ -75,7 +75,7 @@ describe('RoutesService', () => {
 
       ;(mockPrisma.route as any).create.mockResolvedValue({ id: 'r1', name: 'My Named Track' })
 
-      const result = await service.importGpx(gpxWithName, { source: 'manualImport' }, userId)
+      const result = await service.importGpx(gpxWithName, { source: 'manualImport', name: 'My Named Track' }, userId)
 
       expect(result.name).toBe('My Named Track')
     })

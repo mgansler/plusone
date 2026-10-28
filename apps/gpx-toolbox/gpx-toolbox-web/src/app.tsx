@@ -14,7 +14,7 @@ const PUBLIC_ROUTES = new Set(['/login', '/callback'])
  * - Authenticated: renders topbar + Outlet (child route content)
  */
 export function App() {
-  const { isAuthenticated, isLoading, login, user, logout } = useAuth()
+  const { isLoading, user, logout } = useAuth()
   const location = useLocation()
 
   // Show nothing while checking auth status

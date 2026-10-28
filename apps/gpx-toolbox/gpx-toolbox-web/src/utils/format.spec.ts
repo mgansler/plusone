@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { formatDistance, formatDuration } from './format'
+import { formatDistance, formatDuration, formatElevation } from './format'
 
 describe('formatDistance', () => {
   it('formats meters below 1 km', () => {
@@ -44,5 +44,20 @@ describe('formatDuration', () => {
 
   it('formats zero', () => {
     expect(formatDuration(0)).toBe('0s')
+  })
+})
+
+describe('formatElevation', () => {
+  it('rounds to the nearest integer and appends meters', () => {
+    expect(formatElevation(123.4)).toBe('123 m')
+    expect(formatElevation(123.6)).toBe('124 m')
+  })
+
+  it('formats zero', () => {
+    expect(formatElevation(0)).toBe('0 m')
+  })
+
+  it('rounds large values', () => {
+    expect(formatElevation(1500.9)).toBe('1501 m')
   })
 })

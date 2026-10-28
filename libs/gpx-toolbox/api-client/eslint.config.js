@@ -17,5 +17,5 @@ module.exports = [
     // Override or add rules here
     rules: {},
   },
-  { ignores: ['**/client.ts', '**/zod.ts'] },
+  { ignores: ['**/gen/**'] },
 ]

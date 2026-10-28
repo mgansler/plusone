@@ -4,12 +4,14 @@ import { UnauthorizedException } from '@nestjs/common'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
+import { StravaService } from './strava.service'
 import { AuthService } from './auth.service'
 
 describe('AuthService', () => {
   let service: AuthService
   let jwtService: JwtService
   let prisma: PrismaService
+  let stravaService: StravaService
 
   const originalEnv = process.env
 
@@ -20,6 +22,15 @@ describe('AuthService', () => {
     } as unknown as JwtService
 
     process.env = { ...originalEnv, STRAVA_CLIENT_ID: 'test-client-id' }
+
+    stravaService = {
+      getAthlete: vi.fn().mockResolvedValue({
+        id: '12345',
+        firstname: 'Test',
+        lastname: 'User',
+        profile: 'https://example.com/avatar.jpg',
+      }),
+    } as unknown as StravaService
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -35,6 +46,7 @@ describe('AuthService', () => {
             },
           },
         },
+        { provide: StravaService, useValue: stravaService },
       ],
     }).compile()
 

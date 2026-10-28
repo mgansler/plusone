@@ -1,20 +1,50 @@
-import { type ReactNode, useCallback, useEffect, useRef } from 'react'
+import { type ReactNode, useCallback, useEffect, useMemo, useRef } from 'react'
 import L from 'leaflet'
 
-import { type TrackPoint } from '@plusone/gpx-toolbox-utils'
+import { calculateHaversineDistance, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 type SegmentOverlayProps = {
   points: Array<TrackPoint>
   mapInstance: L.Map
-  /** 0-100 range, [start%, end%] of the track */
+  /** Selected segment in km, [startKm, endKm] */
   range: [number, number]
+  /** Total track distance in km (used to detect full-track selection) */
+  totalDistKm: number
   /** Zoom to fit the full track (only on initial load, not on range changes) */
   fitBounds?: boolean
   children?: ReactNode
 }
 
-export function SegmentOverlay({ points, mapInstance, range, fitBounds = false, children }: SegmentOverlayProps) {
+function findClosestIndex(points: Array<TrackPoint>, targetDistKm: number): number {
+  let dist = 0
+  for (let i = 1; i < points.length; i++) {
+    if (dist / 1000 >= targetDistKm) return i - 1
+    dist += calculateHaversineDistance(points[i - 1], points[i])
+  }
+  return points.length - 1
+}
+
+export function SegmentOverlay({
+  points,
+  mapInstance,
+  range,
+  totalDistKm,
+  fitBounds = false,
+  children,
+}: SegmentOverlayProps) {
   const layerRef = useRef<L.LayerGroup | null>(null)
+
+  // Compute segment indices from km range
+  const { startIdx, endIdx, isFull } = useMemo(() => {
+    const s = findClosestIndex(points, range[0])
+    const e = findClosestIndex(points, range[1])
+    const isFull = range[0] === 0 && range[1] >= totalDistKm
+    return { startIdx: s, endIdx: e, isFull: isFull }
+  }, [points, range, totalDistKm])
+
+  const selectedPoints = useMemo(() => {
+    return points.slice(startIdx, endIdx + 1)
+  }, [points, startIdx, endIdx])
 
   // ── Build and attach the overlay layer (stable ref via useCallback) ───────
   const buildLayer = useCallback(
@@ -55,7 +85,7 @@ export function SegmentOverlay({ points, mapInstance, range, fitBounds = false, 
       L.marker(selectedCoords[selectedCoords.length - 1], { icon: endIcon }).addTo(layer)
 
       // ── Fit bounds to full track only on initial load ────────────────────
-      if (fitBounds && range[0] === 0 && range[1] === 100) {
+      if (fitBounds && isFull) {
         requestAnimationFrame(() => {
           const c = mapInstance.getContainer()
           if (!c || !document.contains(c)) return
@@ -72,15 +102,11 @@ export function SegmentOverlay({ points, mapInstance, range, fitBounds = false, 
         layerRef.current = null
       }
     },
-    [points, mapInstance, fitBounds, range],
+    [points, mapInstance, fitBounds, isFull],
   )
 
   useEffect(() => {
-    const selected = points.slice(
-      Math.round((range[0] / 100) * (points.length - 1)),
-      Math.round((range[1] / 100) * (points.length - 1)) + 1,
-    )
-    if (selected.length < 2) {
+    if (selectedPoints.length < 2) {
       return
     }
 
@@ -93,7 +119,7 @@ export function SegmentOverlay({ points, mapInstance, range, fitBounds = false, 
         if (cancelled) return
         const c = mapInstance?.getContainer()
         if (c) {
-          buildLayer(c, selected)
+          buildLayer(c, selectedPoints)
         } else {
           requestAnimationFrame(poll)
         }
@@ -104,10 +130,8 @@ export function SegmentOverlay({ points, mapInstance, range, fitBounds = false, 
       }
     }
 
-    const dispose = buildLayer(container, selected)
-    return dispose
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [points, range, mapInstance, buildLayer])
+    return buildLayer(container, selectedPoints)
+  }, [points, selectedPoints, range, mapInstance, buildLayer])
 
   return <>{children}</>
 }

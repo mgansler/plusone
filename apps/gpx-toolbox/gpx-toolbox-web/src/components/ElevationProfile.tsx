@@ -5,17 +5,13 @@ import { calculateHaversineDistance } from '@plusone/gpx-toolbox-utils'
 
 type ElevationProfileProps = {
   points: Array<TrackPoint>
+  /** Selected segment in km (0 = start of track, total = end of track) */
   range: [number, number]
 }
 
 /** Simple polyline elevation profile — no Catmull-Rom, clean & fast */
 export function ElevationProfile({ points, range }: ElevationProfileProps) {
-  const {
-    profile,
-    minE,
-    maxE,
-    totalDist: _totalDist,
-  } = useMemo(() => {
+  const { profile, minE, maxE } = useMemo(() => {
     // Cumulative distances
     const dists: Array<number> = [0]
     for (let i = 1; i < points.length; i++) {
@@ -28,34 +24,25 @@ export function ElevationProfile({ points, range }: ElevationProfileProps) {
 
     return {
       profile: points.map((p, i) => ({
-        x: (i / (points.length - 1)) * 100,
+        x: (dists[i] / dists[dists.length - 1]) * 100,
         y: p.elevation,
         dist: dists[i] / 1000,
       })),
       minE,
       maxE,
-      totalDist: dists[dists.length - 1] / 1000,
     }
   }, [points])
 
-  const {
-    startIdx,
-    endIdx,
-    startEle,
-    endEle,
-    segMinE: _segMinE,
-    segMaxE: _segMaxE,
-  } = useMemo(() => {
-    const s = Math.round((range[0] / 100) * (points.length - 1))
-    const e = Math.round((range[1] / 100) * (points.length - 1))
+  // Convert km range to point indices
+  const { startIdx, endIdx, startEle, endEle } = useMemo(() => {
+    const s = findClosestIndex(points, range[0])
+    const e = findClosestIndex(points, range[1])
     const seg = points.slice(s, e + 1)
     return {
       startIdx: s,
       endIdx: e,
       startEle: seg[0].elevation,
       endEle: seg[seg.length - 1].elevation,
-      segMinE: Math.min(...seg.map((p) => p.elevation)),
-      segMaxE: Math.max(...seg.map((p) => p.elevation)),
     }
   }, [points, range])
 
@@ -116,6 +103,15 @@ export function ElevationProfile({ points, range }: ElevationProfileProps) {
       </div>
     </div>
   )
+}
+
+function findClosestIndex(points: Array<TrackPoint>, targetDistKm: number): number {
+  let dist = 0
+  for (let i = 1; i < points.length; i++) {
+    if (dist / 1000 >= targetDistKm) return i - 1
+    dist += calculateHaversineDistance(points[i - 1], points[i])
+  }
+  return points.length - 1
 }
 
 const styles = {

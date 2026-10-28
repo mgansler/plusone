@@ -1,4 +1,4 @@
-import { type RefObject, useEffect, useRef, useState } from 'react'
+import { type RefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import L from 'leaflet'
 
@@ -33,7 +33,8 @@ function RoutesPage() {
   const [sortBy, setSortBy] = useState('createdAt')
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null)
   const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
-  const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 100])
+  const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 0])
+  const segmentInitializedRef = useRef(false)
 
   const { data, isLoading, error, isError } = useListRoutes({
     page,
@@ -112,8 +113,25 @@ function RoutesPage() {
   function handleRouteClick(route: (typeof routes)[number]) {
     setSelectedRouteId(route.id)
     setSelectedPoint(null)
-    setSegmentRange([0, 100])
+    setSegmentRange([0, 0])
   }
+
+  // Total distance in km for the selected route
+  const totalDist = useMemo(() => {
+    if (points.length < 2) return 0
+    let dist = 0
+    for (let i = 1; i < points.length; i++) {
+      dist += calculateHaversineDistance(points[i - 1], points[i])
+    }
+    return dist / 1000
+  }, [points])
+
+  useEffect(() => {
+    if (totalDist > 0 && !segmentInitializedRef.current) {
+      segmentInitializedRef.current = true
+      setSegmentRange([0, totalDist])
+    }
+  }, [totalDist])
 
   function handlePointClick(point: TrackPoint, event: L.LeafletMouseEvent) {
     setSelectedPoint((prev) => {
@@ -250,7 +268,7 @@ function RoutesPage() {
       <div style={styles.mapArea}>
         {/* key forces fresh mount on navigation to ensure clean Leaflet lifecycle */}
         <Map key="routes-list" mapRef={mapRef}>
-          {points.length > 1 && segmentRange[1] - segmentRange[0] >= 1 && mapRef.current && (
+          {points.length > 1 && segmentRange[1] - segmentRange[0] >= 0.01 && mapRef.current && (
             <>
               {/* key forces fresh mount when route/points change */}
               <SegmentOverlay
@@ -258,11 +276,13 @@ function RoutesPage() {
                 points={points}
                 mapInstance={mapRef.current}
                 range={segmentRange}
-                fitBounds={segmentRange[0] === 0 && segmentRange[1] === 100}
+                totalDistKm={totalDist}
+                fitBounds={segmentRange[0] === 0 && segmentRange[1] >= totalDist}
               >
                 <TrackClickHandler
                   points={points}
                   range={segmentRange}
+                  totalDistKm={totalDist}
                   mapInstance={mapRef.current}
                   onPointClick={handlePointClick}
                 />
@@ -280,19 +300,30 @@ function RoutesPage() {
 function TrackClickHandler({
   points,
   range,
+  totalDistKm: _totalDistKm,
   mapInstance,
   onPointClick,
 }: {
   points: Array<TrackPoint>
   range: [number, number]
+  totalDistKm: number
   mapInstance: L.Map
   onPointClick: (point: TrackPoint, event: L.LeafletMouseEvent) => void
 }) {
   const layerRef = useRef<L.LayerGroup | null>(null)
 
-  const startIdx = Math.round((range[0] / 100) * (points.length - 1))
-  const endIdx = Math.round((range[1] / 100) * (points.length - 1))
+  const startIdx = findClosestIndex(points, range[0])
+  const endIdx = findClosestIndex(points, range[1])
   const visiblePoints = points.slice(startIdx, endIdx + 1)
+
+  function findClosestIndex(pts: Array<TrackPoint>, targetDistKm: number): number {
+    let dist = 0
+    for (let i = 1; i < pts.length; i++) {
+      if (dist / 1000 >= targetDistKm) return i - 1
+      dist += calculateHaversineDistance(pts[i - 1], pts[i])
+    }
+    return pts.length - 1
+  }
 
   useEffect(() => {
     if (visiblePoints.length < 2) return

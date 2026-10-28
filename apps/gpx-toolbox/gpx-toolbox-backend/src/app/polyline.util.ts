@@ -11,7 +11,7 @@
  * ("[object Object]" is not valid JSON), so this guards against every shape.
  */
 
-export interface PolylinePoint {
+export type PolylinePoint = {
   lat: number
   lng: number
 }

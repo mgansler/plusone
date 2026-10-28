@@ -1,28 +1,25 @@
 import { type ChangeEvent, type DragEvent, useState } from 'react'
 
 import {
-  type TrackPoint,
-  parseGpx,
   calculateAvgSpeed,
   calculateDuration,
   calculateElevationGain,
   calculateElevationLoss,
+  calculateHaversineDistance,
   calculateMaxSpeed,
   calculateTotalDistance,
   getTimeRange,
+  parseGpx,
   renderSvg,
+  type TrackPoint,
 } from '@plusone/gpx-toolbox-utils'
 
 import { formatDistance, formatDuration } from '../utils/format'
 
-import { RangeSlider } from './RangeSlider'
+import { DistanceRangeSlider } from './DistanceRangeSlider'
 import { SegmentStats } from './SegmentStats'
 import { ElevationProfile } from './ElevationProfile'
 import { StravaProfile } from './StravaProfile'
-
-const noop = () => {
-  /* noop */
-}
 
 type SidebarProps = {
   onFileLoad?: (points: Array<TrackPoint>, fileName: string) => void
@@ -32,16 +29,18 @@ type SidebarProps = {
   onSegmentRangeChange?: (range: [number, number]) => void
   onExportGpx?: (points: Array<TrackPoint>) => void
   onExportSvg?: (points: Array<TrackPoint>) => void
+  totalDist?: number
 }
 
 export function Sidebar({
   onFileLoad,
   points,
   fileName,
-  segmentRange = [0, 100],
+  segmentRange = [0, 0],
   onSegmentRangeChange,
   onExportGpx,
   onExportSvg,
+  totalDist,
 }: SidebarProps) {
   const [dragging, setDragging] = useState(false)
 
@@ -115,6 +114,7 @@ export function Sidebar({
               onRangeChange={onSegmentRangeChange}
               onExportGpx={onExportGpx}
               onExportSvg={onExportSvg}
+              totalDist={totalDist}
             />
           </>
         )}
@@ -259,6 +259,7 @@ type SegmentControlsProps = {
   onRangeChange: ((range: [number, number]) => void) | undefined
   onExportGpx?: (points: Array<TrackPoint>) => void
   onExportSvg?: (points: Array<TrackPoint>) => void
+  totalDist?: number
 }
 
 function SegmentControls({
@@ -271,9 +272,9 @@ function SegmentControls({
   const [exportingGpx, setExportingGpx] = useState(false)
   const [exportingSvg, setExportingSvg] = useState(false)
 
-  // Compute selected segment points
-  const startIdx = Math.round((range[0] / 100) * (points.length - 1))
-  const endIdx = Math.round((range[1] / 100) * (points.length - 1))
+  // Compute selected segment points by distance
+  const startIdx = findClosestIndex(points, range[0])
+  const endIdx = findClosestIndex(points, range[1])
   const segmentPoints = points.slice(startIdx, endIdx + 1)
 
   function handleExportGpx() {
@@ -318,7 +319,7 @@ function SegmentControls({
     <div style={styles.infoSection}>
       <h3 style={styles.infoTitle}>Segment</h3>
 
-      <RangeSlider value={range} onChange={onRangeChange ?? noop} />
+      <DistanceRangeSlider points={points} value={range} onChange={onRangeChange ?? (() => undefined)} />
       <SegmentStats points={segmentPoints} />
 
       <div style={styles.exportRow}>
@@ -347,6 +348,15 @@ function SegmentControls({
       </div>
     </div>
   )
+}
+
+function findClosestIndex(points: Array<TrackPoint>, targetDistKm: number): number {
+  let dist = 0
+  for (let i = 1; i < points.length; i++) {
+    if (dist / 1000 >= targetDistKm) return i - 1
+    dist += calculateHaversineDistance(points[i - 1], points[i])
+  }
+  return points.length - 1
 }
 
 function buildGpx(points: Array<TrackPoint>, _fileName: string): string {

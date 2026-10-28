@@ -132,10 +132,9 @@ function NearbySearch() {
     }, 50)
 
     return () => {
-      onMapClick && map.off('click', onMapClick)
+      if (onMapClick) map.off('click', onMapClick)
     }
     // Only (re)create the layers when the map is first available.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map])
 
   // Keep the marker + circle in sync with the current search center / radius.
