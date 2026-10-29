@@ -30,8 +30,8 @@ export enum CreateRouteDtoSource {
   manualImport = 'manualImport',
 }
 export interface CreateRouteDto {
-  /** Route name */
-  name: string
+  /** Route name (defaults to the GPX track name) */
+  name?: string
   /** Route description */
   description?: string
   /** Route source */
@@ -1663,6 +1663,40 @@ export const useAuthenticateWithRefreshToken = <TError = unknown, TContext = unk
   TContext
 > => {
   return useMutation(getAuthenticateWithRefreshTokenMutationOptions(options), queryClient)
+}
+
+export const importGpxActivity = (signal?: AbortSignal) => {
+  return customAxiosInstance<ImportResultDto>({ url: `/api/import/activity`, method: 'POST', signal })
+}
+
+export const getImportGpxActivityMutationKey = () => ['importGpxActivity'] as const
+
+export const getImportGpxActivityMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof importGpxActivity>>, TError, void, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof importGpxActivity>>, TError, void, TContext> => {
+  const mutationKey = getImportGpxActivityMutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof importGpxActivity>>, void> = () => {
+    return importGpxActivity()
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type ImportGpxActivityMutationResult = NonNullable<Awaited<ReturnType<typeof importGpxActivity>>>
+
+export type ImportGpxActivityMutationError = unknown
+
+export const useImportGpxActivity = <TError = unknown, TContext = unknown>(
+  options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof importGpxActivity>>, TError, void, TContext> },
+  queryClient?: QueryClient,
+): UseMutationResult<Awaited<ReturnType<typeof importGpxActivity>>, TError, void, TContext> => {
+  return useMutation(getImportGpxActivityMutationOptions(options), queryClient)
 }
 
 export const importStravaRoutes = (params?: ImportStravaRoutesParams, signal?: AbortSignal) => {

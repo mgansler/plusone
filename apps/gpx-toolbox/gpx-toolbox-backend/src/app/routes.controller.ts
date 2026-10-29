@@ -15,7 +15,9 @@ import {
   Res,
   UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
@@ -26,6 +28,7 @@ import { ListRoutesResponseDto, RouteResponseDto } from './dto/list-routes-respo
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { JwtPayload } from './jwt.strategy'
 import { AuthService } from './auth.service'
+import { readUploadedGpx, UploadedGpxFile } from './gpx-upload.util'
 
 @ApiTags('routes')
 @Controller('routes')
@@ -39,6 +42,7 @@ export class RoutesController {
   ) {}
 
   @Post()
+  @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ operationId: 'importGpx' })
   @ApiBearerAuth()
   async importGpx(
@@ -46,19 +50,7 @@ export class RoutesController {
     @UploadedFile() file: UploadedGpxFile | undefined,
     @Body() dto: CreateRouteDto,
   ) {
-    if (!file) {
-      throw new BadRequestException('No GPX file provided')
-    }
-
-    if (file.size > 50_000_000) {
-      throw new BadRequestException('File size exceeds 50 MB limit')
-    }
-
-    if (!file.originalname?.toLowerCase().endsWith('.gpx')) {
-      throw new BadRequestException('File must be a .gpx file')
-    }
-
-    const gpxContent = file.buffer.toString('utf-8')
+    const gpxContent = readUploadedGpx(file)
 
     try {
       return await this.routesService.importGpx(gpxContent, dto, req.user.sub)
@@ -182,6 +174,3 @@ function toEpochSeconds(value: string | undefined, name: string): number | undef
   }
   return Math.floor(time / 1000)
 }
-
-/** The parts of the multer upload the GPX import uses */
-type UploadedGpxFile = { buffer: Buffer; originalname?: string; size: number }

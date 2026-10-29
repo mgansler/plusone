@@ -120,6 +120,12 @@ export const RefreshStravaTokenResponse = zod.unknown()
 
 export const AuthenticateWithRefreshTokenResponse = zod.unknown()
 
+export const ImportGpxActivityResponse = zod.strictObject({
+  imported: zod.number().describe('Number of routes/activities imported'),
+  matched: zod.number().describe('Number matched to existing routes'),
+  newRoutes: zod.number().describe('Number of new routes created'),
+})
+
 export const ImportStravaRoutesResponse = zod.strictObject({
   imported: zod.number().describe('Number of routes/activities imported'),
   matched: zod.number().describe('Number matched to existing routes'),

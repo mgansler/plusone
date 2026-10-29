@@ -1,4 +1,17 @@
-import { Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { Request } from 'express'
 
@@ -8,6 +21,7 @@ import { JwtAuthGuard } from './jwt-auth.guard'
 import { JwtPayload } from './jwt.strategy'
 import { StravaService } from './strava.service'
 import { AuthService } from './auth.service'
+import { readUploadedGpx, UploadedGpxFile } from './gpx-upload.util'
 
 @ApiTags('import')
 @Controller('import')
@@ -22,6 +36,25 @@ export class ImportController {
   private async getStravaToken(req: Request & { user: JwtPayload }): Promise<string> {
     // Guarantees a valid token: refreshes transparently if the stored one is expired.
     return this.authService.getValidAccessToken(req.user.sub)
+  }
+
+  @Post('activity')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ operationId: 'importGpxActivity' })
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'Import results', type: ImportResultDto })
+  async importGpxActivity(
+    @Req() req: Request & { user: JwtPayload },
+    @UploadedFile() file: UploadedGpxFile | undefined,
+    @Body('title') title?: string,
+  ) {
+    const gpxContent = readUploadedGpx(file)
+
+    try {
+      return await this.importService.importGpxActivity(gpxContent, req.user.sub, title)
+    } catch (error) {
+      throw new BadRequestException(error.message)
+    }
   }
 
   @Post('strava/routes')

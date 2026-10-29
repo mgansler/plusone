@@ -16,11 +16,10 @@ describe('CreateRouteDto', () => {
     expect(errors.length).toBe(0)
   })
 
-  it('rejects missing name', async () => {
+  it('accepts missing name', async () => {
     const dto = plainToInstance(CreateRouteDto, {})
     const errors = await validate(dto)
-    expect(errors.length).toBeGreaterThan(0)
-    expect(errors.some((e) => e.property === 'name')).toBe(true)
+    expect(errors.length).toBe(0)
   })
 
   it('rejects empty name', async () => {

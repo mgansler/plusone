@@ -7,6 +7,7 @@ import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
 import { parsePolyline } from './polyline.util'
 import { routeFilterColumns } from './route-filter-columns.util'
 import { StravaService } from './strava.service'
+import { extractGpxName } from './gpx-upload.util'
 
 /**
  * Internal route type with fahrten relation, used after querying.
@@ -87,7 +88,7 @@ export class RoutesService {
     const elevationLoss = this.calculateElevationLoss(points)
 
     // Use GPX filename as default if no name provided
-    const name = dto.name || this.extractNameFromGpx(gpxContent)
+    const name = dto.name || extractGpxName(gpxContent) || 'Unbenannte Route'
 
     const stats = {
       distance: overview.totalDistance,
@@ -530,17 +531,6 @@ export class RoutesService {
       if (diff > 0) loss += diff
     }
     return Math.round(loss)
-  }
-
-  private extractNameFromGpx(gpxContent: string): string {
-    const nameMatch = gpxContent.match(/<trk\s[^>]*>([\s\S]*?)<\/trk>/)
-    if (nameMatch) {
-      const nameMatch2 = nameMatch[0].match(/<name[^>]*>([^<]+)<\/name>/)
-      if (nameMatch2 && nameMatch2[1].trim()) {
-        return nameMatch2[1].trim()
-      }
-    }
-    return 'Unbenannte Route'
   }
 
   private calculateHaversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {

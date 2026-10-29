@@ -380,6 +380,80 @@ describe('ImportService', () => {
     })
   })
 
+  describe('importGpxActivity', () => {
+    const activityGpx = `<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1">
+  <trk><name>Feierabendrunde</name><trkseg>
+    <trkpt lat="48.0" lon="11.0"><ele>100</ele><time>2024-01-01T10:00:00Z</time>
+      <extensions><gpxtpx:TrackPointExtension><gpxtpx:hr>140</gpxtpx:hr></gpxtpx:TrackPointExtension></extensions>
+    </trkpt>
+    <trkpt lat="48.001" lon="11.001"><ele>110</ele><time>2024-01-01T10:10:00Z</time>
+      <extensions><gpxtpx:TrackPointExtension><gpxtpx:hr>170</gpxtpx:hr></gpxtpx:TrackPointExtension></extensions>
+    </trkpt>
+  </trkseg></trk>
+</gpx>`
+
+    async function createService() {
+      const module: TestingModule = await Test.createTestingModule({
+        providers: [
+          ImportService,
+          {
+            provide: PrismaService,
+            useValue: {
+              route: {
+                findMany: vi.fn().mockResolvedValue([]), // No matches → a new route is created
+                create: vi.fn().mockResolvedValue({ id: '1', name: 'Feierabendrunde' }),
+              },
+              fahrt: {
+                create: vi.fn().mockResolvedValue({ id: 'f1', routeId: '1' }),
+              },
+            },
+          },
+          { provide: StravaService, useValue: {} },
+        ],
+      }).compile()
+
+      return module.get<ImportService>(ImportService)
+    }
+
+    it('creates a route and a Fahrt with data derived from the track points', async () => {
+      service = await createService()
+
+      const result = await service.importGpxActivity(activityGpx, 'user-1')
+
+      expect(result).toEqual({ imported: 1, matched: 0, newRoutes: 1 })
+      expect(service['prisma'].route.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({ name: 'Feierabendrunde', source: 'manualImport', status: 'ridden' }),
+      })
+      expect(service['prisma'].fahrt.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({
+          title: 'Feierabendrunde',
+          riddenAt: new Date('2024-01-01T10:00:00Z'),
+          duration: 600,
+          maxHr: 170,
+        }),
+      })
+    })
+
+    it('prefers the given title over the GPX track name', async () => {
+      service = await createService()
+
+      await service.importGpxActivity(activityGpx, 'user-1', 'Mit Umweg')
+
+      expect(service['prisma'].fahrt.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({ title: 'Mit Umweg' }),
+      })
+    })
+
+    it('rejects a GPX file without track points', async () => {
+      service = await createService()
+
+      await expect(service.importGpxActivity('<gpx><trk><trkseg></trkseg></trk></gpx>', 'user-1')).rejects.toThrow(
+        'No track points found in GPX file',
+      )
+    })
+  })
+
   describe('importStravaActivity', () => {
     it('creates a new route from activity GPX', async () => {
       const streamPoints = [

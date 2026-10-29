@@ -3,11 +3,18 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import L from 'leaflet'
 
 import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
-import { ListAllFahrtenSortBy, useListAllFahrten } from '@plusone/gpx-toolbox-api-client'
+import {
+  getListAllFahrtenQueryKey,
+  getListRoutesQueryKey,
+  ListAllFahrtenSortBy,
+  useListAllFahrten,
+} from '@plusone/gpx-toolbox-api-client'
 
 import { Map } from '../../components/Map'
 import { SegmentOverlay } from '../../components/SegmentOverlay'
 import { PointDetails } from '../../components/PointDetails'
+import { UploadGpxModal } from '../../components/UploadGpxModal'
+import { actionButtonStyle } from '../../components/actionButtonStyle'
 
 export const Route = createFileRoute('/fahrten/')({
   component: FahrtenPage,
@@ -23,6 +30,7 @@ function FahrtenPage() {
   const [sortBy, setSortBy] = useState<ListAllFahrtenSortBy>(ListAllFahrtenSortBy.riddenAt)
   const [order, setOrder] = useState<'ASC' | 'DESC'>('DESC')
   const [selectedFahrtId, setSelectedFahrtId] = useState<string | null>(null)
+  const [showUploadModal, setShowUploadModal] = useState(false)
   const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
 
   // Number inputs fire on every keystroke; wait until typing pauses before querying
@@ -223,9 +231,14 @@ function FahrtenPage() {
         <div style={styles.sidebar}>
           <div style={styles.headingRow}>
             <h2 style={styles.heading}>Fahrten ({total})</h2>
-            <Link to="/fahrten/sync" style={styles.syncButton}>
-              📥 Sync
-            </Link>
+            <div style={styles.headingActions}>
+              <button onClick={() => setShowUploadModal(true)} style={actionButtonStyle}>
+                📤 Upload
+              </button>
+              <Link to="/fahrten/sync" style={actionButtonStyle}>
+                📥 Sync
+              </Link>
+            </div>
           </div>
 
           {/* Summary */}
@@ -340,6 +353,18 @@ function FahrtenPage() {
         </div>
         {selectedPoint && <PointDetails point={selectedPoint.point} />}
       </div>
+
+      {showUploadModal && (
+        <UploadGpxModal
+          heading="Aktivität hochladen"
+          endpoint="/api/import/activity"
+          nameField="title"
+          namePlaceholder="Titel (optional, sonst aus GPX)"
+          nameRequired={false}
+          invalidateQueryKeys={[getListAllFahrtenQueryKey(), getListRoutesQueryKey()]}
+          onClose={() => setShowUploadModal(false)}
+        />
+      )}
     </div>
   )
 }
@@ -604,17 +629,10 @@ const styles = {
     alignItems: 'center',
     marginBottom: 12,
   } as const,
-  syncButton: {
-    padding: '6px 14px',
-    fontSize: 13,
-    fontWeight: 500,
-    backgroundColor: '#fff',
-    color: '#3b82f6',
-    border: '1px solid #3b82f6',
-    borderRadius: 6,
-    cursor: 'pointer',
-    textDecoration: 'none',
-    display: 'inline-block',
+  headingActions: {
+    display: 'flex',
+    gap: 8,
+    alignItems: 'center',
   } as const,
   summary: {
     display: 'flex',

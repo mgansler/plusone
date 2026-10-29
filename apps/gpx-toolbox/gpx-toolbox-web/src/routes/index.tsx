@@ -3,11 +3,13 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import L from 'leaflet'
 
 import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
-import { useListRoutes } from '@plusone/gpx-toolbox-api-client'
+import { getListRoutesQueryKey, useListRoutes } from '@plusone/gpx-toolbox-api-client'
 
 import { Map } from '../components/Map'
 import { SegmentOverlay } from '../components/SegmentOverlay'
 import { PointDetails } from '../components/PointDetails'
+import { UploadGpxModal } from '../components/UploadGpxModal'
+import { actionButtonStyle } from '../components/actionButtonStyle'
 
 const sourceLabels: Record<string, string> = {
   stravaRoute: 'Strava Route',
@@ -36,6 +38,7 @@ function RoutesPage() {
   const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
   const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 0])
   const segmentInitializedRef = useRef(false)
+  const [showUploadModal, setShowUploadModal] = useState(false)
 
   const { data, isLoading, error, isError } = useListRoutes({
     page,
@@ -153,9 +156,14 @@ function RoutesPage() {
       <div style={styles.sidebar}>
         <div style={styles.headingRow}>
           <h2 style={styles.heading}>Routen ({total})</h2>
-          <Link to="/routes/sync" style={styles.syncButton}>
-            📥 Sync
-          </Link>
+          <div style={styles.headingActions}>
+            <button onClick={() => setShowUploadModal(true)} style={actionButtonStyle}>
+              📤 Upload
+            </button>
+            <Link to="/routes/sync" style={actionButtonStyle}>
+              📥 Sync
+            </Link>
+          </div>
         </div>
 
         {/* Summary */}
@@ -293,6 +301,18 @@ function RoutesPage() {
         </Map>
       </div>
       {selectedPoint && <PointDetails point={selectedPoint.point} />}
+      {showUploadModal && (
+        <UploadGpxModal
+          heading="Route hochladen"
+          endpoint="/api/routes"
+          nameField="name"
+          namePlaceholder="Name (optional, sonst aus GPX)"
+          nameRequired={false}
+          extraFields={{ source: 'manualImport' }}
+          invalidateQueryKeys={[getListRoutesQueryKey()]}
+          onClose={() => setShowUploadModal(false)}
+        />
+      )}
     </div>
   )
 }
@@ -418,22 +438,15 @@ const styles = {
     alignItems: 'center',
     marginBottom: 12,
   } as const,
+  headingActions: {
+    display: 'flex',
+    gap: 8,
+    alignItems: 'center',
+  } as const,
   heading: {
     margin: '0 0 12px',
     fontSize: 20,
     fontWeight: 600,
-  } as const,
-  syncButton: {
-    padding: '6px 14px',
-    fontSize: 13,
-    fontWeight: 500,
-    backgroundColor: '#fff',
-    color: '#3b82f6',
-    border: '1px solid #3b82f6',
-    borderRadius: 6,
-    cursor: 'pointer',
-    textDecoration: 'none',
-    display: 'inline-block',
   } as const,
   summary: {
     display: 'flex',

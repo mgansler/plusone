@@ -16,6 +16,7 @@ import {
 import { parsePolyline } from './polyline.util'
 import { routeFilterColumns } from './route-filter-columns.util'
 import { StravaService } from './strava.service'
+import { extractGpxName } from './gpx-upload.util'
 
 /** Routes with a Modified Hausdorff Distance below this value are considered a match. */
 const MATCH_THRESHOLD_METER = 200
@@ -23,6 +24,18 @@ const MATCH_THRESHOLD_METER = 200
 const MATCH_DISTANCE_TOLERANCE = 0.2
 /** Sample spacing for the cheap first comparison pass. */
 const COARSE_SAMPLE_SPACING_METER = 200
+
+/** Activity data shared by all import sources (Strava, GPX upload) */
+type ActivityData = {
+  name: string
+  source: 'stravaActivity' | 'manualImport'
+  stravaActivityId?: string
+  riddenAt: Date
+  duration: number | null
+  avgHr: number | null
+  maxHr: number | null
+  autoMatch: boolean
+}
 
 @Injectable()
 export class ImportService {
@@ -281,85 +294,128 @@ export class ImportService {
       }))
 
       // Serialize the track points to a valid GPX 1.1 XML string for the gpxContent column.
-      const gpxContent = serializeGpx(points, activityDetail.name ?? 'Imported Activity')
+      const name = activityDetail.name ?? 'Imported Activity'
+      const gpxContent = serializeGpx(points, name)
 
-      // Compute stats from stream points
-      const overview = analyzePoints(points)
-      const polyline = points.map((p) => ({ lat: p.latitude, lng: p.longitude }))
-      const elevationLoss = calculateElevationLoss(points)
-      const stats = {
-        distance: overview.totalDistance,
-        elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
-        elevationLoss,
-      }
-
-      let routeId: string | undefined
-      let matched = 0
-      let newRoutes = 0
-
-      // Auto-match
-      if (autoMatch) {
-        const match = await this.findBestMatch(points, userId, stats.distance)
-        if (match) {
-          // Link activity to existing route and mark it as ridden
-          await this.prisma.route.update({
-            where: { id: match.routeId },
-            data: { stravaActivityId: String(activityId), status: RouteStatus.ridden },
-          })
-          this.logger.log(`Auto-matched activity ${activityId} to route "${match.routeName}"`)
-          routeId = match.routeId
-          matched = 1
-        }
-      }
-
-      // Create new route if no match
-      if (!routeId) {
-        const route = await this.prisma.route.create({
-          data: {
-            name: activityDetail.name ?? 'Imported Activity',
-            description: activityDetail.distance ? `${(activityDetail.distance / 1000).toFixed(1)} km` : undefined,
-            gpxContent,
-            polyline: { points: JSON.stringify(polyline) },
-            ...routeFilterColumns(polyline, stats),
-            stats,
-            source: 'stravaActivity',
-            userId,
-            status: RouteStatus.ridden,
-            stravaActivityId: String(activityId),
-            ratingTags: [],
-          },
-        })
-        routeId = route.id
-        newRoutes = 1
-        this.logger.log(`Created new route from Strava activity ${activityId}`)
-      }
-
-      // Create a Fahrt from the activity data
-      const riddenAt = activityDetail.start_date_local ? new Date(activityDetail.start_date_local) : new Date()
-      const duration = activityDetail.moving_time ?? activityDetail.elapsed_time ?? null
       // Strava reports heart rate as floats; the Fahrt columns are integers
-      const avgHr = activityDetail.average_heartrate != null ? Math.round(activityDetail.average_heartrate) : null
-      const maxHr = activityDetail.max_heartrate != null ? Math.round(activityDetail.max_heartrate) : null
-
-      await this.prisma.fahrt.create({
-        data: {
-          routeId,
-          userId,
-          stravaActivityId: String(activityId),
-          title: activityDetail.name ?? null,
-          riddenAt,
-          duration,
-          avgHr,
-          maxHr,
-        },
+      const result = await this.importActivity(points, gpxContent, userId, {
+        name,
+        source: 'stravaActivity',
+        stravaActivityId: String(activityId),
+        riddenAt: activityDetail.start_date_local ? new Date(activityDetail.start_date_local) : new Date(),
+        duration: activityDetail.moving_time ?? activityDetail.elapsed_time ?? null,
+        avgHr: activityDetail.average_heartrate != null ? Math.round(activityDetail.average_heartrate) : null,
+        maxHr: activityDetail.max_heartrate != null ? Math.round(activityDetail.max_heartrate) : null,
+        autoMatch,
       })
       this.logger.log(`Created Fahrt from Strava activity ${activityId}`)
 
-      return { imported: 1, matched, newRoutes }
+      return result
     } catch (error) {
       this.logger.error(`Failed to import Strava activity ${activityId}: ${error.message}`)
       throw error
     }
+  }
+
+  /**
+   * Import a recorded activity from an uploaded GPX file.
+   * Duration and heart rate are derived from the track points.
+   */
+  async importGpxActivity(gpxContent: string, userId: string, title?: string) {
+    const points = parseGpx(gpxContent)
+    if (points.length === 0) {
+      throw new Error('No track points found in GPX file')
+    }
+
+    const startTime = points[0].time
+    const heartRates = points.map((p) => Number(p.hr)).filter((hr) => Number.isFinite(hr) && hr > 0)
+    const overview = analyzePoints(points)
+    const name = title?.trim() || extractGpxName(gpxContent) || 'Imported Activity'
+
+    const result = await this.importActivity(points, gpxContent, userId, {
+      name,
+      source: 'manualImport',
+      riddenAt: startTime && !isNaN(startTime.getTime()) ? startTime : new Date(),
+      duration: overview.totalDuration > 0 ? Math.round(overview.totalDuration) : null,
+      avgHr: heartRates.length > 0 ? overview.overallAvgHeartRate : null,
+      maxHr: heartRates.length > 0 ? Math.max(...heartRates) : null,
+      autoMatch: true,
+    })
+    this.logger.log(`Created Fahrt "${name}" from uploaded GPX`)
+    return result
+  }
+
+  /**
+   * Shared by all activity imports: links the track to a matching route (or creates a new one)
+   * and creates a Fahrt with the activity data.
+   */
+  private async importActivity(points: Array<TrackPoint>, gpxContent: string, userId: string, activity: ActivityData) {
+    // Compute stats from track points
+    const overview = analyzePoints(points)
+    const polyline = points.map((p) => ({ lat: p.latitude, lng: p.longitude }))
+    const elevationLoss = calculateElevationLoss(points)
+    const stats = {
+      distance: overview.totalDistance,
+      elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
+      elevationLoss,
+    }
+
+    let routeId: string | undefined
+    let matched = 0
+    let newRoutes = 0
+
+    // Auto-match
+    if (activity.autoMatch) {
+      const match = await this.findBestMatch(points, userId, stats.distance)
+      if (match) {
+        // Link activity to existing route and mark it as ridden
+        await this.prisma.route.update({
+          where: { id: match.routeId },
+          data: { stravaActivityId: activity.stravaActivityId, status: RouteStatus.ridden },
+        })
+        this.logger.log(`Auto-matched activity "${activity.name}" to route "${match.routeName}"`)
+        routeId = match.routeId
+        matched = 1
+      }
+    }
+
+    // Create new route if no match
+    if (!routeId) {
+      const route = await this.prisma.route.create({
+        data: {
+          name: activity.name,
+          description: `${(stats.distance / 1000).toFixed(1)} km`,
+          gpxContent,
+          polyline: { points: JSON.stringify(polyline) },
+          ...routeFilterColumns(polyline, stats),
+          stats,
+          source: activity.source,
+          userId,
+          status: RouteStatus.ridden,
+          stravaActivityId: activity.stravaActivityId,
+          ratingTags: [],
+        },
+      })
+      routeId = route.id
+      newRoutes = 1
+      this.logger.log(`Created new route from activity "${activity.name}"`)
+    }
+
+    // Create a Fahrt from the activity data
+    await this.prisma.fahrt.create({
+      data: {
+        routeId,
+        userId,
+        stravaActivityId: activity.stravaActivityId,
+        title: activity.name,
+        riddenAt: activity.riddenAt,
+        duration: activity.duration,
+        avgHr: activity.avgHr,
+        maxHr: activity.maxHr,
+      },
+    })
+
+    return { imported: 1, matched, newRoutes }
   }
 
   /**

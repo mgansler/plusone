@@ -752,6 +752,33 @@
         ]
       }
     },
+    "/api/import/activity": {
+      "post": {
+        "operationId": "importGpxActivity",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Import results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResultDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "import"
+        ]
+      }
+    },
     "/api/import/strava/routes": {
       "post": {
         "operationId": "importStravaRoutes",
@@ -1588,7 +1615,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Route name"
+            "description": "Route name (defaults to the GPX track name)"
           },
           "description": {
             "type": "string",
@@ -1603,10 +1630,7 @@
               "manualImport"
             ]
           }
-        },
-        "required": [
-          "name"
-        ]
+        }
       },
       "ListRoutesResponseDto": {
         "type": "object",

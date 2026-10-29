@@ -3,7 +3,6 @@ import {
   IsArray,
   IsEnum,
   IsInt,
-  IsNotEmpty,
   IsOptional,
   IsPositive,
   IsString,
@@ -15,11 +14,11 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 
 export class CreateRouteDto {
-  @ApiProperty({ description: 'Route name' })
+  @ApiPropertyOptional({ description: 'Route name (defaults to the GPX track name)' })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   @MinLength(1)
-  name: string
+  name?: string
 
   @ApiPropertyOptional({ description: 'Route description' })
   @IsOptional()
