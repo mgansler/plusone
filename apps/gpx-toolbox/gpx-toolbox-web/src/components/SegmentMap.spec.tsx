@@ -54,7 +54,14 @@ vi.mock('leaflet', () => {
     }
     return api
   }
-  return { default: { polyline } }
+  const divIcon = (_opts: Record<string, unknown>) => ({ id: 'div-icon' })
+  const marker = (_latLng: [number, number], opts: { icon?: unknown }) => ({
+    setLatLng: vi.fn(),
+    setIcon: vi.fn(),
+    setOpacity: vi.fn(),
+    ...opts,
+  })
+  return { default: { polyline, divIcon, marker } }
 })
 
 // ── Fixture ──────────────────────────────────────────────────────────────────

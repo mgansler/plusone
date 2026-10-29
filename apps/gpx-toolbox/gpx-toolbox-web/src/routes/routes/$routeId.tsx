@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 
-import { parseGpx } from '@plusone/gpx-toolbox-utils'
+import { parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 import {
   getGetRouteQueryKey,
   getListFahrtenQueryKey,
@@ -79,6 +79,7 @@ function RouteDetailPage() {
 
   const points = useMemo(() => (gpxText ? parseGpx(gpxText) : []), [gpxText])
   const { totalDistKm, segmentRange, setSegmentRange } = useSegmentRange(points)
+  const [hoveredPoint, setHoveredPoint] = useState<TrackPoint | null>(null)
 
   const createFahrtMutation = useCreateFahrt({
     mutation: {
@@ -204,7 +205,13 @@ function RouteDetailPage() {
         {points.length >= 2 && (
           <>
             <SidebarDivider />
-            <TrackAnalysis points={points} range={segmentRange} onRangeChange={setSegmentRange} name={route.name} />
+            <TrackAnalysis
+              points={points}
+              range={segmentRange}
+              onRangeChange={setSegmentRange}
+              name={route.name}
+              onPointHover={setHoveredPoint}
+            />
           </>
         )}
 
@@ -335,7 +342,7 @@ function RouteDetailPage() {
         </div>
       </SidebarLayout>
 
-      <SegmentMap points={points} range={segmentRange} totalDistKm={totalDistKm} />
+      <SegmentMap points={points} range={segmentRange} totalDistKm={totalDistKm} hoveredPoint={hoveredPoint} />
     </div>
   )
 }

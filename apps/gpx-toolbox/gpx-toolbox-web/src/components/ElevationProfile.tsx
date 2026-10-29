@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useCallback, useState } from 'react'
 
 import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
 import { calculateHaversineDistance } from '@plusone/gpx-toolbox-utils'
@@ -7,11 +7,13 @@ type ElevationProfileProps = {
   points: Array<TrackPoint>
   /** Selected segment in km (0 = start of track, total = end of track) */
   range: [number, number]
+  /** Called with the nearest track point on hover, or null on leave */
+  onPointHover?: (point: TrackPoint | null) => void
 }
 
 /** Simple polyline elevation profile — no Catmull-Rom, clean & fast */
-export function ElevationProfile({ points, range }: ElevationProfileProps) {
-  const { profile, minE, maxE } = useMemo(() => {
+export function ElevationProfile({ points, range, onPointHover }: ElevationProfileProps) {
+  const { profile, minE, maxE, dists } = useMemo(() => {
     // Cumulative distances
     const dists: Array<number> = [0]
     for (let i = 1; i < points.length; i++) {
@@ -30,6 +32,7 @@ export function ElevationProfile({ points, range }: ElevationProfileProps) {
       })),
       minE,
       maxE,
+      dists,
     }
   }, [points])
 
@@ -63,9 +66,44 @@ export function ElevationProfile({ points, range }: ElevationProfileProps) {
     .map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)},${toY(p.y).toFixed(1)}`)
     .join(' ')
 
+  // ── Hover interaction ──────────────────────────────────────────────────────
+  const totalDist = dists[dists.length - 1]
+  const svgPad = pad
+  const svgW = w - 2 * pad
+
+  const [hoverX, setHoverX] = useState<number | null>(null)
+  const [hoverY, setHoverY] = useState<number | null>(null)
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<SVGSVGElement>) => {
+      if (!onPointHover || totalDist === 0) return
+      const rect = e.currentTarget.getBoundingClientRect()
+      const svgX = ((e.clientX - rect.left) / rect.width) * 100
+      setHoverX(svgX)
+      const distKm = ((svgX - svgPad) / svgW) * (totalDist / 1000)
+      const nearest = findClosestIndex(points, distKm)
+      const pt = points[nearest]
+      setHoverY(toY(pt.elevation))
+      onPointHover(pt)
+    },
+    [onPointHover, totalDist, points, svgPad, svgW, toY],
+  )
+
+  const handleMouseLeave = useCallback(() => {
+    setHoverX(null)
+    setHoverY(null)
+    onPointHover(null)
+  }, [onPointHover])
+
   return (
     <div style={styles.container}>
-      <svg viewBox={`0 0 ${w} ${h}`} style={styles.svg} preserveAspectRatio="none">
+      <svg
+        viewBox={`0 0 ${w} ${h}`}
+        style={{ ...styles.svg, cursor: 'crosshair' }}
+        preserveAspectRatio="none"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
         {/* Background */}
         <rect x={pad} y={pad} width={w - 2 * pad} height={h - 2 * pad} fill="rgba(255,255,255,0.04)" rx="1" />
 
@@ -91,6 +129,14 @@ export function ElevationProfile({ points, range }: ElevationProfileProps) {
 
         {/* End marker */}
         <circle cx={profile[endIdx].x.toFixed(1)} cy={toY(endEle).toFixed(1)} r="1.5" fill="#f87171" />
+
+        {/* Hover crosshair */}
+        {hoverX != null && hoverY != null && (
+          <>
+            <line x1={hoverX} y1={0} x2={hoverX} y2={h} stroke="rgba(148,163,184,0.4)" strokeWidth="0.4" />
+            <circle cx={hoverX} cy={hoverY} r="2" fill="#60a5fa" stroke="#1e3a8a" strokeWidth="0.8" />
+          </>
+        )}
       </svg>
 
       {/* Labels */}

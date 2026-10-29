@@ -26,12 +26,14 @@ type TrackAnalysisProps = {
   onRangeChange: (range: [number, number]) => void
   /** Used for the track name and export file names */
   name?: string
+  /** Called with the nearest track point on elevation profile hover */
+  onPointHover?: (point: TrackPoint | null) => void
 }
 
 /**
  * "Gesamt" and "Segment" sidebar sections: overall stats, elevation profile, segment slider and GPX/SVG export.
  */
-export function TrackAnalysis({ points, range, onRangeChange, name }: TrackAnalysisProps) {
+export function TrackAnalysis({ points, range, onRangeChange, name, onPointHover }: TrackAnalysisProps) {
   const overview = useMemo(() => {
     const analysis = analyzePoints(points)
     return {
@@ -71,7 +73,7 @@ export function TrackAnalysis({ points, range, onRangeChange, name }: TrackAnaly
             </>
           )}
         </div>
-        <ElevationProfile points={points} range={range} />
+        <ElevationProfile points={points} range={range} onPointHover={onPointHover} />
         <ExportButtons points={points} name={name} fileName={baseName} />
       </div>
 

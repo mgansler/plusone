@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import L from 'leaflet'
 
 import { calculateHaversineDistance, type TrackPoint } from '@plusone/gpx-toolbox-utils'
@@ -15,19 +15,44 @@ type SegmentMapProps = {
   range: [number, number]
   /** Total track distance in km */
   totalDistKm: number
+  /** Point hovered in the elevation profile — shown as a marker on the map */
+  hoveredPoint?: TrackPoint | null
 }
 
 /**
  * Map showing the full track greyed out with the selected segment highlighted.
  * Clicking the segment shows details for the nearest track point.
  */
-export function SegmentMap({ points, range, totalDistKm }: SegmentMapProps) {
+export function SegmentMap({ points, range, totalDistKm, hoveredPoint }: SegmentMapProps) {
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
   const [selectedPoint, setSelectedPoint] = useState<TrackPoint | null>(null)
+  const hoverMarkerRef = useRef<L.Marker | null>(null)
 
   useEffect(() => {
     setSelectedPoint(null)
   }, [points])
+
+  // Update or create the hover marker on the map
+  useEffect(() => {
+    if (!mapInstance) return
+    const icon = L.divIcon({
+      className: 'hover-marker',
+      html: '<div style="width:12px;height:12px;background:#60a5fa;border:2px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(96,165,250,0.7)"></div>',
+      iconSize: [12, 12],
+      iconAnchor: [6, 6],
+    })
+    if (hoveredPoint) {
+      if (hoverMarkerRef.current) {
+        hoverMarkerRef.current.setLatLng([hoveredPoint.latitude, hoveredPoint.longitude])
+        hoverMarkerRef.current.setIcon(icon)
+        hoverMarkerRef.current.setOpacity(1)
+      } else {
+        hoverMarkerRef.current = L.marker([hoveredPoint.latitude, hoveredPoint.longitude], { icon }).addTo(mapInstance)
+      }
+    } else if (hoverMarkerRef.current) {
+      hoverMarkerRef.current.setOpacity(0)
+    }
+  }, [mapInstance, hoveredPoint])
 
   const handlePointClick = useCallback((point: TrackPoint) => {
     setSelectedPoint((prev) => (prev === point ? null : point))

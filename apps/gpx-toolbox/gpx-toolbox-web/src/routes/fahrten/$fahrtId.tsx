@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { createFileRoute, Link, redirect, useNavigate } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 
-import { calculateAvgSpeed, calculateTotalDistance, parseGpx } from '@plusone/gpx-toolbox-utils'
+import { calculateAvgSpeed, calculateTotalDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 import {
   getGetFahrt2QueryKey,
   getListAllFahrtenQueryKey,
@@ -85,6 +85,7 @@ function FahrtDetailPage() {
 
   const points = useMemo(() => (gpxText ? parseGpx(gpxText) : []), [gpxText])
   const { totalDistKm, segmentRange, setSegmentRange } = useSegmentRange(points)
+  const [hoveredPoint, setHoveredPoint] = useState<TrackPoint | null>(null)
 
   async function handleDeleteFahrt() {
     if (!confirm('Fahrt wirklich löschen?')) return
@@ -175,6 +176,7 @@ function FahrtDetailPage() {
               range={segmentRange}
               onRangeChange={setSegmentRange}
               name={fahrt.title ?? parentRoute?.name}
+              onPointHover={setHoveredPoint}
             />
           </>
         )}
@@ -186,7 +188,7 @@ function FahrtDetailPage() {
         </button>
       </SidebarLayout>
 
-      <SegmentMap points={points} range={segmentRange} totalDistKm={totalDistKm} />
+      <SegmentMap points={points} range={segmentRange} totalDistKm={totalDistKm} hoveredPoint={hoveredPoint} />
     </div>
   )
 }
