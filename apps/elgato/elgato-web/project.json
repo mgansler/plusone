@@ -5,75 +5,36 @@
   "projectType": "application",
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
+    "serve": {
+      "defaultConfiguration": "development",
       "options": {
-        "outputPath": "dist/apps/elgato/elgato-web"
+        "host": "0.0.0.0",
+        "port": 4101
       },
       "configurations": {
-        "development": {
-          "mode": "development"
-        },
+        "development": {},
         "production": {
           "mode": "production"
         }
       }
     },
-    "serve": {
-      "executor": "@nx/vite:dev-server",
-      "defaultConfiguration": "development",
-      "options": {
-        "host": "0.0.0.0",
-        "port": 4101,
-        "buildTarget": "elgato-web:build",
-        "proxyConfig": "apps/elgato/elgato-web/proxy.conf.json"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "elgato-web:build:development",
-          "hmr": true
-        },
-        "production": {
-          "buildTarget": "elgato-web:build:production",
-          "hmr": false
-        }
-      }
-    },
-    "preview": {
-      "executor": "@nx/vite:preview-server",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "elgato-web:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "elgato-web:build:development"
-        },
-        "production": {
-          "buildTarget": "elgato-web:build:production"
-        }
-      }
-    },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": ["{workspaceRoot}/coverage/apps/elgato/elgato-web"],
       "options": {
         "coverage": true,
-        "reportsDirectory": "{projectRoot}/../../../coverage/apps/elgato/elgato-web"
+        "coverage.reportsDirectory": "../../../coverage/apps/elgato/elgato-web"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        }
       }
     },
     "component-test": {
-      "executor": "@nx/cypress:cypress",
-      "options": {
-        "cypressConfig": "apps/elgato/elgato-web/cypress.config.ts",
-        "testingType": "component",
-        "skipServe": true
-      },
       "configurations": {
         "watch": {
-          "watch": true
+          "headed": true,
+          "no-exit": true
         }
       }
     },
@@ -97,7 +58,19 @@
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "elgato-web:build"
+        "buildTarget": "elgato-web:build",
+        "port": 4101
+      },
+      "readyWhen": {
+        "signal": true
+      },
+      "dependsOn": ["build"]
+    },
+    "preview": {
+      "defaultConfiguration": "development",
+      "configurations": {
+        "development": {},
+        "production": {}
       }
     }
   }

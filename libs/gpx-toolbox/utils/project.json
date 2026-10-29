@@ -17,11 +17,14 @@
       }
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}", "{workspaceRoot}/coverage/libs/gpx-toolbox-utils"],
       "options": {
-        "configFile": "libs/gpx-toolbox/utils/vite.config.mts",
-        "codeCoverage": true
+        "config": "./vite.config.mts"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        }
       }
     }
   }

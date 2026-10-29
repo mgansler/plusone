@@ -22,63 +22,28 @@
         }
       }
     },
-    "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
+    "serve": {
+      "defaultConfiguration": "development",
       "options": {
-        "outputPath": "dist/apps/feeds/feeds-web"
+        "port": 4102
       },
       "configurations": {
-        "development": {
-          "mode": "development"
-        },
+        "development": {},
         "production": {
           "mode": "production"
         }
       }
     },
-    "serve": {
-      "executor": "@nx/vite:dev-server",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "feeds-web:build",
-        "proxyConfig": "apps/feeds/feeds-web/proxy.conf.json",
-        "port": 4102
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "feeds-web:build:development",
-          "hmr": true
-        },
-        "production": {
-          "buildTarget": "feeds-web:build:production",
-          "hmr": false
-        }
-      }
-    },
-    "preview": {
-      "dependsOn": ["build"],
-      "executor": "@nx/vite:preview-server",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "feeds-web:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "feeds-web:build:development"
-        },
-        "production": {
-          "buildTarget": "feeds-web:build:production"
-        }
-      }
-    },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": ["{workspaceRoot}/coverage/apps/feeds/feeds-web"],
       "options": {
         "coverage": true,
-        "reportsDirectory": "{projectRoot}/../../../coverage/apps/feeds/feeds-web"
+        "coverage.reportsDirectory": "../../../coverage/apps/feeds/feeds-web"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        }
       }
     },
     "serve-static": {
@@ -87,6 +52,16 @@
       "options": {
         "buildTarget": "feeds-web:build",
         "spa": true
+      },
+      "readyWhen": {
+        "signal": true
+      }
+    },
+    "preview": {
+      "defaultConfiguration": "development",
+      "configurations": {
+        "development": {},
+        "production": {}
       }
     }
   }

@@ -1,27 +1,8 @@
 import { type ReactNode, type RefObject, useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import '../lib/L.Control.Locate.min.css'
-import 'leaflet-locatecontrol'
-
-// leaflet-locatecontrol lacks TypeScript definitions
-declare module 'leaflet' {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace control {
-    function locate(
-      options?: Partial<{
-        position: string
-        strings: { title: string }
-        flyTo: boolean
-        flyToZoom: number
-        follow: boolean
-        followMode: 'jump' | 'follow' | 'flip'
-        markerStyle: Record<string, unknown>
-        circleStyle: Record<string, unknown>
-      }>,
-    ): Control
-  }
-}
+import 'leaflet.locatecontrol/dist/L.Control.Locate.min.css'
+import { LocateControl } from 'leaflet.locatecontrol'
 
 /** Fallback center (Stuttgart) when the browser location is unavailable */
 export const defaultCenter: [number, number] = [48.77, 9.16]
@@ -95,29 +76,24 @@ export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProp
     L.control.scale({ imperial: true, position: 'bottomleft' }).addTo(map)
 
     // Locate control (leaflet-locatecontrol plugin)
-    L.control
-      .locate({
-        position: 'topleft',
-        strings: { title: 'Zu meinem Standort' },
-        flyTo: true,
-        flyToZoom: 15,
-        follow: true,
-        followMode: 'jump',
-        markerStyle: {
-          radius: 5,
-          color: '#3b82f6',
-          fillColor: '#60a5fa',
-          fillOpacity: 0.9,
-          weight: 2,
-        },
-        circleStyle: {
-          color: '#3b82f6',
-          fillColor: '#60a5fa',
-          fillOpacity: 0.1,
-          weight: 1,
-        },
-      })
-      .addTo(map)
+    new LocateControl({
+      position: 'topleft',
+      strings: { title: 'Zu meinem Standort' },
+      flyTo: true,
+      markerStyle: {
+        radius: 5,
+        color: '#3b82f6',
+        fillColor: '#60a5fa',
+        fillOpacity: 0.9,
+        weight: 2,
+      },
+      circleStyle: {
+        color: '#3b82f6',
+        fillColor: '#60a5fa',
+        fillOpacity: 0.1,
+        weight: 1,
+      },
+    }).addTo(map)
 
     // Children (e.g. track overlays) — rendered by their own React components that directly manipulate the map
     if (children) {

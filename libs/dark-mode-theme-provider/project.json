@@ -23,12 +23,16 @@
       }
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": ["{workspaceRoot}/coverage/libs/dark-mode-theme-provider"],
       "options": {
         "coverage": true,
         "passWithNoTests": true,
-        "reportsDirectory": "{projectRoot}/../../coverage/libs/dark-mode-theme-provider"
+        "coverage.reportsDirectory": "../../coverage/libs/dark-mode-theme-provider"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        }
       }
     }
   }

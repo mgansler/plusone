@@ -7,18 +7,10 @@
   "implicitDependencies": ["github-pipeline-status"],
   "targets": {
     "e2e": {
-      "executor": "@nx/cypress:cypress",
-      "options": {
-        "cypressConfig": "apps/github-pipeline-status-e2e/cypress.config.ts",
-        "devServerTarget": "github-pipeline-status:serve",
-        "testingType": "e2e"
-      },
       "configurations": {
-        "production": {
-          "devServerTarget": "github-pipeline-status:serve:production"
-        },
         "watch": {
-          "watch": true
+          "headed": true,
+          "no-exit": true
         }
       }
     },

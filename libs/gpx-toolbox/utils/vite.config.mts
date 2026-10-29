@@ -1,11 +1,13 @@
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+  resolve: {
+    tsconfigPaths: true,
+  },
   root: __dirname,
   cacheDir: '../../../node_modules/.vite/libs/gpx',
 
-  plugins: [nxViteTsPaths()],
+  plugins: [],
 
   // @ts-expect-error vitest needs this
   test: {

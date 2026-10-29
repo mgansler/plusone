@@ -1,13 +1,62 @@
-const { composePlugins, withNx } = require('@nx/webpack')
+const { join } = require('path')
 
-// Nx plugins for webpack.
-module.exports = composePlugins(
-  withNx({
+const { NxAppWebpackPlugin } = require('@nx/webpack/app-plugin')
+
+// These options were migrated from the removed @nx/webpack:webpack executor in project.json.
+const configValues = {
+  default: {
+    assets: ['./src/assets'],
+    compiler: 'tsc',
+    generatePackageJson: true,
+    main: './src/main.ts',
     target: 'node',
-  }),
-  (config) => {
-    // Update the webpack config as needed here.
-    // e.g. `config.plugins.push(new MyPlugin())`
-    return config
+    tsConfig: join(__dirname, 'tsconfig.app.json'),
+    outputHashing: 'none',
   },
-)
+  'api-spec': {
+    main: './src/generate-openapi-spec.ts',
+  },
+  development: {},
+  production: {
+    optimization: true,
+    extractLicenses: true,
+    assets: [
+      './src/assets',
+      {
+        input: 'libs/stgtrails/persistence/',
+        glob: 'prisma.config.ts',
+        output: '',
+      },
+      {
+        input: 'libs/stgtrails/persistence/',
+        glob: 'schema.prisma',
+        output: '',
+      },
+      {
+        input: 'libs/stgtrails/persistence/',
+        glob: 'migrations',
+        output: 'migrations',
+      },
+      {
+        input: 'dist/apps/stgtrails/stgtrails-web',
+        glob: '**',
+        output: 'web',
+      },
+    ],
+  },
+}
+
+// Determine the correct configValue to use based on the configuration
+const configuration = process.env.NX_TASK_TARGET_CONFIGURATION || 'default'
+
+const options = {
+  ...configValues.default,
+  ...configValues[configuration],
+}
+
+module.exports = {
+  output: {
+    path: join(__dirname, '../../../dist/apps/stgtrails/stgtrails-backend'),
+  },
+  plugins: [new NxAppWebpackPlugin(options)],
+}

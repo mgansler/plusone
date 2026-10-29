@@ -69,66 +69,70 @@
     ]
   },
   "targetDefaults": {
-    "build": {
-      "inputs": ["production", "^production"],
-      "cache": true,
-      "dependsOn": ["^build"]
-    },
-    "e2e": {
-      "inputs": ["default", "^production"],
-      "cache": true
-    },
-    "component-test": {
-      "inputs": ["default", "^production"],
-      "cache": true
-    },
-    "@nx/jest:jest": {
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
-      "cache": true,
+    "@nx/web:file-server": {
       "options": {
-        "passWithNoTests": true
+        "host": "127.0.0.1"
+      }
+    },
+    "build": [
+      {
+        "inputs": ["production", "^production"],
+        "cache": true,
+        "dependsOn": ["^build"]
       },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
+      {
+        "filter": {
+          "plugin": "@nx/vite/plugin"
+        },
+        "defaultConfiguration": "production",
+        "configurations": {
+          "development": {
+            "mode": "development"
+          },
+          "production": {
+            "mode": "production"
+          }
         }
       }
-    },
-    "@nx/vitest:test": {
-      "inputs": ["default", "^production"],
-      "cache": true,
-      "configurations": {
-        "coverage": {
-          "coverage": true
+    ],
+    "e2e": [
+      {
+        "inputs": ["default", "^production"],
+        "cache": true
+      },
+      {
+        "filter": {
+          "plugin": "@nx/cypress/plugin"
+        },
+        "options": {
+          "config-file": "./cypress.config.ts"
         }
       }
-    },
-    "@nx/eslint:lint": {
-      "inputs": [
-        "default",
-        "^default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/eslint.config.js",
-        "{workspaceRoot}/tools/eslint-rules/**/*"
-      ],
-      "cache": true,
-      "configurations": {
-        "fix": {
-          "fix": true
+    ],
+    "component-test": [
+      {
+        "inputs": ["default", "^production"],
+        "cache": true
+      },
+      {
+        "filter": {
+          "plugin": "@nx/cypress/plugin"
+        },
+        "options": {
+          "config-file": "./cypress.config.ts"
         }
       }
-    },
-    "@nx/vite:build": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
-    },
-    "@nx/webpack:webpack": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
-    },
+    ],
+    "test": [
+      {
+        "filter": {
+          "plugin": "@nx/vitest"
+        },
+        "options": {
+          "watch": false
+        }
+      }
+    ],
     "prisma-generate": {
       "inputs": [
         "default",
@@ -196,6 +200,99 @@
         "libs/stgtrails/persistence/**/*",
         "libs/validated-query-factory/**/*"
       ]
+    },
+    {
+      "plugin": "@nx/vitest",
+      "options": {
+        "testMode": "watch",
+        "testTargetName": "test"
+      }
+    },
+    {
+      "plugin": "@nx/cypress/plugin",
+      "options": {
+        "targetName": "e2e",
+        "ciTargetName": "e2e-ci",
+        "componentTestingTargetName": "component-test",
+        "openTargetName": "open-cypress"
+      },
+      "include": [
+        "apps/borgo/borgo-e2e/**/*",
+        "apps/elgato/elgato-e2e/**/*",
+        "apps/feeds/feeds-e2e/**/*",
+        "apps/github-pipeline-status-e2e/**/*",
+        "apps/stgtrails/stgtrails-e2e/**/*"
+      ]
+    },
+    {
+      "plugin": "@nx/cypress/plugin",
+      "options": {
+        "targetName": "component-test",
+        "ciTargetName": "e2e-ci",
+        "componentTestingTargetName": "component-test",
+        "openTargetName": "open-cypress"
+      },
+      "include": [
+        "apps/elgato/elgato-web/**/*",
+        "apps/github-pipeline-status/**/*",
+        "apps/gpx-toolbox/gpx-toolbox-web/**/*",
+        "apps/stgtrails/stgtrails-web/**/*",
+        "libs/components/**/*"
+      ]
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "test"
+      },
+      "include": ["tools/eslint-rules/**/*"]
+    },
+    {
+      "plugin": "@nx/webpack/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static"
+      },
+      "include": [
+        "apps/elgato/elgato-backend/**/*",
+        "apps/feeds/feeds-backend/**/*",
+        "apps/feeds/feeds-dummy-rss-server/**/*",
+        "apps/gpx-toolbox/gpx-toolbox-backend/**/*",
+        "apps/stgtrails/stgtrails-backend/**/*"
+      ]
+    },
+    {
+      "plugin": "@nx/js/typescript",
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        }
+      }
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "devTargetName": "dev",
+        "typecheckTargetName": "typecheck",
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static"
+      },
+      "include": [
+        "apps/borgo/borgo-web/**/*",
+        "apps/elgato/elgato-web/**/*",
+        "apps/feeds/feeds-web/**/*",
+        "apps/github-pipeline-status/**/*",
+        "apps/gpx-toolbox/gpx-toolbox-web/**/*",
+        "apps/stgtrails/stgtrails-web/**/*",
+        "libs/fritzbox-client/**/*"
+      ]
     }
-  ]
+  ],
+  "affected": {
+    "legacy": true
+  }
 }

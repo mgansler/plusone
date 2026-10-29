@@ -7,6 +7,13 @@ export default defineConfig({
     mochaFile: '../../../reports/e2e/borgo-[hash].xml',
     testCaseSwitchClassnameAndName: true,
   },
-  e2e: { ...nxE2EPreset(__filename, { cypressDir: 'src', bundler: 'vite' }), baseUrl: 'http://localhost:4100' },
+  e2e: {
+    ...nxE2EPreset(__filename, {
+      webServerCommands: { default: 'npx nx run borgo-web:serve-static' },
+      cypressDir: 'src',
+      bundler: 'vite',
+    }),
+    baseUrl: 'http://localhost:4100',
+  },
   retries: 2,
 })

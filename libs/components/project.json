@@ -23,24 +23,23 @@
       }
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": ["{workspaceRoot}/coverage/libs/components"],
       "options": {
         "coverage": true,
         "passWithNoTests": true,
-        "reportsDirectory": "{projectRoot}/../../coverage/libs/components"
+        "coverage.reportsDirectory": "../../coverage/libs/components"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        }
       }
     },
     "component-test": {
-      "executor": "@nx/cypress:cypress",
-      "options": {
-        "cypressConfig": "libs/components/cypress.config.ts",
-        "testingType": "component",
-        "skipServe": true
-      },
       "configurations": {
         "watch": {
-          "watch": true
+          "headed": true,
+          "no-exit": true
         }
       }
     }

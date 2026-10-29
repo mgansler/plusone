@@ -5,37 +5,15 @@
   "projectType": "application",
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "outputPath": "dist/apps/github-pipeline-status"
-      },
-      "configurations": {
-        "development": {
-          "mode": "development"
-        },
-        "production": {
-          "mode": "production"
-        }
-      }
-    },
     "serve": {
-      "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "github-pipeline-status:build",
         "port": 4103
       },
       "configurations": {
-        "development": {
-          "buildTarget": "github-pipeline-status:build:development",
-          "hmr": true
-        },
+        "development": {},
         "production": {
-          "buildTarget": "github-pipeline-status:build:production",
-          "hmr": false
+          "mode": "production"
         }
       }
     },
@@ -57,25 +35,29 @@
       }
     },
     "test": {
-      "executor": "@nx/vitest:test",
       "outputs": ["{workspaceRoot}/coverage/apps/github-pipeline-status"],
       "options": {
         "coverage": true,
         "passWithNoTests": true,
-        "reportsDirectory": "{projectRoot}/../../coverage/apps/github-pipeline-status"
+        "coverage.reportsDirectory": "../../coverage/apps/github-pipeline-status"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        }
       }
     },
     "component-test": {
-      "executor": "@nx/cypress:cypress",
-      "options": {
-        "cypressConfig": "apps/github-pipeline-status/cypress.config.ts",
-        "testingType": "component",
-        "skipServe": true
-      },
       "configurations": {
         "watch": {
-          "watch": true
+          "headed": true,
+          "no-exit": true
         }
+      }
+    },
+    "serve-static": {
+      "options": {
+        "port": 4103
       }
     }
   }

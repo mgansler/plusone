@@ -8,7 +8,11 @@ export default defineConfig({
     testCaseSwitchClassnameAndName: true,
   },
   e2e: {
-    ...nxE2EPreset(__filename, { cypressDir: 'src', bundler: 'vite' }),
+    ...nxE2EPreset(__filename, {
+      webServerCommands: { default: 'npx nx run github-pipeline-status:serve-static' },
+      cypressDir: 'src',
+      bundler: 'vite',
+    }),
     experimentalRunAllSpecs: true,
   },
 })

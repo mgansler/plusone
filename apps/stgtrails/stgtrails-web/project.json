@@ -5,54 +5,16 @@
   "sourceRoot": "apps/stgtrails/stgtrails-web/src",
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "outputPath": "dist/apps/stgtrails/stgtrails-web"
-      },
-      "configurations": {
-        "development": {
-          "mode": "development"
-        },
-        "production": {
-          "mode": "production"
-        }
-      }
-    },
     "serve": {
-      "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "stgtrails-web:build",
-        "proxyConfig": "apps/stgtrails/stgtrails-web/proxy.conf.json",
         "host": "0.0.0.0",
         "port": 4104
       },
       "configurations": {
-        "development": {
-          "buildTarget": "stgtrails-web:build:development",
-          "hmr": true
-        },
+        "development": {},
         "production": {
-          "buildTarget": "stgtrails-web:build:production",
-          "hmr": false
-        }
-      }
-    },
-    "preview": {
-      "executor": "@nx/vite:preview-server",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "stgtrails-web:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "stgtrails-web:build:development"
-        },
-        "production": {
-          "buildTarget": "stgtrails-web:build:production"
+          "mode": "production"
         }
       }
     },
@@ -78,27 +40,29 @@
       "options": {
         "buildTarget": "stgtrails-web:build",
         "spa": true
-      }
+      },
+      "readyWhen": {
+        "signal": true
+      },
+      "dependsOn": ["build"]
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": ["{workspaceRoot}/coverage/apps/stgtrails/stgtrails-web"],
       "options": {
         "coverage": true,
-        "reportsDirectory": "{projectRoot}/../../../coverage/apps/stgtrails/stgtrails-web"
+        "coverage.reportsDirectory": "../../../coverage/apps/stgtrails/stgtrails-web"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        }
       }
     },
     "component-test": {
-      "executor": "@nx/cypress:cypress",
-      "options": {
-        "cypressConfig": "apps/stgtrails/stgtrails-web/cypress.config.ts",
-        "testingType": "component",
-        "devServerTarget": "stgtrails-web:build",
-        "skipServe": true
-      },
       "configurations": {
         "watch": {
-          "watch": true
+          "headed": true,
+          "no-exit": true
         }
       }
     },
@@ -114,6 +78,13 @@
       "options": {
         "cwd": "apps/stgtrails/stgtrails-web",
         "command": "i18next-cli status"
+      }
+    },
+    "preview": {
+      "defaultConfiguration": "development",
+      "configurations": {
+        "development": {},
+        "production": {}
       }
     }
   }

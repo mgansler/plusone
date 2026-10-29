@@ -7,8 +7,6 @@
   "implicitDependencies": ["elgato-web"],
   "targets": {
     "build": {
-      "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "dependsOn": [
         {
@@ -20,49 +18,10 @@
           "projects": ["elgato-web"]
         }
       ],
-      "options": {
-        "assets": ["apps/elgato/elgato-backend/src/assets"],
-        "compiler": "tsc",
-        "generatePackageJson": true,
-        "main": "apps/elgato/elgato-backend/src/main.ts",
-        "outputPath": "dist/apps/elgato/elgato-backend",
-        "target": "node",
-        "tsConfig": "apps/elgato/elgato-backend/tsconfig.app.json",
-        "webpackConfig": "apps/elgato/elgato-backend/webpack.config.js"
-      },
       "configurations": {
-        "api-spec": {
-          "main": "apps/elgato/elgato-backend/src/generate-openapi-spec.ts"
-        },
+        "api-spec": {},
         "development": {},
-        "production": {
-          "optimization": true,
-          "extractLicenses": true,
-          "inspect": false,
-          "assets": [
-            "apps/elgato/elgato-backend/src/assets",
-            {
-              "input": "libs/elgato/persistence/",
-              "glob": "prisma.config.ts",
-              "output": ""
-            },
-            {
-              "input": "libs/elgato/persistence/",
-              "glob": "schema.prisma",
-              "output": ""
-            },
-            {
-              "input": "libs/elgato/persistence/",
-              "glob": "migrations",
-              "output": "migrations"
-            },
-            {
-              "input": "dist/apps/elgato/elgato-web",
-              "glob": "**",
-              "output": "web"
-            }
-          ]
-        }
+        "production": {}
       }
     },
     "complete-lockfile": {
@@ -133,8 +92,6 @@
       }
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": [
         {
           "target": "prisma-generate",
@@ -142,10 +99,12 @@
         }
       ],
       "options": {
-        "configFile": "apps/elgato/elgato-backend/vite.config.mts",
-        "codeCoverage": true
+        "config": "./vite.config.mts"
       },
       "configurations": {
+        "coverage": {
+          "coverage": true
+        },
         "watch": {
           "watch": true
         }

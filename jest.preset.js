@@ -1,3 +1,4 @@
+const path = require('node:path')
 const nxPreset = require('@nx/jest/preset').default
 
 module.exports = {
@@ -7,7 +8,7 @@ module.exports = {
     [
       'jest-junit',
       {
-        outputDirectory: 'reports/test',
+        outputDirectory: path.join(__dirname, 'reports/test'),
         outputName: `${process.env.NX_TASK_TARGET_PROJECT}.xml`,
       },
     ],

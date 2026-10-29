@@ -10,7 +10,7 @@ export const FRONTEND_URL = 'FRONTEND_URL'
 export const configSchema = z.object({
   [STRAVA_CLIENT_ID]: z.string(),
   [STRAVA_CLIENT_SECRET]: z.string(),
-  [STRAVA_REDIRECT_URI]: z.string().url().default('http://localhost:3333/api/auth/strava/callback'),
+  [STRAVA_REDIRECT_URI]: z.url().default('http://localhost:3333/api/auth/strava/callback'),
   [JWT_SECRET]: z.string().default('change-me-in-production'),
   [JWT_EXPIRES_IN]: z.string().default('7d'),
   // Target of the redirect after the Strava OAuth callback (the web app)

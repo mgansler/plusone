@@ -9,5 +9,5 @@ export default defineConfig({
     mochaFile: '../../../reports/component-test/stgtrails-web-[hash].xml',
     testCaseSwitchClassnameAndName: true,
   },
-  component: nxComponentTestingPreset(__filename, { bundler: 'vite' }),
+  component: nxComponentTestingPreset(__filename, { buildTarget: 'stgtrails-web:build', bundler: 'vite' }),
 })

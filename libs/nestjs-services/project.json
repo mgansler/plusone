@@ -23,11 +23,13 @@
       }
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "configFile": "libs/nestjs-services/vite.config.mts",
-        "codeCoverage": true
+        "config": "./vite.config.mts"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        }
       }
     }
   }

@@ -7,21 +7,10 @@
   "implicitDependencies": ["elgato-web"],
   "targets": {
     "e2e": {
-      "executor": "@nx/cypress:cypress",
-      "options": {
-        "cypressConfig": "apps/elgato/elgato-e2e/cypress.config.ts",
-        "devServerTarget": "elgato-web:serve:development",
-        "testingType": "e2e"
-      },
       "configurations": {
-        "production": {
-          "devServerTarget": "elgato-web:serve:production"
-        },
-        "ci": {
-          "devServerTarget": "elgato-web:serve-static"
-        },
         "watch": {
-          "watch": true
+          "headed": true,
+          "no-exit": true
         }
       }
     },

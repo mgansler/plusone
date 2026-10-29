@@ -7,19 +7,10 @@
   "implicitDependencies": ["borgo-web"],
   "targets": {
     "e2e": {
-      "executor": "@nx/cypress:cypress",
-      "options": {
-        "cypressConfig": "apps/borgo/borgo-e2e/cypress.config.ts",
-        "testingType": "e2e",
-        "devServerTarget": "borgo-web:serve",
-        "port": 4100
-      },
       "configurations": {
-        "ci": {
-          "devServerTarget": "borgo-web:serve-static"
-        },
         "watch": {
-          "watch": true
+          "headed": true,
+          "no-exit": true
         }
       }
     },

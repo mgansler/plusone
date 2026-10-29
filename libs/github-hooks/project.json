@@ -23,12 +23,16 @@
       }
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": ["{workspaceRoot}/coverage/libs/github-hooks"],
       "options": {
         "coverage": true,
         "passWithNoTests": true,
-        "reportsDirectory": "{projectRoot}/../../coverage/libs/github-hooks"
+        "coverage.reportsDirectory": "../../coverage/libs/github-hooks"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        }
       }
     }
   }

@@ -3,6 +3,18 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { nxReadySignal } from '@nx/vite/plugins/nx-ready-signal.plugin'
+
+// These options were migrated by @nx/vite:convert-to-inferred from the project.json file.
+const configValues = { default: {}, development: { hmr: true }, production: { hmr: false } }
+
+// Determine the correct configValue to use based on the configuration
+const nxConfiguration = process.env.NX_TASK_TARGET_CONFIGURATION ?? 'default'
+
+const options = {
+  ...configValues.default,
+  ...(configValues[nxConfiguration] ?? {}),
+}
 
 export default defineConfig({
   root: import.meta.dirname,
@@ -19,6 +31,13 @@ export default defineConfig({
   server: {
     port: 4200,
     host: 'localhost',
+    hmr: options.hmr,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3101',
+        secure: false,
+      },
+    },
   },
 
   preview: {
@@ -26,7 +45,13 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [tanstackRouter({ target: 'react', autoCodeSplitting: false }), react(), tsconfigPaths(), tailwindcss()],
+  plugins: [
+    tanstackRouter({ target: 'react', autoCodeSplitting: false }),
+    react(),
+    tsconfigPaths(),
+    tailwindcss(),
+    nxReadySignal(),
+  ],
 
   // Uncomment this if you are using workers.
   // worker: {

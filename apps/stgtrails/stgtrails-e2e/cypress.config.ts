@@ -7,6 +7,16 @@ export default defineConfig({
     mochaFile: '../../../reports/e2e/stgtrails-[hash].xml',
     testCaseSwitchClassnameAndName: true,
   },
-  e2e: { ...nxE2EPreset(__filename, { cypressDir: 'src', bundler: 'vite' }), baseUrl: 'http://localhost:3104' },
+  e2e: {
+    ...nxE2EPreset(__filename, {
+      webServerCommands: {
+        default: 'npx nx run stgtrails-backend:serve:production',
+        production: 'npx nx run stgtrails-backend:serve:production',
+      },
+      cypressDir: 'src',
+      bundler: 'vite',
+    }),
+    baseUrl: 'http://localhost:3104',
+  },
   retries: 2,
 })

@@ -23,12 +23,16 @@
       }
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": ["{workspaceRoot}/coverage/libs/dom-utils"],
       "options": {
         "coverage": true,
         "passWithNoTests": true,
-        "reportsDirectory": "{projectRoot}/../../coverage/libs/dom-utils"
+        "coverage.reportsDirectory": "../../coverage/libs/dom-utils"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        }
       }
     }
   }

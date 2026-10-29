@@ -9,5 +9,5 @@ export default defineConfig({
     mochaFile: '../../../reports/component-test/gpx-toolbox-web-[hash].xml',
     testCaseSwitchClassnameAndName: true,
   },
-  component: nxComponentTestingPreset(__filename, { bundler: 'vite' }),
+  component: nxComponentTestingPreset(__filename, { buildTarget: 'gpx-toolbox-web:serve', bundler: 'vite' }),
 })

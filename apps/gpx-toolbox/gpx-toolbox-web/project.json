@@ -5,53 +5,16 @@
   "sourceRoot": "apps/gpx-toolbox/gpx-toolbox-web/src",
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "outputPath": "dist/apps/gpx-toolbox/gpx-toolbox-web"
-      },
-      "configurations": {
-        "development": {
-          "mode": "development"
-        },
-        "production": {
-          "mode": "production"
-        }
-      }
-    },
     "serve": {
-      "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "gpx-toolbox-web:build",
         "host": "0.0.0.0",
         "port": 4250
       },
       "configurations": {
-        "development": {
-          "buildTarget": "gpx-toolbox-web:build:development",
-          "hmr": true
-        },
+        "development": {},
         "production": {
-          "buildTarget": "gpx-toolbox-web:build:production",
-          "hmr": false
-        }
-      }
-    },
-    "preview": {
-      "executor": "@nx/vite:preview-server",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "gpx-toolbox-web:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "gpx-toolbox-web:build:development"
-        },
-        "production": {
-          "buildTarget": "gpx-toolbox-web:build:production"
+          "mode": "production"
         }
       }
     },
@@ -77,34 +40,36 @@
       "options": {
         "buildTarget": "gpx-toolbox-web:build",
         "spa": true
-      }
+      },
+      "readyWhen": {
+        "signal": true
+      },
+      "dependsOn": ["build"]
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": ["{workspaceRoot}/coverage/apps/gpx-toolbox/gpx-toolbox-web"],
       "options": {
         "coverage": true,
-        "reportsDirectory": "{projectRoot}/../../../coverage/apps/gpx-toolbox/gpx-toolbox-web"
+        "coverage.reportsDirectory": "../../../coverage/apps/gpx-toolbox/gpx-toolbox-web"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        }
       }
     },
     "component-test": {
-      "executor": "@nx/cypress:cypress",
-      "outputs": ["{workspaceRoot}/reports/component-test/gpx-toolbox-web"],
-      "options": {
-        "cypressConfig": "apps/gpx-toolbox/gpx-toolbox-web/cypress.config.ts",
-        "devServerTarget": "gpx-toolbox-web:serve",
-        "devServerTargetOptions": {
-          "configuration": "development"
-        },
-        "testingType": "component",
-        "port": "cypress-auto"
-      },
+      "outputs": [
+        "{workspaceRoot}/reports/component-test/gpx-toolbox-web",
+        "{workspaceRoot}/dist/cypress/apps/gpx-toolbox/gpx-toolbox-web/videos",
+        "{workspaceRoot}/dist/cypress/apps/gpx-toolbox/gpx-toolbox-web/screenshots"
+      ]
+    },
+    "preview": {
+      "defaultConfiguration": "development",
       "configurations": {
-        "ci": {
-          "devServerTargetOptions": {
-            "configuration": "production"
-          }
-        }
+        "development": {},
+        "production": {}
       }
     }
   }

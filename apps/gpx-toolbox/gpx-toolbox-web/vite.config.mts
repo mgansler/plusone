@@ -1,18 +1,24 @@
-import { resolve } from 'path'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { nxReadySignal } from '@nx/vite/plugins/nx-ready-signal.plugin'
+
+// These options were migrated by @nx/vite:convert-to-inferred from the project.json file.
+const configValues = { default: {}, development: { hmr: true }, production: { hmr: false } }
+
+// Determine the correct configValue to use based on the configuration
+const nxConfiguration = process.env.NX_TASK_TARGET_CONFIGURATION ?? 'default'
+
+const options = {
+  ...configValues.default,
+  ...(configValues[nxConfiguration] ?? {}),
+}
 
 const root = import.meta.dirname
 
 export default defineConfig({
   root,
-  resolve: {
-    alias: {
-      'leaflet-locatecontrol': resolve(root, 'src/lib/L.Control.Locate.min.js'),
-    },
-  },
   build: {
     outDir: '../../../dist/apps/gpx-toolbox/gpx-toolbox-web',
     emptyOutDir: true,
@@ -26,9 +32,7 @@ export default defineConfig({
   server: {
     port: 4250,
     host: 'localhost',
-    fs: {
-      allow: [resolve(root, '../../../node_modules/leaflet/dist')],
-    },
+    hmr: options.hmr,
     proxy: {
       '/api': {
         target: 'http://localhost:3333',
@@ -42,7 +46,7 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [tanstackRouter({ target: 'react', autoCodeSplitting: false }), react(), tsconfigPaths()],
+  plugins: [tanstackRouter({ target: 'react', autoCodeSplitting: false }), react(), tsconfigPaths(), nxReadySignal()],
 
   test: {
     watch: false,

@@ -7,8 +7,8 @@
   "implicitDependencies": ["feeds-web", "feeds-backend"],
   "targets": {
     "e2e": {
-      "executor": "@nx/cypress:cypress",
       "defaultConfiguration": "production",
+      "parallelism": true,
       "dependsOn": [
         {
           "target": "serve",
@@ -18,16 +18,12 @@
           "target": "wait"
         }
       ],
-      "options": {
-        "cypressConfig": "apps/feeds/feeds-e2e/cypress.config.ts",
-        "devServerTarget": "",
-        "testingType": "e2e"
-      },
       "configurations": {
         "development": {},
         "production": {},
         "watch": {
-          "watch": true
+          "headed": true,
+          "no-exit": true
         }
       }
     },
