@@ -22968,13 +22968,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oauth@npm:0.9.x":
-  version: 0.9.15
-  resolution: "oauth@npm:0.9.15"
-  checksum: 10c0/52204f2a082850efca7e8406e6c6085d89318dc8a85f5a8d6c5594921da36149eb6228bba324af8e2fd9019f084d814ddf835ace6b697ced2b4be0d75f91fb30
-  languageName: node
-  linkType: hard
-
 "object-assign@npm:^4, object-assign@npm:^4.1.1":
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
@@ -23618,31 +23611,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"passport-oauth@npm:0.1.x":
-  version: 0.1.15
-  resolution: "passport-oauth@npm:0.1.15"
-  dependencies:
-    oauth: "npm:0.9.x"
-    passport: "npm:~0.1.1"
-    pkginfo: "npm:0.2.x"
-  checksum: 10c0/6c58c5ae562d1e2ff9aaf2d3eee90267ee70bb8f0eb562c6fc29e449c2a85edf6ffbc7da961fa8184c871e88a6d3d650d1462256d72060263993fa3ff1d45440
-  languageName: node
-  linkType: hard
-
 "passport-strategy@npm:1.x.x, passport-strategy@npm:^1.0.0":
   version: 1.0.0
   resolution: "passport-strategy@npm:1.0.0"
   checksum: 10c0/cf4cd32e1bf2538a239651581292fbb91ccc83973cde47089f00d2014c24bed63d3e65af21da8ddef649a8896e089eb9c3ac9ca639f36c797654ae9ee4ed65e1
-  languageName: node
-  linkType: hard
-
-"passport-strava@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "passport-strava@npm:0.2.0"
-  dependencies:
-    passport-oauth: "npm:0.1.x"
-    pkginfo: "npm:0.2.x"
-  checksum: 10c0/96df84b0b791785e1a724a2034e983d1a6a613e2cd862e6b1e2ec48ba0675c9094211fa12f9517d99b2f1439642259ecb338503b6b8a0c8a15d1c70095a3a75b
   languageName: node
   linkType: hard
 
@@ -23654,16 +23626,6 @@ __metadata:
     pause: "npm:0.0.1"
     utils-merge: "npm:^1.0.1"
   checksum: 10c0/08c940b86e4adbfe43e753f8097300a5a9d1ce9a3aa002d7b12d27770943a1a87202c54597c0f04dbfd4117d67de76303433577512fc19c7e364fec37b0d3fc5
-  languageName: node
-  linkType: hard
-
-"passport@npm:~0.1.1":
-  version: 0.1.18
-  resolution: "passport@npm:0.1.18"
-  dependencies:
-    pause: "npm:0.0.1"
-    pkginfo: "npm:0.2.x"
-  checksum: 10c0/f1b783b3f9bfa42811ae17328355b0b8fcff861e99c3b90edc5cf2f82f3e5ef71eea0c9b27d70236cfb43813af565c6d3b5144440e051a9d3093ee88274be2fa
   languageName: node
   linkType: hard
 
@@ -24014,13 +23976,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pkginfo@npm:0.2.x":
-  version: 0.2.3
-  resolution: "pkginfo@npm:0.2.3"
-  checksum: 10c0/566208379b8e6cde7f4532e847af5e601359872c4a9b3a85382f3640f17da8d93c7d33fbc2bda15a567aa8a46b5d0d0baa9428a0c7ab1d1a2ac8d19dccdb7819
-  languageName: node
-  linkType: hard
-
 "pkijs@npm:^3.3.3":
   version: 3.4.0
   resolution: "pkijs@npm:3.4.0"
@@ -24184,7 +24139,6 @@ __metadata:
     passport-http: "npm:0.3.0"
     passport-jwt: "npm:4.0.1"
     passport-local: "npm:1.0.0"
-    passport-strava: "npm:^0.2.0"
     postcss: "npm:8.5.31"
     prettier: "npm:3.9.10"
     prisma: "npm:7.10.1"

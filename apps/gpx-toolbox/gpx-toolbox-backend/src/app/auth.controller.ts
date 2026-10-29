@@ -62,7 +62,8 @@ export class AuthController {
       }
 
       const tokenData = await tokenResponse.json()
-      const { access_token, refresh_token, expires_at } = tokenData
+      const { access_token, refresh_token, expires_at, scope } = tokenData
+      console.log('[OAuth] Token exchanged, scopes:', scope)
       // Strava returns expires_at in unix seconds; fall back to a 2h window if absent.
       const tokenExpiresAt = expires_at ? new Date(expires_at * 1000) : new Date(Date.now() + 2 * 60 * 60 * 1000)
 

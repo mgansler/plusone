@@ -40,11 +40,13 @@ function SyncPage() {
   const [importResult, setImportResult] = useState<ImportResult | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [hasLoaded, setHasLoaded] = useState(false)
 
   const fetchRoutes = useCallback(async () => {
     if (!token) return
     setLoading(true)
     setError(null)
+    setHasLoaded(false)
     try {
       const response = await fetch('/api/import/strava/routes', {
         headers: { Authorization: `Bearer ${token}` },
@@ -52,6 +54,7 @@ function SyncPage() {
       if (!response.ok) throw new Error(`HTTP ${response.status}`)
       const data = await response.json()
       setRoutes(data)
+      setHasLoaded(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unbekannter Fehler')
     } finally {
@@ -174,7 +177,11 @@ function SyncPage() {
 
         {/* Empty state */}
         {routes.length === 0 && !loading && !error && (
-          <div style={styles.placeholder}>Klicke "Routen laden" um deine Strava-Routen anzusehen</div>
+          <div style={styles.placeholder}>
+            {hasLoaded
+              ? 'Du hast keine Routen bei Strava hinterlegt.'
+              : 'Klicke "Routen laden" um deine Strava-Routen anzusehen'}
+          </div>
         )}
       </div>
 

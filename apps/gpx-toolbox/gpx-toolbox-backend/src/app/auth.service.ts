@@ -69,6 +69,7 @@ export class AuthService {
     }
 
     const data = await response.json()
+    this.logger.debug(`Token refreshed, scopes: ${data.scope}`)
     return {
       accessToken: data.access_token,
       refreshToken: data.refresh_token,

@@ -183,7 +183,7 @@ function RoutesPage() {
             <option value="">Alle Status</option>
             <option value="planned">Geplant</option>
             <option value="ridden">Gefahren</option>
-            <option value="found-online">Online gefunden</option>
+            <option value="foundOnline">Online gefunden</option>
           </select>
           <select
             value={sourceFilter}

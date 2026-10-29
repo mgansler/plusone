@@ -25,24 +25,18 @@ export class RequestLoggerMiddleware implements NestMiddleware {
 
       // Log at different levels based on status code
       if (res.statusCode >= 500) {
-        this.logger.error(`${req.method} ${path} ${res.statusCode} ${duration.toFixed(0)}ms`, {
+        this.logger.error(`${req.method} ${res.statusCode} ${path} ${duration.toFixed(0)}ms`, {
           correlationId,
-          method: req.method,
-          path,
           duration,
         })
       } else if (res.statusCode >= 400) {
-        this.logger.warn(`${req.method} ${path} ${res.statusCode} ${duration.toFixed(0)}ms`, {
+        this.logger.warn(`${req.method} ${res.statusCode} ${path} ${duration.toFixed(0)}ms`, {
           correlationId,
-          method: req.method,
-          path,
           duration,
         })
       } else {
-        this.logger.log(`${req.method} ${path} ${res.statusCode} ${duration.toFixed(0)}ms`, {
+        this.logger.log(`${req.method} ${res.statusCode} ${path} ${duration.toFixed(0)}ms`, {
           correlationId,
-          method: req.method,
-          path,
           duration,
         })
       }
