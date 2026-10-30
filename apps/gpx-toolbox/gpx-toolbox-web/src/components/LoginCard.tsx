@@ -3,11 +3,14 @@ import { useState } from 'react'
 import connectWithStravaButton from '../assets/btn-strava-connect-with-orange.svg'
 import { useAuth } from '../lib/auth-context'
 
+const LOCAL_HOSTNAMES = ['localhost', '127.0.0.1', '[::1]']
+
 /**
- * Reusable login card with both OAuth and manual refresh token login.
+ * Reusable login card with OAuth login and, on localhost only, manual refresh token login.
  * Used by the root App shell and the /login route.
  */
 export function LoginCard() {
+  const showRefreshTokenLogin = LOCAL_HOSTNAMES.includes(window.location.hostname)
   const { isAuthenticated, login, user, loginWithRefreshToken } = useAuth()
   const [refreshToken, setRefreshToken] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -63,44 +66,55 @@ export function LoginCard() {
         />
       </button>
 
-      <div style={styles.dividerText}>
-        <span style={styles.dividerLine} />
-        <span>oder</span>
-        <span style={styles.dividerLine} />
-      </div>
+      {showRefreshTokenLogin && (
+        <>
+          <div style={styles.dividerText}>
+            <span style={styles.dividerLine} />
+            <span>oder</span>
+            <span style={styles.dividerLine} />
+          </div>
 
-      <form onSubmit={handleRefreshTokenSubmit}>
-        <input
-          type="text"
-          placeholder="Refresh Token eingeben"
-          value={refreshToken}
-          onChange={(e) => setRefreshToken(e.target.value)}
-          style={styles.input}
-        />
-        <button
-          type="submit"
-          disabled={loading || !refreshToken}
-          style={{
-            ...styles.submitTokenButton,
-            opacity: loading || !refreshToken ? 0.5 : 1,
-          }}
-        >
-          {loading ? 'Anmeldung...' : 'Mit Token einloggen'}
-        </button>
-        {error && <p style={styles.error}>{error}</p>}
-      </form>
+          <form onSubmit={handleRefreshTokenSubmit}>
+            <input
+              type="text"
+              placeholder="Refresh Token eingeben"
+              value={refreshToken}
+              onChange={(e) => setRefreshToken(e.target.value)}
+              style={styles.input}
+            />
+            <button
+              type="submit"
+              disabled={loading || !refreshToken}
+              style={{
+                ...styles.submitTokenButton,
+                opacity: loading || !refreshToken ? 0.5 : 1,
+              }}
+            >
+              {loading ? 'Anmeldung...' : 'Mit Token einloggen'}
+            </button>
+            {error && <p style={styles.error}>{error}</p>}
+          </form>
+        </>
+      )}
 
       <p style={styles.noteOAuth}>
         Nach dem Login wirst du zu Strava weitergeleitet. Deine Daten werden nur lokal gespeichert.
       </p>
 
-      <p style={styles.noteToken}>
-        Du kannst auch deinen Strava Refresh Token manuell eingeben (
-        <a href="https://www.strava.com/settings/account" target="_blank" rel="noreferrer" style={{ color: '#3b82f6' }}>
-          Strava Einstellungen → Meine Anwendungen → API
-        </a>
-        ).
-      </p>
+      {showRefreshTokenLogin && (
+        <p style={styles.noteToken}>
+          Du kannst auch deinen Strava Refresh Token manuell eingeben (
+          <a
+            href="https://www.strava.com/settings/account"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: '#3b82f6' }}
+          >
+            Strava Einstellungen → Meine Anwendungen → API
+          </a>
+          ).
+        </p>
+      )}
     </div>
   )
 }
