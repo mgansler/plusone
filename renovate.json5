@@ -9,6 +9,12 @@
       allowedVersions: '24.x',
     },
     {
+      // nginx:stable-alpine has no version in its tag, so updates are only possible via digest
+      matchDatasources: ['docker'],
+      matchPackageNames: ['nginx'],
+      pinDigests: true,
+    },
+    {
       matchDatasources: ['npm'],
       minimumReleaseAge: '3 days',
     },
