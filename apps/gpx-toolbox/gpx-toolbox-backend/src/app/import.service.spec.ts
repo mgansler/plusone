@@ -404,7 +404,7 @@ describe('ImportService', () => {
                 findMany: vi.fn().mockResolvedValue([]), // No matches → a new route is created
                 create: vi.fn().mockResolvedValue({ id: '1', name: 'Feierabendrunde' }),
               },
-              fahrt: {
+              activity: {
                 create: vi.fn().mockResolvedValue({ id: 'f1', routeId: '1' }),
               },
             },
@@ -416,7 +416,7 @@ describe('ImportService', () => {
       return module.get<ImportService>(ImportService)
     }
 
-    it('creates a route and a Fahrt with data derived from the track points', async () => {
+    it('creates a route and an activity with data derived from the track points', async () => {
       service = await createService()
 
       const result = await service.importGpxActivity(activityGpx, 'user-1')
@@ -425,7 +425,7 @@ describe('ImportService', () => {
       expect(service['prisma'].route.create).toHaveBeenCalledWith({
         data: expect.objectContaining({ name: 'Feierabendrunde', source: 'manualImport', status: 'ridden' }),
       })
-      expect(service['prisma'].fahrt.create).toHaveBeenCalledWith({
+      expect(service['prisma'].activity.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
           title: 'Feierabendrunde',
           riddenAt: new Date('2024-01-01T10:00:00Z'),
@@ -440,7 +440,7 @@ describe('ImportService', () => {
 
       await service.importGpxActivity(activityGpx, 'user-1', 'Mit Umweg')
 
-      expect(service['prisma'].fahrt.create).toHaveBeenCalledWith({
+      expect(service['prisma'].activity.create).toHaveBeenCalledWith({
         data: expect.objectContaining({ title: 'Mit Umweg' }),
       })
     })
@@ -476,7 +476,7 @@ describe('ImportService', () => {
                 findMany: vi.fn().mockResolvedValue([]), // No matches
                 create: vi.fn().mockResolvedValue({ id: '1', name: 'Activity 999' }),
               },
-              fahrt: {
+              activity: {
                 create: vi.fn().mockResolvedValue({ id: 'f1', routeId: '1' }),
               },
             },
@@ -493,7 +493,7 @@ describe('ImportService', () => {
       expect(result.newRoutes).toBe(1)
       expect(result.matched).toBe(0)
       expect(mockStrava.downloadActivityStreams).toHaveBeenCalledWith('token', 999)
-      expect(service['prisma'].fahrt.create).toHaveBeenCalled()
+      expect(service['prisma'].activity.create).toHaveBeenCalled()
     })
 
     it('auto-matches to existing route when enabled and a match exists', async () => {
@@ -538,7 +538,7 @@ describe('ImportService', () => {
                 update: vi.fn().mockResolvedValue({ id: '1', stravaActivityId: '999' }),
                 create: vi.fn().mockResolvedValue({ id: '2', name: 'Activity 999' }),
               },
-              fahrt: {
+              activity: {
                 create: vi.fn().mockResolvedValue({ id: 'f1', routeId: '1' }),
               },
             },
@@ -557,7 +557,7 @@ describe('ImportService', () => {
         where: { id: '1' },
         data: { stravaActivityId: '999', status: 'ridden' },
       })
-      expect(service['prisma'].fahrt.create).toHaveBeenCalledWith({
+      expect(service['prisma'].activity.create).toHaveBeenCalledWith({
         data: expect.objectContaining({ duration: 3600, avgHr: 150, maxHr: 180 }),
       })
     })
@@ -585,7 +585,7 @@ describe('ImportService', () => {
                 findMany: vi.fn().mockResolvedValue([]), // No matches → a new route is created
                 create: createRoute,
               },
-              fahrt: {
+              activity: {
                 create: vi.fn().mockResolvedValue({ id: 'f1', routeId: '1' }),
               },
             },
@@ -772,7 +772,7 @@ describe('ImportService', () => {
                 findMany: vi.fn().mockResolvedValue([]),
                 create: createRoute,
               },
-              fahrt: {
+              activity: {
                 create: vi.fn().mockResolvedValue({ id: 'f1', routeId: 'route-1' }),
               },
             },
@@ -817,7 +817,7 @@ describe('ImportService', () => {
                 findMany: vi.fn().mockResolvedValue([]),
                 create: createRoute,
               },
-              fahrt: {
+              activity: {
                 create: vi.fn().mockResolvedValue({ id: 'f1', routeId: 'route-1' }),
               },
             },
@@ -861,7 +861,7 @@ describe('ImportService', () => {
                 findMany: vi.fn().mockResolvedValue([]),
                 create: createRoute,
               },
-              fahrt: {
+              activity: {
                 create: vi.fn().mockResolvedValue({ id: 'f1', routeId: 'route-1' }),
               },
             },

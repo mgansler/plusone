@@ -2,7 +2,7 @@ import { validate } from 'class-validator'
 import { plainToInstance } from 'class-transformer'
 
 import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
-import { CreateFahrtDto, QueryFahrtDto } from './dto/ride.dto'
+import { CreateActivityDto, QueryActivityDto } from './dto/activity.dto'
 import { ImportResultDto, ImportStravaActivityDto, StravaRouteSummaryDto } from './dto/import.dto'
 import { NearbyRouteResponseDto } from './dto/nearby-route-response.dto'
 import { ListRoutesResponseDto, RouteResponseDto } from './dto/list-routes-response.dto'
@@ -146,9 +146,9 @@ describe('QueryRouteDto', () => {
   })
 })
 
-describe('CreateFahrtDto', () => {
+describe('CreateActivityDto', () => {
   it('accepts valid data', async () => {
-    const dto = plainToInstance(CreateFahrtDto, {
+    const dto = plainToInstance(CreateActivityDto, {
       riddenAt: '2024-06-01T10:00:00Z',
       duration: 3600,
       avgHr: 150,
@@ -159,45 +159,45 @@ describe('CreateFahrtDto', () => {
   })
 
   it('rejects missing riddenAt', async () => {
-    const dto = plainToInstance(CreateFahrtDto, {})
+    const dto = plainToInstance(CreateActivityDto, {})
     const errors = await validate(dto)
     expect(errors.length).toBeGreaterThan(0)
   })
 
   it('rejects invalid date', async () => {
-    const dto = plainToInstance(CreateFahrtDto, { riddenAt: 'not-a-date' })
+    const dto = plainToInstance(CreateActivityDto, { riddenAt: 'not-a-date' })
     const errors = await validate(dto)
     expect(errors.length).toBeGreaterThan(0)
   })
 
   it('rejects heart rate above 250', async () => {
-    const dto = plainToInstance(CreateFahrtDto, { riddenAt: '2024-06-01T10:00:00Z', avgHr: 300 })
+    const dto = plainToInstance(CreateActivityDto, { riddenAt: '2024-06-01T10:00:00Z', avgHr: 300 })
     const errors = await validate(dto)
     expect(errors.length).toBeGreaterThan(0)
   })
 
   it('rejects negative duration', async () => {
-    const dto = plainToInstance(CreateFahrtDto, { riddenAt: '2024-06-01T10:00:00Z', duration: -1 })
+    const dto = plainToInstance(CreateActivityDto, { riddenAt: '2024-06-01T10:00:00Z', duration: -1 })
     const errors = await validate(dto)
     expect(errors.length).toBeGreaterThan(0)
   })
 })
 
-describe('QueryFahrtDto', () => {
+describe('QueryActivityDto', () => {
   it('accepts empty query', async () => {
-    const dto = plainToInstance(QueryFahrtDto, {})
+    const dto = plainToInstance(QueryActivityDto, {})
     const errors = await validate(dto)
     expect(errors.length).toBe(0)
   })
 
   it('accepts valid date range', async () => {
-    const dto = plainToInstance(QueryFahrtDto, { dateFrom: '2024-06-01', dateTo: '2024-06-30' })
+    const dto = plainToInstance(QueryActivityDto, { dateFrom: '2024-06-01', dateTo: '2024-06-30' })
     const errors = await validate(dto)
     expect(errors.length).toBe(0)
   })
 
   it('rejects invalid date', async () => {
-    const dto = plainToInstance(QueryFahrtDto, { dateFrom: 'not-a-date' })
+    const dto = plainToInstance(QueryActivityDto, { dateFrom: 'not-a-date' })
     const errors = await validate(dto)
     expect(errors.length).toBeGreaterThan(0)
   })

@@ -2,7 +2,7 @@ import { IsDateString, IsIn, IsInt, IsNumber, IsOptional, IsString, Max, Min } f
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 
-export class CreateFahrtDto {
+export class CreateActivityDto {
   @ApiProperty({ description: 'Date and time of the ride (ISO 8601)' })
   @IsDateString()
   riddenAt: string
@@ -43,7 +43,7 @@ export class CreateFahrtDto {
   weather?: string
 }
 
-export class UpdateFahrtDto {
+export class UpdateActivityDto {
   @ApiPropertyOptional({ description: 'Activity title' })
   @IsOptional()
   @IsString()
@@ -85,11 +85,11 @@ export class UpdateFahrtDto {
   weather?: string
 }
 
-/** Fahrt columns plus route columns (distance, elevationGain) the Fahrten list can be sorted by */
-export const FAHRT_SORT_FIELDS = ['riddenAt', 'duration', 'avgHr', 'createdAt', 'distance', 'elevationGain'] as const
-export type FahrtSortField = (typeof FAHRT_SORT_FIELDS)[number]
+/** Activity columns plus route columns (distance, elevationGain) the activities list can be sorted by */
+export const ACTIVITY_SORT_FIELDS = ['riddenAt', 'duration', 'avgHr', 'createdAt', 'distance', 'elevationGain'] as const
+export type ActivitySortField = (typeof ACTIVITY_SORT_FIELDS)[number]
 
-export class QueryFahrtDto {
+export class QueryActivityDto {
   @ApiPropertyOptional({ description: 'Filter by date range start' })
   @IsOptional()
   @IsDateString()
@@ -128,10 +128,10 @@ export class QueryFahrtDto {
   @Min(0)
   maxElevation?: number
 
-  @ApiPropertyOptional({ description: 'Sort field', default: 'riddenAt', enum: FAHRT_SORT_FIELDS })
+  @ApiPropertyOptional({ description: 'Sort field', default: 'riddenAt', enum: ACTIVITY_SORT_FIELDS })
   @IsOptional()
-  @IsIn(FAHRT_SORT_FIELDS)
-  sortBy?: FahrtSortField
+  @IsIn(ACTIVITY_SORT_FIELDS)
+  sortBy?: ActivitySortField
 
   @ApiPropertyOptional({ description: 'Sort order', default: 'DESC' })
   @IsOptional()
@@ -161,7 +161,7 @@ export class QueryFahrtDto {
   limit?: number
 }
 
-export class FahrtRouteResponseDto {
+export class ActivityRouteResponseDto {
   @ApiProperty({ description: 'Route ID' })
   id: string
 
@@ -175,8 +175,8 @@ export class FahrtRouteResponseDto {
   stats?: Record<string, unknown>
 }
 
-export class FahrtResponseDto {
-  @ApiProperty({ description: 'Fahrt ID' })
+export class ActivityResponseDto {
+  @ApiProperty({ description: 'Activity ID' })
   id: string
 
   @ApiProperty({ description: 'Route ID' })
@@ -209,6 +209,6 @@ export class FahrtResponseDto {
   @ApiProperty({ description: 'Updated at' })
   updatedAt: Date
 
-  @ApiPropertyOptional({ description: 'Parent route', type: FahrtRouteResponseDto })
-  route?: FahrtRouteResponseDto
+  @ApiPropertyOptional({ description: 'Parent route', type: ActivityRouteResponseDto })
+  route?: ActivityRouteResponseDto
 }

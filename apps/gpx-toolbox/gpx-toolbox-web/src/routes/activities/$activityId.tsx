@@ -4,10 +4,10 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import { calculateAvgSpeed, calculateTotalDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 import {
-  getGetFahrt2QueryKey,
-  getListAllFahrtenQueryKey,
-  useDeleteFahrt2,
-  useGetFahrt2,
+  getGetActivityQueryKey,
+  getListAllActivitiesQueryKey,
+  useDeleteActivity,
+  useGetActivity,
 } from '@plusone/gpx-toolbox-api-client'
 
 import { SegmentMap } from '../../components/SegmentMap'
@@ -16,8 +16,8 @@ import { TrackAnalysis } from '../../components/TrackAnalysis'
 import { useSegmentRange } from '../../hooks/useSegmentRange'
 import { formatDistance, formatDuration } from '../../utils/format'
 
-export const Route = createFileRoute('/fahrten/$fahrtId')({
-  component: FahrtDetailPage,
+export const Route = createFileRoute('/activities/$activityId')({
+  component: ActivityDetailPage,
   beforeLoad: async () => {
     const token = localStorage.getItem('gpx-toolbox-jwt')
     if (!token) {
@@ -33,19 +33,19 @@ type Weather = {
   windGusts?: { max?: number }
 }
 
-function FahrtDetailPage() {
-  const { fahrtId } = Route.useParams()
+function ActivityDetailPage() {
+  const { activityId } = Route.useParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  const { data: fahrt, isLoading, error, isError } = useGetFahrt2(fahrtId)
+  const { data: activity, isLoading, error, isError } = useGetActivity(activityId)
 
-  const deleteFahrtMutation = useDeleteFahrt2({
+  const deleteActivityMutation = useDeleteActivity({
     mutation: {
       onSuccess: () => {
-        void queryClient.invalidateQueries({ queryKey: getGetFahrt2QueryKey(fahrtId) })
-        void queryClient.invalidateQueries({ queryKey: getListAllFahrtenQueryKey() })
-        void navigate({ to: '/fahrten' })
+        void queryClient.invalidateQueries({ queryKey: getGetActivityQueryKey(activityId) })
+        void queryClient.invalidateQueries({ queryKey: getListAllActivitiesQueryKey() })
+        void navigate({ to: '/activities' })
       },
     },
   })
@@ -54,7 +54,7 @@ function FahrtDetailPage() {
   const [gpxText, setGpxText] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!fahrt?.routeId) {
+    if (!activity?.routeId) {
       setGpxText(null)
       return
     }
@@ -62,35 +62,35 @@ function FahrtDetailPage() {
 
     const token = localStorage.getItem('gpx-toolbox-jwt')
     if (!token) {
-      console.error('[FahrtDetailPage] No auth token')
+      console.error('[ActivityDetailPage] No auth token')
       return
     }
 
-    fetch(`/api/routes/${fahrt.routeId}/export`, {
+    fetch(`/api/routes/${activity.routeId}/export`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (res) => {
         if (!res.ok) {
           const text = await res.text()
-          console.error('[FahrtDetailPage] HTTP error:', res.status, text)
+          console.error('[ActivityDetailPage] HTTP error:', res.status, text)
           return
         }
         const text = await res.text()
         setGpxText(text)
       })
       .catch((err) => {
-        console.error('[FahrtDetailPage] Fetch error:', err)
+        console.error('[ActivityDetailPage] Fetch error:', err)
       })
-  }, [fahrt?.routeId])
+  }, [activity?.routeId])
 
   const points = useMemo(() => (gpxText ? parseGpx(gpxText) : []), [gpxText])
   const { totalDistKm, segmentRange, setSegmentRange } = useSegmentRange(points)
   const [hoveredPoint, setHoveredPoint] = useState<TrackPoint | null>(null)
 
-  async function handleDeleteFahrt() {
-    if (!confirm('Fahrt wirklich löschen?')) return
+  async function handleDeleteActivity() {
+    if (!confirm('Aktivität wirklich löschen?')) return
     try {
-      await deleteFahrtMutation.mutateAsync({ id: fahrtId })
+      await deleteActivityMutation.mutateAsync({ id: activityId })
     } catch {
       // Error handled by mutation
     }
@@ -98,14 +98,14 @@ function FahrtDetailPage() {
 
   if (isLoading) return <div style={styles.loading}>Lade...</div>
   if (isError) return <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>
-  if (!fahrt) return <div style={styles.error}>Fahrt nicht gefunden</div>
+  if (!activity) return <div style={styles.error}>Aktivität nicht gefunden</div>
 
-  const parentRoute = fahrt.route as
+  const parentRoute = activity.route as
     { name?: string; status?: string; stats?: { distance?: number; elevationGain?: number } } | undefined | null
-  const duration = fahrt.duration as unknown as number | null
-  const avgHr = fahrt.avgHr as unknown as number | null
-  const maxHr = fahrt.maxHr as unknown as number | null
-  const weather = fahrt.weather as unknown as Weather | null
+  const duration = activity.duration as unknown as number | null
+  const avgHr = activity.avgHr as unknown as number | null
+  const maxHr = activity.maxHr as unknown as number | null
+  const weather = activity.weather as unknown as Weather | null
   // Prefer the distance of the loaded track, fall back to the stored route stats
   const distance = points.length > 1 ? calculateTotalDistance(points) : (parentRoute?.stats?.distance ?? null)
 
@@ -113,15 +113,15 @@ function FahrtDetailPage() {
     <div style={styles.container}>
       <SidebarLayout
         header={
-          <Link to="/fahrten" style={styles.backLink}>
+          <Link to="/activities" style={styles.backLink}>
             ← Zurück zur Übersicht
           </Link>
         }
       >
         <div>
           <h2 style={styles.heading}>
-            {fahrt.riddenAt &&
-              new Date(fahrt.riddenAt).toLocaleDateString('de-DE', {
+            {activity.riddenAt &&
+              new Date(activity.riddenAt).toLocaleDateString('de-DE', {
                 weekday: 'long',
                 day: '2-digit',
                 month: 'long',
@@ -129,10 +129,10 @@ function FahrtDetailPage() {
               })}
           </h2>
 
-          {fahrt.title && <div style={styles.title}>{fahrt.title}</div>}
+          {activity.title && <div style={styles.title}>{activity.title}</div>}
 
           {parentRoute && (
-            <Link to="/routes/$routeId" params={{ routeId: fahrt.routeId }} style={styles.routeLink}>
+            <Link to="/routes/$routeId" params={{ routeId: activity.routeId }} style={styles.routeLink}>
               {parentRoute.name}
             </Link>
           )}
@@ -147,7 +147,7 @@ function FahrtDetailPage() {
         </div>
 
         <div style={styles.section}>
-          <h3 style={styles.sectionTitle}>Fahrt</h3>
+          <h3 style={styles.sectionTitle}>Aktivität</h3>
           <div style={styles.statsGrid}>
             {distance != null && <Stat label="Distanz" value={formatDistance(distance)} />}
             {points.length < 2 && parentRoute?.stats?.elevationGain != null && (
@@ -165,7 +165,7 @@ function FahrtDetailPage() {
             {weather?.rain?.sum != null && <Stat label="Regen" value={`${weather.rain.sum} mm`} />}
             {weather?.windGusts?.max != null && <Stat label="Windböen" value={`${weather.windGusts.max} km/h`} />}
           </div>
-          {fahrt.notes && <p style={styles.notes}>{fahrt.notes as unknown as string}</p>}
+          {activity.notes && <p style={styles.notes}>{activity.notes as unknown as string}</p>}
         </div>
 
         {points.length >= 2 && (
@@ -175,7 +175,7 @@ function FahrtDetailPage() {
               points={points}
               range={segmentRange}
               onRangeChange={setSegmentRange}
-              name={fahrt.title ?? parentRoute?.name}
+              name={activity.title ?? parentRoute?.name}
               onPointHover={setHoveredPoint}
             />
           </>
@@ -183,8 +183,8 @@ function FahrtDetailPage() {
 
         <SidebarDivider />
 
-        <button onClick={handleDeleteFahrt} style={styles.deleteButton}>
-          🗑 Fahrt löschen
+        <button onClick={handleDeleteActivity} style={styles.deleteButton}>
+          🗑 Aktivität löschen
         </button>
       </SidebarLayout>
 

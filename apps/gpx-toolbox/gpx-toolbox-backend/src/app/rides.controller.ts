@@ -15,13 +15,13 @@ import {
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import { RidesService } from './rides.service'
-import { CreateFahrtDto, FahrtResponseDto, QueryFahrtDto, UpdateFahrtDto } from './dto/ride.dto'
+import { CreateActivityDto, ActivityResponseDto, QueryActivityDto, UpdateActivityDto } from './dto/activity.dto'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { JwtPayload } from './jwt.strategy'
 
 @ApiTags('rides')
 @ApiBearerAuth()
-@Controller('routes/:routeId/fahrten')
+@Controller('routes/:routeId/activities')
 @UseGuards(JwtAuthGuard)
 export class RidesController {
   private readonly logger = new Logger(RidesController.name)
@@ -29,19 +29,19 @@ export class RidesController {
   constructor(private readonly ridesService: RidesService) {}
 
   @Get()
-  @ApiOperation({ operationId: 'listFahrten' })
-  @ApiOkResponse({ description: 'List of fahrten', type: [FahrtResponseDto] })
+  @ApiOperation({ operationId: 'listRouteActivities' })
+  @ApiOkResponse({ description: 'List of activities', type: [ActivityResponseDto] })
   async findAll(
     @Req() req: Request & { user: JwtPayload },
     @Param('routeId', ParseUUIDPipe) routeId: string,
-    @Query() query: QueryFahrtDto,
+    @Query() query: QueryActivityDto,
   ) {
     return this.ridesService.findAll(routeId, query, req.user.sub)
   }
 
   @Get(':id')
-  @ApiOperation({ operationId: 'getFahrt' })
-  @ApiOkResponse({ description: 'Fahrt details', type: FahrtResponseDto })
+  @ApiOperation({ operationId: 'getRouteActivity' })
+  @ApiOkResponse({ description: 'Activity details', type: ActivityResponseDto })
   async findOne(
     @Req() req: Request & { user: JwtPayload },
     @Param('routeId', ParseUUIDPipe) _routeId: string,
@@ -51,31 +51,31 @@ export class RidesController {
   }
 
   @Post()
-  @ApiOperation({ operationId: 'createFahrt' })
-  @ApiOkResponse({ description: 'Fahrt created successfully', type: FahrtResponseDto })
+  @ApiOperation({ operationId: 'createRouteActivity' })
+  @ApiOkResponse({ description: 'Activity created successfully', type: ActivityResponseDto })
   async create(
     @Req() req: Request & { user: JwtPayload },
     @Param('routeId', ParseUUIDPipe) routeId: string,
-    @Body() dto: CreateFahrtDto,
+    @Body() dto: CreateActivityDto,
   ) {
     return this.ridesService.create(routeId, dto, req.user.sub)
   }
 
   @Put(':id')
-  @ApiOperation({ operationId: 'updateFahrt' })
-  @ApiOkResponse({ description: 'Fahrt updated successfully', type: FahrtResponseDto })
+  @ApiOperation({ operationId: 'updateRouteActivity' })
+  @ApiOkResponse({ description: 'Activity updated successfully', type: ActivityResponseDto })
   async update(
     @Req() req: Request & { user: JwtPayload },
     @Param('routeId', ParseUUIDPipe) _routeId: string,
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() dto: UpdateFahrtDto,
+    @Body() dto: UpdateActivityDto,
   ) {
     return this.ridesService.update(id, dto, req.user.sub)
   }
 
   @Delete(':id')
-  @ApiOperation({ operationId: 'deleteFahrt' })
-  @ApiOkResponse({ description: 'Fahrt deleted successfully' })
+  @ApiOperation({ operationId: 'deleteRouteActivity' })
+  @ApiOkResponse({ description: 'Activity deleted successfully' })
   async remove(
     @Req() req: Request & { user: JwtPayload },
     @Param('routeId', ParseUUIDPipe) _routeId: string,
@@ -86,7 +86,7 @@ export class RidesController {
   }
 
   @Get(':id/weather')
-  @ApiOperation({ operationId: 'getFahrtWeather' })
+  @ApiOperation({ operationId: 'getRouteActivityWeather' })
   @ApiQuery({ name: 'date', required: false, description: 'Date to fetch weather for (ISO 8601)' })
   @ApiOkResponse({ description: 'Weather forecast for the ride date' })
   async getWeather(
@@ -95,8 +95,8 @@ export class RidesController {
     @Param('id', ParseUUIDPipe) id: string,
     @Query('date') date?: string,
   ) {
-    const fahrt = await this.ridesService.findOne(id, req.user.sub)
-    const weatherDate = date ?? fahrt.riddenAt.toISOString().split('T')[0]
+    const activity = await this.ridesService.findOne(id, req.user.sub)
+    const weatherDate = date ?? activity.riddenAt.toISOString().split('T')[0]
     return this.ridesService.getWeatherForecast(routeId, weatherDate)
   }
 }

@@ -109,7 +109,7 @@ describe('RoutesService', () => {
         polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
         createdAt: new Date('2024-01-01'),
         updatedAt: new Date('2024-01-02'),
-        fahrten: [],
+        activities: [],
       }
 
       mockPrisma.route.findUnique.mockResolvedValue(mockRoute)
@@ -143,7 +143,7 @@ describe('RoutesService', () => {
         polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
         createdAt: new Date(),
         updatedAt: new Date(),
-        fahrten: [],
+        activities: [],
       }))
 
       mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
@@ -170,7 +170,7 @@ describe('RoutesService', () => {
           polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
           createdAt: new Date(),
           updatedAt: new Date(),
-          fahrten: [],
+          activities: [],
         },
         {
           id: 'route-2',
@@ -184,7 +184,7 @@ describe('RoutesService', () => {
           polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
           createdAt: new Date(),
           updatedAt: new Date(),
-          fahrten: [],
+          activities: [],
         },
       ]
 
@@ -210,7 +210,7 @@ describe('RoutesService', () => {
           polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
           createdAt: new Date(),
           updatedAt: new Date(),
-          fahrten: [],
+          activities: [],
         },
         {
           id: 'route-2',
@@ -224,7 +224,7 @@ describe('RoutesService', () => {
           polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
           createdAt: new Date(),
           updatedAt: new Date(),
-          fahrten: [],
+          activities: [],
         },
       ]
 
@@ -250,7 +250,7 @@ describe('RoutesService', () => {
           polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
           createdAt: new Date(),
           updatedAt: new Date(),
-          fahrten: [],
+          activities: [],
         },
         {
           id: 'route-2',
@@ -264,7 +264,7 @@ describe('RoutesService', () => {
           polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
           createdAt: new Date(),
           updatedAt: new Date(),
-          fahrten: [],
+          activities: [],
         },
       ]
 
@@ -465,7 +465,7 @@ describe('RoutesService', () => {
             provide: PrismaService,
             useValue: {
               route: { findMany: vi.fn().mockResolvedValue([]) },
-              fahrt: { findMany: vi.fn().mockResolvedValue([]) },
+              activity: { findMany: vi.fn().mockResolvedValue([]) },
             },
           },
           { provide: StravaService, useValue: { getActivities } },

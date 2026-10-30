@@ -4,9 +4,9 @@ import { firstValueFrom } from 'rxjs'
 
 import { PrismaService, Route } from '@plusone/gpx-toolbox-persistence'
 
-import { CreateFahrtDto, QueryFahrtDto, UpdateFahrtDto } from './dto/ride.dto'
-import { buildFahrtListQuery } from './fahrt-list-query.util'
-import { FahrtResponse, formatFahrt, PaginatedResponse, WeatherSummary } from './fahrt-response.util'
+import { CreateActivityDto, QueryActivityDto, UpdateActivityDto } from './dto/activity.dto'
+import { buildActivityListQuery } from './activity-list-query.util'
+import { ActivityResponse, formatActivity, PaginatedResponse, WeatherSummary } from './activity-response.util'
 import { parsePolyline } from './polyline.util'
 
 /** Subset of the Open-Meteo `daily` response we request */
@@ -30,9 +30,13 @@ export class RidesService {
   ) {}
 
   /**
-   * List fahrten for a route with optional filters and pagination.
+   * List activities for a route with optional filters and pagination.
    */
-  async findAll(routeId: string, query: QueryFahrtDto, userId: string): Promise<PaginatedResponse<FahrtResponse>> {
+  async findAll(
+    routeId: string,
+    query: QueryActivityDto,
+    userId: string,
+  ): Promise<PaginatedResponse<ActivityResponse>> {
     const { page = 1, limit = 50 } = query
 
     // Verify route exists and belongs to user
@@ -41,9 +45,9 @@ export class RidesService {
       throw new NotFoundException(`Route with ID ${routeId} not found`)
     }
 
-    const { where, orderBy } = buildFahrtListQuery(query, { routeId, userId })
+    const { where, orderBy } = buildActivityListQuery(query, { routeId, userId })
 
-    const all = await this.prisma.fahrt.findMany({
+    const all = await this.prisma.activity.findMany({
       where,
       orderBy,
     })
@@ -52,7 +56,7 @@ export class RidesService {
     const paginated = all.slice((page - 1) * limit, page * limit)
 
     return {
-      items: paginated.map((f) => formatFahrt(f)),
+      items: paginated.map((f) => formatActivity(f)),
       total,
       page,
       limit,
@@ -61,22 +65,22 @@ export class RidesService {
   }
 
   /**
-   * Get a single Fahrt by ID.
+   * Get a single activity by ID.
    */
-  async findOne(id: string, userId: string): Promise<FahrtResponse> {
-    const fahrt = await this.prisma.fahrt.findUnique({ where: { id, userId } })
+  async findOne(id: string, userId: string): Promise<ActivityResponse> {
+    const activity = await this.prisma.activity.findUnique({ where: { id, userId } })
 
-    if (!fahrt) {
-      throw new NotFoundException(`Fahrt with ID ${id} not found`)
+    if (!activity) {
+      throw new NotFoundException(`Activity with ID ${id} not found`)
     }
 
-    return formatFahrt(fahrt)
+    return formatActivity(activity)
   }
 
   /**
-   * Create a new Fahrt for a route.
+   * Create a new activity for a route.
    */
-  async create(routeId: string, dto: CreateFahrtDto, userId: string): Promise<FahrtResponse> {
+  async create(routeId: string, dto: CreateActivityDto, userId: string): Promise<ActivityResponse> {
     // Verify route exists and belongs to user
     const route = await this.prisma.route.findUnique({ where: { id: routeId, userId } })
     if (!route) {
@@ -86,7 +90,7 @@ export class RidesService {
     // Fetch weather forecast for the ridden date
     const weather = await this.fetchWeatherForRide(route, dto.riddenAt)
 
-    const fahrt = await this.prisma.fahrt.create({
+    const activity = await this.prisma.activity.create({
       data: {
         routeId,
         userId,
@@ -101,40 +105,40 @@ export class RidesService {
       include: { route: true },
     })
 
-    this.logger.log(`Created Fahrt #${fahrt.id} for route "${route.name}"`)
-    return formatFahrt(fahrt)
+    this.logger.log(`Created activity #${activity.id} for route "${route.name}"`)
+    return formatActivity(activity)
   }
 
   /**
-   * Update a Fahrt.
+   * Update an activity.
    */
-  async update(id: string, dto: UpdateFahrtDto, userId: string): Promise<FahrtResponse> {
-    const existing = await this.prisma.fahrt.findUnique({ where: { id, userId } })
+  async update(id: string, dto: UpdateActivityDto, userId: string): Promise<ActivityResponse> {
+    const existing = await this.prisma.activity.findUnique({ where: { id, userId } })
     if (!existing) {
-      throw new NotFoundException(`Fahrt with ID ${id} not found`)
+      throw new NotFoundException(`Activity with ID ${id} not found`)
     }
 
-    const fahrt = await this.prisma.fahrt.update({
+    const activity = await this.prisma.activity.update({
       where: { id, userId },
       data: dto,
       include: { route: true },
     })
 
-    this.logger.log(`Updated Fahrt #${id}`)
-    return formatFahrt(fahrt)
+    this.logger.log(`Updated activity #${id}`)
+    return formatActivity(activity)
   }
 
   /**
-   * Delete a Fahrt.
+   * Delete an activity.
    */
   async remove(id: string, userId: string): Promise<void> {
-    const existing = await this.prisma.fahrt.findUnique({ where: { id, userId } })
+    const existing = await this.prisma.activity.findUnique({ where: { id, userId } })
     if (!existing) {
-      throw new NotFoundException(`Fahrt with ID ${id} not found`)
+      throw new NotFoundException(`Activity with ID ${id} not found`)
     }
 
-    await this.prisma.fahrt.delete({ where: { id, userId } })
-    this.logger.log(`Deleted Fahrt #${id}`)
+    await this.prisma.activity.delete({ where: { id, userId } })
+    this.logger.log(`Deleted activity #${id}`)
   }
 
   /**

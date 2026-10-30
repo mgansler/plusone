@@ -5,9 +5,9 @@ import { useQueryClient } from '@tanstack/react-query'
 import { parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 import {
   getGetRouteQueryKey,
-  getListFahrtenQueryKey,
-  useCreateFahrt,
-  useDeleteFahrt,
+  getListRouteActivitiesQueryKey,
+  useCreateRouteActivity,
+  useDeleteRouteActivity,
   useGetRoute,
 } from '@plusone/gpx-toolbox-api-client'
 
@@ -81,11 +81,11 @@ function RouteDetailPage() {
   const { totalDistKm, segmentRange, setSegmentRange } = useSegmentRange(points)
   const [hoveredPoint, setHoveredPoint] = useState<TrackPoint | null>(null)
 
-  const createFahrtMutation = useCreateFahrt({
+  const createActivityMutation = useCreateRouteActivity({
     mutation: {
       onSuccess: () => {
         void queryClient.invalidateQueries({ queryKey: getGetRouteQueryKey(routeId) })
-        void queryClient.invalidateQueries({ queryKey: getListFahrtenQueryKey(routeId) })
+        void queryClient.invalidateQueries({ queryKey: getListRouteActivitiesQueryKey(routeId) })
         setShowForm(false)
         setFormRiddenAt(new Date().toISOString().slice(0, 16))
         setFormTitle('')
@@ -98,16 +98,16 @@ function RouteDetailPage() {
     },
   })
 
-  const deleteFahrtMutation = useDeleteFahrt({
+  const deleteActivityMutation = useDeleteRouteActivity({
     mutation: {
       onSuccess: () => {
         void queryClient.invalidateQueries({ queryKey: getGetRouteQueryKey(routeId) })
-        void queryClient.invalidateQueries({ queryKey: getListFahrtenQueryKey(routeId) })
+        void queryClient.invalidateQueries({ queryKey: getListRouteActivitiesQueryKey(routeId) })
       },
     },
   })
 
-  async function handleCreateFahrt(e: React.FormEvent) {
+  async function handleCreateActivity(e: React.FormEvent) {
     e.preventDefault()
     setFormSubmitting(true)
     setFormError(null)
@@ -118,7 +118,7 @@ function RouteDetailPage() {
       if (formAvgHr) body.avgHr = parseInt(formAvgHr, 10)
       if (formMaxHr) body.maxHr = parseInt(formMaxHr, 10)
       if (formNotes) body.notes = formNotes
-      await createFahrtMutation.mutateAsync({ routeId, data: body as never })
+      await createActivityMutation.mutateAsync({ routeId, data: body as never })
     } catch (err) {
       setFormError(err instanceof Error ? err.message : 'Unbekannter Fehler')
     } finally {
@@ -126,10 +126,10 @@ function RouteDetailPage() {
     }
   }
 
-  async function handleDeleteFahrt(fahrtId: string) {
-    if (!confirm('Fahrt wirklich löschen?')) return
+  async function handleDeleteActivity(activityId: string) {
+    if (!confirm('Aktivität wirklich löschen?')) return
     try {
-      await deleteFahrtMutation.mutateAsync({ routeId, id: fahrtId })
+      await deleteActivityMutation.mutateAsync({ routeId, id: activityId })
     } catch {
       // Error handled by mutation
     }
@@ -139,7 +139,7 @@ function RouteDetailPage() {
   if (isError) return <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>
   if (!route) return <div style={styles.error}>Route nicht gefunden</div>
 
-  const fahrten = route.fahrten ?? []
+  const activities = route.activities ?? []
 
   return (
     <div style={styles.container}>
@@ -217,18 +217,18 @@ function RouteDetailPage() {
 
         <SidebarDivider />
 
-        {/* Fahrten */}
-        <div style={styles.fahrtenSection}>
-          <div style={styles.fahrtenHeader}>
-            <h3 style={styles.fahrtenHeading}>Fahrten ({fahrten.length})</h3>
+        {/* Activities */}
+        <div style={styles.activitiesSection}>
+          <div style={styles.activitiesHeader}>
+            <h3 style={styles.activitiesHeading}>Aktivitäten ({activities.length})</h3>
             <button onClick={() => setShowForm(!showForm)} style={styles.addButton}>
-              + Fahrt
+              + Aktivität
             </button>
           </div>
 
-          {/* Create Fahrt Form */}
+          {/* Create activity Form */}
           {showForm && (
-            <form onSubmit={handleCreateFahrt} style={styles.form}>
+            <form onSubmit={handleCreateActivity} style={styles.form}>
               <input
                 type="datetime-local"
                 value={formRiddenAt}
@@ -289,9 +289,9 @@ function RouteDetailPage() {
             </form>
           )}
 
-          {/* Fahrten Liste */}
+          {/* Activities Liste */}
           {(
-            fahrten as Array<{
+            activities as Array<{
               id: string
               riddenAt: Date
               title: string | null
@@ -302,22 +302,22 @@ function RouteDetailPage() {
               weather: string | null
             }>
           ).map((f) => (
-            <div key={f.id} style={styles.fahrtCard}>
-              <div style={styles.fahrtHeader}>
-                <span style={styles.fahrtDate}>{new Date(f.riddenAt).toLocaleDateString('de-DE')}</span>
-                <button onClick={() => handleDeleteFahrt(f.id)} style={styles.deleteButton}>
+            <div key={f.id} style={styles.activityCard}>
+              <div style={styles.activityHeader}>
+                <span style={styles.activityDate}>{new Date(f.riddenAt).toLocaleDateString('de-DE')}</span>
+                <button onClick={() => handleDeleteActivity(f.id)} style={styles.deleteButton}>
                   🗑
                 </button>
               </div>
-              <div style={styles.fahrtStats}>
+              <div style={styles.activityStats}>
                 {f.duration && <span>{formatDuration(f.duration as number)}</span>}
                 {f.avgHr && <span>Ø HR {f.avgHr as number}</span>}
                 {f.maxHr && <span>Max HR {f.maxHr as number}</span>}
               </div>
-              {f.title && <div style={styles.fahrtTitle}>{f.title as string}</div>}
-              {f.notes && <div style={styles.fahrtNotes}>{f.notes as string}</div>}
+              {f.title && <div style={styles.activityTitle}>{f.title as string}</div>}
+              {f.notes && <div style={styles.activityNotes}>{f.notes as string}</div>}
               {f.weather && (
-                <div style={styles.fahrtWeather}>
+                <div style={styles.activityWeather}>
                   {(() => {
                     try {
                       const w = JSON.parse(typeof f.weather === 'string' ? f.weather : JSON.stringify(f.weather))
@@ -450,14 +450,14 @@ const styles = {
     fontStyle: 'italic',
     marginBottom: 12,
   } as const,
-  fahrtenSection: {} as const,
-  fahrtenHeader: {
+  activitiesSection: {} as const,
+  activitiesHeader: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 8,
   } as const,
-  fahrtenHeading: {
+  activitiesHeading: {
     margin: 0,
     fontSize: 16,
     fontWeight: 600,
@@ -535,20 +535,20 @@ const styles = {
     textAlign: 'center' as const,
     color: '#666',
   } as const,
-  fahrtCard: {
+  activityCard: {
     backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 6,
     padding: 10,
     marginBottom: 8,
     border: '1px solid #334155',
   } as const,
-  fahrtHeader: {
+  activityHeader: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 4,
   } as const,
-  fahrtDate: {
+  activityDate: {
     fontSize: 13,
     fontWeight: 600,
     color: '#f8fafc',
@@ -560,26 +560,26 @@ const styles = {
     fontSize: 14,
     opacity: 0.5,
   } as const,
-  fahrtStats: {
+  activityStats: {
     display: 'flex',
     gap: 12,
     fontSize: 12,
     color: '#94a3b8',
     marginBottom: 4,
   } as const,
-  fahrtNotes: {
+  activityNotes: {
     fontSize: 12,
     color: '#94a3b8',
     fontStyle: 'italic',
     marginTop: 4,
   } as const,
-  fahrtTitle: {
+  activityTitle: {
     fontSize: 14,
     fontWeight: 600,
     color: '#f8fafc',
     marginTop: 4,
   } as const,
-  fahrtWeather: {
+  activityWeather: {
     display: 'flex',
     gap: 8,
     fontSize: 12,

@@ -52,12 +52,12 @@ export function App() {
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
               <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
-            GPX-Toolbox
+            GPX-Toolcat
           </a>
           <div style={styles.topbarRight}>
             {user?.name && <UserMenu name={user.name} />}
-            <a href="/fahrten" style={styles.topbarLink}>
-              Fahrten
+            <a href="/activities" style={styles.topbarLink}>
+              Aktivitäten
             </a>
             <a href="/nearby" style={styles.topbarLink}>
               In der Nähe

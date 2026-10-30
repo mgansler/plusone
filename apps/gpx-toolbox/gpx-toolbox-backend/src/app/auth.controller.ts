@@ -143,7 +143,7 @@ export class AuthController {
     // Aggregate local stats from database
     const [routeCount, rideCount, routesWithPolyline] = await Promise.all([
       this.prisma.route.count({ where: { userId: payload.sub } }),
-      this.prisma.fahrt.count({ where: { userId: payload.sub } }),
+      this.prisma.activity.count({ where: { userId: payload.sub } }),
       this.prisma.route.findMany({
         where: { userId: payload.sub },
         select: { stats: true },

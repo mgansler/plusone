@@ -14,10 +14,10 @@ import { Route as CallbackRouteImport } from './routes/callback'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as NearbyRouteImport } from './routes/nearby'
 import { Route as UtilsRouteImport } from './routes/utils'
+import { Route as ActivitiesIndexRouteImport } from './routes/activities/index'
+import { Route as ActivitiesActivityIdRouteImport } from './routes/activities/$activityId'
+import { Route as ActivitiesSyncRouteImport } from './routes/activities/sync'
 import { Route as DebugIndexRouteImport } from './routes/debug/index'
-import { Route as FahrtenIndexRouteImport } from './routes/fahrten/index'
-import { Route as FahrtenFahrtIdRouteImport } from './routes/fahrten/$fahrtId'
-import { Route as FahrtenSyncRouteImport } from './routes/fahrten/sync'
 import { Route as RoutesIndexRouteImport } from './routes/routes/index'
 import { Route as RoutesRouteIdRouteImport } from './routes/routes/$routeId'
 import { Route as RoutesSyncRouteImport } from './routes/routes/sync'
@@ -47,24 +47,24 @@ const UtilsRoute = UtilsRouteImport.update({
   path: '/utils',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ActivitiesIndexRoute = ActivitiesIndexRouteImport.update({
+  id: '/activities/',
+  path: '/activities/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ActivitiesActivityIdRoute = ActivitiesActivityIdRouteImport.update({
+  id: '/activities/$activityId',
+  path: '/activities/$activityId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ActivitiesSyncRoute = ActivitiesSyncRouteImport.update({
+  id: '/activities/sync',
+  path: '/activities/sync',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DebugIndexRoute = DebugIndexRouteImport.update({
   id: '/debug/',
   path: '/debug/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FahrtenIndexRoute = FahrtenIndexRouteImport.update({
-  id: '/fahrten/',
-  path: '/fahrten/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FahrtenFahrtIdRoute = FahrtenFahrtIdRouteImport.update({
-  id: '/fahrten/$fahrtId',
-  path: '/fahrten/$fahrtId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FahrtenSyncRoute = FahrtenSyncRouteImport.update({
-  id: '/fahrten/sync',
-  path: '/fahrten/sync',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RoutesIndexRoute = RoutesIndexRouteImport.update({
@@ -89,12 +89,12 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
   '/utils': typeof UtilsRoute
-  '/fahrten/$fahrtId': typeof FahrtenFahrtIdRoute
-  '/fahrten/sync': typeof FahrtenSyncRoute
+  '/activities/$activityId': typeof ActivitiesActivityIdRoute
+  '/activities/sync': typeof ActivitiesSyncRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
   '/routes/sync': typeof RoutesSyncRoute
+  '/activities/': typeof ActivitiesIndexRoute
   '/debug/': typeof DebugIndexRoute
-  '/fahrten/': typeof FahrtenIndexRoute
   '/routes/': typeof RoutesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -103,12 +103,12 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
   '/utils': typeof UtilsRoute
-  '/fahrten/$fahrtId': typeof FahrtenFahrtIdRoute
-  '/fahrten/sync': typeof FahrtenSyncRoute
+  '/activities/$activityId': typeof ActivitiesActivityIdRoute
+  '/activities/sync': typeof ActivitiesSyncRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
   '/routes/sync': typeof RoutesSyncRoute
+  '/activities': typeof ActivitiesIndexRoute
   '/debug': typeof DebugIndexRoute
-  '/fahrten': typeof FahrtenIndexRoute
   '/routes': typeof RoutesIndexRoute
 }
 export interface FileRoutesById {
@@ -118,12 +118,12 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
   '/utils': typeof UtilsRoute
-  '/fahrten/$fahrtId': typeof FahrtenFahrtIdRoute
-  '/fahrten/sync': typeof FahrtenSyncRoute
+  '/activities/$activityId': typeof ActivitiesActivityIdRoute
+  '/activities/sync': typeof ActivitiesSyncRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
   '/routes/sync': typeof RoutesSyncRoute
+  '/activities/': typeof ActivitiesIndexRoute
   '/debug/': typeof DebugIndexRoute
-  '/fahrten/': typeof FahrtenIndexRoute
   '/routes/': typeof RoutesIndexRoute
 }
 export interface FileRouteTypes {
@@ -134,12 +134,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/nearby'
     | '/utils'
-    | '/fahrten/$fahrtId'
-    | '/fahrten/sync'
+    | '/activities/$activityId'
+    | '/activities/sync'
     | '/routes/$routeId'
     | '/routes/sync'
+    | '/activities/'
     | '/debug/'
-    | '/fahrten/'
     | '/routes/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -148,12 +148,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/nearby'
     | '/utils'
-    | '/fahrten/$fahrtId'
-    | '/fahrten/sync'
+    | '/activities/$activityId'
+    | '/activities/sync'
     | '/routes/$routeId'
     | '/routes/sync'
+    | '/activities'
     | '/debug'
-    | '/fahrten'
     | '/routes'
   id:
     | '__root__'
@@ -162,12 +162,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/nearby'
     | '/utils'
-    | '/fahrten/$fahrtId'
-    | '/fahrten/sync'
+    | '/activities/$activityId'
+    | '/activities/sync'
     | '/routes/$routeId'
     | '/routes/sync'
+    | '/activities/'
     | '/debug/'
-    | '/fahrten/'
     | '/routes/'
   fileRoutesById: FileRoutesById
 }
@@ -177,12 +177,12 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   NearbyRoute: typeof NearbyRoute
   UtilsRoute: typeof UtilsRoute
-  FahrtenFahrtIdRoute: typeof FahrtenFahrtIdRoute
-  FahrtenSyncRoute: typeof FahrtenSyncRoute
+  ActivitiesActivityIdRoute: typeof ActivitiesActivityIdRoute
+  ActivitiesSyncRoute: typeof ActivitiesSyncRoute
   RoutesRouteIdRoute: typeof RoutesRouteIdRoute
   RoutesSyncRoute: typeof RoutesSyncRoute
+  ActivitiesIndexRoute: typeof ActivitiesIndexRoute
   DebugIndexRoute: typeof DebugIndexRoute
-  FahrtenIndexRoute: typeof FahrtenIndexRoute
   RoutesIndexRoute: typeof RoutesIndexRoute
 }
 
@@ -223,32 +223,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UtilsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/activities/': {
+      id: '/activities/'
+      path: '/activities'
+      fullPath: '/activities/'
+      preLoaderRoute: typeof ActivitiesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/activities/$activityId': {
+      id: '/activities/$activityId'
+      path: '/activities/$activityId'
+      fullPath: '/activities/$activityId'
+      preLoaderRoute: typeof ActivitiesActivityIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/activities/sync': {
+      id: '/activities/sync'
+      path: '/activities/sync'
+      fullPath: '/activities/sync'
+      preLoaderRoute: typeof ActivitiesSyncRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/debug/': {
       id: '/debug/'
       path: '/debug'
       fullPath: '/debug/'
       preLoaderRoute: typeof DebugIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fahrten/': {
-      id: '/fahrten/'
-      path: '/fahrten'
-      fullPath: '/fahrten/'
-      preLoaderRoute: typeof FahrtenIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fahrten/$fahrtId': {
-      id: '/fahrten/$fahrtId'
-      path: '/fahrten/$fahrtId'
-      fullPath: '/fahrten/$fahrtId'
-      preLoaderRoute: typeof FahrtenFahrtIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fahrten/sync': {
-      id: '/fahrten/sync'
-      path: '/fahrten/sync'
-      fullPath: '/fahrten/sync'
-      preLoaderRoute: typeof FahrtenSyncRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/routes/': {
@@ -281,12 +281,12 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   NearbyRoute: NearbyRoute,
   UtilsRoute: UtilsRoute,
-  FahrtenFahrtIdRoute: FahrtenFahrtIdRoute,
-  FahrtenSyncRoute: FahrtenSyncRoute,
+  ActivitiesActivityIdRoute: ActivitiesActivityIdRoute,
+  ActivitiesSyncRoute: ActivitiesSyncRoute,
   RoutesRouteIdRoute: RoutesRouteIdRoute,
   RoutesSyncRoute: RoutesSyncRoute,
+  ActivitiesIndexRoute: ActivitiesIndexRoute,
   DebugIndexRoute: DebugIndexRoute,
-  FahrtenIndexRoute: FahrtenIndexRoute,
   RoutesIndexRoute: RoutesIndexRoute,
 }
 export const routeTree = rootRouteImport

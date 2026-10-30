@@ -14,6 +14,18 @@ const tileLayers: Record<string, string> = {
   Topografisch: 'https://tile.opentopomap.org/{z}/{x}/{y}.png',
 }
 
+/**
+ * Style of the "my location" dot. The plugin's marker draws a circle using `radius`,
+ * but its typings only allow `PathOptions | MarkerOptions`, hence the separate constant.
+ */
+const locateMarkerStyle: L.CircleMarkerOptions = {
+  radius: 5,
+  color: '#3b82f6',
+  fillColor: '#60a5fa',
+  fillOpacity: 0.9,
+  weight: 2,
+}
+
 type MapProps = {
   children?: ReactNode
   center?: [number, number]
@@ -80,13 +92,7 @@ export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProp
       position: 'topleft',
       strings: { title: 'Zu meinem Standort' },
       flyTo: true,
-      markerStyle: {
-        radius: 5,
-        color: '#3b82f6',
-        fillColor: '#60a5fa',
-        fillOpacity: 0.9,
-        weight: 2,
-      },
+      markerStyle: locateMarkerStyle,
       circleStyle: {
         color: '#3b82f6',
         fillColor: '#60a5fa',

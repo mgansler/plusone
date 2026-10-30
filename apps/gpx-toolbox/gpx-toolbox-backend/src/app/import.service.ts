@@ -254,7 +254,7 @@ export class ImportService {
 
   /**
    * Import a single Strava activity with auto-match to existing routes.
-   * Creates a Route and a Fahrt (with activity data: duration, HR, elevation).
+   * Creates a Route and an activity (with activity data: duration, HR, elevation).
    *
    * Uses the Strava streams API (GET /activities/{id}/streams) to obtain
    * track points instead of the unreliable GPX export endpoint.
@@ -297,7 +297,7 @@ export class ImportService {
       const name = activityDetail.name ?? 'Imported Activity'
       const gpxContent = serializeGpx(points, name)
 
-      // Strava reports heart rate as floats; the Fahrt columns are integers
+      // Strava reports heart rate as floats; the activity columns are integers
       const result = await this.importActivity(points, gpxContent, userId, {
         name,
         source: 'stravaActivity',
@@ -308,7 +308,7 @@ export class ImportService {
         maxHr: activityDetail.max_heartrate != null ? Math.round(activityDetail.max_heartrate) : null,
         autoMatch,
       })
-      this.logger.log(`Created Fahrt from Strava activity ${activityId}`)
+      this.logger.log(`Created activity from Strava activity ${activityId}`)
 
       return result
     } catch (error) {
@@ -341,13 +341,13 @@ export class ImportService {
       maxHr: heartRates.length > 0 ? Math.max(...heartRates) : null,
       autoMatch: true,
     })
-    this.logger.log(`Created Fahrt "${name}" from uploaded GPX`)
+    this.logger.log(`Created activity "${name}" from uploaded GPX`)
     return result
   }
 
   /**
    * Shared by all activity imports: links the track to a matching route (or creates a new one)
-   * and creates a Fahrt with the activity data.
+   * and creates an activity with the activity data.
    */
   private async importActivity(points: Array<TrackPoint>, gpxContent: string, userId: string, activity: ActivityData) {
     // Compute stats from track points
@@ -401,8 +401,8 @@ export class ImportService {
       this.logger.log(`Created new route from activity "${activity.name}"`)
     }
 
-    // Create a Fahrt from the activity data
-    await this.prisma.fahrt.create({
+    // Create an activity from the activity data
+    await this.prisma.activity.create({
       data: {
         routeId,
         userId,

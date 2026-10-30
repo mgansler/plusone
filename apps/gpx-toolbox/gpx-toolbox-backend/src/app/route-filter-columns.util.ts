@@ -13,7 +13,7 @@ export type RouteFilterColumns = {
 
 /**
  * Denormalized columns stored next to `polyline` / `stats` so routes can be filtered and
- * sorted in SQL (Fahrten list, auto-match candidates). Spread the result into every route
+ * sorted in SQL (Activities list, auto-match candidates). Spread the result into every route
  * create/update that writes a polyline.
  */
 export function routeFilterColumns(

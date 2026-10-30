@@ -8,7 +8,7 @@ import { decodePolyline } from '@plusone/gpx-toolbox-utils'
 
 import { Map } from '../../components/Map'
 
-export const Route = createFileRoute('/fahrten/sync')({
+export const Route = createFileRoute('/activities/sync')({
   component: SyncPage,
 })
 
@@ -311,7 +311,7 @@ function SyncPage() {
         <div style={styles.sidebar}>
           <div style={styles.headingRow}>
             <h2 style={styles.heading}>Strava Sync</h2>
-            <Link to="/fahrten" style={styles.backLink}>
+            <Link to="/activities" style={styles.backLink}>
               ← Zur Übersicht
             </Link>
           </div>
@@ -417,9 +417,7 @@ function SyncPage() {
 
           {/* Empty state */}
           {!isLoadingActivities && activities.length === 0 && !error && (
-            <div style={styles.placeholder}>
-              Klicke "Aktualisieren" um deine Strava-Aktivitäten als Fahrten zu importieren
-            </div>
+            <div style={styles.placeholder}>Klicke "Aktualisieren" um deine Strava-Aktivitäten zu importieren</div>
           )}
         </div>
 

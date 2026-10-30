@@ -58,7 +58,7 @@ function RoutesPage() {
       stats?: Record<string, unknown>
       ratingTags?: Array<unknown>
       notes?: string | null
-      fahrten?: Array<{ id: string }>
+      activities?: Array<{ id: string }>
       createdAt: string
       updatedAt: string
     }>
@@ -247,8 +247,9 @@ function RoutesPage() {
                     {statusLabels[r.status] || r.status}
                   </span>
                   {(() => {
-                    const fahrten = (r as { fahrten?: Array<{ id: string }> }).fahrten
-                    if (fahrten && fahrten.length > 0) return <span style={styles.badge}>{fahrten.length} Fahrten</span>
+                    const activities = (r as { activities?: Array<{ id: string }> }).activities
+                    if (activities && activities.length > 0)
+                      return <span style={styles.badge}>{activities.length} Aktivitäten</span>
                     return null
                   })()}
                 </div>

@@ -11,7 +11,7 @@ export function setupApi(app: INestApplication): OpenAPIObject {
   app.setGlobalPrefix(GLOBAL_PREFIX)
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('GPX Toolbox API')
+    .setTitle('GPX-Toolcat API')
     .setVersion('0.1')
     .addBearerAuth(
       {
@@ -27,7 +27,7 @@ export function setupApi(app: INestApplication): OpenAPIObject {
 
   // Apply Swagger UI with OAuth2 token input
   SwaggerModule.setup(GLOBAL_PREFIX, app, document, {
-    customSiteTitle: 'GPX Toolbox API',
+    customSiteTitle: 'GPX-Toolcat API',
     // Inject custom CSS to add a token input field
     customCss: `
       .swagger-ui .topbar { display: none; }

@@ -44,7 +44,7 @@ model Route {
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
 
-  fahrten Fahrt[]
+  activities Activity[]
 
   @@index([userId, minLat, maxLat])
   @@map("routes")
@@ -62,7 +62,7 @@ enum RouteStatus {
   foundOnline
 }
 
-model Fahrt {
+model Activity {
   id               String   @id @default(uuid())
   routeId          String
   userId           String? // Strava user ID (nullable for manual imports)
@@ -79,5 +79,5 @@ model Fahrt {
 
   route Route @relation(fields: [routeId], references: [id], onDelete: Cascade)
 
-  @@map("fahrten")
+  @@map("activities")
 }

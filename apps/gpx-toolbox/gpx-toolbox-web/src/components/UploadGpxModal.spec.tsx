@@ -15,7 +15,7 @@ function renderModal(props: Partial<Parameters<typeof UploadGpxModal>[0]> = {}) 
         endpoint="/api/import/activity"
         nameField="title"
         namePlaceholder="Titel"
-        invalidateQueryKeys={[['fahrten'], ['routes']]}
+        invalidateQueryKeys={[['activities'], ['routes']]}
         onClose={onClose}
         {...props}
       />
@@ -52,7 +52,7 @@ describe('UploadGpxModal', () => {
     expect((body.get('file') as File).name).toBe('ride.gpx')
     expect(body.get('title')).toBe('Feierabendrunde')
     expect(body.get('source')).toBe('manualImport')
-    expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: ['fahrten'] })
+    expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: ['activities'] })
     expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: ['routes'] })
   })
 

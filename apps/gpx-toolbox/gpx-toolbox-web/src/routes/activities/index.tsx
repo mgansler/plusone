@@ -4,10 +4,10 @@ import L from 'leaflet'
 
 import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 import {
-  getListAllFahrtenQueryKey,
+  getListAllActivitiesQueryKey,
   getListRoutesQueryKey,
-  ListAllFahrtenSortBy,
-  useListAllFahrten,
+  ListAllActivitiesSortBy,
+  useListAllActivities,
 } from '@plusone/gpx-toolbox-api-client'
 
 import { Map } from '../../components/Map'
@@ -16,20 +16,20 @@ import { PointDetails } from '../../components/PointDetails'
 import { UploadGpxModal } from '../../components/UploadGpxModal'
 import { actionButtonStyle } from '../../components/actionButtonStyle'
 
-export const Route = createFileRoute('/fahrten/')({
-  component: FahrtenPage,
+export const Route = createFileRoute('/activities/')({
+  component: ActivitiesPage,
 })
 
-function FahrtenPage() {
+function ActivitiesPage() {
   const mapRef: RefObject<L.Map | null> = useRef(null)
   const [page, setPage] = useState(1)
   const [dateFrom, setDateFrom] = useState('')
   const [dateTo, setDateTo] = useState('')
   const [distanceKm, setDistanceKm] = useState<NumberRange>(emptyRange)
   const [elevationM, setElevationM] = useState<NumberRange>(emptyRange)
-  const [sortBy, setSortBy] = useState<ListAllFahrtenSortBy>(ListAllFahrtenSortBy.riddenAt)
+  const [sortBy, setSortBy] = useState<ListAllActivitiesSortBy>(ListAllActivitiesSortBy.riddenAt)
   const [order, setOrder] = useState<'ASC' | 'DESC'>('DESC')
-  const [selectedFahrtId, setSelectedFahrtId] = useState<string | null>(null)
+  const [selectedActivityId, setSelectedActivityId] = useState<string | null>(null)
   const [showUploadModal, setShowUploadModal] = useState(false)
   const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
 
@@ -37,7 +37,7 @@ function FahrtenPage() {
   const debouncedDistanceKm = useDebouncedValue(distanceKm, 400)
   const debouncedElevationM = useDebouncedValue(elevationM, 400)
 
-  const { data, isLoading, error, isError } = useListAllFahrten({
+  const { data, isLoading, error, isError } = useListAllActivities({
     page,
     limit: 50,
     sortBy,
@@ -48,7 +48,7 @@ function FahrtenPage() {
     ...rangeParams(debouncedElevationM, 'minElevation', 'maxElevation', 1),
   })
 
-  type FahrtListResponse = {
+  type ActivityListResponse = {
     items?: Array<{
       id: string
       routeId: string
@@ -64,15 +64,15 @@ function FahrtenPage() {
     totalPages?: number
   }
 
-  const fahrten = (data as FahrtListResponse)?.items ?? []
-  const totalPages = (data as unknown as FahrtListResponse | undefined)?.totalPages ?? 1
-  const total = (data as unknown as FahrtListResponse | undefined)?.total ?? 0
+  const activities = (data as ActivityListResponse)?.items ?? []
+  const totalPages = (data as unknown as ActivityListResponse | undefined)?.totalPages ?? 1
+  const total = (data as unknown as ActivityListResponse | undefined)?.total ?? 0
 
-  // Fetch GPX content for selected fahrt's route
+  // Fetch GPX content for selected activity's route
   const [gpxText, setGpxText] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!selectedFahrtId) {
+    if (!selectedActivityId) {
       setGpxText(null)
       return
     }
@@ -80,30 +80,30 @@ function FahrtenPage() {
 
     const token = localStorage.getItem('gpx-toolbox-jwt')
     if (!token) {
-      console.error('[FahrtenPage] No auth token')
+      console.error('[ActivitiesPage] No auth token')
       return
     }
 
-    // Find the fahrt to get its routeId
-    const fahrt = fahrten.find((f) => f.id === selectedFahrtId)
-    if (!fahrt || !fahrt.routeId) return
+    // Find the activity to get its routeId
+    const activity = activities.find((f) => f.id === selectedActivityId)
+    if (!activity || !activity.routeId) return
 
-    fetch(`/api/routes/${fahrt.routeId}/export`, {
+    fetch(`/api/routes/${activity.routeId}/export`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (response) => {
         if (!response.ok) {
           const errorText = await response.text()
-          console.error('[FahrtenPage] HTTP error:', response.status, errorText)
+          console.error('[ActivitiesPage] HTTP error:', response.status, errorText)
           return
         }
         const text = await response.text()
         setGpxText(text)
       })
       .catch((err) => {
-        console.error('[FahrtenPage] Fetch error:', err)
+        console.error('[ActivitiesPage] Fetch error:', err)
       })
-  }, [selectedFahrtId, fahrten])
+  }, [selectedActivityId, activities])
 
   const points = gpxText ? parseGpx(gpxText) : []
 
@@ -117,8 +117,8 @@ function FahrtenPage() {
     return dist / 1000
   }, [points])
 
-  function handleFahrtClick(fahrt: (typeof fahrten)[number]) {
-    setSelectedFahrtId(fahrt.id)
+  function handleActivityClick(activity: (typeof activities)[number]) {
+    setSelectedActivityId(activity.id)
     setSelectedPoint(null)
   }
 
@@ -129,10 +129,10 @@ function FahrtenPage() {
     })
   }
 
-  // Compute totals across all displayed fahrten
-  const totalDuration = fahrten.reduce((sum, f) => sum + (f.duration ?? 0), 0)
-  const totalDistance = fahrten.reduce((sum, f) => sum + (f.route?.stats?.distance ?? 0), 0)
-  const totalElevation = fahrten.reduce((sum, f) => sum + (f.route?.stats?.elevationGain ?? 0), 0)
+  // Compute totals across all displayed activities
+  const totalDuration = activities.reduce((sum, f) => sum + (f.duration ?? 0), 0)
+  const totalDistance = activities.reduce((sum, f) => sum + (f.route?.stats?.distance ?? 0), 0)
+  const totalElevation = activities.reduce((sum, f) => sum + (f.route?.stats?.elevationGain ?? 0), 0)
   const hasFilters = dateFrom !== '' || dateTo !== '' || !isEmptyRange(distanceKm) || !isEmptyRange(elevationM)
 
   return (
@@ -203,7 +203,7 @@ function FahrtenPage() {
           <select
             value={sortBy}
             onChange={(e) => {
-              setSortBy(e.target.value as ListAllFahrtenSortBy)
+              setSortBy(e.target.value as ListAllActivitiesSortBy)
               setPage(1)
             }}
             style={styles.input}
@@ -230,12 +230,12 @@ function FahrtenPage() {
       <div style={styles.container}>
         <div style={styles.sidebar}>
           <div style={styles.headingRow}>
-            <h2 style={styles.heading}>Fahrten ({total})</h2>
+            <h2 style={styles.heading}>Aktivitäten ({total})</h2>
             <div style={styles.headingActions}>
               <button onClick={() => setShowUploadModal(true)} style={actionButtonStyle}>
                 📤 Upload
               </button>
-              <Link to="/fahrten/sync" style={actionButtonStyle}>
+              <Link to="/activities/sync" style={actionButtonStyle}>
                 📥 Sync
               </Link>
             </div>
@@ -263,34 +263,34 @@ function FahrtenPage() {
           {/* Loading */}
           {isLoading && <div style={styles.loading}>Lade...</div>}
 
-          {/* Fahrten */}
-          {fahrten.length > 0 && (
-            <div style={styles.fahrtList}>
-              {fahrten.map((f) => {
+          {/* Activities */}
+          {activities.length > 0 && (
+            <div style={styles.activityList}>
+              {activities.map((f) => {
                 const route = f.route
                 const stats = route?.stats
                 return (
                   <Link
                     key={f.id}
-                    to="/fahrten/$fahrtId"
-                    params={{ fahrtId: f.id }}
-                    onClick={() => handleFahrtClick(f)}
+                    to="/activities/$activityId"
+                    params={{ activityId: f.id }}
+                    onClick={() => handleActivityClick(f)}
                     title={f.notes ?? undefined}
                     style={{
-                      ...styles.fahrtCard,
-                      backgroundColor: selectedFahrtId === f.id ? '#e3f2fd' : '#fff',
+                      ...styles.activityCard,
+                      backgroundColor: selectedActivityId === f.id ? '#e3f2fd' : '#fff',
                     }}
                   >
                     {/* Line 1: date, title, route status */}
-                    <div style={styles.fahrtLine}>
-                      <span style={styles.fahrtDate}>
+                    <div style={styles.activityLine}>
+                      <span style={styles.activityDate}>
                         {new Date(f.riddenAt).toLocaleDateString('de-DE', {
                           day: '2-digit',
                           month: '2-digit',
                           year: 'numeric',
                         })}
                       </span>
-                      <span style={styles.fahrtTitle}>{f.title ?? route?.name ?? ''}</span>
+                      <span style={styles.activityTitle}>{f.title ?? route?.name ?? ''}</span>
                       {route?.status && (
                         <span style={{ ...styles.badge, backgroundColor: statusColors[route.status] || '#9e9e9e' }}>
                           {statusLabels[route.status]}
@@ -298,8 +298,8 @@ function FahrtenPage() {
                       )}
                     </div>
                     {/* Line 2: stats and route name */}
-                    <div style={styles.fahrtLine}>
-                      <span style={styles.fahrtStats}>
+                    <div style={styles.activityLine}>
+                      <span style={styles.activityStats}>
                         <span>⏱ {f.duration ? formatDuration(f.duration) : '–'}</span>
                         <span>↔ {stats?.distance ? formatDistance(stats.distance) : '–'}</span>
                         <span>↗ {stats?.elevationGain ? formatElevation(stats.elevationGain) : '–'}</span>
@@ -361,7 +361,7 @@ function FahrtenPage() {
           nameField="title"
           namePlaceholder="Titel (optional, sonst aus GPX)"
           nameRequired={false}
-          invalidateQueryKeys={[getListAllFahrtenQueryKey(), getListRoutesQueryKey()]}
+          invalidateQueryKeys={[getListAllActivitiesQueryKey(), getListRoutesQueryKey()]}
           onClose={() => setShowUploadModal(false)}
         />
       )}
@@ -442,12 +442,12 @@ function TrackClickHandler({
 
 type RouteStats = { distance?: number; elevationGain?: number }
 
-const sortLabels: Partial<Record<ListAllFahrtenSortBy, string>> = {
-  [ListAllFahrtenSortBy.riddenAt]: 'Datum',
-  [ListAllFahrtenSortBy.duration]: 'Dauer',
-  [ListAllFahrtenSortBy.distance]: 'Distanz',
-  [ListAllFahrtenSortBy.elevationGain]: 'Höhenmeter',
-  [ListAllFahrtenSortBy.avgHr]: 'Ø Herzfrequenz',
+const sortLabels: Partial<Record<ListAllActivitiesSortBy, string>> = {
+  [ListAllActivitiesSortBy.riddenAt]: 'Datum',
+  [ListAllActivitiesSortBy.duration]: 'Dauer',
+  [ListAllActivitiesSortBy.distance]: 'Distanz',
+  [ListAllActivitiesSortBy.elevationGain]: 'Höhenmeter',
+  [ListAllActivitiesSortBy.avgHr]: 'Ø Herzfrequenz',
 }
 
 /** Min/max as typed into the inputs (empty string = no bound) */
@@ -688,12 +688,12 @@ const styles = {
     textAlign: 'center' as const,
     color: '#666',
   } as const,
-  fahrtList: {
+  activityList: {
     display: 'flex',
     flexDirection: 'column' as const,
     gap: 6,
   } as const,
-  fahrtCard: {
+  activityCard: {
     display: 'flex',
     flexDirection: 'column' as const,
     gap: 2,
@@ -705,27 +705,27 @@ const styles = {
     textDecoration: 'none',
     color: 'inherit',
   } as const,
-  fahrtLine: {
+  activityLine: {
     display: 'flex',
     alignItems: 'center',
     gap: 8,
     minWidth: 0,
     whiteSpace: 'nowrap' as const,
   } as const,
-  fahrtDate: {
+  activityDate: {
     fontWeight: 600,
     fontSize: 13,
     color: '#1e293b',
     flexShrink: 0,
   } as const,
-  fahrtTitle: {
+  activityTitle: {
     flex: 1,
     fontSize: 13,
     color: '#1e293b',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
   } as const,
-  fahrtStats: {
+  activityStats: {
     display: 'flex',
     gap: 12,
     fontSize: 12,

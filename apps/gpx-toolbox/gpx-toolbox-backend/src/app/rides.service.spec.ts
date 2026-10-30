@@ -17,7 +17,7 @@ describe('RidesService', () => {
     route: {
       findUnique: vi.fn(),
     },
-    fahrt: {
+    activity: {
       findMany: vi.fn(),
       findUnique: vi.fn(),
       create: vi.fn(),
@@ -46,8 +46,8 @@ describe('RidesService', () => {
   })
 
   describe('findAll', () => {
-    it('returns paginated fahrten for a route', async () => {
-      const mockFahrten = [
+    it('returns paginated activities for a route', async () => {
+      const mockActivities = [
         {
           id: 'f1',
           routeId: 'route-1',
@@ -77,7 +77,7 @@ describe('RidesService', () => {
       ]
 
       mockPrisma.route.findUnique.mockResolvedValue({ id: 'route-1' })
-      mockPrisma.fahrt.findMany.mockResolvedValue(mockFahrten)
+      mockPrisma.activity.findMany.mockResolvedValue(mockActivities)
 
       const result = await service.findAll('route-1', { page: 1, limit: 10 }, userId)
 
@@ -93,7 +93,7 @@ describe('RidesService', () => {
     })
 
     it('filters by date range', async () => {
-      const mockFahrten = [
+      const mockActivities = [
         {
           id: 'f1',
           routeId: 'route-1',
@@ -110,18 +110,18 @@ describe('RidesService', () => {
       ]
 
       mockPrisma.route.findUnique.mockResolvedValue({ id: 'route-1' })
-      mockPrisma.fahrt.findMany.mockResolvedValue(mockFahrten)
+      mockPrisma.activity.findMany.mockResolvedValue(mockActivities)
 
       await service.findAll('route-1', { dateFrom: '2024-06-01', dateTo: '2024-06-30' }, userId)
 
-      expect(mockPrisma.fahrt.findMany.mock.calls[0][0].where.riddenAt.gte).toBeDefined()
-      expect(mockPrisma.fahrt.findMany.mock.calls[0][0].where.riddenAt.lte).toBeDefined()
+      expect(mockPrisma.activity.findMany.mock.calls[0][0].where.riddenAt.gte).toBeDefined()
+      expect(mockPrisma.activity.findMany.mock.calls[0][0].where.riddenAt.lte).toBeDefined()
     })
   })
 
   describe('findOne', () => {
-    it('returns a fahrt when found', async () => {
-      const mockFahrt = {
+    it('returns an activity when found', async () => {
+      const mockActivity = {
         id: 'f1',
         routeId: 'route-1',
         userId,
@@ -135,7 +135,7 @@ describe('RidesService', () => {
         updatedAt: new Date(),
       }
 
-      mockPrisma.fahrt.findUnique.mockResolvedValue(mockFahrt)
+      mockPrisma.activity.findUnique.mockResolvedValue(mockActivity)
 
       const result = await service.findOne('f1', userId)
 
@@ -147,15 +147,15 @@ describe('RidesService', () => {
       expect(result.notes).toBe('Great ride')
     })
 
-    it('throws when fahrt not found', async () => {
-      mockPrisma.fahrt.findUnique.mockResolvedValue(null)
+    it('throws when activity not found', async () => {
+      mockPrisma.activity.findUnique.mockResolvedValue(null)
 
       await expect(service.findOne('nonexistent', userId)).rejects.toThrow('not found')
     })
   })
 
   describe('create', () => {
-    it('creates a fahrt with weather forecast', async () => {
+    it('creates an activity with weather forecast', async () => {
       const mockRoute = {
         id: 'route-1',
         name: 'Test Route',
@@ -166,7 +166,7 @@ describe('RidesService', () => {
       }
 
       mockPrisma.route.findUnique.mockResolvedValue(mockRoute)
-      mockPrisma.fahrt.create.mockResolvedValue({
+      mockPrisma.activity.create.mockResolvedValue({
         id: 'f1',
         routeId: 'route-1',
         riddenAt: new Date('2024-06-01'),
@@ -196,7 +196,7 @@ describe('RidesService', () => {
       const result = await service.create('route-1', { riddenAt: '2024-06-01T10:00:00Z' }, userId)
 
       expect(result.id).toBe('f1')
-      expect(mockPrisma.fahrt.create.mock.calls[0][0].data.riddenAt).toEqual(new Date('2024-06-01T10:00:00Z'))
+      expect(mockPrisma.activity.create.mock.calls[0][0].data.riddenAt).toEqual(new Date('2024-06-01T10:00:00Z'))
     })
 
     it('throws when route does not belong to user', async () => {
@@ -209,7 +209,7 @@ describe('RidesService', () => {
   })
 
   describe('update', () => {
-    it('updates a fahrt', async () => {
+    it('updates an activity', async () => {
       const existing = {
         id: 'f1',
         routeId: 'route-1',
@@ -226,8 +226,8 @@ describe('RidesService', () => {
       }
       const updated = { ...existing, duration: 4000, notes: 'Updated notes' }
 
-      mockPrisma.fahrt.findUnique.mockResolvedValue(existing)
-      mockPrisma.fahrt.update.mockResolvedValue(updated)
+      mockPrisma.activity.findUnique.mockResolvedValue(existing)
+      mockPrisma.activity.update.mockResolvedValue(updated)
 
       const result = await service.update('f1', { duration: 4000, notes: 'Updated notes' }, userId)
 
@@ -235,15 +235,15 @@ describe('RidesService', () => {
       expect(result.notes).toBe('Updated notes')
     })
 
-    it('throws when fahrt not found', async () => {
-      mockPrisma.fahrt.findUnique.mockResolvedValue(null)
+    it('throws when activity not found', async () => {
+      mockPrisma.activity.findUnique.mockResolvedValue(null)
 
       await expect(service.update('nonexistent', { duration: 4000 }, userId)).rejects.toThrow('not found')
     })
   })
 
   describe('remove', () => {
-    it('deletes a fahrt', async () => {
+    it('deletes an activity', async () => {
       const existing = {
         id: 'f1',
         routeId: 'route-1',
@@ -257,14 +257,14 @@ describe('RidesService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
       }
-      mockPrisma.fahrt.findUnique.mockResolvedValue(existing)
-      mockPrisma.fahrt.delete.mockResolvedValue(undefined)
+      mockPrisma.activity.findUnique.mockResolvedValue(existing)
+      mockPrisma.activity.delete.mockResolvedValue(undefined)
 
       await expect(service.remove('f1', userId)).resolves.toBeUndefined()
     })
 
-    it('throws when fahrt not found', async () => {
-      mockPrisma.fahrt.findUnique.mockResolvedValue(null)
+    it('throws when activity not found', async () => {
+      mockPrisma.activity.findUnique.mockResolvedValue(null)
 
       await expect(service.remove('nonexistent', userId)).rejects.toThrow('not found')
     })

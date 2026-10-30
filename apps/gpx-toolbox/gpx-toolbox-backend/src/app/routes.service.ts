@@ -10,9 +10,9 @@ import { StravaService } from './strava.service'
 import { extractGpxName } from './gpx-upload.util'
 
 /**
- * Internal route type with fahrten relation, used after querying.
+ * Internal route type with activities relation, used after querying.
  */
-type RouteWithFahrten = Prisma.RouteGetPayload<{ include: { fahrten: true } }>
+type RouteWithActivities = Prisma.RouteGetPayload<{ include: { activities: true } }>
 
 /**
  * Formatted route output for API responses (without relation data).
@@ -35,7 +35,7 @@ type FormattedRouteBase = {
  * Formatted route output for API responses.
  */
 type FormattedRoute = FormattedRouteBase & {
-  fahrten: Array<{
+  activities: Array<{
     id: string
     riddenAt: Date
     duration: number | null
@@ -123,12 +123,12 @@ export class RoutesService {
   }
 
   /**
-   * Get a route by ID with its fahrten relation.
+   * Get a route by ID with its activities relation.
    */
   async findById(id: string, userId: string): Promise<FormattedRoute> {
     const route = await this.prismaService.route.findUnique({
       where: { id, userId },
-      include: { fahrten: { orderBy: { riddenAt: 'desc' } } },
+      include: { activities: { orderBy: { riddenAt: 'desc' } } },
     })
 
     if (!route) {
@@ -225,7 +225,7 @@ export class RoutesService {
     const route = await this.prismaService.route.update({
       where: { id, userId },
       data: dto,
-      include: { fahrten: { orderBy: { riddenAt: 'desc' } } },
+      include: { activities: { orderBy: { riddenAt: 'desc' } } },
     })
 
     return this.formatRoute(route)
@@ -384,7 +384,7 @@ export class RoutesService {
 
   /**
    * Get Strava activities with pagination, enriched with existing route data.
-   * Used by the /fahrten/sync page to list activities for import as Fahrten.
+   * Used by the /activities/sync page to list Strava activities for import.
    *
    * `after` / `before` (epoch seconds) are the only filters the Strava API supports here.
    */
@@ -432,21 +432,21 @@ export class RoutesService {
     )
 
     // The Strava summary list does not include heart rate; source it from
-    // already-imported Fahrten (stored from the detailed activity at import time).
-    const fahrten = await this.prismaService.fahrt.findMany({
+    // already-imported activities (stored from the detailed activity at import time).
+    const importedActivities = await this.prismaService.activity.findMany({
       where: { stravaActivityId: { in: activities.map((a) => String(a.id ?? 0)) } },
       select: { stravaActivityId: true, avgHr: true, maxHr: true },
     })
-    const fahrtByActivity = new Map(
-      fahrten.flatMap((f) =>
-        f.stravaActivityId ? [[f.stravaActivityId, { avgHr: f.avgHr, maxHr: f.maxHr }] as const] : [],
+    const activityByStravaId = new Map(
+      importedActivities.flatMap((a) =>
+        a.stravaActivityId ? [[a.stravaActivityId, { avgHr: a.avgHr, maxHr: a.maxHr }] as const] : [],
       ),
     )
 
     const items = activities.map((activity) => {
       const stravaId = activity.id ?? 0
       const routeInfo = routeByActivity.get(String(stravaId))
-      const fahrtInfo = fahrtByActivity.get(String(stravaId))
+      const activityInfo = activityByStravaId.get(String(stravaId))
 
       return {
         id: stravaId,
@@ -455,8 +455,8 @@ export class RoutesService {
         elevationGain: activity.total_elevation_gain,
         moving_time: activity.moving_time,
         elapsed_duration: activity.elapsed_time,
-        heart_rate_avg: fahrtInfo?.avgHr ?? undefined,
-        heart_rate_max: fahrtInfo?.maxHr ?? undefined,
+        heart_rate_avg: activityInfo?.avgHr ?? undefined,
+        heart_rate_max: activityInfo?.maxHr ?? undefined,
         start_date_local: activity.start_date_local ?? new Date().toISOString(),
         sport_type: activity.sport_type,
         trainer: activity.trainer,
@@ -503,7 +503,7 @@ export class RoutesService {
     }
   }
 
-  private formatRoute(route: RouteWithFahrten): FormattedRoute {
+  private formatRoute(route: RouteWithActivities): FormattedRoute {
     return {
       id: route.id,
       name: route.name,
@@ -516,7 +516,7 @@ export class RoutesService {
       polyline: parsePolyline(route.polyline),
       createdAt: route.createdAt,
       updatedAt: route.updatedAt,
-      fahrten: route.fahrten,
+      activities: route.activities,
     }
   }
 

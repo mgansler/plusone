@@ -92,7 +92,7 @@ export function ElevationProfile({ points, range, onPointHover }: ElevationProfi
   const handleMouseLeave = useCallback(() => {
     setHoverX(null)
     setHoverY(null)
-    onPointHover(null)
+    onPointHover?.(null)
   }, [onPointHover])
 
   return (

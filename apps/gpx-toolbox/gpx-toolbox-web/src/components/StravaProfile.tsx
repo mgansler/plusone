@@ -47,7 +47,7 @@ export function StravaProfile() {
 
           <div style={styles.statsGrid}>
             <StatItem label="Routen" value={(profile.localStats as { routeCount?: number }).routeCount ?? 0} />
-            <StatItem label="Fahrten" value={(profile.localStats as { rideCount?: number }).rideCount ?? 0} />
+            <StatItem label="Aktivitäten" value={(profile.localStats as { rideCount?: number }).rideCount ?? 0} />
             <StatItem label="Follower" value={profile.follower_count ?? 0} />
             <StatItem label="Freunde" value={profile.friend_count ?? 0} />
           </div>

@@ -960,9 +960,9 @@
         ]
       }
     },
-    "/api/routes/{routeId}/fahrten": {
+    "/api/routes/{routeId}/activities": {
       "get": {
-        "operationId": "listFahrten",
+        "operationId": "listRouteActivities",
         "parameters": [
           {
             "name": "routeId",
@@ -1077,13 +1077,13 @@
         ],
         "responses": {
           "200": {
-            "description": "List of fahrten",
+            "description": "List of activities",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/FahrtResponseDto"
+                    "$ref": "#/components/schemas/ActivityResponseDto"
                   }
                 }
               }
@@ -1101,7 +1101,7 @@
         ]
       },
       "post": {
-        "operationId": "createFahrt",
+        "operationId": "createRouteActivity",
         "parameters": [
           {
             "name": "routeId",
@@ -1117,18 +1117,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateFahrtDto"
+                "$ref": "#/components/schemas/CreateActivityDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Fahrt created successfully",
+            "description": "Activity created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FahrtResponseDto"
+                  "$ref": "#/components/schemas/ActivityResponseDto"
                 }
               }
             }
@@ -1145,9 +1145,9 @@
         ]
       }
     },
-    "/api/routes/{routeId}/fahrten/{id}": {
+    "/api/routes/{routeId}/activities/{id}": {
       "get": {
-        "operationId": "getFahrt",
+        "operationId": "getRouteActivity",
         "parameters": [
           {
             "name": "routeId",
@@ -1168,11 +1168,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Fahrt details",
+            "description": "Activity details",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FahrtResponseDto"
+                  "$ref": "#/components/schemas/ActivityResponseDto"
                 }
               }
             }
@@ -1189,7 +1189,7 @@
         ]
       },
       "put": {
-        "operationId": "updateFahrt",
+        "operationId": "updateRouteActivity",
         "parameters": [
           {
             "name": "routeId",
@@ -1213,18 +1213,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateFahrtDto"
+                "$ref": "#/components/schemas/UpdateActivityDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Fahrt updated successfully",
+            "description": "Activity updated successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FahrtResponseDto"
+                  "$ref": "#/components/schemas/ActivityResponseDto"
                 }
               }
             }
@@ -1241,7 +1241,7 @@
         ]
       },
       "delete": {
-        "operationId": "deleteFahrt",
+        "operationId": "deleteRouteActivity",
         "parameters": [
           {
             "name": "routeId",
@@ -1262,7 +1262,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Fahrt deleted successfully"
+            "description": "Activity deleted successfully"
           }
         },
         "security": [
@@ -1276,9 +1276,9 @@
         ]
       }
     },
-    "/api/routes/{routeId}/fahrten/{id}/weather": {
+    "/api/routes/{routeId}/activities/{id}/weather": {
       "get": {
-        "operationId": "getFahrtWeather",
+        "operationId": "getRouteActivityWeather",
         "parameters": [
           {
             "name": "routeId",
@@ -1322,9 +1322,9 @@
         ]
       }
     },
-    "/api/fahrten": {
+    "/api/activities": {
       "get": {
-        "operationId": "listAllFahrten",
+        "operationId": "listAllActivities",
         "parameters": [
           {
             "name": "dateFrom",
@@ -1431,13 +1431,13 @@
         ],
         "responses": {
           "200": {
-            "description": "List of fahrten",
+            "description": "List of activities",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/FahrtResponseDto"
+                    "$ref": "#/components/schemas/ActivityResponseDto"
                   }
                 }
               }
@@ -1451,13 +1451,13 @@
         ],
         "summary": "",
         "tags": [
-          "fahrten"
+          "activities"
         ]
       }
     },
-    "/api/fahrten/{id}": {
+    "/api/activities/{id}": {
       "get": {
-        "operationId": "getFahrt",
+        "operationId": "getActivity",
         "parameters": [
           {
             "name": "id",
@@ -1470,11 +1470,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Fahrt details",
+            "description": "Activity details",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FahrtResponseDto"
+                  "$ref": "#/components/schemas/ActivityResponseDto"
                 }
               }
             }
@@ -1487,11 +1487,11 @@
         ],
         "summary": "",
         "tags": [
-          "fahrten"
+          "activities"
         ]
       },
       "put": {
-        "operationId": "updateFahrt",
+        "operationId": "updateActivity",
         "parameters": [
           {
             "name": "id",
@@ -1507,18 +1507,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateFahrtDto"
+                "$ref": "#/components/schemas/UpdateActivityDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Fahrt updated successfully",
+            "description": "Activity updated successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FahrtResponseDto"
+                  "$ref": "#/components/schemas/ActivityResponseDto"
                 }
               }
             }
@@ -1531,11 +1531,11 @@
         ],
         "summary": "",
         "tags": [
-          "fahrten"
+          "activities"
         ]
       },
       "delete": {
-        "operationId": "deleteFahrt",
+        "operationId": "deleteActivity",
         "parameters": [
           {
             "name": "id",
@@ -1548,7 +1548,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Fahrt deleted successfully"
+            "description": "Activity deleted successfully"
           }
         },
         "security": [
@@ -1558,7 +1558,7 @@
         ],
         "summary": "",
         "tags": [
-          "fahrten"
+          "activities"
         ]
       }
     },
@@ -1594,7 +1594,7 @@
     }
   },
   "info": {
-    "title": "GPX Toolbox API",
+    "title": "GPX-Toolcat API",
     "description": "",
     "version": "0.1",
     "contact": {}
@@ -1754,7 +1754,7 @@
             "type": "object",
             "description": "Route statistics"
           },
-          "fahrten": {
+          "activities": {
             "type": "array",
             "description": "List of rides"
           },
@@ -1973,7 +1973,7 @@
           "imported"
         ]
       },
-      "FahrtRouteResponseDto": {
+      "ActivityRouteResponseDto": {
         "type": "object",
         "properties": {
           "id": {
@@ -1998,12 +1998,12 @@
           "name"
         ]
       },
-      "FahrtResponseDto": {
+      "ActivityResponseDto": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "description": "Fahrt ID"
+            "description": "Activity ID"
           },
           "routeId": {
             "type": "string",
@@ -2053,7 +2053,7 @@
             "description": "Parent route",
             "allOf": [
               {
-                "$ref": "#/components/schemas/FahrtRouteResponseDto"
+                "$ref": "#/components/schemas/ActivityRouteResponseDto"
               }
             ]
           }
@@ -2066,7 +2066,7 @@
           "updatedAt"
         ]
       },
-      "CreateFahrtDto": {
+      "CreateActivityDto": {
         "type": "object",
         "properties": {
           "riddenAt": {
@@ -2102,7 +2102,7 @@
           "riddenAt"
         ]
       },
-      "UpdateFahrtDto": {
+      "UpdateActivityDto": {
         "type": "object",
         "properties": {
           "title": {

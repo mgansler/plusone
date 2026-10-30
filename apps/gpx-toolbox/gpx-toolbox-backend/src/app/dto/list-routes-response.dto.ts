@@ -43,7 +43,7 @@ export class RouteResponseDto {
   stats?: Record<string, unknown> | null
 
   @ApiProperty({ description: 'List of rides', type: 'array', required: false })
-  fahrten?: Array<{
+  activities?: Array<{
     id: string
     riddenAt: string
     duration: number | null
