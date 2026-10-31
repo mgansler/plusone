@@ -1,6 +1,12 @@
 import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset'
 import { defineConfig } from 'cypress'
 
+const adminPassword = 'e2e-admin'
+const crewPassword = 'e2e-crew'
+
+// Set explicitly, as protected CI/CD variables on main would otherwise take precedence over .local.env
+const backendEnv = `TRAILCARE_ADMIN_PASSWORD=${adminPassword} TRAILCARE_INITIAL_ACCESS_PASSWORD=${crewPassword}`
+
 export default defineConfig({
   reporter: 'junit',
   reporterOptions: {
@@ -10,8 +16,8 @@ export default defineConfig({
   e2e: {
     ...nxE2EPreset(__filename, {
       webServerCommands: {
-        default: 'npx nx run trailcare-backend:serve:production',
-        production: 'npx nx run trailcare-backend:serve:production',
+        default: `${backendEnv} npx nx run trailcare-backend:serve:production`,
+        production: `${backendEnv} npx nx run trailcare-backend:serve:production`,
       },
       cypressDir: 'src',
       bundler: 'vite',
@@ -22,8 +28,8 @@ export default defineConfig({
     viewportHeight: 844,
   },
   expose: {
-    adminPassword: 'e2e-admin',
-    crewPassword: 'e2e-crew',
+    adminPassword,
+    crewPassword,
   },
   retries: 2,
 })
