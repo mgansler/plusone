@@ -261,6 +261,16 @@ export class ImportService {
    */
   async importStravaActivity(accessToken: string, userId: string, activityId: string, autoMatch = true) {
     try {
+      // Already imported: skip before spending Strava API calls (activities.stravaActivityId is unique)
+      const existingActivity = await this.prisma.activity.findFirst({
+        where: { userId, stravaActivityId: String(activityId) },
+        select: { id: true },
+      })
+      if (existingActivity) {
+        this.logger.log(`Strava activity ${activityId} is already imported, skipping`)
+        return { imported: 0, matched: 0, newRoutes: 0 }
+      }
+
       // Fetch activity details (start_date_local, elapsed_time, heart rate, elevation)
       const activityDetail = (await this.stravaService.getActivity(accessToken, Number(activityId))) as {
         id?: number
@@ -364,14 +374,25 @@ export class ImportService {
     let matched = 0
     let newRoutes = 0
 
+    // Route.stravaActivityId is the activity a route was created from. If that activity was
+    // deleted and is now imported again, reattach it to its route instead of creating a duplicate.
+    if (activity.stravaActivityId) {
+      const originRoute = await this.prisma.route.findFirst({
+        where: { userId, stravaActivityId: activity.stravaActivityId },
+        select: { id: true },
+      })
+      routeId = originRoute?.id
+    }
+
     // Auto-match
-    if (activity.autoMatch) {
+    if (!routeId && activity.autoMatch) {
       const match = await this.findBestMatch(points, userId, stats.distance)
       if (match) {
-        // Link activity to existing route and mark it as ridden
+        // Link activity to existing route and mark it as ridden. The link is the activity's routeId;
+        // the route's stravaActivityId stays the activity it was created from (if any).
         await this.prisma.route.update({
           where: { id: match.routeId },
-          data: { stravaActivityId: activity.stravaActivityId, status: RouteStatus.ridden },
+          data: { status: RouteStatus.ridden },
         })
         this.logger.log(`Auto-matched activity "${activity.name}" to route "${match.routeName}"`)
         routeId = match.routeId

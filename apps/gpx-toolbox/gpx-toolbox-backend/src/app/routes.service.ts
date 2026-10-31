@@ -235,9 +235,14 @@ export class RoutesService {
   }
 
   /**
-   * Delete a route.
+   * Delete a route. Its activities are deleted with it (`onDelete: Cascade`).
    */
   async remove(id: string, userId: string): Promise<void> {
+    const existing = await this.prismaService.route.findUnique({ where: { id, userId }, select: { id: true } })
+    if (!existing) {
+      throw new NotFoundException(`Route with ID ${id} not found`)
+    }
+
     await this.prismaService.route.delete({
       where: { id, userId },
     })
@@ -377,16 +382,6 @@ export class RoutesService {
   }
 
   /**
-   * Link a Strava activity to an existing route (auto-match result).
-   */
-  async linkActivityToRoute(routeId: string, stravaActivityId: string): Promise<void> {
-    await this.prismaService.route.update({
-      where: { id: routeId },
-      data: { stravaActivityId },
-    })
-  }
-
-  /**
    * Get Strava activities with pagination, enriched with existing route data.
    * Used by the /activities/sync page to list Strava activities for import.
    *
@@ -422,34 +417,19 @@ export class RoutesService {
     // Fetch paginated activities from Strava
     const activities = await this.stravaService.getActivities(accessToken, { page, per_page, ...range })
 
-    // Fetch existing routes that have stravaActivityId
-    const routes = await this.prismaService.route.findMany({
-      where: { userId, stravaActivityId: { not: null } },
-      select: { id: true, stravaActivityId: true, stats: true, gpxContent: true, polyline: true },
-    })
-    const routeByActivity = new Map(
-      routes.flatMap((r) =>
-        r.stravaActivityId
-          ? [[r.stravaActivityId, { routeId: r.id, stats: r.stats, hasGpx: !!r.gpxContent }] as const]
-          : [],
-      ),
-    )
-
-    // The Strava summary list does not include heart rate; source it from
-    // already-imported activities (stored from the detailed activity at import time).
+    // An activity counts as imported when it exists in the activities table; its route is the one
+    // it is linked to. The Strava summary list does not include heart rate, so it is sourced from
+    // there as well (stored from the detailed activity at import time).
     const importedActivities = await this.prismaService.activity.findMany({
-      where: { stravaActivityId: { in: activities.map((a) => String(a.id ?? 0)) } },
-      select: { stravaActivityId: true, avgHr: true, maxHr: true },
+      where: { userId, stravaActivityId: { in: activities.map((a) => String(a.id ?? 0)) } },
+      select: { stravaActivityId: true, routeId: true, avgHr: true, maxHr: true },
     })
     const activityByStravaId = new Map(
-      importedActivities.flatMap((a) =>
-        a.stravaActivityId ? [[a.stravaActivityId, { avgHr: a.avgHr, maxHr: a.maxHr }] as const] : [],
-      ),
+      importedActivities.flatMap((a) => (a.stravaActivityId ? [[a.stravaActivityId, a] as const] : [])),
     )
 
     const items = activities.map((activity) => {
       const stravaId = activity.id ?? 0
-      const routeInfo = routeByActivity.get(String(stravaId))
       const activityInfo = activityByStravaId.get(String(stravaId))
 
       return {
@@ -466,8 +446,8 @@ export class RoutesService {
         trainer: activity.trainer,
         // Encoded, simplified track for a quick preview before importing
         summary_polyline: activity.map?.summary_polyline,
-        routeId: routeInfo?.routeId,
-        imported: !!routeInfo?.hasGpx,
+        routeId: activityInfo?.routeId,
+        imported: activityInfo != null,
       }
     })
 

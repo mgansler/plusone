@@ -473,10 +473,12 @@ describe('ImportService', () => {
             provide: PrismaService,
             useValue: {
               route: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 findMany: vi.fn().mockResolvedValue([]), // No matches
                 create: vi.fn().mockResolvedValue({ id: '1', name: 'Activity 999' }),
               },
               activity: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 create: vi.fn().mockResolvedValue({ id: 'f1', routeId: '1' }),
               },
             },
@@ -522,6 +524,7 @@ describe('ImportService', () => {
             provide: PrismaService,
             useValue: {
               route: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 findMany: vi.fn().mockResolvedValue([
                   {
                     id: '1',
@@ -535,10 +538,11 @@ describe('ImportService', () => {
                     ),
                   },
                 ]),
-                update: vi.fn().mockResolvedValue({ id: '1', stravaActivityId: '999' }),
+                update: vi.fn().mockResolvedValue({ id: '1' }),
                 create: vi.fn().mockResolvedValue({ id: '2', name: 'Activity 999' }),
               },
               activity: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 create: vi.fn().mockResolvedValue({ id: 'f1', routeId: '1' }),
               },
             },
@@ -555,10 +559,80 @@ describe('ImportService', () => {
       expect(result.matched).toBe(1)
       expect(service['prisma'].route.update).toHaveBeenCalledWith({
         where: { id: '1' },
-        data: { stravaActivityId: '999', status: 'ridden' },
+        data: { status: 'ridden' },
       })
       expect(service['prisma'].activity.create).toHaveBeenCalledWith({
         data: expect.objectContaining({ duration: 3600, avgHr: 150, maxHr: 180 }),
+      })
+    })
+
+    it('skips an activity that is already imported without calling Strava', async () => {
+      const mockStrava = { getActivity: vi.fn(), downloadActivityStreams: vi.fn() }
+      const createActivity = vi.fn()
+
+      const module: TestingModule = await Test.createTestingModule({
+        providers: [
+          ImportService,
+          {
+            provide: PrismaService,
+            useValue: {
+              route: { findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn() },
+              activity: { findFirst: vi.fn().mockResolvedValue({ id: 'f1' }), create: createActivity },
+            },
+          },
+          { provide: StravaService, useValue: mockStrava },
+        ],
+      }).compile()
+
+      service = module.get<ImportService>(ImportService)
+
+      const result = await service.importStravaActivity('token', 'user-1', '999', true)
+
+      expect(result).toEqual({ imported: 0, matched: 0, newRoutes: 0 })
+      expect(mockStrava.getActivity).not.toHaveBeenCalled()
+      expect(createActivity).not.toHaveBeenCalled()
+    })
+
+    it('reattaches a re-imported activity to the route it was originally created from', async () => {
+      const streamPoints = [
+        { latitude: 48.0, longitude: 11.0, elevation: 100, time: new Date('2024-01-01T10:00:00Z') },
+        { latitude: 48.001, longitude: 11.001, elevation: 120, time: new Date('2024-01-01T10:02:00Z') },
+      ]
+      const mockStrava = {
+        downloadActivityStreams: vi.fn().mockResolvedValue(streamPoints),
+        getActivity: vi.fn().mockResolvedValue({ id: 999, name: 'Activity 999', distance: 20000 }),
+      }
+      const createRoute = vi.fn()
+      const findMatchCandidates = vi.fn()
+      const createActivity = vi.fn().mockResolvedValue({ id: 'f2', routeId: 'origin-route' })
+
+      const module: TestingModule = await Test.createTestingModule({
+        providers: [
+          ImportService,
+          {
+            provide: PrismaService,
+            useValue: {
+              route: {
+                findFirst: vi.fn().mockResolvedValue({ id: 'origin-route' }),
+                findMany: findMatchCandidates,
+                create: createRoute,
+              },
+              activity: { findFirst: vi.fn().mockResolvedValue(null), create: createActivity },
+            },
+          },
+          { provide: StravaService, useValue: mockStrava },
+        ],
+      }).compile()
+
+      service = module.get<ImportService>(ImportService)
+
+      const result = await service.importStravaActivity('token', 'user-1', '999', true)
+
+      expect(result).toEqual({ imported: 1, matched: 0, newRoutes: 0 })
+      expect(createRoute).not.toHaveBeenCalled()
+      expect(findMatchCandidates).not.toHaveBeenCalled()
+      expect(createActivity).toHaveBeenCalledWith({
+        data: expect.objectContaining({ routeId: 'origin-route', stravaActivityId: '999' }),
       })
     })
 
@@ -582,10 +656,12 @@ describe('ImportService', () => {
             provide: PrismaService,
             useValue: {
               route: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 findMany: vi.fn().mockResolvedValue([]), // No matches → a new route is created
                 create: createRoute,
               },
               activity: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 create: vi.fn().mockResolvedValue({ id: 'f1', routeId: '1' }),
               },
             },
@@ -639,6 +715,7 @@ describe('ImportService', () => {
             useValue: {
               route: {
                 findFirst: vi.fn().mockResolvedValue(null),
+                findFirst: vi.fn().mockResolvedValue(null),
                 create: vi.fn().mockImplementation(async (data: { data: Record<string, unknown> }) => ({
                   id: String(data.data.stravaRouteId),
                   ...data.data,
@@ -682,6 +759,7 @@ describe('ImportService', () => {
             provide: PrismaService,
             useValue: {
               route: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 findFirst: vi.fn().mockResolvedValue({ id: 'db-1' }), // Already exists
                 create: vi.fn().mockResolvedValue({ id: 'new-1' }),
               },
@@ -722,6 +800,7 @@ describe('ImportService', () => {
             provide: PrismaService,
             useValue: {
               route: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 findFirst: vi.fn().mockResolvedValue({ id: 'db-1' }), // Already exists
                 create: vi.fn().mockResolvedValue({ id: 'new-1' }),
                 update: vi.fn().mockResolvedValue({ id: 'db-1' }),
@@ -769,10 +848,12 @@ describe('ImportService', () => {
             provide: PrismaService,
             useValue: {
               route: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 findMany: vi.fn().mockResolvedValue([]),
                 create: createRoute,
               },
               activity: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 create: vi.fn().mockResolvedValue({ id: 'f1', routeId: 'route-1' }),
               },
             },
@@ -814,10 +895,12 @@ describe('ImportService', () => {
             provide: PrismaService,
             useValue: {
               route: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 findMany: vi.fn().mockResolvedValue([]),
                 create: createRoute,
               },
               activity: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 create: vi.fn().mockResolvedValue({ id: 'f1', routeId: 'route-1' }),
               },
             },
@@ -858,10 +941,12 @@ describe('ImportService', () => {
             provide: PrismaService,
             useValue: {
               route: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 findMany: vi.fn().mockResolvedValue([]),
                 create: createRoute,
               },
               activity: {
+                findFirst: vi.fn().mockResolvedValue(null),
                 create: vi.fn().mockResolvedValue({ id: 'f1', routeId: 'route-1' }),
               },
             },

@@ -378,6 +378,23 @@ describe('RoutesService', () => {
     })
   })
 
+  describe('remove', () => {
+    it('deletes the route of the user', async () => {
+      mockPrisma.route.findUnique.mockResolvedValue({ id: 'route-1' })
+
+      await service.remove('route-1', userId)
+
+      expect(mockPrisma.route.delete).toHaveBeenCalledWith({ where: { id: 'route-1', userId } })
+    })
+
+    it('throws NotFoundException when route does not exist', async () => {
+      mockPrisma.route.findUnique.mockResolvedValue(null)
+
+      await expect(service.remove('nonexistent', userId)).rejects.toThrow('not found')
+      expect(mockPrisma.route.delete).not.toHaveBeenCalled()
+    })
+  })
+
   describe('exportGpx', () => {
     it('returns the stored GPX content', async () => {
       mockPrisma.route.findUnique.mockResolvedValue({
@@ -440,16 +457,6 @@ describe('RoutesService', () => {
     })
   })
 
-  describe('linkActivityToRoute', () => {
-    it('updates the route with a stravaActivityId', async () => {
-      mockPrisma.route.update.mockResolvedValue({ id: 'route-1', stravaActivityId: 'activity-999' })
-
-      await service.linkActivityToRoute('route-1', 'activity-999')
-
-      expect(mockPrisma.route.update.mock.calls[0][0].data.stravaActivityId).toBe('activity-999')
-    })
-  })
-
   describe('getStravaActivities', () => {
     it('passes the date range to Strava and returns sport type and trainer flag', async () => {
       const getActivities = vi.fn().mockResolvedValue([
@@ -489,6 +496,33 @@ describe('RoutesService', () => {
       expect(result.items[0]).toEqual(
         expect.objectContaining({ sport_type: 'VirtualRide', trainer: true, summary_polyline: '_p~iF~ps|U' }),
       )
+    })
+
+    it('marks activities as imported based on the activities table, with the route they are linked to', async () => {
+      const getActivities = vi.fn().mockResolvedValue([
+        { id: 1, name: 'Imported' },
+        { id: 2, name: 'Not imported' },
+      ])
+      const findActivities = vi
+        .fn()
+        .mockResolvedValue([{ stravaActivityId: '1', routeId: 'route-1', avgHr: 140, maxHr: 170 }])
+      const module = await Test.createTestingModule({
+        providers: [
+          RoutesService,
+          { provide: PrismaService, useValue: { activity: { findMany: findActivities } } },
+          { provide: StravaService, useValue: { getActivities } },
+        ],
+      }).compile()
+
+      const result = await module.get<RoutesService>(RoutesService).getStravaActivities('token', userId, 1, 25)
+
+      expect(findActivities).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { userId, stravaActivityId: { in: ['1', '2'] } } }),
+      )
+      expect(result.items[0]).toEqual(
+        expect.objectContaining({ imported: true, routeId: 'route-1', heart_rate_avg: 140, heart_rate_max: 170 }),
+      )
+      expect(result.items[1]).toEqual(expect.objectContaining({ imported: false, routeId: undefined }))
     })
   })
 })

@@ -5,11 +5,13 @@ import { useQueryClient } from '@tanstack/react-query'
 import { calculateAvgSpeed, calculateTotalDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 import {
   getGetActivityQueryKey,
+  getGetRouteQueryKey,
   getListAllActivitiesQueryKey,
   useDeleteActivity,
   useGetActivity,
 } from '@plusone/gpx-toolbox-api-client'
 
+import { ConfirmDialog } from '../../components/ConfirmDialog'
 import { SegmentMap } from '../../components/SegmentMap'
 import { SidebarDivider, SidebarLayout } from '../../components/SidebarLayout'
 import { TrackAnalysis } from '../../components/TrackAnalysis'
@@ -45,6 +47,8 @@ function ActivityDetailPage() {
       onSuccess: () => {
         void queryClient.invalidateQueries({ queryKey: getGetActivityQueryKey(activityId) })
         void queryClient.invalidateQueries({ queryKey: getListAllActivitiesQueryKey() })
+        // The route stays, but its activity list changes
+        if (activity?.routeId) void queryClient.invalidateQueries({ queryKey: getGetRouteQueryKey(activity.routeId) })
         void navigate({ to: '/activities' })
       },
     },
@@ -87,12 +91,14 @@ function ActivityDetailPage() {
   const { totalDistKm, segmentRange, setSegmentRange } = useSegmentRange(points)
   const [hoveredPoint, setHoveredPoint] = useState<TrackPoint | null>(null)
 
+  const [confirmDelete, setConfirmDelete] = useState(false)
+
   async function handleDeleteActivity() {
-    if (!confirm('Aktivität wirklich löschen?')) return
     try {
+      // Navigates away on success
       await deleteActivityMutation.mutateAsync({ id: activityId })
     } catch {
-      // Error handled by mutation
+      // Shown in the dialog via deleteActivityMutation.isError
     }
   }
 
@@ -183,10 +189,26 @@ function ActivityDetailPage() {
 
         <SidebarDivider />
 
-        <button onClick={handleDeleteActivity} style={styles.deleteButton}>
+        <button onClick={() => setConfirmDelete(true)} style={styles.deleteButton}>
           🗑 Aktivität löschen
         </button>
       </SidebarLayout>
+
+      {confirmDelete && (
+        <ConfirmDialog
+          title="Aktivität löschen"
+          message={`${activity.title ? `„${activity.title}“` : 'Die Aktivität'} wird endgültig gelöscht.${parentRoute?.name ? ` Die Route „${parentRoute.name}“ bleibt erhalten.` : ''}`}
+          confirmLabel="Löschen"
+          danger
+          pending={deleteActivityMutation.isPending}
+          error={deleteActivityMutation.isError ? 'Aktivität konnte nicht gelöscht werden.' : null}
+          onConfirm={() => void handleDeleteActivity()}
+          onCancel={() => {
+            setConfirmDelete(false)
+            deleteActivityMutation.reset()
+          }}
+        />
+      )}
 
       <SegmentMap points={points} range={segmentRange} totalDistKm={totalDistKm} hoveredPoint={hoveredPoint} />
     </div>

@@ -79,13 +79,28 @@ describe('UploadGpxModal', () => {
     expect(submitButton().disabled).toBe(false)
   })
 
-  it('ignores files that are not GPX', () => {
-    vi.stubGlobal('alert', vi.fn())
+  it('ignores files that are not GPX and shows a hint in the modal', () => {
     const { container } = renderModal({ nameRequired: false })
 
     selectFile(container, 'ride.fit')
 
-    expect(alert).toHaveBeenCalled()
+    expect(screen.getByRole('alert').textContent).toBe('Bitte nur GPX-Dateien hochladen.')
     expect(submitButton().disabled).toBe(true)
+
+    selectFile(container, 'ride.gpx')
+    expect(screen.queryByRole('alert')).toBeNull()
+  })
+
+  it('closes on Escape and on a click on the backdrop, not on a click inside', () => {
+    const { onClose } = renderModal()
+
+    fireEvent.click(screen.getByRole('dialog'))
+    expect(onClose).not.toHaveBeenCalled()
+
+    fireEvent.keyDown(document, { key: 'Escape' })
+    expect(onClose).toHaveBeenCalledTimes(1)
+
+    fireEvent.click(screen.getByRole('dialog').parentElement as HTMLElement)
+    expect(onClose).toHaveBeenCalledTimes(2)
   })
 })

@@ -1,16 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 import {
+  getFindNearbyRoutesQueryKey,
   getGetRouteQueryKey,
+  getListAllActivitiesQueryKey,
   getListRouteActivitiesQueryKey,
+  getListRoutesQueryKey,
   useCreateRouteActivity,
+  useDeleteRoute,
   useDeleteRouteActivity,
   useGetRoute,
 } from '@plusone/gpx-toolbox-api-client'
 
+import { ConfirmDialog } from '../../components/ConfirmDialog'
 import { SegmentMap } from '../../components/SegmentMap'
 import { SidebarDivider, SidebarLayout } from '../../components/SidebarLayout'
 import { TrackAnalysis } from '../../components/TrackAnalysis'
@@ -35,6 +40,7 @@ export const Route = createFileRoute('/routes/$routeId')({
 function RouteDetailPage() {
   const { routeId } = Route.useParams()
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const [showForm, setShowForm] = useState(false)
   const [formRiddenAt, setFormRiddenAt] = useState(new Date().toISOString().slice(0, 16))
   const [formTitle, setFormTitle] = useState('')
@@ -103,9 +109,47 @@ function RouteDetailPage() {
       onSuccess: () => {
         void queryClient.invalidateQueries({ queryKey: getGetRouteQueryKey(routeId) })
         void queryClient.invalidateQueries({ queryKey: getListRouteActivitiesQueryKey(routeId) })
+        void queryClient.invalidateQueries({ queryKey: getListAllActivitiesQueryKey() })
       },
     },
   })
+
+  // Deleting a route also deletes its activities (cascade), so every list showing either is stale
+  const deleteRouteMutation = useDeleteRoute({
+    mutation: {
+      onSuccess: () => {
+        queryClient.removeQueries({ queryKey: getGetRouteQueryKey(routeId) })
+        void queryClient.invalidateQueries({ queryKey: getListRoutesQueryKey() })
+        void queryClient.invalidateQueries({ queryKey: getFindNearbyRoutesQueryKey() })
+        void queryClient.invalidateQueries({ queryKey: getListAllActivitiesQueryKey() })
+        void navigate({ to: '/' })
+      },
+    },
+  })
+
+  // What the open confirmation dialog would delete
+  const [pendingDelete, setPendingDelete] = useState<{ kind: 'route' } | { kind: 'activity'; id: string } | null>(null)
+
+  function closeDeleteDialog() {
+    setPendingDelete(null)
+    deleteRouteMutation.reset()
+    deleteActivityMutation.reset()
+  }
+
+  async function handleConfirmDelete() {
+    if (!pendingDelete) return
+    try {
+      if (pendingDelete.kind === 'route') {
+        // Navigates away on success
+        await deleteRouteMutation.mutateAsync({ id: routeId })
+      } else {
+        await deleteActivityMutation.mutateAsync({ routeId, id: pendingDelete.id })
+        setPendingDelete(null)
+      }
+    } catch {
+      // Shown in the dialog via the mutation's error state
+    }
+  }
 
   async function handleCreateActivity(e: React.FormEvent) {
     e.preventDefault()
@@ -123,15 +167,6 @@ function RouteDetailPage() {
       setFormError(err instanceof Error ? err.message : 'Unbekannter Fehler')
     } finally {
       setFormSubmitting(false)
-    }
-  }
-
-  async function handleDeleteActivity(activityId: string) {
-    if (!confirm('Aktivität wirklich löschen?')) return
-    try {
-      await deleteActivityMutation.mutateAsync({ routeId, id: activityId })
-    } catch {
-      // Error handled by mutation
     }
   }
 
@@ -305,7 +340,11 @@ function RouteDetailPage() {
             <div key={f.id} style={styles.activityCard}>
               <div style={styles.activityHeader}>
                 <span style={styles.activityDate}>{new Date(f.riddenAt).toLocaleDateString('de-DE')}</span>
-                <button onClick={() => handleDeleteActivity(f.id)} style={styles.deleteButton}>
+                <button
+                  onClick={() => setPendingDelete({ kind: 'activity', id: f.id })}
+                  style={styles.deleteButton}
+                  aria-label="Aktivität löschen"
+                >
                   🗑
                 </button>
               </div>
@@ -340,7 +379,42 @@ function RouteDetailPage() {
             </div>
           ))}
         </div>
+
+        <SidebarDivider />
+
+        <button onClick={() => setPendingDelete({ kind: 'route' })} style={styles.deleteRouteButton}>
+          🗑 Route löschen
+        </button>
       </SidebarLayout>
+
+      {pendingDelete?.kind === 'route' && (
+        <ConfirmDialog
+          title="Route löschen"
+          message={
+            activities.length === 0
+              ? `„${route.name}“ wird endgültig gelöscht.`
+              : `„${route.name}“ wird endgültig gelöscht, ${activities.length === 1 ? 'die zugehörige Aktivität' : `die ${activities.length} zugehörigen Aktivitäten`} ebenfalls.`
+          }
+          confirmLabel="Löschen"
+          danger
+          pending={deleteRouteMutation.isPending}
+          error={deleteRouteMutation.isError ? 'Route konnte nicht gelöscht werden.' : null}
+          onConfirm={() => void handleConfirmDelete()}
+          onCancel={closeDeleteDialog}
+        />
+      )}
+      {pendingDelete?.kind === 'activity' && (
+        <ConfirmDialog
+          title="Aktivität löschen"
+          message="Die Aktivität wird endgültig gelöscht. Die Route bleibt erhalten."
+          confirmLabel="Löschen"
+          danger
+          pending={deleteActivityMutation.isPending}
+          error={deleteActivityMutation.isError ? 'Aktivität konnte nicht gelöscht werden.' : null}
+          onConfirm={() => void handleConfirmDelete()}
+          onCancel={closeDeleteDialog}
+        />
+      )}
 
       <SegmentMap points={points} range={segmentRange} totalDistKm={totalDistKm} hoveredPoint={hoveredPoint} />
     </div>
@@ -552,6 +626,16 @@ const styles = {
     fontSize: 13,
     fontWeight: 600,
     color: '#f8fafc',
+  } as const,
+  deleteRouteButton: {
+    padding: '6px 12px',
+    fontSize: 13,
+    backgroundColor: 'transparent',
+    color: '#fca5a5',
+    border: '1px solid #f87171',
+    borderRadius: 4,
+    cursor: 'pointer',
+    alignSelf: 'flex-start',
   } as const,
   deleteButton: {
     background: 'none',

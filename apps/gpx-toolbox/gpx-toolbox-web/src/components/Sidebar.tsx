@@ -2,6 +2,7 @@ import { type ChangeEvent, type DragEvent, useState } from 'react'
 
 import { parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 
+import { MessageDialog } from './MessageDialog'
 import { SidebarDivider, SidebarLayout } from './SidebarLayout'
 import { TrackAnalysis } from './TrackAnalysis'
 
@@ -15,6 +16,7 @@ type SidebarProps = {
 
 export function Sidebar({ onFileLoad, points, fileName, segmentRange = [0, 0], onSegmentRangeChange }: SidebarProps) {
   const [dragging, setDragging] = useState(false)
+  const [noTrackFile, setNoTrackFile] = useState<string | null>(null)
 
   function handleFile(file: File) {
     const reader = new FileReader()
@@ -23,7 +25,7 @@ export function Sidebar({ onFileLoad, points, fileName, segmentRange = [0, 0], o
       const trackPoints = parseGpx(text)
 
       if (trackPoints.length === 0) {
-        alert('Kein Track in der GPX-Datei gefunden.')
+        setNoTrackFile(file.name)
         return
       }
 
@@ -70,6 +72,14 @@ export function Sidebar({ onFileLoad, points, fileName, segmentRange = [0, 0], o
             name={fileName}
           />
         </>
+      )}
+
+      {noTrackFile && (
+        <MessageDialog
+          title="Kein Track gefunden"
+          message={`In der Datei „${noTrackFile}“ wurde kein Track gefunden.`}
+          onClose={() => setNoTrackFile(null)}
+        />
       )}
     </SidebarLayout>
   )
