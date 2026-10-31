@@ -4,10 +4,13 @@ import { Prisma, PrismaService } from '@plusone/gpx-toolbox-persistence'
 import { analyzeGpx, parseGpx, TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
-import { parsePolyline } from './polyline.util'
+import { downsamplePolyline, parsePolyline } from './polyline.util'
 import { routeFilterColumns } from './route-filter-columns.util'
 import { StravaService } from './strava.service'
 import { extractGpxName } from './gpx-upload.util'
+
+/** Nearby results draw many routes at once on the map; a coarse track per route is enough there */
+const NEARBY_POLYLINE_MAX_POINTS = 300
 
 /**
  * Internal route type with activities relation, used after querying.
@@ -286,6 +289,7 @@ export class RoutesService {
             status: route.status,
             source: route.source,
             stats: route.stats,
+            polyline: downsamplePolyline(polyline, NEARBY_POLYLINE_MAX_POINTS),
           }
         }
         return null

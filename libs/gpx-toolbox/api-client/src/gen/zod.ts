@@ -59,6 +59,14 @@ export const FindNearbyRoutesResponseItem = zod.strictObject({
   status: zod.string().describe('Route status'),
   source: zod.string().describe('Route source'),
   stats: zod.looseObject({}).optional().describe('Route statistics'),
+  polyline: zod
+    .array(
+      zod.strictObject({
+        lat: zod.number(),
+        lng: zod.number(),
+      }),
+    )
+    .describe('Simplified route track for overview maps'),
 })
 export const FindNearbyRoutesResponse = zod.array(FindNearbyRoutesResponseItem)
 

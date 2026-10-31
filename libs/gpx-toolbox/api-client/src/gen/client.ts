@@ -51,6 +51,11 @@ export interface ListRoutesResponseDto {
   items: unknown[]
 }
 
+export interface PolylinePointDto {
+  lat: number
+  lng: number
+}
+
 /**
  * Route statistics
  */
@@ -71,6 +76,8 @@ export interface NearbyRouteResponseDto {
   source: string
   /** Route statistics */
   stats?: NearbyRouteResponseDtoStats
+  /** Simplified route track for overview maps */
+  polyline: PolylinePointDto[]
 }
 
 /**

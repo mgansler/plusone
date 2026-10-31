@@ -311,6 +311,10 @@ describe('RoutesService', () => {
       expect(results).toHaveLength(1)
       expect(results[0].name).toBe('Nearby Route')
       expect(results[0].distance).toBeLessThan(1000)
+      expect(results[0].polyline).toEqual([
+        { lat: 48.0001, lng: 11.0001 },
+        { lat: 48.0002, lng: 11.0002 },
+      ])
     })
 
     it('returns empty array when no routes exist', async () => {

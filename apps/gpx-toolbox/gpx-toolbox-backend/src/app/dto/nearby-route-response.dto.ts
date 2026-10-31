@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger'
 
+export class PolylinePointDto {
+  @ApiProperty({ example: 48.77 })
+  lat: number
+
+  @ApiProperty({ example: 9.16 })
+  lng: number
+}
+
 export class NearbyRouteResponseDto {
   @ApiProperty({ description: 'Route ID', example: '550e8400-e29b-41d4-a716-446655440000' })
   id: string
@@ -21,4 +29,7 @@ export class NearbyRouteResponseDto {
 
   @ApiProperty({ description: 'Route statistics', required: false })
   stats?: Record<string, unknown> | null
+
+  @ApiProperty({ type: [PolylinePointDto], description: 'Simplified route track for overview maps' })
+  polyline: Array<PolylinePointDto>
 }

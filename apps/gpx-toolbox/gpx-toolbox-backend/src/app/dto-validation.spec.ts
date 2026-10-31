@@ -264,6 +264,7 @@ describe('DTO type shapes', () => {
       status: 'planned',
       source: 'manualImport',
       stats: { distance: 5000 },
+      polyline: [{ lat: 48.0, lng: 11.0 }],
     }
     expect(dto.distance).toBe(1500)
     expect(dto.distanceKm).toBe('1.50')

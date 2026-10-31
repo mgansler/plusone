@@ -47,3 +47,14 @@ function parseJsonArray(value: string): Array<PolylinePoint> {
     return []
   }
 }
+
+/**
+ * Thin out a polyline to at most `maxPoints` points by keeping every n-th point.
+ * First and last point are always kept so the track keeps its start and end.
+ * Good enough for overview maps, where several routes are drawn at once.
+ */
+export function downsamplePolyline(points: Array<PolylinePoint>, maxPoints: number): Array<PolylinePoint> {
+  if (points.length <= maxPoints) return points
+  const step = (points.length - 1) / (maxPoints - 1)
+  return Array.from({ length: maxPoints }, (_, i) => points[Math.round(i * step)])
+}

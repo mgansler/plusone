@@ -1,4 +1,4 @@
-import { parsePolyline } from './polyline.util'
+import { downsamplePolyline, parsePolyline } from './polyline.util'
 
 describe('parsePolyline', () => {
   it('returns a plain array of points unchanged', () => {
@@ -47,5 +47,22 @@ describe('parsePolyline', () => {
     expect(parsePolyline(null)).toEqual([])
     expect(parsePolyline(undefined)).toEqual([])
     expect(parsePolyline({ foo: 'bar' })).toEqual([])
+  })
+})
+
+describe('downsamplePolyline', () => {
+  const points = Array.from({ length: 101 }, (_, i) => ({ lat: 48 + i / 1000, lng: 11 }))
+
+  it('returns short polylines unchanged', () => {
+    expect(downsamplePolyline(points.slice(0, 5), 10)).toEqual(points.slice(0, 5))
+  })
+
+  it('reduces long polylines to maxPoints, keeping first and last point', () => {
+    const result = downsamplePolyline(points, 11)
+
+    expect(result).toHaveLength(11)
+    expect(result[0]).toEqual(points[0])
+    expect(result[10]).toEqual(points[100])
+    expect(result[5]).toEqual(points[50])
   })
 })

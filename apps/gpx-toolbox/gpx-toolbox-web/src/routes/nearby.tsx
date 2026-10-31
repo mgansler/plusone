@@ -1,9 +1,11 @@
-import { type RefObject, useEffect, useRef, useState } from 'react'
+import { type RefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import L from 'leaflet'
 
-import { useFindNearbyRoutes, useGetRoute } from '@plusone/gpx-toolbox-api-client'
+import { useExportRoute, useFindNearbyRoutes, useGetRoute } from '@plusone/gpx-toolbox-api-client'
+import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 
+import { ElevationProfile } from '../components/ElevationProfile'
 import { defaultCenter, Map } from '../components/Map'
 import { formatElevation } from '../utils/format'
 
@@ -28,6 +30,32 @@ const statusColors: Record<string, string> = {
   planned: '#9c27b0',
   ridden: '#4caf50',
   'found-online': '#ff5722',
+}
+
+/** Distinct track colors, assigned to the results in list order */
+const routeColors = [
+  '#e11d48',
+  '#16a34a',
+  '#2563eb',
+  '#ea580c',
+  '#9333ea',
+  '#0891b2',
+  '#db2777',
+  '#65a30d',
+  '#b45309',
+  '#4f46e5',
+]
+
+function routeColor(index: number): string {
+  return routeColors[index % routeColors.length]
+}
+
+type TrackStyle = Pick<L.PolylineOptions, 'weight' | 'opacity'>
+
+/** Track style: with a highlighted route, all others fade so the highlighted one stands out */
+function trackStyle(isHighlighted: boolean, hasHighlight: boolean): TrackStyle {
+  if (isHighlighted) return { weight: 6, opacity: 1 }
+  return hasHighlight ? { weight: 3, opacity: 0.7 } : { weight: 3, opacity: 0.8 }
 }
 
 type GeocodeResult = { id: number; lat: number; lng: number; label: string }
@@ -137,6 +165,9 @@ function NearbySearch() {
   const [lng, setLng] = useState<number | null>(null)
   const [radius, setRadius] = useState<number>(DEFAULT_RADIUS_KM)
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null)
+  // Route under the mouse, in the result list or on the map; takes precedence over the selection
+  const [hoveredRoute, setHoveredRoute] = useState<string | null>(null)
+  const highlightedRoute = hoveredRoute ?? selectedRoute
   const [usingGPS, setUsingGPS] = useState(false)
 
   // Place-name search
@@ -160,11 +191,31 @@ function NearbySearch() {
     isError,
   } = useFindNearbyRoutes({ lat: lat ?? 0, lng: lng ?? 0, radius }, { query: { enabled: lat != null && lng != null } })
 
-  // Fetch the selected route so its polyline can be drawn on the map.
+  // Fetch the selected route so its full-resolution track replaces the simplified one on the map.
   // Disabled while nothing is selected (empty id would otherwise fire the query).
   const { data: selectedRouteDetail } = useGetRoute(selectedRoute ?? '', {
     query: { enabled: selectedRoute != null },
   })
+
+  // The route list only has 2D tracks; the elevation profile needs the GPX of the selected route.
+  // The generated type says void, but the endpoint returns the GPX XML as text.
+  const { data: selectedGpx, isLoading: gpxLoading } = useExportRoute(selectedRoute ?? '', {
+    query: { enabled: selectedRoute != null },
+  })
+  const selectedPoints = useMemo(() => (typeof selectedGpx === 'string' ? parseGpx(selectedGpx) : []), [selectedGpx])
+  const selectedDistKm = useMemo(
+    () =>
+      selectedPoints.reduce(
+        (sum, p, i) => (i === 0 ? 0 : sum + calculateHaversineDistance(selectedPoints[i - 1], p)),
+        0,
+      ) / 1000,
+    [selectedPoints],
+  )
+  // GPX files without <ele> parse to NaN elevations, which the profile cannot draw
+  const hasElevation = selectedPoints.length >= 2 && selectedPoints.every((p) => Number.isFinite(p.elevation))
+  // Point under the mouse in the elevation profile, shown as a marker on the map
+  const [profilePoint, setProfilePoint] = useState<TrackPoint | null>(null)
+  useEffect(() => setProfilePoint(null), [selectedRoute])
 
   // Request the browser location; `onDone` also runs on failure so callers can fall back
   function locate(onFound: (lat: number, lng: number) => void, onDone?: () => void) {
@@ -274,25 +325,74 @@ function NearbySearch() {
     circleRef.current?.setLatLng([lat, lng]).setRadius(radius * 1000)
   }, [lat, lng, radius])
 
-  // Draw the selected route's track as an overlay — without moving the map.
+  // Track layers of all results by route ID, so highlighting only restyles them
+  const trackLayersRef = useRef(new globalThis.Map<string, L.Polyline>())
+  const highlightedRouteRef = useRef(highlightedRoute)
+  highlightedRouteRef.current = highlightedRoute
+
+  // Draw the tracks of all results — without moving the map.
   useEffect(() => {
-    if (!map) return
+    if (!map || !results) return
+
     // The generated type says string[], but the backend returns Array<{lat,lng}>
     // (from parsePolyline). Route through unknown to satisfy the cast.
-    const polyline = (selectedRouteDetail?.polyline ?? []) as unknown as Array<{ lat: number; lng: number }>
-    if (polyline.length < 2) return
+    const selectedPolyline = (selectedRouteDetail?.polyline ?? []) as unknown as Array<{ lat: number; lng: number }>
 
     const layer = L.layerGroup()
-    L.polyline(
-      polyline.map((p) => [p.lat, p.lng] as [number, number]),
-      { color: '#e11d48', weight: 4, opacity: 0.95 },
-    ).addTo(layer)
+    const trackLayers = trackLayersRef.current
+    const highlighted = highlightedRouteRef.current
+    results.forEach((r, index) => {
+      const points = r.id === selectedRouteDetail?.id && selectedPolyline.length >= 2 ? selectedPolyline : r.polyline
+      if (points.length < 2) return
+
+      const track = L.polyline(
+        points.map((p) => [p.lat, p.lng] as [number, number]),
+        {
+          color: routeColor(index),
+          ...trackStyle(r.id === highlighted, highlighted != null),
+          // Keep track clicks from moving the search center (map click handler)
+          bubblingMouseEvents: false,
+        },
+      )
+        .bindTooltip(r.name, { sticky: true })
+        .on('mouseover', () => setHoveredRoute(r.id))
+        .on('mouseout', () => setHoveredRoute((current) => (current === r.id ? null : current)))
+        .on('click', () => setSelectedRoute((current) => (current === r.id ? null : r.id)))
+        .addTo(layer)
+      trackLayers.set(r.id, track)
+    })
     layer.addTo(map)
+    if (highlighted) trackLayers.get(highlighted)?.bringToFront()
 
     return () => {
       layer.remove()
+      trackLayers.clear()
     }
-  }, [map, selectedRouteDetail])
+  }, [map, results, selectedRouteDetail])
+
+  // Saturate the highlighted track and fade all others
+  useEffect(() => {
+    for (const [id, track] of trackLayersRef.current) {
+      track.setStyle(trackStyle(id === highlightedRoute, highlightedRoute != null))
+    }
+    if (highlightedRoute) trackLayersRef.current.get(highlightedRoute)?.bringToFront()
+  }, [highlightedRoute])
+
+  // Show where the mouse is in the elevation profile on the map
+  useEffect(() => {
+    if (!map || !profilePoint) return
+    const marker = L.circleMarker([profilePoint.latitude, profilePoint.longitude], {
+      radius: 6,
+      color: '#1e3a8a',
+      weight: 2,
+      fillColor: '#60a5fa',
+      fillOpacity: 1,
+      interactive: false,
+    }).addTo(map)
+    return () => {
+      marker.remove()
+    }
+  }, [map, profilePoint])
 
   async function handleGeocode() {
     if (!place.trim()) return
@@ -432,13 +532,18 @@ function NearbySearch() {
         {results && results.length > 0 && (
           <div style={styles.results}>
             <h3 style={styles.resultCount}>{results.length} Routen gefunden</h3>
-            {results.map((r) => (
+            {results.map((r, index) => (
               <div
                 key={r.id}
                 onClick={() => setSelectedRoute(selectedRoute === r.id ? null : r.id)}
+                onMouseEnter={() => setHoveredRoute(r.id)}
+                onMouseLeave={() => setHoveredRoute((current) => (current === r.id ? null : current))}
                 style={{
                   ...styles.resultCard,
-                  backgroundColor: selectedRoute === r.id ? '#e3f2fd' : '#fff',
+                  // Color stripe like the route's track on the map (no border shorthand conflict)
+                  boxShadow: `inset 6px 0 0 ${routeColor(index)}`,
+                  paddingLeft: 18,
+                  backgroundColor: selectedRoute === r.id ? '#e3f2fd' : hoveredRoute === r.id ? '#f5f5f5' : '#fff',
                 }}
               >
                 <div style={styles.resultName}>{r.name}</div>
@@ -472,6 +577,22 @@ function NearbySearch() {
                     </div>
                     <div>Höhenmeter ↑: {formatElev((r.stats as { elevationGain?: number })?.elevationGain)}</div>
                     <div>Abstieg ↓: {formatElev((r.stats as { elevationLoss?: number })?.elevationLoss)}</div>
+                  </div>
+                )}
+                {selectedRoute === r.id && (
+                  // Hovering/clicking the profile must not collapse the card
+                  <div style={styles.profile} onClick={(e) => e.stopPropagation()}>
+                    {gpxLoading ? (
+                      <div style={styles.profileHint}>Höhenprofil wird geladen…</div>
+                    ) : hasElevation ? (
+                      <ElevationProfile
+                        points={selectedPoints}
+                        range={[0, selectedDistKm]}
+                        onPointHover={setProfilePoint}
+                      />
+                    ) : (
+                      <div style={styles.profileHint}>Kein Höhenprofil verfügbar</div>
+                    )}
                   </div>
                 )}
               </div>
@@ -667,6 +788,14 @@ const styles = {
     color: '#fff',
     fontWeight: 500,
     marginRight: 4,
+  } as const,
+  profile: {
+    marginTop: 8,
+    cursor: 'default',
+  } as const,
+  profileHint: {
+    fontSize: 12,
+    color: '#888',
   } as const,
   resultStats: {
     marginTop: 8,
