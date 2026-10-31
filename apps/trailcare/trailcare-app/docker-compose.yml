@@ -1,0 +1,22 @@
+services:
+  app:
+    image: ${DOCKER_IMAGE_NAME}
+    restart: on-failure
+    environment:
+      TZ: 'Europe/Berlin'
+      TRAILCARE_DATABASE_URL: 'file:/usr/trailcare/sqlite/trailcare.db'
+      TRAILCARE_ADMIN_PASSWORD: ${TRAILCARE_ADMIN_PASSWORD}
+      # Only used on the very first start, change it in the admin area afterwards
+      TRAILCARE_INITIAL_ACCESS_PASSWORD: ${TRAILCARE_INITIAL_ACCESS_PASSWORD}
+    volumes:
+      - sqlite:/usr/trailcare/sqlite/
+    labels:
+      - 'traefik.http.services.trailcare-app.loadbalancer.server.port=3105'
+      - 'traefik.http.routers.trailcare-app.rule=Host(`care.stgtrails.de`)'
+      - 'traefik.http.routers.trailcare-app.tls=true'
+      - 'traefik.http.routers.trailcare-app.tls.certresolver=letsencrypt'
+      - 'traefik.http.routers.trailcare-app.ruleSyntax=v3'
+
+volumes:
+  sqlite:
+    driver: local

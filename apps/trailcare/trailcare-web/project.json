@@ -1,0 +1,69 @@
+{
+  "name": "trailcare-web",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/trailcare/trailcare-web/src",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "defaultConfiguration": "development",
+      "options": {
+        "host": "0.0.0.0",
+        "port": 4105
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "lint": {
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "trailcare-web:build",
+        "spa": true
+      },
+      "readyWhen": {
+        "signal": true
+      },
+      "dependsOn": ["build"]
+    },
+    "test": {
+      "outputs": ["{workspaceRoot}/coverage/apps/trailcare/trailcare-web"],
+      "options": {
+        "coverage": true,
+        "coverage.reportsDirectory": "../../../coverage/apps/trailcare/trailcare-web"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        }
+      }
+    },
+    "preview": {
+      "defaultConfiguration": "development",
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    }
+  }
+}

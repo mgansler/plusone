@@ -1,0 +1,61 @@
+{
+  "name": "trailcare-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/trailcare/trailcare-e2e/src",
+  "projectType": "application",
+  "tags": [],
+  "implicitDependencies": ["trailcare-backend", "trailcare-web", "trailcare-persistence"],
+  "targets": {
+    "e2e": {
+      "dependsOn": [
+        {
+          "target": "setup-db",
+          "projects": ["trailcare-e2e"]
+        },
+        {
+          "target": "build",
+          "projects": ["trailcare-web"]
+        }
+      ],
+      "configurations": {
+        "watch": {
+          "command": "cypress run --config baseUrl=http://localhost:4105",
+          "headed": true,
+          "no-exit": true
+        }
+      }
+    },
+    "setup-db": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "env": {
+          "TRAILCARE_DATABASE_URL": "file:./trailcare-e2e.db"
+        },
+        "commands": [
+          "rm -f libs/trailcare/persistence/trailcare-e2e.db",
+          "prisma --config libs/trailcare/persistence/prisma.config.ts generate",
+          "prisma --config libs/trailcare/persistence/prisma.config.ts migrate deploy"
+        ],
+        "parallel": false
+      }
+    },
+    "lint": {
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
+    }
+  }
+}

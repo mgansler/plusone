@@ -1,0 +1,142 @@
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import type { FormEvent } from 'react'
+import { useEffect, useState } from 'react'
+
+import type { TrailDto } from '@plusone/trailcare-api-client'
+import { useDeleteTrail, useGetTrail, useGetTrailAreas, useUpdateTrail } from '@plusone/trailcare-api-client'
+
+import { useAdminMutationOptions } from '../../../admin/use-admin-mutation'
+import { AppHeader } from '../../../components/app-header'
+import { BackIcon } from '../../../components/icons'
+
+export const Route = createFileRoute('/admin/trails/$trailId')({
+  component: EditTrailPage,
+})
+
+function EditTrailPage() {
+  const trailId = Number(Route.useParams().trailId)
+  const { data: trail } = useGetTrail(trailId)
+
+  const back = (
+    <Link to="/admin" className="back-link" aria-label="Zurück zur Verwaltung">
+      <BackIcon className="back-icon" />
+    </Link>
+  )
+
+  return (
+    <div className="page">
+      <AppHeader back={back} title="Trail bearbeiten" />
+      <main className="content">{trail && <EditTrailForm trail={trail} />}</main>
+    </div>
+  )
+}
+
+function EditTrailForm({ trail }: { trail: TrailDto }) {
+  const navigate = useNavigate()
+  const { data: areas } = useGetTrailAreas()
+  const [name, setName] = useState(trail.name)
+  const [trailAreaId, setTrailAreaId] = useState(trail.trailAreaId)
+  const [aliases, setAliases] = useState(trail.aliases.join('\n'))
+  // Kept as text so the field can be emptied while typing
+  const [green, setGreen] = useState(String(trail.sweepGreenMaxDays))
+  const [yellow, setYellow] = useState(String(trail.sweepYellowMaxDays))
+  const [saved, setSaved] = useState(false)
+
+  useEffect(() => {
+    if (!saved) return
+    const timeout = window.setTimeout(() => setSaved(false), 2_000)
+    return () => window.clearTimeout(timeout)
+  }, [saved])
+
+  const update = useUpdateTrail(useAdminMutationOptions(() => setSaved(true)))
+  const remove = useDeleteTrail(useAdminMutationOptions(() => navigate({ to: '/admin' })))
+
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    update.mutate({
+      trailId: trail.id,
+      data: {
+        name,
+        trailAreaId,
+        aliases: aliases
+          .split('\n')
+          .map((alias) => alias.trim())
+          .filter(Boolean),
+        sweepGreenMaxDays: Number(green),
+        sweepYellowMaxDays: Number(yellow),
+      },
+    })
+  }
+
+  const onDelete = () => {
+    if (window.confirm(`„${trail.name}“ mit dem ganzen Pflegelog löschen?`)) {
+      remove.mutate({ trailId: trail.id })
+    }
+  }
+
+  return (
+    <form className="care-form" onSubmit={onSubmit}>
+      <label className="field">
+        <span>Name</span>
+        <input value={name} onChange={(event) => setName(event.target.value)} maxLength={100} required />
+      </label>
+
+      <label className="field">
+        <span>Trailgebiet</span>
+        <select value={trailAreaId} onChange={(event) => setTrailAreaId(Number(event.target.value))}>
+          {areas?.map((area) => (
+            <option key={area.id} value={area.id}>
+              {area.name}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label className="field">
+        <span>Weitere Namen, einer pro Zeile</span>
+        <textarea rows={3} value={aliases} onChange={(event) => setAliases(event.target.value)} />
+      </label>
+
+      <fieldset className="field-row field-row-narrow">
+        <legend>Ampel nach dem Fegen</legend>
+        <label className="field">
+          <span>Grün bis Tag</span>
+          <input
+            type="number"
+            inputMode="numeric"
+            min={0}
+            max={365}
+            value={green}
+            onChange={(event) => setGreen(event.target.value)}
+            required
+          />
+        </label>
+        <label className="field">
+          <span>Gelb bis Tag</span>
+          <input
+            type="number"
+            inputMode="numeric"
+            min={green || 0}
+            max={365}
+            value={yellow}
+            onChange={(event) => setYellow(event.target.value)}
+            required
+          />
+        </label>
+      </fieldset>
+      <p className="hint">Danach ist der Trail rot. Tag 0 ist der Tag, an dem gefegt wurde.</p>
+
+      <div className="button-row">
+        <button className="button button-primary" type="submit" disabled={update.isPending}>
+          {saved ? 'Gespeichert' : 'Speichern'}
+        </button>
+        <Link to="/trails/$trailId" params={{ trailId: String(trail.id) }} className="button">
+          Zum Pflegelog
+        </Link>
+        <button className="button button-danger" type="button" onClick={onDelete}>
+          Trail löschen
+        </button>
+      </div>
+    </form>
+  )
+}

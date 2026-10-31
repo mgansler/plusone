@@ -1,0 +1,1389 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/health": {
+      "get": {
+        "operationId": "getHealthStatus",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Health status of the application.\n\nThe Health Check is successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ok",
+                        "degraded"
+                      ],
+                      "example": "ok"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up",
+                          "responseTime": 12
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ]
+                          },
+                          "responseTime": {
+                            "type": "number",
+                            "description": "Time the health indicator took to respond, in ms"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {},
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ]
+                          },
+                          "responseTime": {
+                            "type": "number",
+                            "description": "Time the health indicator took to respond, in ms"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up",
+                          "responseTime": 12
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ]
+                          },
+                          "responseTime": {
+                            "type": "number",
+                            "description": "Time the health indicator took to respond, in ms"
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The Health Check is not successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error",
+                        "shutting_down"
+                      ],
+                      "example": "error"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up",
+                          "responseTime": 12
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ]
+                          },
+                          "responseTime": {
+                            "type": "number",
+                            "description": "Time the health indicator took to respond, in ms"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect",
+                          "responseTime": 3005
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ]
+                          },
+                          "responseTime": {
+                            "type": "number",
+                            "description": "Time the health indicator took to respond, in ms"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up",
+                          "responseTime": 12
+                        },
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect",
+                          "responseTime": 3005
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "up",
+                              "degraded",
+                              "down"
+                            ]
+                          },
+                          "responseTime": {
+                            "type": "number",
+                            "description": "Time the health indicator took to respond, in ms"
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/api/trail-areas": {
+      "get": {
+        "description": "All trail areas with their trails and sweep status",
+        "operationId": "getTrailAreas",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TrailAreaDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "trails"
+        ]
+      }
+    },
+    "/api/trails/{trailId}": {
+      "get": {
+        "operationId": "getTrail",
+        "parameters": [
+          {
+            "name": "trailId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "trails"
+        ]
+      }
+    },
+    "/api/trails/{trailId}/care-entries": {
+      "get": {
+        "description": "Care log of a trail, newest first",
+        "operationId": "getCareEntries",
+        "parameters": [
+          {
+            "name": "trailId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CareEntryDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "care"
+        ]
+      },
+      "post": {
+        "operationId": "createCareEntry",
+        "parameters": [
+          {
+            "name": "trailId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCareEntryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CareEntryDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "care"
+        ]
+      }
+    },
+    "/api/care-entries/{entryId}": {
+      "put": {
+        "operationId": "updateCareEntry",
+        "parameters": [
+          {
+            "name": "entryId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCareEntryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CareEntryDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "care"
+        ]
+      },
+      "delete": {
+        "description": "Undo for the creator, delete for admins",
+        "operationId": "deleteCareEntry",
+        "parameters": [
+          {
+            "name": "entryId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "care"
+        ]
+      }
+    },
+    "/api/admin/trail-areas": {
+      "post": {
+        "operationId": "createTrailArea",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrailAreaInputDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrailAreaResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/admin/trail-areas/{trailAreaId}": {
+      "put": {
+        "operationId": "updateTrailArea",
+        "parameters": [
+          {
+            "name": "trailAreaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrailAreaInputDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrailAreaResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      },
+      "delete": {
+        "description": "Deletes the area including its trails and care log",
+        "operationId": "deleteTrailArea",
+        "parameters": [
+          {
+            "name": "trailAreaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/admin/trail-areas/{trailAreaId}/trails": {
+      "post": {
+        "operationId": "createTrail",
+        "parameters": [
+          {
+            "name": "trailAreaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTrailDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/admin/trails/{trailId}": {
+      "put": {
+        "operationId": "updateTrail",
+        "parameters": [
+          {
+            "name": "trailId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTrailDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      },
+      "delete": {
+        "description": "Deletes the trail including its care log",
+        "operationId": "deleteTrail",
+        "parameters": [
+          {
+            "name": "trailId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/admin/access-passwords": {
+      "get": {
+        "operationId": "getAccessPasswords",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccessPasswordDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      },
+      "post": {
+        "operationId": "createAccessPassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAccessPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessPasswordWithSecretDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/admin/access-passwords/{accessPasswordId}": {
+      "put": {
+        "operationId": "updateAccessPassword",
+        "parameters": [
+          {
+            "name": "accessPasswordId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccessPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessPasswordDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      },
+      "delete": {
+        "description": "Deletes the password and logs out its devices",
+        "operationId": "deleteAccessPassword",
+        "parameters": [
+          {
+            "name": "accessPasswordId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/admin/access-passwords/{accessPasswordId}/rotate": {
+      "post": {
+        "description": "New password, logs out all its devices",
+        "operationId": "rotateAccessPassword",
+        "parameters": [
+          {
+            "name": "accessPasswordId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RotateAccessPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessPasswordWithSecretDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/auth/session": {
+      "get": {
+        "operationId": "getSession",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "operationId": "login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "operationId": "logout",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "auth"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Trailcare API",
+    "description": "",
+    "version": "0.1",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "cookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "trailcare_session"
+      }
+    },
+    "schemas": {
+      "SweepStatus": {
+        "type": "string",
+        "enum": [
+          "GREEN",
+          "YELLOW",
+          "RED"
+        ]
+      },
+      "CareType": {
+        "type": "string",
+        "enum": [
+          "SWEPT",
+          "CUT_BACK",
+          "REPAIR",
+          "INSPECTION",
+          "FALLEN_TREE"
+        ]
+      },
+      "CareEntryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "trailId": {
+            "type": "number"
+          },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CareType"
+              }
+            ]
+          },
+          "performedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "performedBy": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "undoableUntil": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Set when the current session may still undo this entry"
+          }
+        },
+        "required": [
+          "id",
+          "trailId",
+          "type",
+          "performedAt",
+          "createdAt"
+        ]
+      },
+      "TrailDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "trailAreaId": {
+            "type": "number"
+          },
+          "trailAreaName": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sweepGreenMaxDays": {
+            "type": "number"
+          },
+          "sweepYellowMaxDays": {
+            "type": "number"
+          },
+          "sweepStatus": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SweepStatus"
+              }
+            ]
+          },
+          "lastSweptAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "daysSinceSwept": {
+            "type": "number",
+            "description": "Calendar days since the last sweep, 0 = today"
+          },
+          "lastCareEntry": {
+            "$ref": "#/components/schemas/CareEntryDto"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "trailAreaId",
+          "trailAreaName",
+          "aliases",
+          "sweepGreenMaxDays",
+          "sweepYellowMaxDays",
+          "sweepStatus"
+        ]
+      },
+      "TrailAreaDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "trails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TrailDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "trails"
+        ]
+      },
+      "CreateCareEntryDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CareType"
+              }
+            ]
+          },
+          "performedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Defaults to now"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "performedBy": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "UpdateCareEntryDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CareType"
+              }
+            ]
+          },
+          "performedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Empty string removes the comment"
+          },
+          "performedBy": {
+            "type": "string",
+            "description": "Empty string removes the name"
+          }
+        }
+      },
+      "TrailAreaInputDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "TrailAreaResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "CreateTrailDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sweepGreenMaxDays": {
+            "type": "number",
+            "default": 2
+          },
+          "sweepYellowMaxDays": {
+            "type": "number",
+            "default": 4
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateTrailDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "trailAreaId": {
+            "type": "number",
+            "description": "Move the trail to another area"
+          },
+          "aliases": {
+            "description": "Replaces all aliases",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sweepGreenMaxDays": {
+            "type": "number"
+          },
+          "sweepYellowMaxDays": {
+            "type": "number"
+          }
+        }
+      },
+      "AccessPasswordDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "label": {
+            "type": "string"
+          },
+          "activeSessions": {
+            "type": "number",
+            "description": "Number of devices currently logged in with this password"
+          },
+          "lastUsedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "activeSessions",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateAccessPasswordDto": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "description": "Generated when omitted"
+          }
+        },
+        "required": [
+          "label"
+        ]
+      },
+      "AccessPasswordWithSecretDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "label": {
+            "type": "string"
+          },
+          "activeSessions": {
+            "type": "number",
+            "description": "Number of devices currently logged in with this password"
+          },
+          "lastUsedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "activeSessions",
+          "createdAt",
+          "updatedAt",
+          "password"
+        ]
+      },
+      "UpdateAccessPasswordDto": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label"
+        ]
+      },
+      "RotateAccessPasswordDto": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "description": "Generated when omitted"
+          }
+        }
+      },
+      "Role": {
+        "type": "string",
+        "enum": [
+          "USER",
+          "ADMIN"
+        ]
+      },
+      "SessionResponseDto": {
+        "type": "object",
+        "properties": {
+          "authenticated": {
+            "type": "boolean"
+          },
+          "role": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Role"
+              }
+            ]
+          }
+        },
+        "required": [
+          "authenticated"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "password"
+        ]
+      }
+    }
+  }
+}

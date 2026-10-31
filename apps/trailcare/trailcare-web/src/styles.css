@@ -1,0 +1,945 @@
+:root {
+  --ground: #e8ece3;
+  --surface: #f7f9f4;
+  --ink: #17251d;
+  --muted: #56665b;
+  --line: #c7d1c3;
+  --spruce: #1d3a2c;
+  --spruce-ink: #f1f5ee;
+  --focus: #2f6fd1;
+
+  --status-green: #2f8a3f;
+  --status-yellow: #e2b112;
+  --status-red: #c4303a;
+  --tree: #7a4b1f;
+
+  --sign: 'Avenir Next Condensed', 'Roboto Condensed', 'Arial Narrow', sans-serif-condensed, system-ui, sans-serif;
+  --body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --tap: 52px;
+  --radius-small: 6px;
+  --radius: 12px;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --ground: #121a15;
+    --surface: #1a251e;
+    --ink: #e4ebe2;
+    --muted: #9aab9f;
+    --line: #2f3d34;
+    --spruce: #9fd0ae;
+    --spruce-ink: #10200f;
+    --focus: #7fb0ff;
+    --status-green: #3fa152;
+    --status-yellow: #e8bb22;
+    --status-red: #e0505a;
+    --tree: #c58a50;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --ground: #121a15;
+  --surface: #1a251e;
+  --ink: #e4ebe2;
+  --muted: #9aab9f;
+  --line: #2f3d34;
+  --spruce: #9fd0ae;
+  --spruce-ink: #10200f;
+  --focus: #7fb0ff;
+  --status-green: #3fa152;
+  --status-yellow: #e8bb22;
+  --status-red: #e0505a;
+  --tree: #c58a50;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.45;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+.splash {
+  min-height: 100vh;
+}
+
+/* ── Layout ──────────────────────────────────────────────────────────── */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 16px 16px calc(120px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: env(safe-area-inset-top) 12px 0 16px;
+  background: var(--ground);
+  border-bottom: 1px solid var(--line);
+}
+
+.app-header-title {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--sign);
+  font-weight: 700;
+  font-size: 1.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-header-nav {
+  display: flex;
+  gap: 4px;
+}
+
+.header-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.header-link[aria-current='page'] {
+  color: var(--ink);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-left: -10px;
+}
+
+.back-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.section-title {
+  font-family: var(--sign);
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.empty {
+  padding: 32px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ── Blaze: the painted trail marker carrying the traffic light ──────── */
+
+.blaze {
+  --blaze-color: var(--status-red);
+  --blaze-ink: #fff;
+  position: relative;
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 44px;
+}
+
+.blaze[data-status='GREEN'] {
+  --blaze-color: var(--status-green);
+}
+
+.blaze[data-status='YELLOW'] {
+  --blaze-color: var(--status-yellow);
+  --blaze-ink: #23200f;
+}
+
+.blaze svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: var(--blaze-color);
+}
+
+.blaze-value {
+  position: relative;
+  font-family: var(--sign);
+  font-weight: 800;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--blaze-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.blaze-large {
+  width: 72px;
+  height: 94px;
+}
+
+.blaze-large .blaze-value {
+  font-size: 2.6rem;
+}
+
+/* ── Search ──────────────────────────────────────────────────────────── */
+
+.search {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.search input {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 14px 0 44px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+/* ── Trail list ──────────────────────────────────────────────────────── */
+
+.area-name {
+  font-family: var(--sign);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.trail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.trail-row {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--line);
+}
+
+.trail-row-link {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  text-decoration: none;
+}
+
+.trail-row-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.trail-row-name {
+  font-family: var(--sign);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.trail-row-alias,
+.trail-row-meta {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.trail-row-last {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.trail-row-last[data-type='FALLEN_TREE'] {
+  color: var(--tree);
+}
+
+.sweep-button {
+  flex-shrink: 0;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  margin-left: 8px;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--spruce);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    transform 120ms ease-out,
+    background-color 200ms;
+}
+
+.sweep-button:active {
+  transform: scale(0.92);
+}
+
+.sweep-button:disabled {
+  opacity: 0.6;
+}
+
+.sweep-icon {
+  width: 32px;
+  height: 32px;
+}
+
+/* Feedback right after the tap: the button fills green and the marker repaints */
+.trail-row[data-just-swept] .sweep-button {
+  background: var(--status-green);
+  border-color: var(--status-green);
+  color: #fff;
+  opacity: 1;
+}
+
+.trail-row[data-just-swept] .blaze svg {
+  animation: repaint 500ms ease-out;
+}
+
+@keyframes repaint {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ── Trail detail ────────────────────────────────────────────────────── */
+
+.trail-hero {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.trail-hero-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.trail-hero h1 {
+  font-family: var(--sign);
+  font-size: 2.1rem;
+  font-weight: 800;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.trail-aliases {
+  color: var(--muted);
+}
+
+.trail-hero-status {
+  font-weight: 600;
+}
+
+.text-link {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.panel summary {
+  min-height: var(--tap);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.panel[open] summary {
+  border-bottom: 1px solid var(--line);
+}
+
+.panel .care-form {
+  padding: 16px;
+}
+
+/* ── Care log ────────────────────────────────────────────────────────── */
+
+.care-log {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 16px;
+  border-left: 3px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.care-log-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.care-log-item::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: 6px;
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  background: var(--muted);
+}
+
+.care-log-item[data-type='SWEPT']::before {
+  background: var(--status-green);
+}
+
+.care-log-item[data-type='FALLEN_TREE']::before {
+  background: var(--tree);
+}
+
+.care-log-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 12px;
+}
+
+.care-log-type {
+  font-weight: 700;
+}
+
+.care-log-head time,
+.care-log-by {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.care-log-item .text-button {
+  align-self: flex-start;
+  margin-left: -8px;
+}
+
+.care-log-comment {
+  overflow-wrap: anywhere;
+}
+
+/* ── Forms ───────────────────────────────────────────────────────────── */
+
+.care-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.care-form-compact {
+  gap: 12px;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+legend {
+  padding: 0;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.field {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field > span {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  background: var(--surface);
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.field-row > .field {
+  flex-basis: 12rem;
+}
+
+.field-row-narrow > .field {
+  flex-basis: 7rem;
+}
+
+fieldset.field-row > legend {
+  width: 100%;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chips legend {
+  width: 100%;
+}
+
+.chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.chip input:checked + span {
+  background: var(--spruce);
+  border-color: var(--spruce);
+  color: var(--spruce-ink);
+  font-weight: 600;
+}
+
+.chip[data-type='FALLEN_TREE'] input:checked + span {
+  background: var(--tree);
+  border-color: var(--tree);
+  color: #fff;
+}
+
+.chip input:focus-visible + span {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.form-error {
+  color: var(--status-red);
+  font-weight: 600;
+}
+
+.inline-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.inline-form .field {
+  flex-basis: 12rem;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────── */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  background: var(--surface);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.button-primary {
+  background: var(--spruce);
+  border-color: var(--spruce);
+  color: var(--spruce-ink);
+}
+
+.button-danger {
+  color: var(--status-red);
+}
+
+.button-sweep {
+  min-height: 64px;
+  border-radius: var(--radius);
+  background: var(--spruce);
+  border-color: var(--spruce);
+  color: var(--spruce-ink);
+  font-family: var(--sign);
+  font-size: 1.35rem;
+}
+
+.button-sweep:active {
+  transform: scale(0.98);
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.text-button {
+  min-height: 44px;
+  padding: 0 8px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.text-button-danger {
+  color: var(--status-red);
+}
+
+/* ── Undo toast ──────────────────────────────────────────────────────── */
+
+.toast-region {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  padding: 0 12px calc(12px + env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.toast {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 38rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  padding: 8px 8px 8px 18px;
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: var(--ground);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+  pointer-events: auto;
+  animation: toast-in 180ms ease-out;
+}
+
+.toast[data-tone='error'] {
+  background: var(--status-red);
+  color: #fff;
+}
+
+.toast-message {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+}
+
+.toast-undo {
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 2px solid currentColor;
+  border-radius: var(--radius-small);
+  background: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Shrinking bar shows how long undo is still possible */
+.toast-timer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  width: 100%;
+  background: var(--status-green);
+  transform-origin: left;
+  animation: toast-timer linear forwards;
+}
+
+@keyframes toast-timer {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes toast-in {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+}
+
+/* ── Login ───────────────────────────────────────────────────────────── */
+
+.login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 22rem;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.login-mark {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.login-mark h1 {
+  font-family: var(--sign);
+  font-size: 2.4rem;
+  font-weight: 800;
+}
+
+.login-intro {
+  color: var(--muted);
+}
+
+/* ── Admin ───────────────────────────────────────────────────────────── */
+
+.admin-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.admin-area-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-area-head .area-name {
+  margin: 0;
+  color: var(--ink);
+}
+
+.admin-trails {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-trail-link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  min-height: var(--tap);
+  text-decoration: none;
+}
+
+.admin-trail-link .blaze {
+  width: 18px;
+  height: 24px;
+}
+
+.admin-trail-name {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.admin-passwords {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-password-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.admin-password {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-password-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-password-label {
+  font-weight: 600;
+}
+
+.revealed {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border: 2px solid var(--status-green);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.revealed-password {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  user-select: all;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Keep the undo countdown readable as a static bar */
+  .toast-timer {
+    display: none;
+  }
+}

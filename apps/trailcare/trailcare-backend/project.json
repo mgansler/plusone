@@ -1,0 +1,114 @@
+{
+  "name": "trailcare-backend",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/trailcare/trailcare-backend/src",
+  "projectType": "application",
+  "tags": [],
+  "implicitDependencies": ["trailcare-web"],
+  "targets": {
+    "build": {
+      "defaultConfiguration": "production",
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        },
+        {
+          "target": "build",
+          "projects": ["trailcare-web"]
+        }
+      ],
+      "configurations": {
+        "api-spec": {},
+        "development": {},
+        "production": {}
+      }
+    },
+    "complete-lockfile": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "dependsOn": ["build"],
+      "options": {
+        "command": "sh tools/scripts/prepare-deployment-lockfile.sh dist/apps/trailcare/trailcare-backend"
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        },
+        {
+          "target": "prisma-deploy",
+          "dependencies": true
+        }
+      ],
+      "options": {
+        "buildTarget": "trailcare-backend:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "trailcare-backend:build:development"
+        },
+        "production": {
+          "buildTarget": "trailcare-backend:build:production"
+        }
+      }
+    },
+    "generate-api-spec": {
+      "executor": "@nx/js:node",
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        },
+        {
+          "target": "prisma-deploy",
+          "dependencies": true
+        }
+      ],
+      "options": {
+        "buildTarget": "trailcare-backend:build:api-spec",
+        "watch": false
+      }
+    },
+    "lint": {
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
+    },
+    "test": {
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        }
+      ],
+      "options": {
+        "config": "./vite.config.mts"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        },
+        "watch": {
+          "watch": true
+        }
+      }
+    }
+  }
+}

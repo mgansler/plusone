@@ -1,0 +1,104 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider   = "prisma-client"
+  output     = "src/lib/client"
+  engineType = "client"
+}
+
+model TrailArea {
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  trails Trail[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Trail {
+  id      Int          @id @default(autoincrement())
+  name    String
+  aliases TrailAlias[]
+
+  /// Traffic light: green while days since last sweep <= this value
+  sweepGreenMaxDays  Int @default(2)
+  /// Traffic light: yellow while days since last sweep <= this value, red afterwards
+  sweepYellowMaxDays Int @default(4)
+
+  careEntries CareEntry[]
+
+  trailArea   TrailArea @relation(fields: [trailAreaId], references: [id], onDelete: Cascade)
+  trailAreaId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([trailAreaId, name])
+}
+
+model TrailAlias {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  trail   Trail @relation(fields: [trailId], references: [id], onDelete: Cascade)
+  trailId Int
+}
+
+enum CareType {
+  SWEPT
+  CUT_BACK
+  REPAIR
+  INSPECTION
+  FALLEN_TREE
+}
+
+model CareEntry {
+  id          Int      @id @default(autoincrement())
+  type        CareType
+  performedAt DateTime
+  comment     String?
+  performedBy String?
+
+  /// Session that created the entry, allows the creator to undo it shortly after
+  createdBySessionId String?
+
+  trail   Trail @relation(fields: [trailId], references: [id], onDelete: Cascade)
+  trailId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([trailId, type, performedAt])
+}
+
+/// Passwords for the public (non-admin) area, all grant the same access but can be rotated individually
+model AccessPassword {
+  id           Int       @id @default(autoincrement())
+  label        String
+  passwordHash String
+  sessions     Session[]
+
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Session {
+  /// sha256 of the session token stored in the cookie
+  id        String   @id
+  role      Role
+  expiresAt DateTime
+
+  /// Rotating or deleting the password ends all sessions that were opened with it
+  accessPassword   AccessPassword? @relation(fields: [accessPasswordId], references: [id], onDelete: Cascade)
+  accessPasswordId Int?
+
+  createdAt DateTime @default(now())
+}

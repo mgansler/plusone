@@ -1,0 +1,33 @@
+{
+  "name": "trailcare-persistence",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/trailcare/persistence/src",
+  "projectType": "library",
+  "tags": [],
+  "implicitDependencies": ["plugins-nx-prisma"],
+  "targets": {
+    "prisma-validate": {
+      "executor": "@mgansler/nx-prisma:validate"
+    },
+    "prisma-format": {
+      "executor": "@mgansler/nx-prisma:format"
+    },
+    "prisma-generate": {
+      "executor": "@mgansler/nx-prisma:generate"
+    },
+    "prisma-deploy": {
+      "executor": "@mgansler/nx-prisma:deploy"
+    },
+    "prisma-migrate": {
+      "executor": "@mgansler/nx-prisma:migrate"
+    },
+    "prisma-push": {
+      "executor": "@mgansler/nx-prisma:push",
+      "dependsOn": [
+        {
+          "target": "prisma-generate"
+        }
+      ]
+    }
+  }
+}

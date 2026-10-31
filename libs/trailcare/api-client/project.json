@@ -1,0 +1,43 @@
+{
+  "name": "trailcare-api-client",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/trailcare/api-client/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "generate-api-client": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": [
+        {
+          "externalDependencies": ["orval"]
+        },
+        "{projectRoot}/orval.config.ts",
+        "{projectRoot}/src/**/*",
+        "!{projectRoot}/src/gen/*",
+        "{workspaceRoot}/apps/trailcare/trailcare-backend/trailcare-internal.json"
+      ],
+      "outputs": ["{projectRoot}/src/gen/*"],
+      "options": {
+        "command": "yarn orval --config libs/trailcare/api-client/orval.config.cjs"
+      }
+    },
+    "lint": {
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
+    }
+  }
+}
