@@ -5,6 +5,8 @@ import L from 'leaflet'
 import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 import { getListRoutesQueryKey, useListRoutes } from '@plusone/gpx-toolbox-api-client'
 
+import { CompareBar } from '../components/CompareBar'
+import { CompareToggleButton } from '../components/CompareToggleButton'
 import { Map } from '../components/Map'
 import { SegmentOverlay } from '../components/SegmentOverlay'
 import { PointDetails } from '../components/PointDetails'
@@ -252,6 +254,9 @@ function RoutesPage() {
                       return <span style={styles.badge}>{activities.length} Aktivitäten</span>
                     return null
                   })()}
+                  <span style={styles.compareToggle}>
+                    <CompareToggleButton id={r.id} name={r.name} />
+                  </span>
                 </div>
               </Link>
             ))}
@@ -272,6 +277,8 @@ function RoutesPage() {
             </button>
           </div>
         )}
+
+        <CompareBar />
       </div>
 
       {/* Map — same mechanism as home page */}
@@ -527,6 +534,10 @@ const styles = {
   routeMeta: {
     display: 'flex',
     gap: 4,
+    alignItems: 'center',
+  } as const,
+  compareToggle: {
+    marginLeft: 'auto',
   } as const,
   badge: {
     display: 'inline-block',

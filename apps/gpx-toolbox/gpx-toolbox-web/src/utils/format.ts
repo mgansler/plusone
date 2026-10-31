@@ -31,3 +31,11 @@ export function formatDuration(seconds: number): string {
   }
   return `${secs}s`
 }
+
+/** Signed difference to the reference, e.g. "+8.7 km" / "−160 m" */
+export function formatDifference(value: number, reference: number, format: (v: number) => string): string {
+  const diff = value - reference
+  const formatted = format(Math.abs(diff))
+  if (formatted === format(0)) return `±${formatted}`
+  return `${diff > 0 ? '+' : '−'}${formatted}`
+}

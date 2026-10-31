@@ -19,6 +19,7 @@ import { ConfirmDialog } from '../../components/ConfirmDialog'
 import { SegmentMap } from '../../components/SegmentMap'
 import { SidebarDivider, SidebarLayout } from '../../components/SidebarLayout'
 import { TrackAnalysis } from '../../components/TrackAnalysis'
+import { compareList } from '../../hooks/useCompareList'
 import { useSegmentRange } from '../../hooks/useSegmentRange'
 
 const sourceLabels: Record<string, string> = {
@@ -119,6 +120,7 @@ function RouteDetailPage() {
     mutation: {
       onSuccess: () => {
         queryClient.removeQueries({ queryKey: getGetRouteQueryKey(routeId) })
+        compareList.remove(routeId)
         void queryClient.invalidateQueries({ queryKey: getListRoutesQueryKey() })
         void queryClient.invalidateQueries({ queryKey: getFindNearbyRoutesQueryKey() })
         void queryClient.invalidateQueries({ queryKey: getListAllActivitiesQueryKey() })

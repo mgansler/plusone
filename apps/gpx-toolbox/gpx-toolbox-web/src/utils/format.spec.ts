@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { formatDistance, formatDuration, formatElevation } from './format'
+import { formatDifference, formatDistance, formatDuration, formatElevation } from './format'
 
 describe('formatDistance', () => {
   it('formats meters below 1 km', () => {
@@ -59,5 +59,18 @@ describe('formatElevation', () => {
 
   it('rounds large values', () => {
     expect(formatElevation(1500.9)).toBe('1501 m')
+  })
+})
+
+describe('formatDifference', () => {
+  const km = (m: number) => `${(m / 1000).toFixed(1)} km`
+
+  it('shows the signed difference to the reference', () => {
+    expect(formatDifference(51_000, 42_300, km)).toBe('+8.7 km')
+    expect(formatDifference(38_100, 42_300, km)).toBe('−4.2 km')
+  })
+
+  it('shows ± when the rounded difference is zero', () => {
+    expect(formatDifference(42_320, 42_300, km)).toBe('±0.0 km')
   })
 })

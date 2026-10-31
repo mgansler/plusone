@@ -6,8 +6,11 @@ import { useExportRoute, useFindNearbyRoutes, useGetRoute } from '@plusone/gpx-t
 import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 import { ElevationProfile } from '../components/ElevationProfile'
+import { CompareBar } from '../components/CompareBar'
+import { CompareToggleButton } from '../components/CompareToggleButton'
 import { defaultCenter, Map } from '../components/Map'
 import { formatElevation } from '../utils/format'
+import { routeColor } from '../utils/routeColors'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type NearbyRoute = {
@@ -30,24 +33,6 @@ const statusColors: Record<string, string> = {
   planned: '#9c27b0',
   ridden: '#4caf50',
   'found-online': '#ff5722',
-}
-
-/** Distinct track colors, assigned to the results in list order */
-const routeColors = [
-  '#e11d48',
-  '#16a34a',
-  '#2563eb',
-  '#ea580c',
-  '#9333ea',
-  '#0891b2',
-  '#db2777',
-  '#65a30d',
-  '#b45309',
-  '#4f46e5',
-]
-
-function routeColor(index: number): string {
-  return routeColors[index % routeColors.length]
 }
 
 type TrackStyle = Pick<L.PolylineOptions, 'weight' | 'opacity'>
@@ -565,6 +550,9 @@ function NearbySearch() {
                   >
                     {r.status}
                   </span>
+                  <span style={styles.compareToggle}>
+                    <CompareToggleButton id={r.id} name={r.name} />
+                  </span>
                 </div>
                 {selectedRoute === r.id && r.stats && (
                   <div style={styles.resultStats}>
@@ -599,6 +587,8 @@ function NearbySearch() {
             ))}
           </div>
         )}
+
+        <CompareBar />
       </div>
 
       {/* Map */}
@@ -779,6 +769,10 @@ const styles = {
   resultMeta: {
     display: 'flex',
     gap: 6,
+    alignItems: 'center',
+  } as const,
+  compareToggle: {
+    marginLeft: 'auto',
   } as const,
   badge: {
     display: 'inline-block',
