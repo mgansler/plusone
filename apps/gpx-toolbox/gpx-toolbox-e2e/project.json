@@ -1,0 +1,60 @@
+{
+  "name": "gpx-toolbox-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/gpx-toolbox/gpx-toolbox-e2e/src",
+  "projectType": "application",
+  "tags": [],
+  "implicitDependencies": ["gpx-toolbox-backend", "gpx-toolbox-web", "gpx-toolbox-persistence"],
+  "targets": {
+    "e2e": {
+      "dependsOn": [
+        {
+          "target": "setup-db",
+          "projects": ["gpx-toolbox-e2e"]
+        },
+        {
+          "target": "build",
+          "projects": ["gpx-toolbox-web"]
+        }
+      ],
+      "configurations": {
+        "watch": {
+          "headed": true,
+          "no-exit": true
+        }
+      }
+    },
+    "setup-db": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "env": {
+          "GPX_TOOLBOX_DATABASE_URL": "file:./gpx-toolbox-e2e.db"
+        },
+        "commands": [
+          "rm -f libs/gpx-toolbox/persistence/gpx-toolbox-e2e.db",
+          "prisma --config libs/gpx-toolbox/persistence/prisma.config.ts generate",
+          "prisma --config libs/gpx-toolbox/persistence/prisma.config.ts migrate deploy"
+        ],
+        "parallel": false
+      }
+    },
+    "lint": {
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "configurations": {
+        "fix": {
+          "fix": true
+        }
+      }
+    }
+  }
+}

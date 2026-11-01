@@ -1,9 +1,11 @@
+import { randomBytes, timingSafeEqual } from 'node:crypto'
+
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
-import { STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET } from './config'
+import { STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET, stravaBaseUrl } from './config'
 import { StravaService } from './strava.service'
 
 /**
@@ -11,6 +13,18 @@ import { StravaService } from './strava.service'
  * long-running request never hits an expired token mid-flight.
  */
 const REFRESH_BUFFER_MS = 60_000
+
+/** Strava tokens as stored on the user */
+type StravaTokens = { accessToken: string; refreshToken: string; expiresAt: Date }
+
+/** Result of a successful login: the local user plus the issued JWT */
+type AuthenticatedUser = {
+  userId: string
+  stravaId: string
+  name: string | null
+  avatarUrl: string | null
+  jwtToken: string
+}
 
 @Injectable()
 export class AuthService {
@@ -23,25 +37,63 @@ export class AuthService {
   ) {}
 
   /**
-   * Get the Strava authorization URL for the frontend.
+   * Get the Strava authorization URL plus the random `state` it contains. The caller has to remember the
+   * state (cookie) and compare it in the callback via `verifyState`.
    */
-  getAuthorizationUrl(): { authorizationUrl: string } {
+  getAuthorizationUrl(): { authorizationUrl: string; state: string } {
+    const state = this.generateState()
     const params = new URLSearchParams({
       client_id: requireEnv(STRAVA_CLIENT_ID),
       redirect_uri: process.env.STRAVA_REDIRECT_URI ?? 'http://localhost:3333/api/auth/strava/callback',
       response_type: 'code',
       scope: 'read_all,activity:read_all,profile:read_all',
-      state: this.generateState(),
+      state,
     })
-    return { authorizationUrl: `https://www.strava.com/oauth/authorize?${params.toString()}` }
+    return { authorizationUrl: `${stravaBaseUrl()}/oauth/authorize?${params.toString()}`, state }
   }
 
   /**
-   * Verify the OAuth state parameter to prevent CSRF.
+   * Verify the OAuth state parameter returned by Strava against the one issued in `getAuthorizationUrl`
+   * to prevent login CSRF. Both have to be present.
    */
-  verifyState(_state: string): boolean {
-    // For MVP: accept any state. In production, store state in session/cookie and compare.
-    return true
+  verifyState(state: string | undefined, expected: string | undefined): boolean {
+    if (!state || !expected) return false
+    const a = Buffer.from(state)
+    const b = Buffer.from(expected)
+    return a.length === b.length && timingSafeEqual(a, b)
+  }
+
+  /**
+   * Exchange the authorization code from the OAuth callback for Strava tokens.
+   */
+  async exchangeAuthorizationCode(code: string): Promise<StravaTokens> {
+    const response = await fetch(`${stravaBaseUrl()}/oauth/token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        client_id: requireEnv(STRAVA_CLIENT_ID),
+        client_secret: requireEnv(STRAVA_CLIENT_SECRET),
+        code,
+        grant_type: 'authorization_code',
+      }),
+    })
+
+    if (!response.ok) {
+      this.logger.error(`Code exchange failed: ${response.status} ${response.statusText}`)
+      throw new UnauthorizedException('Failed to exchange code for token')
+    }
+
+    const data = await response.json()
+    this.logger.debug(`Token exchanged, scopes: ${data.scope}`)
+    return toStravaTokens(data)
+  }
+
+  /**
+   * Authenticate a user via the authorization code from the OAuth callback.
+   */
+  async authenticateWithAuthorizationCode(code: string): Promise<AuthenticatedUser> {
+    const tokens = await this.exchangeAuthorizationCode(code)
+    return this.loginStravaUser(tokens)
   }
 
   /**
@@ -50,8 +102,8 @@ export class AuthService {
    * Strava's token endpoint also returns `expires_at` (unix seconds); we keep it
    * so we know when the *next* token will expire.
    */
-  async refreshToken(refreshToken: string): Promise<{ accessToken: string; refreshToken: string; expiresAt: Date }> {
-    const response = await fetch('https://www.strava.com/oauth/token', {
+  async refreshToken(refreshToken: string): Promise<StravaTokens> {
+    const response = await fetch(`${stravaBaseUrl()}/oauth/token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -70,62 +122,55 @@ export class AuthService {
 
     const data = await response.json()
     this.logger.debug(`Token refreshed, scopes: ${data.scope}`)
-    return {
-      accessToken: data.access_token,
-      refreshToken: data.refresh_token,
-      // Strava returns expires_at in unix seconds; fall back to a 2h window if absent.
-      expiresAt: data.expires_at ? new Date(data.expires_at * 1000) : new Date(Date.now() + 2 * 60 * 60 * 1000),
-    }
+    return toStravaTokens(data)
   }
 
   /**
    * Authenticate a user by refreshing a Strava refresh token.
-   * Exchanges the token, fetches the athlete profile, upserts the user,
-   * and returns the JWT payload.
    */
-  async authenticateWithRefreshToken(refreshToken: string): Promise<{
-    userId: string
-    stravaId: string
-    name: string | null
-    avatarUrl: string | null
-    jwtToken: string
-  }> {
+  async authenticateWithRefreshToken(refreshToken: string): Promise<AuthenticatedUser> {
     const tokens = await this.refreshToken(refreshToken)
+    const result = await this.loginStravaUser(tokens)
+    this.logger.log(`Authenticated user ${result.userId} via refresh token`)
+    return result
+  }
 
-    // Fetch athlete profile to create/update the user
+  /**
+   * Fetch the athlete profile with fresh tokens, create/update the local user and issue a JWT.
+   */
+  private async loginStravaUser(tokens: StravaTokens): Promise<AuthenticatedUser> {
     const profile = (await this.stravaService.getAthlete(tokens.accessToken)) as {
-      id?: string
+      id?: string | number
       firstname?: string
       lastname?: string
       profile?: string
-    }
+    } | null
 
+    // Without an athlete id we would create a user with stravaId "undefined"
     if (!profile?.id) {
-      throw new UnauthorizedException('Could not fetch Strava profile with provided refresh token')
+      throw new UnauthorizedException('Could not fetch Strava profile')
     }
 
+    const name = profile.firstname ?? profile.lastname ?? null
     const user = await this.prisma.user.upsert({
       where: { stravaId: String(profile.id) },
       update: {
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken,
         tokenExpiresAt: tokens.expiresAt,
-        name: profile.firstname ?? profile.lastname ?? null,
+        name,
       },
       create: {
         stravaId: String(profile.id),
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken,
         tokenExpiresAt: tokens.expiresAt,
-        name: profile.firstname ?? profile.lastname ?? null,
+        name,
         avatarUrl: profile.profile ?? null,
       },
     })
 
-    const payload = { sub: user.id, stravaId: user.stravaId }
-    const jwtToken = this.jwtService.sign(payload)
-
-    this.logger.log(`Authenticated user ${user.id} via refresh token`)
+    const jwtToken = this.jwtService.sign({ sub: user.id, stravaId: user.stravaId })
 
     return { userId: user.id, stravaId: user.stravaId, name: user.name, avatarUrl: user.avatarUrl, jwtToken }
   }
@@ -134,10 +179,7 @@ export class AuthService {
    * Refresh the Strava token for a user and persist the new access/refresh
    * tokens and expiry. Returns the fresh tokens.
    */
-  async refreshAndPersist(
-    userId: string,
-    refreshToken: string,
-  ): Promise<{ accessToken: string; refreshToken: string; expiresAt: Date }> {
+  async refreshAndPersist(userId: string, refreshToken: string): Promise<StravaTokens> {
     const tokens = await this.refreshToken(refreshToken)
 
     await this.prisma.user.update({
@@ -187,7 +229,16 @@ export class AuthService {
    * Generate a random state string for CSRF protection.
    */
   private generateState(): string {
-    return Math.random().toString(36).substring(2)
+    return randomBytes(16).toString('hex')
+  }
+}
+
+/** Map Strava's token response; `expires_at` is in unix seconds, fall back to a 2h window if absent */
+function toStravaTokens(data: { access_token: string; refresh_token: string; expires_at?: number }): StravaTokens {
+  return {
+    accessToken: data.access_token,
+    refreshToken: data.refresh_token,
+    expiresAt: data.expires_at ? new Date(data.expires_at * 1000) : new Date(Date.now() + 2 * 60 * 60 * 1000),
   }
 }
 

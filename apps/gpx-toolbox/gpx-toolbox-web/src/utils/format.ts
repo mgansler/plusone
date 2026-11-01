@@ -39,3 +39,23 @@ export function formatDifference(value: number, reference: number, format: (v: n
   if (formatted === format(0)) return `±${formatted}`
   return `${diff > 0 ? '+' : '−'}${formatted}`
 }
+
+/** Compact distance for lists and badges: one decimal in km, e.g. "12.3 km" */
+export function formatDistanceShort(meters: number): string {
+  if (meters >= 1000) return `${(meters / 1000).toFixed(1)} km`
+  return `${Math.round(meters)} m`
+}
+
+/** Elevation gain in "Höhenmeter", e.g. "350 hm" */
+export function formatElevationGain(meters: number): string {
+  return `${Math.round(meters)} hm`
+}
+
+/** Compact duration without seconds, e.g. "1h 5m"; "–" for an unknown (0) duration */
+export function formatDurationShort(seconds: number): string {
+  if (!seconds) return '–'
+  const h = Math.floor(seconds / 3600)
+  const m = Math.floor((seconds % 3600) / 60)
+  if (h > 0) return `${h}h ${m}m`
+  return `${m}m`
+}

@@ -106,11 +106,11 @@ describe('QueryRouteDto', () => {
     }
   })
 
-  it('transforms invalid sort field to the string (IsString passes)', async () => {
+  it('rejects unknown sort fields (they would end up in the Prisma orderBy)', async () => {
     const dto = plainToInstance(QueryRouteDto, { sortBy: 'invalid' })
     const errors = await validate(dto)
-    // IsString passes for any non-empty string; no explicit enum validation blocks it
-    expect(errors.length).toBe(0)
+    expect(errors.length).toBe(1)
+    expect(errors[0].property).toBe('sortBy')
   })
 
   it('accepts valid pagination', async () => {

@@ -1,4 +1,5 @@
 import {
+  BadGatewayException,
   BadRequestException,
   Body,
   Controller,
@@ -66,7 +67,7 @@ export class ImportController {
     const accessToken = await this.getStravaToken(req)
     // Fetch athlete ID first (required by importStravaRoutes)
     const athlete = (await this.stravaService.getAthlete(accessToken)) as { id?: number }
-    if (!athlete?.id) throw new Error('Could not retrieve athlete ID from Strava')
+    if (!athlete?.id) throw new BadGatewayException('Could not retrieve athlete ID from Strava')
     return this.importService.importStravaRoutes(accessToken, req.user.sub, athlete.id, force === 'true')
   }
 
@@ -79,6 +80,7 @@ export class ImportController {
     @Query('activityId') activityId: string,
     @Query('autoMatch') autoMatch: string,
   ) {
+    if (!activityId) throw new BadRequestException('activityId is required')
     const accessToken = await this.getStravaToken(req)
     return this.importService.importStravaActivity(accessToken, req.user.sub, activityId, autoMatch !== 'false')
   }
@@ -100,7 +102,7 @@ export class ImportController {
   async listStravaRoutes(@Req() req: Request & { user: JwtPayload }) {
     const accessToken = await this.getStravaToken(req)
     const athlete = (await this.stravaService.getAthlete(accessToken)) as { id?: number }
-    if (!athlete?.id) throw new Error('Could not retrieve athlete ID from Strava')
+    if (!athlete?.id) throw new BadGatewayException('Could not retrieve athlete ID from Strava')
     return this.importService.listStravaRoutes(accessToken, req.user.sub, athlete.id)
   }
 

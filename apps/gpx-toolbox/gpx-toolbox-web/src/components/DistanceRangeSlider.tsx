@@ -26,6 +26,9 @@ export function DistanceRangeSlider({ points, value, onChange }: DistanceRangeSl
   const totalDist = dists[dists.length - 1] / 1000
   const minDist = 0.05 // minimum 50m to avoid thumbs crossing
 
+  // Position in percent of the track; a track without distance (all points at one spot) has no range
+  const percent = (km: number) => (totalDist > 0 ? (km / totalDist) * 100 : 0)
+
   // Clamp to valid range
   const clamp = (v: number) => Math.max(0, Math.min(totalDist, v))
 
@@ -103,8 +106,8 @@ export function DistanceRangeSlider({ points, value, onChange }: DistanceRangeSl
         <div
           style={{
             ...styles.trackFill,
-            left: `${(value[0] / totalDist) * 100}%`,
-            right: `${100 - (value[1] / totalDist) * 100}%`,
+            left: `${percent(value[0])}%`,
+            right: `${100 - percent(value[1])}%`,
           }}
         />
 
@@ -113,7 +116,7 @@ export function DistanceRangeSlider({ points, value, onChange }: DistanceRangeSl
           onPointerDown={handleThumbPointerDown('start')}
           style={{
             ...styles.thumb,
-            left: `${(value[0] / totalDist) * 100}%`,
+            left: `${percent(value[0])}%`,
             background: '#4ade80',
             boxShadow:
               activeThumb === 'start'
@@ -127,7 +130,7 @@ export function DistanceRangeSlider({ points, value, onChange }: DistanceRangeSl
           onPointerDown={handleThumbPointerDown('end')}
           style={{
             ...styles.thumb,
-            left: `${(value[1] / totalDist) * 100}%`,
+            left: `${percent(value[1])}%`,
             background: '#f87171',
             boxShadow:
               activeThumb === 'end'

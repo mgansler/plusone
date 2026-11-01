@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 
 import { useAuth } from '../../lib/auth-context'
+import { formatDistanceShort, formatElevationGain } from '../../utils/format'
 
 export const Route = createFileRoute('/routes/sync')({
   component: SyncPage,
@@ -21,15 +22,6 @@ type ImportResult = {
   imported: number
   matched: number
   newRoutes: number
-}
-
-function formatDistance(meters: number): string {
-  if (meters >= 1000) return `${(meters / 1000).toFixed(1)} km`
-  return `${Math.round(meters)} m`
-}
-
-function formatElevation(meters: number): string {
-  return `${Math.round(meters)} hm`
 }
 
 function SyncPage() {
@@ -157,8 +149,8 @@ function SyncPage() {
 
                 {route.distance != null && (
                   <div style={styles.routeStats}>
-                    <span>{formatDistance(route.distance)}</span>
-                    {route.elevationGain != null && <span>{formatElevation(route.elevationGain)}</span>}
+                    <span>{formatDistanceShort(route.distance)}</span>
+                    {route.elevationGain != null && <span>{formatElevationGain(route.elevationGain)}</span>}
                   </div>
                 )}
 

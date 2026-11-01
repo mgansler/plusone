@@ -106,12 +106,18 @@ export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProp
       // Children render themselves; nothing for Leaflet to manage here
     }
 
+    // Leaflet finishes a zoom animation (e.g. from fitBounds) in a timeout that crashes if the map was
+    // removed in the meantime, so a map that is still zooming is removed once the animation ended
+    let isZooming = false
+    map.on('zoomanim', () => (isZooming = true)).on('zoomend', () => (isZooming = false))
+
     mapInstanceRef.current = map
     if (mapRefRef.current) mapRefRef.current.current = map
     onMapReadyRef.current?.(map)
 
     return () => {
-      map.remove()
+      if (isZooming) map.once('zoomend', () => map.remove())
+      else map.remove()
       mapInstanceRef.current = null
       if (mapRefRef.current) mapRefRef.current.current = null
       onMapReadyRef.current?.(null)

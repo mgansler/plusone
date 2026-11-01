@@ -440,7 +440,7 @@ export type ListRoutesParams = {
   /**
    * Sort field
    */
-  sortBy?: string
+  sortBy?: ListRoutesSortBy
   /**
    * Sort order
    */
@@ -471,7 +471,22 @@ export type ListRoutesParams = {
   limit?: number
 }
 
+export enum ListRoutesSortBy {
+  name = 'name',
+  distance = 'distance',
+  elevationGain = 'elevationGain',
+  createdAt = 'createdAt',
+  updatedAt = 'updatedAt',
+}
 export type ListStravaActivitiesParams = {
+  /**
+   * Page number (default: 1)
+   */
+  page?: number
+  /**
+   * Items per page (default: 50)
+   */
+  per_page?: number
   /**
    * Only activities after this time (ISO 8601)
    */
@@ -480,14 +495,6 @@ export type ListStravaActivitiesParams = {
    * Only activities before this time (ISO 8601)
    */
   before?: string
-  /**
-   * Items per page (default: 50)
-   */
-  per_page?: number
-  /**
-   * Page number (default: 1)
-   */
-  page?: number
 }
 
 export type FindNearbyRoutesParams = {

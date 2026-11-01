@@ -1,4 +1,13 @@
-import { Controller, Get, Logger, Query, Req, UnauthorizedException, UseGuards } from '@nestjs/common'
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Logger,
+  Query,
+  Req,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { Request } from 'express'
 
@@ -6,7 +15,7 @@ import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { JwtPayload } from './jwt.strategy'
-import { StravaService } from './strava.service'
+import { resolveStravaUrl, StravaService } from './strava.service'
 import { AuthService } from './auth.service'
 
 /**
@@ -40,7 +49,9 @@ export class DebugController {
     required: true,
     description: 'Strava API endpoint (e.g. /athlete, /athletes/me/stats, /routes)',
   })
-  async stravaRequest(@Req() req: Request & { user: JwtPayload }, @Query('endpoint') endpoint: string) {
+  async stravaRequest(@Req() req: Request & { user: JwtPayload }, @Query('endpoint') endpoint?: string) {
+    if (!endpoint) throw new BadRequestException('Missing endpoint')
+
     const accessToken = await this.authService.getValidAccessToken(req.user.sub)
     const user = await this.prisma.user.findUnique({
       where: { id: req.user.sub },
@@ -51,6 +62,8 @@ export class DebugController {
 
     // Replace {id} and {athlete_id} with the authenticated user's Strava ID
     const resolvedEndpoint = endpoint.replace('{id}', user.stravaId).replace('{athlete_id}', user.stravaId)
+    // Throws a 400 for anything outside of the Strava API, the request carries the user's access token
+    resolveStravaUrl(resolvedEndpoint)
 
     this.logger.log(`Debug Strava request: ${resolvedEndpoint}`)
 

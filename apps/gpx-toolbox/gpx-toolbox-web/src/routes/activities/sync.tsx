@@ -7,23 +7,12 @@ import { customAxiosInstance } from '@plusone/gpx-toolbox-api-client'
 import { decodePolyline } from '@plusone/gpx-toolbox-utils'
 
 import { Map } from '../../components/Map'
+import { formatDistanceShort, formatDurationShort } from '../../utils/format'
+import { dateRangeParams, isIndoorRide } from '../../utils/filters'
 
 export const Route = createFileRoute('/activities/sync')({
   component: SyncPage,
 })
-
-function formatDistance(meters: number): string {
-  if (meters >= 1000) return `${(meters / 1000).toFixed(1)} km`
-  return `${Math.round(meters)} m`
-}
-
-function formatDuration(seconds: number): string {
-  if (!seconds) return '–'
-  const h = Math.floor(seconds / 3600)
-  const m = Math.floor((seconds % 3600) / 60)
-  if (h > 0) return `${h}h ${m}m`
-  return `${m}m`
-}
 
 function formatDateLocal(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('de-DE', {
@@ -51,23 +40,6 @@ type PaginatedStravaActivity = {
   summary_polyline?: string
   routeId?: string
   imported: boolean
-}
-
-/** Strava `after`/`before` as ISO timestamps; "Bis" includes the whole selected day (local time) */
-function dateRangeParams({ dateFrom, dateTo }: { dateFrom: string; dateTo: string }): Record<string, string> {
-  const params: Record<string, string> = {}
-  if (dateFrom) params.after = new Date(`${dateFrom}T00:00:00`).toISOString()
-  if (dateTo) {
-    const end = new Date(`${dateTo}T00:00:00`)
-    end.setDate(end.getDate() + 1)
-    params.before = end.toISOString()
-  }
-  return params
-}
-
-/** Indoor trainer rides: flagged as trainer, or virtual rides (Zwift etc.) which don't always set the flag */
-function isIndoorRide(activity: { trainer?: boolean; sport_type?: string }): boolean {
-  return activity.trainer === true || activity.sport_type === 'VirtualRide'
 }
 
 const sportTypeLabels: Record<string, string> = {
@@ -382,8 +354,8 @@ function SyncPage() {
                     </div>
                     {/* Line 2: stats */}
                     <div style={styles.activityStats}>
-                      <span>⏱ {activity.moving_time ? formatDuration(activity.moving_time) : '–'}</span>
-                      <span>↔ {activity.distance != null ? formatDistance(activity.distance) : '–'}</span>
+                      <span>⏱ {activity.moving_time ? formatDurationShort(activity.moving_time) : '–'}</span>
+                      <span>↔ {activity.distance != null ? formatDistanceShort(activity.distance) : '–'}</span>
                       <span>↗ {activity.elevationGain != null ? `${Math.round(activity.elevationGain)} hm` : '–'}</span>
                       {activity.heart_rate_avg && <span>♥ {activity.heart_rate_avg}</span>}
                     </div>
@@ -396,6 +368,7 @@ function SyncPage() {
                     }}
                     disabled={importingId === activity.id || activity.imported}
                     title={activity.imported ? 'Bereits importiert' : 'Importieren'}
+                    aria-label={`${activity.name} ${activity.imported ? 'ist bereits importiert' : 'importieren'}`}
                     style={{
                       ...styles.importButton,
                       opacity: activity.imported || importingId === activity.id ? 0.5 : 1,

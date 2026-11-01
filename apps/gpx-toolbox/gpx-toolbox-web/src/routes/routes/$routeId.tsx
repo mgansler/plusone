@@ -21,17 +21,13 @@ import { SidebarDivider, SidebarLayout } from '../../components/SidebarLayout'
 import { TrackAnalysis } from '../../components/TrackAnalysis'
 import { compareList } from '../../hooks/useCompareList'
 import { useSegmentRange } from '../../hooks/useSegmentRange'
+import { routeStatusColor, routeStatusLabel } from '../../utils/routeStatus'
+import { formatDistanceShort, formatDurationShort, formatElevationGain } from '../../utils/format'
 
 const sourceLabels: Record<string, string> = {
   stravaRoute: 'Strava Route',
   stravaActivity: 'Strava Activity',
   manualImport: 'Manuell',
-}
-
-const statusLabels: Record<string, string> = {
-  planned: 'Geplant',
-  ridden: 'Gefahren',
-  'found-online': 'Online gefunden',
 }
 
 export const Route = createFileRoute('/routes/$routeId')({
@@ -198,8 +194,8 @@ function RouteDetailPage() {
             <span style={{ ...styles.badge, backgroundColor: sourceColors[route.source] || '#9e9e9e' }}>
               {sourceLabels[route.source] || route.source}
             </span>
-            <span style={{ ...styles.badge, backgroundColor: statusColors[route.status] || '#9e9e9e' }}>
-              {statusLabels[route.status] || route.status}
+            <span style={{ ...styles.badge, backgroundColor: routeStatusColor(route.status) }}>
+              {routeStatusLabel(route.status)}
             </span>
           </div>
 
@@ -208,19 +204,19 @@ function RouteDetailPage() {
               <div style={styles.statRow}>
                 <span style={styles.statLabel}>Distanz</span>
                 <span style={styles.statValue}>
-                  {formatDistance((route.stats as { distance?: number } | null)?.distance ?? 0)}
+                  {formatDistanceShort((route.stats as { distance?: number } | null)?.distance ?? 0)}
                 </span>
               </div>
               <div style={styles.statRow}>
                 <span style={styles.statLabel}>Höhenmeter ↑</span>
                 <span style={styles.statValue}>
-                  {formatElevation((route.stats as { elevationGain?: number } | null)?.elevationGain ?? 0)}
+                  {formatElevationGain((route.stats as { elevationGain?: number } | null)?.elevationGain ?? 0)}
                 </span>
               </div>
               <div style={styles.statRow}>
                 <span style={styles.statLabel}>Abstieg ↓</span>
                 <span style={styles.statValue}>
-                  {formatElevation((route.stats as { elevationLoss?: number } | null)?.elevationLoss ?? 0)}
+                  {formatElevationGain((route.stats as { elevationLoss?: number } | null)?.elevationLoss ?? 0)}
                 </span>
               </div>
             </div>
@@ -351,7 +347,7 @@ function RouteDetailPage() {
                 </button>
               </div>
               <div style={styles.activityStats}>
-                {f.duration && <span>{formatDuration(f.duration as number)}</span>}
+                {f.duration && <span>{formatDurationShort(f.duration as number)}</span>}
                 {f.avgHr && <span>Ø HR {f.avgHr as number}</span>}
                 {f.maxHr && <span>Max HR {f.maxHr as number}</span>}
               </div>
@@ -427,28 +423,6 @@ const sourceColors: Record<string, string> = {
   manualImport: '#2196f3',
   stravaRoute: '#4caf50',
   stravaActivity: '#ff9800',
-}
-
-const statusColors: Record<string, string> = {
-  planned: '#9c27b0',
-  ridden: '#4caf50',
-  'found-online': '#ff5722',
-}
-
-function formatDistance(meters: number): string {
-  if (meters >= 1000) return `${(meters / 1000).toFixed(1)} km`
-  return `${Math.round(meters)} m`
-}
-
-function formatElevation(meters: number): string {
-  return `${Math.round(meters)} hm`
-}
-
-function formatDuration(seconds: number): string {
-  const h = Math.floor(seconds / 3600)
-  const m = Math.floor((seconds % 3600) / 60)
-  if (h > 0) return `${h}h ${m}m`
-  return `${m}m`
 }
 
 const styles = {

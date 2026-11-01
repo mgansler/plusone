@@ -2,15 +2,22 @@ import { Controller, Get, Post, Body, Req, Res, UnauthorizedException } from '@n
 import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { JwtService } from '@nestjs/jwt'
 import { Request, Response } from 'express'
+import { IsNotEmpty, IsString } from 'class-validator'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { AuthService } from './auth.service'
 import { StravaService } from './strava.service'
 import { StravaAthleteProfileDto } from './dto/strava-athlete-profile.dto'
+import { JwtPayload } from './jwt.strategy'
+
+const OAUTH_STATE_COOKIE = 'gpx_toolbox_oauth_state'
+const OAUTH_STATE_MAX_AGE_MS = 10 * 60 * 1000
 
 /** DTO for manual refresh token authentication. */
 class RefreshTokenAuthDto {
+  @IsString()
+  @IsNotEmpty()
   refresh_token: string
 }
 
@@ -28,7 +35,14 @@ export class AuthController {
   @ApiOperation({ operationId: 'stravaAuthRedirect' })
   @ApiOkResponse({ description: 'Redirects to Strava authorization page' })
   stravaAuth(@Res({ passthrough: true }) res: Response) {
-    const { authorizationUrl } = this.authService.getAuthorizationUrl()
+    const { authorizationUrl, state } = this.authService.getAuthorizationUrl()
+    // Remembered in the browser so the callback can check that it belongs to a login started here
+    res.cookie(OAUTH_STATE_COOKIE, state, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: (process.env.STRAVA_REDIRECT_URI ?? '').startsWith('https://'),
+      maxAge: OAUTH_STATE_MAX_AGE_MS,
+    })
     res.redirect(authorizationUrl)
   }
 
@@ -39,68 +53,27 @@ export class AuthController {
   async stravaCallback(@Req() req: Request, @Res() res: Response) {
     const { code, state } = req.query as { code?: string; state?: string }
 
-    // Verify state if present
-    if (state && !this.authService.verifyState(state)) {
+    const expectedState = readCookie(req.headers.cookie, OAUTH_STATE_COOKIE)
+    res.clearCookie(OAUTH_STATE_COOKIE)
+
+    if (!this.authService.verifyState(state, expectedState)) {
       return res.status(401).json({ error: 'Invalid state parameter' })
     }
 
+    if (!code) {
+      return res.status(400).json({ error: 'Missing authorization code' })
+    }
+
     try {
-      // Exchange code for tokens
-      const tokenResponse = await fetch('https://www.strava.com/oauth/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          client_id: process.env.STRAVA_CLIENT_ID,
-          client_secret: process.env.STRAVA_CLIENT_SECRET,
-          code,
-          grant_type: 'authorization_code',
-        }),
-      })
-
-      if (!tokenResponse.ok) {
-        return res.status(401).json({ error: 'Failed to exchange code for token' })
-      }
-
-      const tokenData = await tokenResponse.json()
-      const { access_token, refresh_token, expires_at, scope } = tokenData
-      console.log('[OAuth] Token exchanged, scopes:', scope)
-      // Strava returns expires_at in unix seconds; fall back to a 2h window if absent.
-      const tokenExpiresAt = expires_at ? new Date(expires_at * 1000) : new Date(Date.now() + 2 * 60 * 60 * 1000)
-
-      // Fetch athlete profile
-      const profile = (await this.stravaService.getAthlete(access_token)) as {
-        id?: string
-        firstname?: string
-        lastname?: string
-        profile?: string
-      }
-
-      // Upsert user and issue JWT
-      const user = await this.prisma.user.upsert({
-        where: { stravaId: String(profile.id) },
-        update: {
-          accessToken: access_token,
-          refreshToken: refresh_token,
-          tokenExpiresAt,
-          name: profile.firstname ?? profile.lastname ?? null,
-        },
-        create: {
-          stravaId: String(profile.id),
-          accessToken: access_token,
-          refreshToken: refresh_token,
-          tokenExpiresAt,
-          name: profile.firstname ?? profile.lastname ?? null,
-          avatarUrl: profile.profile,
-        },
-      })
-
-      const payload = { sub: user.id, stravaId: user.stravaId }
-      const jwtToken = this.jwtService.sign(payload)
+      const { jwtToken } = await this.authService.authenticateWithAuthorizationCode(code)
 
       // Redirect frontend with JWT in URL fragment (SPA-friendly)
       const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4250'
       res.redirect(`${frontendUrl}#token=${jwtToken}`)
-    } catch {
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        return res.status(401).json({ error: error.message })
+      }
       res.status(500).json({ error: 'Authentication failed' })
     }
   }
@@ -109,10 +82,7 @@ export class AuthController {
   @ApiOperation({ operationId: 'stravaAthlete' })
   @ApiOkResponse({ type: StravaAthleteProfileDto, description: 'Strava athlete profile with local stats' })
   async getStravaAthlete(@Req() req: Request) {
-    const auth = req.headers['authorization']?.replace('Bearer ', '')
-    if (!auth) throw new UnauthorizedException()
-
-    const payload = this.jwtService.verify(auth)
+    const payload = this.verifyBearer(req)
     const accessToken = await this.authService.getValidAccessToken(payload.sub)
 
     const athlete = (await this.stravaService.getAthlete(accessToken)) as {
@@ -197,20 +167,15 @@ export class AuthController {
   @ApiOperation({ operationId: 'authStatus' })
   @ApiOkResponse({ description: 'Authentication status' })
   async authStatus(@Req() req: Request) {
-    const auth = req.headers['authorization']?.replace('Bearer ', '')
-
-    if (!auth) {
-      return { authenticated: false }
-    }
-
     try {
-      const payload = this.jwtService.verify(auth)
+      const payload = this.verifyBearer(req)
       const user = await this.prisma.user.findUnique({
         where: { id: payload.sub },
         select: { id: true, stravaId: true, name: true, avatarUrl: true },
       })
 
-      return { authenticated: true, user }
+      // A valid JWT of a deleted user is not a valid login
+      return user ? { authenticated: true, user } : { authenticated: false }
     } catch {
       return { authenticated: false }
     }
@@ -220,19 +185,13 @@ export class AuthController {
   @ApiOperation({ operationId: 'refreshStravaToken' })
   @ApiOkResponse({ description: 'Token refreshed successfully' })
   async refreshStravaToken(@Req() req: Request) {
-    const auth = req.headers['authorization']?.replace('Bearer ', '')
-
-    if (!auth) {
-      throw new Error('No access token provided')
-    }
-
-    const payload = this.jwtService.verify(auth)
+    const payload = this.verifyBearer(req)
     const user = await this.prisma.user.findUnique({
       where: { id: payload.sub },
     })
 
     if (!user?.refreshToken) {
-      throw new Error('No refresh token available')
+      throw new UnauthorizedException('No refresh token available')
     }
 
     // Refresh the Strava token and persist the new access/refresh tokens + expiry.
@@ -252,4 +211,25 @@ export class AuthController {
     const result = await this.authService.authenticateWithRefreshToken(body.refresh_token)
     return { accessToken: result.jwtToken }
   }
+
+  /** Verify the JWT from the Authorization header; an invalid or missing token is a 401, not a 500 */
+  private verifyBearer(req: Request): JwtPayload {
+    const token = req.headers['authorization']?.replace('Bearer ', '')
+    if (!token) throw new UnauthorizedException('No access token provided')
+
+    try {
+      return this.jwtService.verify<JwtPayload>(token)
+    } catch {
+      throw new UnauthorizedException('Invalid access token')
+    }
+  }
+}
+
+/** Read a single cookie from the raw Cookie header */
+function readCookie(header: string | undefined, name: string): string | undefined {
+  for (const part of header?.split(';') ?? []) {
+    const [key, ...value] = part.trim().split('=')
+    if (key === name) return decodeURIComponent(value.join('='))
+  }
+  return undefined
 }

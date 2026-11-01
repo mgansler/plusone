@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
-import { StravaService } from './strava.service'
+import { resolveStravaUrl, StravaService } from './strava.service'
 
 // ── Mock axios (vi.hoisted keeps it available during hoisted vi.mock) ────────
 const hoisted = vi.hoisted(() => {
@@ -248,5 +248,30 @@ describe('StravaService', () => {
 
       expect(result).toEqual([])
     })
+  })
+})
+
+describe('resolveStravaUrl', () => {
+  it('resolves relative endpoints against the API base', () => {
+    expect(resolveStravaUrl('/athlete')).toBe('https://www.strava.com/api/v3/athlete')
+    expect(resolveStravaUrl('athletes/42/stats?page=1')).toBe('https://www.strava.com/api/v3/athletes/42/stats?page=1')
+  })
+
+  it('accepts absolute URLs below the API base', () => {
+    expect(resolveStravaUrl('https://www.strava.com/api/v3/routes/1')).toBe('https://www.strava.com/api/v3/routes/1')
+  })
+
+  it.each([
+    'https://evil.example.com/api/v3/athlete',
+    'http://www.strava.com/api/v3/athlete',
+    'https://www.strava.com.evil.example.com/api/v3/athlete',
+    'https://www.strava.com@evil.example.com/api/v3/athlete',
+    'https://www.strava.com/oauth/token',
+    'https://www.strava.com/api/v3',
+    '//evil.example.com/x',
+    'file:///etc/passwd',
+    '/../../oauth/token',
+  ])('rejects %s', (endpoint) => {
+    expect(() => resolveStravaUrl(endpoint)).toThrow('Endpoint must point to the Strava API')
   })
 })

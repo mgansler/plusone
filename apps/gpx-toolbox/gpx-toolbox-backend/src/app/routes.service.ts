@@ -184,6 +184,8 @@ export class RoutesService {
     const allRoutes = await this.prismaService.route.findMany({
       where,
       orderBy: { [sortBy]: order === 'ASC' ? Prisma.SortOrder.asc : Prisma.SortOrder.desc },
+      // The list shows the number of activities per route
+      include: { activities: { orderBy: { riddenAt: 'desc' } } },
     })
 
     // Apply JSON field filters in-memory
@@ -213,7 +215,7 @@ export class RoutesService {
     const paginated = filtered.slice((page - 1) * limit, page * limit)
 
     return {
-      items: paginated.map((r) => this.formatRouteBase(r)) as Array<FormattedRoute>,
+      items: paginated.map((r) => this.formatRoute(r)),
       total,
       page,
       limit,
@@ -225,6 +227,11 @@ export class RoutesService {
    * Update a route.
    */
   async update(id: string, dto: UpdateRouteDto, userId: string): Promise<FormattedRoute> {
+    const existing = await this.prismaService.route.findUnique({ where: { id, userId }, select: { id: true } })
+    if (!existing) {
+      throw new NotFoundException(`Route with ID ${id} not found`)
+    }
+
     const route = await this.prismaService.route.update({
       where: { id, userId },
       data: dto,
@@ -456,34 +463,6 @@ export class RoutesService {
       per_page,
       hasMore: activities.length === per_page,
       items,
-    }
-  }
-
-  private formatRouteBase(route: {
-    id: string
-    name: string
-    description: string | null
-    source: string
-    status: string
-    ratingTags: unknown
-    notes: string | null
-    stats: unknown
-    polyline: unknown
-    createdAt: Date
-    updatedAt: Date
-  }): FormattedRouteBase {
-    return {
-      id: route.id,
-      name: route.name,
-      description: route.description,
-      source: route.source,
-      status: route.status,
-      ratingTags: typeof route.ratingTags === 'string' ? JSON.parse(route.ratingTags) : route.ratingTags,
-      notes: route.notes,
-      stats: typeof route.stats === 'string' ? JSON.parse(route.stats) : route.stats,
-      polyline: parsePolyline(route.polyline),
-      createdAt: route.createdAt,
-      updatedAt: route.updatedAt,
     }
   }
 

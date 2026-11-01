@@ -8,9 +8,12 @@ import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/
 import { ElevationProfile } from '../components/ElevationProfile'
 import { CompareBar } from '../components/CompareBar'
 import { CompareToggleButton } from '../components/CompareToggleButton'
+import { COORDINATE_DECIMALS, CoordinateInput } from '../components/CoordinateInput'
 import { defaultCenter, Map } from '../components/Map'
 import { formatElevation } from '../utils/format'
+import { geocodePlace, type GeocodeResult } from '../utils/geocode'
 import { routeColor } from '../utils/routeColors'
+import { routeStatusColor, routeStatusLabel } from '../utils/routeStatus'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type NearbyRoute = {
@@ -29,12 +32,6 @@ const sourceColors: Record<string, string> = {
   stravaActivity: '#ff9800',
 }
 
-const statusColors: Record<string, string> = {
-  planned: '#9c27b0',
-  ridden: '#4caf50',
-  'found-online': '#ff5722',
-}
-
 type TrackStyle = Pick<L.PolylineOptions, 'weight' | 'opacity'>
 
 /** Track style: with a highlighted route, all others fade so the highlighted one stands out */
@@ -43,96 +40,7 @@ function trackStyle(isHighlighted: boolean, hasHighlight: boolean): TrackStyle {
   return hasHighlight ? { weight: 3, opacity: 0.7 } : { weight: 3, opacity: 0.8 }
 }
 
-type GeocodeResult = { id: number; lat: number; lng: number; label: string }
-
-/**
- * Resolve a place name to candidate coordinates via the free, CORS-enabled Open-Meteo
- * geocoding API (the same provider the project already uses for weather).
- * Returns up to `count` matches, most relevant first; empty if nothing was found.
- */
-async function geocodePlace(place: string, count = 8): Promise<Array<GeocodeResult>> {
-  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(place)}&count=${count}&language=de&format=json`
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`Geocoding failed: ${res.status}`)
-  const json = (await res.json()) as {
-    results?: Array<{
-      id: number
-      name: string
-      latitude: number
-      longitude: number
-      admin1?: string
-      admin2?: string
-      country?: string
-    }>
-  }
-  return (json.results ?? []).map((r) => ({
-    id: r.id,
-    lat: r.latitude,
-    lng: r.longitude,
-    // admin2 (district) helps telling apart places with the same name in one state
-    label: [r.name, r.admin2, r.admin1, r.country].filter(Boolean).join(', '),
-  }))
-}
-
 const DEFAULT_RADIUS_KM = 20
-
-/** 5 decimals ≈ 1 m, more precision is meaningless for a search center */
-const COORDINATE_DECIMALS = 5
-const COORDINATE_PATTERN = new RegExp(`^-?\\d*(\\.\\d{0,${COORDINATE_DECIMALS}})?$`)
-
-function formatCoordinate(value: number | null): string {
-  return value == null ? '' : String(Number(value.toFixed(COORDINATE_DECIMALS)))
-}
-
-/**
- * Text input for a latitude/longitude limited to `COORDINATE_DECIMALS` decimals.
- * Keeps the typed text locally so partial input like "48." is not lost, and shows
- * external changes (map click, GPS, place search) rounded.
- */
-function CoordinateInput({
-  label,
-  value,
-  onChange,
-  onBlur,
-  placeholder,
-}: {
-  label: string
-  value: number | null
-  onChange: (value: number | null) => void
-  onBlur: () => void
-  placeholder: string
-}) {
-  const [text, setText] = useState(formatCoordinate(value))
-
-  // Sync external changes, but leave the text alone while it already represents the value
-  useEffect(() => {
-    const typed = text === '' || text === '-' ? null : parseFloat(text)
-    const rounded = value == null ? null : Number(value.toFixed(COORDINATE_DECIMALS))
-    if (typed !== rounded) setText(formatCoordinate(value))
-    // Only react to external value changes, not to typing (text is intentionally not a dependency)
-  }, [value])
-
-  return (
-    <label style={styles.coordinateField}>
-      <span style={styles.label}>{label}</span>
-      <input
-        type="text"
-        inputMode="decimal"
-        value={text}
-        onChange={(e) => {
-          const next = e.target.value.replace(',', '.')
-          if (!COORDINATE_PATTERN.test(next)) return
-          setText(next)
-          const parsed = parseFloat(next)
-          onChange(isNaN(parsed) ? null : parsed)
-        }}
-        onBlur={onBlur}
-        style={styles.input}
-        placeholder={placeholder}
-      />
-    </label>
-  )
-}
 
 /** Zoom the map so the whole search circle is visible */
 function fitSearchArea(map: L.Map, lat: number, lng: number, radiusKm: number) {
@@ -545,10 +453,10 @@ function NearbySearch() {
                   <span
                     style={{
                       ...styles.badge,
-                      backgroundColor: statusColors[r.status] || '#9e9e9e',
+                      backgroundColor: routeStatusColor(r.status),
                     }}
                   >
-                    {r.status}
+                    {routeStatusLabel(r.status)}
                   </span>
                   <span style={styles.compareToggle}>
                     <CompareToggleButton id={r.id} name={r.name} />
@@ -650,10 +558,6 @@ const styles = {
   coordinateRow: {
     display: 'flex',
     gap: 8,
-  } as const,
-  coordinateField: {
-    flex: 1,
-    minWidth: 0,
   } as const,
   placeRow: {
     display: 'flex',

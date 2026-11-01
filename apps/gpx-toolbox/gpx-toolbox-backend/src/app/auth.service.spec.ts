@@ -21,7 +21,7 @@ describe('AuthService', () => {
       verify: vi.fn().mockReturnValue({ sub: 'user-1', stravaId: '12345' }),
     } as unknown as JwtService
 
-    process.env = { ...originalEnv, STRAVA_CLIENT_ID: 'test-client-id' }
+    process.env = { ...originalEnv, STRAVA_CLIENT_ID: 'test-client-id', STRAVA_CLIENT_SECRET: 'test-secret' }
 
     stravaService = {
       getAthlete: vi.fn().mockResolvedValue({
@@ -79,18 +79,150 @@ describe('AuthService', () => {
       expect(result.authorizationUrl).toContain('redirect_uri=https%3A%2F%2Fcustom.example.com%2Fcallback')
     })
 
-    it('includes a state parameter for CSRF protection', () => {
-      const result = service.getAuthorizationUrl()
+    it('includes a random state parameter for CSRF protection and returns it', () => {
+      const first = service.getAuthorizationUrl()
+      const second = service.getAuthorizationUrl()
 
-      expect(result.authorizationUrl).toContain('state=')
+      expect(first.state).toMatch(/^[0-9a-f]{32}$/)
+      expect(first.state).not.toBe(second.state)
+      expect(new URL(first.authorizationUrl).searchParams.get('state')).toBe(first.state)
     })
   })
 
   describe('verifyState', () => {
-    it('accepts any state string (MVP behavior)', () => {
-      expect(service.verifyState('any-state-value')).toBe(true)
-      expect(service.verifyState('')).toBe(true)
-      expect(service.verifyState('random123')).toBe(true)
+    it('accepts the issued state', () => {
+      expect(service.verifyState('abc123', 'abc123')).toBe(true)
+    })
+
+    it('rejects a different state', () => {
+      expect(service.verifyState('abc124', 'abc123')).toBe(false)
+      expect(service.verifyState('abc', 'abc123')).toBe(false)
+    })
+
+    it('rejects a missing state or a login that was not started here', () => {
+      expect(service.verifyState(undefined, 'abc123')).toBe(false)
+      expect(service.verifyState('abc123', undefined)).toBe(false)
+      expect(service.verifyState('', '')).toBe(false)
+    })
+  })
+
+  describe('authenticateWithAuthorizationCode', () => {
+    const expiresAt = new Date('2030-01-01T00:00:00Z')
+
+    beforeEach(() => {
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: vi.fn().mockResolvedValue({
+          access_token: 'access',
+          refresh_token: 'refresh',
+          expires_at: expiresAt.getTime() / 1000,
+        }),
+      })
+      vi.mocked(prisma.user.upsert).mockResolvedValue({
+        id: 'user-1',
+        stravaId: '12345',
+        name: 'Test',
+        avatarUrl: null,
+      } as never)
+    })
+
+    it('exchanges the code, upserts the user and issues a JWT', async () => {
+      const result = await service.authenticateWithAuthorizationCode('the-code')
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        'https://www.strava.com/oauth/token',
+        expect.objectContaining({ body: expect.stringContaining('"grant_type":"authorization_code"') }),
+      )
+      expect(JSON.parse(vi.mocked(global.fetch).mock.calls[0][1]?.body as string)).toMatchObject({
+        code: 'the-code',
+        client_id: 'test-client-id',
+        client_secret: 'test-secret',
+      })
+      expect(stravaService.getAthlete).toHaveBeenCalledWith('access')
+      expect(prisma.user.upsert).toHaveBeenCalledWith({
+        where: { stravaId: '12345' },
+        update: { accessToken: 'access', refreshToken: 'refresh', tokenExpiresAt: expiresAt, name: 'Test' },
+        create: {
+          stravaId: '12345',
+          accessToken: 'access',
+          refreshToken: 'refresh',
+          tokenExpiresAt: expiresAt,
+          name: 'Test',
+          avatarUrl: 'https://example.com/avatar.jpg',
+        },
+      })
+      expect(jwtService.sign).toHaveBeenCalledWith({ sub: 'user-1', stravaId: '12345' })
+      expect(result.jwtToken).toBe('mock-jwt-token')
+    })
+
+    it('falls back to a 2h expiry when Strava returns no expires_at', async () => {
+      vi.useFakeTimers({ now: new Date('2026-01-01T10:00:00Z') })
+      vi.mocked(global.fetch).mockResolvedValue({
+        ok: true,
+        json: vi.fn().mockResolvedValue({ access_token: 'access', refresh_token: 'refresh' }),
+      } as never)
+
+      await service.authenticateWithAuthorizationCode('the-code')
+
+      expect(vi.mocked(prisma.user.upsert).mock.calls[0][0].update.tokenExpiresAt).toEqual(
+        new Date('2026-01-01T12:00:00Z'),
+      )
+      vi.useRealTimers()
+    })
+
+    it('throws Unauthorized when the code exchange fails', async () => {
+      vi.mocked(global.fetch).mockResolvedValue({ ok: false, status: 400, statusText: 'Bad Request' } as never)
+
+      await expect(service.authenticateWithAuthorizationCode('bad')).rejects.toBeInstanceOf(UnauthorizedException)
+      expect(prisma.user.upsert).not.toHaveBeenCalled()
+    })
+
+    it('does not create a user with stravaId "undefined" when the profile cannot be fetched', async () => {
+      vi.mocked(stravaService.getAthlete).mockResolvedValue({ message: 'Authorization Error' })
+
+      await expect(service.authenticateWithAuthorizationCode('the-code')).rejects.toBeInstanceOf(UnauthorizedException)
+      expect(prisma.user.upsert).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('authenticateWithRefreshToken', () => {
+    it('refreshes the token and logs the user in', async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: vi.fn().mockResolvedValue({ access_token: 'access', refresh_token: 'refresh', expires_at: 1 }),
+      })
+      vi.mocked(prisma.user.upsert).mockResolvedValue({
+        id: 'user-1',
+        stravaId: '12345',
+        name: 'Test',
+        avatarUrl: null,
+      } as never)
+
+      const result = await service.authenticateWithRefreshToken('my-refresh-token')
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        'https://www.strava.com/oauth/token',
+        expect.objectContaining({ body: expect.stringContaining('"refresh_token":"my-refresh-token"') }),
+      )
+      expect(result).toEqual({
+        userId: 'user-1',
+        stravaId: '12345',
+        name: 'Test',
+        avatarUrl: null,
+        jwtToken: 'mock-jwt-token',
+      })
+    })
+
+    it('throws Unauthorized for an invalid refresh token', async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: false,
+        status: 400,
+        statusText: 'Bad Request',
+        text: vi.fn().mockResolvedValue('invalid'),
+      })
+
+      await expect(service.authenticateWithRefreshToken('invalid')).rejects.toBeInstanceOf(UnauthorizedException)
+      expect(prisma.user.upsert).not.toHaveBeenCalled()
     })
   })
 

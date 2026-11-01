@@ -137,8 +137,9 @@ describe('RidesService', () => {
 
       mockPrisma.activity.findUnique.mockResolvedValue(mockActivity)
 
-      const result = await service.findOne('f1', userId)
+      const result = await service.findOne('route-1', 'f1', userId)
 
+      expect(mockPrisma.activity.findUnique).toHaveBeenCalledWith({ where: { id: 'f1', userId, routeId: 'route-1' } })
       expect(result.id).toBe('f1')
       expect(result.riddenAt).toEqual(new Date('2024-06-01'))
       expect(result.duration).toBe(3600)
@@ -150,7 +151,7 @@ describe('RidesService', () => {
     it('throws when activity not found', async () => {
       mockPrisma.activity.findUnique.mockResolvedValue(null)
 
-      await expect(service.findOne('nonexistent', userId)).rejects.toThrow('not found')
+      await expect(service.findOne('route-1', 'nonexistent', userId)).rejects.toThrow('not found')
     })
   })
 
@@ -229,7 +230,7 @@ describe('RidesService', () => {
       mockPrisma.activity.findUnique.mockResolvedValue(existing)
       mockPrisma.activity.update.mockResolvedValue(updated)
 
-      const result = await service.update('f1', { duration: 4000, notes: 'Updated notes' }, userId)
+      const result = await service.update('route-1', 'f1', { duration: 4000, notes: 'Updated notes' }, userId)
 
       expect(result.duration).toBe(4000)
       expect(result.notes).toBe('Updated notes')
@@ -238,7 +239,7 @@ describe('RidesService', () => {
     it('throws when activity not found', async () => {
       mockPrisma.activity.findUnique.mockResolvedValue(null)
 
-      await expect(service.update('nonexistent', { duration: 4000 }, userId)).rejects.toThrow('not found')
+      await expect(service.update('route-1', 'nonexistent', { duration: 4000 }, userId)).rejects.toThrow('not found')
     })
   })
 
@@ -260,13 +261,14 @@ describe('RidesService', () => {
       mockPrisma.activity.findUnique.mockResolvedValue(existing)
       mockPrisma.activity.delete.mockResolvedValue(undefined)
 
-      await expect(service.remove('f1', userId)).resolves.toBeUndefined()
+      await expect(service.remove('route-1', 'f1', userId)).resolves.toBeUndefined()
+      expect(mockPrisma.activity.delete).toHaveBeenCalledWith({ where: { id: 'f1', userId, routeId: 'route-1' } })
     })
 
     it('throws when activity not found', async () => {
       mockPrisma.activity.findUnique.mockResolvedValue(null)
 
-      await expect(service.remove('nonexistent', userId)).rejects.toThrow('not found')
+      await expect(service.remove('route-1', 'nonexistent', userId)).rejects.toThrow('not found')
     })
   })
 
@@ -295,8 +297,10 @@ describe('RidesService', () => {
         }),
       )
 
-      const result = await service.getWeatherForecast('route-1', '2024-06-01')
+      const result = await service.getWeatherForecast('route-1', '2024-06-01', userId)
 
+      // Only routes of the user may be used
+      expect(mockPrisma.route.findUnique).toHaveBeenCalledWith({ where: { id: 'route-1', userId } })
       expect(result).not.toBeNull()
       expect(result?.temperature2m.max).toBe(25)
       expect(result?.temperature2m.min).toBe(15)
@@ -311,7 +315,7 @@ describe('RidesService', () => {
 
       mockPrisma.route.findUnique.mockResolvedValue(mockRoute)
 
-      const result = await service.getWeatherForecast('route-1', '2024-06-01')
+      const result = await service.getWeatherForecast('route-1', '2024-06-01', userId)
 
       expect(result).toBeNull()
     })
@@ -319,7 +323,7 @@ describe('RidesService', () => {
     it('throws when route not found', async () => {
       mockPrisma.route.findUnique.mockResolvedValue(null)
 
-      await expect(service.getWeatherForecast('nonexistent', '2024-06-01')).rejects.toThrow('not found')
+      await expect(service.getWeatherForecast('nonexistent', '2024-06-01', userId)).rejects.toThrow('not found')
     })
   })
 })

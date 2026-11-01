@@ -2,6 +2,7 @@ import {
   ArrayMaxSize,
   IsArray,
   IsEnum,
+  IsIn,
   IsInt,
   IsOptional,
   IsPositive,
@@ -12,6 +13,9 @@ import {
 } from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
+
+const ROUTE_SORT_FIELDS = ['name', 'distance', 'elevationGain', 'createdAt', 'updatedAt'] as const
+type RouteSortField = (typeof ROUTE_SORT_FIELDS)[number]
 
 export class CreateRouteDto {
   @ApiPropertyOptional({ description: 'Route name (defaults to the GPX track name)' })
@@ -72,10 +76,10 @@ export class QueryRouteDto {
   @IsEnum(['stravaRoute', 'stravaActivity', 'manualImport'])
   source?: 'stravaRoute' | 'stravaActivity' | 'manualImport'
 
-  @ApiPropertyOptional({ description: 'Sort field', default: 'createdAt' })
+  @ApiPropertyOptional({ description: 'Sort field', default: 'createdAt', enum: ROUTE_SORT_FIELDS })
   @IsOptional()
-  @IsString()
-  sortBy?: 'name' | 'distance' | 'elevationGain' | 'createdAt' | 'updatedAt'
+  @IsIn(ROUTE_SORT_FIELDS)
+  sortBy?: RouteSortField
 
   @ApiPropertyOptional({ description: 'Sort order', default: 'DESC' })
   @IsOptional()

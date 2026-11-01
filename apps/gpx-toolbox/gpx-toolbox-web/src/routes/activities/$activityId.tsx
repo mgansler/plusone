@@ -17,6 +17,7 @@ import { SidebarDivider, SidebarLayout } from '../../components/SidebarLayout'
 import { TrackAnalysis } from '../../components/TrackAnalysis'
 import { useSegmentRange } from '../../hooks/useSegmentRange'
 import { formatDistance, formatDuration } from '../../utils/format'
+import { routeStatusColor, routeStatusLabel } from '../../utils/routeStatus'
 
 export const Route = createFileRoute('/activities/$activityId')({
   component: ActivityDetailPage,
@@ -145,8 +146,8 @@ function ActivityDetailPage() {
 
           {parentRoute?.status && (
             <div style={styles.meta}>
-              <span style={{ ...styles.badge, backgroundColor: statusColors[parentRoute.status] || '#9e9e9e' }}>
-                {statusLabels[parentRoute.status] || parentRoute.status}
+              <span style={{ ...styles.badge, backgroundColor: routeStatusColor(parentRoute.status) }}>
+                {routeStatusLabel(parentRoute.status)}
               </span>
             </div>
           )}
@@ -222,18 +223,6 @@ function Stat({ label, value }: { label: string; value: string }) {
       <span style={styles.statValue}>{value}</span>
     </div>
   )
-}
-
-const statusLabels: Record<string, string> = {
-  planned: 'Geplant',
-  ridden: 'Gefahren',
-  'found-online': 'Online gefunden',
-}
-
-const statusColors: Record<string, string> = {
-  planned: '#9c27b0',
-  ridden: '#4caf50',
-  'found-online': '#ff5722',
 }
 
 const styles = {

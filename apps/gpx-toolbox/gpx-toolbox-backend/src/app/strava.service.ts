@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { BadRequestException, Injectable, Logger } from '@nestjs/common'
 
 import {
   createUpload,
@@ -39,7 +39,9 @@ import {
   UpdateLoggedInAthleteParams,
 } from '@plusone/gpx-toolbox-api-client'
 
-const STRAVA_API_BASE = 'https://www.strava.com/api/v3'
+import { stravaBaseUrl } from './config'
+
+const STRAVA_API_BASE = `${stravaBaseUrl()}/api/v3`
 
 /**
  * Helper: build Axios config with base URL + auth header.
@@ -432,16 +434,15 @@ export class StravaService {
   // ── Legacy: generic fetch (used by debug controller) ─────────────────
 
   /**
-   * Generic fetch for any Strava API endpoint.
-   * Returns the raw Response for flexible handling.
+   * Generic fetch for any Strava API endpoint (relative to the API base, or an absolute URL below it).
+   * Returns the raw Response for flexible handling. Other hosts are rejected, the request carries the
+   * user's access token.
    */
   async fetchStrava(
     endpoint: string,
     accessToken: string,
   ): Promise<{ ok: boolean; status: number; statusText: string; json: () => Promise<unknown> }> {
-    const url = endpoint.startsWith('http')
-      ? endpoint
-      : `${STRAVA_API_BASE}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`
+    const url = resolveStravaUrl(endpoint)
 
     const axios = (await import('axios')).default
     let response: { status: number; statusText: string; data: unknown }
@@ -469,4 +470,20 @@ export class StravaService {
       json: () => Promise.resolve(response.data),
     }
   }
+}
+
+/**
+ * Resolve an endpoint against the Strava API base. Throws for anything that would leave the Strava API.
+ */
+export function resolveStravaUrl(endpoint: string): string {
+  const raw = /^[a-z][a-z0-9+.-]*:|^\/\//i.test(endpoint)
+    ? endpoint
+    : `${STRAVA_API_BASE}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`
+  const base = new URL(STRAVA_API_BASE)
+  const url = URL.canParse(raw) ? new URL(raw) : null
+
+  if (!url || url.origin !== base.origin || !url.pathname.startsWith(`${base.pathname}/`)) {
+    throw new BadRequestException(`Endpoint must point to the Strava API: ${endpoint}`)
+  }
+  return url.toString()
 }

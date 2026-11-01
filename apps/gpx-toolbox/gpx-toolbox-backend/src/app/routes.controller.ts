@@ -2,10 +2,12 @@ import {
   BadRequestException,
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Logger,
   Param,
+  ParseFloatPipe,
   ParseIntPipe,
   ParseUUIDPipe,
   Post,
@@ -99,8 +101,8 @@ export class RoutesController {
   @ApiOkResponse({ description: 'List of Strava activities with metadata' })
   async listStravaActivities(
     @Req() req: Request & { user: JwtPayload },
-    @Query('page', new ParseIntPipe()) page = 1,
-    @Query('per_page', new ParseIntPipe()) per_page = 50,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('per_page', new DefaultValuePipe(50), ParseIntPipe) per_page: number,
     @Query('after') after?: string,
     @Query('before') before?: string,
   ) {
@@ -120,13 +122,10 @@ export class RoutesController {
   @ApiOkResponse({ type: [NearbyRouteResponseDto], description: 'Routes within radius' })
   async findNearby(
     @Req() req: Request & { user: JwtPayload },
-    @Query('lat') latitude: number,
-    @Query('lng') longitude: number,
-    @Query('radius') radius: number,
+    @Query('lat', ParseFloatPipe) latitude: number,
+    @Query('lng', ParseFloatPipe) longitude: number,
+    @Query('radius', ParseFloatPipe) radius: number,
   ) {
-    if (latitude == null || longitude == null || radius == null) {
-      throw new BadRequestException('lat, lng, and radius are required')
-    }
     return this.routesService.findNearby(latitude, longitude, radius, req.user.sub)
   }
 

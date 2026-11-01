@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { NotFoundException } from '@nestjs/common'
 import { Mock } from 'vitest'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
@@ -375,6 +376,36 @@ describe('RoutesService', () => {
       expect(results).toHaveLength(2)
       expect(results[0].name).toBe('Closer Route')
       expect(results[1].name).toBe('Farther Route')
+    })
+  })
+
+  describe('update', () => {
+    it('updates the route of the user', async () => {
+      mockPrisma.route.findUnique.mockResolvedValue({ id: 'route-1' })
+      mockPrisma.route.update.mockResolvedValue({
+        id: 'route-1',
+        name: 'Renamed',
+        status: 'ridden',
+        ratingTags: ['Nochmal fahren'],
+        stats: { distance: 5000, elevationGain: 100 },
+        polyline: [],
+        activities: [],
+      })
+
+      const result = await service.update('route-1', { name: 'Renamed', status: 'ridden' }, userId)
+
+      expect(mockPrisma.route.update).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { id: 'route-1', userId }, data: { name: 'Renamed', status: 'ridden' } }),
+      )
+      expect(result.name).toBe('Renamed')
+      expect(result.status).toBe('ridden')
+    })
+
+    it('throws NotFoundException instead of a Prisma error when the route does not exist', async () => {
+      mockPrisma.route.findUnique.mockResolvedValue(null)
+
+      await expect(service.update('nonexistent', { name: 'x' }, userId)).rejects.toBeInstanceOf(NotFoundException)
+      expect(mockPrisma.route.update).not.toHaveBeenCalled()
     })
   })
 

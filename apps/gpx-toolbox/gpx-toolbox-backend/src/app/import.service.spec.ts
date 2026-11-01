@@ -715,7 +715,6 @@ describe('ImportService', () => {
             useValue: {
               route: {
                 findFirst: vi.fn().mockResolvedValue(null),
-                findFirst: vi.fn().mockResolvedValue(null),
                 create: vi.fn().mockImplementation(async (data: { data: Record<string, unknown> }) => ({
                   id: String(data.data.stravaRouteId),
                   ...data.data,
@@ -759,7 +758,6 @@ describe('ImportService', () => {
             provide: PrismaService,
             useValue: {
               route: {
-                findFirst: vi.fn().mockResolvedValue(null),
                 findFirst: vi.fn().mockResolvedValue({ id: 'db-1' }), // Already exists
                 create: vi.fn().mockResolvedValue({ id: 'new-1' }),
               },
@@ -800,7 +798,6 @@ describe('ImportService', () => {
             provide: PrismaService,
             useValue: {
               route: {
-                findFirst: vi.fn().mockResolvedValue(null),
                 findFirst: vi.fn().mockResolvedValue({ id: 'db-1' }), // Already exists
                 create: vi.fn().mockResolvedValue({ id: 'new-1' }),
                 update: vi.fn().mockResolvedValue({ id: 'db-1' }),

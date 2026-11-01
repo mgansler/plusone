@@ -15,6 +15,10 @@ import { SegmentOverlay } from '../../components/SegmentOverlay'
 import { PointDetails } from '../../components/PointDetails'
 import { UploadGpxModal } from '../../components/UploadGpxModal'
 import { actionButtonStyle } from '../../components/actionButtonStyle'
+import { routeStatusColor, routeStatusLabel } from '../../utils/routeStatus'
+import { formatDistanceShort, formatDurationShort, formatElevationGain } from '../../utils/format'
+import { useDebouncedValue } from '../../hooks/useDebouncedValue'
+import { emptyRange, isEmptyRange, type NumberRange, rangeParams } from '../../utils/filters'
 
 export const Route = createFileRoute('/activities/')({
   component: ActivitiesPage,
@@ -244,15 +248,15 @@ function ActivitiesPage() {
           {/* Summary */}
           <div style={styles.summary}>
             <div style={styles.summaryItem}>
-              <span style={styles.summaryValue}>{formatDuration(totalDuration)}</span>
+              <span style={styles.summaryValue}>{formatDurationShort(totalDuration)}</span>
               <span style={styles.summaryLabel}>Gesamtdauer</span>
             </div>
             <div style={styles.summaryItem}>
-              <span style={styles.summaryValue}>{formatDistance(totalDistance)}</span>
+              <span style={styles.summaryValue}>{formatDistanceShort(totalDistance)}</span>
               <span style={styles.summaryLabel}>Distanz</span>
             </div>
             <div style={styles.summaryItem}>
-              <span style={styles.summaryValue}>{formatElevation(totalElevation)}</span>
+              <span style={styles.summaryValue}>{formatElevationGain(totalElevation)}</span>
               <span style={styles.summaryLabel}>Höhenmeter</span>
             </div>
           </div>
@@ -292,17 +296,17 @@ function ActivitiesPage() {
                       </span>
                       <span style={styles.activityTitle}>{f.title ?? route?.name ?? ''}</span>
                       {route?.status && (
-                        <span style={{ ...styles.badge, backgroundColor: statusColors[route.status] || '#9e9e9e' }}>
-                          {statusLabels[route.status]}
+                        <span style={{ ...styles.badge, backgroundColor: routeStatusColor(route.status) }}>
+                          {routeStatusLabel(route.status)}
                         </span>
                       )}
                     </div>
                     {/* Line 2: stats and route name */}
                     <div style={styles.activityLine}>
                       <span style={styles.activityStats}>
-                        <span>⏱ {f.duration ? formatDuration(f.duration) : '–'}</span>
-                        <span>↔ {stats?.distance ? formatDistance(stats.distance) : '–'}</span>
-                        <span>↗ {stats?.elevationGain ? formatElevation(stats.elevationGain) : '–'}</span>
+                        <span>⏱ {f.duration ? formatDurationShort(f.duration) : '–'}</span>
+                        <span>↔ {stats?.distance ? formatDistanceShort(stats.distance) : '–'}</span>
+                        <span>↗ {stats?.elevationGain ? formatElevationGain(stats.elevationGain) : '–'}</span>
                         {f.avgHr && <span>♥ {f.avgHr}</span>}
                       </span>
                       {route?.name && f.title && <span style={styles.routeName}>{route.name}</span>}
@@ -450,39 +454,6 @@ const sortLabels: Partial<Record<ListAllActivitiesSortBy, string>> = {
   [ListAllActivitiesSortBy.avgHr]: 'Ø Herzfrequenz',
 }
 
-/** Min/max as typed into the inputs (empty string = no bound) */
-type NumberRange = { min: string; max: string }
-
-const emptyRange: NumberRange = { min: '', max: '' }
-
-function isEmptyRange(range: NumberRange): boolean {
-  return range.min === '' && range.max === ''
-}
-
-/** Turn a typed range into query params, converting to meters with `factor` */
-function rangeParams<Min extends string, Max extends string>(
-  range: NumberRange,
-  minKey: Min,
-  maxKey: Max,
-  factor: number,
-): Partial<Record<Min | Max, number>> {
-  const params: Partial<Record<Min | Max, number>> = {}
-  const min = parseFloat(range.min)
-  const max = parseFloat(range.max)
-  if (!isNaN(min)) params[minKey] = min * factor
-  if (!isNaN(max)) params[maxKey] = max * factor
-  return params
-}
-
-function useDebouncedValue<T>(value: T, delayMs: number): T {
-  const [debounced, setDebounced] = useState(value)
-  useEffect(() => {
-    const timeout = setTimeout(() => setDebounced(value), delayMs)
-    return () => clearTimeout(timeout)
-  }, [value, delayMs])
-  return debounced
-}
-
 function RangeFilter({
   label,
   unit,
@@ -522,35 +493,6 @@ function RangeFilter({
       </div>
     </div>
   )
-}
-
-const statusLabels: Record<string, string> = {
-  planned: 'Geplant',
-  ridden: 'Gefahren',
-  'found-online': 'Online gefunden',
-}
-
-const statusColors: Record<string, string> = {
-  planned: '#9c27b0',
-  ridden: '#4caf50',
-  'found-online': '#ff5722',
-}
-
-function formatDistance(meters: number): string {
-  if (meters >= 1000) return `${(meters / 1000).toFixed(1)} km`
-  return `${Math.round(meters)} m`
-}
-
-function formatElevation(meters: number): string {
-  return `${Math.round(meters)} hm`
-}
-
-function formatDuration(seconds: number): string {
-  if (!seconds) return '–'
-  const h = Math.floor(seconds / 3600)
-  const m = Math.floor((seconds % 3600) / 60)
-  if (h > 0) return `${h}h ${m}m`
-  return `${m}m`
 }
 
 const styles = {

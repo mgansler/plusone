@@ -44,10 +44,10 @@ export class RidesController {
   @ApiOkResponse({ description: 'Activity details', type: ActivityResponseDto })
   async findOne(
     @Req() req: Request & { user: JwtPayload },
-    @Param('routeId', ParseUUIDPipe) _routeId: string,
+    @Param('routeId', ParseUUIDPipe) routeId: string,
     @Param('id', ParseUUIDPipe) id: string,
   ) {
-    return this.ridesService.findOne(id, req.user.sub)
+    return this.ridesService.findOne(routeId, id, req.user.sub)
   }
 
   @Post()
@@ -66,11 +66,11 @@ export class RidesController {
   @ApiOkResponse({ description: 'Activity updated successfully', type: ActivityResponseDto })
   async update(
     @Req() req: Request & { user: JwtPayload },
-    @Param('routeId', ParseUUIDPipe) _routeId: string,
+    @Param('routeId', ParseUUIDPipe) routeId: string,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateActivityDto,
   ) {
-    return this.ridesService.update(id, dto, req.user.sub)
+    return this.ridesService.update(routeId, id, dto, req.user.sub)
   }
 
   @Delete(':id')
@@ -78,10 +78,10 @@ export class RidesController {
   @ApiOkResponse({ description: 'Activity deleted successfully' })
   async remove(
     @Req() req: Request & { user: JwtPayload },
-    @Param('routeId', ParseUUIDPipe) _routeId: string,
+    @Param('routeId', ParseUUIDPipe) routeId: string,
     @Param('id', ParseUUIDPipe) id: string,
   ) {
-    await this.ridesService.remove(id, req.user.sub)
+    await this.ridesService.remove(routeId, id, req.user.sub)
     return { deleted: true, id }
   }
 
@@ -95,8 +95,8 @@ export class RidesController {
     @Param('id', ParseUUIDPipe) id: string,
     @Query('date') date?: string,
   ) {
-    const activity = await this.ridesService.findOne(id, req.user.sub)
+    const activity = await this.ridesService.findOne(routeId, id, req.user.sub)
     const weatherDate = date ?? activity.riddenAt.toISOString().split('T')[0]
-    return this.ridesService.getWeatherForecast(routeId, weatherDate)
+    return this.ridesService.getWeatherForecast(routeId, weatherDate, req.user.sub)
   }
 }

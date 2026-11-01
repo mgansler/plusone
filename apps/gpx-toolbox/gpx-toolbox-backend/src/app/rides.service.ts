@@ -65,10 +65,10 @@ export class RidesService {
   }
 
   /**
-   * Get a single activity by ID.
+   * Get a single activity of a route by ID.
    */
-  async findOne(id: string, userId: string): Promise<ActivityResponse> {
-    const activity = await this.prisma.activity.findUnique({ where: { id, userId } })
+  async findOne(routeId: string, id: string, userId: string): Promise<ActivityResponse> {
+    const activity = await this.prisma.activity.findUnique({ where: { id, userId, routeId } })
 
     if (!activity) {
       throw new NotFoundException(`Activity with ID ${id} not found`)
@@ -110,16 +110,16 @@ export class RidesService {
   }
 
   /**
-   * Update an activity.
+   * Update an activity of a route.
    */
-  async update(id: string, dto: UpdateActivityDto, userId: string): Promise<ActivityResponse> {
-    const existing = await this.prisma.activity.findUnique({ where: { id, userId } })
+  async update(routeId: string, id: string, dto: UpdateActivityDto, userId: string): Promise<ActivityResponse> {
+    const existing = await this.prisma.activity.findUnique({ where: { id, userId, routeId } })
     if (!existing) {
       throw new NotFoundException(`Activity with ID ${id} not found`)
     }
 
     const activity = await this.prisma.activity.update({
-      where: { id, userId },
+      where: { id, userId, routeId },
       data: dto,
       include: { route: true },
     })
@@ -129,23 +129,23 @@ export class RidesService {
   }
 
   /**
-   * Delete an activity.
+   * Delete an activity of a route.
    */
-  async remove(id: string, userId: string): Promise<void> {
-    const existing = await this.prisma.activity.findUnique({ where: { id, userId } })
+  async remove(routeId: string, id: string, userId: string): Promise<void> {
+    const existing = await this.prisma.activity.findUnique({ where: { id, userId, routeId } })
     if (!existing) {
       throw new NotFoundException(`Activity with ID ${id} not found`)
     }
 
-    await this.prisma.activity.delete({ where: { id, userId } })
+    await this.prisma.activity.delete({ where: { id, userId, routeId } })
     this.logger.log(`Deleted activity #${id}`)
   }
 
   /**
-   * Get weather forecast for a route on a specific date.
+   * Get weather forecast for a route of the user on a specific date.
    */
-  async getWeatherForecast(routeId: string, date: string): Promise<WeatherSummary | null> {
-    const route = await this.prisma.route.findUnique({ where: { id: routeId } })
+  async getWeatherForecast(routeId: string, date: string, userId: string): Promise<WeatherSummary | null> {
+    const route = await this.prisma.route.findUnique({ where: { id: routeId, userId } })
     if (!route) {
       throw new NotFoundException(`Route with ID ${routeId} not found`)
     }

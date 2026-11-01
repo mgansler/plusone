@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest'
 
-import { formatDifference, formatDistance, formatDuration, formatElevation } from './format'
+import {
+  formatDifference,
+  formatDistance,
+  formatDistanceShort,
+  formatDuration,
+  formatDurationShort,
+  formatElevation,
+  formatElevationGain,
+} from './format'
 
 describe('formatDistance', () => {
   it('formats meters below 1 km', () => {
@@ -72,5 +80,32 @@ describe('formatDifference', () => {
 
   it('shows ± when the rounded difference is zero', () => {
     expect(formatDifference(42_320, 42_300, km)).toBe('±0.0 km')
+  })
+})
+
+describe('formatDistanceShort', () => {
+  it('uses one decimal for kilometers and meters below', () => {
+    expect(formatDistanceShort(42195)).toBe('42.2 km')
+    expect(formatDistanceShort(1000)).toBe('1.0 km')
+    expect(formatDistanceShort(999.6)).toBe('1000 m')
+    expect(formatDistanceShort(0)).toBe('0 m')
+  })
+})
+
+describe('formatElevationGain', () => {
+  it('rounds and uses "hm"', () => {
+    expect(formatElevationGain(349.5)).toBe('350 hm')
+  })
+})
+
+describe('formatDurationShort', () => {
+  it('formats hours and minutes without seconds', () => {
+    expect(formatDurationShort(3 * 3600 + 5 * 60 + 59)).toBe('3h 5m')
+    expect(formatDurationShort(59 * 60)).toBe('59m')
+    expect(formatDurationShort(30)).toBe('0m')
+  })
+
+  it('shows a dash for an unknown duration', () => {
+    expect(formatDurationShort(0)).toBe('–')
   })
 })

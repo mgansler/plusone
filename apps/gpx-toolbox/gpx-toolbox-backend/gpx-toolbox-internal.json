@@ -295,7 +295,14 @@
             "description": "Sort field",
             "schema": {
               "default": "createdAt",
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "name",
+                "distance",
+                "elevationGain",
+                "createdAt",
+                "updatedAt"
+              ]
             }
           },
           {
@@ -422,6 +429,24 @@
         "operationId": "listStravaActivities",
         "parameters": [
           {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (default: 1)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "per_page",
+            "required": false,
+            "in": "query",
+            "description": "Items per page (default: 50)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
             "name": "after",
             "required": false,
             "in": "query",
@@ -437,24 +462,6 @@
             "description": "Only activities before this time (ISO 8601)",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "per_page",
-            "required": false,
-            "in": "query",
-            "description": "Items per page (default: 50)",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "page",
-            "required": false,
-            "in": "query",
-            "description": "Page number (default: 1)",
-            "schema": {
-              "type": "number"
             }
           }
         ],

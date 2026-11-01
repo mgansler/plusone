@@ -3,7 +3,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import L from 'leaflet'
 
 import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
-import { getListRoutesQueryKey, useListRoutes } from '@plusone/gpx-toolbox-api-client'
+import { getListRoutesQueryKey, ListRoutesSortBy, useListRoutes } from '@plusone/gpx-toolbox-api-client'
 
 import { CompareBar } from '../components/CompareBar'
 import { CompareToggleButton } from '../components/CompareToggleButton'
@@ -12,17 +12,13 @@ import { SegmentOverlay } from '../components/SegmentOverlay'
 import { PointDetails } from '../components/PointDetails'
 import { UploadGpxModal } from '../components/UploadGpxModal'
 import { actionButtonStyle } from '../components/actionButtonStyle'
+import { routeStatusColor, routeStatusLabel } from '../utils/routeStatus'
+import { formatDistanceShort, formatElevationGain } from '../utils/format'
 
 const sourceLabels: Record<string, string> = {
   stravaRoute: 'Strava Route',
   stravaActivity: 'Strava Activity',
   manualImport: 'Manuell',
-}
-
-const statusLabels: Record<string, string> = {
-  planned: 'Geplant',
-  ridden: 'Gefahren',
-  'found-online': 'Online gefunden',
 }
 
 /** Start page: list of all routes (detail pages stay at /routes/$routeId) */
@@ -35,7 +31,7 @@ function RoutesPage() {
   const [page, setPage] = useState(1)
   const [statusFilter, setStatusFilter] = useState<string>('')
   const [sourceFilter, setSourceFilter] = useState<string>('')
-  const [sortBy, setSortBy] = useState('createdAt')
+  const [sortBy, setSortBy] = useState(ListRoutesSortBy.createdAt)
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null)
   const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
   const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 0])
@@ -171,11 +167,11 @@ function RoutesPage() {
         {/* Summary */}
         <div style={styles.summary}>
           <div style={styles.summaryItem}>
-            <span style={styles.summaryValue}>{formatDistance(totalDistance)}</span>
+            <span style={styles.summaryValue}>{formatDistanceShort(totalDistance)}</span>
             <span style={styles.summaryLabel}>Distanz</span>
           </div>
           <div style={styles.summaryItem}>
-            <span style={styles.summaryValue}>{formatElevation(totalElevation)}</span>
+            <span style={styles.summaryValue}>{formatElevationGain(totalElevation)}</span>
             <span style={styles.summaryLabel}>Höhenmeter</span>
           </div>
         </div>
@@ -208,7 +204,7 @@ function RoutesPage() {
             <option value="stravaActivity">Strava Activity</option>
             <option value="manualImport">Manuell</option>
           </select>
-          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} style={styles.select}>
+          <select value={sortBy} onChange={(e) => setSortBy(e.target.value as ListRoutesSortBy)} style={styles.select}>
             <option value="createdAt">Neueste</option>
             <option value="name">Name A-Z</option>
           </select>
@@ -237,16 +233,18 @@ function RoutesPage() {
                 <div style={styles.routeName}>{r.name}</div>
                 {r.stats && (
                   <div style={styles.routeStats}>
-                    <span>{formatDistance((r.stats as { distance?: number } | null)?.distance ?? 0)}</span>
-                    <span>{formatElevation((r.stats as { elevationGain?: number } | null)?.elevationGain ?? 0)}</span>
+                    <span>{formatDistanceShort((r.stats as { distance?: number } | null)?.distance ?? 0)}</span>
+                    <span>
+                      {formatElevationGain((r.stats as { elevationGain?: number } | null)?.elevationGain ?? 0)}
+                    </span>
                   </div>
                 )}
                 <div style={styles.routeMeta}>
                   <span style={{ ...styles.badge, backgroundColor: sourceColors[r.source] || '#9e9e9e' }}>
                     {sourceLabels[r.source] || r.source}
                   </span>
-                  <span style={{ ...styles.badge, backgroundColor: statusColors[r.status] || '#9e9e9e' }}>
-                    {statusLabels[r.status] || r.status}
+                  <span style={{ ...styles.badge, backgroundColor: routeStatusColor(r.status) }}>
+                    {routeStatusLabel(r.status)}
                   </span>
                   {(() => {
                     const activities = (r as { activities?: Array<{ id: string }> }).activities
@@ -404,21 +402,6 @@ const sourceColors: Record<string, string> = {
   manualImport: '#2196f3',
   stravaRoute: '#4caf50',
   stravaActivity: '#ff9800',
-}
-
-const statusColors: Record<string, string> = {
-  planned: '#9c27b0',
-  ridden: '#4caf50',
-  'found-online': '#ff5722',
-}
-
-function formatDistance(meters: number): string {
-  if (meters >= 1000) return `${(meters / 1000).toFixed(1)} km`
-  return `${Math.round(meters)} m`
-}
-
-function formatElevation(meters: number): string {
-  return `${Math.round(meters)} hm`
 }
 
 const styles = {

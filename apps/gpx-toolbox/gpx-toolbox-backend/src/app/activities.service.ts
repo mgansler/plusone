@@ -58,6 +58,11 @@ export class ActivitiesService {
    * Update an activity.
    */
   async update(id: string, dto: UpdateActivityDto, userId: string): Promise<ActivityWithRouteResponse> {
+    const existing = await this.prisma.activity.findUnique({ where: { id, userId }, select: { id: true } })
+    if (!existing) {
+      throw new NotFoundException(`Activity with ID ${id} not found`)
+    }
+
     const activity = await this.prisma.activity.update({
       where: { id, userId },
       data: dto,
