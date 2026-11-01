@@ -143,6 +143,59 @@ describe('admin page', () => {
     })
   })
 
+  describe('search and collapsing', () => {
+    it('finds areas and trails', async () => {
+      setup()
+      const search = await screen.findByRole('searchbox', { name: 'Gebiete und Trails durchsuchen' })
+
+      fireEvent.change(search, { target: { value: 'saubu' } })
+      expect(
+        within(areaSection('Heslach'))
+          .getAllByRole('link')
+          .map((link) => link.textContent),
+      ).toEqual(['Saubuckel'])
+      expect(screen.queryByRole('heading', { name: 'Solitude' })).toBeNull()
+      expect(screen.queryByLabelText('Neues Trailgebiet')).toBeNull()
+
+      fireEvent.change(search, { target: { value: 'yoyo' } })
+      expect(screen.getByText('Jojo')).toBeTruthy()
+
+      fireEvent.change(search, { target: { value: 'solitude' } })
+      expect(screen.getByText('Jojo')).toBeTruthy()
+
+      fireEvent.change(search, { target: { value: 'gibtsnicht' } })
+      expect(screen.getByText('Kein Gebiet und kein Trail heißt „gibtsnicht“.')).toBeTruthy()
+
+      fireEvent.change(search, { target: { value: '' } })
+      expect(screen.getByLabelText('Neues Trailgebiet')).toBeTruthy()
+    })
+
+    it('counts all trails of an area when deleting from search results', async () => {
+      const confirm = vi.fn().mockReturnValue(false)
+      vi.stubGlobal('confirm', confirm)
+      setup()
+
+      fireEvent.change(await screen.findByRole('searchbox'), { target: { value: 'klabuster' } })
+      fireEvent.click(within(areaSection('Heslach')).getByRole('button', { name: 'Löschen' }))
+      expect(confirm).toHaveBeenCalledWith('„Heslach“ mit 3 Trails und dem ganzen Pflegelog löschen?')
+    })
+
+    it('collapses an area', async () => {
+      setup()
+      const toggle = await screen.findByRole('button', { name: 'Heslach' })
+
+      fireEvent.click(toggle)
+      expect(toggle.getAttribute('aria-expanded')).toBe('false')
+      expect(screen.queryByText('Klabuster')).toBeNull()
+      expect(within(toggle).getByText('3 Trails')).toBeTruthy()
+      // Renaming and deleting stay available on a collapsed area
+      expect(within(areaSection('Heslach 3 Trails')).getByRole('button', { name: 'Umbenennen' })).toBeTruthy()
+
+      fireEvent.click(toggle)
+      expect(screen.getByText('Klabuster')).toBeTruthy()
+    })
+  })
+
   describe('access passwords', () => {
     it('lists passwords with their usage', async () => {
       setup()

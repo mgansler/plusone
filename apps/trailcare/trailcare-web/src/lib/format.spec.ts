@@ -1,4 +1,4 @@
-import { performedAtForDay, relativeDay, sweptLabel, toDayKey } from './format'
+import { performedAtForDay, relativeDay, sweptLabel, toDayKey, trailCount } from './format'
 
 describe('format', () => {
   it('describes the last sweep', () => {
@@ -6,6 +6,12 @@ describe('format', () => {
     expect(sweptLabel(0)).toBe('Heute gefegt')
     expect(sweptLabel(1)).toBe('Gestern gefegt')
     expect(sweptLabel(5)).toBe('Vor 5 Tagen gefegt')
+  })
+
+  it('counts trails', () => {
+    expect(trailCount(0)).toBe('keine Trails')
+    expect(trailCount(1)).toBe('1 Trail')
+    expect(trailCount(4)).toBe('4 Trails')
   })
 
   it('uses the Berlin calendar day', () => {

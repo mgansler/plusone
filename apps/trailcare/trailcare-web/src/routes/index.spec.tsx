@@ -55,6 +55,40 @@ describe('trail list', () => {
     expect(screen.getByText('Klabuster')).toBeTruthy()
   })
 
+  it('collapses areas and remembers it', async () => {
+    const { unmount } = renderApp('/')
+    const heslach = await screen.findByRole('button', { name: 'Heslach' })
+    expect(heslach.getAttribute('aria-expanded')).toBe('true')
+
+    fireEvent.click(heslach)
+    expect(heslach.getAttribute('aria-expanded')).toBe('false')
+    expect(screen.queryByText('Klabuster')).toBeNull()
+    // The summary tells how many trails are hidden and how many need sweeping
+    expect(within(heslach).getByText('3 Trails · 1× fegen nötig')).toBeTruthy()
+    expect(screen.getByText('Jojo')).toBeTruthy()
+
+    unmount()
+    renderApp('/')
+    expect((await screen.findByRole('button', { name: /Heslach/ })).getAttribute('aria-expanded')).toBe('false')
+    expect(screen.queryByText('Klabuster')).toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: /Heslach/ }))
+    expect(screen.getByText('Klabuster')).toBeTruthy()
+  })
+
+  it('shows search results in collapsed areas', async () => {
+    renderApp('/')
+    fireEvent.click(await screen.findByRole('button', { name: 'Heslach' }))
+
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'klab' } })
+    const heslach = screen.getByRole<HTMLButtonElement>('button', { name: 'Heslach' })
+    expect(screen.getByText('Klabuster')).toBeTruthy()
+    expect(heslach.disabled).toBe(true)
+
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: '' } })
+    expect(screen.queryByText('Klabuster')).toBeNull()
+  })
+
   it('sweeps a trail with one tap and offers undo', async () => {
     fakeApi.on('POST', '/api/trails/2/care-entries', careEntry({ id: 9, trailId: 2, undoableUntil: UNDOABLE() }))
     fakeApi.on('DELETE', '/api/care-entries/9', undefined)

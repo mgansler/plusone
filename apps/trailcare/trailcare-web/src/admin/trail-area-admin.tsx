@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router'
 import type { FormEvent } from 'react'
 import { useState } from 'react'
 
-import type { TrailAreaDto } from '@plusone/trailcare-api-client'
+import type { TrailAreaDto, TrailDto } from '@plusone/trailcare-api-client'
 import {
   useCreateTrail,
   useCreateTrailArea,
@@ -10,7 +10,9 @@ import {
   useUpdateTrailArea,
 } from '@plusone/trailcare-api-client'
 
+import { AreaToggle } from '../components/area-toggle'
 import { Blaze } from '../components/blaze'
+import { trailCount } from '../lib/format'
 
 import { useAdminMutationOptions } from './use-admin-mutation'
 
@@ -36,7 +38,16 @@ export function CreateTrailAreaForm() {
   )
 }
 
-export function TrailAreaAdmin({ area }: { area: TrailAreaDto }) {
+type TrailAreaAdminProps = {
+  area: TrailAreaDto
+  /** The trails matching the search, all trails of the area without search */
+  visibleTrails?: Array<TrailDto>
+  expanded?: boolean
+  /** Without it the area can't be collapsed, e.g. while searching */
+  onToggle?: () => void
+}
+
+export function TrailAreaAdmin({ area, visibleTrails = area.trails, expanded = true, onToggle }: TrailAreaAdminProps) {
   const [isRenaming, setIsRenaming] = useState(false)
   const [name, setName] = useState(area.name)
   const [trailName, setTrailName] = useState('')
@@ -44,6 +55,8 @@ export function TrailAreaAdmin({ area }: { area: TrailAreaDto }) {
   const update = useUpdateTrailArea(useAdminMutationOptions(() => setIsRenaming(false)))
   const remove = useDeleteTrailArea(useAdminMutationOptions())
   const createTrail = useCreateTrail(useAdminMutationOptions(() => setTrailName('')))
+
+  const panelId = `admin-area-${area.id}-trails`
 
   const onRename = (event: FormEvent) => {
     event.preventDefault()
@@ -92,7 +105,15 @@ export function TrailAreaAdmin({ area }: { area: TrailAreaDto }) {
         </form>
       ) : (
         <div className="admin-area-head">
-          <h3 className="area-name">{area.name}</h3>
+          <AreaToggle
+            name={area.name}
+            expanded={expanded}
+            controls={panelId}
+            onToggle={() => onToggle?.()}
+            summary={trailCount(area.trails.length)}
+            disabled={!onToggle}
+            level={3}
+          />
           <div className="button-row">
             <button className="text-button" onClick={() => setIsRenaming(true)}>
               Umbenennen
@@ -104,27 +125,36 @@ export function TrailAreaAdmin({ area }: { area: TrailAreaDto }) {
         </div>
       )}
 
-      <ul className="admin-trails">
-        {area.trails.map((trail) => (
-          <li key={trail.id}>
-            <Link to="/admin/trails/$trailId" params={{ trailId: String(trail.id) }} className="admin-trail-link">
-              <Blaze status={trail.sweepStatus} />
-              <span className="admin-trail-name">{trail.name}</span>
-              {trail.aliases.length > 0 && <span className="hint">auch {trail.aliases.join(', ')}</span>}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {expanded && (
+        <div id={panelId} className="admin-area-body">
+          <ul className="admin-trails">
+            {visibleTrails.map((trail) => (
+              <li key={trail.id}>
+                <Link to="/admin/trails/$trailId" params={{ trailId: String(trail.id) }} className="admin-trail-link">
+                  <Blaze status={trail.sweepStatus} />
+                  <span className="admin-trail-name">{trail.name}</span>
+                  {trail.aliases.length > 0 && <span className="hint">auch {trail.aliases.join(', ')}</span>}
+                </Link>
+              </li>
+            ))}
+          </ul>
 
-      <form className="inline-form" onSubmit={onCreateTrail}>
-        <label className="field">
-          <span>Trail hinzufügen</span>
-          <input value={trailName} onChange={(event) => setTrailName(event.target.value)} maxLength={100} required />
-        </label>
-        <button className="button" type="submit" disabled={createTrail.isPending || !trailName.trim()}>
-          Hinzufügen
-        </button>
-      </form>
+          <form className="inline-form" onSubmit={onCreateTrail}>
+            <label className="field">
+              <span>Trail hinzufügen</span>
+              <input
+                value={trailName}
+                onChange={(event) => setTrailName(event.target.value)}
+                maxLength={100}
+                required
+              />
+            </label>
+            <button className="button" type="submit" disabled={createTrail.isPending || !trailName.trim()}>
+              Hinzufügen
+            </button>
+          </form>
+        </div>
+      )}
     </section>
   )
 }

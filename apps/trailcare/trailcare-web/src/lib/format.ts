@@ -45,3 +45,10 @@ export function relativeDay(iso: string, now = new Date()): string {
   if (days < 7) return `vor ${days} Tagen`
   return formatDate(iso)
 }
+
+export function trailCount(count: number): string {
+  if (count === 0) {
+    return 'keine Trails'
+  }
+  return count === 1 ? '1 Trail' : `${count} Trails`
+}
