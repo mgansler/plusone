@@ -29,3 +29,11 @@ export type Config = z.infer<typeof configSchema>
 export function stravaBaseUrl(): string {
   return process.env[STRAVA_BASE_URL] || DEFAULT_STRAVA_BASE_URL
 }
+
+/**
+ * The debug proxy forwards arbitrary Strava API requests, so it only exists on the local dev server.
+ * `nx serve` sets NODE_ENV to the configuration name, the production container doesn't set it at all.
+ */
+export function debugEndpointsEnabled(env: NodeJS.ProcessEnv): boolean {
+  return env.NODE_ENV === 'development'
+}

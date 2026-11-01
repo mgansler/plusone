@@ -1,11 +1,15 @@
 import { useCallback, useMemo, useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
 import { useDebugStravaRequest } from '@plusone/gpx-toolbox-api-client'
 
 import { stravaEndpointGroups } from '../../lib/strava-endpoints'
 
 export const Route = createFileRoute('/debug/')({
+  // The backend only offers the debug proxy on the dev server
+  beforeLoad: () => {
+    if (!import.meta.env.DEV) throw redirect({ to: '/', replace: true })
+  },
   component: DebugPage,
 })
 

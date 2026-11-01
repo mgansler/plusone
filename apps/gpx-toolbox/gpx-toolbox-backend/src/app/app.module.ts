@@ -2,7 +2,7 @@ import { join } from 'path'
 
 import { HttpModule } from '@nestjs/axios'
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
+import { ConditionalModule, ConfigModule } from '@nestjs/config'
 import { PassportModule } from '@nestjs/passport'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { TerminusModule } from '@nestjs/terminus'
@@ -11,7 +11,7 @@ import { RequestLoggerMiddleware } from '@plusone/nestjs-services'
 import { PrismaModule } from '@plusone/gpx-toolbox-persistence'
 
 import { AppService } from './app.service'
-import { configSchema } from './config'
+import { configSchema, debugEndpointsEnabled } from './config'
 import { HealthController } from './health.controller'
 import { RoutesModule } from './routes.module'
 import { AuthModule } from './auth.module'
@@ -41,7 +41,7 @@ import { DebugModule } from './debug.module'
     ImportModule,
     RidesModule,
     ActivitiesModule,
-    DebugModule,
+    ConditionalModule.registerWhen(DebugModule, debugEndpointsEnabled),
   ],
   controllers: [HealthController],
   providers: [AppService, JwtStrategy],

@@ -65,9 +65,11 @@ export function App() {
             <a href="/utils" style={styles.topbarLink}>
               Utils
             </a>
-            <a href="/debug" style={styles.topbarLink}>
-              Debug
-            </a>
+            {import.meta.env.DEV && (
+              <a href="/debug" style={styles.topbarLink}>
+                Debug
+              </a>
+            )}
             <button onClick={logout} style={styles.logoutButton}>
               Abmelden
             </button>
