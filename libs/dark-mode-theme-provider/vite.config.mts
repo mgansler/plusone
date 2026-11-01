@@ -1,16 +1,14 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
-import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/libs/dark-mode-theme-provider',
 
-  plugins: [react(), tsconfigPaths()],
+  plugins: [react()],
 
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ tsconfigPaths() ],
-  // },
+  resolve: {
+    tsconfigPaths: true,
+  },
 
   test: {
     reporters: ['default', 'junit'],

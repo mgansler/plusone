@@ -2,7 +2,6 @@ import react from '@vitejs/plugin-react'
 import * as process from 'process'
 import { searchForWorkspaceRoot } from 'vite'
 import { defineConfig } from 'vitest/config'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { nxReadySignal } from '@nx/vite/plugins/nx-ready-signal.plugin'
 
 // These options were migrated by @nx/vite:convert-to-inferred from the project.json file.
@@ -50,9 +49,10 @@ export default defineConfig({
     },
   },
 
-  plugins: [react(), tsconfigPaths(), nxReadySignal()],
+  plugins: [react(), nxReadySignal()],
 
   resolve: {
+    tsconfigPaths: true,
     alias: {
       'node-fetch': 'isomorphic-fetch',
     },
@@ -61,11 +61,6 @@ export default defineConfig({
   define: {
     global: {},
   },
-
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ tsconfigPaths() ],
-  // },
 
   test: {
     reporters: ['default', 'junit'],

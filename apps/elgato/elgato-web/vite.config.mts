@@ -2,7 +2,6 @@ import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { nxReadySignal } from '@nx/vite/plugins/nx-ready-signal.plugin'
 
 // These options were migrated by @nx/vite:convert-to-inferred from the project.json file.
@@ -46,17 +45,15 @@ export default defineConfig({
   },
 
   plugins: [
-    tanstackRouter({ target: 'react', autoCodeSplitting: false }),
+    tanstackRouter({ target: 'react', autoCodeSplitting: false, routeFileIgnorePattern: '\\.(spec|test|cy)\\.tsx?$' }),
     react(),
-    tsconfigPaths(),
     tailwindcss(),
     nxReadySignal(),
   ],
 
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ tsconfigPaths() ],
-  // },
+  resolve: {
+    tsconfigPaths: true,
+  },
 
   test: {
     reporters: ['default', 'junit'],

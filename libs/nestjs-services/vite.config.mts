@@ -1,11 +1,14 @@
 import { defineConfig } from 'vitest/config'
-import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   root: import.meta.dirname,
   cacheDir: '../../node_modules/.vite/libs/nestjs-services',
 
-  plugins: [tsconfigPaths()],
+  plugins: [],
+
+  resolve: {
+    tsconfigPaths: true,
+  },
 
   // @ts-expect-error vitest needs this
   test: {

@@ -1,7 +1,6 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { nxReadySignal } from '@nx/vite/plugins/nx-ready-signal.plugin'
 
 // These options were migrated by @nx/vite:convert-to-inferred from the project.json file.
@@ -46,7 +45,15 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [tanstackRouter({ target: 'react', autoCodeSplitting: false }), react(), tsconfigPaths(), nxReadySignal()],
+  plugins: [
+    tanstackRouter({ target: 'react', autoCodeSplitting: false, routeFileIgnorePattern: '\\.(spec|test)\\.tsx?$' }),
+    react(),
+    nxReadySignal(),
+  ],
+
+  resolve: {
+    tsconfigPaths: true,
+  },
 
   test: {
     watch: false,

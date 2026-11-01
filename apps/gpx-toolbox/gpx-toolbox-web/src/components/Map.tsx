@@ -3,6 +3,20 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet.locatecontrol/dist/L.Control.Locate.min.css'
 import { LocateControl } from 'leaflet.locatecontrol'
+import markerIcon2xUrl from 'leaflet/dist/images/marker-icon-2x.png'
+import markerIconUrl from 'leaflet/dist/images/marker-icon.png'
+import markerShadowUrl from 'leaflet/dist/images/marker-shadow.png'
+
+/**
+ * Leaflet derives the default marker image path from the CSS background URL of `.leaflet-default-icon-path`.
+ * Vite inlines that image as a data URL in production builds, which breaks the derivation, so set the URLs explicitly.
+ */
+L.Icon.Default.imagePath = ''
+L.Icon.Default.mergeOptions({
+  iconUrl: markerIconUrl,
+  iconRetinaUrl: markerIcon2xUrl,
+  shadowUrl: markerShadowUrl,
+})
 
 /** Fallback center (Stuttgart) when the browser location is unavailable */
 export const defaultCenter: [number, number] = [48.77, 9.16]

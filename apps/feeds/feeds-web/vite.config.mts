@@ -1,6 +1,5 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { nxReadySignal } from '@nx/vite/plugins/nx-ready-signal.plugin'
 
 // These options were migrated by @nx/vite:convert-to-inferred from the project.json file.
@@ -33,11 +32,11 @@ export default defineConfig(() => ({
     host: 'localhost',
   },
 
-  plugins: [react(), tsconfigPaths(), nxReadySignal()],
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ tsconfigPaths() ],
-  // },
+  plugins: [react(), nxReadySignal()],
+
+  resolve: {
+    tsconfigPaths: true,
+  },
 
   build: {
     outDir: '../../../dist/apps/feeds/feeds-web',
