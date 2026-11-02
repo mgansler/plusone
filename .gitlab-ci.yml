@@ -85,6 +85,13 @@ api-client-check:
   after_script:
     - git status
 
+e2e-parallelism-check:
+  stage: static
+  extends:
+    - .distributed
+  script:
+    - sh tools/scripts/check-e2e-parallelism.sh
+
 lint-and-format:
   stage: static
   extends:

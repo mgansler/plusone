@@ -8,22 +8,23 @@ import { startStravaMock } from './src/support/strava-mock'
 const PORT = 3433
 const STRAVA_MOCK_PORT = 3434
 
-// Set explicitly, as CI/CD variables and the backend's .local.env/.env.local would otherwise take precedence
-const backendEnv = [
-  `PORT=${PORT}`,
-  'GPX_TOOLBOX_DATABASE_URL=file:./gpx-toolbox-e2e.db',
-  `STRAVA_BASE_URL=http://localhost:${STRAVA_MOCK_PORT}`,
-  'STRAVA_CLIENT_ID=e2e-client',
-  'STRAVA_CLIENT_SECRET=e2e-secret',
-  `STRAVA_REDIRECT_URI=http://localhost:${PORT}/api/auth/strava/callback`,
-  `FRONTEND_URL=http://localhost:${PORT}`,
-  'JWT_SECRET=e2e-jwt-secret',
-].join(' ')
+// Set explicitly, as CI/CD variables and the backend's .local.env/.env.local would otherwise take precedence.
+// Not as a prefix of the web server command, as @nx/cypress then no longer infers the task and disables parallelism.
+Object.assign(process.env, {
+  PORT: `${PORT}`,
+  GPX_TOOLBOX_DATABASE_URL: 'file:./gpx-toolbox-e2e.db',
+  STRAVA_BASE_URL: `http://localhost:${STRAVA_MOCK_PORT}`,
+  STRAVA_CLIENT_ID: 'e2e-client',
+  STRAVA_CLIENT_SECRET: 'e2e-secret',
+  STRAVA_REDIRECT_URI: `http://localhost:${PORT}/api/auth/strava/callback`,
+  FRONTEND_URL: `http://localhost:${PORT}`,
+  JWT_SECRET: 'e2e-jwt-secret',
+})
 
 const preset = nxE2EPreset(__filename, {
   webServerCommands: {
-    default: `${backendEnv} npx nx run gpx-toolbox-backend:serve:production`,
-    production: `${backendEnv} npx nx run gpx-toolbox-backend:serve:production`,
+    default: 'npx nx run gpx-toolbox-backend:serve:production',
+    production: 'npx nx run gpx-toolbox-backend:serve:production',
   },
   cypressDir: 'src',
   bundler: 'vite',
