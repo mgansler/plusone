@@ -16,8 +16,8 @@ function trailRecord(overrides: Record<string, unknown> = {}) {
     trailAreaId: 10,
     trailArea: { name: 'Heslach' },
     aliases: [{ id: 1, name: 'Klabi', trailId: 1 }],
-    sweepGreenMaxDays: 2,
-    sweepYellowMaxDays: 4,
+    sweepGreenMaxDays: null,
+    sweepYellowMaxDays: null,
     careEntries: [],
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -48,12 +48,14 @@ describe('TrailService', () => {
   const prisma = {
     trailArea: { findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn() },
     trail: { findUnique: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn() },
-    careEntry: { groupBy: vi.fn() },
+    careEntry: { findMany: vi.fn() },
+    sweepSettings: { findUnique: vi.fn(), upsert: vi.fn() },
   }
 
   beforeEach(async () => {
     vi.resetAllMocks()
-    prisma.careEntry.groupBy.mockResolvedValue([])
+    prisma.careEntry.findMany.mockResolvedValue([])
+    prisma.sweepSettings.findUnique.mockResolvedValue(null)
     const module = await Test.createTestingModule({
       providers: [TrailService, { provide: PrismaService, useValue: prisma }],
     }).compile()
@@ -72,10 +74,7 @@ describe('TrailService', () => {
           ],
         },
       ])
-      prisma.careEntry.groupBy.mockResolvedValue([
-        { trailId: 1, _max: { performedAt: new Date(Date.now() - 3 * DAY) } },
-        { trailId: 2, _max: { performedAt: null } },
-      ])
+      prisma.careEntry.findMany.mockResolvedValue([{ trailId: 1, performedAt: new Date(Date.now() - 3 * DAY) }])
 
       const [area] = await service.listTrailAreas(USER_SESSION)
 
@@ -94,11 +93,15 @@ describe('TrailService', () => {
       expect(area.trails[1].lastCareEntry?.undoableUntil).toBeInstanceOf(Date)
     })
 
-    it('only looks at sweeps for the traffic light', async () => {
+    it('bases the traffic light on the most recently entered sweep only', async () => {
       prisma.trailArea.findMany.mockResolvedValue([])
       await service.listTrailAreas()
-      expect(prisma.careEntry.groupBy).toHaveBeenCalledWith(
-        expect.objectContaining({ where: { type: CareType.SWEPT, trailId: undefined } }),
+      expect(prisma.careEntry.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { type: CareType.SWEPT, trailId: undefined },
+          orderBy: { id: 'desc' },
+          distinct: ['trailId'],
+        }),
       )
     })
   })
@@ -106,10 +109,10 @@ describe('TrailService', () => {
   describe('getTrail', () => {
     it('limits the sweep lookup to the trail', async () => {
       prisma.trail.findUnique.mockResolvedValue(trailRecord())
-      prisma.careEntry.groupBy.mockResolvedValue([{ trailId: 1, _max: { performedAt: new Date() } }])
+      prisma.careEntry.findMany.mockResolvedValue([{ trailId: 1, performedAt: new Date() }])
 
       expect(await service.getTrail(1)).toMatchObject({ id: 1, sweepStatus: SweepStatus.GREEN, daysSinceSwept: 0 })
-      expect(prisma.careEntry.groupBy).toHaveBeenCalledWith(
+      expect(prisma.careEntry.findMany).toHaveBeenCalledWith(
         expect.objectContaining({ where: { type: CareType.SWEPT, trailId: 1 } }),
       )
     })
@@ -117,6 +120,31 @@ describe('TrailService', () => {
     it('throws for unknown trails', async () => {
       prisma.trail.findUnique.mockResolvedValue(null)
       await expect(service.getTrail(1)).rejects.toThrow(NotFoundException)
+    })
+  })
+
+  describe('sweep settings', () => {
+    it('falls back to 2/4 days until they are saved', async () => {
+      expect(await service.getSweepSettings()).toEqual({ sweepGreenMaxDays: 2, sweepYellowMaxDays: 4 })
+    })
+
+    it('saves the thresholds in the single settings row', async () => {
+      prisma.sweepSettings.upsert.mockResolvedValue({ id: 1, sweepGreenMaxDays: 4, sweepYellowMaxDays: 8 })
+
+      await service.updateSweepSettings({ sweepGreenMaxDays: 4, sweepYellowMaxDays: 8 })
+
+      expect(prisma.sweepSettings.upsert).toHaveBeenCalledWith({
+        where: { id: 1 },
+        create: { id: 1, sweepGreenMaxDays: 4, sweepYellowMaxDays: 8 },
+        update: { sweepGreenMaxDays: 4, sweepYellowMaxDays: 8 },
+      })
+    })
+
+    it('rejects yellow below green', async () => {
+      await expect(service.updateSweepSettings({ sweepGreenMaxDays: 5, sweepYellowMaxDays: 4 })).rejects.toThrow(
+        BadRequestException,
+      )
+      expect(prisma.sweepSettings.upsert).not.toHaveBeenCalled()
     })
   })
 
@@ -156,7 +184,16 @@ describe('TrailService', () => {
       )
     })
 
-    it('rejects yellow below green, also against the defaults', async () => {
+    it('stores no thresholds for trails that follow the global ones', async () => {
+      prisma.trail.create.mockResolvedValue(trailRecord())
+      await service.createTrail(10, { name: 'x' })
+      expect(prisma.trail.create.mock.calls[0][0].data).toMatchObject({
+        sweepGreenMaxDays: null,
+        sweepYellowMaxDays: null,
+      })
+    })
+
+    it('rejects yellow below green and only one of both thresholds', async () => {
       await expect(service.createTrail(10, { name: 'x', sweepGreenMaxDays: 3, sweepYellowMaxDays: 2 })).rejects.toThrow(
         BadRequestException,
       )
@@ -204,7 +241,26 @@ describe('TrailService', () => {
       expect(prisma.trail.update.mock.calls[0][0].data.aliases.create).toEqual([{ name: 'K' }])
     })
 
-    it('validates thresholds against the stored values', async () => {
+    it('sets, keeps and resets the trail’s own thresholds', async () => {
+      await service.updateTrail(1, { sweepGreenMaxDays: 1, sweepYellowMaxDays: 2 })
+      expect(prisma.trail.update.mock.calls[0][0].data).toMatchObject({ sweepGreenMaxDays: 1, sweepYellowMaxDays: 2 })
+
+      prisma.trail.findUnique.mockResolvedValue(trailRecord({ sweepGreenMaxDays: 1, sweepYellowMaxDays: 2 }))
+      await service.updateTrail(1, { name: 'Neu' })
+      expect(prisma.trail.update.mock.calls[1][0].data).toMatchObject({ sweepGreenMaxDays: 1, sweepYellowMaxDays: 2 })
+
+      await service.updateTrail(1, { sweepGreenMaxDays: null, sweepYellowMaxDays: null })
+      expect(prisma.trail.update.mock.calls[2][0].data).toMatchObject({
+        sweepGreenMaxDays: null,
+        sweepYellowMaxDays: null,
+      })
+    })
+
+    it('rejects yellow below green and only one of both thresholds', async () => {
+      await expect(service.updateTrail(1, { sweepGreenMaxDays: 5, sweepYellowMaxDays: 3 })).rejects.toThrow(
+        BadRequestException,
+      )
+      // Overrides always come as a pair, a single value would mix with the global one
       await expect(service.updateTrail(1, { sweepGreenMaxDays: 5 })).rejects.toThrow(BadRequestException)
       await expect(service.updateTrail(1, { sweepYellowMaxDays: 1 })).rejects.toThrow(BadRequestException)
       expect(prisma.trail.update).not.toHaveBeenCalled()

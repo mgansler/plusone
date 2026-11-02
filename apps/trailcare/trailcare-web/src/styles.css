@@ -329,9 +329,22 @@ textarea {
   color: var(--muted);
 }
 
+/* The comment of the last entry must not make the row taller, so it is cut off at the end of the line */
+.trail-row-meta,
+.trail-row-last {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .trail-row-last {
   font-size: 0.88rem;
   font-weight: 600;
+}
+
+.trail-row-comment {
+  font-weight: 400;
+  color: var(--muted);
 }
 
 .trail-row-last[data-type='FALLEN_TREE'] {
@@ -568,6 +581,34 @@ legend {
 
 .field textarea {
   resize: vertical;
+}
+
+.field input:disabled {
+  opacity: 0.6;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-group > legend {
+  margin-bottom: 0;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.checkbox input {
+  flex: none;
+  width: 22px;
+  height: 22px;
 }
 
 .field-row {
@@ -942,6 +983,62 @@ fieldset.field-row > legend {
   .toast-timer {
     display: none;
   }
+}
+
+/* ── Reorder areas ───────────────────────────────────────────────────── */
+
+.list-tools {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  margin: -16px 0;
+}
+
+.area-sorter {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.area-sorter-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.area-sorter-name {
+  flex: 1;
+  min-width: 0;
+  padding: 0 4px;
+  font-family: var(--sign);
+  font-size: 1.15rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.area-sorter-button {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--tap);
+  height: var(--tap);
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.area-sorter-button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.area-sorter-icon {
+  width: 22px;
+  height: 22px;
 }
 
 /* ── Collapsible areas ───────────────────────────────────────────────── */

@@ -11,6 +11,7 @@ import {
   RotateAccessPasswordDto,
   UpdateAccessPasswordDto,
 } from './dto/access-password.dto'
+import { SweepSettingsDto } from './dto/sweep-settings.dto'
 import { CreateTrailDto, TrailAreaInputDto, TrailAreaResponseDto, TrailDto, UpdateTrailDto } from './dto/trail.dto'
 import { TrailService } from './trail.service'
 
@@ -23,6 +24,23 @@ export class AdminController {
     private readonly trailService: TrailService,
     private readonly accessPasswordService: AccessPasswordService,
   ) {}
+
+  @Get('sweep-settings')
+  @ApiOperation({ operationId: 'getSweepSettings', description: 'Traffic light thresholds for all trails' })
+  @ApiOkResponse({ type: SweepSettingsDto })
+  getSweepSettings() {
+    return this.trailService.getSweepSettings()
+  }
+
+  @Put('sweep-settings')
+  @ApiOperation({
+    operationId: 'updateSweepSettings',
+    description: 'Changes the traffic light for all trails that have no thresholds of their own',
+  })
+  @ApiOkResponse({ type: SweepSettingsDto })
+  updateSweepSettings(@Body() body: SweepSettingsDto) {
+    return this.trailService.updateSweepSettings(body)
+  }
 
   @Post('trail-areas')
   @ApiOperation({ operationId: 'createTrailArea' })

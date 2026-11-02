@@ -134,6 +134,11 @@ export function TrailAreaAdmin({ area, visibleTrails = area.trails, expanded = t
                   <Blaze status={trail.sweepStatus} />
                   <span className="admin-trail-name">{trail.name}</span>
                   {trail.aliases.length > 0 && <span className="hint">auch {trail.aliases.join(', ')}</span>}
+                  {trail.hasCustomSweepThresholds && (
+                    <span className="hint">
+                      eigene Ampel {trail.sweepGreenMaxDays}/{trail.sweepYellowMaxDays} Tage
+                    </span>
+                  )}
                 </Link>
               </li>
             ))}

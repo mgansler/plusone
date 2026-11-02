@@ -17,6 +17,13 @@ export function TrailRow({ trail, matchedAlias }: TrailRowProps) {
   )
   const last = trail.lastCareEntry
   const showLast = last && last.type !== 'SWEPT'
+  // Kept to a single line each, the full text is in the care log
+  const comment = last?.comment && (
+    <span className="trail-row-comment" title={last.comment}>
+      {' · '}
+      {last.comment}
+    </span>
+  )
 
   return (
     <li className="trail-row" data-status={trail.sweepStatus} data-just-swept={isSuccess || undefined}>
@@ -25,10 +32,14 @@ export function TrailRow({ trail, matchedAlias }: TrailRowProps) {
         <span className="trail-row-text">
           <span className="trail-row-name">{trail.name}</span>
           {matchedAlias && <span className="trail-row-alias">auch „{matchedAlias}“</span>}
-          <span className="trail-row-meta">{sweptLabel(trail.daysSinceSwept)}</span>
+          <span className="trail-row-meta">
+            {sweptLabel(trail.daysSinceSwept)}
+            {!showLast && comment}
+          </span>
           {showLast && (
             <span className="trail-row-last" data-type={last.type}>
               {capitalize(relativeDay(last.performedAt))}: {CARE_TYPE_LABEL[last.type]}
+              {comment}
             </span>
           )}
         </span>

@@ -5,10 +5,12 @@ import type { TrailDto } from '@plusone/trailcare-api-client'
 import { SweepStatus, useGetTrailAreas } from '@plusone/trailcare-api-client'
 
 import { AppHeader } from '../components/app-header'
+import { AreaSorter } from '../components/area-sorter'
 import { AreaToggle } from '../components/area-toggle'
 import { SearchField } from '../components/search-field'
 import { TrailRow } from '../components/trail-row'
 import { errorMessage } from '../lib/api-error'
+import { useAreaOrder } from '../lib/area-order'
 import { trailCount } from '../lib/format'
 import { filterTrailAreas } from '../lib/search'
 import { useSession } from '../lib/session'
@@ -28,15 +30,32 @@ function HomePage() {
   const { isAdmin } = useSession()
   const { data: areas, isLoading, error } = useGetTrailAreas({ query: { refetchInterval: 60_000 } })
   const [query, setQuery] = useState('')
-  const result = useMemo(() => filterTrailAreas(areas ?? [], query), [areas, query])
+  const [isSorting, setIsSorting] = useState(false)
+  const areaOrder = useAreaOrder('trailcare-area-order')
+  const sortedAreas = useMemo(() => areaOrder.sort(areas ?? []), [areaOrder, areas])
+  const result = useMemo(() => filterTrailAreas(sortedAreas, query), [sortedAreas, query])
   const { isCollapsed, toggle } = useCollapsedAreas('trailcare-collapsed-areas')
   const isSearching = query.trim().length > 0
+  const canSort = sortedAreas.length > 1 && !isSearching
 
   return (
     <div className="page">
       <AppHeader />
       <main className="content">
         <SearchField value={query} onChange={setQuery} placeholder="Trail suchen" label="Trail nach Name suchen" />
+
+        {canSort && (
+          <div className="list-tools">
+            {isSorting && areaOrder.isCustom && (
+              <button className="text-button" onClick={areaOrder.reset}>
+                Alphabetisch
+              </button>
+            )}
+            <button className="text-button" onClick={() => setIsSorting((current) => !current)}>
+              {isSorting ? 'Fertig' : 'Gebiete sortieren'}
+            </button>
+          </div>
+        )}
 
         {isLoading && <p className="hint">Trails werden geladen …</p>}
         {!!error && <p className="form-error">{errorMessage(error)}</p>}
@@ -56,38 +75,46 @@ function HomePage() {
           <p className="hint">Kein Trail heißt „{query.trim()}“. Probier einen anderen Namen.</p>
         )}
 
-        {result.areas.map((area) => {
-          // Search results are never hidden in a collapsed area
-          const expanded = isSearching || !isCollapsed(area.id)
-          const panelId = `area-${area.id}-trails`
-          return (
-            <section key={area.id} className="area">
-              <AreaToggle
-                name={area.name}
-                expanded={expanded}
-                controls={panelId}
-                onToggle={() => toggle(area.id)}
-                summary={collapsedSummary(area.trails)}
-                disabled={isSearching}
-              />
-              <div id={panelId}>
-                {!expanded ? null : area.trails.length === 0 ? (
-                  <p className="hint">Noch keine Trails in diesem Gebiet.</p>
-                ) : (
-                  <ul className="trail-list">
-                    {area.trails.map((trail) => (
-                      <TrailRow
-                        key={trail.id}
-                        trail={trail}
-                        matchedAlias={result.matches.get(trail.id)?.matchedAlias}
-                      />
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </section>
-          )
-        })}
+        {canSort && isSorting && (
+          <AreaSorter
+            names={sortedAreas}
+            onMove={(areaId, direction) => areaOrder.move(sortedAreas, areaId, direction)}
+          />
+        )}
+
+        {!(canSort && isSorting) &&
+          result.areas.map((area) => {
+            // Search results are never hidden in a collapsed area
+            const expanded = isSearching || !isCollapsed(area.id)
+            const panelId = `area-${area.id}-trails`
+            return (
+              <section key={area.id} className="area">
+                <AreaToggle
+                  name={area.name}
+                  expanded={expanded}
+                  controls={panelId}
+                  onToggle={() => toggle(area.id)}
+                  summary={collapsedSummary(area.trails)}
+                  disabled={isSearching}
+                />
+                <div id={panelId}>
+                  {!expanded ? null : area.trails.length === 0 ? (
+                    <p className="hint">Noch keine Trails in diesem Gebiet.</p>
+                  ) : (
+                    <ul className="trail-list">
+                      {area.trails.map((trail) => (
+                        <TrailRow
+                          key={trail.id}
+                          trail={trail}
+                          matchedAlias={result.matches.get(trail.id)?.matchedAlias}
+                        />
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </section>
+            )
+          })}
       </main>
     </div>
   )

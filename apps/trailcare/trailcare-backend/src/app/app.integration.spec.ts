@@ -290,7 +290,7 @@ describe('Trailcare API', () => {
       const unchanged = await api()
         .put(`/api/admin/trails/${trail.id}`)
         .set('Cookie', admin)
-        .send({ sweepGreenMaxDays: 0 })
+        .send({ sweepGreenMaxDays: 0, sweepYellowMaxDays: 1 })
         .expect(200)
       expect(unchanged.body.aliases).toEqual(['Wurzelpfad'])
     })
@@ -347,6 +347,28 @@ describe('Trailcare API', () => {
       await api().delete(`/api/care-entries/${entry.body.id}`).set('Cookie', admin).expect(204)
     })
 
+    it('lets the most recently entered sweep win over an earlier entry with a later date', async () => {
+      const areaId = await createArea('Korrektur')
+      const trail = await createTrail(areaId, 'Korrekturtrail')
+      const daysAgo = (days: number) => new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString()
+      const [today, yesterday] = [daysAgo(0), daysAgo(1)]
+
+      for (const performedAt of [today, yesterday]) {
+        await api()
+          .post(`/api/trails/${trail.id}/care-entries`)
+          .set('Cookie', user)
+          .send({ type: 'SWEPT', performedAt })
+          .expect(201)
+      }
+
+      const areas = await api().get('/api/trail-areas').set('Cookie', user).expect(200)
+      const listed = areas.body.find((area: { id: number }) => area.id === areaId).trails[0]
+      expect(listed).toMatchObject({ sweepStatus: 'GREEN', daysSinceSwept: 1 })
+
+      const entries = await api().get(`/api/trails/${trail.id}/care-entries`).set('Cookie', user).expect(200)
+      expect(entries.body.map((entry: { performedAt: string }) => entry.performedAt)).toEqual([today, yesterday])
+    })
+
     it('bases the traffic light on sweeps only and reports the latest entry', async () => {
       const areaId = await createArea('Ampel')
       const trail = await createTrail(areaId, 'Ampeltrail')
@@ -379,6 +401,69 @@ describe('Trailcare API', () => {
         .send({ sweepGreenMaxDays: 1, sweepYellowMaxDays: 2 })
         .expect(200)
       expect(updated.body.sweepStatus).toBe('RED')
+    })
+
+    it('changes the thresholds of all trails except those with their own', async () => {
+      const areaId = await createArea('Global')
+      const followsGlobal = await createTrail(areaId, 'Folgt global')
+      const custom = await createTrail(areaId, 'Eigene Werte')
+      await api()
+        .put(`/api/admin/trails/${custom.id}`)
+        .set('Cookie', admin)
+        .send({ sweepGreenMaxDays: 1, sweepYellowMaxDays: 2 })
+        .expect(200)
+      for (const trail of [followsGlobal, custom]) {
+        await api()
+          .post(`/api/trails/${trail.id}/care-entries`)
+          .set('Cookie', user)
+          .send({ type: 'SWEPT', performedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString() })
+          .expect(201)
+      }
+      const listTrails = async () => {
+        const areas = await api().get('/api/trail-areas').set('Cookie', user).expect(200)
+        return areas.body.find((area: { id: number }) => area.id === areaId).trails as Array<Record<string, unknown>>
+      }
+
+      // 2/4 by default: three days ago is yellow, the custom 1/2 makes it red
+      expect(await listTrails()).toMatchObject([
+        { name: 'Eigene Werte', sweepStatus: 'RED', hasCustomSweepThresholds: true },
+        { name: 'Folgt global', sweepStatus: 'YELLOW', hasCustomSweepThresholds: false },
+      ])
+
+      await api().get('/api/admin/sweep-settings').set('Cookie', user).expect(403)
+      await api().put('/api/admin/sweep-settings').set('Cookie', user).send({}).expect(403)
+      await api()
+        .put('/api/admin/sweep-settings')
+        .set('Cookie', admin)
+        .send({ sweepGreenMaxDays: 5, sweepYellowMaxDays: 4 })
+        .expect(400)
+      await api()
+        .put('/api/admin/sweep-settings')
+        .set('Cookie', admin)
+        .send({ sweepGreenMaxDays: 4, sweepYellowMaxDays: 8 })
+        .expect(200, { sweepGreenMaxDays: 4, sweepYellowMaxDays: 8 })
+      await api()
+        .get('/api/admin/sweep-settings')
+        .set('Cookie', admin)
+        .expect(200, { sweepGreenMaxDays: 4, sweepYellowMaxDays: 8 })
+
+      expect(await listTrails()).toMatchObject([
+        { name: 'Eigene Werte', sweepStatus: 'RED', sweepGreenMaxDays: 1 },
+        { name: 'Folgt global', sweepStatus: 'GREEN', sweepGreenMaxDays: 4, sweepYellowMaxDays: 8 },
+      ])
+
+      // Back to the global thresholds, but only as pair
+      await api()
+        .put(`/api/admin/trails/${followsGlobal.id}`)
+        .set('Cookie', admin)
+        .send({ sweepGreenMaxDays: 2 })
+        .expect(400)
+      const reset = await api()
+        .put(`/api/admin/trails/${custom.id}`)
+        .set('Cookie', admin)
+        .send({ sweepGreenMaxDays: null, sweepYellowMaxDays: null })
+        .expect(200)
+      expect(reset.body).toMatchObject({ sweepStatus: 'GREEN', hasCustomSweepThresholds: false })
     })
 
     it('admins can change type and date of an entry but not into the future', async () => {

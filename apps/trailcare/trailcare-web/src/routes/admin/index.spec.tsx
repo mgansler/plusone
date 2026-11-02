@@ -24,11 +24,12 @@ const PASSWORDS: Array<AccessPasswordDto> = [
   },
 ]
 
-function setup() {
+function setup(areas = AREAS) {
   fakeApi
     .on('GET', '/api/auth/session', ADMIN)
-    .on('GET', '/api/trail-areas', AREAS)
+    .on('GET', '/api/trail-areas', areas)
     .on('GET', '/api/admin/access-passwords', PASSWORDS)
+    .on('GET', '/api/admin/sweep-settings', { sweepGreenMaxDays: 2, sweepYellowMaxDays: 4 })
   return renderApp('/admin')
 }
 
@@ -41,6 +42,48 @@ function passwordItem(label: string) {
 }
 
 describe('admin page', () => {
+  describe('traffic light for all trails', () => {
+    it('shows and saves the global thresholds', async () => {
+      fakeApi.on('PUT', '/api/admin/sweep-settings', { sweepGreenMaxDays: 4, sweepYellowMaxDays: 8 })
+      setup()
+
+      const section = (await screen.findByRole('heading', { name: 'Ampel für alle Trails' })).closest(
+        'section',
+      ) as HTMLElement
+      const green = await within(section).findByLabelText<HTMLInputElement>('Grün bis Tag')
+      expect(green.value).toBe('2')
+      expect(within(section).getByLabelText<HTMLInputElement>('Gelb bis Tag').value).toBe('4')
+
+      fireEvent.change(green, { target: { value: '4' } })
+      fireEvent.change(within(section).getByLabelText('Gelb bis Tag'), { target: { value: '8' } })
+      fireEvent.click(within(section).getByRole('button', { name: 'Ampel speichern' }))
+
+      expect(await within(section).findByRole('button', { name: 'Gespeichert' })).toBeTruthy()
+      expect(fakeApi.bodies('PUT', '/api/admin/sweep-settings')).toEqual([
+        { sweepGreenMaxDays: 4, sweepYellowMaxDays: 8 },
+      ])
+    })
+
+    it('marks trails with their own thresholds', async () => {
+      setup([
+        {
+          ...AREAS[0],
+          trails: [
+            { ...AREAS[0].trails[0], hasCustomSweepThresholds: true, sweepGreenMaxDays: 1, sweepYellowMaxDays: 2 },
+            AREAS[0].trails[1],
+          ],
+        },
+      ])
+
+      const heslach = areaSection(await screen.findByRole('heading', { name: 'Heslach' }).then(() => 'Heslach'))
+      expect(
+        within(heslach)
+          .getAllByText(/eigene Ampel/)
+          .map((hint) => hint.textContent),
+      ).toEqual(['eigene Ampel 1/2 Tage'])
+    })
+  })
+
   describe('trail areas and trails', () => {
     it('lists areas with their trails and aliases', async () => {
       setup()

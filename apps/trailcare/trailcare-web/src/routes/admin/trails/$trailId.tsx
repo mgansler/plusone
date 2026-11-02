@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import type { TrailDto } from '@plusone/trailcare-api-client'
 import { useDeleteTrail, useGetTrail, useGetTrailAreas, useUpdateTrail } from '@plusone/trailcare-api-client'
 
+import { SweepThresholdFields } from '../../../admin/sweep-threshold-fields'
 import { useAdminMutationOptions } from '../../../admin/use-admin-mutation'
 import { AppHeader } from '../../../components/app-header'
 import { BackIcon } from '../../../components/icons'
@@ -37,7 +38,8 @@ function EditTrailForm({ trail }: { trail: TrailDto }) {
   const [name, setName] = useState(trail.name)
   const [trailAreaId, setTrailAreaId] = useState(trail.trailAreaId)
   const [aliases, setAliases] = useState(trail.aliases.join('\n'))
-  // Kept as text so the field can be emptied while typing
+  // Without own thresholds the trail follows the global ones, which are shown as read-only values
+  const [hasCustomThresholds, setHasCustomThresholds] = useState(trail.hasCustomSweepThresholds)
   const [green, setGreen] = useState(String(trail.sweepGreenMaxDays))
   const [yellow, setYellow] = useState(String(trail.sweepYellowMaxDays))
   const [saved, setSaved] = useState(false)
@@ -62,8 +64,8 @@ function EditTrailForm({ trail }: { trail: TrailDto }) {
           .split('\n')
           .map((alias) => alias.trim())
           .filter(Boolean),
-        sweepGreenMaxDays: Number(green),
-        sweepYellowMaxDays: Number(yellow),
+        sweepGreenMaxDays: hasCustomThresholds ? Number(green) : null,
+        sweepYellowMaxDays: hasCustomThresholds ? Number(yellow) : null,
       },
     })
   }
@@ -97,34 +99,29 @@ function EditTrailForm({ trail }: { trail: TrailDto }) {
         <textarea rows={3} value={aliases} onChange={(event) => setAliases(event.target.value)} />
       </label>
 
-      <fieldset className="field-row field-row-narrow">
+      <fieldset className="field-group">
         <legend>Ampel nach dem Fegen</legend>
-        <label className="field">
-          <span>Grün bis Tag</span>
+        <label className="checkbox">
           <input
-            type="number"
-            inputMode="numeric"
-            min={0}
-            max={365}
-            value={green}
-            onChange={(event) => setGreen(event.target.value)}
-            required
+            type="checkbox"
+            checked={hasCustomThresholds}
+            onChange={(event) => setHasCustomThresholds(event.target.checked)}
           />
+          <span>Eigene Werte für diesen Trail</span>
         </label>
-        <label className="field">
-          <span>Gelb bis Tag</span>
-          <input
-            type="number"
-            inputMode="numeric"
-            min={green || 0}
-            max={365}
-            value={yellow}
-            onChange={(event) => setYellow(event.target.value)}
-            required
-          />
-        </label>
+        <SweepThresholdFields
+          green={green}
+          yellow={yellow}
+          onGreenChange={setGreen}
+          onYellowChange={setYellow}
+          disabled={!hasCustomThresholds}
+        />
+        <p className="hint">
+          {hasCustomThresholds
+            ? 'Danach ist der Trail rot. Tag 0 ist der Tag, an dem gefegt wurde.'
+            : 'Dieser Trail folgt den Werten für alle Trails, die in der Verwaltung eingestellt werden.'}
+        </p>
       </fieldset>
-      <p className="hint">Danach ist der Trail rot. Tag 0 ist der Tag, an dem gefegt wurde.</p>
 
       <div className="button-row">
         <button className="button button-primary" type="submit" disabled={update.isPending}>

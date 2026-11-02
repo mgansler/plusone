@@ -46,7 +46,7 @@ describe('admin area', () => {
     cy.findByText('Ein Trailgebiet mit diesem Namen existiert bereits').should('be.visible')
   })
 
-  it('edits aliases and thresholds of a trail', () => {
+  it('edits aliases and own thresholds of a trail', () => {
     const area = unique('Solitude')
     cy.createTrailArea(area, [{ name: 'Jojo' }]).then(([jojo]) => {
       cy.createCareEntry(jojo.id, { type: 'SWEPT', performedAt: daysAgo(3) })
@@ -55,6 +55,7 @@ describe('admin area', () => {
 
       cy.location('pathname').should('eq', `/admin/trails/${jojo.id}`)
       cy.findByLabelText('Weitere Namen, einer pro Zeile').type('Yoyo{enter}JJ')
+      cy.findByLabelText('Eigene Werte für diesen Trail').check()
       cy.findByLabelText('Grün bis Tag').clear()
       cy.findByLabelText('Grün bis Tag').type('3')
       cy.findByLabelText('Gelb bis Tag').clear()

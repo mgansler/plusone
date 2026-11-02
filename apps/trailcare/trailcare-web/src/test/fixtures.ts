@@ -14,6 +14,7 @@ export function trail(overrides: Partial<TrailDto> = {}): TrailDto {
     aliases: [],
     sweepGreenMaxDays: 2,
     sweepYellowMaxDays: 4,
+    hasCustomSweepThresholds: false,
     sweepStatus: SweepStatus.GREEN,
     daysSinceSwept: 1,
     lastSweptAt: '2026-10-30T10:00:00.000Z',

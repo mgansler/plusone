@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { useGetTrailAreas } from '@plusone/trailcare-api-client'
 
 import { AccessPasswordAdmin } from '../../admin/access-password-admin'
+import { SweepSettingsAdmin } from '../../admin/sweep-settings-admin'
 import { CreateTrailAreaForm, TrailAreaAdmin } from '../../admin/trail-area-admin'
 import { AppHeader } from '../../components/app-header'
 import { BackIcon } from '../../components/icons'
@@ -59,6 +60,11 @@ function AdminPage() {
             )
           })}
           {!isSearching && <CreateTrailAreaForm />}
+        </section>
+
+        <section>
+          <h2 className="section-title">Ampel für alle Trails</h2>
+          <SweepSettingsAdmin />
         </section>
 
         <section>

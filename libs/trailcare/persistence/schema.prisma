@@ -22,10 +22,11 @@ model Trail {
   name    String
   aliases TrailAlias[]
 
-  /// Traffic light: green while days since last sweep <= this value
-  sweepGreenMaxDays  Int @default(2)
-  /// Traffic light: yellow while days since last sweep <= this value, red afterwards
-  sweepYellowMaxDays Int @default(4)
+  /// Traffic light override: green while days since last sweep <= this value. Always set together with
+  /// sweepYellowMaxDays, null for both means the trail uses the SweepSettings.
+  sweepGreenMaxDays  Int?
+  /// Traffic light override: yellow while days since last sweep <= this value, red afterwards
+  sweepYellowMaxDays Int?
 
   careEntries CareEntry[]
 
@@ -36,6 +37,18 @@ model Trail {
   updatedAt DateTime @updatedAt
 
   @@unique([trailAreaId, name])
+}
+
+/// Traffic light thresholds all trails use unless they have their own. A single row with id 1, defaults apply without it.
+model SweepSettings {
+  id Int @id @default(1)
+
+  /// Green while days since last sweep <= this value
+  sweepGreenMaxDays  Int @default(2)
+  /// Yellow while days since last sweep <= this value, red afterwards
+  sweepYellowMaxDays Int @default(4)
+
+  updatedAt DateTime @updatedAt
 }
 
 model TrailAlias {

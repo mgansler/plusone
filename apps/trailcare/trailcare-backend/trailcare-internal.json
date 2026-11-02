@@ -463,6 +463,70 @@
         ]
       }
     },
+    "/api/admin/sweep-settings": {
+      "get": {
+        "description": "Traffic light thresholds for all trails",
+        "operationId": "getSweepSettings",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SweepSettingsDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      },
+      "put": {
+        "description": "Changes the traffic light for all trails that have no thresholds of their own",
+        "operationId": "updateSweepSettings",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SweepSettingsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SweepSettingsDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
     "/api/admin/trail-areas": {
       "post": {
         "operationId": "createTrailArea",
@@ -1058,10 +1122,16 @@
             }
           },
           "sweepGreenMaxDays": {
-            "type": "number"
+            "type": "number",
+            "description": "Effective threshold, the trail’s own or the global one"
           },
           "sweepYellowMaxDays": {
-            "type": "number"
+            "type": "number",
+            "description": "Effective threshold, the trail’s own or the global one"
+          },
+          "hasCustomSweepThresholds": {
+            "type": "boolean",
+            "description": "The trail deviates from the global thresholds"
           },
           "sweepStatus": {
             "allOf": [
@@ -1090,6 +1160,7 @@
           "aliases",
           "sweepGreenMaxDays",
           "sweepYellowMaxDays",
+          "hasCustomSweepThresholds",
           "sweepStatus"
         ]
       },
@@ -1165,6 +1236,23 @@
           }
         }
       },
+      "SweepSettingsDto": {
+        "type": "object",
+        "properties": {
+          "sweepGreenMaxDays": {
+            "type": "number",
+            "description": "Global traffic light: green while days since last sweep <= this value"
+          },
+          "sweepYellowMaxDays": {
+            "type": "number",
+            "description": "Global traffic light: yellow while days since last sweep <= this value"
+          }
+        },
+        "required": [
+          "sweepGreenMaxDays",
+          "sweepYellowMaxDays"
+        ]
+      },
       "TrailAreaInputDto": {
         "type": "object",
         "properties": {
@@ -1205,11 +1293,13 @@
           },
           "sweepGreenMaxDays": {
             "type": "number",
-            "default": 2
+            "nullable": true,
+            "description": "Without it the global threshold applies"
           },
           "sweepYellowMaxDays": {
             "type": "number",
-            "default": 4
+            "nullable": true,
+            "description": "Without it the global threshold applies, only allowed together with the green one"
           }
         },
         "required": [
@@ -1234,10 +1324,14 @@
             }
           },
           "sweepGreenMaxDays": {
-            "type": "number"
+            "type": "number",
+            "nullable": true,
+            "description": "null resets to the global threshold"
           },
           "sweepYellowMaxDays": {
-            "type": "number"
+            "type": "number",
+            "nullable": true,
+            "description": "null resets to the global threshold, green and yellow are always set or reset together"
           }
         }
       },

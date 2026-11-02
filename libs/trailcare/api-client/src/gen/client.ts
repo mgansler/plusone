@@ -51,8 +51,12 @@ export interface TrailDto {
   trailAreaId: number
   trailAreaName: string
   aliases: string[]
+  /** Effective threshold, the trail’s own or the global one */
   sweepGreenMaxDays: number
+  /** Effective threshold, the trail’s own or the global one */
   sweepYellowMaxDays: number
+  /** The trail deviates from the global thresholds */
+  hasCustomSweepThresholds: boolean
   sweepStatus: SweepStatus
   lastSweptAt?: string
   /** Calendar days since the last sweep, 0 = today */
@@ -83,6 +87,13 @@ export interface UpdateCareEntryDto {
   performedBy?: string
 }
 
+export interface SweepSettingsDto {
+  /** Global traffic light: green while days since last sweep <= this value */
+  sweepGreenMaxDays: number
+  /** Global traffic light: yellow while days since last sweep <= this value */
+  sweepYellowMaxDays: number
+}
+
 export interface TrailAreaInputDto {
   name: string
 }
@@ -95,8 +106,16 @@ export interface TrailAreaResponseDto {
 export interface CreateTrailDto {
   name: string
   aliases?: string[]
-  sweepGreenMaxDays?: number
-  sweepYellowMaxDays?: number
+  /**
+   * Without it the global threshold applies
+   * @nullable
+   */
+  sweepGreenMaxDays?: number | null
+  /**
+   * Without it the global threshold applies, only allowed together with the green one
+   * @nullable
+   */
+  sweepYellowMaxDays?: number | null
 }
 
 export interface UpdateTrailDto {
@@ -105,8 +124,16 @@ export interface UpdateTrailDto {
   trailAreaId?: number
   /** Replaces all aliases */
   aliases?: string[]
-  sweepGreenMaxDays?: number
-  sweepYellowMaxDays?: number
+  /**
+   * null resets to the global threshold
+   * @nullable
+   */
+  sweepGreenMaxDays?: number | null
+  /**
+   * null resets to the global threshold, green and yellow are always set or reset together
+   * @nullable
+   */
+  sweepYellowMaxDays?: number | null
 }
 
 export interface AccessPasswordDto {
@@ -778,6 +805,156 @@ export const useDeleteCareEntry = <TError = unknown, TContext = unknown>(
   TContext
 > => {
   return useMutation(getDeleteCareEntryMutationOptions(options), queryClient)
+}
+
+/**
+ * Traffic light thresholds for all trails
+ */
+export const getSweepSettings = (signal?: AbortSignal) => {
+  return customAxiosInstance<SweepSettingsDto>({ url: `/api/admin/sweep-settings`, method: 'GET', signal })
+}
+
+export const getGetSweepSettingsQueryKey = () => {
+  return [`/api/admin/sweep-settings`] as const
+}
+
+export const getGetSweepSettingsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getSweepSettings>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSweepSettings>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetSweepSettingsQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getSweepSettings>>> = ({ signal }) => getSweepSettings(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getSweepSettings>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSweepSettingsQueryResult = NonNullable<Awaited<ReturnType<typeof getSweepSettings>>>
+export type GetSweepSettingsQueryError = unknown
+
+export function useGetSweepSettings<TData = Awaited<ReturnType<typeof getSweepSettings>>, TError = unknown>(
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSweepSettings>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSweepSettings>>,
+          TError,
+          Awaited<ReturnType<typeof getSweepSettings>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSweepSettings<TData = Awaited<ReturnType<typeof getSweepSettings>>, TError = unknown>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSweepSettings>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSweepSettings>>,
+          TError,
+          Awaited<ReturnType<typeof getSweepSettings>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSweepSettings<TData = Awaited<ReturnType<typeof getSweepSettings>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSweepSettings>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSweepSettings<TData = Awaited<ReturnType<typeof getSweepSettings>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSweepSettings>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetSweepSettingsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
+/**
+ * Changes the traffic light for all trails that have no thresholds of their own
+ */
+export const updateSweepSettings = (sweepSettingsDto: SweepSettingsDto, signal?: AbortSignal) => {
+  return customAxiosInstance<SweepSettingsDto>({
+    url: `/api/admin/sweep-settings`,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    data: sweepSettingsDto,
+    signal,
+  })
+}
+
+export const getUpdateSweepSettingsMutationKey = () => ['updateSweepSettings'] as const
+
+export const getUpdateSweepSettingsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateSweepSettings>>,
+    TError,
+    UpdateSweepSettingsMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateSweepSettings>>,
+  TError,
+  UpdateSweepSettingsMutationVariables,
+  TContext
+> => {
+  const mutationKey = getUpdateSweepSettingsMutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateSweepSettings>>,
+    UpdateSweepSettingsMutationVariables
+  > = (props) => {
+    const { data } = props ?? {}
+
+    return updateSweepSettings(data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type UpdateSweepSettingsMutationResult = NonNullable<Awaited<ReturnType<typeof updateSweepSettings>>>
+export type UpdateSweepSettingsMutationBody = SweepSettingsDto
+export type UpdateSweepSettingsMutationError = unknown
+export type UpdateSweepSettingsMutationVariables = { data: SweepSettingsDto }
+
+export const useUpdateSweepSettings = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof updateSweepSettings>>,
+      TError,
+      UpdateSweepSettingsMutationVariables,
+      TContext
+    >
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof updateSweepSettings>>,
+  TError,
+  UpdateSweepSettingsMutationVariables,
+  TContext
+> => {
+  return useMutation(getUpdateSweepSettingsMutationOptions(options), queryClient)
 }
 
 export const createTrailArea = (trailAreaInputDto: TrailAreaInputDto, signal?: AbortSignal) => {

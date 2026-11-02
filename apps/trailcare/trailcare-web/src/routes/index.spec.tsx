@@ -38,6 +38,39 @@ describe('trail list', () => {
     expect(within(row('Klabuster')).queryByText(/Heute:/)).toBeNull()
   })
 
+  it('shows the comment of the last entry in the line that is there anyway', async () => {
+    const [heslach, solitude] = AREAS
+    fakeApi.on('GET', '/api/trail-areas', [
+      {
+        ...heslach,
+        trails: [
+          // After a sweep the comment follows the sweep label
+          { ...heslach.trails[0], lastCareEntry: careEntry({ comment: 'Laub auf der Strecke' }) },
+          ...heslach.trails.slice(1),
+        ],
+      },
+      {
+        ...solitude,
+        trails: [
+          // Otherwise it follows the type of the last work
+          {
+            ...solitude.trails[0],
+            lastCareEntry: careEntry({ ...solitude.trails[0].lastCareEntry, comment: 'Quer bei der dritten Kehre' }),
+          },
+        ],
+      },
+    ])
+    renderApp('/')
+    await screen.findByText('Klabuster')
+
+    expect(within(row('Klabuster')).getByText('· Laub auf der Strecke')).toBeTruthy()
+    expect(within(row('Klabuster')).getByText('Gestern gefegt')).toBeTruthy()
+    expect(within(row('Jojo')).getByText('Heute: Baum im Trail')).toBeTruthy()
+    expect(within(row('Jojo')).getByText('· Quer bei der dritten Kehre')).toBeTruthy()
+    expect(within(row('Jojo')).getByText('Vor 9 Tagen gefegt').textContent).toBe('Vor 9 Tagen gefegt')
+    expect(within(row('Saubuckel')).queryByText(/·/)).toBeNull()
+  })
+
   it('searches names and aliases', async () => {
     renderApp('/')
     const search = await screen.findByRole('searchbox', { name: 'Trail nach Name suchen' })
@@ -74,6 +107,41 @@ describe('trail list', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Heslach/ }))
     expect(screen.getByText('Klabuster')).toBeTruthy()
+  })
+
+  it('reorders the areas per device and remembers it', async () => {
+    const headings = () => screen.getAllByRole('heading', { level: 2 }).map((heading) => heading.textContent)
+    const { unmount } = renderApp('/')
+    await screen.findByRole('heading', { name: 'Heslach' })
+    expect(headings()).toEqual(['Heslach', 'Solitude'])
+
+    fireEvent.click(screen.getByRole('button', { name: 'Gebiete sortieren' }))
+    // Only the areas are listed while sorting, the ends cannot be moved further
+    expect(screen.queryByText('Klabuster')).toBeNull()
+    expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Heslach nach oben' }).disabled).toBe(true)
+    expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Solitude nach unten' }).disabled).toBe(true)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Solitude nach oben' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Fertig' }))
+    expect(headings()).toEqual(['Solitude', 'Heslach'])
+
+    unmount()
+    renderApp('/')
+    await screen.findByRole('heading', { name: 'Heslach' })
+    expect(headings()).toEqual(['Solitude', 'Heslach'])
+
+    fireEvent.click(screen.getByRole('button', { name: 'Gebiete sortieren' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Alphabetisch' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Fertig' }))
+    expect(headings()).toEqual(['Heslach', 'Solitude'])
+    expect(localStorage.getItem('trailcare-area-order')).toBeNull()
+  })
+
+  it('does not offer sorting while searching', async () => {
+    renderApp('/')
+    await screen.findByRole('heading', { name: 'Heslach' })
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'klab' } })
+    expect(screen.queryByRole('button', { name: 'Gebiete sortieren' })).toBeNull()
   })
 
   it('shows search results in collapsed areas', async () => {

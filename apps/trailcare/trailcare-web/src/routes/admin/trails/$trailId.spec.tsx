@@ -6,10 +6,10 @@ import { renderApp } from '../../../test/render-app'
 
 const KLABUSTER = trail({ aliases: ['Klabi', 'KB'] })
 
-function setup() {
+function setup(loaded = KLABUSTER) {
   fakeApi
     .on('GET', '/api/auth/session', ADMIN)
-    .on('GET', '/api/trails/1', KLABUSTER)
+    .on('GET', '/api/trails/1', loaded)
     .on('GET', '/api/trail-areas', AREAS)
     .on('GET', '/api/admin/access-passwords', [])
   return renderApp('/admin/trails/1')
@@ -21,13 +21,16 @@ describe('edit trail page', () => {
 
     expect((await screen.findByLabelText<HTMLInputElement>('Name')).value).toBe('Klabuster')
     expect(screen.getByLabelText<HTMLTextAreaElement>('Weitere Namen, einer pro Zeile').value).toBe('Klabi\nKB')
+    // Without own thresholds the global ones are shown but can't be edited
+    expect(screen.getByLabelText<HTMLInputElement>('Eigene Werte für diesen Trail').checked).toBe(false)
     expect(screen.getByLabelText<HTMLInputElement>('Grün bis Tag').value).toBe('2')
+    expect(screen.getByLabelText<HTMLInputElement>('Grün bis Tag').disabled).toBe(true)
     expect(screen.getByLabelText<HTMLInputElement>('Gelb bis Tag').value).toBe('4')
     await waitFor(() => expect(screen.getByLabelText<HTMLSelectElement>('Trailgebiet').value).toBe('10'))
     expect(screen.getAllByRole('option').map((option) => option.textContent)).toEqual(['Heslach', 'Solitude'])
   })
 
-  it('saves name, area, aliases and thresholds', async () => {
+  it('saves name, area, aliases and own thresholds', async () => {
     fakeApi.on('PUT', '/api/admin/trails/1', KLABUSTER)
     setup()
 
@@ -37,6 +40,7 @@ describe('edit trail page', () => {
     fireEvent.change(screen.getByLabelText('Weitere Namen, einer pro Zeile'), {
       target: { value: ' Klabi \n\nKlabuster\n' },
     })
+    fireEvent.click(screen.getByLabelText('Eigene Werte für diesen Trail'))
     fireEvent.change(screen.getByLabelText('Grün bis Tag'), { target: { value: '3' } })
     fireEvent.change(screen.getByLabelText('Gelb bis Tag'), { target: { value: '7' } })
     fireEvent.click(screen.getByRole('button', { name: 'Speichern' }))
@@ -53,8 +57,26 @@ describe('edit trail page', () => {
     ])
   })
 
+  it('resets to the global thresholds when the own ones are switched off', async () => {
+    fakeApi.on('PUT', '/api/admin/trails/1', KLABUSTER)
+    setup(trail({ hasCustomSweepThresholds: true, sweepGreenMaxDays: 1, sweepYellowMaxDays: 2 }))
+
+    const own = await screen.findByLabelText<HTMLInputElement>('Eigene Werte für diesen Trail')
+    expect(own.checked).toBe(true)
+    expect(screen.getByLabelText<HTMLInputElement>('Grün bis Tag').value).toBe('1')
+
+    fireEvent.click(own)
+    fireEvent.click(screen.getByRole('button', { name: 'Speichern' }))
+
+    expect(await screen.findByRole('button', { name: 'Gespeichert' })).toBeTruthy()
+    expect(fakeApi.bodies('PUT', '/api/admin/trails/1')).toEqual([
+      expect.objectContaining({ sweepGreenMaxDays: null, sweepYellowMaxDays: null }),
+    ])
+  })
+
   it('lets the threshold fields be emptied while typing', async () => {
     setup()
+    fireEvent.click(await screen.findByLabelText('Eigene Werte für diesen Trail'))
     const green = await screen.findByLabelText<HTMLInputElement>('Grün bis Tag')
     fireEvent.change(green, { target: { value: '' } })
     expect(green.value).toBe('')
@@ -64,6 +86,7 @@ describe('edit trail page', () => {
 
   it('does not allow yellow below green', async () => {
     setup()
+    fireEvent.click(await screen.findByLabelText('Eigene Werte für diesen Trail'))
     fireEvent.change(await screen.findByLabelText('Grün bis Tag'), { target: { value: '5' } })
     expect(screen.getByLabelText<HTMLInputElement>('Gelb bis Tag').min).toBe('5')
   })

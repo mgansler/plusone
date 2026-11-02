@@ -12,6 +12,9 @@ export type SweepThresholds = {
   sweepYellowMaxDays: number
 }
 
+/** Used until an admin saves their own thresholds */
+export const DEFAULT_SWEEP_THRESHOLDS: SweepThresholds = { sweepGreenMaxDays: 2, sweepYellowMaxDays: 4 }
+
 const dayFormat = new Intl.DateTimeFormat('en-CA', {
   timeZone: TIME_ZONE,
   year: 'numeric',

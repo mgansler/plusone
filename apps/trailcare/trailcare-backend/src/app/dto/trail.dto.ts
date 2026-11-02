@@ -26,11 +26,14 @@ export class TrailDto {
   @ApiProperty({ type: [String] })
   aliases: Array<string>
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Effective threshold, the trail’s own or the global one' })
   sweepGreenMaxDays: number
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Effective threshold, the trail’s own or the global one' })
   sweepYellowMaxDays: number
+
+  @ApiProperty({ description: 'The trail deviates from the global thresholds' })
+  hasCustomSweepThresholds: boolean
 
   @ApiProperty({ enum: SweepStatus, enumName: 'SweepStatus' })
   sweepStatus: SweepStatus
@@ -91,19 +94,23 @@ export class CreateTrailDto {
   @MaxLength(100, { each: true })
   aliases?: Array<string>
 
-  @ApiPropertyOptional({ default: 2 })
+  @ApiPropertyOptional({ type: Number, nullable: true, description: 'Without it the global threshold applies' })
   @IsOptional()
   @IsInt()
   @Min(0)
   @Max(365)
-  sweepGreenMaxDays?: number
+  sweepGreenMaxDays?: number | null
 
-  @ApiPropertyOptional({ default: 4 })
+  @ApiPropertyOptional({
+    type: Number,
+    nullable: true,
+    description: 'Without it the global threshold applies, only allowed together with the green one',
+  })
   @IsOptional()
   @IsInt()
   @Min(0)
   @Max(365)
-  sweepYellowMaxDays?: number
+  sweepYellowMaxDays?: number | null
 }
 
 export class UpdateTrailDto {
@@ -130,17 +137,21 @@ export class UpdateTrailDto {
   @MaxLength(100, { each: true })
   aliases?: Array<string>
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: Number, nullable: true, description: 'null resets to the global threshold' })
   @IsOptional()
   @IsInt()
   @Min(0)
   @Max(365)
-  sweepGreenMaxDays?: number
+  sweepGreenMaxDays?: number | null
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({
+    type: Number,
+    nullable: true,
+    description: 'null resets to the global threshold, green and yellow are always set or reset together',
+  })
   @IsOptional()
   @IsInt()
   @Min(0)
   @Max(365)
-  sweepYellowMaxDays?: number
+  sweepYellowMaxDays?: number | null
 }
