@@ -229,13 +229,9 @@ export type GetSunriseSunsetForTrailAreaParams = {
 }
 
 export type GetTrailAreasParams = {
-  /**
-   * Filter for country
-   */
+  /** Filter for country */
   country?: string
-  /**
-   * Filter for state
-   */
+  /** Filter for state */
   state?: string
 }
 

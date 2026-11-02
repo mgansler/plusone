@@ -168,47 +168,29 @@ export interface TagInputDto {
 }
 
 export type MarkArticlesReadParams = {
-  /**
-   * The string that the article should match.
-   */
+  /** The string that the article should match. */
   s?: string
-  /**
-   * The id of the feed where all articles should be marked as read.
-   */
+  /** The id of the feed where all articles should be marked as read. */
   f?: string
 }
 
 export type FindArticlesParams = {
-  /**
-   * The string that the article should match.
-   */
+  /** The string that the article should match. */
   s?: string
-  /**
-   * Should read articles be included.
-   */
+  /** Should read articles be included. */
   r?: boolean
-  /**
-   * Should articles appear in chronically ascending or descending order.
-   */
+  /** Should articles appear in chronically ascending or descending order. */
   starred?: boolean
-  /**
-   * Should articles appear in chronically ascending or descending order.
-   */
+  /** Should articles appear in chronically ascending or descending order. */
   sort?: Sort
-  /**
-   * The id of the feed this query should be limited to.
-   */
+  /** The id of the feed this query should be limited to. */
   f?: string
-  /**
-   * Cursor of the last article for pagination.
-   */
+  /** Cursor of the last article for pagination. */
   cursor?: number
 }
 
 export type DiscoverFeedParams = {
-  /**
-   * URL of the website where a feed should be discovered.
-   */
+  /** URL of the website where a feed should be discovered. */
   url: string
 }
 

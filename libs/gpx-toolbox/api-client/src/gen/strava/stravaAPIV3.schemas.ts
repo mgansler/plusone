@@ -16,20 +16,14 @@ export type PageParameter = number
 export type PerPageParameter = number
 
 export type UpdateLoggedInAthleteParams = {
-  /**
-   * The weight of the athlete in kilograms.
-   */
+  /** The weight of the athlete in kilograms. */
   weight: number
 }
 
 export type GetLoggedInAthleteStarredSegmentsParams = {
-  /**
-   * Page number. Defaults to 1.
-   */
+  /** Page number. Defaults to 1. */
   page?: PageParameter
-  /**
-   * Number of items per page. Defaults to 30.
-   */
+  /** Number of items per page. Defaults to 30. */
   per_page?: PerPageParameter
 }
 
@@ -117,21 +111,13 @@ export type StarSegmentBody = {
 }
 
 export type GetEffortsBySegmentIdParams = {
-  /**
-   * The identifier of the segment.
-   */
+  /** The identifier of the segment. */
   segment_id: number
-  /**
-   * ISO 8601 formatted date time.
-   */
+  /** ISO 8601 formatted date time. */
   start_date_local?: string
-  /**
-   * ISO 8601 formatted date time.
-   */
+  /** ISO 8601 formatted date time. */
   end_date_local?: string
-  /**
-   * Number of items per page. Defaults to 30.
-   */
+  /** Number of items per page. Defaults to 30. */
   per_page?: PerPageParameter
 }
 
@@ -265,9 +251,7 @@ export type ExploreSegmentsParams = {
    * @maxItems 4
    */
   bounds: number[]
-  /**
-   * Desired activity type.
-   */
+  /** Desired activity type. */
   activity_type?: ExploreSegmentsActivityType
   /**
    * The minimum climbing category.
@@ -314,9 +298,7 @@ export type CreateActivityBody = {
 }
 
 export type GetActivityByIdParams = {
-  /**
-   * To include all segments efforts.
-   */
+  /** To include all segments efforts. */
   include_all_efforts?: boolean
 }
 
@@ -463,21 +445,13 @@ export type UpdateActivityByIdBody = {
 }
 
 export type GetLoggedInAthleteActivitiesParams = {
-  /**
-   * An epoch timestamp to use for filtering activities that have taken place before a certain time.
-   */
+  /** An epoch timestamp to use for filtering activities that have taken place before a certain time. */
   before?: number
-  /**
-   * An epoch timestamp to use for filtering activities that have taken place after a certain time.
-   */
+  /** An epoch timestamp to use for filtering activities that have taken place after a certain time. */
   after?: number
-  /**
-   * Page number. Defaults to 1.
-   */
+  /** Page number. Defaults to 1. */
   page?: PageParameter
-  /**
-   * Number of items per page. Defaults to 30.
-   */
+  /** Number of items per page. Defaults to 30. */
   per_page?: PerPageParameter
 }
 
@@ -764,21 +738,13 @@ export type GetZonesByActivityId200Item = {
 }
 
 export type GetCommentsByActivityIdParams = {
-  /**
-   * Deprecated. Prefer to use after_cursor.
-   */
+  /** Deprecated. Prefer to use after_cursor. */
   page?: number
-  /**
-   * Deprecated. Prefer to use page_size.
-   */
+  /** Deprecated. Prefer to use page_size. */
   per_page?: number
-  /**
-   * Number of items per page. Defaults to 30.
-   */
+  /** Number of items per page. Defaults to 30. */
   page_size?: number
-  /**
-   * Cursor of the last item in the previous page of results, used to request the subsequent page of results.  When omitted, the first page of results is fetched.
-   */
+  /** Cursor of the last item in the previous page of results, used to request the subsequent page of results.  When omitted, the first page of results is fetched. */
   after_cursor?: string
 }
 
@@ -827,13 +793,9 @@ export type GetCommentsByActivityId200Item = {
 }
 
 export type GetKudoersByActivityIdParams = {
-  /**
-   * Page number. Defaults to 1.
-   */
+  /** Page number. Defaults to 1. */
   page?: PageParameter
-  /**
-   * Number of items per page. Defaults to 30.
-   */
+  /** Number of items per page. Defaults to 30. */
   per_page?: PerPageParameter
 }
 
@@ -870,13 +832,9 @@ export type GetKudoersByActivityId200Item = {
 }
 
 export type GetLoggedInAthleteClubsParams = {
-  /**
-   * Page number. Defaults to 1.
-   */
+  /** Page number. Defaults to 1. */
   page?: PageParameter
-  /**
-   * Number of items per page. Defaults to 30.
-   */
+  /** Number of items per page. Defaults to 30. */
   per_page?: PerPageParameter
 }
 
@@ -955,13 +913,9 @@ export type GetLoggedInAthleteClubs200Item = {
 }
 
 export type GetRoutesByAthleteIdParams = {
-  /**
-   * Page number. Defaults to 1.
-   */
+  /** Page number. Defaults to 1. */
   page?: PageParameter
-  /**
-   * Number of items per page. Defaults to 30.
-   */
+  /** Number of items per page. Defaults to 30. */
   per_page?: PerPageParameter
 }
 
@@ -1189,9 +1143,7 @@ export type GetActivityStreamsParams = {
    * @minItems 1
    */
   keys: GetActivityStreamsKeysItem[]
-  /**
-   * Must be true.
-   */
+  /** Must be true. */
   key_by_type?: boolean
 }
 
@@ -1217,9 +1169,7 @@ export type GetSegmentEffortStreamsParams = {
    * @minItems 1
    */
   keys: GetSegmentEffortStreamsKeysItem[]
-  /**
-   * Must be true.
-   */
+  /** Must be true. */
   key_by_type?: boolean
 }
 
@@ -1246,9 +1196,7 @@ export type GetSegmentStreamsParams = {
    * @minItems 1
    */
   keys: GetSegmentStreamsKeysItem[]
-  /**
-   * Must be true.
-   */
+  /** Must be true. */
   key_by_type?: boolean
 }
 

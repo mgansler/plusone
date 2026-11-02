@@ -429,45 +429,25 @@ export type GetHealthStatus503 = {
 }
 
 export type ListRoutesParams = {
-  /**
-   * Filter by status
-   */
+  /** Filter by status */
   status?: string
-  /**
-   * Filter by source
-   */
+  /** Filter by source */
   source?: string
-  /**
-   * Sort field
-   */
+  /** Sort field */
   sortBy?: ListRoutesSortBy
-  /**
-   * Sort order
-   */
+  /** Sort order */
   order?: string
-  /**
-   * Minimum distance in meters
-   */
+  /** Minimum distance in meters */
   minDistance?: number
-  /**
-   * Maximum distance in meters
-   */
+  /** Maximum distance in meters */
   maxDistance?: number
-  /**
-   * Minimum elevation gain in meters
-   */
+  /** Minimum elevation gain in meters */
   minElevation?: number
-  /**
-   * Maximum elevation gain in meters
-   */
+  /** Maximum elevation gain in meters */
   maxElevation?: number
-  /**
-   * Page number
-   */
+  /** Page number */
   page?: number
-  /**
-   * Page size
-   */
+  /** Page size */
   limit?: number
 }
 
@@ -479,48 +459,32 @@ export enum ListRoutesSortBy {
   updatedAt = 'updatedAt',
 }
 export type ListStravaActivitiesParams = {
-  /**
-   * Page number (default: 1)
-   */
+  /** Page number (default: 1) */
   page?: number
-  /**
-   * Items per page (default: 50)
-   */
+  /** Items per page (default: 50) */
   per_page?: number
-  /**
-   * Only activities after this time (ISO 8601)
-   */
+  /** Only activities after this time (ISO 8601) */
   after?: string
-  /**
-   * Only activities before this time (ISO 8601)
-   */
+  /** Only activities before this time (ISO 8601) */
   before?: string
 }
 
 export type FindNearbyRoutesParams = {
   lat: number
   lng: number
-  /**
-   * Radius in kilometers
-   */
+  /** Radius in kilometers */
   radius: number
 }
 
 export type StravaCallbackParams = {
-  /**
-   * OAuth state parameter
-   */
+  /** OAuth state parameter */
   state?: unknown
-  /**
-   * Strava authorization code
-   */
+  /** Strava authorization code */
   code?: unknown
 }
 
 export type ImportStravaRoutesParams = {
-  /**
-   * Force re-import
-   */
+  /** Force re-import */
   force?: string
 }
 
@@ -534,45 +498,25 @@ export type ImportAllStravaActivitiesParams = {
 }
 
 export type ListRouteActivitiesParams = {
-  /**
-   * Filter by date range start
-   */
+  /** Filter by date range start */
   dateFrom?: string
-  /**
-   * Filter by date range end
-   */
+  /** Filter by date range end */
   dateTo?: string
-  /**
-   * Minimum route distance in meters
-   */
+  /** Minimum route distance in meters */
   minDistance?: number
-  /**
-   * Maximum route distance in meters
-   */
+  /** Maximum route distance in meters */
   maxDistance?: number
-  /**
-   * Minimum route elevation gain in meters
-   */
+  /** Minimum route elevation gain in meters */
   minElevation?: number
-  /**
-   * Maximum route elevation gain in meters
-   */
+  /** Maximum route elevation gain in meters */
   maxElevation?: number
-  /**
-   * Sort field
-   */
+  /** Sort field */
   sortBy?: ListRouteActivitiesSortBy
-  /**
-   * Sort order
-   */
+  /** Sort order */
   order?: string
-  /**
-   * Page number
-   */
+  /** Page number */
   page?: number
-  /**
-   * Page size
-   */
+  /** Page size */
   limit?: number
 }
 
@@ -585,52 +529,30 @@ export enum ListRouteActivitiesSortBy {
   elevationGain = 'elevationGain',
 }
 export type GetRouteActivityWeatherParams = {
-  /**
-   * Date to fetch weather for (ISO 8601)
-   */
+  /** Date to fetch weather for (ISO 8601) */
   date?: string
 }
 
 export type ListAllActivitiesParams = {
-  /**
-   * Filter by date range start
-   */
+  /** Filter by date range start */
   dateFrom?: string
-  /**
-   * Filter by date range end
-   */
+  /** Filter by date range end */
   dateTo?: string
-  /**
-   * Minimum route distance in meters
-   */
+  /** Minimum route distance in meters */
   minDistance?: number
-  /**
-   * Maximum route distance in meters
-   */
+  /** Maximum route distance in meters */
   maxDistance?: number
-  /**
-   * Minimum route elevation gain in meters
-   */
+  /** Minimum route elevation gain in meters */
   minElevation?: number
-  /**
-   * Maximum route elevation gain in meters
-   */
+  /** Maximum route elevation gain in meters */
   maxElevation?: number
-  /**
-   * Sort field
-   */
+  /** Sort field */
   sortBy?: ListAllActivitiesSortBy
-  /**
-   * Sort order
-   */
+  /** Sort order */
   order?: string
-  /**
-   * Page number
-   */
+  /** Page number */
   page?: number
-  /**
-   * Page size
-   */
+  /** Page size */
   limit?: number
 }
 
@@ -643,9 +565,7 @@ export enum ListAllActivitiesSortBy {
   elevationGain = 'elevationGain',
 }
 export type DebugStravaRequestParams = {
-  /**
-   * Strava API endpoint (e.g. /athlete, /athletes/me/stats, /routes)
-   */
+  /** Strava API endpoint (e.g. /athlete, /athletes/me/stats, /routes) */
   endpoint: string
 }
 
