@@ -4,7 +4,7 @@ import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 import { cumulativeDistances, indexAtDistance, niceStep } from '../utils/profile'
 
-export type ProfileTrack = { id: string; name: string; color: string; points: Array<TrackPoint> }
+export type ProfileTrack = { id: string; name: string; color: string; dashArray?: string; points: Array<TrackPoint> }
 
 export type ProfileHover = Array<{ id: string; point: TrackPoint }>
 

@@ -12,7 +12,7 @@ import { SidebarDivider, SidebarLayout } from '../components/SidebarLayout'
 import { type CompareItem, useCompareList } from '../hooks/useCompareList'
 import { formatDifference } from '../utils/format'
 import { cumulativeDistances } from '../utils/profile'
-import { routeColor } from '../utils/routeColors'
+import { routeColor, routeStyle } from '../utils/routeColors'
 
 export const Route = createFileRoute('/compare')({
   component: ComparePage,
@@ -61,7 +61,17 @@ function ComparePage() {
     () =>
       items.flatMap((item, index) => {
         const parsed = parsedTracks[index]
-        return parsed ? [{ id: item.id, name: item.name, color: routeColor(index), points: parsed.points }] : []
+        return parsed
+          ? [
+              {
+                id: item.id,
+                name: item.name,
+                color: routeColor(index),
+                dashArray: routeStyle(index).dashArray,
+                points: parsed.points,
+              },
+            ]
+          : []
       }),
     [items, parsedTracks],
   )
@@ -284,7 +294,7 @@ function CompareMap({
     for (const track of tracks) {
       const line = L.polyline(
         track.points.map((p) => [p.latitude, p.longitude] as [number, number]),
-        { color: track.color, opacity: 0.9, weight: track.id === highlightedIdRef.current ? 7 : 4 },
+        { ...track, opacity: 0.9, weight: track.id === highlightedIdRef.current ? 7 : 4 },
       )
         .bindTooltip(track.name, { sticky: true })
         .on('mouseover', () => onHighlight(track.id))

@@ -12,7 +12,7 @@ import { COORDINATE_DECIMALS, CoordinateInput } from '../components/CoordinateIn
 import { defaultCenter, Map } from '../components/Map'
 import { formatElevation } from '../utils/format'
 import { geocodePlace, type GeocodeResult } from '../utils/geocode'
-import { routeColor } from '../utils/routeColors'
+import { routeColor, routeStyle } from '../utils/routeColors'
 import { routeStatusColor, routeStatusLabel } from '../utils/routeStatus'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -241,7 +241,7 @@ function NearbySearch() {
       const track = L.polyline(
         points.map((p) => [p.lat, p.lng] as [number, number]),
         {
-          color: routeColor(index),
+          ...routeStyle(index),
           ...trackStyle(r.id === highlighted, highlighted != null),
           // Keep track clicks from moving the search center (map click handler)
           bubblingMouseEvents: false,
