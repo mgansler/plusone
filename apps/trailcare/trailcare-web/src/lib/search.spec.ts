@@ -13,6 +13,7 @@ function trail(id: number, name: string, aliases: Array<string> = []): TrailDto 
     sweepGreenMaxDays: 2,
     sweepYellowMaxDays: 4,
     sweepStatus: SweepStatus.RED,
+    hasCustomSweepThresholds: false,
   }
 }
 

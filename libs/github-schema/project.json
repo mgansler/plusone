@@ -20,6 +20,13 @@
           "target": "download"
         }
       ]
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --noEmit -p libs/github-schema/tsconfig.lib.json"],
+        "parallel": false
+      }
     }
   },
   "tags": []

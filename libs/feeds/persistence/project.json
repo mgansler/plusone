@@ -57,6 +57,13 @@
           "fix": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --noEmit -p libs/feeds/persistence/tsconfig.lib.json"],
+        "parallel": false
+      }
     }
   }
 }

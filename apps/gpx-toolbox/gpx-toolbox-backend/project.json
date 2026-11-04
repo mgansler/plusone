@@ -109,6 +109,22 @@
           "watch": true
         }
       }
+    },
+    "typecheck": {
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        }
+      ],
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p apps/gpx-toolbox/gpx-toolbox-backend/tsconfig.app.json",
+          "tsc --noEmit -p apps/gpx-toolbox/gpx-toolbox-backend/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

@@ -31,6 +31,16 @@
           "coverage": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p libs/nestjs-services/tsconfig.lib.json",
+          "tsc --noEmit -p libs/nestjs-services/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

@@ -49,6 +49,13 @@
           "fix": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --noEmit -p apps/feeds/feeds-e2e/tsconfig.json"],
+        "parallel": false
+      }
     }
   }
 }

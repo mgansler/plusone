@@ -13,7 +13,7 @@ describe('fritzboxClient', () => {
   let fritzboxClient: FritzboxClient
 
   beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
+    server.listen({ onUnhandledFrame: 'error' })
   })
 
   afterAll(() => {

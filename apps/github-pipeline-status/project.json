@@ -59,6 +59,16 @@
       "options": {
         "port": 4103
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p apps/github-pipeline-status/tsconfig.app.json",
+          "tsc --noEmit -p apps/github-pipeline-status/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

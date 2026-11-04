@@ -44,7 +44,7 @@ describe('Services', () => {
   let tr064: Tr064
 
   beforeAll(async () => {
-    server.listen({ onUnhandledRequest: 'error' })
+    server.listen({ onUnhandledFrame: 'error' })
     tr064 = await Tr064.init({ host: 'fritz-test.box', username: 'admin', password: 'gurkensalat' })
   })
 

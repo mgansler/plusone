@@ -18,7 +18,7 @@ describe('tr064', () => {
   let tr064: Tr064
 
   beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
+    server.listen({ onUnhandledFrame: 'error' })
   })
 
   afterAll(() => {

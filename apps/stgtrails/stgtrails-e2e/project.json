@@ -56,6 +56,13 @@
           "fix": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --noEmit -p apps/stgtrails/stgtrails-e2e/tsconfig.json"],
+        "parallel": false
+      }
     }
   }
 }

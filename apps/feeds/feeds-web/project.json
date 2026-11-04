@@ -63,6 +63,16 @@
         "development": {},
         "production": {}
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p apps/feeds/feeds-web/tsconfig.app.json",
+          "tsc --noEmit -p apps/feeds/feeds-web/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

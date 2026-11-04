@@ -106,6 +106,22 @@
           "watch": true
         }
       }
+    },
+    "typecheck": {
+      "dependsOn": [
+        {
+          "target": "prisma-generate",
+          "dependencies": true
+        }
+      ],
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p apps/feeds/feeds-backend/tsconfig.app.json",
+          "tsc --noEmit -p apps/feeds/feeds-backend/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

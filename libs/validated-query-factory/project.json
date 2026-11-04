@@ -21,6 +21,13 @@
           "fix": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --noEmit -p libs/validated-query-factory/tsconfig.lib.json"],
+        "parallel": false
+      }
     }
   }
 }

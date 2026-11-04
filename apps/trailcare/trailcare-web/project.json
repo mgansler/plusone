@@ -64,6 +64,16 @@
         "development": {},
         "production": {}
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p apps/trailcare/trailcare-web/tsconfig.app.json",
+          "tsc --noEmit -p apps/trailcare/trailcare-web/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

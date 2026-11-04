@@ -10,7 +10,6 @@ export default defineConfig({
     tsconfigPaths: true,
   },
 
-  // @ts-expect-error vitest needs this
   test: {
     globals: true,
     environment: 'node',

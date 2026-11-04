@@ -55,6 +55,13 @@
           "fix": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --noEmit -p apps/gpx-toolbox/gpx-toolbox-e2e/tsconfig.json"],
+        "parallel": false
+      }
     }
   }
 }

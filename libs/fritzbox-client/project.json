@@ -33,6 +33,16 @@
           "fix": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p libs/fritzbox-client/tsconfig.lib.json",
+          "tsc --noEmit -p libs/fritzbox-client/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

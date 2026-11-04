@@ -71,6 +71,16 @@
         "development": {},
         "production": {}
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p apps/gpx-toolbox/gpx-toolbox-web/tsconfig.app.json",
+          "tsc --noEmit -p apps/gpx-toolbox/gpx-toolbox-web/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

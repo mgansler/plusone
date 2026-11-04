@@ -116,6 +116,7 @@ test:
     - .distributed
   retry: 2
   script:
+    - time yarn nx affected --base=$NX_BASE --head=$NX_HEAD -t typecheck --parallel=8
     - time yarn nx affected --base=$NX_BASE --head=$NX_HEAD -t test --parallel=8 --configuration=ci
   artifacts:
     when: always

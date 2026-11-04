@@ -38,6 +38,16 @@
           "fix": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p libs/trailcare/api-client/tsconfig.lib.json",
+          "tsc --noEmit -p libs/trailcare/api-client/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

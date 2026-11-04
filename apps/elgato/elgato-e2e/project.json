@@ -30,6 +30,13 @@
           "fix": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --noEmit -p apps/elgato/elgato-e2e/tsconfig.json"],
+        "parallel": false
+      }
     }
   }
 }

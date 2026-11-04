@@ -62,6 +62,16 @@
         "development": {},
         "production": {}
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p apps/borgo/borgo-web/tsconfig.app.json",
+          "tsc --noEmit -p apps/borgo/borgo-web/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

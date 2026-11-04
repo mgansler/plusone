@@ -28,6 +28,13 @@
           "target": "prisma-generate"
         }
       ]
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --noEmit -p libs/gpx-toolbox/persistence/tsconfig.lib.json"],
+        "parallel": false
+      }
     }
   }
 }

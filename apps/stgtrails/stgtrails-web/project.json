@@ -86,6 +86,16 @@
         "development": {},
         "production": {}
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p apps/stgtrails/stgtrails-web/tsconfig.app.json",
+          "tsc --noEmit -p apps/stgtrails/stgtrails-web/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

@@ -42,6 +42,16 @@
           "no-exit": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p libs/components/tsconfig.lib.json",
+          "tsc --noEmit -p libs/components/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

@@ -4,10 +4,10 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { nxReadySignal } from '@nx/vite/plugins/nx-ready-signal.plugin'
 
 // These options were migrated by @nx/vite:convert-to-inferred from the project.json file.
-const configValues = { default: {}, development: { hmr: true }, production: { hmr: false } }
+const configValues = { default: { hmr: false }, development: { hmr: true }, production: { hmr: false } }
 
 // Determine the correct configValue to use based on the configuration
-const nxConfiguration = process.env.NX_TASK_TARGET_CONFIGURATION ?? 'default'
+const nxConfiguration = (process.env.NX_TASK_TARGET_CONFIGURATION as keyof typeof configValues) ?? 'default'
 
 const options = {
   ...configValues.default,

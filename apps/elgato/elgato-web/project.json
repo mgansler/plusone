@@ -72,6 +72,16 @@
         "development": {},
         "production": {}
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p apps/elgato/elgato-web/tsconfig.app.json",
+          "tsc --noEmit -p apps/elgato/elgato-web/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

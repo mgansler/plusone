@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios'
 import { setupServer } from 'msw/node'
+import { MockInstance } from 'vitest'
 
 import { getAccessoryInfoResponseStub } from '../../stubs/accessory-info-response.stub'
 import { getDevice } from '../../stubs/device.stub'
@@ -25,11 +26,11 @@ describe('ElgatoService', () => {
   const server = setupServer()
   let elgatoService: ElgatoService
   let httpService: HttpService
-  let errSpy: vi.SpyInstance
-  let warnSpy: vi.SpyInstance
+  let errSpy: MockInstance
+  let warnSpy: MockInstance
 
   beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
+    server.listen({ onUnhandledFrame: 'error' })
   })
 
   beforeEach(() => {

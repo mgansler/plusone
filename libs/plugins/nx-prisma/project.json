@@ -54,6 +54,16 @@
           "fix": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p libs/plugins/nx-prisma/tsconfig.lib.json",
+          "tsc --noEmit -p libs/plugins/nx-prisma/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

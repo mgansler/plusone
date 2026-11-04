@@ -56,6 +56,13 @@
           "fix": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --noEmit -p apps/trailcare/trailcare-e2e/tsconfig.json"],
+        "parallel": false
+      }
     }
   }
 }

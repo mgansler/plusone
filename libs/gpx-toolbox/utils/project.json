@@ -26,6 +26,16 @@
           "coverage": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p libs/gpx-toolbox/utils/tsconfig.lib.json",
+          "tsc --noEmit -p libs/gpx-toolbox/utils/tsconfig.spec.json"
+        ],
+        "parallel": false
+      }
     }
   }
 }

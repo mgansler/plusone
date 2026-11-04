@@ -30,6 +30,13 @@
           "fix": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --noEmit -p apps/github-pipeline-status-e2e/tsconfig.json"],
+        "parallel": false
+      }
     }
   }
 }
