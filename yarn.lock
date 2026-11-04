@@ -24062,7 +24062,7 @@ __metadata:
     react-dom: "npm:19.3.1"
     react-error-boundary: "npm:6.1.6"
     react-hook-form: "npm:7.91.0"
-    react-i18next: "npm:17.1.9"
+    react-i18next: "npm:17.1.10"
     react-router-dom: "npm:7.18.5"
     reflect-metadata: "npm:0.2.2"
     rss-parser: "npm:3.13.0"
@@ -25046,7 +25046,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:17.1.9, react-i18next@npm:^17.1.8":
+"react-i18next@npm:17.1.10":
+  version: 17.1.10
+  resolution: "react-i18next@npm:17.1.10"
+  dependencies:
+    "@babel/runtime": "npm:^7.29.7"
+    html-parse-stringify: "npm:^4.0.1"
+    use-sync-external-store: "npm:^1.6.0"
+  peerDependencies:
+    i18next: ">= 26.2.0"
+    react: ">= 16.8.0"
+    typescript: ^5 || ^6 || ^7
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+    typescript:
+      optional: true
+  checksum: 10c0/8c03c2b27bf4d4861926d5629221e3c6b3e502213030c7667b1563ac6a67451ace96c3f52eddb44d7ff02db64a140d4d502d8113d4c364f485b946d2ba44ea0a
+  languageName: node
+  linkType: hard
+
+"react-i18next@npm:^17.1.8":
   version: 17.1.9
   resolution: "react-i18next@npm:17.1.9"
   dependencies:
