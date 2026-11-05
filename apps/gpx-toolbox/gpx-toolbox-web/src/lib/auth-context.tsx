@@ -3,8 +3,8 @@ import { createContext, type ReactNode, useCallback, useContext, useEffect, useS
 /** User profile returned from the auth status endpoint. */
 export type UserProfile = {
   id: string
-  stravaId: string
   name: string | null
+  email: string | null
   avatarUrl: string | null
 }
 
@@ -24,10 +24,8 @@ type AuthContextValue = {
   user: UserProfile | null
   /** The JWT token string, or null. */
   token: string | null
-  /** Redirect to Strava OAuth. */
+  /** Redirect to the Google sign-in. */
   login: () => void
-  /** Submit a Strava refresh token to authenticate. */
-  loginWithRefreshToken: (refreshToken: string) => Promise<void>
   /** Clear token and user state. */
   logout: () => void
   /** Whether the auth status is still being checked. */
@@ -67,7 +65,6 @@ const AuthContext = createContext<AuthContextValue>({
   user: null,
   token: null,
   login: noop,
-  loginWithRefreshToken: noop as unknown as (refreshToken: string) => Promise<void>,
   logout: noop,
   isLoading: false,
 })
@@ -125,24 +122,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(() => {
     // Navigate directly to the OAuth authorization URL
-    // The backend redirects to Strava, which then redirects back to the callback
-    window.location.href = '/api/auth/strava'
-  }, [])
-
-  const loginWithRefreshToken = useCallback(async (refreshToken: string) => {
-    const res = await fetch('/api/auth/refresh-token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refresh_token: refreshToken }),
-    })
-    if (!res.ok) throw new Error('Authentication failed')
-    const data = await res.json()
-    setToken(data.accessToken)
-    // Hard reload to / — the JWT is now in localStorage and the app
-    // will re-initialize as authenticated instead of showing /login.
-    // Using window.location.href avoids "setState during render" with
-    // TanStack Router when logging in on the /login page.
-    window.location.href = '/'
+    // The backend redirects to Google, which then redirects back to the callback
+    window.location.href = '/api/auth/google'
   }, [])
 
   const logout = useCallback(() => {
@@ -156,7 +137,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     token,
     login,
-    loginWithRefreshToken,
     logout,
     isLoading,
   }
@@ -166,7 +146,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 /**
  * Extract the JWT token from the current URL hash fragment.
- * Called by the callback route after Strava OAuth redirect.
+ * Called after the OAuth redirect of the login.
  */
 export function extractTokenFromHash(): string | null {
   const hash = window.location.hash

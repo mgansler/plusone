@@ -28,8 +28,6 @@ type NearbyRoute = {
 
 const sourceColors: Record<string, string> = {
   manualImport: '#2196f3',
-  stravaRoute: '#4caf50',
-  stravaActivity: '#ff9800',
 }
 
 type TrackStyle = Pick<L.PolylineOptions, 'weight' | 'opacity'>

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { useAuth } from '../lib/auth-context'
@@ -8,7 +8,6 @@ import { LoginCard } from './LoginCard'
 vi.mock('../lib/auth-context', () => ({ useAuth: vi.fn() }))
 
 const login = vi.fn()
-const loginWithRefreshToken = vi.fn()
 
 function mockAuth(overrides: Partial<ReturnType<typeof useAuth>> = {}) {
   vi.mocked(useAuth).mockReturnValue({
@@ -17,79 +16,87 @@ function mockAuth(overrides: Partial<ReturnType<typeof useAuth>> = {}) {
     user: null,
     token: null,
     login,
-    loginWithRefreshToken,
     logout: vi.fn(),
     ...overrides,
   })
 }
 
-function setHostname(hostname: string) {
+const originalLocation = window.location
+
+function setSearch(search: string) {
   Object.defineProperty(window, 'location', {
     configurable: true,
-    value: { ...originalLocation, hostname },
+    value: { ...originalLocation, search },
   })
 }
-
-const originalLocation = window.location
 
 describe('LoginCard', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockAuth()
-    setHostname('localhost')
+    setSearch('')
   })
 
   afterEach(() => {
     Object.defineProperty(window, 'location', { configurable: true, value: originalLocation })
   })
 
-  it('starts the Strava OAuth login', () => {
+  it('starts the Google login', () => {
     render(<LoginCard />)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Connect with Strava' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Mit Google anmelden' }))
 
     expect(login).toHaveBeenCalled()
   })
 
-  it('offers the refresh token login only on localhost', () => {
-    setHostname('gpx.martingansler.de')
+  it('tells what is stored about the user', () => {
     render(<LoginCard />)
 
-    expect(screen.queryByPlaceholderText('Refresh Token eingeben')).toBeNull()
+    expect(screen.getByText(/Wir speichern deinen Namen, deine E-Mail-Adresse und dein Profilbild/)).toBeTruthy()
+    expect(screen.queryByText(/nur lokal gespeichert/)).toBeNull()
   })
 
-  it('logs in with a trimmed refresh token', async () => {
-    loginWithRefreshToken.mockReturnValue(new Promise(() => undefined))
+  it('links the privacy policy', () => {
     render(<LoginCard />)
-    const submit = screen.getByRole('button', { name: 'Mit Token einloggen' }) as HTMLButtonElement
-    expect(submit.disabled).toBe(true)
 
-    fireEvent.change(screen.getByPlaceholderText('Refresh Token eingeben'), { target: { value: '  r1  ' } })
-    fireEvent.click(submit)
-
-    expect(loginWithRefreshToken).toHaveBeenCalledWith('r1')
-    expect(await screen.findByRole('button', { name: 'Anmeldung...' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Datenschutzerklärung' }).getAttribute('href')).toBe('/datenschutz')
   })
 
-  it('shows the error of a failed refresh token login and allows a retry', async () => {
-    loginWithRefreshToken.mockRejectedValue(new Error('Authentication failed'))
+  it('links the imprint', () => {
     render(<LoginCard />)
 
-    fireEvent.change(screen.getByPlaceholderText('Refresh Token eingeben'), { target: { value: 'bad' } })
-    fireEvent.click(screen.getByRole('button', { name: 'Mit Token einloggen' }))
+    expect(screen.getByRole('link', { name: 'Impressum' }).getAttribute('href')).toBe('/impressum')
+  })
 
-    expect(await screen.findByText('Authentication failed')).toBeTruthy()
-    await waitFor(() =>
-      expect((screen.getByRole('button', { name: 'Mit Token einloggen' }) as HTMLButtonElement).disabled).toBe(false),
-    )
+  it('shows no error on a fresh visit', () => {
+    render(<LoginCard />)
+
+    expect(screen.queryByText(/Anmeldung wurde abgebrochen|Anmeldung ist fehlgeschlagen/)).toBeNull()
+  })
+
+  it('explains a login the user declined on the Google page', () => {
+    setSearch('?error=access_denied')
+    render(<LoginCard />)
+
+    expect(screen.getByText('Die Anmeldung wurde abgebrochen.')).toBeTruthy()
+  })
+
+  it('reports any other login error', () => {
+    setSearch('?error=server_error')
+    render(<LoginCard />)
+
+    expect(screen.getByText('Die Anmeldung ist fehlgeschlagen.')).toBeTruthy()
   })
 
   it('greets a logged in user', () => {
-    mockAuth({ isAuthenticated: true, user: { id: 'u1', stravaId: '42', name: 'martin', avatarUrl: null } })
+    mockAuth({
+      isAuthenticated: true,
+      user: { id: 'u1', name: 'martin', email: null, avatarUrl: null },
+    })
     render(<LoginCard />)
 
     expect(screen.getByText('Willkommen, martin!')).toBeTruthy()
     expect(screen.getByText('M')).toBeTruthy()
-    expect(screen.queryByRole('button', { name: 'Connect with Strava' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Mit Google anmelden' })).toBeNull()
   })
 })

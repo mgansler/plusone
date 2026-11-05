@@ -6,8 +6,7 @@ import { PrismaModule } from '@plusone/gpx-toolbox-persistence'
 
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
-import { StravaService } from './strava.service'
-import { StravaStrategy } from './strava.strategy'
+import { OidcService } from './oidc.service'
 
 @Module({
   imports: [
@@ -19,7 +18,7 @@ import { StravaStrategy } from './strava.strategy'
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, StravaService, StravaStrategy],
-  exports: [AuthService, StravaService],
+  providers: [AuthService, OidcService],
+  exports: [AuthService],
 })
 export class AuthModule {}

@@ -25,8 +25,6 @@ import { routeStatusColor, routeStatusLabel } from '../../utils/routeStatus'
 import { formatDistanceShort, formatDurationShort, formatElevationGain } from '../../utils/format'
 
 const sourceLabels: Record<string, string> = {
-  stravaRoute: 'Strava Route',
-  stravaActivity: 'Strava Activity',
   manualImport: 'Manuell',
 }
 
@@ -421,8 +419,6 @@ function RouteDetailPage() {
 
 const sourceColors: Record<string, string> = {
   manualImport: '#2196f3',
-  stravaRoute: '#4caf50',
-  stravaActivity: '#ff9800',
 }
 
 const styles = {

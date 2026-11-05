@@ -6,7 +6,6 @@ import { analyzeGpx, parseGpx, TrackPoint } from '@plusone/gpx-toolbox-utils'
 import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
 import { downsamplePolyline, parsePolyline } from './polyline.util'
 import { routeFilterColumns } from './route-filter-columns.util'
-import { StravaService } from './strava.service'
 import { extractGpxName } from './gpx-upload.util'
 
 /** Nearby results draw many routes at once on the map; a coarse track per route is enough there */
@@ -53,10 +52,7 @@ type FormattedRoute = FormattedRouteBase & {
 export class RoutesService {
   private readonly logger = new Logger(RoutesService.name)
 
-  constructor(
-    private readonly prismaService: PrismaService,
-    private readonly stravaService: StravaService,
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   /**
    * Import a GPX file: parse, compute stats, extract polyline, create route.
@@ -71,6 +67,8 @@ export class RoutesService {
     totalDistance: number
     elevationGain: number
     elevationLoss: number
+    /** True if `skipDuplicate` was set and the returned route already existed */
+    duplicate: boolean
   }> {
     const points = parseGpx(gpxContent)
 
@@ -99,6 +97,25 @@ export class RoutesService {
       elevationLoss,
     }
 
+    // Lets an import be repeated without piling up copies of the same route
+    if (dto.skipDuplicate) {
+      const existing = await this.prismaService.route.findFirst({
+        where: { userId, gpxContent },
+        select: { id: true, name: true },
+      })
+      if (existing) {
+        this.logger.log(`Skipped "${name}", the same GPX content exists as route ${existing.id}`)
+        return {
+          id: existing.id,
+          name: existing.name,
+          totalDistance: stats.distance,
+          elevationGain: stats.elevationGain,
+          elevationLoss,
+          duplicate: true,
+        }
+      }
+    }
+
     // Create route in DB
     const route = await this.prismaService.route.create({
       data: {
@@ -122,6 +139,7 @@ export class RoutesService {
       totalDistance: stats.distance,
       elevationGain: stats.elevationGain,
       elevationLoss,
+      duplicate: false,
     }
   }
 
@@ -310,160 +328,6 @@ export class RoutesService {
       .sort((a, b) => a.distance - b.distance)
 
     return results
-  }
-
-  /**
-   * Create a route from Strava data (called by Strava import service).
-   */
-  async createFromStrava(
-    stravaId: string,
-    name: string,
-    gpxContent: string,
-    points: Array<TrackPoint>,
-    userId?: string,
-  ) {
-    const overview = analyzeGpx(gpxContent)
-    const polyline: Array<{ lat: number; lng: number }> = points.map((p) => ({
-      lat: p.latitude,
-      lng: p.longitude,
-    }))
-    const elevationLoss = this.calculateElevationLoss(points)
-    const stats = {
-      distance: overview.totalDistance,
-      elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
-      elevationLoss,
-    }
-
-    const route = await this.prismaService.route.create({
-      data: {
-        name,
-        source: 'stravaActivity',
-        gpxContent,
-        polyline: { points: JSON.stringify(polyline) },
-        ...routeFilterColumns(polyline, stats),
-        stats,
-        ratingTags: [],
-        userId,
-      },
-    })
-
-    return route
-  }
-
-  /**
-   * Create a route from Strava Route API.
-   * Downloads GPX from Strava, parses it, and stores both GPX content and polyline.
-   */
-  async createStravaRoute(stravaId: string, name: string, gpxContent: string, userId?: string) {
-    const points = gpxContent ? parseGpx(gpxContent) : []
-    const polyline: Array<{ lat: number; lng: number }> = points.map((p) => ({
-      lat: p.latitude,
-      lng: p.longitude,
-    }))
-
-    const stats = gpxContent
-      ? (() => {
-          const overview = analyzeGpx(gpxContent)
-          const elevationLoss = this.calculateElevationLoss(points)
-          return {
-            distance: overview.totalDistance,
-            elevationGain: Math.round(overview.segments.reduce((sum, s) => sum + s.elevationGain, 0)),
-            elevationLoss,
-          }
-        })()
-      : { distance: 0, elevationGain: 0, elevationLoss: 0 }
-
-    return this.prismaService.route.create({
-      data: {
-        name,
-        source: 'stravaRoute',
-        stravaRouteId: stravaId,
-        gpxContent,
-        polyline: { points: JSON.stringify(polyline) },
-        ...routeFilterColumns(polyline, stats),
-        stats,
-        ratingTags: [],
-        userId,
-      },
-    })
-  }
-
-  /**
-   * Get Strava activities with pagination, enriched with existing route data.
-   * Used by the /activities/sync page to list Strava activities for import.
-   *
-   * `after` / `before` (epoch seconds) are the only filters the Strava API supports here.
-   */
-  async getStravaActivities(
-    accessToken: string,
-    userId: string,
-    page = 1,
-    per_page = 50,
-    range: { after?: number; before?: number } = {},
-  ): Promise<{
-    items: Array<{
-      id: number
-      name: string
-      distance?: number
-      elevationGain?: number
-      moving_time?: number
-      elapsed_duration?: number
-      heart_rate_avg?: number
-      heart_rate_max?: number
-      start_date_local: string
-      sport_type?: string
-      trainer?: boolean
-      summary_polyline?: string
-      routeId?: string
-      imported: boolean
-    }>
-    page: number
-    per_page: number
-    hasMore: boolean
-  }> {
-    // Fetch paginated activities from Strava
-    const activities = await this.stravaService.getActivities(accessToken, { page, per_page, ...range })
-
-    // An activity counts as imported when it exists in the activities table; its route is the one
-    // it is linked to. The Strava summary list does not include heart rate, so it is sourced from
-    // there as well (stored from the detailed activity at import time).
-    const importedActivities = await this.prismaService.activity.findMany({
-      where: { userId, stravaActivityId: { in: activities.map((a) => String(a.id ?? 0)) } },
-      select: { stravaActivityId: true, routeId: true, avgHr: true, maxHr: true },
-    })
-    const activityByStravaId = new Map(
-      importedActivities.flatMap((a) => (a.stravaActivityId ? [[a.stravaActivityId, a] as const] : [])),
-    )
-
-    const items = activities.map((activity) => {
-      const stravaId = activity.id ?? 0
-      const activityInfo = activityByStravaId.get(String(stravaId))
-
-      return {
-        id: stravaId,
-        name: activity.name ?? `Aktivität ${stravaId}`,
-        distance: activity.distance,
-        elevationGain: activity.total_elevation_gain,
-        moving_time: activity.moving_time,
-        elapsed_duration: activity.elapsed_time,
-        heart_rate_avg: activityInfo?.avgHr ?? undefined,
-        heart_rate_max: activityInfo?.maxHr ?? undefined,
-        start_date_local: activity.start_date_local ?? new Date().toISOString(),
-        sport_type: activity.sport_type,
-        trainer: activity.trainer,
-        // Encoded, simplified track for a quick preview before importing
-        summary_polyline: activity.map?.summary_polyline,
-        routeId: activityInfo?.routeId,
-        imported: activityInfo != null,
-      }
-    })
-
-    return {
-      page,
-      per_page,
-      hasMore: activities.length === per_page,
-      items,
-    }
   }
 
   private formatRoute(route: RouteWithActivities): FormattedRoute {

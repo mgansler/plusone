@@ -3,10 +3,9 @@ import { plainToInstance } from 'class-transformer'
 
 import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
 import { CreateActivityDto, QueryActivityDto } from './dto/activity.dto'
-import { ImportResultDto, ImportStravaActivityDto, StravaRouteSummaryDto } from './dto/import.dto'
+import { ImportResultDto } from './dto/import.dto'
 import { NearbyRouteResponseDto } from './dto/nearby-route-response.dto'
 import { ListRoutesResponseDto, RouteResponseDto } from './dto/list-routes-response.dto'
-import { StravaAthleteProfileDto } from './dto/strava-athlete-profile.dto'
 import { HealthCheckResultDto } from './dto/health.dto'
 
 describe('CreateRouteDto', () => {
@@ -40,6 +39,31 @@ describe('CreateRouteDto', () => {
       const errors = await validate(dto)
       expect(errors.length).toBe(0)
     }
+  })
+})
+
+describe('CreateRouteDto skipDuplicate', () => {
+  it.each([
+    ['true', true],
+    ['false', false],
+    [true, true],
+  ])('accepts %s (a form field arrives as string) as %s', async (value, expected) => {
+    const dto = plainToInstance(CreateRouteDto, { skipDuplicate: value })
+    const errors = await validate(dto)
+    expect(errors.length).toBe(0)
+    expect(dto.skipDuplicate).toBe(expected)
+  })
+
+  it('is optional', async () => {
+    const dto = plainToInstance(CreateRouteDto, { name: 'Test' })
+    expect(await validate(dto)).toHaveLength(0)
+    expect(dto.skipDuplicate).toBeUndefined()
+  })
+
+  it('rejects anything but a boolean', async () => {
+    const dto = plainToInstance(CreateRouteDto, { skipDuplicate: 'maybe' })
+    const errors = await validate(dto)
+    expect(errors.length).toBeGreaterThan(0)
   })
 })
 
@@ -203,32 +227,12 @@ describe('QueryActivityDto', () => {
   })
 })
 
-describe('ImportStravaActivityDto', () => {
-  it('accepts valid data', async () => {
-    const dto = plainToInstance(ImportStravaActivityDto, { activityId: '123456' })
-    const errors = await validate(dto)
-    expect(errors.length).toBe(0)
-  })
-
-  it('rejects missing activityId', async () => {
-    const dto = plainToInstance(ImportStravaActivityDto, {})
-    const errors = await validate(dto)
-    expect(errors.length).toBeGreaterThan(0)
-  })
-})
-
 describe('DTO type shapes', () => {
   it('ImportResultDto has required fields', () => {
     const dto: ImportResultDto = { imported: 5, matched: 2, newRoutes: 3 }
     expect(dto.imported).toBe(5)
     expect(dto.matched).toBe(2)
     expect(dto.newRoutes).toBe(3)
-  })
-
-  it('StravaRouteSummaryDto has required fields', () => {
-    const dto: StravaRouteSummaryDto = { stravaId: 123, name: 'Test', imported: false }
-    expect(dto.stravaId).toBe(123)
-    expect(dto.imported).toBe(false)
   })
 
   it('HealthCheckResultDto has required fields', () => {
@@ -280,18 +284,5 @@ describe('DTO type shapes', () => {
     }
     expect(dto.total).toBe(10)
     expect(dto.items).toEqual([])
-  })
-
-  it('StravaAthleteProfileDto has all expected fields', () => {
-    const dto: StravaAthleteProfileDto = {
-      id: 123456,
-      firstname: 'John',
-      lastname: 'Doe',
-      username: 'johndoe',
-      gender: 'M',
-      athleteType: 'cyclist',
-    }
-    expect(dto.id).toBe(123456)
-    expect(dto.firstname).toBe('John')
   })
 })

@@ -10,7 +10,6 @@ import { ActivitiesService } from './activities.service'
 import { ImportService } from './import.service'
 import { RidesService } from './rides.service'
 import { RoutesService } from './routes.service'
-import { StravaService } from './strava.service'
 
 const ALICE = 'user-alice'
 const BOB = 'user-bob'
@@ -50,11 +49,10 @@ describe('Persistence (SQLite integration)', () => {
   beforeAll(async () => {
     db = await createTestDatabase()
     prisma = db.prisma
-    const strava = {} as StravaService
-    routes = new RoutesService(prisma, strava)
+    routes = new RoutesService(prisma)
     activities = new ActivitiesService(prisma)
     rides = new RidesService(prisma, httpService as unknown as HttpService)
-    imports = new ImportService(prisma, strava)
+    imports = new ImportService(prisma)
   })
 
   afterAll(async () => {
@@ -133,6 +131,39 @@ describe('Persistence (SQLite integration)', () => {
       )
       await expect(rides.remove(otherRoute, aliceActivity, ALICE)).rejects.toBeInstanceOf(NotFoundException)
       expect((await rides.findOne(aliceRoute, aliceActivity, ALICE)).title).toBe('Alice Fahrt')
+    })
+  })
+
+  describe('skipping duplicate route imports', () => {
+    const track = line(48.7, 9.1)
+
+    it('keeps a single route when the same GPX is imported again, but only per user', async () => {
+      const first = await routes.importGpx(gpx(track, 'Runde'), { skipDuplicate: true }, ALICE)
+      const again = await routes.importGpx(gpx(track, 'Runde'), { name: 'Anderer Name', skipDuplicate: true }, ALICE)
+      const bob = await routes.importGpx(gpx(track, 'Runde'), { skipDuplicate: true }, BOB)
+
+      expect(first.duplicate).toBe(false)
+      expect(again).toMatchObject({ id: first.id, name: 'Runde', duplicate: true })
+      expect(bob).toMatchObject({ duplicate: false })
+      expect(bob.id).not.toBe(first.id)
+      expect(await prisma.route.count({ where: { userId: ALICE } })).toBe(1)
+      expect(await prisma.route.count({ where: { userId: BOB } })).toBe(1)
+    })
+
+    it('imports a route with the same name but a different track', async () => {
+      await routes.importGpx(gpx(track, 'Runde'), { skipDuplicate: true }, ALICE)
+
+      const other = await routes.importGpx(gpx(line(48.9, 9.3), 'Runde'), { skipDuplicate: true }, ALICE)
+
+      expect(other.duplicate).toBe(false)
+      expect(await prisma.route.count({ where: { userId: ALICE } })).toBe(2)
+    })
+
+    it('creates a copy when the option is not set', async () => {
+      await routes.importGpx(gpx(track, 'Runde'), {}, ALICE)
+      await routes.importGpx(gpx(track, 'Runde'), {}, ALICE)
+
+      expect(await prisma.route.count({ where: { userId: ALICE } })).toBe(2)
     })
   })
 
@@ -310,13 +341,6 @@ describe('Persistence (SQLite integration)', () => {
       expect(result).toEqual({ imported: 1, matched: 1, newRoutes: 0 })
       expect(await prisma.route.count({ where: { userId: ALICE } })).toBe(1)
       expect(await prisma.activity.count({ where: { userId: ALICE } })).toBe(2)
-    })
-
-    it('does not match routes that were created from Strava activities', async () => {
-      const points = parseGpx(gpx(track))
-      await routes.createFromStrava('strava-1', 'Von Strava', gpx(track), points, ALICE)
-
-      expect(await imports.findBestMatch(points, ALICE)).toBeNull()
     })
   })
 })

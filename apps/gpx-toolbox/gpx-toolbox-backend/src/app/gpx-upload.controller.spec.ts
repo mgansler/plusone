@@ -2,13 +2,11 @@ import { ExecutionContext, INestApplication, ValidationPipe } from '@nestjs/comm
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
-import { AuthService } from './auth.service'
 import { ImportController } from './import.controller'
 import { ImportService } from './import.service'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { RoutesController } from './routes.controller'
 import { RoutesService } from './routes.service'
-import { StravaService } from './strava.service'
 
 /** Verifies the multipart parsing of the GPX upload endpoints (file + form fields) */
 describe('GPX upload endpoints', () => {
@@ -24,8 +22,6 @@ describe('GPX upload endpoints', () => {
       providers: [
         { provide: RoutesService, useValue: routesService },
         { provide: ImportService, useValue: importService },
-        { provide: StravaService, useValue: {} },
-        { provide: AuthService, useValue: {} },
       ],
     })
       .overrideGuard(JwtAuthGuard)
@@ -66,6 +62,32 @@ describe('GPX upload endpoints', () => {
         expect.objectContaining({ name: 'foo', source: 'manualImport' }),
         'user-1',
       )
+    })
+
+    it('passes skipDuplicate as boolean', async () => {
+      routesService.importGpx.mockResolvedValue({ id: 'r1' })
+
+      await request(app.getHttpServer())
+        .post('/routes')
+        .attach('file', gpx, 'tour.gpx')
+        .field('skipDuplicate', 'true')
+        .expect(201)
+
+      expect(routesService.importGpx).toHaveBeenCalledWith(
+        '<gpx></gpx>',
+        expect.objectContaining({ skipDuplicate: true }),
+        'user-1',
+      )
+    })
+
+    it('rejects an invalid skipDuplicate value', async () => {
+      await request(app.getHttpServer())
+        .post('/routes')
+        .attach('file', gpx, 'tour.gpx')
+        .field('skipDuplicate', 'maybe')
+        .expect(400)
+
+      expect(routesService.importGpx).not.toHaveBeenCalled()
     })
 
     it('accepts an upload without name', async () => {

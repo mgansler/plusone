@@ -1,20 +1,41 @@
-import { useState } from 'react'
-
-import connectWithStravaButton from '../assets/btn-strava-connect-with-orange.svg'
 import { useAuth } from '../lib/auth-context'
 
-const LOCAL_HOSTNAMES = ['localhost', '127.0.0.1', '[::1]']
+/** The login page is opened with `?error=` when the user declined on the Google page */
+function loginErrorMessage(): string | null {
+  const error = new URLSearchParams(window.location.search).get('error')
+  if (!error) return null
+  return error === 'access_denied' ? 'Die Anmeldung wurde abgebrochen.' : 'Die Anmeldung ist fehlgeschlagen.'
+}
+
+/** The multicolor "G" as published in Google's branding guidelines for the sign-in button */
+function GoogleLogo() {
+  return (
+    <svg viewBox="0 0 48 48" width={18} height={18} aria-hidden="true" style={{ display: 'block' }}>
+      <path
+        fill="#EA4335"
+        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+      />
+      <path
+        fill="#4285F4"
+        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+      />
+      <path
+        fill="#34A853"
+        d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+      />
+    </svg>
+  )
+}
 
 /**
- * Reusable login card with OAuth login and, on localhost only, manual refresh token login.
- * Used by the root App shell and the /login route.
+ * Reusable login card with the Google sign-in. Used by the root App shell and the /login route.
  */
 export function LoginCard() {
-  const showRefreshTokenLogin = LOCAL_HOSTNAMES.includes(window.location.hostname)
-  const { isAuthenticated, login, user, loginWithRefreshToken } = useAuth()
-  const [refreshToken, setRefreshToken] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+  const { isAuthenticated, login, user } = useAuth()
 
   if (isAuthenticated && user) {
     return (
@@ -35,86 +56,33 @@ export function LoginCard() {
     )
   }
 
-  async function handleRefreshTokenSubmit(event: React.FormEvent) {
-    event.preventDefault()
-    const token = refreshToken.trim()
-    if (!token) return
-
-    setLoading(true)
-    setError(null)
-    try {
-      await loginWithRefreshToken(token)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Anmeldung fehlgeschlagen')
-      setLoading(false)
-    }
-  }
+  const error = loginErrorMessage()
 
   return (
     <div style={styles.card}>
       <h1 style={styles.title}>GPX-Toolcat</h1>
       <p style={styles.description}>
-        Plane, speichere und bewerte deine Routen. Verbinde dich mit Strava, um deine Aktivitäten zu importieren.
+        Plane, speichere und bewerte deine Routen und lade deine Aktivitäten als GPX-Dateien hoch.
       </p>
-      <button onClick={login} style={styles.loginButton}>
-        <img
-          src={connectWithStravaButton}
-          alt="Connect with Strava"
-          width={237}
-          height={48}
-          style={styles.loginImage}
-        />
+      <button onClick={login} style={styles.googleButton}>
+        <GoogleLogo />
+        Mit Google anmelden
       </button>
-
-      {showRefreshTokenLogin && (
-        <>
-          <div style={styles.dividerText}>
-            <span style={styles.dividerLine} />
-            <span>oder</span>
-            <span style={styles.dividerLine} />
-          </div>
-
-          <form onSubmit={handleRefreshTokenSubmit}>
-            <input
-              type="text"
-              placeholder="Refresh Token eingeben"
-              value={refreshToken}
-              onChange={(e) => setRefreshToken(e.target.value)}
-              style={styles.input}
-            />
-            <button
-              type="submit"
-              disabled={loading || !refreshToken}
-              style={{
-                ...styles.submitTokenButton,
-                opacity: loading || !refreshToken ? 0.5 : 1,
-              }}
-            >
-              {loading ? 'Anmeldung...' : 'Mit Token einloggen'}
-            </button>
-            {error && <p style={styles.error}>{error}</p>}
-          </form>
-        </>
-      )}
+      {error && <p style={styles.error}>{error}</p>}
 
       <p style={styles.noteOAuth}>
-        Nach dem Login wirst du zu Strava weitergeleitet. Deine Daten werden nur lokal gespeichert.
+        Nach dem Klick wirst du zu Google weitergeleitet. Wir speichern deinen Namen, deine E-Mail-Adresse und dein
+        Profilbild. Mehr dazu in der{' '}
+        <a href="/datenschutz" style={styles.noteLink}>
+          Datenschutzerklärung
+        </a>
+        .
       </p>
-
-      {showRefreshTokenLogin && (
-        <p style={styles.noteToken}>
-          Du kannst auch deinen Strava Refresh Token manuell eingeben (
-          <a
-            href="https://www.strava.com/settings/account"
-            target="_blank"
-            rel="noreferrer"
-            style={{ color: '#3b82f6' }}
-          >
-            Strava Einstellungen → Meine Anwendungen → API
-          </a>
-          ).
-        </p>
-      )}
+      <p style={styles.noteOAuth}>
+        <a href="/impressum" style={styles.noteLink}>
+          Impressum
+        </a>
+      </p>
     </div>
   )
 }
@@ -141,53 +109,21 @@ const styles = {
     margin: '0 0 2rem',
     lineHeight: 1.6,
   } as const,
-  // official "Connect with Strava" asset, Strava's brand guidelines require it unmodified
-  loginButton: {
-    display: 'inline-block',
-    padding: 0,
-    background: 'none',
-    border: 'none',
-    borderRadius: 6,
-    cursor: 'pointer',
-    lineHeight: 0,
-  } as const,
-  loginImage: {
-    display: 'block',
-  } as const,
-  dividerText: {
-    display: 'flex',
+  // Light theme of Google's sign-in button: https://developers.google.com/identity/branding-guidelines
+  googleButton: {
+    display: 'inline-flex',
     alignItems: 'center',
-    gap: 12,
-    margin: '1.5rem 0',
-    color: '#94a3b8',
-    fontSize: 13,
-  } as const,
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#e2e8f0',
-  } as const,
-  input: {
-    width: '100%',
-    padding: '10px 14px',
+    gap: 10,
+    height: 40,
+    padding: '0 12px',
+    fontFamily: "Roboto, 'Helvetica Neue', Arial, sans-serif",
     fontSize: 14,
-    border: '1px solid #cbd5e1',
-    borderRadius: 8,
-    outline: 'none',
-    marginBottom: 8,
-    boxSizing: 'border-box',
-  } as const,
-  submitTokenButton: {
-    width: '100%',
-    padding: '10px 16px',
-    fontSize: 14,
-    fontWeight: 600,
-    color: '#fff',
-    backgroundColor: '#3b82f6',
-    border: 'none',
-    borderRadius: 8,
+    fontWeight: 500,
+    color: '#1f1f1f',
+    backgroundColor: '#fff',
+    border: '1px solid #747775',
+    borderRadius: 4,
     cursor: 'pointer',
-    opacity: 0.5,
   } as const,
   error: {
     color: '#ef4444',
@@ -199,11 +135,8 @@ const styles = {
     color: '#94a3b8',
     margin: '1.5rem 0 0',
   } as const,
-  noteToken: {
-    fontSize: 11,
-    color: '#94a3b8',
-    margin: '1rem 0 0',
-    lineHeight: 1.5,
+  noteLink: {
+    color: '#64748b',
   } as const,
   avatar: {
     width: 80,

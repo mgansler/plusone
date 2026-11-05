@@ -2,13 +2,11 @@ import {
   BadRequestException,
   Body,
   Controller,
-  DefaultValuePipe,
   Delete,
   Get,
   Logger,
   Param,
   ParseFloatPipe,
-  ParseIntPipe,
   ParseUUIDPipe,
   Post,
   Put,
@@ -29,7 +27,6 @@ import { NearbyRouteResponseDto } from './dto/nearby-route-response.dto'
 import { ListRoutesResponseDto, RouteResponseDto } from './dto/list-routes-response.dto'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { JwtPayload } from './jwt.strategy'
-import { AuthService } from './auth.service'
 import { readUploadedGpx, UploadedGpxFile } from './gpx-upload.util'
 
 @ApiTags('routes')
@@ -38,10 +35,7 @@ import { readUploadedGpx, UploadedGpxFile } from './gpx-upload.util'
 export class RoutesController {
   private readonly logger = new Logger(RoutesController.name)
 
-  constructor(
-    private readonly routesService: RoutesService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly routesService: RoutesService) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
@@ -84,33 +78,6 @@ export class RoutesController {
     response.setHeader('Content-Type', 'application/gpx+xml')
     response.setHeader('Content-Disposition', 'attachment; filename="route.gpx"')
     response.send(gpxContent)
-  }
-
-  @Get('strava-activities')
-  @ApiOperation({ operationId: 'listStravaActivities' })
-  @ApiBearerAuth()
-  @ApiQuery({ name: 'page', type: Number, required: false, description: 'Page number (default: 1)' })
-  @ApiQuery({ name: 'per_page', type: Number, required: false, description: 'Items per page (default: 50)' })
-  @ApiQuery({ name: 'after', type: String, required: false, description: 'Only activities after this time (ISO 8601)' })
-  @ApiQuery({
-    name: 'before',
-    type: String,
-    required: false,
-    description: 'Only activities before this time (ISO 8601)',
-  })
-  @ApiOkResponse({ description: 'List of Strava activities with metadata' })
-  async listStravaActivities(
-    @Req() req: Request & { user: JwtPayload },
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-    @Query('per_page', new DefaultValuePipe(50), ParseIntPipe) per_page: number,
-    @Query('after') after?: string,
-    @Query('before') before?: string,
-  ) {
-    const accessToken = await this.getStravaToken(req)
-    return this.routesService.getStravaActivities(accessToken, req.user.sub, page, per_page, {
-      after: toEpochSeconds(after, 'after'),
-      before: toEpochSeconds(before, 'before'),
-    })
   }
 
   @Get('nearby')
@@ -157,19 +124,4 @@ export class RoutesController {
     await this.routesService.remove(id, req.user.sub)
     return { deleted: true, id }
   }
-
-  private async getStravaToken(req: Request & { user: JwtPayload }): Promise<string> {
-    // Guarantees a valid token: refreshes transparently if the stored one is expired.
-    return this.authService.getValidAccessToken(req.user.sub)
-  }
-}
-
-/** Convert an optional ISO 8601 query parameter to epoch seconds as expected by the Strava API. */
-function toEpochSeconds(value: string | undefined, name: string): number | undefined {
-  if (!value) return undefined
-  const time = new Date(value).getTime()
-  if (isNaN(time)) {
-    throw new BadRequestException(`${name} must be an ISO 8601 date`)
-  }
-  return Math.floor(time / 1000)
 }

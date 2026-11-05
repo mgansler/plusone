@@ -4,13 +4,11 @@ import { PrismaModule } from '@plusone/gpx-toolbox-persistence'
 
 import { RoutesController } from './routes.controller'
 import { RoutesService } from './routes.service'
-import { StravaService } from './strava.service'
-import { AuthModule } from './auth.module'
 
 @Module({
-  imports: [PrismaModule, AuthModule],
+  imports: [PrismaModule],
   controllers: [RoutesController],
-  providers: [RoutesService, StravaService],
+  providers: [RoutesService],
   exports: [RoutesService],
 })
 export class RoutesModule {}

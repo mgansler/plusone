@@ -7,7 +7,6 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
  */
 export type JwtPayload = {
   sub: string // user id
-  stravaId: string // Strava external id
 }
 
 /**

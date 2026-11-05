@@ -1,6 +1,7 @@
 import {
   ArrayMaxSize,
   IsArray,
+  IsBoolean,
   IsEnum,
   IsIn,
   IsInt,
@@ -33,6 +34,16 @@ export class CreateRouteDto {
   @IsOptional()
   @IsEnum(['stravaRoute', 'stravaActivity', 'manualImport'])
   source?: 'stravaRoute' | 'stravaActivity' | 'manualImport'
+
+  @ApiPropertyOptional({
+    description:
+      'If the user already has a route with exactly this GPX content, return it instead of creating another one',
+  })
+  @IsOptional()
+  // Multipart form fields arrive as strings
+  @Transform(({ value }) => (value === 'true' ? true : value === 'false' ? false : value))
+  @IsBoolean()
+  skipDuplicate?: boolean
 }
 
 export class UpdateRouteDto {

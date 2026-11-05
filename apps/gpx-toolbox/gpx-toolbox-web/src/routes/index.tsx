@@ -10,14 +10,13 @@ import { CompareToggleButton } from '../components/CompareToggleButton'
 import { Map } from '../components/Map'
 import { SegmentOverlay } from '../components/SegmentOverlay'
 import { PointDetails } from '../components/PointDetails'
+import { StravaExportImportModal } from '../components/StravaExportImportModal'
 import { UploadGpxModal } from '../components/UploadGpxModal'
 import { actionButtonStyle } from '../components/actionButtonStyle'
 import { routeStatusColor, routeStatusLabel } from '../utils/routeStatus'
 import { formatDistanceShort, formatElevationGain } from '../utils/format'
 
 const sourceLabels: Record<string, string> = {
-  stravaRoute: 'Strava Route',
-  stravaActivity: 'Strava Activity',
   manualImport: 'Manuell',
 }
 
@@ -30,20 +29,19 @@ function RoutesPage() {
   const mapRef: RefObject<L.Map | null> = useRef(null)
   const [page, setPage] = useState(1)
   const [statusFilter, setStatusFilter] = useState<string>('')
-  const [sourceFilter, setSourceFilter] = useState<string>('')
   const [sortBy, setSortBy] = useState(ListRoutesSortBy.createdAt)
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null)
   const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
   const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 0])
   const segmentInitializedRef = useRef(false)
   const [showUploadModal, setShowUploadModal] = useState(false)
+  const [showExportModal, setShowExportModal] = useState(false)
 
   const { data, isLoading, error, isError } = useListRoutes({
     page,
     limit: 50,
     sortBy,
     ...(statusFilter && { status: statusFilter }),
-    ...(sourceFilter && { source: sourceFilter }),
   })
 
   type RouteListResponse = {
@@ -158,9 +156,9 @@ function RoutesPage() {
             <button onClick={() => setShowUploadModal(true)} style={actionButtonStyle}>
               📤 Upload
             </button>
-            <Link to="/routes/sync" style={actionButtonStyle}>
-              📥 Sync
-            </Link>
+            <button onClick={() => setShowExportModal(true)} style={actionButtonStyle}>
+              📦 Strava-Export
+            </button>
           </div>
         </div>
 
@@ -190,19 +188,6 @@ function RoutesPage() {
             <option value="planned">Geplant</option>
             <option value="ridden">Gefahren</option>
             <option value="foundOnline">Online gefunden</option>
-          </select>
-          <select
-            value={sourceFilter}
-            onChange={(e) => {
-              setSourceFilter(e.target.value)
-              setPage(1)
-            }}
-            style={styles.select}
-          >
-            <option value="">Alle Quellen</option>
-            <option value="stravaRoute">Strava Route</option>
-            <option value="stravaActivity">Strava Activity</option>
-            <option value="manualImport">Manuell</option>
           </select>
           <select value={sortBy} onChange={(e) => setSortBy(e.target.value as ListRoutesSortBy)} style={styles.select}>
             <option value="createdAt">Neueste</option>
@@ -307,6 +292,13 @@ function RoutesPage() {
         </Map>
       </div>
       {selectedPoint && <PointDetails point={selectedPoint.point} />}
+      {showExportModal && (
+        <StravaExportImportModal
+          invalidateQueryKeys={[getListRoutesQueryKey()]}
+          onClose={() => setShowExportModal(false)}
+        />
+      )}
+
       {showUploadModal && (
         <UploadGpxModal
           heading="Route hochladen"
@@ -400,8 +392,6 @@ function TrackClickHandler({
 
 const sourceColors: Record<string, string> = {
   manualImport: '#2196f3',
-  stravaRoute: '#4caf50',
-  stravaActivity: '#ff9800',
 }
 
 const styles = {

@@ -1,63 +1,60 @@
-import { Controller, Get, Post, Body, Req, Res, UnauthorizedException } from '@nestjs/common'
+import { Controller, Get, Req, Res, UnauthorizedException } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { JwtService } from '@nestjs/jwt'
 import { Request, Response } from 'express'
-import { IsNotEmpty, IsString } from 'class-validator'
 
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { AuthService } from './auth.service'
-import { StravaService } from './strava.service'
-import { StravaAthleteProfileDto } from './dto/strava-athlete-profile.dto'
 import { JwtPayload } from './jwt.strategy'
 
-const OAUTH_STATE_COOKIE = 'gpx_toolbox_oauth_state'
-const OAUTH_STATE_MAX_AGE_MS = 10 * 60 * 1000
+/** Holds what the Google callback needs to finish a login, kept in the browser that started it */
+const GOOGLE_COOKIE = 'gpx_toolbox_oauth'
+const COOKIE_PATH = '/api/auth'
+const COOKIE_MAX_AGE_MS = 10 * 60 * 1000
 
-/** DTO for manual refresh token authentication. */
-class RefreshTokenAuthDto {
-  @IsString()
-  @IsNotEmpty()
-  refresh_token: string
-}
+/** Values of a started Google login, see `OidcAuthorization` */
+type PendingGoogleLogin = { state: string; nonce: string; codeVerifier: string }
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly stravaService: StravaService,
     private readonly jwtService: JwtService,
     private readonly prisma: PrismaService,
   ) {}
 
-  @Get('strava')
-  @ApiOperation({ operationId: 'stravaAuthRedirect' })
-  @ApiOkResponse({ description: 'Redirects to Strava authorization page' })
-  stravaAuth(@Res({ passthrough: true }) res: Response) {
-    const { authorizationUrl, state } = this.authService.getAuthorizationUrl()
+  @Get('google')
+  @ApiOperation({ operationId: 'googleAuthRedirect' })
+  @ApiOkResponse({ description: 'Redirects to the Google sign-in page' })
+  async googleAuth(@Res({ passthrough: true }) res: Response) {
+    const { authorizationUrl, state, nonce, codeVerifier } = await this.authService.getGoogleAuthorization()
+    const pending: PendingGoogleLogin = { state, nonce, codeVerifier }
     // Remembered in the browser so the callback can check that it belongs to a login started here
-    res.cookie(OAUTH_STATE_COOKIE, state, {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: (process.env.STRAVA_REDIRECT_URI ?? '').startsWith('https://'),
-      maxAge: OAUTH_STATE_MAX_AGE_MS,
-    })
+    res.cookie(GOOGLE_COOKIE, Buffer.from(JSON.stringify(pending)).toString('base64url'), cookieOptions())
     res.redirect(authorizationUrl)
   }
 
-  @Get('strava/callback')
-  @ApiOperation({ operationId: 'stravaCallback' })
-  @ApiQuery({ name: 'code', required: false, description: 'Strava authorization code' })
+  @Get('google/callback')
+  @ApiOperation({ operationId: 'googleCallback' })
+  @ApiQuery({ name: 'code', required: false, description: 'Google authorization code' })
   @ApiQuery({ name: 'state', required: false, description: 'OAuth state parameter' })
-  async stravaCallback(@Req() req: Request, @Res() res: Response) {
-    const { code, state } = req.query as { code?: string; state?: string }
+  async googleCallback(@Req() req: Request, @Res() res: Response) {
+    const { code, state, error } = req.query as { code?: string; state?: string; error?: string }
 
-    const expectedState = readCookie(req.headers.cookie, OAUTH_STATE_COOKIE)
-    res.clearCookie(OAUTH_STATE_COOKIE)
+    const pending = readPendingGoogleLogin(readCookie(req.headers.cookie, GOOGLE_COOKIE))
+    res.clearCookie(GOOGLE_COOKIE, { path: COOKIE_PATH })
 
-    if (!this.authService.verifyState(state, expectedState)) {
+    if (!pending || !this.authService.verifyState(state, pending.state)) {
       return res.status(401).json({ error: 'Invalid state parameter' })
+    }
+
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4250'
+
+    // E.g. the user declined on the Google page
+    if (error) {
+      return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent(error)}`)
     }
 
     if (!code) {
@@ -65,101 +62,15 @@ export class AuthController {
     }
 
     try {
-      const { jwtToken } = await this.authService.authenticateWithAuthorizationCode(code)
+      const { jwtToken } = await this.authService.loginWithGoogle(code, pending.codeVerifier, pending.nonce)
 
       // Redirect frontend with JWT in URL fragment (SPA-friendly)
-      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4250'
       res.redirect(`${frontendUrl}#token=${jwtToken}`)
-    } catch (error) {
-      if (error instanceof UnauthorizedException) {
-        return res.status(401).json({ error: error.message })
+    } catch (e) {
+      if (e instanceof UnauthorizedException) {
+        return res.status(401).json({ error: e.message })
       }
       res.status(500).json({ error: 'Authentication failed' })
-    }
-  }
-
-  @Get('athlete')
-  @ApiOperation({ operationId: 'stravaAthlete' })
-  @ApiOkResponse({ type: StravaAthleteProfileDto, description: 'Strava athlete profile with local stats' })
-  async getStravaAthlete(@Req() req: Request) {
-    const payload = this.verifyBearer(req)
-    const accessToken = await this.authService.getValidAccessToken(payload.sub)
-
-    const athlete = (await this.stravaService.getAthlete(accessToken)) as {
-      id?: string
-      username?: string | null
-      firstname?: string
-      lastname?: string
-      profile?: string
-      profile_medium?: string
-      city?: string
-      state?: string
-      country?: string
-      sex?: string
-      weight?: number
-      premium?: boolean
-      summit?: boolean
-      created_at?: string
-      updated_at?: string
-      follower_count?: number
-      friend_count?: number
-      measurement_preference?: string
-      ftp?: number
-      clubs?: unknown
-      bikes?: unknown
-      shoes?: unknown
-    }
-
-    // Aggregate local stats from database
-    const [routeCount, rideCount, routesWithPolyline] = await Promise.all([
-      this.prisma.route.count({ where: { userId: payload.sub } }),
-      this.prisma.activity.count({ where: { userId: payload.sub } }),
-      this.prisma.route.findMany({
-        where: { userId: payload.sub },
-        select: { stats: true },
-      }),
-    ])
-
-    const totalDistance = routesWithPolyline.reduce((sum, r) => {
-      const stats = r.stats as { distance?: number } | null
-      return sum + (stats?.distance ?? 0)
-    }, 0)
-
-    const totalElevation = routesWithPolyline.reduce((sum, r) => {
-      const stats = r.stats as { elevationGain?: number } | null
-      return sum + (stats?.elevationGain ?? 0)
-    }, 0)
-
-    return {
-      id: athlete.id,
-      username: athlete.username ?? undefined,
-      firstname: athlete.firstname,
-      lastname: athlete.lastname,
-      profile: athlete.profile,
-      profile_medium: athlete.profile_medium,
-      city: athlete.city,
-      state: athlete.state,
-      country: athlete.country,
-      gender: athlete.sex,
-      weight: athlete.weight,
-      premium: athlete.premium,
-      summit: athlete.summit,
-      created_at: athlete.created_at,
-      updated_at: athlete.updated_at,
-      follower_count: athlete.follower_count,
-      friend_count: athlete.friend_count,
-      measurement_preference: athlete.measurement_preference,
-      ftp: athlete.ftp,
-      clubs: athlete.clubs,
-      bikes: athlete.bikes,
-      shoes: athlete.shoes,
-      // Local database stats (fallback when Strava Premium stats are unavailable)
-      localStats: {
-        routeCount,
-        rideCount,
-        totalDistanceM: totalDistance,
-        totalElevationM: totalElevation,
-      },
     }
   }
 
@@ -171,7 +82,7 @@ export class AuthController {
       const payload = this.verifyBearer(req)
       const user = await this.prisma.user.findUnique({
         where: { id: payload.sub },
-        select: { id: true, stravaId: true, name: true, avatarUrl: true },
+        select: { id: true, name: true, email: true, avatarUrl: true },
       })
 
       // A valid JWT of a deleted user is not a valid login
@@ -179,37 +90,6 @@ export class AuthController {
     } catch {
       return { authenticated: false }
     }
-  }
-
-  @Post('refresh')
-  @ApiOperation({ operationId: 'refreshStravaToken' })
-  @ApiOkResponse({ description: 'Token refreshed successfully' })
-  async refreshStravaToken(@Req() req: Request) {
-    const payload = this.verifyBearer(req)
-    const user = await this.prisma.user.findUnique({
-      where: { id: payload.sub },
-    })
-
-    if (!user?.refreshToken) {
-      throw new UnauthorizedException('No refresh token available')
-    }
-
-    // Refresh the Strava token and persist the new access/refresh tokens + expiry.
-    await this.authService.refreshAndPersist(user.id, user.refreshToken)
-
-    // Issue new JWT
-    const jwtPayload = { sub: user.id, stravaId: user.stravaId }
-    const newJwt = this.jwtService.sign(jwtPayload)
-
-    return { accessToken: newJwt }
-  }
-
-  @Post('refresh-token')
-  @ApiOperation({ operationId: 'authenticateWithRefreshToken' })
-  @ApiOkResponse({ description: 'Authenticated successfully, returns JWT token' })
-  async authenticateWithRefreshToken(@Body() body: RefreshTokenAuthDto) {
-    const result = await this.authService.authenticateWithRefreshToken(body.refresh_token)
-    return { accessToken: result.jwtToken }
   }
 
   /** Verify the JWT from the Authorization header; an invalid or missing token is a 401, not a 500 */
@@ -222,6 +102,33 @@ export class AuthController {
     } catch {
       throw new UnauthorizedException('Invalid access token')
     }
+  }
+}
+
+/** The cookie of the OAuth flow is only needed by the callback, so it is short-lived and scoped to the auth API */
+function cookieOptions() {
+  const redirectUri = process.env.GOOGLE_REDIRECT_URI ?? ''
+  return {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: redirectUri.startsWith('https://'),
+    path: COOKIE_PATH,
+    maxAge: COOKIE_MAX_AGE_MS,
+  } as const
+}
+
+/** Decode the cookie set by `googleAuth`; anything else (missing, tampered, truncated) is "no login started" */
+function readPendingGoogleLogin(value: string | undefined): PendingGoogleLogin | undefined {
+  if (!value) return undefined
+  try {
+    const pending = JSON.parse(Buffer.from(value, 'base64url').toString('utf-8')) as Partial<PendingGoogleLogin>
+    return typeof pending.state === 'string' &&
+      typeof pending.nonce === 'string' &&
+      typeof pending.codeVerifier === 'string'
+      ? { state: pending.state, nonce: pending.nonce, codeVerifier: pending.codeVerifier }
+      : undefined
+  } catch {
+    return undefined
   }
 }
 

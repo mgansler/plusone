@@ -1,10 +1,10 @@
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { AuthProvider, extractTokenFromHash, handleOAuthCallback, useAuth } from './auth-context'
 
 const TOKEN_KEY = 'gpx-toolbox-jwt'
-const user = { id: 'u1', stravaId: '42', name: 'Martin', avatarUrl: null }
+const user = { id: 'u1', name: 'Martin', email: 'martin@example.com', avatarUrl: null }
 
 /** Renders the auth state as text and exposes the actions */
 function AuthState() {
@@ -14,7 +14,7 @@ function AuthState() {
       <p>{auth.isLoading ? 'lädt' : auth.isAuthenticated ? `angemeldet als ${auth.user?.name}` : 'abgemeldet'}</p>
       <p>token: {auth.token ?? '-'}</p>
       <button onClick={auth.logout}>Abmelden</button>
-      <button onClick={() => auth.loginWithRefreshToken('r1').catch((e: Error) => e)}>Token-Login</button>
+      <button onClick={auth.login}>Anmelden</button>
     </div>
   )
 }
@@ -105,39 +105,15 @@ describe('AuthProvider', () => {
     expect(localStorage.getItem(TOKEN_KEY)).toBeNull()
   })
 
-  it('stores the JWT of a refresh token login and reloads the app', async () => {
-    const fetchMock = mockFetch({ ok: true, json: async () => ({ accessToken: 'jwt-new' }) })
+  it('starts the Google login by navigating to the backend', async () => {
+    const fetchMock = mockFetch({ ok: true })
     renderAuth()
     await screen.findByText('abgemeldet')
 
-    act(() => screen.getByText('Token-Login').click())
+    act(() => screen.getByText('Anmelden').click())
 
-    await waitFor(() => expect(locationHref).toBe('/'))
-    expect(localStorage.getItem(TOKEN_KEY)).toBe('jwt-new')
-    expect(fetchMock).toHaveBeenCalledWith(
-      '/api/auth/refresh-token',
-      expect.objectContaining({ method: 'POST', body: JSON.stringify({ refresh_token: 'r1' }) }),
-    )
-  })
-
-  it('rejects a failed refresh token login without storing anything', async () => {
-    mockFetch({ ok: false })
-    let error: unknown
-    function Login() {
-      const { loginWithRefreshToken } = useAuth()
-      return <button onClick={() => loginWithRefreshToken('bad').catch((e) => (error = e))}>Login</button>
-    }
-    render(
-      <AuthProvider>
-        <Login />
-      </AuthProvider>,
-    )
-
-    act(() => screen.getByText('Login').click())
-
-    await waitFor(() => expect(error).toEqual(new Error('Authentication failed')))
-    expect(localStorage.getItem(TOKEN_KEY)).toBeNull()
-    expect(locationHref).toBe('')
+    expect(locationHref).toBe('/api/auth/google')
+    expect(fetchMock).not.toHaveBeenCalled()
   })
 })
 

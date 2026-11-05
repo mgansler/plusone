@@ -13,10 +13,16 @@ services:
       ADMIN_USER: root
       ADMIN_PASSWORD: ${FEEDS_ADMIN_PASSWORD}
     labels:
+      - 'traefik.enable=true'
       - 'traefik.http.services.feeds-app.loadbalancer.server.port=3333'
       - 'traefik.http.routers.feeds-app.rule=Host(`rss.martingansler.de`)'
       - 'traefik.http.routers.feeds-app.tls=true'
       - 'traefik.http.routers.feeds-app.tls.certresolver=letsencrypt'
+    logging:
+      driver: local
+      options:
+        max-size: '10m'
+        max-file: '3'
 
   database:
     restart: always
@@ -29,6 +35,11 @@ services:
       POSTGRES_DB: feeds
     volumes:
       - data:/var/lib/postgresql/data
+    logging:
+      driver: local
+      options:
+        max-size: '10m'
+        max-file: '3'
 
 volumes:
   data:

@@ -5,7 +5,6 @@ import { Mock } from 'vitest'
 import { PrismaService } from '@plusone/gpx-toolbox-persistence'
 
 import { RoutesService } from './routes.service'
-import { StravaService } from './strava.service'
 
 const sampleGpx = `<?xml version="1.0" encoding="UTF-8"?>
 <gpx>
@@ -20,7 +19,7 @@ const sampleGpx = `<?xml version="1.0" encoding="UTF-8"?>
 
 const userId = 'user-1'
 
-type MockPrisma = { route: Record<'create' | 'findUnique' | 'findMany' | 'update' | 'delete', Mock> }
+type MockPrisma = { route: Record<'create' | 'findUnique' | 'findFirst' | 'findMany' | 'update' | 'delete', Mock> }
 
 /**
  * Build a fresh testing module with a mutable mock PrismaService.
@@ -33,7 +32,6 @@ async function buildModule(mockPrisma: MockPrisma) {
         provide: PrismaService,
         useValue: mockPrisma,
       },
-      { provide: StravaService, useValue: {} },
     ],
   }).compile()
 }
@@ -46,6 +44,7 @@ describe('RoutesService', () => {
     const routeMock = {
       create: vi.fn(),
       findUnique: vi.fn(),
+      findFirst: vi.fn(),
       findMany: vi.fn(),
       update: vi.fn(),
       delete: vi.fn(),
@@ -82,6 +81,48 @@ describe('RoutesService', () => {
       const result = await service.importGpx(gpxWithName, { source: 'manualImport', name: 'My Named Track' }, userId)
 
       expect(result.name).toBe('My Named Track')
+    })
+
+    describe('skipDuplicate', () => {
+      it('returns the existing route instead of creating another one with the same GPX content', async () => {
+        mockPrisma.route.findFirst.mockResolvedValue({ id: 'existing', name: 'Alte Runde' })
+
+        const result = await service.importGpx(sampleGpx, { name: 'Neue Runde', skipDuplicate: true }, userId)
+
+        expect(result).toMatchObject({ id: 'existing', name: 'Alte Runde', duplicate: true })
+        expect(result.totalDistance).toBeGreaterThan(0)
+        expect(mockPrisma.route.create).not.toHaveBeenCalled()
+        // Only the routes of the same user count
+        expect(mockPrisma.route.findFirst).toHaveBeenCalledWith(
+          expect.objectContaining({ where: { userId, gpxContent: sampleGpx } }),
+        )
+      })
+
+      it('creates the route when there is none with this content yet', async () => {
+        mockPrisma.route.findFirst.mockResolvedValue(null)
+        mockPrisma.route.create.mockResolvedValue({ id: 'route-1', name: 'Neue Runde' })
+
+        const result = await service.importGpx(sampleGpx, { name: 'Neue Runde', skipDuplicate: true }, userId)
+
+        expect(result).toMatchObject({ id: 'route-1', duplicate: false })
+        expect(mockPrisma.route.create).toHaveBeenCalledTimes(1)
+      })
+
+      it('does not look for duplicates unless asked to', async () => {
+        mockPrisma.route.create.mockResolvedValue({ id: 'route-1', name: 'Runde' })
+
+        const result = await service.importGpx(sampleGpx, { name: 'Runde' }, userId)
+
+        expect(result.duplicate).toBe(false)
+        expect(mockPrisma.route.findFirst).not.toHaveBeenCalled()
+      })
+
+      it('still rejects a GPX file without track points', async () => {
+        await expect(
+          service.importGpx('<gpx><trk><trkseg></trkseg></trk></gpx>', { name: 'Leer', skipDuplicate: true }, userId),
+        ).rejects.toThrow('No track points found in GPX file')
+        expect(mockPrisma.route.findFirst).not.toHaveBeenCalled()
+      })
     })
 
     it('throws when GPX has no track points', async () => {
@@ -442,118 +483,6 @@ describe('RoutesService', () => {
       mockPrisma.route.findUnique.mockResolvedValue(null)
 
       await expect(service.exportGpx('nonexistent', userId)).rejects.toThrow('not found')
-    })
-  })
-
-  describe('createFromStrava', () => {
-    it('creates a route with stravaActivity source', async () => {
-      const mockRoute = { id: 'route-1', name: 'Strava Route' }
-      const points = [
-        { latitude: 48.0, longitude: 11.0, elevation: 100, time: new Date() },
-        { latitude: 48.001, longitude: 11.001, elevation: 110, time: new Date() },
-      ]
-
-      mockPrisma.route.create.mockResolvedValue(mockRoute)
-
-      const result = await service.createFromStrava('strava-123', 'Strava Route', sampleGpx, points, userId)
-
-      expect(result.id).toBe('route-1')
-      expect(mockPrisma.route.create.mock.calls[0][0].data.source).toBe('stravaActivity')
-    })
-  })
-
-  describe('createStravaRoute', () => {
-    it('creates a route with stravaRoute source', async () => {
-      const mockRoute = { id: 'route-1', name: 'Strava Route' }
-      mockPrisma.route.create.mockResolvedValue(mockRoute)
-
-      const result = await service.createStravaRoute('strava-123', 'Strava Route', sampleGpx, userId)
-
-      expect(result.id).toBe('route-1')
-      expect(mockPrisma.route.create.mock.calls[0][0].data.source).toBe('stravaRoute')
-      expect(mockPrisma.route.create.mock.calls[0][0].data.stravaRouteId).toBe('strava-123')
-    })
-
-    it('handles empty GPX with zeroed stats', async () => {
-      const mockRoute = { id: 'route-1', name: 'Empty Route' }
-      mockPrisma.route.create.mockResolvedValue(mockRoute)
-
-      const result = await service.createStravaRoute('strava-123', 'Empty Route', '', userId)
-
-      expect(result.id).toBe('route-1')
-      const createData = mockPrisma.route.create.mock.calls[0][0].data
-      expect(createData.stats.distance).toBe(0)
-      expect(createData.stats.elevationGain).toBe(0)
-      expect(createData.stats.elevationLoss).toBe(0)
-    })
-  })
-
-  describe('getStravaActivities', () => {
-    it('passes the date range to Strava and returns sport type and trainer flag', async () => {
-      const getActivities = vi.fn().mockResolvedValue([
-        {
-          id: 1,
-          name: 'Zwift',
-          sport_type: 'VirtualRide',
-          trainer: true,
-          start_date_local: '2026-10-01T08:00:00Z',
-          map: { summary_polyline: '_p~iF~ps|U' },
-        },
-      ])
-      const module = await Test.createTestingModule({
-        providers: [
-          RoutesService,
-          {
-            provide: PrismaService,
-            useValue: {
-              route: { findMany: vi.fn().mockResolvedValue([]) },
-              activity: { findMany: vi.fn().mockResolvedValue([]) },
-            },
-          },
-          { provide: StravaService, useValue: { getActivities } },
-        ],
-      }).compile()
-
-      const result = await module
-        .get<RoutesService>(RoutesService)
-        .getStravaActivities('token', userId, 2, 25, { after: 1_700_000_000, before: 1_800_000_000 })
-
-      expect(getActivities).toHaveBeenCalledWith('token', {
-        page: 2,
-        per_page: 25,
-        after: 1_700_000_000,
-        before: 1_800_000_000,
-      })
-      expect(result.items[0]).toEqual(
-        expect.objectContaining({ sport_type: 'VirtualRide', trainer: true, summary_polyline: '_p~iF~ps|U' }),
-      )
-    })
-
-    it('marks activities as imported based on the activities table, with the route they are linked to', async () => {
-      const getActivities = vi.fn().mockResolvedValue([
-        { id: 1, name: 'Imported' },
-        { id: 2, name: 'Not imported' },
-      ])
-      const findActivities = vi
-        .fn()
-        .mockResolvedValue([{ stravaActivityId: '1', routeId: 'route-1', avgHr: 140, maxHr: 170 }])
-      const module = await Test.createTestingModule({
-        providers: [
-          RoutesService,
-          { provide: PrismaService, useValue: { activity: { findMany: findActivities } } },
-          { provide: StravaService, useValue: { getActivities } },
-        ],
-      }).compile()
-
-      const result = await module.get<RoutesService>(RoutesService).getStravaActivities('token', userId, 1, 25)
-
-      expect(findActivities).toHaveBeenCalledWith(
-        expect.objectContaining({ where: { userId, stravaActivityId: { in: ['1', '2'] } } }),
-      )
-      expect(result.items[0]).toEqual(
-        expect.objectContaining({ imported: true, routeId: 'route-1', heart_rate_avg: 140, heart_rate_max: 170 }),
-      )
-      expect(result.items[1]).toEqual(expect.objectContaining({ imported: false, routeId: undefined }))
     })
   })
 })

@@ -25,7 +25,6 @@ export const defaultCenter: [number, number] = [48.77, 9.16]
 const tileLayers: Record<string, string> = {
   OpenStreetMap: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   Satellite: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-  Topografisch: 'https://tile.opentopomap.org/{z}/{x}/{y}.png',
 }
 
 /**
@@ -86,9 +85,7 @@ export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProp
         attribution:
           name === 'OpenStreetMap'
             ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            : name === 'Satellite'
-              ? '&copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics'
-              : '&copy; <a href="https://opentopomap.org">OpenTopoMap</a> &mdash; ODbL',
+            : '&copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics',
         maxZoom: 17,
         minZoom: 8,
       })

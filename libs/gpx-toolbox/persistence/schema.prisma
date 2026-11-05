@@ -9,15 +9,50 @@ generator client {
 }
 
 model User {
-  id             String  @id @default(uuid())
-  stravaId       String  @unique
+  id        String   @id @default(uuid())
+  name      String?
+  email     String?
+  avatarUrl String?
+  createdAt DateTime @default(now())
+
+  identities       Identity[]
+  stravaConnection StravaConnection?
+
+  @@map("users")
+}
+
+// How a user logs in. `subject` is the stable id of the identity provider (e.g. the `sub` claim), not the email.
+model Identity {
+  id        String           @id @default(uuid())
+  userId    String
+  provider  IdentityProvider
+  subject   String
+  email     String?
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, subject])
+  @@index([userId])
+  @@map("identities")
+}
+
+enum IdentityProvider {
+  google
+}
+
+// Optional link to a Strava account, independent of how the user logs in
+model StravaConnection {
+  userId         String    @id
+  stravaId       String    @unique
   accessToken    String
   refreshToken   String?
   tokenExpiresAt DateTime?
-  name           String?
-  avatarUrl      String?
+  connectedAt    DateTime  @default(now())
 
-  @@map("users")
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("strava_connections")
 }
 
 model Route {
@@ -38,7 +73,7 @@ model Route {
   status           RouteStatus @default(planned)
   ratingTags       Json // ["Nochmal fahren", "Anpassung nötig", ...]
   notes            String?
-  userId           String? // Strava user ID (nullable for manual imports)
+  userId           String? // User id (nullable for imports without an owner)
   stravaRouteId    String?     @unique
   stravaActivityId String?     @unique // Strava activity the route was created from (link to activities: Activity.routeId)
   createdAt        DateTime    @default(now())
@@ -65,7 +100,7 @@ enum RouteStatus {
 model Activity {
   id               String   @id @default(uuid())
   routeId          String
-  userId           String? // Strava user ID (nullable for manual imports)
+  userId           String? // User id (nullable for imports without an owner)
   stravaActivityId String?  @unique
   title            String?  // Activity title (from Strava or manual entry)
   riddenAt         DateTime

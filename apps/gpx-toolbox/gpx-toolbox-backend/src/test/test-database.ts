@@ -43,6 +43,8 @@ export async function createTestDatabase(): Promise<TestDatabase> {
     reset: async () => {
       await prisma.activity.deleteMany()
       await prisma.route.deleteMany()
+      await prisma.stravaConnection.deleteMany()
+      await prisma.identity.deleteMany()
       await prisma.user.deleteMany()
     },
     close: async () => {

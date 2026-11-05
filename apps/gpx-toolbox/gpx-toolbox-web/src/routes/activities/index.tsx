@@ -239,9 +239,6 @@ function ActivitiesPage() {
               <button onClick={() => setShowUploadModal(true)} style={actionButtonStyle}>
                 📤 Upload
               </button>
-              <Link to="/activities/sync" style={actionButtonStyle}>
-                📥 Sync
-              </Link>
             </div>
           </div>
 

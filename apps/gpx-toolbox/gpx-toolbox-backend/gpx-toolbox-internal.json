@@ -424,63 +424,6 @@
         ]
       }
     },
-    "/api/routes/strava-activities": {
-      "get": {
-        "operationId": "listStravaActivities",
-        "parameters": [
-          {
-            "name": "page",
-            "required": false,
-            "in": "query",
-            "description": "Page number (default: 1)",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "per_page",
-            "required": false,
-            "in": "query",
-            "description": "Items per page (default: 50)",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "after",
-            "required": false,
-            "in": "query",
-            "description": "Only activities after this time (ISO 8601)",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "before",
-            "required": false,
-            "in": "query",
-            "description": "Only activities before this time (ISO 8601)",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of Strava activities with metadata"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "routes"
-        ]
-      }
-    },
     "/api/routes/nearby": {
       "get": {
         "operationId": "findNearbyRoutes",
@@ -637,13 +580,13 @@
         ]
       }
     },
-    "/api/auth/strava": {
+    "/api/auth/google": {
       "get": {
-        "operationId": "stravaAuthRedirect",
+        "operationId": "googleAuthRedirect",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Redirects to Strava authorization page"
+            "description": "Redirects to the Google sign-in page"
           }
         },
         "summary": "",
@@ -652,9 +595,9 @@
         ]
       }
     },
-    "/api/auth/strava/callback": {
+    "/api/auth/google/callback": {
       "get": {
-        "operationId": "stravaCallback",
+        "operationId": "googleCallback",
         "parameters": [
           {
             "name": "state",
@@ -667,35 +610,13 @@
             "name": "code",
             "required": false,
             "in": "query",
-            "description": "Strava authorization code",
+            "description": "Google authorization code",
             "schema": {}
           }
         ],
         "responses": {
           "200": {
             "description": ""
-          }
-        },
-        "summary": "",
-        "tags": [
-          "auth"
-        ]
-      }
-    },
-    "/api/auth/athlete": {
-      "get": {
-        "operationId": "stravaAthlete",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Strava athlete profile with local stats",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StravaAthleteProfileDto"
-                }
-              }
-            }
           }
         },
         "summary": "",
@@ -719,46 +640,6 @@
         ]
       }
     },
-    "/api/auth/refresh": {
-      "post": {
-        "operationId": "refreshStravaToken",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Token refreshed successfully"
-          }
-        },
-        "summary": "",
-        "tags": [
-          "auth"
-        ]
-      }
-    },
-    "/api/auth/refresh-token": {
-      "post": {
-        "operationId": "authenticateWithRefreshToken",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RefreshTokenAuthDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Authenticated successfully, returns JWT token"
-          }
-        },
-        "summary": "",
-        "tags": [
-          "auth"
-        ]
-      }
-    },
     "/api/import/activity": {
       "post": {
         "operationId": "importGpxActivity",
@@ -766,187 +647,6 @@
         "responses": {
           "200": {
             "description": "Import results",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportResultDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "import"
-        ]
-      }
-    },
-    "/api/import/strava/routes": {
-      "post": {
-        "operationId": "importStravaRoutes",
-        "parameters": [
-          {
-            "name": "force",
-            "required": false,
-            "in": "query",
-            "description": "Force re-import",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Import results",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportResultDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "import"
-        ]
-      },
-      "get": {
-        "operationId": "listStravaRoutes",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "List of Strava routes",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StravaRouteSummaryDto"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "import"
-        ]
-      }
-    },
-    "/api/import/strava/activity": {
-      "post": {
-        "operationId": "importStravaActivity",
-        "parameters": [
-          {
-            "name": "activityId",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "autoMatch",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Import results",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportResultDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "import"
-        ]
-      }
-    },
-    "/api/import/strava/all-activities": {
-      "post": {
-        "operationId": "importAllStravaActivities",
-        "parameters": [
-          {
-            "name": "limit",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Import results",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportResultDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "import"
-        ]
-      }
-    },
-    "/api/import/strava/routes/{stravaRouteId}": {
-      "post": {
-        "operationId": "importSingleStravaRoute",
-        "parameters": [
-          {
-            "name": "stravaRouteId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Import result for single route",
             "content": {
               "application/json": {
                 "schema": {
@@ -1568,36 +1268,6 @@
           "activities"
         ]
       }
-    },
-    "/api/debug/strava": {
-      "get": {
-        "operationId": "debugStravaRequest",
-        "parameters": [
-          {
-            "name": "endpoint",
-            "required": true,
-            "in": "query",
-            "description": "Strava API endpoint (e.g. /athlete, /athletes/me/stats, /routes)",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "debug"
-        ]
-      }
     }
   },
   "info": {
@@ -1636,6 +1306,10 @@
               "stravaActivity",
               "manualImport"
             ]
+          },
+          "skipDuplicate": {
+            "type": "boolean",
+            "description": "If the user already has a route with exactly this GPX content, return it instead of creating another one"
           }
         }
       },
@@ -1848,107 +1522,6 @@
           }
         }
       },
-      "StravaAthleteProfileDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number",
-            "example": 123456
-          },
-          "firstname": {
-            "type": "string",
-            "example": "John"
-          },
-          "lastname": {
-            "type": "string",
-            "example": "Doe"
-          },
-          "username": {
-            "type": "string",
-            "example": "johndoe",
-            "description": "Strava username, not set for every account"
-          },
-          "profile": {
-            "type": "object"
-          },
-          "profile_medium": {
-            "type": "object"
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-          "gender": {
-            "type": "string",
-            "example": "M"
-          },
-          "weight": {
-            "type": "object"
-          },
-          "friend": {
-            "type": "object"
-          },
-          "follower": {
-            "type": "object"
-          },
-          "athleteType": {
-            "type": "string",
-            "example": "cyclist"
-          },
-          "premium": {
-            "type": "boolean"
-          },
-          "summit": {
-            "type": "boolean"
-          },
-          "created_at": {
-            "type": "string"
-          },
-          "updated_at": {
-            "type": "string"
-          },
-          "follower_count": {
-            "type": "number"
-          },
-          "friend_count": {
-            "type": "number"
-          },
-          "measurement_preference": {
-            "type": "string"
-          },
-          "ftp": {
-            "type": "object"
-          },
-          "clubs": {
-            "type": "object"
-          },
-          "bikes": {
-            "type": "object"
-          },
-          "shoes": {
-            "type": "object"
-          },
-          "localStats": {
-            "type": "object"
-          }
-        },
-        "required": [
-          "id",
-          "firstname",
-          "lastname",
-          "gender",
-          "athleteType"
-        ]
-      },
-      "RefreshTokenAuthDto": {
-        "type": "object",
-        "properties": {}
-      },
       "ImportResultDto": {
         "type": "object",
         "properties": {
@@ -1969,40 +1542,6 @@
           "imported",
           "matched",
           "newRoutes"
-        ]
-      },
-      "StravaRouteSummaryDto": {
-        "type": "object",
-        "properties": {
-          "stravaId": {
-            "type": "number",
-            "description": "Strava route ID"
-          },
-          "name": {
-            "type": "string",
-            "description": "Route name"
-          },
-          "description": {
-            "type": "string",
-            "description": "Route description"
-          },
-          "distance": {
-            "type": "number",
-            "description": "Distance in meters"
-          },
-          "elevationGain": {
-            "type": "number",
-            "description": "Elevation gain in meters"
-          },
-          "imported": {
-            "type": "boolean",
-            "description": "Whether already imported"
-          }
-        },
-        "required": [
-          "stravaId",
-          "name",
-          "imported"
         ]
       },
       "ActivityRouteResponseDto": {

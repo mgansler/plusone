@@ -9,7 +9,7 @@ const DATABASE_FILE = join(__dirname, '../../../../../libs/gpx-toolbox/persisten
 export function resetDatabase(): null {
   const db = new Database(DATABASE_FILE)
   try {
-    db.exec('DELETE FROM activities; DELETE FROM routes; DELETE FROM users;')
+    db.exec('DELETE FROM activities; DELETE FROM routes; DELETE FROM identities; DELETE FROM users;')
   } finally {
     db.close()
   }

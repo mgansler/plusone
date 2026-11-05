@@ -35,13 +35,16 @@ describe('ProtectedRoute', () => {
     expect(screen.queryByText('Inhalt')).toBeNull()
   })
 
-  it('renders public routes without login', () => {
-    window.history.replaceState(null, '', '/callback')
-    mockAuth({ isAuthenticated: false, isLoading: false })
-    render(<ProtectedRoute>Inhalt</ProtectedRoute>)
+  it.each(['/callback', '/login', '/datenschutz', '/impressum'])(
+    'renders the public route %s without login',
+    (path) => {
+      window.history.replaceState(null, '', path)
+      mockAuth({ isAuthenticated: false, isLoading: false })
+      render(<ProtectedRoute>Inhalt</ProtectedRoute>)
 
-    expect(screen.getByText('Inhalt')).toBeTruthy()
-  })
+      expect(screen.getByText('Inhalt')).toBeTruthy()
+    },
+  )
 
   it('renders the content when authenticated', () => {
     mockAuth({ isAuthenticated: true, isLoading: false })

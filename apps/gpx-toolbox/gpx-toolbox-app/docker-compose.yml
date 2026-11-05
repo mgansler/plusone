@@ -5,20 +5,26 @@ services:
     environment:
       TZ: 'Europe/Berlin'
       GPX_TOOLBOX_DATABASE_URL: 'file:/usr/gpx-toolbox/sqlite/gpx-toolbox.db'
-      STRAVA_CLIENT_ID: ${STRAVA_CLIENT_ID}
-      STRAVA_CLIENT_SECRET: ${STRAVA_CLIENT_SECRET}
-      STRAVA_REDIRECT_URI: ${STRAVA_REDIRECT_URI}
-      # Where the Strava OAuth callback sends the browser back to (same host as the Traefik rule)
+      GOOGLE_CLIENT_ID: ${GPX_GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GPX_GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URI: ${GPX_GOOGLE_REDIRECT_URI}
+      # Where the Google login sends the browser back to (same host as the Traefik rule)
       FRONTEND_URL: 'https://gpx.martingansler.de'
       JWT_SECRET: ${GPX_TOOLBOX_JWT_SECRET}
     volumes:
       - sqlite:/usr/gpx-toolbox/sqlite/
     labels:
+      - 'traefik.enable=true'
       - 'traefik.http.services.gpx-toolbox-app.loadbalancer.server.port=3333'
       - 'traefik.http.routers.gpx-toolbox-app.rule=Host(`gpx.martingansler.de`)'
       - 'traefik.http.routers.gpx-toolbox-app.tls=true'
       - 'traefik.http.routers.gpx-toolbox-app.tls.certresolver=letsencrypt'
       - 'traefik.http.routers.gpx-toolbox-app.ruleSyntax=v3'
+    logging:
+      driver: local
+      options:
+        max-size: '10m'
+        max-file: '3'
 
 volumes:
   sqlite:

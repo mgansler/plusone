@@ -11,11 +11,17 @@ services:
     volumes:
       - sqlite:/usr/trailcare/sqlite/
     labels:
+      - 'traefik.enable=true'
       - 'traefik.http.services.trailcare-app.loadbalancer.server.port=3105'
       - 'traefik.http.routers.trailcare-app.rule=Host(`care.stgtrails.de`)'
       - 'traefik.http.routers.trailcare-app.tls=true'
       - 'traefik.http.routers.trailcare-app.tls.certresolver=letsencrypt'
       - 'traefik.http.routers.trailcare-app.ruleSyntax=v3'
+    logging:
+      driver: local
+      options:
+        max-size: '10m'
+        max-file: '3'
 
 volumes:
   sqlite:

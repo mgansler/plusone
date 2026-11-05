@@ -12,16 +12,16 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CallbackRouteImport } from './routes/callback'
 import { Route as CompareRouteImport } from './routes/compare'
+import { Route as DatenschutzRouteImport } from './routes/datenschutz'
+import { Route as ImpressumRouteImport } from './routes/impressum'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as NearbyRouteImport } from './routes/nearby'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as UtilsRouteImport } from './routes/utils'
 import { Route as ActivitiesIndexRouteImport } from './routes/activities/index'
 import { Route as ActivitiesActivityIdRouteImport } from './routes/activities/$activityId'
-import { Route as ActivitiesSyncRouteImport } from './routes/activities/sync'
-import { Route as DebugIndexRouteImport } from './routes/debug/index'
 import { Route as RoutesIndexRouteImport } from './routes/routes/index'
 import { Route as RoutesRouteIdRouteImport } from './routes/routes/$routeId'
-import { Route as RoutesSyncRouteImport } from './routes/routes/sync'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -38,6 +38,16 @@ const CompareRoute = CompareRouteImport.update({
   path: '/compare',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DatenschutzRoute = DatenschutzRouteImport.update({
+  id: '/datenschutz',
+  path: '/datenschutz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImpressumRoute = ImpressumRouteImport.update({
+  id: '/impressum',
+  path: '/impressum',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -46,6 +56,11 @@ const LoginRoute = LoginRouteImport.update({
 const NearbyRoute = NearbyRouteImport.update({
   id: '/nearby',
   path: '/nearby',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UtilsRoute = UtilsRouteImport.update({
@@ -63,16 +78,6 @@ const ActivitiesActivityIdRoute = ActivitiesActivityIdRouteImport.update({
   path: '/activities/$activityId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ActivitiesSyncRoute = ActivitiesSyncRouteImport.update({
-  id: '/activities/sync',
-  path: '/activities/sync',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DebugIndexRoute = DebugIndexRouteImport.update({
-  id: '/debug/',
-  path: '/debug/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const RoutesIndexRoute = RoutesIndexRouteImport.update({
   id: '/routes/',
   path: '/routes/',
@@ -83,40 +88,35 @@ const RoutesRouteIdRoute = RoutesRouteIdRouteImport.update({
   path: '/routes/$routeId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RoutesSyncRoute = RoutesSyncRouteImport.update({
-  id: '/routes/sync',
-  path: '/routes/sync',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/callback': typeof CallbackRoute
   '/compare': typeof CompareRoute
+  '/datenschutz': typeof DatenschutzRoute
+  '/impressum': typeof ImpressumRoute
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
+  '/settings': typeof SettingsRoute
   '/utils': typeof UtilsRoute
   '/activities/$activityId': typeof ActivitiesActivityIdRoute
-  '/activities/sync': typeof ActivitiesSyncRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
-  '/routes/sync': typeof RoutesSyncRoute
   '/activities/': typeof ActivitiesIndexRoute
-  '/debug/': typeof DebugIndexRoute
   '/routes/': typeof RoutesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/callback': typeof CallbackRoute
   '/compare': typeof CompareRoute
+  '/datenschutz': typeof DatenschutzRoute
+  '/impressum': typeof ImpressumRoute
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
+  '/settings': typeof SettingsRoute
   '/utils': typeof UtilsRoute
   '/activities/$activityId': typeof ActivitiesActivityIdRoute
-  '/activities/sync': typeof ActivitiesSyncRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
-  '/routes/sync': typeof RoutesSyncRoute
   '/activities': typeof ActivitiesIndexRoute
-  '/debug': typeof DebugIndexRoute
   '/routes': typeof RoutesIndexRoute
 }
 export interface FileRoutesById {
@@ -124,15 +124,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/callback': typeof CallbackRoute
   '/compare': typeof CompareRoute
+  '/datenschutz': typeof DatenschutzRoute
+  '/impressum': typeof ImpressumRoute
   '/login': typeof LoginRoute
   '/nearby': typeof NearbyRoute
+  '/settings': typeof SettingsRoute
   '/utils': typeof UtilsRoute
   '/activities/$activityId': typeof ActivitiesActivityIdRoute
-  '/activities/sync': typeof ActivitiesSyncRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
-  '/routes/sync': typeof RoutesSyncRoute
   '/activities/': typeof ActivitiesIndexRoute
-  '/debug/': typeof DebugIndexRoute
   '/routes/': typeof RoutesIndexRoute
 }
 export interface FileRouteTypes {
@@ -141,45 +141,45 @@ export interface FileRouteTypes {
     | '/'
     | '/callback'
     | '/compare'
+    | '/datenschutz'
+    | '/impressum'
     | '/login'
     | '/nearby'
+    | '/settings'
     | '/utils'
     | '/activities/$activityId'
-    | '/activities/sync'
     | '/routes/$routeId'
-    | '/routes/sync'
     | '/activities/'
-    | '/debug/'
     | '/routes/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/callback'
     | '/compare'
+    | '/datenschutz'
+    | '/impressum'
     | '/login'
     | '/nearby'
+    | '/settings'
     | '/utils'
     | '/activities/$activityId'
-    | '/activities/sync'
     | '/routes/$routeId'
-    | '/routes/sync'
     | '/activities'
-    | '/debug'
     | '/routes'
   id:
     | '__root__'
     | '/'
     | '/callback'
     | '/compare'
+    | '/datenschutz'
+    | '/impressum'
     | '/login'
     | '/nearby'
+    | '/settings'
     | '/utils'
     | '/activities/$activityId'
-    | '/activities/sync'
     | '/routes/$routeId'
-    | '/routes/sync'
     | '/activities/'
-    | '/debug/'
     | '/routes/'
   fileRoutesById: FileRoutesById
 }
@@ -187,15 +187,15 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CallbackRoute: typeof CallbackRoute
   CompareRoute: typeof CompareRoute
+  DatenschutzRoute: typeof DatenschutzRoute
+  ImpressumRoute: typeof ImpressumRoute
   LoginRoute: typeof LoginRoute
   NearbyRoute: typeof NearbyRoute
+  SettingsRoute: typeof SettingsRoute
   UtilsRoute: typeof UtilsRoute
   ActivitiesActivityIdRoute: typeof ActivitiesActivityIdRoute
-  ActivitiesSyncRoute: typeof ActivitiesSyncRoute
   RoutesRouteIdRoute: typeof RoutesRouteIdRoute
-  RoutesSyncRoute: typeof RoutesSyncRoute
   ActivitiesIndexRoute: typeof ActivitiesIndexRoute
-  DebugIndexRoute: typeof DebugIndexRoute
   RoutesIndexRoute: typeof RoutesIndexRoute
 }
 
@@ -222,6 +222,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompareRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/datenschutz': {
+      id: '/datenschutz'
+      path: '/datenschutz'
+      fullPath: '/datenschutz'
+      preLoaderRoute: typeof DatenschutzRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/impressum': {
+      id: '/impressum'
+      path: '/impressum'
+      fullPath: '/impressum'
+      preLoaderRoute: typeof ImpressumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -234,6 +248,13 @@ declare module '@tanstack/react-router' {
       path: '/nearby'
       fullPath: '/nearby'
       preLoaderRoute: typeof NearbyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/utils': {
@@ -257,20 +278,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ActivitiesActivityIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/activities/sync': {
-      id: '/activities/sync'
-      path: '/activities/sync'
-      fullPath: '/activities/sync'
-      preLoaderRoute: typeof ActivitiesSyncRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/debug/': {
-      id: '/debug/'
-      path: '/debug'
-      fullPath: '/debug/'
-      preLoaderRoute: typeof DebugIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/routes/': {
       id: '/routes/'
       path: '/routes'
@@ -285,13 +292,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoutesRouteIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/routes/sync': {
-      id: '/routes/sync'
-      path: '/routes/sync'
-      fullPath: '/routes/sync'
-      preLoaderRoute: typeof RoutesSyncRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -299,15 +299,15 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CallbackRoute: CallbackRoute,
   CompareRoute: CompareRoute,
+  DatenschutzRoute: DatenschutzRoute,
+  ImpressumRoute: ImpressumRoute,
   LoginRoute: LoginRoute,
   NearbyRoute: NearbyRoute,
+  SettingsRoute: SettingsRoute,
   UtilsRoute: UtilsRoute,
   ActivitiesActivityIdRoute: ActivitiesActivityIdRoute,
-  ActivitiesSyncRoute: ActivitiesSyncRoute,
   RoutesRouteIdRoute: RoutesRouteIdRoute,
-  RoutesSyncRoute: RoutesSyncRoute,
   ActivitiesIndexRoute: ActivitiesIndexRoute,
-  DebugIndexRoute: DebugIndexRoute,
   RoutesIndexRoute: RoutesIndexRoute,
 }
 export const routeTree = rootRouteImport

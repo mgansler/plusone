@@ -56,6 +56,16 @@ describe('UploadGpxModal', () => {
     expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: ['routes'] })
   })
 
+  it('tells before the upload that heart rate values are stored and links the privacy policy', () => {
+    renderModal()
+
+    expect(screen.getByText(/Enthält die Datei Herzfrequenzwerte, werden sie gespeichert/)).toBeTruthy()
+    expect(screen.getByText(/willigst du in die Speicherung ein/)).toBeTruthy()
+    const link = screen.getByRole('link', { name: 'Datenschutzerklärung' })
+    expect(link.getAttribute('href')).toBe('/datenschutz')
+    expect(link.getAttribute('target')).toBe('_blank')
+  })
+
   it('omits an empty optional name', async () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 201 }))
     vi.stubGlobal('fetch', fetchMock)

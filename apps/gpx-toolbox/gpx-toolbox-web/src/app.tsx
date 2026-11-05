@@ -2,10 +2,9 @@ import { Outlet, useLocation } from '@tanstack/react-router'
 
 import { useAuth } from './lib/auth-context'
 import { ProtectedRoute } from './components/ProtectedRoute'
-import { UserMenu } from './components/UserMenu'
 
 /** Public routes that don't require authentication. */
-const PUBLIC_ROUTES = new Set(['/login', '/callback'])
+const PUBLIC_ROUTES = new Set(['/login', '/callback', '/datenschutz', '/impressum'])
 
 /**
  * Main app shell.
@@ -55,7 +54,9 @@ export function App() {
             GPX-Toolcat
           </a>
           <div style={styles.topbarRight}>
-            {user?.name && <UserMenu name={user.name} />}
+            <a href="/settings" style={styles.topbarLink}>
+              {user?.name ?? 'Einstellungen'}
+            </a>
             <a href="/activities" style={styles.topbarLink}>
               Aktivitäten
             </a>
@@ -65,11 +66,6 @@ export function App() {
             <a href="/utils" style={styles.topbarLink}>
               Utils
             </a>
-            {import.meta.env.DEV && (
-              <a href="/debug" style={styles.topbarLink}>
-                Debug
-              </a>
-            )}
             <button onClick={logout} style={styles.logoutButton}>
               Abmelden
             </button>

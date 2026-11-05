@@ -154,6 +154,15 @@ export function UploadGpxModal({
           required={nameRequired}
         />
 
+        <p style={styles.consent}>
+          Enthält die Datei Herzfrequenzwerte, werden sie gespeichert. Das sind Gesundheitsdaten, mit dem Hochladen
+          willigst du in die Speicherung ein (
+          <a href="/datenschutz" target="_blank" rel="noopener noreferrer" style={styles.consentLink}>
+            Datenschutzerklärung
+          </a>
+          ).
+        </p>
+
         {/* Actions */}
         <div style={modalStyles.actions}>
           <button type="button" onClick={onClose} style={modalStyles.cancelButton}>
@@ -176,6 +185,15 @@ export function UploadGpxModal({
 }
 
 const styles = {
+  consent: {
+    margin: 0,
+    fontSize: 12,
+    lineHeight: 1.5,
+    color: '#64748b',
+  } as const,
+  consentLink: {
+    color: '#475569',
+  } as const,
   form: {
     display: 'flex',
     flexDirection: 'column',
