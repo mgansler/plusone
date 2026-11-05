@@ -3,7 +3,13 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import L from 'leaflet'
 
 import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
-import { getListRoutesQueryKey, ListRoutesSortBy, useListRoutes } from '@plusone/gpx-toolbox-api-client'
+import {
+  getListRoutesQueryKey,
+  importGpx,
+  ImportRouteUploadDtoSource,
+  ListRoutesSortBy,
+  useListRoutes,
+} from '@plusone/gpx-toolbox-api-client'
 
 import { CompareBar } from '../components/CompareBar'
 import { CompareToggleButton } from '../components/CompareToggleButton'
@@ -302,11 +308,9 @@ function RoutesPage() {
       {showUploadModal && (
         <UploadGpxModal
           heading="Route hochladen"
-          endpoint="/api/routes"
-          nameField="name"
+          upload={(file, name) => importGpx({ file, name, source: ImportRouteUploadDtoSource.manualImport })}
           namePlaceholder="Name (optional, sonst aus GPX)"
           nameRequired={false}
-          extraFields={{ source: 'manualImport' }}
           invalidateQueryKeys={[getListRoutesQueryKey()]}
           onClose={() => setShowUploadModal(false)}
         />

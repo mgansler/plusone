@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import { UploadGpxModal } from './UploadGpxModal'
 
@@ -8,12 +8,12 @@ function renderModal(props: Partial<Parameters<typeof UploadGpxModal>[0]> = {}) 
   const queryClient = new QueryClient()
   const invalidateQueries = vi.spyOn(queryClient, 'invalidateQueries')
   const onClose = vi.fn()
+  const upload = vi.fn().mockResolvedValue(undefined)
   const result = render(
     <QueryClientProvider client={queryClient}>
       <UploadGpxModal
         heading="Aktivität hochladen"
-        endpoint="/api/import/activity"
-        nameField="title"
+        upload={upload}
         namePlaceholder="Titel"
         invalidateQueryKeys={[['activities'], ['routes']]}
         onClose={onClose}
@@ -21,7 +21,7 @@ function renderModal(props: Partial<Parameters<typeof UploadGpxModal>[0]> = {}) 
       />
     </QueryClientProvider>,
   )
-  return { ...result, invalidateQueries, onClose }
+  return { ...result, invalidateQueries, onClose, upload }
 }
 
 function selectFile(container: HTMLElement, name: string) {
@@ -32,26 +32,18 @@ function selectFile(container: HTMLElement, name: string) {
 const submitButton = () => screen.getByRole('button', { name: 'Hochladen' }) as HTMLButtonElement
 
 describe('UploadGpxModal', () => {
-  afterEach(() => {
-    vi.unstubAllGlobals()
-  })
-
-  it('posts file, name and extra fields to the endpoint and refetches the given queries', async () => {
-    const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 201 }))
-    vi.stubGlobal('fetch', fetchMock)
-    const { container, invalidateQueries, onClose } = renderModal({ extraFields: { source: 'manualImport' } })
+  it('hands the file and the trimmed name to the upload and refetches the given queries', async () => {
+    const { container, invalidateQueries, onClose, upload } = renderModal()
 
     selectFile(container, 'ride.gpx')
     fireEvent.change(screen.getByPlaceholderText('Titel'), { target: { value: ' Feierabendrunde ' } })
     fireEvent.click(submitButton())
 
     await waitFor(() => expect(onClose).toHaveBeenCalled())
-    const [url, init] = fetchMock.mock.calls[0]
-    const body = init.body as FormData
-    expect(url).toBe('/api/import/activity')
-    expect((body.get('file') as File).name).toBe('ride.gpx')
-    expect(body.get('title')).toBe('Feierabendrunde')
-    expect(body.get('source')).toBe('manualImport')
+    expect(upload).toHaveBeenCalledTimes(1)
+    const [file, name] = upload.mock.calls[0]
+    expect((file as File).name).toBe('ride.gpx')
+    expect(name).toBe('Feierabendrunde')
     expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: ['activities'] })
     expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: ['routes'] })
   })
@@ -66,17 +58,29 @@ describe('UploadGpxModal', () => {
     expect(link.getAttribute('target')).toBe('_blank')
   })
 
-  it('omits an empty optional name', async () => {
-    const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 201 }))
-    vi.stubGlobal('fetch', fetchMock)
-    const { container, onClose } = renderModal({ nameRequired: false })
+  it('passes no name for an empty optional name', async () => {
+    const { container, onClose, upload } = renderModal({ nameRequired: false })
 
     selectFile(container, 'ride.gpx')
     expect(submitButton().disabled).toBe(false)
     fireEvent.click(submitButton())
 
     await waitFor(() => expect(onClose).toHaveBeenCalled())
-    expect((fetchMock.mock.calls[0][1].body as FormData).has('title')).toBe(false)
+    expect(upload.mock.calls[0][1]).toBeUndefined()
+  })
+
+  it('stays open when the upload fails', async () => {
+    const { container, onClose, upload, invalidateQueries } = renderModal()
+    upload.mockRejectedValue(new Error('Server error'))
+
+    selectFile(container, 'ride.gpx')
+    fireEvent.change(screen.getByPlaceholderText('Titel'), { target: { value: 'Runde' } })
+    fireEvent.click(submitButton())
+
+    await waitFor(() => expect(upload).toHaveBeenCalled())
+    await waitFor(() => expect(submitButton().disabled).toBe(false))
+    expect(onClose).not.toHaveBeenCalled()
+    expect(invalidateQueries).not.toHaveBeenCalled()
   })
 
   it('requires a name if nameRequired is set', () => {

@@ -18,11 +18,26 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
 import { RoutesService } from './routes.service'
-import { CreateRouteDto, QueryRouteDto, UpdateRouteDto } from './dto/route.dto'
+import {
+  CreateRouteDto,
+  ImportRouteResultDto,
+  ImportRouteUploadDto,
+  QueryRouteDto,
+  UpdateRouteDto,
+} from './dto/route.dto'
 import { NearbyRouteResponseDto } from './dto/nearby-route-response.dto'
 import { ListRoutesResponseDto, RouteResponseDto } from './dto/list-routes-response.dto'
 import { JwtAuthGuard } from './jwt-auth.guard'
@@ -41,6 +56,9 @@ export class RoutesController {
   @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ operationId: 'importGpx' })
   @ApiBearerAuth()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: ImportRouteUploadDto })
+  @ApiCreatedResponse({ type: ImportRouteResultDto, description: 'The imported route' })
   async importGpx(
     @Req() req: Request & { user: JwtPayload },
     @UploadedFile() file: UploadedGpxFile | undefined,

@@ -28,6 +28,23 @@ describe('activity upload', () => {
     cy.findByRole('heading', { name: 'Routen (1)' }).should('be.visible')
   })
 
+  it('uploads an activity through the dialog', () => {
+    cy.visitLoggedIn('/activities')
+    cy.findByRole('heading', { name: 'Aktivitäten (0)' }).should('be.visible')
+
+    cy.findByRole('button', { name: '📤 Upload' }).click()
+    cy.findByRole('dialog', { name: 'Aktivität hochladen' }).within(() => {
+      cy.get('input[type=file]').selectFile('src/fixtures/hausrunde.gpx', { force: true })
+      cy.findByPlaceholderText('Titel (optional, sonst aus GPX)').type('Feierabendrunde')
+      cy.findByRole('button', { name: 'Hochladen' }).click()
+    })
+
+    cy.findByRole('dialog').should('not.exist')
+    cy.findByRole('heading', { name: 'Aktivitäten (1)' }).should('be.visible')
+    // The title of the activity and the name of the route that was created for it
+    cy.findAllByText('Feierabendrunde').should('have.length', 2)
+  })
+
   it('does not offer a Strava import any more', () => {
     cy.visitLoggedIn('/activities')
 

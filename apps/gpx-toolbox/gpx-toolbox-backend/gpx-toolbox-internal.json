@@ -245,16 +245,23 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CreateRouteDto"
+                "$ref": "#/components/schemas/ImportRouteUploadDto"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "The imported route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportRouteResultDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -644,6 +651,16 @@
       "post": {
         "operationId": "importGpxActivity",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportActivityUploadDto"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Import results",
@@ -1287,7 +1304,7 @@
       }
     },
     "schemas": {
-      "CreateRouteDto": {
+      "ImportRouteUploadDto": {
         "type": "object",
         "properties": {
           "name": {
@@ -1310,8 +1327,53 @@
           "skipDuplicate": {
             "type": "boolean",
             "description": "If the user already has a route with exactly this GPX content, return it instead of creating another one"
+          },
+          "file": {
+            "type": "string",
+            "description": "The GPX file",
+            "format": "binary"
           }
-        }
+        },
+        "required": [
+          "file"
+        ]
+      },
+      "ImportRouteResultDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID of the created route, or of the existing one for a duplicate"
+          },
+          "name": {
+            "type": "string",
+            "description": "Route name"
+          },
+          "totalDistance": {
+            "type": "number",
+            "description": "Length of the track in meters"
+          },
+          "elevationGain": {
+            "type": "number",
+            "description": "Elevation gain in meters"
+          },
+          "elevationLoss": {
+            "type": "number",
+            "description": "Elevation loss in meters"
+          },
+          "duplicate": {
+            "type": "boolean",
+            "description": "True if skipDuplicate was set and the user already had this route"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "totalDistance",
+          "elevationGain",
+          "elevationLoss",
+          "duplicate"
+        ]
       },
       "ListRoutesResponseDto": {
         "type": "object",
@@ -1521,6 +1583,23 @@
             "description": "Notes"
           }
         }
+      },
+      "ImportActivityUploadDto": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "The GPX file",
+            "format": "binary"
+          },
+          "title": {
+            "type": "string",
+            "description": "Activity title (defaults to the GPX track name)"
+          }
+        },
+        "required": [
+          "file"
+        ]
       },
       "ImportResultDto": {
         "type": "object",

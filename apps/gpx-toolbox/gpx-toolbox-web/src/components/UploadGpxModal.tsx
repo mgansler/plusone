@@ -5,15 +5,11 @@ import { Modal, modalStyles } from './Modal'
 
 type UploadGpxModalProps = {
   heading: string
-  /** API endpoint the multipart form is posted to */
-  endpoint: string
-  /** Form field the entered name is sent as */
-  nameField: string
+  /** Sends the file and the entered name (undefined if left empty) with the generated API client */
+  upload: (file: File, name: string | undefined) => Promise<unknown>
   namePlaceholder: string
   /** If false, the name may be left empty and the backend falls back to the GPX track name */
   nameRequired?: boolean
-  /** Additional form fields sent with every upload */
-  extraFields?: Record<string, string>
   /** Queries to refetch after a successful upload */
   invalidateQueryKeys: Array<QueryKey>
   onClose: () => void
@@ -22,11 +18,9 @@ type UploadGpxModalProps = {
 /** Modal for manually uploading a GPX file */
 export function UploadGpxModal({
   heading,
-  endpoint,
-  nameField,
+  upload,
   namePlaceholder,
   nameRequired = true,
-  extraFields = {},
   invalidateQueryKeys,
   onClose,
 }: UploadGpxModalProps) {
@@ -39,24 +33,7 @@ export function UploadGpxModal({
   const mutation = useMutation({
     mutationFn: async () => {
       if (!file) return
-      const formData = new FormData()
-      formData.append('file', file)
-      if (name.trim()) formData.append(nameField, name.trim())
-      for (const [key, value] of Object.entries(extraFields)) {
-        formData.append(key, value)
-      }
-
-      const token = localStorage.getItem('gpx-toolbox-jwt')
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      })
-      if (!res.ok) {
-        const text = await res.text()
-        throw new Error(text || 'Upload fehlgeschlagen')
-      }
-      return res.json()
+      return upload(file, name.trim() || undefined)
     },
     onSuccess: () => {
       for (const queryKey of invalidateQueryKeys) {

@@ -6,6 +6,7 @@ import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/
 import {
   getListAllActivitiesQueryKey,
   getListRoutesQueryKey,
+  importGpxActivity,
   ListAllActivitiesSortBy,
   useListAllActivities,
 } from '@plusone/gpx-toolbox-api-client'
@@ -358,8 +359,7 @@ function ActivitiesPage() {
       {showUploadModal && (
         <UploadGpxModal
           heading="Aktivität hochladen"
-          endpoint="/api/import/activity"
-          nameField="title"
+          upload={(file, name) => importGpxActivity({ file, title: name })}
           namePlaceholder="Titel (optional, sonst aus GPX)"
           nameRequired={false}
           invalidateQueryKeys={[getListAllActivitiesQueryKey(), getListRoutesQueryKey()]}

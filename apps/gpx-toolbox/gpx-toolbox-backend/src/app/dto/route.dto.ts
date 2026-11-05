@@ -46,6 +46,32 @@ export class CreateRouteDto {
   skipDuplicate?: boolean
 }
 
+/** The multipart form of a route upload: the GPX file next to the fields of `CreateRouteDto` */
+export class ImportRouteUploadDto extends CreateRouteDto {
+  @ApiProperty({ description: 'The GPX file', type: 'string', format: 'binary' })
+  file: Buffer
+}
+
+export class ImportRouteResultDto {
+  @ApiProperty({ description: 'ID of the created route, or of the existing one for a duplicate' })
+  id: string
+
+  @ApiProperty({ description: 'Route name' })
+  name: string
+
+  @ApiProperty({ description: 'Length of the track in meters' })
+  totalDistance: number
+
+  @ApiProperty({ description: 'Elevation gain in meters' })
+  elevationGain: number
+
+  @ApiProperty({ description: 'Elevation loss in meters' })
+  elevationLoss: number
+
+  @ApiProperty({ description: 'True if skipDuplicate was set and the user already had this route' })
+  duplicate: boolean
+}
+
 export class UpdateRouteDto {
   @ApiPropertyOptional({ description: 'Route name' })
   @IsOptional()

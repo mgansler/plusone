@@ -24,20 +24,37 @@ import { customAxiosInstance } from '../custom-axios'
 /**
  * Route source
  */
-export enum CreateRouteDtoSource {
+export enum ImportRouteUploadDtoSource {
   stravaRoute = 'stravaRoute',
   stravaActivity = 'stravaActivity',
   manualImport = 'manualImport',
 }
-export interface CreateRouteDto {
+export interface ImportRouteUploadDto {
   /** Route name (defaults to the GPX track name) */
   name?: string
   /** Route description */
   description?: string
   /** Route source */
-  source?: CreateRouteDtoSource
+  source?: ImportRouteUploadDtoSource
   /** If the user already has a route with exactly this GPX content, return it instead of creating another one */
   skipDuplicate?: boolean
+  /** The GPX file */
+  file: Blob | File
+}
+
+export interface ImportRouteResultDto {
+  /** ID of the created route, or of the existing one for a duplicate */
+  id: string
+  /** Route name */
+  name: string
+  /** Length of the track in meters */
+  totalDistance: number
+  /** Elevation gain in meters */
+  elevationGain: number
+  /** Elevation loss in meters */
+  elevationLoss: number
+  /** True if skipDuplicate was set and the user already had this route */
+  duplicate: boolean
 }
 
 export interface ListRoutesResponseDto {
@@ -143,6 +160,13 @@ export interface UpdateRouteDto {
   ratingTags?: string[]
   /** Notes */
   notes?: string
+}
+
+export interface ImportActivityUploadDto {
+  /** The GPX file */
+  file: Blob | File
+  /** Activity title (defaults to the GPX track name) */
+  title?: string
 }
 
 export interface ImportResultDto {
@@ -563,12 +587,27 @@ export function useGetHealthStatus<TData = Awaited<ReturnType<typeof getHealthSt
   return withQueryKey(query, queryOptions.queryKey)
 }
 
-export const importGpx = (createRouteDto: CreateRouteDto, signal?: AbortSignal) => {
-  return customAxiosInstance<void>({
+export const importGpx = (importRouteUploadDto: ImportRouteUploadDto, signal?: AbortSignal) => {
+  const formData = new FormData()
+  if (importRouteUploadDto.name !== undefined) {
+    formData.append(`name`, importRouteUploadDto.name)
+  }
+  if (importRouteUploadDto.description !== undefined) {
+    formData.append(`description`, importRouteUploadDto.description)
+  }
+  if (importRouteUploadDto.source !== undefined) {
+    formData.append(`source`, importRouteUploadDto.source)
+  }
+  if (importRouteUploadDto.skipDuplicate !== undefined) {
+    formData.append(`skipDuplicate`, importRouteUploadDto.skipDuplicate.toString())
+  }
+  formData.append(`file`, importRouteUploadDto.file)
+
+  return customAxiosInstance<ImportRouteResultDto>({
     url: `/api/routes`,
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: createRouteDto,
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data: formData,
     signal,
   })
 }
@@ -595,9 +634,9 @@ export const getImportGpxMutationOptions = <TError = unknown, TContext = unknown
 }
 
 export type ImportGpxMutationResult = NonNullable<Awaited<ReturnType<typeof importGpx>>>
-export type ImportGpxMutationBody = CreateRouteDto
+export type ImportGpxMutationBody = ImportRouteUploadDto
 export type ImportGpxMutationError = unknown
-export type ImportGpxMutationVariables = { data: CreateRouteDto }
+export type ImportGpxMutationVariables = { data: ImportRouteUploadDto }
 
 export const useImportGpx = <TError = unknown, TContext = unknown>(
   options?: {
@@ -1240,15 +1279,37 @@ export function useAuthStatus<TData = Awaited<ReturnType<typeof authStatus>>, TE
   return withQueryKey(query, queryOptions.queryKey)
 }
 
-export const importGpxActivity = (signal?: AbortSignal) => {
-  return customAxiosInstance<ImportResultDto>({ url: `/api/import/activity`, method: 'POST', signal })
+export const importGpxActivity = (importActivityUploadDto: ImportActivityUploadDto, signal?: AbortSignal) => {
+  const formData = new FormData()
+  formData.append(`file`, importActivityUploadDto.file)
+  if (importActivityUploadDto.title !== undefined) {
+    formData.append(`title`, importActivityUploadDto.title)
+  }
+
+  return customAxiosInstance<ImportResultDto>({
+    url: `/api/import/activity`,
+    method: 'POST',
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data: formData,
+    signal,
+  })
 }
 
 export const getImportGpxActivityMutationKey = () => ['importGpxActivity'] as const
 
 export const getImportGpxActivityMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof importGpxActivity>>, TError, void, TContext>
-}): UseMutationOptions<Awaited<ReturnType<typeof importGpxActivity>>, TError, void, TContext> => {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof importGpxActivity>>,
+    TError,
+    ImportGpxActivityMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof importGpxActivity>>,
+  TError,
+  ImportGpxActivityMutationVariables,
+  TContext
+> => {
   const mutationKey = getImportGpxActivityMutationKey()
   const { mutation: mutationOptions } = options
     ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
@@ -1256,21 +1317,39 @@ export const getImportGpxActivityMutationOptions = <TError = unknown, TContext =
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey } }
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof importGpxActivity>>, void> = () => {
-    return importGpxActivity()
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof importGpxActivity>>,
+    ImportGpxActivityMutationVariables
+  > = (props) => {
+    const { data } = props ?? {}
+
+    return importGpxActivity(data)
   }
 
   return { mutationFn, ...mutationOptions }
 }
 
 export type ImportGpxActivityMutationResult = NonNullable<Awaited<ReturnType<typeof importGpxActivity>>>
-
+export type ImportGpxActivityMutationBody = ImportActivityUploadDto
 export type ImportGpxActivityMutationError = unknown
+export type ImportGpxActivityMutationVariables = { data: ImportActivityUploadDto }
 
 export const useImportGpxActivity = <TError = unknown, TContext = unknown>(
-  options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof importGpxActivity>>, TError, void, TContext> },
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof importGpxActivity>>,
+      TError,
+      ImportGpxActivityMutationVariables,
+      TContext
+    >
+  },
   queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof importGpxActivity>>, TError, void, TContext> => {
+): UseMutationResult<
+  Awaited<ReturnType<typeof importGpxActivity>>,
+  TError,
+  ImportGpxActivityMutationVariables,
+  TContext
+> => {
   return useMutation(getImportGpxActivityMutationOptions(options), queryClient)
 }
 

@@ -1,5 +1,8 @@
 import { type ChangeEvent, useEffect, useRef, useState } from 'react'
 import { type QueryKey, useQueryClient } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
+
+import { importGpx, ImportRouteUploadDtoSource } from '@plusone/gpx-toolbox-api-client'
 
 import { readStravaExport, type StravaExport } from '../utils/stravaExport'
 
@@ -26,15 +29,15 @@ type ImportResult = {
 const MAX_LISTED_FAILURES = 10
 
 /** The message of a failed request: Nest answers with JSON, anything else is shown as it is */
-async function errorMessage(response: Response): Promise<string> {
-  const text = await response.text()
-  try {
-    const message = (JSON.parse(text) as { message?: string | Array<string> }).message
-    if (message) return Array.isArray(message) ? message.join(', ') : message
-  } catch {
-    // not JSON
+function errorMessage(error: unknown): string {
+  if (isAxiosError(error)) {
+    const data: unknown = error.response?.data
+    const message =
+      typeof data === 'object' && data !== null ? (data as { message?: string | Array<string> }).message : data
+    if (message) return Array.isArray(message) ? message.join(', ') : String(message)
+    if (error.response) return `Fehler ${error.response.status}`
   }
-  return text || `Fehler ${response.status}`
+  return error instanceof Error ? error.message : 'Unbekannter Fehler'
 }
 
 /**
@@ -87,7 +90,6 @@ export function StravaExportImportModal({ invalidateQueryKeys, onClose }: Strava
 
   async function startImport() {
     cancelled.current = false
-    const token = localStorage.getItem('gpx-toolbox-jwt')
     const outcome: ImportResult = {
       imported: 0,
       duplicates: 0,
@@ -111,20 +113,13 @@ export function StravaExportImportModal({ invalidateQueryKeys, onClose }: Strava
       }
 
       try {
-        const body = new FormData()
-        body.append('file', route.file, route.file.name)
-        if (route.name) body.append('name', route.name)
-        body.append('source', 'manualImport')
-        body.append('skipDuplicate', 'true')
-
-        const response = await fetch('/api/routes', {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${token}` },
-          body,
+        const created = await importGpx({
+          file: route.file,
+          name: route.name || undefined,
+          source: ImportRouteUploadDtoSource.manualImport,
+          skipDuplicate: true,
         })
-        if (!response.ok) throw new Error(await errorMessage(response))
 
-        const created = (await response.json()) as { duplicate?: boolean }
         // A server without the duplicate check (e.g. a dev server that was not restarted) ignores the option and
         // does not report the flag. Going on would copy every route that already exists.
         if (typeof created.duplicate !== 'boolean') {
@@ -136,7 +131,7 @@ export function StravaExportImportModal({ invalidateQueryKeys, onClose }: Strava
         if (created.duplicate) outcome.duplicates++
         else outcome.imported++
       } catch (err) {
-        outcome.failed.push({ name: route.name, reason: err instanceof Error ? err.message : 'Unbekannter Fehler' })
+        outcome.failed.push({ name: route.name, reason: errorMessage(err) })
       }
     }
 
