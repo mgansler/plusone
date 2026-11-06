@@ -1,4 +1,4 @@
-FROM nginx:stable-alpine@sha256:e9b2d7624fd7957f4ed44ae0a272d93fb73aeb8512ba8916f8118ae6143fd115
+FROM nginx:stable-alpine@sha256:583b7f2fce1cdb8da5ad5c39ebd3c33b98b87d493190e548bdee1fa8c619c311
 CMD ["nginx", "-g", "daemon off;"]
 EXPOSE 80/tcp
 
