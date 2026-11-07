@@ -28,6 +28,12 @@ stages:
     - .yarn-cache
   tags:
     - docker
+  variables:
+    # The node image ships the headers, so node-gyp does not have to download them
+    # from nodejs.org (that download can stall and hang the yarn link step).
+    npm_config_nodedir: /usr/local
+    # Only the jobs that actually run Cypress install its ~230 MB binary.
+    CYPRESS_INSTALL_BINARY: '0'
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: on_success
@@ -138,6 +144,8 @@ component-test:
   tags:
     - docker
   retry: 2
+  variables:
+    CYPRESS_INSTALL_BINARY: '' # overrides the skip from .distributed, Cypress needs its binary here
   before_script:
     - !reference [.distributed, before_script]
     - sh tools/scripts/install-cypress-dependencies.sh
@@ -165,6 +173,7 @@ e2e:
     - lint-and-format
     - test
   variables:
+    CYPRESS_INSTALL_BINARY: '' # overrides the skip from .distributed, Cypress needs its binary here
     FEEDS_DATABASE_URL: postgres://postgres:local_db_password@docker:5434/feeds
   before_script:
     - !reference [.dind, before_script]
