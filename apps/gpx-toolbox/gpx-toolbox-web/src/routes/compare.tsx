@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { type RefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useQueries } from '@tanstack/react-query'
 import L from 'leaflet'
@@ -7,14 +7,25 @@ import { parseGpx } from '@plusone/gpx-toolbox-utils'
 import { getExportRouteQueryOptions, getGetRouteQueryOptions } from '@plusone/gpx-toolbox-api-client'
 
 import { CompareElevationProfile, type ProfileHover, type ProfileTrack } from '../components/CompareElevationProfile'
-import { Map } from '../components/Map'
+import { Map as MapView } from '../components/Map'
 import { SidebarDivider, SidebarLayout } from '../components/SidebarLayout'
 import { type CompareItem, useCompareList } from '../hooks/useCompareList'
+import { Sheet } from '../layout/Sheet'
+import { TOPBAR_HEIGHT } from '../layout/tokens'
+import { useIsMobile } from '../layout/useIsMobile'
 import { formatDifference } from '../utils/format'
 import { cumulativeDistances } from '../utils/profile'
 import { routeColor, routeStyle } from '../utils/routeColors'
 
+/** Height of the bar with back link and title on mobile */
+const MOBILE_HEADER_HEIGHT = 48
+
 export const Route = createFileRoute('/compare')({
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      from: typeof search.from === 'string' ? search.from : undefined,
+    }
+  },
   component: ComparePage,
 })
 
@@ -38,7 +49,10 @@ function formatMeters(meters: number): string {
 }
 
 function ComparePage() {
+  const { from } = Route.useSearch()
+  const isMobile = useIsMobile()
   const { items, remove, makeReference, clear } = useCompareList()
+  const mapRef: RefObject<L.Map | null> = useRef(null)
 
   const routeQueries = useQueries({ queries: items.map((i) => getGetRouteQueryOptions(i.id)) })
   const gpxQueries = useQueries({ queries: items.map((i) => getExportRouteQueryOptions(i.id)) })
@@ -92,67 +106,201 @@ function ComparePage() {
   const [hover, setHover] = useState<ProfileHover | null>(null)
   // Route under the mouse on the map or in the table; drawn on top of overlapping routes
   const [highlightedId, setHighlightedId] = useState<string | null>(null)
+  // Mobile: collapsible route list at top, collapsible elevation profile at bottom
+  const [listOpen, setListOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
 
+  // The map changes size when the sidebar or the header appears or disappears at the breakpoint
+  useEffect(() => {
+    mapRef.current?.invalidateSize()
+  }, [isMobile])
+
+  const backLink = (
+    <Link to={from === 'nearby' ? '/nearby' : '/routes'} style={styles.backLink}>
+      {isMobile ? '← Zurück' : `← Zurück${from === 'nearby' ? ' zur Suche' : ' zur Übersicht'}`}
+    </Link>
+  )
+
+  // The map keeps its position among the container's children in both layouts,
+  // so crossing the breakpoint does not recreate the Leaflet map.
   return (
-    <div style={styles.container}>
-      <SidebarLayout
-        header={
-          <Link to="/" style={styles.backLink}>
-            ← Zurück zur Übersicht
-          </Link>
-        }
-      >
-        <h2 style={styles.heading}>Routenvergleich</h2>
-
-        {items.length < 2 ? (
-          <p style={styles.hint}>
-            Füge mindestens zwei Routen über „+ Vergleich“ in der{' '}
-            <Link to="/" style={styles.link}>
-              Routenliste
-            </Link>{' '}
-            oder unter{' '}
-            <Link to="/nearby" style={styles.link}>
-              In der Nähe
-            </Link>{' '}
-            hinzu.
-          </p>
-        ) : null}
-
-        {rows.length > 0 && (
-          <CompareTable
-            rows={rows}
-            highlightedId={highlightedId}
-            onHighlight={setHighlightedId}
-            onRemove={remove}
-            onMakeReference={makeReference}
-          />
-        )}
-
-        {rows.length > 0 && (
-          <>
-            <SidebarDivider />
-            <button type="button" onClick={clear} style={styles.clearButton}>
-              Vergleichsliste leeren
+    <div style={isMobile ? { ...styles.container, flexDirection: 'column' } : styles.container}>
+      {isMobile && (
+        <div style={styles.mobileHeader}>
+          {backLink}
+          <span style={styles.mobileTitle}>Vergleich</span>
+          {rows.length > 0 ? (
+            <button type="button" onClick={clear} style={styles.textButton}>
+              Leeren
             </button>
-          </>
-        )}
-      </SidebarLayout>
+          ) : (
+            <span />
+          )}
+        </div>
+      )}
+
+      {!isMobile && (
+        <SidebarLayout header={backLink}>
+          <h2 style={styles.heading}>Routenvergleich</h2>
+
+          {items.length < 2 ? (
+            <p style={styles.hint}>
+              Füge mindestens zwei Routen über „+ Vergleich" in der{' '}
+              <Link to="/routes" style={styles.link}>
+                Routenliste
+              </Link>{' '}
+              oder unter{' '}
+              <Link to="/nearby" style={styles.link}>
+                In der Nähe
+              </Link>{' '}
+              hinzu.
+            </p>
+          ) : null}
+
+          {rows.length > 0 && (
+            <CompareTable
+              rows={rows}
+              highlightedId={highlightedId}
+              onHighlight={setHighlightedId}
+              onRemove={remove}
+              onMakeReference={makeReference}
+            />
+          )}
+
+          {rows.length > 0 && (
+            <>
+              <SidebarDivider />
+              <button type="button" onClick={clear} style={styles.clearButton}>
+                Vergleichsliste leeren
+              </button>
+            </>
+          )}
+        </SidebarLayout>
+      )}
 
       <div style={styles.main}>
         <div style={styles.mapArea}>
-          <CompareMap tracks={tracks} hover={hover} highlightedId={highlightedId} onHighlight={setHighlightedId} />
-        </div>
-        <div style={styles.profilePanel}>
-          {tracks.length > 0 ? (
-            <CompareElevationProfile tracks={tracks} onHover={setHover} />
-          ) : (
-            <div style={styles.profileHint}>
-              {rows.some((r) => r.isLoading) ? 'Lade Höhenprofile…' : 'Keine Routen zum Anzeigen'}
-            </div>
+          <CompareMap
+            mapRef={mapRef}
+            tracks={tracks}
+            hover={hover}
+            highlightedId={highlightedId}
+            onHighlight={setHighlightedId}
+          />
+          {isMobile && items.length < 2 && (
+            <div style={styles.mobileHint}>Füge mindestens zwei Routen über „+ Vergleich" hinzu.</div>
           )}
         </div>
+
+        {!isMobile && (
+          <div style={styles.profilePanel}>
+            {tracks.length > 0 ? (
+              <CompareElevationProfile tracks={tracks} onHover={setHover} />
+            ) : (
+              <div style={styles.profileHint}>
+                {rows.some((r) => r.isLoading) ? 'Lade Höhenprofile…' : 'Keine Routen zum Anzeigen'}
+              </div>
+            )}
+          </div>
+        )}
       </div>
+
+      {isMobile && (
+        <>
+          {/* No backdrop: the map stays usable, e.g. to follow the hover in the elevation profile */}
+          {rows.length > 0 && (
+            <Sheet
+              side="top"
+              open={listOpen}
+              onClose={() => setListOpen(false)}
+              label="Routenliste"
+              backdrop={false}
+              style={{ top: TOPBAR_HEIGHT + MOBILE_HEADER_HEIGHT }}
+              bodyStyle={styles.darkSheet}
+              handle={
+                <SheetTab
+                  side="top"
+                  onClick={() => setListOpen((o) => !o)}
+                  expanded={listOpen}
+                  arrow={listOpen ? '▲' : '▼'}
+                >
+                  Routen
+                </SheetTab>
+              }
+            >
+              <CompareTable
+                rows={rows}
+                highlightedId={highlightedId}
+                onHighlight={setHighlightedId}
+                onRemove={remove}
+                onMakeReference={makeReference}
+                showHead={false}
+              />
+            </Sheet>
+          )}
+
+          {tracks.length > 0 && (
+            <Sheet
+              side="bottom"
+              open={profileOpen}
+              onClose={() => setProfileOpen(false)}
+              label="Höhenprofil"
+              backdrop={false}
+              style={{ height: '30vh' }}
+              bodyStyle={styles.darkSheet}
+              handle={
+                <SheetTab
+                  side="bottom"
+                  onClick={() => setProfileOpen((o) => !o)}
+                  expanded={profileOpen}
+                  arrow={profileOpen ? '▼' : '▲'}
+                  wide
+                >
+                  Höhenprofil
+                </SheetTab>
+              }
+            >
+              <CompareElevationProfile tracks={tracks} onHover={setHover} />
+            </Sheet>
+          )}
+        </>
+      )}
     </div>
+  )
+}
+
+/** Tab on the edge of a sheet that opens and closes it */
+function SheetTab({
+  side,
+  onClick,
+  expanded,
+  arrow,
+  wide = false,
+  children,
+}: {
+  /** Edge of the viewport the sheet belongs to; the tab sticks out of it towards the page */
+  side: 'top' | 'bottom'
+  onClick: () => void
+  expanded: boolean
+  arrow: string
+  /** Wider tab, for longer labels */
+  wide?: boolean
+  children: string
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-expanded={expanded}
+      style={{
+        ...styles.sheetTab,
+        width: wide ? 160 : 120,
+        borderRadius: side === 'bottom' ? '12px 12px 0 0' : '0 0 12px 12px',
+        boxShadow: side === 'bottom' ? '0 -4px 8px rgba(0,0,0,0.2)' : '0 4px 8px rgba(0,0,0,0.2)',
+      }}
+    >
+      <span aria-hidden="true">{arrow}</span> {children}
+    </button>
   )
 }
 
@@ -162,24 +310,29 @@ function CompareTable({
   onHighlight,
   onRemove,
   onMakeReference,
+  showHead = true,
 }: {
   rows: Array<CompareRow>
   highlightedId: string | null
   onHighlight: (id: string | null) => void
   onRemove: (id: string) => void
   onMakeReference: (id: string) => void
+  /** Column headings; the narrow mobile list leaves them out */
+  showHead?: boolean
 }) {
   const reference = rows[0]
 
   return (
     <table style={styles.table}>
-      <thead>
-        <tr>
-          <th style={{ ...styles.th, textAlign: 'left' }}>Route</th>
-          <th style={styles.th}>Strecke</th>
-          <th style={styles.th}>Höhenmeter</th>
-        </tr>
-      </thead>
+      {showHead && (
+        <thead>
+          <tr>
+            <th style={{ ...styles.th, textAlign: 'left' }}>Route</th>
+            <th style={styles.th}>Strecke</th>
+            <th style={styles.th}>Höhenmeter</th>
+          </tr>
+        </thead>
+      )}
       <tbody>
         {rows.map((row, index) => {
           const isReference = index === 0
@@ -196,6 +349,7 @@ function CompareTable({
                   <Link
                     to="/routes/$routeId"
                     params={{ routeId: row.item.id }}
+                    search={{ from: 'compare' }}
                     style={styles.routeLink}
                     title={row.name}
                   >
@@ -268,15 +422,20 @@ function CompareMap({
   hover,
   highlightedId,
   onHighlight,
+  mapRef,
 }: {
   tracks: Array<ProfileTrack>
   hover: ProfileHover | null
   highlightedId: string | null
   onHighlight: (id: string | null) => void
+  mapRef?: RefObject<L.Map | null>
 }) {
   const [map, setMap] = useState<L.Map | null>(null)
+  useEffect(() => {
+    if (mapRef) mapRef.current = map
+  }, [map, mapRef])
   // Polylines by route ID, so highlighting only restyles them instead of redrawing
-  const linesRef = useRef(new globalThis.Map<string, L.Polyline>())
+  const linesRef = useRef(new Map<string, L.Polyline>())
   const highlightedIdRef = useRef(highlightedId)
   highlightedIdRef.current = highlightedId
   const colorById = Object.fromEntries(tracks.map((t) => [t.id, t.color]))
@@ -342,7 +501,7 @@ function CompareMap({
     return () => markers.forEach((m) => m.remove())
   }, [map, hover])
 
-  return <Map onMapReady={setMap} />
+  return <MapView onMapReady={setMap} />
 }
 
 const styles = {
@@ -350,6 +509,7 @@ const styles = {
     display: 'flex',
     height: '100%',
     width: '100%',
+    position: 'relative' as const,
   } as const,
   main: {
     flex: 1,
@@ -388,6 +548,51 @@ const styles = {
     fontSize: 20,
     fontWeight: 600,
   } as const,
+  mobileHeader: {
+    height: MOBILE_HEADER_HEIGHT,
+    flexShrink: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '0 12px',
+    backgroundColor: '#1e293b',
+    borderBottom: '1px solid #334155',
+  } as const,
+  darkSheet: {
+    padding: 12,
+    overflowY: 'auto',
+    backgroundColor: '#1e293b',
+    color: '#e2e8f0',
+  } as const,
+  sheetTab: {
+    height: 24,
+    border: 'none',
+    backgroundColor: '#1e293b',
+    color: '#e2e8f0',
+    fontSize: 12,
+    fontWeight: 500,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+  } as const,
+  mobileTitle: {
+    fontSize: 15,
+    fontWeight: 600,
+    color: '#e2e8f0',
+  } as const,
+  mobileHint: {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    fontSize: 13,
+    color: '#94a3b8',
+    textAlign: 'center' as const,
+    padding: 16,
+    zIndex: 100,
+  } as const,
   hint: {
     margin: 0,
     fontSize: 13,
@@ -421,13 +626,13 @@ const styles = {
   } as const,
   nameCell: {
     padding: '8px 8px 8px 0',
-    maxWidth: 0,
     width: '100%',
   } as const,
   nameLine: {
     display: 'flex',
     alignItems: 'center',
     gap: 6,
+    minWidth: 0,
   } as const,
   swatch: {
     width: 10,
@@ -442,6 +647,8 @@ const styles = {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+    minWidth: 0,
+    flex: 1,
   } as const,
   rowActions: {
     display: 'flex',

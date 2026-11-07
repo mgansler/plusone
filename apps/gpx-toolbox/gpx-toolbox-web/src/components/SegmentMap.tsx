@@ -4,6 +4,7 @@ import L from 'leaflet'
 import { calculateHaversineDistance, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 import { slicePointsByDistance } from '../utils/track'
+import { mapClickHandler, mapHoverMarker } from '../utils/routeColors'
 
 import { Map } from './Map'
 import { SegmentOverlay } from './SegmentOverlay'
@@ -37,7 +38,7 @@ export function SegmentMap({ points, range, totalDistKm, hoveredPoint }: Segment
     if (!mapInstance) return
     const icon = L.divIcon({
       className: 'hover-marker',
-      html: '<div style="width:12px;height:12px;background:#60a5fa;border:2px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(96,165,250,0.7)"></div>',
+      html: `<div style="width:12px;height:12px;background:${mapHoverMarker};border:2px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(96,165,250,0.7)"></div>`,
       iconSize: [12, 12],
       iconAnchor: [6, 6],
     })
@@ -99,7 +100,7 @@ function TrackClickHandler({
     const coords: Array<[number, number]> = visiblePoints.map((p) => [p.latitude, p.longitude] as [number, number])
 
     const clickable = L.polyline(coords, {
-      color: '#fff',
+      color: mapClickHandler,
       weight: 20,
       interactive: true,
       opacity: 0,

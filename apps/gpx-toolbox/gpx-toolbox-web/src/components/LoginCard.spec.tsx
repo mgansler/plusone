@@ -5,7 +5,10 @@ import { useAuth } from '../lib/auth-context'
 
 import { LoginCard } from './LoginCard'
 
-vi.mock('../lib/auth-context', () => ({ useAuth: vi.fn() }))
+vi.mock('../lib/auth-context', () => ({
+  useAuth: vi.fn(),
+  setTokenDirectly: vi.fn(),
+}))
 
 const login = vi.fn()
 

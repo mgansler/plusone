@@ -16,6 +16,7 @@ import { SegmentMap } from '../../components/SegmentMap'
 import { SidebarDivider, SidebarLayout } from '../../components/SidebarLayout'
 import { TrackAnalysis } from '../../components/TrackAnalysis'
 import { useSegmentRange } from '../../hooks/useSegmentRange'
+import { useIsMobile } from '../../layout/useIsMobile'
 import { formatDistance, formatDuration } from '../../utils/format'
 import { routeStatusColor, routeStatusLabel } from '../../utils/routeStatus'
 
@@ -38,6 +39,7 @@ type Weather = {
 
 function ActivityDetailPage() {
   const { activityId } = Route.useParams()
+  const isMobile = useIsMobile()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -211,7 +213,9 @@ function ActivityDetailPage() {
         />
       )}
 
-      <SegmentMap points={points} range={segmentRange} totalDistKm={totalDistKm} hoveredPoint={hoveredPoint} />
+      {!isMobile && (
+        <SegmentMap points={points} range={segmentRange} totalDistKm={totalDistKm} hoveredPoint={hoveredPoint} />
+      )}
     </div>
   )
 }

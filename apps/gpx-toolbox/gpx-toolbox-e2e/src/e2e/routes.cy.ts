@@ -2,7 +2,7 @@ import { authHeaders } from '../support/commands'
 
 describe('routes', () => {
   it('uploads a GPX file and shows the route', () => {
-    cy.visitLoggedIn('/')
+    cy.visitLoggedIn('/routes')
     cy.findByRole('heading', { name: 'Routen (0)' }).should('be.visible')
 
     cy.findByRole('button', { name: '📤 Upload' }).click()
@@ -23,7 +23,7 @@ describe('routes', () => {
   })
 
   it('uses the track name when no name is given', () => {
-    cy.visitLoggedIn('/')
+    cy.visitLoggedIn('/routes')
 
     cy.findByRole('button', { name: '📤 Upload' }).click()
     cy.get('input[type=file]').selectFile('src/fixtures/bergtour.gpx', { force: true })
@@ -33,7 +33,7 @@ describe('routes', () => {
   })
 
   it('shows the details, the activities and exports the route', () => {
-    cy.visitLoggedIn('/')
+    cy.visitLoggedIn('/routes')
     cy.uploadRoute('hausrunde.gpx').then((routeId) => {
       cy.request({
         method: 'POST',
@@ -57,7 +57,7 @@ describe('routes', () => {
   })
 
   it('deletes a route together with its activities after confirmation', () => {
-    cy.visitLoggedIn('/')
+    cy.visitLoggedIn('/routes')
     cy.uploadRoute('hausrunde.gpx').then((routeId) => {
       cy.request({
         method: 'POST',
@@ -80,7 +80,7 @@ describe('routes', () => {
       cy.findByRole('button', { name: 'Löschen' }).click(),
     )
 
-    cy.location('pathname').should('eq', '/')
+    cy.location('pathname').should('eq', '/routes')
     cy.findByRole('heading', { name: 'Routen (0)' }).should('be.visible')
     cy.request({ url: '/api/activities', headers: authHeaders() }).its('body.total').should('eq', 0)
   })

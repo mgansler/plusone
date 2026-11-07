@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 
+import { useIsMobile } from '../layout/useIsMobile'
+
 type SidebarLayoutProps = {
   /** Content of the header bar at the top (e.g. a back link); omitted pages start directly with the content */
   header?: ReactNode
@@ -7,11 +9,14 @@ type SidebarLayoutProps = {
 }
 
 /**
- * Dark sidebar shell shared by all map pages: fixed width, header bar and a scrollable content column.
+ * Dark sidebar shell shared by all map pages: header bar and a scrollable content column.
+ * Fixed width next to the map on desktop, the full width on mobile.
  */
 export function SidebarLayout({ header, children }: SidebarLayoutProps) {
+  const isMobile = useIsMobile()
+
   return (
-    <div style={styles.sidebar}>
+    <div style={isMobile ? { ...styles.sidebar, ...styles.sidebarMobile } : styles.sidebar}>
       {header != null && <div style={styles.header}>{header}</div>}
       <div style={styles.content}>{children}</div>
     </div>
@@ -33,6 +38,10 @@ const styles = {
     flexDirection: 'column' as const,
     borderRight: '1px solid #334155',
     overflow: 'auto',
+  },
+  sidebarMobile: {
+    width: '100%',
+    borderRight: 'none',
   },
   header: {
     padding: '1.25rem 1rem 0.75rem',

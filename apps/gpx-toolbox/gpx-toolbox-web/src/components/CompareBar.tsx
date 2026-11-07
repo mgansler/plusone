@@ -4,7 +4,7 @@ import { useCompareList } from '../hooks/useCompareList'
 import { routeColor } from '../utils/routeColors'
 
 /** Comparison list at the bottom of a sidebar; hidden while it is empty */
-export function CompareBar() {
+export function CompareBar({ from }: { from?: string } = {}) {
   const { items, remove, clear } = useCompareList()
   if (items.length === 0) return null
 
@@ -35,7 +35,7 @@ export function CompareBar() {
         ))}
       </ul>
       {canCompare ? (
-        <Link to="/compare" style={styles.compareButton}>
+        <Link to="/compare" search={from ? { from } : undefined} style={styles.compareButton}>
           Vergleichen →
         </Link>
       ) : (
@@ -50,7 +50,7 @@ const styles = {
     // Stays visible at the bottom of the scrolling sidebar
     position: 'sticky',
     bottom: 0,
-    marginTop: 16,
+    margin: '0 0 16px',
     padding: 12,
     backgroundColor: '#fff',
     border: '1px solid #cbd5e1',

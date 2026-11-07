@@ -7,7 +7,10 @@ import { compareList } from '../hooks/useCompareList'
 import { CompareBar } from './CompareBar'
 
 vi.mock('@tanstack/react-router', () => ({
-  Link: ({ to, children }: { to: string; children: ReactNode }) => <a href={to}>{children}</a>,
+  Link: ({ to, children, search }: { to: string; children: ReactNode; search?: Record<string, string> }) => {
+    const href = search ? `${to}?from=${search.from}` : to
+    return <a href={href}>{children}</a>
+  },
 }))
 
 describe('CompareBar', () => {
@@ -38,6 +41,16 @@ describe('CompareBar', () => {
     render(<CompareBar />)
 
     expect(screen.getByRole('link', { name: 'Vergleichen →' }).getAttribute('href')).toBe('/compare')
+  })
+
+  it('passes through from parameter when provided', () => {
+    act(() => {
+      compareList.add({ id: 'a', name: 'Runde A' })
+      compareList.add({ id: 'b', name: 'Runde B' })
+    })
+    render(<CompareBar from="nearby" />)
+
+    expect(screen.getByRole('link', { name: 'Vergleichen →' }).getAttribute('href')).toBe('/compare?from=nearby')
   })
 
   it('removes single routes and clears the list', () => {

@@ -3,7 +3,7 @@ import { Navigate } from '@tanstack/react-router'
 import { useAuth } from '../lib/auth-context'
 
 /** Public routes that don't require authentication. */
-const PUBLIC_ROUTES = new Set(['/login', '/callback', '/datenschutz', '/impressum'])
+const PUBLIC_ROUTES = new Set(['/login', '/callback', '/datenschutz', '/impressum', '/'])
 
 /**
  * Renders `children` if authenticated, otherwise redirects to `/login`.

@@ -16,6 +16,15 @@ const STATUS_COLORS: Record<RouteStatus, string> = {
 
 const FALLBACK_COLOR = '#9e9e9e'
 
+const SOURCE_COLORS: Record<string, string> = {
+  manualImport: '#2196f3',
+}
+
+/** Badge color of a route source */
+export function routeSourceColor(source: string): string {
+  return SOURCE_COLORS[source] ?? FALLBACK_COLOR
+}
+
 /** German label of a route status, unknown values are shown as they are */
 export function routeStatusLabel(status: string): string {
   return STATUS_LABELS[status as RouteStatus] ?? status

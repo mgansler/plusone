@@ -1,4 +1,4 @@
-import { type MouseEvent, useMemo, useState } from 'react'
+import { type MouseEvent, useCallback, useMemo, useRef, useState } from 'react'
 
 import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
 
@@ -16,16 +16,21 @@ type CompareElevationProfileProps = {
 
 // SVG coordinate system; stretched to the container (preserveAspectRatio="none")
 const W = 1000
-const H = 200
+const H = 300
 const PAD_Y = 8
 /** Enough for a smooth line at any realistic panel width */
 const MAX_PATH_POINTS = 1500
+/** Viewport shows 20 km at a time; longer routes scroll horizontally */
+const VIEWPORT_KM = 20000
 
 /**
- * Elevation profiles of several tracks on shared axes. The x axis spans the longest track,
- * so shorter tracks end before the right edge.
+ * Elevation profiles of several tracks on shared axes.
+ * The viewport shows 20 km at a time; longer routes scroll horizontally.
+ * Elevation labels (y-axis) appear to the right of the 0 km line.
  */
 export function CompareElevationProfile({ tracks, onHover }: CompareElevationProfileProps) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+
   const profiles = useMemo(
     () =>
       tracks
@@ -41,6 +46,7 @@ export function CompareElevationProfile({ tracks, onHover }: CompareElevationPro
   const maxElevation = Math.max(...elevations)
   const elevationRange = maxElevation - minElevation || 1
 
+  // The SVG x-axis always maps to the full track distance, but the visible viewport is 20 km
   const toX = (distance: number) => (distance / maxDistance) * W
   const toY = (elevation: number) => H - PAD_Y - ((elevation - minElevation) / elevationRange) * (H - 2 * PAD_Y)
 
@@ -69,118 +75,135 @@ export function CompareElevationProfile({ tracks, onHover }: CompareElevationPro
     entries: Array<{ id: string; color: string; name: string; point: TrackPoint }>
   } | null>(null)
 
-  function handleMouseMove(event: MouseEvent<HTMLDivElement>) {
-    const rect = event.currentTarget.getBoundingClientRect()
-    const distance = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width)) * maxDistance
-    const entries = profiles
-      // A shorter track has no point at this distance
-      .filter((p) => distance <= p.distances[p.distances.length - 1])
-      .map((p) => ({ id: p.id, color: p.color, name: p.name, point: p.points[indexAtDistance(p.distances, distance)] }))
-    setHover({ distance, entries })
-    onHover?.(entries.map(({ id, point }) => ({ id, point })))
-  }
+  const handleMouseMove = useCallback(
+    (event: MouseEvent<HTMLDivElement>) => {
+      const rect = event.currentTarget.getBoundingClientRect()
+      const distance = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width)) * maxDistance
+      const entries = profiles
+        // A shorter track has no point at this distance
+        .filter((p) => distance <= p.distances[p.distances.length - 1])
+        .map((p) => ({
+          id: p.id,
+          color: p.color,
+          name: p.name,
+          point: p.points[indexAtDistance(p.distances, distance)],
+        }))
+      setHover({ distance, entries })
+      onHover?.(entries.map(({ id, point }) => ({ id, point })))
+    },
+    [profiles, maxDistance, onHover],
+  )
 
-  function handleMouseLeave() {
+  const handleMouseLeave = useCallback(() => {
     setHover(null)
     onHover?.(null)
-  }
+  }, [onHover])
 
   if (profiles.length === 0 || maxDistance === 0) {
     return <div style={styles.empty}>Keine Höhendaten vorhanden</div>
   }
 
+  // Whether horizontal scrolling is needed
+  const needsScroll = maxDistance > VIEWPORT_KM
+
   return (
     <div style={styles.container}>
-      <div style={styles.yAxis}>
-        <span>{Math.round(maxElevation)} m</span>
-        <span>{Math.round(minElevation)} m</span>
-      </div>
-
       <div style={styles.plotColumn}>
-        <div
-          style={styles.plot}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          data-testid="compare-profile-plot"
-        >
-          <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" style={styles.svg}>
-            {ticks.map((t) => (
-              <line
-                key={t}
-                x1={toX(t)}
-                x2={toX(t)}
-                y1={0}
-                y2={H}
-                stroke="#334155"
-                strokeWidth={1}
-                vectorEffect="non-scaling-stroke"
-              />
-            ))}
-            {paths.map((p) => (
-              <path
-                key={p.id}
-                d={p.d}
-                fill="none"
-                stroke={p.color}
-                strokeWidth={2}
-                strokeLinejoin="round"
-                vectorEffect="non-scaling-stroke"
-                data-testid={`profile-${p.id}`}
-              />
-            ))}
-            {hover && (
-              <line
-                x1={toX(hover.distance)}
-                x2={toX(hover.distance)}
-                y1={0}
-                y2={H}
-                stroke="#94a3b8"
-                strokeWidth={1}
-                vectorEffect="non-scaling-stroke"
-              />
-            )}
-          </svg>
-
-          {/* Dots and tooltip as HTML: in the stretched SVG circles would turn into ellipses */}
-          {hover?.entries.map((e) => (
-            <span
-              key={e.id}
-              style={{
-                ...styles.dot,
-                backgroundColor: e.color,
-                left: `${(toX(hover.distance) / W) * 100}%`,
-                top: `${(toY(e.point.elevation) / H) * 100}%`,
-              }}
-            />
-          ))}
-          {hover && (
+        {/* Scrollable wrapper — only scrolls when route exceeds 20 km */}
+        <div ref={scrollRef} style={styles.scrollWrapper}>
+          <div style={{ ...styles.plotInner, width: needsScroll ? `${(maxDistance / VIEWPORT_KM) * 100}%` : '100%' }}>
             <div
-              style={{
-                ...styles.tooltip,
-                // Flip to the left side in the right half so the tooltip stays inside the panel
-                ...(hover.distance > maxDistance / 2
-                  ? { right: `${100 - (toX(hover.distance) / W) * 100}%`, marginRight: 8 }
-                  : { left: `${(toX(hover.distance) / W) * 100}%`, marginLeft: 8 }),
-              }}
+              style={styles.plot}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              data-testid="compare-profile-plot"
             >
-              <div style={styles.tooltipTitle}>{(hover.distance / 1000).toFixed(1)} km</div>
-              {hover.entries.map((e) => (
-                <div key={e.id} style={styles.tooltipRow}>
-                  <span style={{ ...styles.swatch, backgroundColor: e.color }} />
-                  <span style={styles.tooltipName}>{e.name}</span>
-                  <span>{Math.round(e.point.elevation)} m</span>
+              <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" style={styles.svg}>
+                {ticks.map((t) => (
+                  <line
+                    key={t}
+                    x1={toX(t)}
+                    x2={toX(t)}
+                    y1={0}
+                    y2={H}
+                    stroke="#334155"
+                    strokeWidth={1}
+                    vectorEffect="non-scaling-stroke"
+                  />
+                ))}
+                {paths.map((p) => (
+                  <path
+                    key={p.id}
+                    d={p.d}
+                    fill="none"
+                    stroke={p.color}
+                    strokeWidth={2}
+                    strokeLinejoin="round"
+                    vectorEffect="non-scaling-stroke"
+                    data-testid={`profile-${p.id}`}
+                  />
+                ))}
+                {hover && (
+                  <line
+                    x1={toX(hover.distance)}
+                    x2={toX(hover.distance)}
+                    y1={0}
+                    y2={H}
+                    stroke="#94a3b8"
+                    strokeWidth={1}
+                    vectorEffect="non-scaling-stroke"
+                  />
+                )}
+              </svg>
+
+              {/* Elevation labels — positioned to the right of the 0 km line, inside the plot */}
+              <div style={styles.yAxisInline}>
+                <span>{Math.round(maxElevation)} m</span>
+                <span>{Math.round(minElevation)} m</span>
+              </div>
+
+              {/* Dots and tooltip as HTML: in the stretched SVG circles would turn into ellipses */}
+              {hover?.entries.map((e) => (
+                <span
+                  key={e.id}
+                  style={{
+                    ...styles.dot,
+                    backgroundColor: e.color,
+                    left: `${(toX(hover.distance) / W) * 100}%`,
+                    top: `${(toY(e.point.elevation) / H) * 100}%`,
+                  }}
+                />
+              ))}
+              {hover && (
+                <div
+                  style={{
+                    ...styles.tooltip,
+                    // Flip to the left side in the right half so the tooltip stays inside the panel
+                    ...(hover.distance > maxDistance / 2
+                      ? { right: `${100 - (toX(hover.distance) / W) * 100}%`, marginRight: 8 }
+                      : { left: `${(toX(hover.distance) / W) * 100}%`, marginLeft: 8 }),
+                  }}
+                >
+                  <div style={styles.tooltipTitle}>{(hover.distance / 1000).toFixed(1)} km</div>
+                  {hover.entries.map((e) => (
+                    <div key={e.id} style={styles.tooltipRow}>
+                      <span style={{ ...styles.swatch, backgroundColor: e.color }} />
+                      <span style={styles.tooltipName}>{e.name}</span>
+                      <span>{Math.round(e.point.elevation)} m</span>
+                    </div>
+                  ))}
                 </div>
+              )}
+            </div>
+
+            <div style={styles.xAxis}>
+              {ticks.map((t) => (
+                <span key={t} style={{ ...styles.xTick, left: `${(toX(t) / W) * 100}%` }}>
+                  {t / 1000} km
+                </span>
               ))}
             </div>
-          )}
-        </div>
-
-        <div style={styles.xAxis}>
-          {ticks.map((t) => (
-            <span key={t} style={{ ...styles.xTick, left: `${(toX(t) / W) * 100}%` }}>
-              {t / 1000} km
-            </span>
-          ))}
+          </div>
         </div>
       </div>
     </div>
@@ -190,21 +213,24 @@ export function CompareElevationProfile({ tracks, onHover }: CompareElevationPro
 const styles = {
   container: {
     display: 'flex',
-    gap: 8,
     height: '100%',
     minHeight: 0,
   } as const,
-  yAxis: {
+  yAxisInline: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    // Leaves room for the x axis labels below the plot
-    paddingBottom: 18,
     fontSize: 11,
     fontFamily: 'monospace',
     color: '#94a3b8',
-    textAlign: 'right',
-    minWidth: 48,
+    textAlign: 'left',
+    paddingLeft: 6,
+    pointerEvents: 'none',
+    zIndex: 1,
   } as const,
   plotColumn: {
     flex: 1,
@@ -212,11 +238,26 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
   } as const,
+  scrollWrapper: {
+    flex: 1,
+    minWidth: 0,
+    minHeight: 0,
+    overflowX: 'auto',
+    overflowY: 'hidden',
+  } as const,
+  plotInner: {
+    display: 'flex',
+    flexDirection: 'column',
+    minWidth: 0,
+    height: '100%',
+  } as const,
   plot: {
     position: 'relative',
     flex: 1,
     minHeight: 0,
     cursor: 'crosshair',
+    display: 'flex',
+    flexDirection: 'column',
   } as const,
   svg: {
     display: 'block',

@@ -11,11 +11,13 @@ import {
   useListAllActivities,
 } from '@plusone/gpx-toolbox-api-client'
 
-import { Map } from '../../components/Map'
+import { Map as MapView } from '../../components/Map'
 import { SegmentOverlay } from '../../components/SegmentOverlay'
 import { PointDetails } from '../../components/PointDetails'
 import { UploadGpxModal } from '../../components/UploadGpxModal'
 import { actionButtonStyle } from '../../components/actionButtonStyle'
+import { Sheet } from '../../layout/Sheet'
+import { useIsMobile } from '../../layout/useIsMobile'
 import { routeStatusColor, routeStatusLabel } from '../../utils/routeStatus'
 import { formatDistanceShort, formatDurationShort, formatElevationGain } from '../../utils/format'
 import { useDebouncedValue } from '../../hooks/useDebouncedValue'
@@ -26,6 +28,7 @@ export const Route = createFileRoute('/activities/')({
 })
 
 function ActivitiesPage() {
+  const isMobile = useIsMobile()
   const mapRef: RefObject<L.Map | null> = useRef(null)
   const [page, setPage] = useState(1)
   const [dateFrom, setDateFrom] = useState('')
@@ -36,6 +39,7 @@ function ActivitiesPage() {
   const [order, setOrder] = useState<'ASC' | 'DESC'>('DESC')
   const [selectedActivityId, setSelectedActivityId] = useState<string | null>(null)
   const [showUploadModal, setShowUploadModal] = useState(false)
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
 
   // Number inputs fire on every keystroke; wait until typing pauses before querying
@@ -77,7 +81,8 @@ function ActivitiesPage() {
   const [gpxText, setGpxText] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!selectedActivityId) {
+    // The track is only drawn on the map, which mobile does not show
+    if (!selectedActivityId || isMobile) {
       setGpxText(null)
       return
     }
@@ -108,7 +113,7 @@ function ActivitiesPage() {
       .catch((err) => {
         console.error('[ActivitiesPage] Fetch error:', err)
       })
-  }, [selectedActivityId, activities])
+  }, [selectedActivityId, activities, isMobile])
 
   const points = gpxText ? parseGpx(gpxText) : []
 
@@ -140,100 +145,124 @@ function ActivitiesPage() {
   const totalElevation = activities.reduce((sum, f) => sum + (f.route?.stats?.elevationGain ?? 0), 0)
   const hasFilters = dateFrom !== '' || dateTo !== '' || !isEmptyRange(distanceKm) || !isEmptyRange(elevationM)
 
-  return (
-    <div style={styles.page}>
-      {/* Filter & sort bar */}
-      <div style={styles.filterBar}>
-        <label style={styles.filterField}>
-          <span style={styles.filterLabel}>Von</span>
-          <input
-            type="date"
-            value={dateFrom}
-            onChange={(e) => {
-              setDateFrom(e.target.value)
-              setPage(1)
-            }}
-            style={styles.input}
-          />
-        </label>
-        <label style={styles.filterField}>
-          <span style={styles.filterLabel}>Bis</span>
-          <input
-            type="date"
-            value={dateTo}
-            onChange={(e) => {
-              setDateTo(e.target.value)
-              setPage(1)
-            }}
-            style={styles.input}
-          />
-        </label>
-        <RangeFilter
-          label="Distanz"
-          unit="km"
-          value={distanceKm}
-          onChange={(range) => {
-            setDistanceKm(range)
+  const activeFilterCount = [
+    dateFrom !== '',
+    dateTo !== '',
+    !isEmptyRange(distanceKm),
+    !isEmptyRange(elevationM),
+  ].filter(Boolean).length
+
+  const filterControls = (
+    <>
+      <label style={styles.filterField}>
+        <span style={styles.filterLabel}>Von</span>
+        <input
+          type="date"
+          value={dateFrom}
+          onChange={(e) => {
+            setDateFrom(e.target.value)
             setPage(1)
           }}
+          style={styles.input}
         />
-        <RangeFilter
-          label="Höhenmeter"
-          unit="hm"
-          value={elevationM}
-          onChange={(range) => {
-            setElevationM(range)
+      </label>
+      <label style={styles.filterField}>
+        <span style={styles.filterLabel}>Bis</span>
+        <input
+          type="date"
+          value={dateTo}
+          onChange={(e) => {
+            setDateTo(e.target.value)
             setPage(1)
           }}
+          style={styles.input}
         />
-        {hasFilters && (
-          <button
-            onClick={() => {
-              setDateFrom('')
-              setDateTo('')
-              setDistanceKm(emptyRange)
-              setElevationM(emptyRange)
-              setPage(1)
-            }}
-            style={styles.resetButton}
-          >
-            Filter zurücksetzen
-          </button>
-        )}
-
-        <div style={styles.filterSpacer} />
-
-        <label style={styles.filterField}>
-          <span style={styles.filterLabel}>Sortieren nach</span>
-          <select
-            value={sortBy}
-            onChange={(e) => {
-              setSortBy(e.target.value as ListAllActivitiesSortBy)
-              setPage(1)
-            }}
-            style={styles.input}
-          >
-            {Object.entries(sortLabels).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
+      </label>
+      <RangeFilter
+        label="Distanz"
+        unit="km"
+        value={distanceKm}
+        onChange={(range) => {
+          setDistanceKm(range)
+          setPage(1)
+        }}
+      />
+      <RangeFilter
+        label="Höhenmeter"
+        unit="hm"
+        value={elevationM}
+        onChange={(range) => {
+          setElevationM(range)
+          setPage(1)
+        }}
+      />
+      {hasFilters && (
         <button
           onClick={() => {
-            setOrder(order === 'DESC' ? 'ASC' : 'DESC')
+            setDateFrom('')
+            setDateTo('')
+            setDistanceKm(emptyRange)
+            setElevationM(emptyRange)
             setPage(1)
           }}
-          style={styles.orderButton}
-          title={order === 'DESC' ? 'Absteigend' : 'Aufsteigend'}
+          style={styles.resetButton}
         >
-          {order === 'DESC' ? '↓ Absteigend' : '↑ Aufsteigend'}
+          Filter zurücksetzen
         </button>
-      </div>
+      )}
+
+      <div style={styles.filterSpacer} />
+
+      <label style={styles.filterField}>
+        <span style={styles.filterLabel}>Sortieren nach</span>
+        <select
+          value={sortBy}
+          onChange={(e) => {
+            setSortBy(e.target.value as ListAllActivitiesSortBy)
+            setPage(1)
+          }}
+          style={styles.input}
+        >
+          {Object.entries(sortLabels).map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </label>
+      <button
+        onClick={() => {
+          setOrder(order === 'DESC' ? 'ASC' : 'DESC')
+          setPage(1)
+        }}
+        style={styles.orderButton}
+        title={order === 'DESC' ? 'Absteigend' : 'Aufsteigend'}
+      >
+        {order === 'DESC' ? '↓ Absteigend' : '↑ Aufsteigend'}
+      </button>
+    </>
+  )
+
+  return (
+    <div style={styles.page}>
+      {/* Filter & sort: a bar on desktop, a sheet behind one button on mobile */}
+      {isMobile ? (
+        <div style={styles.filterBar}>
+          <button
+            type="button"
+            onClick={() => setFiltersOpen(true)}
+            style={styles.orderButton}
+            aria-expanded={filtersOpen}
+          >
+            Filter &amp; Sortierung{activeFilterCount > 0 && ` (${activeFilterCount})`}
+          </button>
+        </div>
+      ) : (
+        <div style={styles.filterBar}>{filterControls}</div>
+      )}
 
       <div style={styles.container}>
-        <div style={styles.sidebar}>
+        <div style={isMobile ? { ...styles.sidebar, ...styles.sidebarMobile } : styles.sidebar}>
           <div style={styles.headingRow}>
             <h2 style={styles.heading}>Aktivitäten ({total})</h2>
             <div style={styles.headingActions}>
@@ -331,30 +360,49 @@ function ActivitiesPage() {
           )}
         </div>
 
-        {/* Map */}
-        <div style={styles.mapArea}>
-          <Map mapRef={mapRef}>
-            {points.length > 1 && (
-              <SegmentOverlay
-                points={points}
-                mapInstance={mapRef.current!}
-                range={[0, totalDist]}
-                totalDistKm={totalDist}
-                fitBounds
-              >
-                <TrackClickHandler
+        {/* Mobile shows the list only */}
+        {!isMobile && (
+          <div style={styles.mapArea}>
+            <MapView mapRef={mapRef}>
+              {points.length > 1 && (
+                <SegmentOverlay
                   points={points}
+                  mapInstance={mapRef.current!}
                   range={[0, totalDist]}
                   totalDistKm={totalDist}
-                  mapInstance={mapRef.current!}
-                  onPointClick={handlePointClick}
-                />
-              </SegmentOverlay>
-            )}
-          </Map>
-        </div>
+                  fitBounds
+                >
+                  <TrackClickHandler
+                    points={points}
+                    range={[0, totalDist]}
+                    totalDistKm={totalDist}
+                    mapInstance={mapRef.current!}
+                    onPointClick={handlePointClick}
+                  />
+                </SegmentOverlay>
+              )}
+            </MapView>
+          </div>
+        )}
         {selectedPoint && <PointDetails point={selectedPoint.point} />}
       </div>
+
+      {isMobile && (
+        <Sheet
+          side="bottom"
+          open={filtersOpen}
+          onClose={() => setFiltersOpen(false)}
+          label="Filter und Sortierung"
+          style={{ height: 'auto', maxHeight: '80vh', display: 'flex', flexDirection: 'column' }}
+        >
+          <div style={styles.sheetFilters}>
+            {filterControls}
+            <button type="button" onClick={() => setFiltersOpen(false)} style={styles.doneButton}>
+              Fertig
+            </button>
+          </div>
+        </Sheet>
+      )}
 
       {showUploadModal && (
         <UploadGpxModal
@@ -538,6 +586,24 @@ const styles = {
     backgroundColor: '#fff',
     cursor: 'pointer',
   } as const,
+  sheetFilters: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: 12,
+    padding: 16,
+    overflowY: 'auto',
+  } as const,
+  doneButton: {
+    padding: '10px 16px',
+    fontSize: 14,
+    fontWeight: 500,
+    border: 'none',
+    borderRadius: 4,
+    backgroundColor: '#2196f3',
+    color: '#fff',
+    cursor: 'pointer',
+  } as const,
   container: {
     display: 'flex',
     flex: 1,
@@ -551,6 +617,10 @@ const styles = {
     borderRight: '1px solid #e0e0e0',
     padding: 16,
     backgroundColor: '#fafafa',
+  } as const,
+  sidebarMobile: {
+    width: '100%',
+    borderRight: 'none',
   } as const,
   mapArea: {
     flex: 1,

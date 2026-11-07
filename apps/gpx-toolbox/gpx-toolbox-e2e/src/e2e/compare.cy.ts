@@ -1,6 +1,6 @@
 describe('comparing routes', () => {
   beforeEach(() => {
-    cy.visitLoggedIn('/')
+    cy.visitLoggedIn('/routes')
     cy.uploadRoute('hausrunde.gpx')
     cy.uploadRoute('bergtour.gpx')
     cy.reload()
@@ -20,16 +20,17 @@ describe('comparing routes', () => {
 
     cy.location('pathname').should('eq', '/compare')
     cy.findByRole('heading', { name: 'Routenvergleich' }).should('be.visible')
-    cy.get('tbody tr').should('have.length', 2)
-    cy.get('tbody tr').first().should('contain', 'Hausrunde').and('contain', 'Referenz')
+    // The first row holds the column headings
+    cy.findAllByRole('row').should('have.length', 3)
+    cy.findAllByRole('row').eq(1).should('contain', 'Hausrunde').and('contain', 'Referenz')
     // Differences are relative to the reference
-    cy.get('tbody tr').last().should('contain', 'Bergtour').and('contain', '+')
+    cy.findAllByRole('row').eq(2).should('contain', 'Bergtour').and('contain', '+')
 
     cy.findByRole('button', { name: 'Als Referenz' }).click()
-    cy.get('tbody tr').first().should('contain', 'Bergtour').and('contain', 'Referenz')
+    cy.findAllByRole('row').eq(1).should('contain', 'Bergtour').and('contain', 'Referenz')
 
     cy.findByRole('button', { name: 'Hausrunde aus dem Vergleich entfernen' }).click()
-    cy.get('tbody tr').should('have.length', 1)
+    cy.findAllByRole('row').should('have.length', 2)
     cy.findByText(/Füge mindestens zwei Routen/).should('be.visible')
   })
 
@@ -41,6 +42,6 @@ describe('comparing routes', () => {
 
     cy.findAllByText('Route nicht gefunden').should('have.length', 2)
     cy.findByRole('button', { name: 'Vergleichsliste leeren' }).click()
-    cy.get('table').should('not.exist')
+    cy.findByRole('table').should('not.exist')
   })
 })

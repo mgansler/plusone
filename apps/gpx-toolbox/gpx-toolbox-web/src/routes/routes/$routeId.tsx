@@ -21,21 +21,28 @@ import { SidebarDivider, SidebarLayout } from '../../components/SidebarLayout'
 import { TrackAnalysis } from '../../components/TrackAnalysis'
 import { compareList } from '../../hooks/useCompareList'
 import { useSegmentRange } from '../../hooks/useSegmentRange'
+import { useIsMobile } from '../../layout/useIsMobile'
 import { routeStatusColor, routeStatusLabel } from '../../utils/routeStatus'
+import { sourceColors, sourceLabels } from '../../utils/routeColors'
 import { formatDistanceShort, formatDurationShort, formatElevationGain } from '../../utils/format'
 
-const sourceLabels: Record<string, string> = {
-  manualImport: 'Manuell',
-}
-
 export const Route = createFileRoute('/routes/$routeId')({
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      from: typeof search.from === 'string' ? search.from : undefined,
+    }
+  },
   component: RouteDetailPage,
 })
 
 function RouteDetailPage() {
   const { routeId } = Route.useParams()
+  const { from } = Route.useSearch()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
+  const isMobile = useIsMobile()
+  // Mobile: the map replaces the overview in the sidebar instead of sitting next to it
+  const [showMap, setShowMap] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [formRiddenAt, setFormRiddenAt] = useState(new Date().toISOString().slice(0, 16))
   const [formTitle, setFormTitle] = useState('')
@@ -118,7 +125,7 @@ function RouteDetailPage() {
         void queryClient.invalidateQueries({ queryKey: getListRoutesQueryKey() })
         void queryClient.invalidateQueries({ queryKey: getFindNearbyRoutesQueryKey() })
         void queryClient.invalidateQueries({ queryKey: getListAllActivitiesQueryKey() })
-        void navigate({ to: '/' })
+        void navigate({ to: '/routes' })
       },
     },
   })
@@ -176,13 +183,25 @@ function RouteDetailPage() {
     <div style={styles.container}>
       <SidebarLayout
         header={
-          <Link to="/" style={styles.backLink}>
-            ← Zurück zur Übersicht
+          <Link to={from === 'compare' ? '/compare' : '/routes'} style={styles.backLink}>
+            ← Zurück{from === 'compare' ? ' zum Vergleich' : ' zur Übersicht'}
           </Link>
         }
       >
         <div>
-          <h2 style={styles.heading}>{route.name}</h2>
+          <div style={styles.titleRow}>
+            <h2 style={styles.heading}>{route.name}</h2>
+            {isMobile && (
+              <button
+                onClick={() => setShowMap((v) => !v)}
+                style={styles.mapToggle}
+                aria-label="Karte anzeigen"
+                aria-pressed={showMap}
+              >
+                🗺
+              </button>
+            )}
+          </div>
 
           {route.description && (
             <p style={styles.description}>{(route.description as unknown as string | null) ?? ''}</p>
@@ -236,12 +255,23 @@ function RouteDetailPage() {
         {points.length >= 2 && (
           <>
             <SidebarDivider />
+            {isMobile && showMap && (
+              <div style={styles.mobileMap}>
+                <SegmentMap
+                  points={points}
+                  range={segmentRange}
+                  totalDistKm={totalDistKm}
+                  hoveredPoint={hoveredPoint}
+                />
+              </div>
+            )}
             <TrackAnalysis
               points={points}
               range={segmentRange}
               onRangeChange={setSegmentRange}
               name={route.name}
               onPointHover={setHoveredPoint}
+              showOverview={!(isMobile && showMap)}
             />
           </>
         )}
@@ -412,13 +442,13 @@ function RouteDetailPage() {
         />
       )}
 
-      <SegmentMap points={points} range={segmentRange} totalDistKm={totalDistKm} hoveredPoint={hoveredPoint} />
+      {!isMobile && (
+        <div style={styles.mapContainer}>
+          <SegmentMap points={points} range={segmentRange} totalDistKm={totalDistKm} hoveredPoint={hoveredPoint} />
+        </div>
+      )}
     </div>
   )
-}
-
-const sourceColors: Record<string, string> = {
-  manualImport: '#2196f3',
 }
 
 const styles = {
@@ -426,6 +456,30 @@ const styles = {
     display: 'flex',
     height: '100%',
     width: '100%',
+  } as const,
+  titleRow: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  } as const,
+  mapToggle: {
+    background: 'none',
+    border: 'none',
+    fontSize: 16,
+    cursor: 'pointer',
+    padding: 4,
+  } as const,
+  mobileMap: {
+    display: 'flex',
+    flex: 1,
+    minWidth: 0,
+    minHeight: 200,
+  } as const,
+  mapContainer: {
+    flex: 1,
+    minWidth: 0,
+    height: '100%',
+    display: 'flex',
   } as const,
   backLink: {
     display: 'block',

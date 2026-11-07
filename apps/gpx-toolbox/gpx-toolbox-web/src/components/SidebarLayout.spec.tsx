@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+
+import { mockViewport } from '../layout/mockViewport'
 
 import { SidebarDivider, SidebarLayout } from './SidebarLayout'
 
@@ -23,11 +25,24 @@ describe('SidebarLayout', () => {
     expect((container.firstElementChild as HTMLElement).children).toHaveLength(1)
   })
 
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
   it('uses the dark sidebar theme', () => {
+    mockViewport(false)
     const { container } = render(<SidebarLayout header="Titel" />)
     const sidebar = container.firstElementChild as HTMLElement
     expect(sidebar.style.background).toBe('#1e293b')
     expect(sidebar.style.width).toBe('400px')
+  })
+
+  it('takes the full width on mobile', () => {
+    mockViewport(true)
+    const { container } = render(<SidebarLayout header="Titel" />)
+    const sidebar = container.firstElementChild as HTMLElement
+    expect(sidebar.style.width).toBe('100%')
+    expect(sidebar.style.borderRight).not.toContain('1px')
   })
 })
 

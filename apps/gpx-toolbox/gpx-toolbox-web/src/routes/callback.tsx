@@ -41,14 +41,3 @@ const styles = {
     margin: 0,
   } as const,
 }
-
-// Inject keyframes for the spinner
-if (typeof document !== 'undefined') {
-  const styleId = 'gpx-toolbox-spinner-style'
-  if (!document.getElementById(styleId)) {
-    const style = document.createElement('style')
-    style.id = styleId
-    style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }'
-    document.head.appendChild(style)
-  }
-}

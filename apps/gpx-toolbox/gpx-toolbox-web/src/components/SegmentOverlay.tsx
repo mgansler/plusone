@@ -3,6 +3,8 @@ import L from 'leaflet'
 
 import { calculateHaversineDistance, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 
+import { mapEndMarker, mapFullTrack, mapSelectedSegment, mapStartMarker } from '../utils/routeColors'
+
 type SegmentOverlayProps = {
   points: Array<TrackPoint>
   mapInstance: L.Map
@@ -54,7 +56,7 @@ export function SegmentOverlay({
       // ── Full track (greyed out) ──────────────────────────────────────────
       const fullCoords: Array<[number, number]> = points.map((p) => [p.latitude, p.longitude] as [number, number])
       L.polyline(fullCoords, {
-        color: '#94a3b8',
+        color: mapFullTrack,
         weight: 2,
         opacity: 0.4,
         interactive: false,
@@ -63,7 +65,7 @@ export function SegmentOverlay({
       // ── Selected segment (highlighted) ───────────────────────────────────
       const selectedCoords: Array<[number, number]> = selected.map((p) => [p.latitude, p.longitude] as [number, number])
       L.polyline(selectedCoords, {
-        color: '#2563eb',
+        color: mapSelectedSegment,
         weight: 4,
         opacity: 0.9,
         interactive: false,
@@ -72,7 +74,7 @@ export function SegmentOverlay({
       // ── Start / End markers for selected segment ─────────────────────────
       const startIcon = L.divIcon({
         className: 'segment-marker start',
-        html: '<div style="width:14px;height:14px;background:#22c55e;border:2px solid #fff;border-radius:3px;box-shadow:0 0 6px rgba(0,0,0,0.4)"></div>',
+        html: `<div style="width:14px;height:14px;background:${mapStartMarker};border:2px solid #fff;border-radius:3px;box-shadow:0 0 6px rgba(0,0,0,0.4)"></div>`,
         iconSize: [14, 14],
         iconAnchor: [7, 7],
       })
@@ -80,7 +82,7 @@ export function SegmentOverlay({
 
       const endIcon = L.divIcon({
         className: 'segment-marker end',
-        html: '<div style="width:14px;height:14px;background:#ef4444;border:2px solid #fff;border-radius:3px;box-shadow:0 0 6px rgba(0,0,0,0.4)"></div>',
+        html: `<div style="width:14px;height:14px;background:${mapEndMarker};border:2px solid #fff;border-radius:3px;box-shadow:0 0 6px rgba(0,0,0,0.4)"></div>`,
         iconSize: [14, 14],
         iconAnchor: [7, 7],
       })

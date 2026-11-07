@@ -19,7 +19,7 @@ export const configSchema = z.object({
   [JWT_SECRET]: z.string().default('change-me-in-production'),
   [JWT_EXPIRES_IN]: z.string().default('7d'),
   // Target of the redirect after the Google login (the web app)
-  [FRONTEND_URL]: z.string().url().default('http://localhost:4250'),
+  [FRONTEND_URL]: z.url().default('http://localhost:4250'),
   GPX_TOOLBOX_DATABASE_URL: z.string().startsWith('file:'),
 })
 

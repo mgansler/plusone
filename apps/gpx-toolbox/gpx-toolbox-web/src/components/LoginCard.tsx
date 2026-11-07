@@ -1,4 +1,7 @@
+import { useState } from 'react'
+
 import { useAuth } from '../lib/auth-context'
+import { setTokenDirectly } from '../lib/auth-context'
 
 /** The login page is opened with `?error=` when the user declined on the Google page */
 function loginErrorMessage(): string | null {
@@ -31,11 +34,21 @@ function GoogleLogo() {
   )
 }
 
+const isDevMode = import.meta.env.DEV
+
 /**
  * Reusable login card with the Google sign-in. Used by the root App shell and the /login route.
  */
 export function LoginCard() {
   const { isAuthenticated, login, user } = useAuth()
+  const [manualToken, setManualToken] = useState('')
+
+  const handleManualLogin = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!manualToken.trim()) return
+    setTokenDirectly(manualToken.trim())
+    window.location.href = '/'
+  }
 
   if (isAuthenticated && user) {
     return (
@@ -49,7 +62,7 @@ export function LoginCard() {
         </div>
         <h2 style={styles.welcome}>Willkommen{user.name ? `, ${user.name}` : ''}!</h2>
         <p style={styles.subtitle}>Du bist erfolgreich angemeldet.</p>
-        <a href="/" style={styles.link}>
+        <a href="/routes" style={styles.link}>
           → Zur Route-Übersicht
         </a>
       </div>
@@ -69,6 +82,24 @@ export function LoginCard() {
         Mit Google anmelden
       </button>
       {error && <p style={styles.error}>{error}</p>}
+
+      {isDevMode && (
+        <div style={styles.devSection}>
+          <p style={styles.devTitle}>Dev: Token manuell eingeben</p>
+          <form onSubmit={handleManualLogin} style={styles.devForm}>
+            <input
+              type="text"
+              value={manualToken}
+              onChange={(e) => setManualToken(e.target.value)}
+              placeholder="JWT einfügen..."
+              style={styles.devInput}
+            />
+            <button type="submit" style={styles.devButton}>
+              Anmelden
+            </button>
+          </form>
+        </div>
+      )}
 
       <p style={styles.noteOAuth}>
         Nach dem Klick wirst du zu Google weitergeleitet. Wir speichern deinen Namen, deine E-Mail-Adresse und dein
@@ -175,5 +206,41 @@ const styles = {
     fontWeight: 600,
     color: '#3b82f6',
     textDecoration: 'none',
+  } as const,
+  devSection: {
+    marginTop: '1.5rem',
+    padding: '1rem',
+    backgroundColor: '#f8fafc',
+    borderRadius: 8,
+    border: '1px dashed #cbd5e1',
+  } as const,
+  devTitle: {
+    fontSize: 12,
+    fontWeight: 600,
+    color: '#64748b',
+    margin: '0 0 0.5rem',
+  } as const,
+  devForm: {
+    display: 'flex',
+    gap: '0.5rem',
+  } as const,
+  devInput: {
+    flex: 1,
+    padding: '0.4rem 0.6rem',
+    fontSize: 12,
+    border: '1px solid #cbd5e1',
+    borderRadius: 4,
+    outline: 'none',
+  } as const,
+  devButton: {
+    padding: '0.4rem 0.8rem',
+    fontSize: 12,
+    fontWeight: 600,
+    color: '#fff',
+    backgroundColor: '#64748b',
+    border: 'none',
+    borderRadius: 4,
+    cursor: 'pointer',
+    whiteSpace: 'nowrap',
   } as const,
 }

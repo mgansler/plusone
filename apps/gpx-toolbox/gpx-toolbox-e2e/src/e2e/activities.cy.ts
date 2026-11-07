@@ -1,11 +1,11 @@
 describe('activity upload', () => {
   it('links an uploaded activity to the matching route', () => {
-    cy.visitLoggedIn('/')
+    cy.visitLoggedIn('/routes')
     cy.uploadRoute('hausrunde.gpx')
     cy.uploadActivity('hausrunde.gpx', 'Feierabendrunde')
 
     // The activity was matched to the uploaded route instead of creating a new one
-    cy.visit('/')
+    cy.visit('/routes')
     cy.findByRole('heading', { name: 'Routen (1)' }).should('be.visible')
     cy.findByRole('link', { name: /Hausrunde/ }).within(() => {
       cy.findByText('Gefahren').should('be.visible')
@@ -16,7 +16,7 @@ describe('activity upload', () => {
   })
 
   it('creates a new route for an activity without a matching route', () => {
-    cy.visitLoggedIn('/')
+    cy.visitLoggedIn('/routes')
     cy.uploadActivity('bergtour.gpx', 'Bergtour')
 
     cy.visit('/activities')
@@ -24,7 +24,7 @@ describe('activity upload', () => {
     // The title of the activity and the name of its new route
     cy.findAllByText('Bergtour').should('have.length', 2)
 
-    cy.visit('/')
+    cy.visit('/routes')
     cy.findByRole('heading', { name: 'Routen (1)' }).should('be.visible')
   })
 

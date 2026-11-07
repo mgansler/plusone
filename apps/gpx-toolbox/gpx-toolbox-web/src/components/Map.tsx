@@ -7,6 +7,8 @@ import markerIcon2xUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import markerIconUrl from 'leaflet/dist/images/marker-icon.png'
 import markerShadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
+import { mapLocateCircleFill, mapLocateMarkerFill, mapLocateMarkerRing } from '../utils/routeColors'
+
 /**
  * Leaflet derives the default marker image path from the CSS background URL of `.leaflet-default-icon-path`.
  * Vite inlines that image as a data URL in production builds, which breaks the derivation, so set the URLs explicitly.
@@ -33,8 +35,8 @@ const tileLayers: Record<string, string> = {
  */
 const locateMarkerStyle: L.CircleMarkerOptions = {
   radius: 5,
-  color: '#3b82f6',
-  fillColor: '#60a5fa',
+  color: mapLocateMarkerRing,
+  fillColor: mapLocateMarkerFill,
   fillOpacity: 0.9,
   weight: 2,
 }
@@ -105,8 +107,8 @@ export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProp
       flyTo: true,
       markerStyle: locateMarkerStyle,
       circleStyle: {
-        color: '#3b82f6',
-        fillColor: '#60a5fa',
+        color: mapLocateMarkerRing,
+        fillColor: mapLocateCircleFill,
         fillOpacity: 0.1,
         weight: 1,
       },

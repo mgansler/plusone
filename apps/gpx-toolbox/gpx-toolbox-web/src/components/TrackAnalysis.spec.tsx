@@ -45,6 +45,13 @@ describe('TrackAnalysis', () => {
     expect(screen.getAllByRole('button', { name: 'SVG' })).toHaveLength(2)
   })
 
+  it('leaves out the "Gesamt" section on request', () => {
+    renderAnalysis({ showOverview: false })
+    expect(screen.queryByRole('heading', { name: 'Gesamt' })).toBeNull()
+    expect(screen.getByRole('heading', { name: 'Segment' })).toBeTruthy()
+    expect(screen.getAllByRole('button', { name: 'GPX' })).toHaveLength(1)
+  })
+
   it('shows time-based stats only when the track has timestamps', () => {
     // Both "Gesamt" and the segment stats list the speed
     const { unmount } = renderAnalysis()

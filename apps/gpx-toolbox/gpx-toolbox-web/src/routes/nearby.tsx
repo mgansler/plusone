@@ -1,512 +1,211 @@
-import { type RefObject, useEffect, useMemo, useRef, useState } from 'react'
+import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import L from 'leaflet'
+import type L from 'leaflet'
 
-import { useExportRoute, useFindNearbyRoutes, useGetRoute } from '@plusone/gpx-toolbox-api-client'
-import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
+import { useFindNearbyRoutes } from '@plusone/gpx-toolbox-api-client'
 
-import { ElevationProfile } from '../components/ElevationProfile'
 import { CompareBar } from '../components/CompareBar'
-import { CompareToggleButton } from '../components/CompareToggleButton'
-import { COORDINATE_DECIMALS, CoordinateInput } from '../components/CoordinateInput'
-import { defaultCenter, Map } from '../components/Map'
-import { formatElevation } from '../utils/format'
-import { geocodePlace, type GeocodeResult } from '../utils/geocode'
-import { routeColor, routeStyle } from '../utils/routeColors'
-import { routeStatusColor, routeStatusLabel } from '../utils/routeStatus'
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type NearbyRoute = {
-  id: string
-  name: string
-  distance: number
-  distanceKm: string
-  status: string
-  source: string
-  stats: Record<string, unknown> | null
-}
-
-const sourceColors: Record<string, string> = {
-  manualImport: '#2196f3',
-}
-
-type TrackStyle = Pick<L.PolylineOptions, 'weight' | 'opacity'>
-
-/** Track style: with a highlighted route, all others fade so the highlighted one stands out */
-function trackStyle(isHighlighted: boolean, hasHighlight: boolean): TrackStyle {
-  if (isHighlighted) return { weight: 6, opacity: 1 }
-  return hasHighlight ? { weight: 3, opacity: 0.7 } : { weight: 3, opacity: 0.8 }
-}
-
-const DEFAULT_RADIUS_KM = 20
-
-/** Zoom the map so the whole search circle is visible */
-function fitSearchArea(map: L.Map, lat: number, lng: number, radiusKm: number) {
-  map.fitBounds(L.latLng(lat, lng).toBounds(radiusKm * 2 * 1000), { padding: [16, 16] })
-}
+import { COORDINATE_DECIMALS } from '../components/CoordinateInput'
+import { Map as MapView } from '../components/Map'
+import { NearbyFilters } from '../components/NearbyFilters'
+import { NearbyResults } from '../components/NearbyResults'
+import { usePlaceSearch } from '../hooks/usePlaceSearch'
+import { useProfilePointMarker, useResultTrackLayers, useSearchAreaLayers } from '../hooks/useNearbyMapLayers'
+import { useRouteSelection } from '../hooks/useRouteSelection'
+import { useSearchArea } from '../hooks/useSearchArea'
+import { Sheet } from '../layout/Sheet'
+import { useIsMobile } from '../layout/useIsMobile'
+import { Z_INDEX } from '../layout/tokens'
 
 export const Route = createFileRoute('/nearby')({
   component: NearbySearch,
 })
 
 function NearbySearch() {
-  const mapRef: RefObject<L.Map | null> = useRef(null)
+  const isMobile = useIsMobile()
   const [map, setMap] = useState<L.Map | null>(null)
-  const [lat, setLat] = useState<number | null>(null)
-  const [lng, setLng] = useState<number | null>(null)
-  const [radius, setRadius] = useState<number>(DEFAULT_RADIUS_KM)
-  const [selectedRoute, setSelectedRoute] = useState<string | null>(null)
-  // Route under the mouse, in the result list or on the map; takes precedence over the selection
-  const [hoveredRoute, setHoveredRoute] = useState<string | null>(null)
-  const highlightedRoute = hoveredRoute ?? selectedRoute
-  const [usingGPS, setUsingGPS] = useState(false)
+  // Mobile: the search form is a bottom sheet, the results a sheet from the right; one is open at a time
+  const [filtersOpen, setFiltersOpen] = useState(false)
+  const [resultsOpen, setResultsOpen] = useState(false)
 
-  // Place-name search
-  const [place, setPlace] = useState('')
-  const [geoLoading, setGeoLoading] = useState(false)
-  const [geoError, setGeoError] = useState<string | null>(null)
-  // Several matches for the searched place: let the user pick instead of jumping to the first
-  const [geoCandidates, setGeoCandidates] = useState<Array<GeocodeResult>>([])
-
-  // Leaflet layers for the search center (kept across renders, updated in place)
-  const markerRef = useRef<L.Marker | null>(null)
-  const circleRef = useRef<L.Circle | null>(null)
-  // Latest search center for the deferred layer creation below
-  const centerRef = useRef({ lat, lng, radius })
-  centerRef.current = { lat, lng, radius }
+  const area = useSearchArea(map)
+  const place = usePlaceSearch(area.pickLocation)
+  const selection = useRouteSelection(map)
 
   const {
     data: results,
-    isLoading: loading,
+    isLoading: searching,
     error,
     isError,
-  } = useFindNearbyRoutes({ lat: lat ?? 0, lng: lng ?? 0, radius }, { query: { enabled: lat != null && lng != null } })
-
-  // Fetch the selected route so its full-resolution track replaces the simplified one on the map.
-  // Disabled while nothing is selected (empty id would otherwise fire the query).
-  const { data: selectedRouteDetail } = useGetRoute(selectedRoute ?? '', {
-    query: { enabled: selectedRoute != null },
-  })
-
-  // The route list only has 2D tracks; the elevation profile needs the GPX of the selected route.
-  // The generated type says void, but the endpoint returns the GPX XML as text.
-  const { data: selectedGpx, isLoading: gpxLoading } = useExportRoute(selectedRoute ?? '', {
-    query: { enabled: selectedRoute != null },
-  })
-  const selectedPoints = useMemo(() => (typeof selectedGpx === 'string' ? parseGpx(selectedGpx) : []), [selectedGpx])
-  const selectedDistKm = useMemo(
-    () =>
-      selectedPoints.reduce(
-        (sum, p, i) => (i === 0 ? 0 : sum + calculateHaversineDistance(selectedPoints[i - 1], p)),
-        0,
-      ) / 1000,
-    [selectedPoints],
+  } = useFindNearbyRoutes(
+    { lat: area.lat ?? 0, lng: area.lng ?? 0, radius: area.radius },
+    { query: { enabled: area.lat != null && area.lng != null } },
   )
-  // GPX files without <ele> parse to NaN elevations, which the profile cannot draw
-  const hasElevation = selectedPoints.length >= 2 && selectedPoints.every((p) => Number.isFinite(p.elevation))
-  // Point under the mouse in the elevation profile, shown as a marker on the map
-  const [profilePoint, setProfilePoint] = useState<TrackPoint | null>(null)
-  useEffect(() => setProfilePoint(null), [selectedRoute])
+  const hasResults = results != null && results.length > 0
 
-  // Request the browser location; `onDone` also runs on failure so callers can fall back
-  function locate(onFound: (lat: number, lng: number) => void, onDone?: () => void) {
-    if (!navigator.geolocation) {
-      onDone?.()
-      return
-    }
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        onFound(pos.coords.latitude, pos.coords.longitude)
-        onDone?.()
-      },
-      () => onDone?.(),
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 },
-    )
+  useSearchAreaLayers(map, area)
+  useResultTrackLayers(map, {
+    results,
+    selectedDetail: selection.detail,
+    highlightedRoute: selection.highlightedRoute,
+    onHover: selection.setHovered,
+    onToggle: selection.toggle,
+  })
+  useProfilePointMarker(map, selection.profilePoint)
+
+  const center: [number, number] | undefined = area.lat != null && area.lng != null ? [area.lat, area.lng] : undefined
+
+  const filters = (
+    <NearbyFilters
+      place={place}
+      area={area}
+      searching={searching}
+      error={isError ? (error instanceof Error ? error.message : 'Unbekannter Fehler') : null}
+    />
+  )
+
+  const heading = (
+    <div style={styles.sidebarHeader}>
+      <h2 style={styles.heading}>Routen in der Nähe</h2>
+      {isMobile && (
+        <button type="button" onClick={() => setFiltersOpen(false)} style={styles.closeButton} title="Schließen">
+          <CloseIcon />
+        </button>
+      )}
+    </div>
+  )
+
+  function toggleFilters() {
+    setFiltersOpen((open) => !open)
+    setResultsOpen(false)
   }
 
-  // Start the search at the current location right away (fallback: default center),
-  // so nearby routes show up without clicking "GPS-Position" first.
-  const [initialCenter, setInitialCenter] = useState<[number, number] | null>(null)
-  useEffect(() => {
-    let found = false
-    locate(
-      (foundLat, foundLng) => {
-        found = true
-        setInitialCenter([foundLat, foundLng])
-      },
-      () => {
-        if (!found) setInitialCenter(defaultCenter)
-      },
-    )
-  }, [])
-
-  // Apply the initial center once both it and the map are available
-  // (unless the user already picked a location in the meantime).
-  const initialCenterApplied = useRef(false)
-  useEffect(() => {
-    if (!initialCenter || !map || initialCenterApplied.current) return
-    initialCenterApplied.current = true
-    if (lat != null && lng != null) return
-    setLat(initialCenter[0])
-    setLng(initialCenter[1])
-    fitSearchArea(map, initialCenter[0], initialCenter[1], radius)
-  }, [initialCenter, map, lat, lng, radius])
-
-  // Recenter the map only when the user explicitly picks a location
-  // (GPS / place / typed coordinates) — not when they click/drag the map,
-  // where the view is already where they want it.
-  function centerOn(nextLat: number, nextLng: number) {
-    if (mapRef.current) fitSearchArea(mapRef.current, nextLat, nextLng, radius)
+  function toggleResults() {
+    setResultsOpen((open) => !open)
+    setFiltersOpen(false)
   }
 
-  // Create the draggable center marker + radius circle once the map is ready,
-  // and let a click anywhere on the map move the search center there.
-  useEffect(() => {
-    if (!map) return
-
-    // The map DOM container may not be in the document yet when this effect
-    // runs (onMapReady fires during the same render cycle). Defer to the
-    // next macrotask so the browser has committed the layout first.
-    let onMapClick: ((e: L.LeafletMouseEvent) => void) | null = null
-
-    setTimeout(() => {
-      if (!map) return
-
-      // Read the center at creation time: it may have been set (e.g. by geolocation) meanwhile
-      const initLat = centerRef.current.lat ?? defaultCenter[0]
-      const initLng = centerRef.current.lng ?? defaultCenter[1]
-
-      if (!markerRef.current) {
-        const marker = L.marker([initLat, initLng], { draggable: true, title: 'Suchzentrum' }).addTo(map)
-        marker.on('dragend', () => {
-          const p = marker.getLatLng()
-          setLat(p.lat)
-          setLng(p.lng)
-        })
-        markerRef.current = marker
-      }
-
-      if (!circleRef.current) {
-        circleRef.current = L.circle([initLat, initLng], {
-          radius: centerRef.current.radius * 1000,
-          color: '#2196f3',
-          weight: 2,
-          fillColor: '#2196f3',
-          fillOpacity: 0.08,
-        }).addTo(map)
-      }
-
-      onMapClick = (e: L.LeafletMouseEvent) => {
-        setLat(e.latlng.lat)
-        setLng(e.latlng.lng)
-      }
-      map.on('click', onMapClick)
-    }, 50)
-
-    return () => {
-      if (onMapClick) map.off('click', onMapClick)
-    }
-    // Only (re)create the layers when the map is first available.
-  }, [map])
-
-  // Keep the marker + circle in sync with the current search center / radius.
-  useEffect(() => {
-    if (lat == null || lng == null) return
-    markerRef.current?.setLatLng([lat, lng])
-    circleRef.current?.setLatLng([lat, lng]).setRadius(radius * 1000)
-  }, [lat, lng, radius])
-
-  // Track layers of all results by route ID, so highlighting only restyles them
-  const trackLayersRef = useRef(new globalThis.Map<string, L.Polyline>())
-  const highlightedRouteRef = useRef(highlightedRoute)
-  highlightedRouteRef.current = highlightedRoute
-
-  // Draw the tracks of all results — without moving the map.
-  useEffect(() => {
-    if (!map || !results) return
-
-    // The generated type says string[], but the backend returns Array<{lat,lng}>
-    // (from parsePolyline). Route through unknown to satisfy the cast.
-    const selectedPolyline = (selectedRouteDetail?.polyline ?? []) as unknown as Array<{ lat: number; lng: number }>
-
-    const layer = L.layerGroup()
-    const trackLayers = trackLayersRef.current
-    const highlighted = highlightedRouteRef.current
-    results.forEach((r, index) => {
-      const points = r.id === selectedRouteDetail?.id && selectedPolyline.length >= 2 ? selectedPolyline : r.polyline
-      if (points.length < 2) return
-
-      const track = L.polyline(
-        points.map((p) => [p.lat, p.lng] as [number, number]),
-        {
-          ...routeStyle(index),
-          ...trackStyle(r.id === highlighted, highlighted != null),
-          // Keep track clicks from moving the search center (map click handler)
-          bubblingMouseEvents: false,
-        },
-      )
-        .bindTooltip(r.name, { sticky: true })
-        .on('mouseover', () => setHoveredRoute(r.id))
-        .on('mouseout', () => setHoveredRoute((current) => (current === r.id ? null : current)))
-        .on('click', () => setSelectedRoute((current) => (current === r.id ? null : r.id)))
-        .addTo(layer)
-      trackLayers.set(r.id, track)
-    })
-    layer.addTo(map)
-    if (highlighted) trackLayers.get(highlighted)?.bringToFront()
-
-    return () => {
-      layer.remove()
-      trackLayers.clear()
-    }
-  }, [map, results, selectedRouteDetail])
-
-  // Saturate the highlighted track and fade all others
-  useEffect(() => {
-    for (const [id, track] of trackLayersRef.current) {
-      track.setStyle(trackStyle(id === highlightedRoute, highlightedRoute != null))
-    }
-    if (highlightedRoute) trackLayersRef.current.get(highlightedRoute)?.bringToFront()
-  }, [highlightedRoute])
-
-  // Show where the mouse is in the elevation profile on the map
-  useEffect(() => {
-    if (!map || !profilePoint) return
-    const marker = L.circleMarker([profilePoint.latitude, profilePoint.longitude], {
-      radius: 6,
-      color: '#1e3a8a',
-      weight: 2,
-      fillColor: '#60a5fa',
-      fillOpacity: 1,
-      interactive: false,
-    }).addTo(map)
-    return () => {
-      marker.remove()
-    }
-  }, [map, profilePoint])
-
-  async function handleGeocode() {
-    if (!place.trim()) return
-    setGeoLoading(true)
-    setGeoError(null)
-    setGeoCandidates([])
-    try {
-      const results = await geocodePlace(place)
-      if (results.length === 0) {
-        setGeoError(`Ort „${place}" nicht gefunden`)
-      } else if (results.length === 1) {
-        selectPlace(results[0])
-      } else {
-        setGeoCandidates(results)
-      }
-    } catch {
-      setGeoError('Ort konnte nicht aufgelöst werden')
-    } finally {
-      setGeoLoading(false)
-    }
-  }
-
-  function selectPlace(result: GeocodeResult) {
-    setGeoCandidates([])
-    setPlace(result.label)
-    setLat(result.lat)
-    setLng(result.lng)
-    centerOn(result.lat, result.lng)
-  }
-
-  const center: [number, number] | undefined = lat != null && lng != null ? [lat, lng] : undefined
-
-  // Unified formatter for elevation stats: rounds to integer, appends 'm'.
-  const formatElev = (val: number | undefined): string => (val != null ? formatElevation(val) : '-')
-
+  // The map keeps its position among the container's children in both layouts,
+  // so crossing the breakpoint does not recreate the Leaflet map.
   return (
     <div style={styles.container}>
-      {/* Sidebar */}
-      <div style={styles.sidebar}>
-        <h2 style={styles.heading}>Routen in der Nähe</h2>
-
-        {/* Place search */}
-        <div style={styles.section}>
-          <label style={styles.label}>Ort suchen</label>
-          <div style={styles.placeRow}>
-            <input
-              type="text"
-              value={place}
-              onChange={(e) => setPlace(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') void handleGeocode()
-              }}
-              style={styles.input}
-              placeholder="z. B. Ulm, Schwäbische Alb"
-            />
-            <button onClick={() => void handleGeocode()} style={styles.searchButton} disabled={geoLoading}>
-              {geoLoading ? '…' : 'Suchen'}
-            </button>
-          </div>
-          {geoError && <div style={styles.geoError}>{geoError}</div>}
-          {geoCandidates.length > 0 && (
-            <div style={styles.candidates}>
-              <div style={styles.candidatesTitle}>Welcher Ort ist gemeint?</div>
-              {geoCandidates.map((candidate) => (
-                <button key={candidate.id} onClick={() => selectPlace(candidate)} style={styles.candidate}>
-                  {candidate.label}
-                </button>
-              ))}
+      {!isMobile && (
+        <div style={styles.sidebar}>
+          {heading}
+          {filters}
+          {hasResults && (
+            <div style={styles.results}>
+              <h3 style={styles.resultCount}>{results.length} Routen gefunden</h3>
+              <NearbyResults results={results} selection={selection} />
             </div>
           )}
-          <div style={styles.hint}>Tipp: auf die Karte klicken oder den Marker ziehen, um den Suchort zu setzen.</div>
+          <CompareBar from="nearby" />
         </div>
+      )}
 
-        {/* Location input */}
-        <div style={styles.section}>
-          <div style={styles.coordinateRow}>
-            <CoordinateInput
-              label="Breitengrad (lat)"
-              value={lat}
-              onChange={setLat}
-              onBlur={() => {
-                if (lat != null && lng != null) centerOn(lat, lng)
-              }}
-              placeholder="48.77"
-            />
-            <CoordinateInput
-              label="Längengrad (lng)"
-              value={lng}
-              onChange={setLng}
-              onBlur={() => {
-                if (lat != null && lng != null) centerOn(lat, lng)
-              }}
-              placeholder="9.16"
-            />
-          </div>
-          <button
-            onClick={() => {
-              setUsingGPS(true)
-              locate(
-                (gpsLat, gpsLng) => {
-                  setLat(gpsLat)
-                  setLng(gpsLng)
-                  centerOn(gpsLat, gpsLng)
-                },
-                () => setUsingGPS(false),
-              )
-            }}
-            style={styles.gpsButton}
-            disabled={usingGPS}
-          >
-            {usingGPS ? 'GPS...' : 'GPS-Position'}
-          </button>
-        </div>
-
-        {/* Radius slider */}
-        <div style={styles.section}>
-          <label style={styles.label}>Radius: {radius} km</label>
-          <input
-            type="range"
-            min={5}
-            max={200}
-            step={5}
-            value={radius}
-            onChange={(e) => setRadius(parseInt(e.target.value))}
-            style={styles.range}
-          />
-        </div>
-
-        {/* Error */}
-        {isError && <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>}
-
-        {/* Loading */}
-        {lat == null && <div style={styles.loading}>Standort wird ermittelt...</div>}
-        {loading && <div style={styles.loading}>Suche...</div>}
-
-        {/* Results */}
-        {results && results.length > 0 && (
-          <div style={styles.results}>
-            <h3 style={styles.resultCount}>{results.length} Routen gefunden</h3>
-            {results.map((r, index) => (
-              <div
-                key={r.id}
-                onClick={() => setSelectedRoute(selectedRoute === r.id ? null : r.id)}
-                onMouseEnter={() => setHoveredRoute(r.id)}
-                onMouseLeave={() => setHoveredRoute((current) => (current === r.id ? null : current))}
-                style={{
-                  ...styles.resultCard,
-                  // Color stripe like the route's track on the map (no border shorthand conflict)
-                  boxShadow: `inset 6px 0 0 ${routeColor(index)}`,
-                  paddingLeft: 18,
-                  backgroundColor: selectedRoute === r.id ? '#e3f2fd' : hoveredRoute === r.id ? '#f5f5f5' : '#fff',
-                }}
-              >
-                <div style={styles.resultName}>{r.name}</div>
-                <div style={styles.resultDistance}>{r.distanceKm} km</div>
-                <div style={styles.resultMeta}>
-                  <span
-                    style={{
-                      ...styles.badge,
-                      backgroundColor: sourceColors[r.source] || '#9e9e9e',
-                    }}
-                  >
-                    {r.source}
-                  </span>
-                  <span
-                    style={{
-                      ...styles.badge,
-                      backgroundColor: routeStatusColor(r.status),
-                    }}
-                  >
-                    {routeStatusLabel(r.status)}
-                  </span>
-                  <span style={styles.compareToggle}>
-                    <CompareToggleButton id={r.id} name={r.name} />
-                  </span>
-                </div>
-                {selectedRoute === r.id && r.stats && (
-                  <div style={styles.resultStats}>
-                    <div>
-                      Strecke:{' '}
-                      {(() => {
-                        const distance = (r.stats as { distance?: number })?.distance
-                        return distance ? `${(distance / 1000).toFixed(1)} km` : '-'
-                      })()}
-                    </div>
-                    <div>Höhenmeter ↑: {formatElev((r.stats as { elevationGain?: number })?.elevationGain)}</div>
-                    <div>Abstieg ↓: {formatElev((r.stats as { elevationLoss?: number })?.elevationLoss)}</div>
-                  </div>
-                )}
-                {selectedRoute === r.id && (
-                  // Hovering/clicking the profile must not collapse the card
-                  <div style={styles.profile} onClick={(e) => e.stopPropagation()}>
-                    {gpxLoading ? (
-                      <div style={styles.profileHint}>Höhenprofil wird geladen…</div>
-                    ) : hasElevation ? (
-                      <ElevationProfile
-                        points={selectedPoints}
-                        range={[0, selectedDistKm]}
-                        onPointHover={setProfilePoint}
-                      />
-                    ) : (
-                      <div style={styles.profileHint}>Kein Höhenprofil verfügbar</div>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-        <CompareBar />
-      </div>
-
-      {/* Map */}
       <div style={styles.mapArea}>
-        <Map mapRef={mapRef} onMapReady={setMap} center={center} />
-        {lat != null && lng != null && (
+        <MapView onMapReady={setMap} center={center} />
+        {area.lat != null && area.lng != null && (
           <div style={styles.centerMarker}>
-            {lat.toFixed(COORDINATE_DECIMALS)}, {lng.toFixed(COORDINATE_DECIMALS)}
+            {area.lat.toFixed(COORDINATE_DECIMALS)}, {area.lng.toFixed(COORDINATE_DECIMALS)}
           </div>
         )}
       </div>
+
+      {isMobile && (
+        <>
+          <button
+            type="button"
+            onClick={toggleFilters}
+            style={styles.filterButton}
+            aria-expanded={filtersOpen}
+            aria-label={filtersOpen ? 'Suche schließen' : 'Suche öffnen'}
+          >
+            {filtersOpen ? <CloseIcon size={24} /> : <MenuIcon />}
+          </button>
+
+          <Sheet side="bottom" open={filtersOpen} onClose={() => setFiltersOpen(false)} label="Suche">
+            <div style={styles.sheetContent}>
+              {heading}
+              {filters}
+            </div>
+          </Sheet>
+
+          <Sheet
+            side="right"
+            open={resultsOpen && hasResults}
+            onClose={() => setResultsOpen(false)}
+            label="Gefundene Routen"
+            style={{ bottom: 20 }}
+            handle={
+              <button
+                type="button"
+                onClick={toggleResults}
+                disabled={!hasResults}
+                aria-expanded={resultsOpen && hasResults}
+                aria-label={hasResults ? 'Gefundene Routen' : 'Keine Routen'}
+                title={
+                  hasResults ? (resultsOpen ? 'Routen verbergen' : `${results.length} Routen anzeigen`) : 'Keine Routen'
+                }
+                style={styles.resultsTab}
+              >
+                <span style={{ color: hasResults ? '#2196f3' : '#ccc' }}>{resultsOpen && hasResults ? '▶' : '◀'}</span>
+              </button>
+            }
+          >
+            <div style={styles.resultsHeader}>
+              <h3 style={styles.resultsTitle}>{results?.length ?? 0} Routen gefunden</h3>
+              <button type="button" onClick={() => setResultsOpen(false)} style={styles.closeButton} title="Schließen">
+                <CloseIcon />
+              </button>
+            </div>
+            <div style={styles.resultsList}>
+              <CompareBar from="nearby" />
+              {results && <NearbyResults results={results} selection={selection} />}
+            </div>
+          </Sheet>
+        </>
+      )}
     </div>
+  )
+}
+
+function CloseIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  )
+}
+
+function MenuIcon() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
   )
 }
 
@@ -515,6 +214,7 @@ const styles = {
     display: 'flex',
     height: '100%',
     width: '100%',
+    position: 'relative' as const,
   } as const,
   sidebar: {
     width: 360,
@@ -523,6 +223,74 @@ const styles = {
     borderRight: '1px solid #e0e0e0',
     padding: 16,
     backgroundColor: '#fafafa',
+  } as const,
+  sidebarHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  } as const,
+  sheetContent: {
+    flex: 1,
+    minHeight: 0,
+    overflowY: 'auto',
+    padding: 16,
+  } as const,
+  filterButton: {
+    position: 'fixed',
+    bottom: 16,
+    right: 16,
+    zIndex: Z_INDEX.floatingButton,
+    width: 48,
+    height: 48,
+    borderRadius: '50%',
+    border: 'none',
+    backgroundColor: '#fff',
+    boxShadow: '0 2px 12px rgba(0,0,0,0.25)',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#333',
+  } as const,
+  resultsTab: {
+    width: 28,
+    height: 100,
+    border: 'none',
+    borderRadius: '12px 0 0 12px',
+    backgroundColor: '#fff',
+    boxShadow: '-3px 2px 12px rgba(0,0,0,0.15)',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 14,
+  } as const,
+  resultsHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '12px 16px',
+    borderBottom: '1px solid #e0e0e0',
+    flexShrink: 0,
+  } as const,
+  resultsTitle: {
+    margin: 0,
+    fontSize: 15,
+    fontWeight: 600,
+  } as const,
+  resultsList: {
+    flex: 1,
+    overflowY: 'auto',
+    padding: 12,
+  } as const,
+  closeButton: {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: 4,
+    color: '#666',
+    display: 'flex',
+    alignItems: 'center',
   } as const,
   mapArea: {
     flex: 1,
@@ -533,112 +301,7 @@ const styles = {
     margin: '0 0 16px',
     fontSize: 20,
     fontWeight: 600,
-  } as const,
-  section: {
-    marginBottom: 16,
-  } as const,
-  label: {
-    display: 'block',
-    marginBottom: 4,
-    fontSize: 13,
-    fontWeight: 500,
-    color: '#555',
-  } as const,
-  input: {
-    width: '100%',
-    padding: '8px 12px',
-    fontSize: 14,
-    border: '1px solid #ccc',
-    borderRadius: 4,
-    marginBottom: 8,
-    boxSizing: 'border-box',
-  } as const,
-  coordinateRow: {
-    display: 'flex',
-    gap: 8,
-  } as const,
-  placeRow: {
-    display: 'flex',
-    gap: 8,
-    alignItems: 'flex-start',
-  } as const,
-  searchButton: {
-    flexShrink: 0,
-    padding: '8px 14px',
-    fontSize: 14,
-    fontWeight: 500,
-    backgroundColor: '#2196f3',
-    color: '#fff',
-    border: 'none',
-    borderRadius: 4,
-    cursor: 'pointer',
-    marginBottom: 8,
-  } as const,
-  hint: {
-    fontSize: 12,
-    color: '#888',
-    marginTop: -4,
-    marginBottom: 4,
-  } as const,
-  candidates: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    marginBottom: 8,
-    border: '1px solid #e0e0e0',
-    borderRadius: 4,
-    backgroundColor: '#fff',
-    overflow: 'hidden',
-  } as const,
-  candidatesTitle: {
-    padding: '6px 10px',
-    fontSize: 12,
-    color: '#64748b',
-    borderBottom: '1px solid #e0e0e0',
-  } as const,
-  candidate: {
-    padding: '6px 10px',
-    fontSize: 13,
-    textAlign: 'left' as const,
-    border: 'none',
-    borderBottom: '1px solid #f1f5f9',
-    backgroundColor: 'transparent',
-    cursor: 'pointer',
-  } as const,
-  geoError: {
-    padding: '6px 10px',
-    backgroundColor: '#fff3e0',
-    color: '#e65100',
-    borderRadius: 4,
-    marginBottom: 8,
-    fontSize: 13,
-  } as const,
-  range: {
-    width: '100%',
-  } as const,
-  gpsButton: {
-    width: '100%',
-    padding: '10px 16px',
-    fontSize: 14,
-    fontWeight: 500,
-    backgroundColor: '#2196f3',
-    color: '#fff',
-    border: 'none',
-    borderRadius: 4,
-    cursor: 'pointer',
-    marginTop: 8,
-  } as const,
-  error: {
-    padding: '8px 12px',
-    backgroundColor: '#ffebee',
-    color: '#c62828',
-    borderRadius: 4,
-    marginBottom: 16,
-    fontSize: 13,
-  } as const,
-  loading: {
-    padding: 16,
-    textAlign: 'center',
-    color: '#666',
+    flex: 1,
   } as const,
   results: {
     marginTop: 16,
@@ -648,57 +311,6 @@ const styles = {
     fontWeight: 500,
     color: '#666',
     margin: '0 0 8px',
-  } as const,
-  resultCard: {
-    padding: '12px',
-    marginBottom: 8,
-    borderRadius: 6,
-    cursor: 'pointer',
-    border: '1px solid #e0e0e0',
-    transition: 'background-color 0.15s',
-  } as const,
-  resultName: {
-    fontWeight: 600,
-    fontSize: 14,
-    marginBottom: 4,
-  } as const,
-  resultDistance: {
-    fontSize: 18,
-    fontWeight: 700,
-    color: '#2196f3',
-    marginBottom: 4,
-  } as const,
-  resultMeta: {
-    display: 'flex',
-    gap: 6,
-    alignItems: 'center',
-  } as const,
-  compareToggle: {
-    marginLeft: 'auto',
-  } as const,
-  badge: {
-    display: 'inline-block',
-    padding: '2px 8px',
-    borderRadius: 10,
-    fontSize: 11,
-    color: '#fff',
-    fontWeight: 500,
-    marginRight: 4,
-  } as const,
-  profile: {
-    marginTop: 8,
-    cursor: 'default',
-  } as const,
-  profileHint: {
-    fontSize: 12,
-    color: '#888',
-  } as const,
-  resultStats: {
-    marginTop: 8,
-    fontSize: 12,
-    color: '#555',
-    borderTop: '1px solid #e0e0e0',
-    paddingTop: 8,
   } as const,
   centerMarker: {
     position: 'absolute',

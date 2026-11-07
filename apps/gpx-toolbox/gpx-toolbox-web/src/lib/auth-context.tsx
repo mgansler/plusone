@@ -48,6 +48,9 @@ function setToken(token: string): void {
   }
 }
 
+/** Store a JWT token directly (used by the dev-mode manual token input). */
+export { setToken as setTokenDirectly }
+
 function clearToken(): void {
   try {
     localStorage.removeItem(TOKEN_KEY)

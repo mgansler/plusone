@@ -28,12 +28,21 @@ type TrackAnalysisProps = {
   name?: string
   /** Called with the nearest track point on elevation profile hover */
   onPointHover?: (point: TrackPoint | null) => void
+  /** Shows the "Gesamt" section; a page that gives its space to a map can leave it out */
+  showOverview?: boolean
 }
 
 /**
  * "Gesamt" and "Segment" sidebar sections: overall stats, elevation profile, segment slider and GPX/SVG export.
  */
-export function TrackAnalysis({ points, range, onRangeChange, name, onPointHover }: TrackAnalysisProps) {
+export function TrackAnalysis({
+  points,
+  range,
+  onRangeChange,
+  name,
+  onPointHover,
+  showOverview = true,
+}: TrackAnalysisProps) {
   const overview = useMemo(() => {
     const analysis = analyzePoints(points)
     return {
@@ -55,29 +64,33 @@ export function TrackAnalysis({ points, range, onRangeChange, name, onPointHover
 
   return (
     <>
-      <div style={styles.section}>
-        <h3 style={styles.title}>Gesamt</h3>
-        <div style={styles.statsGrid}>
-          <Stat label="Distanz" value={formatDistance(overview.totalDistance)} />
-          <Stat label="Höhenmeter ↑" value={`${Math.round(overview.elevationGain)} hm`} />
-          <Stat label="Abstieg ↓" value={`${Math.round(overview.elevationLoss)} hm`} />
-          {hasTime && (
-            <>
-              <Stat label="Dauer" value={formatDuration(overview.totalDuration)} />
-              <Stat
-                label="Ø Geschw."
-                value={`${calculateAvgSpeed(overview.totalDistance, overview.totalDuration)} km/h`}
-              />
-              <Stat label="Max Geschw." value={`${overview.maxSpeed} km/h`} />
-              <Stat label="Zeit" value={overview.timeRange} />
-            </>
-          )}
-        </div>
-        <ElevationProfile points={points} range={range} onPointHover={onPointHover} />
-        <ExportButtons points={points} name={name} fileName={baseName} />
-      </div>
+      {showOverview && (
+        <>
+          <div style={styles.section}>
+            <h3 style={styles.title}>Gesamt</h3>
+            <div style={styles.statsGrid}>
+              <Stat label="Distanz" value={formatDistance(overview.totalDistance)} />
+              <Stat label="Höhenmeter ↑" value={`${Math.round(overview.elevationGain)} hm`} />
+              <Stat label="Abstieg ↓" value={`${Math.round(overview.elevationLoss)} hm`} />
+              {hasTime && (
+                <>
+                  <Stat label="Dauer" value={formatDuration(overview.totalDuration)} />
+                  <Stat
+                    label="Ø Geschw."
+                    value={`${calculateAvgSpeed(overview.totalDistance, overview.totalDuration)} km/h`}
+                  />
+                  <Stat label="Max Geschw." value={`${overview.maxSpeed} km/h`} />
+                  <Stat label="Zeit" value={overview.timeRange} />
+                </>
+              )}
+            </div>
+            <ElevationProfile points={points} range={range} onPointHover={onPointHover} />
+            <ExportButtons points={points} name={name} fileName={baseName} />
+          </div>
 
-      <SidebarDivider />
+          <SidebarDivider />
+        </>
+      )}
 
       <div style={styles.section}>
         <h3 style={styles.title}>Segment</h3>

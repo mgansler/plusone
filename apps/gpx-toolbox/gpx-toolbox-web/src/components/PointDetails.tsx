@@ -1,5 +1,7 @@
 import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
 
+import { mapPanelBackground, mapPanelClose, mapPanelLabel, mapPanelText } from '../utils/routeColors'
+
 type PointDetailsProps = {
   point: TrackPoint
   /** Defaults to reloading the page */
@@ -48,7 +50,7 @@ const styles = {
     position: 'absolute',
     top: '1rem',
     right: '1rem',
-    background: '#fff',
+    background: mapPanelBackground,
     borderRadius: '12px',
     padding: '1.25rem',
     boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
@@ -64,13 +66,13 @@ const styles = {
   title: {
     fontSize: '1rem',
     fontWeight: 600,
-    color: '#1a1a1a',
+    color: mapPanelText,
   },
   closeBtn: {
     background: 'none',
     border: 'none',
     fontSize: '1.5rem',
-    color: '#999',
+    color: mapPanelClose,
     cursor: 'pointer',
     lineHeight: 1,
     padding: '0 0.25rem',
@@ -87,11 +89,11 @@ const styles = {
   },
   label: {
     fontSize: '0.8rem',
-    color: '#666',
+    color: mapPanelLabel,
   },
   value: {
     fontSize: '0.9rem',
     fontWeight: 600,
-    color: '#1a1a1a',
+    color: mapPanelText,
   },
 } as const

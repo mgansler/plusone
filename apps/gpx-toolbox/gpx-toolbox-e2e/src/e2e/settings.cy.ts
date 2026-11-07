@@ -11,9 +11,9 @@ describe('settings', () => {
   })
 
   it('is reachable from the topbar', () => {
-    cy.visitLoggedIn('/')
+    cy.visitLoggedIn('/routes')
 
-    cy.findByRole('link', { name: GOOGLE_USER.name }).click()
+    cy.findByRole('link', { name: 'Einstellungen' }).click()
 
     cy.location('pathname').should('eq', '/settings')
   })

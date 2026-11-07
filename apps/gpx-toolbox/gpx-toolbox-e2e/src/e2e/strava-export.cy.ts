@@ -27,7 +27,7 @@ describe('Strava export import', () => {
           'export_1/activities.csv': 'Activity ID\n1\n',
         }
 
-        cy.visitLoggedIn('/')
+        cy.visitLoggedIn('/routes')
         cy.findByRole('button', { name: /Strava-Export/ }).click()
         selectFolder(exportFolder)
         cy.findByRole('status').should('have.text', '3 Routen gefunden.')
@@ -55,7 +55,7 @@ describe('Strava export import', () => {
   })
 
   it('tells when the selected folder is no Strava export', () => {
-    cy.visitLoggedIn('/')
+    cy.visitLoggedIn('/routes')
     cy.findByRole('button', { name: /Strava-Export/ }).click()
 
     selectFolder({ 'Downloads/foto.jpg': '' })
