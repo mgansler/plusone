@@ -46,7 +46,7 @@ export default defineConfig({
   },
 
   plugins: [
-    tanstackRouter({ target: 'react', autoCodeSplitting: false, routeFileIgnorePattern: '\\.(spec|test)\\.tsx?$' }),
+    tanstackRouter({ target: 'react', autoCodeSplitting: false, routeFileIgnorePattern: '\\.(spec|cy)\\.tsx?$' }),
     react(),
     nxReadySignal(),
   ],

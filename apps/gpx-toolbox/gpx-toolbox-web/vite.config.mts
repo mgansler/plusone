@@ -45,7 +45,11 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [tanstackRouter({ target: 'react', autoCodeSplitting: false }), react(), nxReadySignal()],
+  plugins: [
+    tanstackRouter({ target: 'react', autoCodeSplitting: false, routeFileIgnorePattern: '\\.(spec|cy)\\.tsx?$' }),
+    react(),
+    nxReadySignal(),
+  ],
 
   resolve: {
     tsconfigPaths: true,
