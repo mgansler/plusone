@@ -9723,13 +9723,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-arm64@npm:1.16.21":
-  version: 1.16.21
-  resolution: "@swc/core-darwin-arm64@npm:1.16.21"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@swc/core-darwin-arm64@npm:1.16.22":
   version: 1.16.22
   resolution: "@swc/core-darwin-arm64@npm:1.16.22"
@@ -9740,13 +9733,6 @@ __metadata:
 "@swc/core-darwin-x64@npm:1.15.40":
   version: 1.15.40
   resolution: "@swc/core-darwin-x64@npm:1.15.40"
-  conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@swc/core-darwin-x64@npm:1.16.21":
-  version: 1.16.21
-  resolution: "@swc/core-darwin-x64@npm:1.16.21"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -9765,13 +9751,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm-gnueabihf@npm:1.16.21":
-  version: 1.16.21
-  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.16.21"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
 "@swc/core-linux-arm-gnueabihf@npm:1.16.22":
   version: 1.16.22
   resolution: "@swc/core-linux-arm-gnueabihf@npm:1.16.22"
@@ -9782,13 +9761,6 @@ __metadata:
 "@swc/core-linux-arm64-gnu@npm:1.15.40":
   version: 1.15.40
   resolution: "@swc/core-linux-arm64-gnu@npm:1.15.40"
-  conditions: os=linux & cpu=arm64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-arm64-gnu@npm:1.16.21":
-  version: 1.16.21
-  resolution: "@swc/core-linux-arm64-gnu@npm:1.16.21"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
@@ -9807,13 +9779,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-musl@npm:1.16.21":
-  version: 1.16.21
-  resolution: "@swc/core-linux-arm64-musl@npm:1.16.21"
-  conditions: os=linux & cpu=arm64 & libc=musl
-  languageName: node
-  linkType: hard
-
 "@swc/core-linux-arm64-musl@npm:1.16.22":
   version: 1.16.22
   resolution: "@swc/core-linux-arm64-musl@npm:1.16.22"
@@ -9824,13 +9789,6 @@ __metadata:
 "@swc/core-linux-ppc64-gnu@npm:1.15.40":
   version: 1.15.40
   resolution: "@swc/core-linux-ppc64-gnu@npm:1.15.40"
-  conditions: os=linux & cpu=ppc64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-ppc64-gnu@npm:1.16.21":
-  version: 1.16.21
-  resolution: "@swc/core-linux-ppc64-gnu@npm:1.16.21"
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
@@ -9849,13 +9807,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-s390x-gnu@npm:1.16.21":
-  version: 1.16.21
-  resolution: "@swc/core-linux-s390x-gnu@npm:1.16.21"
-  conditions: os=linux & cpu=s390x & libc=glibc
-  languageName: node
-  linkType: hard
-
 "@swc/core-linux-s390x-gnu@npm:1.16.22":
   version: 1.16.22
   resolution: "@swc/core-linux-s390x-gnu@npm:1.16.22"
@@ -9866,13 +9817,6 @@ __metadata:
 "@swc/core-linux-x64-gnu@npm:1.15.40":
   version: 1.15.40
   resolution: "@swc/core-linux-x64-gnu@npm:1.15.40"
-  conditions: os=linux & cpu=x64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-x64-gnu@npm:1.16.21":
-  version: 1.16.21
-  resolution: "@swc/core-linux-x64-gnu@npm:1.16.21"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
@@ -9891,13 +9835,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-musl@npm:1.16.21":
-  version: 1.16.21
-  resolution: "@swc/core-linux-x64-musl@npm:1.16.21"
-  conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
 "@swc/core-linux-x64-musl@npm:1.16.22":
   version: 1.16.22
   resolution: "@swc/core-linux-x64-musl@npm:1.16.22"
@@ -9908,13 +9845,6 @@ __metadata:
 "@swc/core-win32-arm64-msvc@npm:1.15.40":
   version: 1.15.40
   resolution: "@swc/core-win32-arm64-msvc@npm:1.15.40"
-  conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@swc/core-win32-arm64-msvc@npm:1.16.21":
-  version: 1.16.21
-  resolution: "@swc/core-win32-arm64-msvc@npm:1.16.21"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
@@ -9933,13 +9863,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-win32-ia32-msvc@npm:1.16.21":
-  version: 1.16.21
-  resolution: "@swc/core-win32-ia32-msvc@npm:1.16.21"
-  conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
 "@swc/core-win32-ia32-msvc@npm:1.16.22":
   version: 1.16.22
   resolution: "@swc/core-win32-ia32-msvc@npm:1.16.22"
@@ -9954,13 +9877,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-win32-x64-msvc@npm:1.16.21":
-  version: 1.16.21
-  resolution: "@swc/core-win32-x64-msvc@npm:1.16.21"
-  conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
 "@swc/core-win32-x64-msvc@npm:1.16.22":
   version: 1.16.22
   resolution: "@swc/core-win32-x64-msvc@npm:1.16.22"
@@ -9968,22 +9884,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core@npm:1.16.21":
-  version: 1.16.21
-  resolution: "@swc/core@npm:1.16.21"
+"@swc/core@npm:1.16.22, @swc/core@npm:^1.16.21":
+  version: 1.16.22
+  resolution: "@swc/core@npm:1.16.22"
   dependencies:
-    "@swc/core-darwin-arm64": "npm:1.16.21"
-    "@swc/core-darwin-x64": "npm:1.16.21"
-    "@swc/core-linux-arm-gnueabihf": "npm:1.16.21"
-    "@swc/core-linux-arm64-gnu": "npm:1.16.21"
-    "@swc/core-linux-arm64-musl": "npm:1.16.21"
-    "@swc/core-linux-ppc64-gnu": "npm:1.16.21"
-    "@swc/core-linux-s390x-gnu": "npm:1.16.21"
-    "@swc/core-linux-x64-gnu": "npm:1.16.21"
-    "@swc/core-linux-x64-musl": "npm:1.16.21"
-    "@swc/core-win32-arm64-msvc": "npm:1.16.21"
-    "@swc/core-win32-ia32-msvc": "npm:1.16.21"
-    "@swc/core-win32-x64-msvc": "npm:1.16.21"
+    "@swc/core-darwin-arm64": "npm:1.16.22"
+    "@swc/core-darwin-x64": "npm:1.16.22"
+    "@swc/core-linux-arm-gnueabihf": "npm:1.16.22"
+    "@swc/core-linux-arm64-gnu": "npm:1.16.22"
+    "@swc/core-linux-arm64-musl": "npm:1.16.22"
+    "@swc/core-linux-ppc64-gnu": "npm:1.16.22"
+    "@swc/core-linux-s390x-gnu": "npm:1.16.22"
+    "@swc/core-linux-x64-gnu": "npm:1.16.22"
+    "@swc/core-linux-x64-musl": "npm:1.16.22"
+    "@swc/core-win32-arm64-msvc": "npm:1.16.22"
+    "@swc/core-win32-ia32-msvc": "npm:1.16.22"
+    "@swc/core-win32-x64-msvc": "npm:1.16.22"
     "@swc/counter": "npm:^0.1.3"
     "@swc/types": "npm:^0.1.28"
   peerDependencies:
@@ -10016,7 +9932,7 @@ __metadata:
   peerDependenciesMeta:
     "@swc/helpers":
       optional: true
-  checksum: 10c0/d5f464c58da55e9ab14d3bea298b5509e52c237ed5873ec8631d3a5d05bce70b9f41cb62ba2a2585e6eef32da4e7e304169e856de049d5c9b96a3e0e3cc93e39
+  checksum: 10c0/1fecb6764b2b9ad3b5e5ce14fcc78ba8eb6226ef23e51df28f485f3ca207d9587732a61a4a4ec3c439e3fe80955128d9d4780f1976757b7d05f40d803f106781
   languageName: node
   linkType: hard
 
@@ -10069,58 +9985,6 @@ __metadata:
     "@swc/helpers":
       optional: true
   checksum: 10c0/852a8940b307b08ea6d628e01bb0855fba6c60e59c8c1d4fa0bca9700e61106bb05939a721bf864f2f6d91c502d43cd938cb7f12e56f78eb56bc4f26c49fd8b7
-  languageName: node
-  linkType: hard
-
-"@swc/core@npm:^1.16.21":
-  version: 1.16.22
-  resolution: "@swc/core@npm:1.16.22"
-  dependencies:
-    "@swc/core-darwin-arm64": "npm:1.16.22"
-    "@swc/core-darwin-x64": "npm:1.16.22"
-    "@swc/core-linux-arm-gnueabihf": "npm:1.16.22"
-    "@swc/core-linux-arm64-gnu": "npm:1.16.22"
-    "@swc/core-linux-arm64-musl": "npm:1.16.22"
-    "@swc/core-linux-ppc64-gnu": "npm:1.16.22"
-    "@swc/core-linux-s390x-gnu": "npm:1.16.22"
-    "@swc/core-linux-x64-gnu": "npm:1.16.22"
-    "@swc/core-linux-x64-musl": "npm:1.16.22"
-    "@swc/core-win32-arm64-msvc": "npm:1.16.22"
-    "@swc/core-win32-ia32-msvc": "npm:1.16.22"
-    "@swc/core-win32-x64-msvc": "npm:1.16.22"
-    "@swc/counter": "npm:^0.1.3"
-    "@swc/types": "npm:^0.1.28"
-  peerDependencies:
-    "@swc/helpers": ">=0.5.17"
-  dependenciesMeta:
-    "@swc/core-darwin-arm64":
-      optional: true
-    "@swc/core-darwin-x64":
-      optional: true
-    "@swc/core-linux-arm-gnueabihf":
-      optional: true
-    "@swc/core-linux-arm64-gnu":
-      optional: true
-    "@swc/core-linux-arm64-musl":
-      optional: true
-    "@swc/core-linux-ppc64-gnu":
-      optional: true
-    "@swc/core-linux-s390x-gnu":
-      optional: true
-    "@swc/core-linux-x64-gnu":
-      optional: true
-    "@swc/core-linux-x64-musl":
-      optional: true
-    "@swc/core-win32-arm64-msvc":
-      optional: true
-    "@swc/core-win32-ia32-msvc":
-      optional: true
-    "@swc/core-win32-x64-msvc":
-      optional: true
-  peerDependenciesMeta:
-    "@swc/helpers":
-      optional: true
-  checksum: 10c0/1fecb6764b2b9ad3b5e5ce14fcc78ba8eb6226ef23e51df28f485f3ca207d9587732a61a4a4ec3c439e3fe80955128d9d4780f1976757b7d05f40d803f106781
   languageName: node
   linkType: hard
 
@@ -10345,61 +10209,61 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.106.0":
-  version: 5.106.0
-  resolution: "@tanstack/query-core@npm:5.106.0"
-  checksum: 10c0/92c25d24240b533740f9b4b72ec25a393a154cc29eb49bc830cdb5a9281ad40fe137e8084eebacc92aacfbaf00c2a4650810120b5dfff0f59d5a8eabef90ac9c
+"@tanstack/query-core@npm:5.106.1":
+  version: 5.106.1
+  resolution: "@tanstack/query-core@npm:5.106.1"
+  checksum: 10c0/514065f943faacdaae39659fc936956906f51677a4385342508ff39c2846c6df8d6acba8ce6167ac3c86bda75a64b714f739f9ada82634e93524f6d6b70ad9f6
   languageName: node
   linkType: hard
 
-"@tanstack/query-devtools@npm:5.106.0":
-  version: 5.106.0
-  resolution: "@tanstack/query-devtools@npm:5.106.0"
+"@tanstack/query-devtools@npm:5.106.1":
+  version: 5.106.1
+  resolution: "@tanstack/query-devtools@npm:5.106.1"
   dependencies:
     "@kobalte/core": "npm:^0.13.14"
     "@solid-primitives/keyed": "npm:^1.5.3"
     "@solid-primitives/resize-observer": "npm:^2.2.0"
     "@solid-primitives/storage": "npm:^1.3.11"
     "@tanstack/match-sorter-utils": "npm:^9.1.2"
-    "@tanstack/query-core": "npm:5.106.0"
+    "@tanstack/query-core": "npm:5.106.1"
     "@tanstack/solid-virtual": "npm:^3.13.52"
     clsx: "npm:^2.1.1"
     goober: "npm:^2.1.19"
     solid-js: "npm:^1.9.15"
     solid-transition-group: "npm:^0.2.3"
     superjson: "npm:^2.2.6"
-  checksum: 10c0/c235be79621a11e0cfe6e89534e20eaa8d21d4772e81b30d0e02786cc58124b61329e356d046460df28b9bef04693e0555edd19d6019a23dc9d2253e18fcf278
+  checksum: 10c0/a34cf8b6300c7b3e445217e0bc6a00d7202046298a9a4ea9a654ebe9d3cc00107e1d7393e2a434712045bc35da81dfcac01db11a9358bcb3d46bc1d2429bcb0f
   languageName: node
   linkType: hard
 
-"@tanstack/react-query-devtools@npm:5.106.0":
-  version: 5.106.0
-  resolution: "@tanstack/react-query-devtools@npm:5.106.0"
+"@tanstack/react-query-devtools@npm:5.106.1":
+  version: 5.106.1
+  resolution: "@tanstack/react-query-devtools@npm:5.106.1"
   dependencies:
-    "@tanstack/query-devtools": "npm:5.106.0"
+    "@tanstack/query-devtools": "npm:5.106.1"
   peerDependencies:
-    "@tanstack/react-query": ^5.106.0
+    "@tanstack/react-query": ^5.106.1
     "@types/react": ^18 || ^19
     react: ^18 || ^19
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10c0/2cc0e4bac54b891a26d9b1854dc3c8d1fb0c4779bba35d6b6e87e99bcc5c989524af87c727a2dd22b5c7e0e6b3d70fc9b802608ae00407d3e8353b567b33791e
+  checksum: 10c0/9290c43f297a8bc3d1b65eae0b124d90425a97acfb7d28a3265571df1f46196f172b84a5f20a20bb9da5ec3fd6dc0c933d56cc877196c93307a472fa299d8a22
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:5.106.0":
-  version: 5.106.0
-  resolution: "@tanstack/react-query@npm:5.106.0"
+"@tanstack/react-query@npm:5.106.1":
+  version: 5.106.1
+  resolution: "@tanstack/react-query@npm:5.106.1"
   dependencies:
-    "@tanstack/query-core": "npm:5.106.0"
+    "@tanstack/query-core": "npm:5.106.1"
   peerDependencies:
     "@types/react": ^18 || ^19
     react: ^18 || ^19
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10c0/1cd1e9feeb31deb659d925d876304113784cb18fc7c22041ebdb3961aea34a17726f25f8c11f2149292d5220a7d8d847537105542a61e113dc5816097051348b
+  checksum: 10c0/508752957de016b2e8acabc2f1253716d732ba327a1e8897e187d5ea4ec0d250cee1fdaf1ec00251e1cce86cea27284c2240c5f1ab34d183a5e0a0d5b33a0715
   languageName: node
   linkType: hard
 
@@ -19026,9 +18890,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-cli@npm:1.82.5":
-  version: 1.82.5
-  resolution: "i18next-cli@npm:1.82.5"
+"i18next-cli@npm:1.85.1":
+  version: 1.85.1
+  resolution: "i18next-cli@npm:1.85.1"
   dependencies:
     "@croct/json5-parser": "npm:^0.2.2"
     "@formatjs/icu-messageformat-parser": "npm:^3.5.22"
@@ -19053,7 +18917,7 @@ __metadata:
     yocto-spinner: "npm:^1.2.2"
   bin:
     i18next-cli: dist/esm/cli.js
-  checksum: 10c0/17cebcc9be811bc639ba384bc9477b84ff9971e398c69a9be30b004036a622475ac9aa0ed84e8906e6cb803b8388ae423c5ce73f0dff5192b090de10193501c5
+  checksum: 10c0/f2c1a78e525d2ebb62d429cceb83cfc4f8666d04be170ab0b53e2328192ca18e1920974bd1ef5561e33de2d75204069c79a116a0d20b5d4a513b5d67216e7227
   languageName: node
   linkType: hard
 
@@ -19078,19 +18942,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:26.7.1":
-  version: 26.7.1
-  resolution: "i18next@npm:26.7.1"
-  peerDependencies:
-    typescript: ^5 || ^6 || ^7
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 10c0/742c0d5ea25a68e0380de3be5c4b7d1f2a9ab9da81d5f2a85ea2892a500f60ba1a87a2c1fd6e0cd16588f37175dc88da817d3b26dda1963044f045bd86202960
-  languageName: node
-  linkType: hard
-
-"i18next@npm:^26.7.1":
+"i18next@npm:26.7.2, i18next@npm:^26.7.1":
   version: 26.7.2
   resolution: "i18next@npm:26.7.2"
   peerDependencies:
@@ -22488,9 +22340,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"msw@npm:3.0.3":
-  version: 3.0.3
-  resolution: "msw@npm:3.0.3"
+"msw@npm:3.0.4":
+  version: 3.0.4
+  resolution: "msw@npm:3.0.4"
   dependencies:
     "@inquirer/confirm": "npm:^6.0.11"
     "@msw/url": "npm:^0.1.2"
@@ -22517,7 +22369,7 @@ __metadata:
       optional: true
   bin:
     msw: cli/index.js
-  checksum: 10c0/ce71174c7881c1ae1623baaf76a6a9e0fa492b2e19e7fdf8ca3293c9385ee8a3cab8293b0215a9810b6ab9125998060be1499a17af036a51c67eab44f97055a3
+  checksum: 10c0/59fa0db0620184156d41382c9865444d79b537c45c159ad72a09002c4f085ce122e287d3306fb3d9dba7d54da36752f29f5bd227a8eca23303648d67ad99739d
   languageName: node
   linkType: hard
 
@@ -24152,11 +24004,11 @@ __metadata:
     "@svgr/webpack": "npm:8.1.0"
     "@swc-node/register": "npm:1.12.1"
     "@swc/cli": "npm:0.8.2"
-    "@swc/core": "npm:1.16.21"
+    "@swc/core": "npm:1.16.22"
     "@swc/helpers": "npm:0.5.24"
     "@tailwindcss/vite": "npm:4.3.4"
-    "@tanstack/react-query": "npm:5.106.0"
-    "@tanstack/react-query-devtools": "npm:5.106.0"
+    "@tanstack/react-query": "npm:5.106.1"
+    "@tanstack/react-query-devtools": "npm:5.106.1"
     "@tanstack/react-router": "npm:1.170.46"
     "@tanstack/router-plugin": "npm:1.168.48"
     "@testing-library/cypress": "npm:10.1.3"
@@ -24209,9 +24061,9 @@ __metadata:
     graphql: "npm:17.1.0"
     happy-dom: "npm:21.0.4"
     husky: "npm:9.1.7"
-    i18next: "npm:26.7.1"
+    i18next: "npm:26.7.2"
     i18next-browser-languagedetector: "npm:8.3.0"
-    i18next-cli: "npm:1.82.5"
+    i18next-cli: "npm:1.85.1"
     i18next-http-backend: "npm:4.0.10"
     isbot: "npm:5.2.2"
     isomorphic-fetch: "npm:3.0.0"
@@ -24227,7 +24079,7 @@ __metadata:
     leaflet.locatecontrol: "npm:0.90.1"
     lint-staged: "npm:17.6.0"
     lodash: "npm:4.18.1"
-    msw: "npm:3.0.3"
+    msw: "npm:3.0.4"
     nx: "npm:24.0.4"
     openapi-types: "npm:12.1.3"
     openmeteo: "npm:1.2.3"
@@ -24243,7 +24095,7 @@ __metadata:
     react-dom: "npm:19.3.1"
     react-error-boundary: "npm:6.1.6"
     react-hook-form: "npm:7.91.0"
-    react-i18next: "npm:17.1.12"
+    react-i18next: "npm:17.1.13"
     react-router-dom: "npm:7.18.5"
     reflect-metadata: "npm:0.2.2"
     rss-parser: "npm:3.13.0"
@@ -25227,29 +25079,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:17.1.12":
-  version: 17.1.12
-  resolution: "react-i18next@npm:17.1.12"
-  dependencies:
-    "@babel/runtime": "npm:^7.29.7"
-    html-parse-stringify: "npm:^4.0.1"
-    use-sync-external-store: "npm:^1.6.0"
-  peerDependencies:
-    i18next: ">= 26.2.0"
-    react: ">= 16.8.0"
-    typescript: ^5 || ^6 || ^7
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-    react-native:
-      optional: true
-    typescript:
-      optional: true
-  checksum: 10c0/92b9bb4261420575e3d5c619474f6b855fac12c285f8ca797c8b2b9e0322ec9464ca778786c98cbe2a51e57af4bc25f0675a45aa9f58dc0c315650a1ce8afe85
-  languageName: node
-  linkType: hard
-
-"react-i18next@npm:^17.1.11":
+"react-i18next@npm:17.1.13, react-i18next@npm:^17.1.11":
   version: 17.1.13
   resolution: "react-i18next@npm:17.1.13"
   dependencies:
