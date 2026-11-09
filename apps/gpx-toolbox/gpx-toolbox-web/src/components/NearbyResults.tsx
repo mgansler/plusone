@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import type { NearbyRouteResponseDto } from '@plusone/gpx-toolbox-api-client'
 
 import type { RouteSelection } from '../hooks/useRouteSelection'
@@ -33,8 +35,9 @@ export function NearbyResults({ results, selection }: NearbyResultsProps) {
 }
 
 function SelectedRouteProfile({ selection }: { selection: RouteSelection }) {
-  if (selection.gpxLoading) return <div style={styles.hint}>Höhenprofil wird geladen…</div>
-  if (!selection.hasElevation) return <div style={styles.hint}>Kein Höhenprofil verfügbar</div>
+  const { t } = useTranslation()
+  if (selection.gpxLoading) return <div style={styles.hint}>{t('nearby.profileLoading')}</div>
+  if (!selection.hasElevation) return <div style={styles.hint}>{t('nearby.noProfile')}</div>
   return (
     <ElevationProfile
       points={selection.points}

@@ -33,8 +33,7 @@
     "component-test": {
       "configurations": {
         "watch": {
-          "headed": true,
-          "no-exit": true
+          "command": "cypress open --component"
         }
       }
     },

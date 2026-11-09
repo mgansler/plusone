@@ -1,7 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
 
 import { useAuth } from '../lib/auth-context'
+import translations from '../../public/locales/de/translation.json'
 
 import { LoginCard } from './LoginCard'
 
@@ -34,6 +37,15 @@ function setSearch(search: string) {
 }
 
 describe('LoginCard', () => {
+  beforeAll(async () => {
+    await i18n.use(initReactI18next).init({
+      lng: 'de',
+      fallbackLng: 'de',
+      resources: { de: { translation: translations } },
+      interpolation: { escapeValue: false },
+    })
+  })
+
   beforeEach(() => {
     vi.clearAllMocks()
     mockAuth()

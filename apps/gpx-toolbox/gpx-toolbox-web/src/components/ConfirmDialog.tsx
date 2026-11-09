@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { Modal, modalStyles } from './Modal'
 
 type ConfirmDialogProps = {
@@ -24,13 +26,14 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
+  const { t } = useTranslation()
   return (
     <Modal title={title} onClose={pending ? () => undefined : onCancel}>
       <p style={modalStyles.message}>{message}</p>
       {error && <div style={modalStyles.error}>{error}</div>}
       <div style={modalStyles.actions}>
         <button type="button" onClick={onCancel} disabled={pending} style={modalStyles.cancelButton}>
-          Abbrechen
+          {t('confirmDialog.cancel')}
         </button>
         <button
           type="button"

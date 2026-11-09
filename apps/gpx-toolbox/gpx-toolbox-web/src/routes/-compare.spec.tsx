@@ -68,7 +68,7 @@ describe('ComparePage', () => {
       addRoutes('a', 'b')
       render(<ComparePage />)
 
-      expect(screen.getByRole('heading', { name: 'Routenvergleich' })).toBeTruthy()
+      expect(screen.getByRole('heading', { name: 'Vergleich' })).toBeTruthy()
       expect(screen.getAllByRole('row')).toHaveLength(3) // headings + two routes
       expect(screen.getByRole('region', { name: 'Karte' })).toBeTruthy()
     })
@@ -98,9 +98,9 @@ describe('ComparePage', () => {
       addRoutes('a', 'b')
       render(<ComparePage />)
 
-      expect(screen.queryByRole('heading', { name: 'Routenvergleich' })).toBeNull()
+      expect(screen.queryByRole('heading', { name: 'Vergleich' })).toBeNull()
       expect(screen.getByRole('link', { name: '← Zurück' })).toBeTruthy()
-      expect(screen.getByRole('button', { name: 'Leeren' })).toBeTruthy()
+      expect(screen.getByRole('button', { name: 'Alle entfernen' })).toBeTruthy()
       expect(screen.getByRole('region', { name: 'Karte' })).toBeTruthy()
     })
 
@@ -142,14 +142,14 @@ describe('ComparePage', () => {
 
       expect(screen.getByText(/Füge mindestens zwei Routen/)).toBeTruthy()
       expect(screen.queryByRole('button', { name: 'Routen' })).toBeNull()
-      expect(screen.queryByRole('button', { name: 'Leeren' })).toBeNull()
+      expect(screen.queryByRole('button', { name: 'Alle entfernen' })).toBeNull()
     })
 
     it('clears the list from the header', () => {
       addRoutes('a', 'b')
       render(<ComparePage />)
 
-      fireEvent.click(screen.getByRole('button', { name: 'Leeren' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Alle entfernen' }))
 
       expect(screen.queryByRole('button', { name: 'Routen' })).toBeNull()
     })

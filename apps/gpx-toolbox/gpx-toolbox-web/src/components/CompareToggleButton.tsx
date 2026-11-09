@@ -1,9 +1,11 @@
 import type { MouseEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useCompareList } from '../hooks/useCompareList'
 
 /** Adds a route to or removes it from the comparison list; usable inside clickable cards and links */
 export function CompareToggleButton({ id, name }: { id: string; name: string }) {
+  const { t } = useTranslation()
   const { has, add, remove } = useCompareList()
   const selected = has(id)
 
@@ -22,7 +24,7 @@ export function CompareToggleButton({ id, name }: { id: string; name: string }) 
       aria-pressed={selected}
       style={{ ...styles.button, ...(selected ? styles.selected : {}) }}
     >
-      {selected ? '✓ Im Vergleich' : '+ Vergleich'}
+      {selected ? t('compare.inCompare') : t('compare.addToCompare')}
     </button>
   )
 }

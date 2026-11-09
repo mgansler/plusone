@@ -1,4 +1,5 @@
 import { type ChangeEvent, type DragEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 
@@ -15,6 +16,7 @@ type SidebarProps = {
 }
 
 export function Sidebar({ onFileLoad, points, fileName, segmentRange = [0, 0], onSegmentRangeChange }: SidebarProps) {
+  const { t } = useTranslation()
   const [dragging, setDragging] = useState(false)
   const [noTrackFile, setNoTrackFile] = useState<string | null>(null)
 
@@ -76,8 +78,8 @@ export function Sidebar({ onFileLoad, points, fileName, segmentRange = [0, 0], o
 
       {noTrackFile && (
         <MessageDialog
-          title="Kein Track gefunden"
-          message={`In der Datei „${noTrackFile}“ wurde kein Track gefunden.`}
+          title={t('sidebar.noTrackFound')}
+          message={t('sidebar.noTrackMessage', { fileName: noTrackFile })}
           onClose={() => setNoTrackFile(null)}
         />
       )}
@@ -94,6 +96,7 @@ type FileUploadProps = {
 }
 
 function FileUpload({ dragging, onDragOver, onDragLeave, onDrop, onFileInput }: FileUploadProps) {
+  const { t } = useTranslation()
   return (
     <div
       onDragOver={onDragOver}
@@ -107,9 +110,9 @@ function FileUpload({ dragging, onDragOver, onDragLeave, onDrop, onFileInput }: 
     >
       <div style={styles.dropContent}>
         <span style={styles.dropIcon}>📁</span>
-        <p style={styles.dropHint}>GPX-Datei hierher ziehen oder</p>
+        <p style={styles.dropHint}>{t('sidebar.dropFile')}</p>
         <label style={styles.dropButton}>
-          Datei auswählen
+          {t('sidebar.selectFile')}
           <input type="file" accept=".gpx" onChange={onFileInput} style={{ display: 'none' }} />
         </label>
       </div>

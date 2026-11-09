@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 import { mapPanelBackground, mapPanelClose, mapPanelLabel, mapPanelText } from '../utils/routeColors'
@@ -9,23 +11,28 @@ type PointDetailsProps = {
 }
 
 export function PointDetails({ point, onClose = () => window.location.reload() }: PointDetailsProps) {
+  const { t, i18n } = useTranslation()
   return (
     <div style={styles.panel}>
       <div style={styles.header}>
-        <span style={styles.title}>Track-Punkt</span>
+        <span style={styles.title}>{t('pointDetails.title')}</span>
         <button style={styles.closeBtn} onClick={onClose}>
           ×
         </button>
       </div>
       <div style={styles.grid}>
-        <Stat label="Höhe" value={`${point.elevation} m`} />
-        {point.hr !== undefined && <Stat label="HR" value={`${point.hr} bpm`} />}
-        {point.cad !== undefined && <Stat label="Cadence" value={`${point.cad} rpm`} />}
+        <Stat label={t('pointDetails.elevation')} value={`${point.elevation} m`} />
+        {point.hr !== undefined && <Stat label={t('pointDetails.hr')} value={`${point.hr} bpm`} />}
+        {point.cad !== undefined && <Stat label={t('pointDetails.cadence')} value={`${point.cad} rpm`} />}
         <Stat
-          label="Zeit"
-          value={point.time.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+          label={t('pointDetails.time')}
+          value={point.time.toLocaleTimeString(i18n.language, {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          })}
         />
-        <Stat label="Datum" value={point.time.toLocaleDateString('de-DE')} />
+        <Stat label={t('pointDetails.date')} value={point.time.toLocaleDateString(i18n.language)} />
       </div>
     </div>
   )

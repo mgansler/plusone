@@ -1,14 +1,15 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { TOPBAR_HEIGHT, Z_INDEX } from '../layout/tokens'
 import { useIsMobile } from '../layout/useIsMobile'
 
-const NAV_ITEMS = [
-  { href: '/nearby', label: 'In der Nähe' },
-  { href: '/routes', label: 'Routen' },
-  { href: '/activities', label: 'Aktivitäten' },
-  { href: '/utils', label: 'Utils' },
-  { href: '/settings', label: 'Einstellungen' },
+const NAV_HREFS = [
+  { href: '/nearby', key: 'nearby' },
+  { href: '/routes', key: 'routes' },
+  { href: '/activities', key: 'activities' },
+  { href: '/utils', key: 'utils' },
+  { href: '/settings', key: 'settings' },
 ] as const
 
 type TopBarProps = {
@@ -19,6 +20,7 @@ type TopBarProps = {
 /** App bar with the main navigation: a row of links on desktop, a dropdown menu on mobile */
 export function TopBar({ userName, onLogout }: TopBarProps) {
   const isMobile = useIsMobile()
+  const { t } = useTranslation()
 
   return (
     <div style={styles.topbar}>
@@ -38,20 +40,20 @@ export function TopBar({ userName, onLogout }: TopBarProps) {
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
           <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
-        GPX-Toolcat
+        {t('nav.brand')}
       </a>
       {isMobile ? (
         <MobileMenu userName={userName} onLogout={onLogout} />
       ) : (
-        <nav aria-label="Hauptnavigation" style={styles.links}>
+        <nav aria-label={t('nav.mainNav')} style={styles.links}>
           {userName && <span style={styles.user}>{userName}</span>}
-          {NAV_ITEMS.map((item) => (
+          {NAV_HREFS.map((item) => (
             <a key={item.href} href={item.href} style={styles.link}>
-              {item.label}
+              {t(`nav.${item.key}`)}
             </a>
           ))}
           <button onClick={onLogout} style={styles.logoutButton}>
-            Abmelden
+            {t('nav.logout')}
           </button>
         </nav>
       )}
@@ -61,10 +63,16 @@ export function TopBar({ userName, onLogout }: TopBarProps) {
 
 function MobileMenu({ userName, onLogout }: TopBarProps) {
   const [open, setOpen] = useState(false)
+  const { t } = useTranslation()
 
   return (
     <div style={{ position: 'relative' }}>
-      <button onClick={() => setOpen((o) => !o)} style={styles.menuButton} aria-label="Menü" aria-expanded={open}>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        style={styles.menuButton}
+        aria-label={t('nav.menu')}
+        aria-expanded={open}
+      >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <circle cx="12" cy="5" r="2" />
           <circle cx="12" cy="12" r="2" />
@@ -72,11 +80,11 @@ function MobileMenu({ userName, onLogout }: TopBarProps) {
         </svg>
       </button>
       {open && (
-        <nav aria-label="Hauptnavigation" style={styles.dropdown}>
+        <nav aria-label={t('nav.mainNav')} style={styles.dropdown}>
           {userName && <div style={styles.dropdownUser}>{userName}</div>}
-          {NAV_ITEMS.map((item) => (
+          {NAV_HREFS.map((item) => (
             <a key={item.href} href={item.href} onClick={() => setOpen(false)} style={styles.dropdownLink}>
-              {item.label}
+              {t(`nav.${item.key}`)}
             </a>
           ))}
           <div style={styles.dropdownDivider} />
@@ -87,7 +95,7 @@ function MobileMenu({ userName, onLogout }: TopBarProps) {
             }}
             style={styles.dropdownLogout}
           >
-            Abmelden
+            {t('nav.logout')}
           </button>
         </nav>
       )}

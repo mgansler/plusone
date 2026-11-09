@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import i18n from 'i18next'
 
 import { geocodePlace, type GeocodeResult } from '../utils/geocode'
 
@@ -26,14 +27,14 @@ export function usePlaceSearch(onPick: (lat: number, lng: number) => void) {
     try {
       const results = await geocodePlace(place)
       if (results.length === 0) {
-        setError(`Ort „${place}" nicht gefunden`)
+        setError(i18n.t('placeSearch.notFound', { place }))
       } else if (results.length === 1) {
         pick(results[0])
       } else {
         setCandidates(results)
       }
     } catch {
-      setError('Ort konnte nicht aufgelöst werden')
+      setError(i18n.t('placeSearch.resolveError'))
     } finally {
       setLoading(false)
     }

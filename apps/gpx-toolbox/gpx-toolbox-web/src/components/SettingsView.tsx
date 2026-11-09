@@ -1,18 +1,21 @@
+import { useTranslation } from 'react-i18next'
+
 import { useAuth } from '../lib/auth-context'
 
 /** The account of the logged-in user */
 export function SettingsView() {
   const { user } = useAuth()
+  const { t } = useTranslation()
 
   if (!user) return null
 
   return (
     <div style={styles.page}>
-      <h1 style={styles.title}>Einstellungen</h1>
+      <h1 style={styles.title}>{t('settings.title')}</h1>
 
       <section style={styles.card} aria-labelledby="account-heading">
         <h2 id="account-heading" style={styles.heading}>
-          Konto
+          {t('settings.account')}
         </h2>
         <div style={styles.accountRow}>
           {user.avatarUrl ? (
@@ -23,7 +26,7 @@ export function SettingsView() {
             </span>
           )}
           <div>
-            <div style={styles.name}>{user.name ?? 'Unbekannt'}</div>
+            <div style={styles.name}>{user.name ?? t('settings.unknown')}</div>
             {user.email && <div style={styles.email}>{user.email}</div>}
           </div>
         </div>
@@ -31,11 +34,11 @@ export function SettingsView() {
 
       <p style={styles.footer}>
         <a href="/datenschutz" style={styles.footerLink}>
-          Datenschutzerklärung
+          {t('settings.privacyPolicy')}
         </a>
         {' · '}
         <a href="/impressum" style={styles.footerLink}>
-          Impressum
+          {t('settings.imprint')}
         </a>
       </p>
     </div>

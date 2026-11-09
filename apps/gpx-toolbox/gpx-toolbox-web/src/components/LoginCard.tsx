@@ -1,13 +1,14 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useAuth } from '../lib/auth-context'
 import { setTokenDirectly } from '../lib/auth-context'
 
 /** The login page is opened with `?error=` when the user declined on the Google page */
-function loginErrorMessage(): string | null {
+function loginErrorMessage(t: (key: string) => string): string | null {
   const error = new URLSearchParams(window.location.search).get('error')
   if (!error) return null
-  return error === 'access_denied' ? 'Die Anmeldung wurde abgebrochen.' : 'Die Anmeldung ist fehlgeschlagen.'
+  return error === 'access_denied' ? t('login.cancelled') : t('login.failed')
 }
 
 /** The multicolor "G" as published in Google's branding guidelines for the sign-in button */
@@ -41,6 +42,7 @@ const isDevMode = import.meta.env.DEV
  */
 export function LoginCard() {
   const { isAuthenticated, login, user } = useAuth()
+  const { t } = useTranslation()
   const [manualToken, setManualToken] = useState('')
 
   const handleManualLogin = (e: React.FormEvent) => {
@@ -60,58 +62,60 @@ export function LoginCard() {
             <span style={styles.avatarFallback}>{user.name?.charAt(0)?.toUpperCase() ?? 'U'}</span>
           )}
         </div>
-        <h2 style={styles.welcome}>Willkommen{user.name ? `, ${user.name}` : ''}!</h2>
-        <p style={styles.subtitle}>Du bist erfolgreich angemeldet.</p>
+        <h2 style={styles.welcome}>
+          {t('login.welcome')}
+          {user.name ? `, ${user.name}` : ''}!
+        </h2>
+        <p style={styles.subtitle}>{t('login.signedIn')}</p>
         <a href="/routes" style={styles.link}>
-          → Zur Route-Übersicht
+          {t('login.goToRoutes')}
         </a>
       </div>
     )
   }
 
-  const error = loginErrorMessage()
+  const error = loginErrorMessage(t)
 
   return (
     <div style={styles.card}>
-      <h1 style={styles.title}>GPX-Toolcat</h1>
-      <p style={styles.description}>
-        Plane, speichere und bewerte deine Routen und lade deine Aktivitäten als GPX-Dateien hoch.
-      </p>
+      <h1 style={styles.title}>{t('login.title')}</h1>
+      <p style={styles.description}>{t('login.description')}</p>
       <button onClick={login} style={styles.googleButton}>
         <GoogleLogo />
-        Mit Google anmelden
+        {t('login.signInGoogle')}
       </button>
       {error && <p style={styles.error}>{error}</p>}
 
       {isDevMode && (
         <div style={styles.devSection}>
-          <p style={styles.devTitle}>Dev: Token manuell eingeben</p>
+          <p style={styles.devTitle}>{t('login.devTokenTitle')}</p>
           <form onSubmit={handleManualLogin} style={styles.devForm}>
             <input
               type="text"
               value={manualToken}
               onChange={(e) => setManualToken(e.target.value)}
-              placeholder="JWT einfügen..."
+              placeholder={t('login.devTokenPlaceholder')}
               style={styles.devInput}
             />
             <button type="submit" style={styles.devButton}>
-              Anmelden
+              {t('login.devLogin')}
             </button>
           </form>
         </div>
       )}
 
-      <p style={styles.noteOAuth}>
-        Nach dem Klick wirst du zu Google weitergeleitet. Wir speichern deinen Namen, deine E-Mail-Adresse und dein
-        Profilbild. Mehr dazu in der{' '}
-        <a href="/datenschutz" style={styles.noteLink}>
-          Datenschutzerklärung
-        </a>
-        .
-      </p>
+      <p
+        style={styles.noteOAuth}
+        dangerouslySetInnerHTML={{
+          __html: t('login.oauthNote', {
+            linkStart: `<a href="/datenschutz" style="color: #60a5fa; text-decoration: none;">`,
+            linkEnd: `</a>`,
+          }),
+        }}
+      />
       <p style={styles.noteOAuth}>
         <a href="/impressum" style={styles.noteLink}>
-          Impressum
+          {t('settings.imprint')}
         </a>
       </p>
     </div>

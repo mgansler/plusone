@@ -1,5 +1,6 @@
 import { type RefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import L from 'leaflet'
 
 import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
@@ -31,6 +32,7 @@ export const Route = createFileRoute('/routes/')({
 
 function RoutesPage() {
   const isMobile = useIsMobile()
+  const { t } = useTranslation()
   const mapRef: RefObject<L.Map | null> = useRef(null)
   const [page, setPage] = useState(1)
   const [statusFilter, setStatusFilter] = useState<string>('')
@@ -157,14 +159,16 @@ function RoutesPage() {
     <div style={styles.container}>
       <div style={isMobile ? { ...styles.sidebar, ...styles.sidebarMobile } : styles.sidebar}>
         <div style={styles.headingRow}>
-          <h2 style={styles.heading}>Routen ({total})</h2>
+          <h2 style={styles.heading}>
+            {t('routes.title')} ({total})
+          </h2>
           <div style={styles.headingActions}>
             <button onClick={() => setShowUploadModal(true)} style={actionButtonStyle}>
-              📤 Upload
+              {t('routes.upload')}
             </button>
             {!isMobile && (
               <button onClick={() => setShowExportModal(true)} style={actionButtonStyle}>
-                📦 Strava-Export
+                {t('routes.stravaExport')}
               </button>
             )}
           </div>
@@ -174,11 +178,11 @@ function RoutesPage() {
         <div style={styles.summary}>
           <div style={styles.summaryItem}>
             <span style={styles.summaryValue}>{formatDistanceShort(totalDistance)}</span>
-            <span style={styles.summaryLabel}>Distanz</span>
+            <span style={styles.summaryLabel}>{t('routes.distance')}</span>
           </div>
           <div style={styles.summaryItem}>
             <span style={styles.summaryValue}>{formatElevationGain(totalElevation)}</span>
-            <span style={styles.summaryLabel}>Höhenmeter</span>
+            <span style={styles.summaryLabel}>{t('routes.elevation')}</span>
           </div>
         </div>
 
@@ -192,22 +196,22 @@ function RoutesPage() {
             }}
             style={styles.select}
           >
-            <option value="">Alle Status</option>
-            <option value="planned">Geplant</option>
-            <option value="ridden">Gefahren</option>
-            <option value="foundOnline">Online gefunden</option>
+            <option value="">{t('routes.allStatus')}</option>
+            <option value="planned">{t('routes.planned')}</option>
+            <option value="ridden">{t('routes.ridden')}</option>
+            <option value="foundOnline">{t('routes.foundOnline')}</option>
           </select>
           <select value={sortBy} onChange={(e) => setSortBy(e.target.value as ListRoutesSortBy)} style={styles.select}>
-            <option value="createdAt">Neueste</option>
-            <option value="name">Name A-Z</option>
+            <option value="createdAt">{t('routes.newest')}</option>
+            <option value="name">{t('routes.nameAZ')}</option>
           </select>
         </div>
 
         {/* Error */}
-        {isError && <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>}
+        {isError && <div style={styles.error}>{error instanceof Error ? error.message : t('routes.unknownError')}</div>}
 
         {/* Loading */}
-        {isLoading && <div style={styles.loading}>Lade...</div>}
+        {isLoading && <div style={styles.loading}>{t('routes.loading')}</div>}
 
         {/* Routes */}
         {routes.length > 0 && (
@@ -230,7 +234,7 @@ function RoutesPage() {
                     shareGpx(r.id, r.name)
                   }}
                   style={styles.shareButton}
-                  title="GPX teilen"
+                  title={t('routes.shareGpx')}
                 >
                   📤
                 </button>
@@ -253,7 +257,11 @@ function RoutesPage() {
                   {(() => {
                     const activities = (r as { activities?: Array<{ id: string }> }).activities
                     if (activities && activities.length > 0)
-                      return <span style={styles.badge}>{activities.length} Aktivitäten</span>
+                      return (
+                        <span style={styles.badge}>
+                          {activities.length} {t('routes.activities')}
+                        </span>
+                      )
                     return null
                   })()}
                   <span style={styles.compareToggle}>
@@ -322,9 +330,9 @@ function RoutesPage() {
 
       {showUploadModal && (
         <UploadGpxModal
-          heading="Route hochladen"
+          heading={t('routes.upload')}
           upload={(file, name) => importGpx({ file, name, source: ImportRouteUploadDtoSource.manualImport })}
-          namePlaceholder="Name (optional, sonst aus GPX)"
+          namePlaceholder={t('routeDetail.title') + ' (optional)'}
           nameRequired={false}
           invalidateQueryKeys={[getListRoutesQueryKey()]}
           onClose={() => setShowUploadModal(false)}

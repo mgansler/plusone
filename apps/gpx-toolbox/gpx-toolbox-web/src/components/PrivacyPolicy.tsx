@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
 function ExternalLink({ href, children }: { href: string; children: ReactNode }) {
   return (
@@ -14,12 +15,13 @@ function ExternalLink({ href, children }: { href: string; children: ReactNode })
  * and visitors have to read it before they log in.
  */
 export function PrivacyPolicy() {
+  const { t } = useTranslation()
   return (
     <article style={styles.page}>
       <a href="/" style={styles.back}>
-        ← Zurück
+        {t('privacy.back')}
       </a>
-      <h1 style={styles.title}>Datenschutzerklärung</h1>
+      <h1 style={styles.title}>{t('privacy.title')}</h1>
       <p style={styles.text}>
         GPX-Toolcat ist ein Werkzeug, um Radrouten zu planen, zu speichern und zu bewerten. Diese Erklärung beschreibt,
         welche personenbezogenen Daten dabei verarbeitet werden. Die App enthält keine Werbung und keine Analyse- oder

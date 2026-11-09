@@ -63,7 +63,12 @@
         "{workspaceRoot}/reports/component-test/gpx-toolbox-web",
         "{workspaceRoot}/dist/cypress/apps/gpx-toolbox/gpx-toolbox-web/videos",
         "{workspaceRoot}/dist/cypress/apps/gpx-toolbox/gpx-toolbox-web/screenshots"
-      ]
+      ],
+      "configurations": {
+        "watch": {
+          "command": "cypress open --component"
+        }
+      }
     },
     "preview": {
       "defaultConfiguration": "development",

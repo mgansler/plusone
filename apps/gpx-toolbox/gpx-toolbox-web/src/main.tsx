@@ -5,6 +5,7 @@ import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import { handleOAuthCallback } from './lib/auth-context'
 
+import './i18n'
 import './styles.css'
 
 const queryClient = new QueryClient({

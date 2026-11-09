@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { formatElevation } from '../utils/format'
 import { routeSourceColor, routeStatusColor, routeStatusLabel } from '../utils/routeStatus'
@@ -35,6 +36,7 @@ export function RouteResultCard({
   onHoverChange,
   children,
 }: RouteResultCardProps) {
+  const { t } = useTranslation()
   const stats = route.stats as { distance?: number; elevationGain?: number; elevationLoss?: number } | undefined
   const formatElev = (value: number | undefined) => (value != null ? formatElevation(value) : '-')
 
@@ -57,7 +59,7 @@ export function RouteResultCard({
           void shareGpx(route.id, route.name)
         }}
         style={styles.shareButton}
-        title="GPX teilen"
+        title={t('routes.shareGpx')}
       >
         📤
       </button>
@@ -74,9 +76,15 @@ export function RouteResultCard({
       </div>
       {selected && stats && (
         <div style={styles.stats}>
-          <div>Strecke: {stats.distance ? `${(stats.distance / 1000).toFixed(1)} km` : '-'}</div>
-          <div>Höhenmeter ↑: {formatElev(stats.elevationGain)}</div>
-          <div>Abstieg ↓: {formatElev(stats.elevationLoss)}</div>
+          <div>
+            {t('routes.strecke')}: {stats.distance ? `${(stats.distance / 1000).toFixed(1)} km` : '-'}
+          </div>
+          <div>
+            {t('routes.elevationGain')}: {formatElev(stats.elevationGain)}
+          </div>
+          <div>
+            {t('routes.elevationLoss')}: {formatElev(stats.elevationLoss)}
+          </div>
         </div>
       )}
       {selected && children != null && (

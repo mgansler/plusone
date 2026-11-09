@@ -68,21 +68,21 @@ describe('nearby routes on mobile', () => {
   })
 
   it('shows only the map until a sheet is opened', () => {
-    cy.findByRole('button', { name: 'Gefundene Routen' }).should('be.enabled')
+    cy.findByRole('button', { name: 'Ergebnisse' }).should('be.enabled')
     cy.findByRole('textbox', { name: 'Ort suchen' }).should('not.exist')
     cy.findByRole('dialog').should('not.exist')
   })
 
   it('shows the found routes in a sheet', () => {
-    cy.findByRole('button', { name: 'Gefundene Routen' }).should('be.enabled').click()
+    cy.findByRole('button', { name: 'Ergebnisse' }).should('be.enabled').click()
 
-    cy.findByRole('dialog', { name: 'Gefundene Routen' }).within(() => {
+    cy.findByRole('dialog', { name: 'Ergebnisse' }).within(() => {
       cy.findByRole('heading', { name: '1 Routen gefunden' }).should('be.visible')
       cy.findByText('Hausrunde').click()
       cy.findByText('Strecke: 4.2 km').should('be.visible')
       cy.findByRole('button', { name: 'Schließen' }).click()
     })
-    cy.findByRole('dialog', { name: 'Gefundene Routen' }).should('not.exist')
+    cy.findByRole('dialog', { name: 'Ergebnisse' }).should('not.exist')
   })
 
   it('searches in a sheet and finds more routes with a larger radius', () => {
@@ -97,21 +97,21 @@ describe('nearby routes on mobile', () => {
     cy.findByRole('button', { name: 'Suche schließen' }).click()
     cy.findByRole('dialog', { name: 'Suche' }).should('not.exist')
 
-    cy.findByRole('button', { name: 'Gefundene Routen' }).click()
-    cy.findByRole('dialog', { name: 'Gefundene Routen' }).within(() => {
+    cy.findByRole('button', { name: 'Ergebnisse' }).click()
+    cy.findByRole('dialog', { name: 'Ergebnisse' }).within(() => {
       cy.findByRole('heading', { name: '2 Routen gefunden' }).should('be.visible')
       cy.findByText('Bergtour').should('be.visible')
     })
   })
 
   it('opens one sheet at a time', () => {
-    cy.findByRole('button', { name: 'Gefundene Routen' }).should('be.enabled').click()
-    cy.findByRole('dialog', { name: 'Gefundene Routen' }).should('be.visible')
+    cy.findByRole('button', { name: 'Ergebnisse' }).should('be.enabled').click()
+    cy.findByRole('dialog', { name: 'Ergebnisse' }).should('be.visible')
 
     cy.findByRole('button', { name: 'Suche öffnen' }).click()
 
     cy.findByRole('dialog', { name: 'Suche' }).should('be.visible')
-    cy.findByRole('dialog', { name: 'Gefundene Routen' }).should('not.exist')
+    cy.findByRole('dialog', { name: 'Ergebnisse' }).should('not.exist')
   })
 
   it('compares routes found nearby and returns to the search', () => {
@@ -119,21 +119,21 @@ describe('nearby routes on mobile', () => {
     setRadius(RADIUS_TO_REACH_BERGTOUR_KM)
     cy.findByRole('button', { name: 'Suche schließen' }).click()
 
-    cy.findByRole('button', { name: 'Gefundene Routen' }).click()
-    cy.findByRole('dialog', { name: 'Gefundene Routen' }).within(() => {
+    cy.findByRole('button', { name: 'Ergebnisse' }).click()
+    cy.findByRole('dialog', { name: 'Ergebnisse' }).within(() => {
       cy.findByRole('heading', { name: '2 Routen gefunden' }).should('be.visible')
       cy.findAllByRole('button', { name: '+ Vergleich' })
         .should('have.length', 2)
         .each(($button) => cy.wrap($button).click())
-      cy.findByLabelText('Vergleichsliste').within(() => {
+      cy.findByLabelText('Vergleich').within(() => {
         cy.findByText('Vergleich (2)').should('be.visible')
-        cy.findByRole('link', { name: 'Vergleichen →' }).click()
+        cy.findByRole('link', { name: 'Vergleich →' }).click()
       })
     })
 
     cy.location('pathname').should('eq', '/compare')
     cy.findByRole('link', { name: '← Zurück' }).should('be.visible')
-    cy.findByRole('heading', { name: 'Routenvergleich' }).should('not.exist')
+    cy.findByRole('heading', { name: 'Vergleich' }).should('not.exist')
 
     // The route list and the elevation profile are sheets of their own
     cy.findByRole('dialog', { name: 'Routenliste' }).should('not.exist')

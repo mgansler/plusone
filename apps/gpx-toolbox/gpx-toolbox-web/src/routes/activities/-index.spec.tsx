@@ -1,10 +1,51 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import type { ReactNode } from 'react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { I18nextProvider } from 'react-i18next'
+import { beforeAll, afterEach, describe, expect, it, vi } from 'vitest'
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
 
 import { mockViewport } from '../../layout/mockViewport'
 
 import { Route } from './index'
+
+const deTranslations = {
+  nav: {
+    brand: 'GPX-Toolcat',
+    nearby: 'In der Nähe',
+    routes: 'Routen',
+    activities: 'Aktivitäten',
+    utils: 'Utils',
+    settings: 'Einstellungen',
+    logout: 'Abmelden',
+    mainNav: 'Hauptnavigation',
+  },
+  activities: {
+    title: 'Aktivitäten',
+    upload: '📤 Upload',
+    filters: 'Filter',
+    dateFrom: 'Von',
+    dateTo: 'Bis',
+    distance: 'Distanz (km)',
+    elevation: 'Höhenmeter',
+    duration: 'Dauer',
+    avgHr: 'Ø HR',
+    loading: 'Lade...',
+    unknownError: 'Unbekannter Fehler',
+    filtersAndSorting: 'Filter und Sortierung',
+    done: 'Fertig',
+    uploadActivity: 'Aktivität hochladen',
+    uploadPlaceholder: 'Titel (optional, sonst aus GPX)',
+    orderDesc: 'Absteigend',
+    orderAsc: 'Aufsteigend',
+    filterAndSort: 'Filter & Sortierung',
+  },
+  routeStatus: {
+    planned: 'Geplant',
+    ridden: 'Gefahren',
+    foundOnline: 'Online gefunden',
+  },
+}
 
 const activities = [
   {
@@ -42,10 +83,22 @@ vi.mock('../../components/Map', () => ({
 
 function ActivitiesPage() {
   const Component = (Route as unknown as { component: () => ReactNode }).component
-  return <Component />
+  return (
+    <I18nextProvider i18n={i18n}>
+      <Component />
+    </I18nextProvider>
+  )
 }
 
 describe('ActivitiesPage', () => {
+  beforeAll(async () => {
+    await i18n.use(initReactI18next).init({
+      lng: 'de',
+      fallbackLng: 'de',
+      resources: { de: { translation: deTranslations } },
+    })
+  })
+
   afterEach(() => {
     vi.unstubAllGlobals()
   })
@@ -81,7 +134,7 @@ describe('ActivitiesPage', () => {
       render(<ActivitiesPage />)
 
       expect(screen.getByLabelText('Von')).toBeTruthy()
-      expect(screen.getByLabelText('Distanz min')).toBeTruthy()
+      expect(screen.getByLabelText('Distanz (km) min')).toBeTruthy()
       expect(screen.queryByRole('button', { name: /Filter & Sortierung/ })).toBeNull()
     })
 
@@ -101,7 +154,7 @@ describe('ActivitiesPage', () => {
 
       const filters = screen.getByRole('dialog', { name: 'Filter und Sortierung' })
       expect(within(filters).getByLabelText('Von')).toBeTruthy()
-      expect(within(filters).getByLabelText('Sortieren nach')).toBeTruthy()
+      expect(within(filters).getByLabelText('Filter')).toBeTruthy()
     })
 
     it('shows how many filters are active on the mobile button', () => {
@@ -109,7 +162,7 @@ describe('ActivitiesPage', () => {
       render(<ActivitiesPage />)
       fireEvent.click(screen.getByRole('button', { name: 'Filter & Sortierung' }))
 
-      fireEvent.change(screen.getByLabelText('Distanz min'), { target: { value: '10' } })
+      fireEvent.change(screen.getByLabelText('Distanz (km) min'), { target: { value: '10' } })
       fireEvent.change(screen.getByLabelText('Von'), { target: { value: '2026-01-01' } })
       fireEvent.click(screen.getByRole('button', { name: 'Fertig' }))
 

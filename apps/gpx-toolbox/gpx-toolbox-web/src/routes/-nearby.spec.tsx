@@ -112,9 +112,9 @@ describe('NearbySearch', () => {
     it('opens the found routes in a sheet', () => {
       render(<NearbyPage />)
 
-      fireEvent.click(screen.getByRole('button', { name: 'Gefundene Routen' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Ergebnisse' }))
 
-      const results = screen.getByRole('dialog', { name: 'Gefundene Routen' })
+      const results = screen.getByRole('dialog', { name: 'Ergebnisse' })
       expect(within(results).getByRole('heading', { name: '2 Routen gefunden' })).toBeTruthy()
       expect(within(results).getByText('Hausrunde')).toBeTruthy()
     })
@@ -122,20 +122,20 @@ describe('NearbySearch', () => {
     it('shows one sheet at a time', () => {
       render(<NearbyPage />)
 
-      fireEvent.click(screen.getByRole('button', { name: 'Gefundene Routen' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Ergebnisse' }))
       fireEvent.click(screen.getByRole('button', { name: 'Suche öffnen' }))
 
       expect(screen.getByRole('dialog', { name: 'Suche' })).toBeTruthy()
-      expect(screen.queryByRole('dialog', { name: 'Gefundene Routen' })).toBeNull()
+      expect(screen.queryByRole('dialog', { name: 'Ergebnisse' })).toBeNull()
     })
 
     it('closes the results sheet on Escape', () => {
       render(<NearbyPage />)
-      fireEvent.click(screen.getByRole('button', { name: 'Gefundene Routen' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Ergebnisse' }))
 
       fireEvent.keyDown(document, { key: 'Escape' })
 
-      expect(screen.queryByRole('dialog', { name: 'Gefundene Routen' })).toBeNull()
+      expect(screen.queryByRole('dialog', { name: 'Ergebnisse' })).toBeNull()
     })
   })
 })

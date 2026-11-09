@@ -6,9 +6,9 @@ describe('routes', () => {
     cy.findByRole('heading', { name: 'Routen (0)' }).should('be.visible')
 
     cy.findByRole('button', { name: '📤 Upload' }).click()
-    cy.findByRole('dialog', { name: 'Route hochladen' }).within(() => {
+    cy.findByRole('dialog', { name: '📤 Upload' }).within(() => {
       cy.get('input[type=file]').selectFile('src/fixtures/hausrunde.gpx', { force: true })
-      cy.findByPlaceholderText('Name (optional, sonst aus GPX)').type('Meine Hausrunde')
+      cy.findByPlaceholderText('Titel (optional)').type('Meine Hausrunde')
       cy.findByRole('button', { name: 'Hochladen' }).click()
     })
 

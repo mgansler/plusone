@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
 import {
   calculateAvgSpeed,
@@ -16,6 +18,7 @@ type SegmentStatsProps = {
 }
 
 export function SegmentStats({ points }: SegmentStatsProps) {
+  const { t } = useTranslation()
   const totalDistance = calculateTotalDistance(points)
   const elevationGain = calculateElevationGain(points)
   const elevationLoss = calculateElevationLoss(points)
@@ -27,20 +30,20 @@ export function SegmentStats({ points }: SegmentStatsProps) {
   if (points.length < 2) {
     return (
       <div style={styles.empty}>
-        <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Wähle mindestens 2 Punkte aus</span>
+        <span style={{ fontSize: '0.8rem', color: '#64748b' }}>{t('segmentStats.selectPoints')}</span>
       </div>
     )
   }
 
   return (
     <div style={styles.grid}>
-      <Stat label="Distanz" value={formatDistance(totalDistance)} />
-      <Stat label="Höhenmeter ↑" value={`${Math.round(elevationGain)} m`} />
-      <Stat label="Tiefenmeter ↓" value={`${Math.round(elevationLoss)} m`} />
-      <Stat label="Dauer" value={formatDuration(duration)} />
-      <Stat label="Ø Geschw." value={`${avgSpeed} km/h`} />
-      <Stat label="Max Geschw." value={`${maxSpeed} km/h`} />
-      <Stat label="Zeit" value={timeRange} />
+      <Stat label={t('segmentStats.distance')} value={formatDistance(totalDistance)} />
+      <Stat label={t('segmentStats.elevationGain')} value={`${Math.round(elevationGain)} m`} />
+      <Stat label={t('segmentStats.elevationLoss')} value={`${Math.round(elevationLoss)} m`} />
+      <Stat label={t('segmentStats.duration')} value={formatDuration(duration)} />
+      <Stat label={t('segmentStats.avgSpeed')} value={`${avgSpeed} km/h`} />
+      <Stat label={t('segmentStats.maxSpeed')} value={`${maxSpeed} km/h`} />
+      <Stat label={t('segmentStats.time')} value={timeRange} />
     </div>
   )
 }

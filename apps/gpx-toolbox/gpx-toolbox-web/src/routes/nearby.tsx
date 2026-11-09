@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import type L from 'leaflet'
 
 import { useFindNearbyRoutes } from '@plusone/gpx-toolbox-api-client'
@@ -23,6 +24,7 @@ export const Route = createFileRoute('/nearby')({
 
 function NearbySearch() {
   const isMobile = useIsMobile()
+  const { t } = useTranslation()
   const [map, setMap] = useState<L.Map | null>(null)
   // Mobile: the search form is a bottom sheet, the results a sheet from the right; one is open at a time
   const [filtersOpen, setFiltersOpen] = useState(false)
@@ -60,15 +62,20 @@ function NearbySearch() {
       place={place}
       area={area}
       searching={searching}
-      error={isError ? (error instanceof Error ? error.message : 'Unbekannter Fehler') : null}
+      error={isError ? (error instanceof Error ? error.message : t('nearby.unknownError')) : null}
     />
   )
 
   const heading = (
     <div style={styles.sidebarHeader}>
-      <h2 style={styles.heading}>Routen in der Nähe</h2>
+      <h2 style={styles.heading}>{t('nearby.title')}</h2>
       {isMobile && (
-        <button type="button" onClick={() => setFiltersOpen(false)} style={styles.closeButton} title="Schließen">
+        <button
+          type="button"
+          onClick={() => setFiltersOpen(false)}
+          style={styles.closeButton}
+          title={t('nearby.close')}
+        >
           <CloseIcon />
         </button>
       )}
@@ -95,7 +102,7 @@ function NearbySearch() {
           {filters}
           {hasResults && (
             <div style={styles.results}>
-              <h3 style={styles.resultCount}>{results.length} Routen gefunden</h3>
+              <h3 style={styles.resultCount}>{t('nearby.routesFound', { count: results.length })}</h3>
               <NearbyResults results={results} selection={selection} />
             </div>
           )}
@@ -119,12 +126,12 @@ function NearbySearch() {
             onClick={toggleFilters}
             style={styles.filterButton}
             aria-expanded={filtersOpen}
-            aria-label={filtersOpen ? 'Suche schließen' : 'Suche öffnen'}
+            aria-label={filtersOpen ? t('nearby.searchClose') : t('nearby.searchOpen')}
           >
             {filtersOpen ? <CloseIcon size={24} /> : <MenuIcon />}
           </button>
 
-          <Sheet side="bottom" open={filtersOpen} onClose={() => setFiltersOpen(false)} label="Suche">
+          <Sheet side="bottom" open={filtersOpen} onClose={() => setFiltersOpen(false)} label={t('nearby.searchSheet')}>
             <div style={styles.sheetContent}>
               {heading}
               {filters}
@@ -135,7 +142,7 @@ function NearbySearch() {
             side="right"
             open={resultsOpen && hasResults}
             onClose={() => setResultsOpen(false)}
-            label="Gefundene Routen"
+            label={t('nearby.results')}
             style={{ bottom: 20 }}
             handle={
               <button
@@ -143,9 +150,13 @@ function NearbySearch() {
                 onClick={toggleResults}
                 disabled={!hasResults}
                 aria-expanded={resultsOpen && hasResults}
-                aria-label={hasResults ? 'Gefundene Routen' : 'Keine Routen'}
+                aria-label={hasResults ? t('nearby.results') : t('nearby.noRoutes')}
                 title={
-                  hasResults ? (resultsOpen ? 'Routen verbergen' : `${results.length} Routen anzeigen`) : 'Keine Routen'
+                  hasResults
+                    ? resultsOpen
+                      ? t('nearby.close')
+                      : `${results.length} ${t('nearby.routes')}`
+                    : t('nearby.noRoutes')
                 }
                 style={styles.resultsTab}
               >
@@ -154,8 +165,13 @@ function NearbySearch() {
             }
           >
             <div style={styles.resultsHeader}>
-              <h3 style={styles.resultsTitle}>{results?.length ?? 0} Routen gefunden</h3>
-              <button type="button" onClick={() => setResultsOpen(false)} style={styles.closeButton} title="Schließen">
+              <h3 style={styles.resultsTitle}>{t('nearby.routesFound', { count: results?.length ?? 0 })}</h3>
+              <button
+                type="button"
+                onClick={() => setResultsOpen(false)}
+                style={styles.closeButton}
+                title={t('nearby.close')}
+              >
                 <CloseIcon />
               </button>
             </div>

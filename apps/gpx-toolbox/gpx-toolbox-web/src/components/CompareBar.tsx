@@ -1,21 +1,25 @@
 import { Link } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 
 import { useCompareList } from '../hooks/useCompareList'
 import { routeColor } from '../utils/routeColors'
 
 /** Comparison list at the bottom of a sidebar; hidden while it is empty */
 export function CompareBar({ from }: { from?: string } = {}) {
+  const { t } = useTranslation()
   const { items, remove, clear } = useCompareList()
   if (items.length === 0) return null
 
   const canCompare = items.length >= 2
 
   return (
-    <div style={styles.bar} aria-label="Vergleichsliste">
+    <div style={styles.bar} aria-label={t('compare.title')}>
       <div style={styles.header}>
-        <span style={styles.title}>Vergleich ({items.length})</span>
+        <span style={styles.title}>
+          {t('compare.title')} ({items.length})
+        </span>
         <button type="button" onClick={clear} style={styles.clearButton}>
-          Leeren
+          {t('compare.clearAll')}
         </button>
       </div>
       <ul style={styles.list}>
@@ -27,7 +31,7 @@ export function CompareBar({ from }: { from?: string } = {}) {
               type="button"
               onClick={() => remove(item.id)}
               style={styles.removeButton}
-              aria-label={`${item.name} aus dem Vergleich entfernen`}
+              aria-label={`${item.name} ${t('compare.remove')}`}
             >
               ×
             </button>
@@ -36,10 +40,10 @@ export function CompareBar({ from }: { from?: string } = {}) {
       </ul>
       {canCompare ? (
         <Link to="/compare" search={from ? { from } : undefined} style={styles.compareButton}>
-          Vergleichen →
+          {t('compare.title')} →
         </Link>
       ) : (
-        <div style={styles.hint}>Mindestens eine weitere Route hinzufügen</div>
+        <div style={styles.hint}>{t('compare.noRoutes')}</div>
       )}
     </div>
   )

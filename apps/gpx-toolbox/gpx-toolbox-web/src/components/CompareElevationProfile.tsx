@@ -1,4 +1,5 @@
 import { type MouseEvent, useCallback, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
 
@@ -99,8 +100,10 @@ export function CompareElevationProfile({ tracks, onHover }: CompareElevationPro
     onHover?.(null)
   }, [onHover])
 
+  const { t } = useTranslation()
+
   if (profiles.length === 0 || maxDistance === 0) {
-    return <div style={styles.empty}>Keine Höhendaten vorhanden</div>
+    return <div style={styles.empty}>{t('compare.noElevationData')}</div>
   }
 
   // Whether horizontal scrolling is needed

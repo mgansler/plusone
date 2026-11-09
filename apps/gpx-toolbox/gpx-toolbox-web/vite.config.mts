@@ -55,6 +55,7 @@ export default defineConfig({
     watch: false,
     reporters: ['default', 'junit'],
     outputFile: '../../../reports/test/gpx-toolbox-web.xml',
+    setupFiles: ['src/test-setup.ts'],
     coverage: {
       reporter: ['html', 'clover', 'json', 'cobertura'],
       include: ['src/**/*.{ts,tsx}'],

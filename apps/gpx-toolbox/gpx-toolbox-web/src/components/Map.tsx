@@ -1,4 +1,5 @@
 import { type ReactNode, type RefObject, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet.locatecontrol/dist/L.Control.Locate.min.css'
@@ -50,6 +51,7 @@ type MapProps = {
 }
 
 export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProps) {
+  const { t } = useTranslation()
   const [initCenter, setInitCenter] = useState<[number, number] | null>(null)
   const mapDomRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<L.Map | null>(null)
@@ -103,7 +105,7 @@ export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProp
     // Locate control (leaflet-locatecontrol plugin)
     new LocateControl({
       position: 'topleft',
-      strings: { title: 'Zu meinem Standort' },
+      strings: { title: t('map.locateTitle') },
       flyTo: true,
       markerStyle: locateMarkerStyle,
       circleStyle: {

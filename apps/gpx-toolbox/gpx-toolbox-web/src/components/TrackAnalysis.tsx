@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import {
   analyzePoints,
@@ -43,6 +44,7 @@ export function TrackAnalysis({
   onPointHover,
   showOverview = true,
 }: TrackAnalysisProps) {
+  const { t } = useTranslation()
   const overview = useMemo(() => {
     const analysis = analyzePoints(points)
     return {
@@ -67,20 +69,20 @@ export function TrackAnalysis({
       {showOverview && (
         <>
           <div style={styles.section}>
-            <h3 style={styles.title}>Gesamt</h3>
+            <h3 style={styles.title}>{t('trackAnalysis.overview')}</h3>
             <div style={styles.statsGrid}>
-              <Stat label="Distanz" value={formatDistance(overview.totalDistance)} />
-              <Stat label="Höhenmeter ↑" value={`${Math.round(overview.elevationGain)} hm`} />
-              <Stat label="Abstieg ↓" value={`${Math.round(overview.elevationLoss)} hm`} />
+              <Stat label={t('trackAnalysis.distance')} value={formatDistance(overview.totalDistance)} />
+              <Stat label={t('trackAnalysis.elevationGain')} value={`${Math.round(overview.elevationGain)} hm`} />
+              <Stat label={t('trackAnalysis.elevationLoss')} value={`${Math.round(overview.elevationLoss)} hm`} />
               {hasTime && (
                 <>
-                  <Stat label="Dauer" value={formatDuration(overview.totalDuration)} />
+                  <Stat label={t('trackAnalysis.duration')} value={formatDuration(overview.totalDuration)} />
                   <Stat
-                    label="Ø Geschw."
+                    label={t('trackAnalysis.avgSpeed')}
                     value={`${calculateAvgSpeed(overview.totalDistance, overview.totalDuration)} km/h`}
                   />
-                  <Stat label="Max Geschw." value={`${overview.maxSpeed} km/h`} />
-                  <Stat label="Zeit" value={overview.timeRange} />
+                  <Stat label={t('trackAnalysis.maxSpeed')} value={`${overview.maxSpeed} km/h`} />
+                  <Stat label={t('trackAnalysis.time')} value={overview.timeRange} />
                 </>
               )}
             </div>
@@ -93,7 +95,7 @@ export function TrackAnalysis({
       )}
 
       <div style={styles.section}>
-        <h3 style={styles.title}>Segment</h3>
+        <h3 style={styles.title}>{t('trackAnalysis.segment')}</h3>
         <DistanceRangeSlider points={points} value={range} onChange={onRangeChange} />
         <SegmentStats points={segmentPoints} />
         <ExportButtons points={segmentPoints} name={name} fileName={`${baseName}_segment`} />

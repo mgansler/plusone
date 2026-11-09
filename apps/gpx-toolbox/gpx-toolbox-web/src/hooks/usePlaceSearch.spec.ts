@@ -52,7 +52,7 @@ describe('usePlaceSearch', () => {
     const { result, onPick } = await searchFor('Nirgendwo')
 
     expect(onPick).not.toHaveBeenCalled()
-    expect(result.current.error).toBe('Ort „Nirgendwo" nicht gefunden')
+    expect(result.current.error).toBe('Ort "Nirgendwo" nicht gefunden')
   })
 
   it('reports a failed lookup', async () => {

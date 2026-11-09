@@ -1,12 +1,8 @@
+import i18n from 'i18next'
+
 import type { UpdateRouteDtoStatus } from '@plusone/gpx-toolbox-api-client'
 
 type RouteStatus = `${UpdateRouteDtoStatus}`
-
-const STATUS_LABELS: Record<RouteStatus, string> = {
-  planned: 'Geplant',
-  ridden: 'Gefahren',
-  foundOnline: 'Online gefunden',
-}
 
 const STATUS_COLORS: Record<RouteStatus, string> = {
   planned: '#9c27b0',
@@ -25,9 +21,12 @@ export function routeSourceColor(source: string): string {
   return SOURCE_COLORS[source] ?? FALLBACK_COLOR
 }
 
-/** German label of a route status, unknown values are shown as they are */
+/** Localized label of a route status, unknown values are shown as they are */
 export function routeStatusLabel(status: string): string {
-  return STATUS_LABELS[status as RouteStatus] ?? status
+  const key = `routeStatus.${status}`
+  const translated = i18n.t(key)
+  // i18next returns the key itself when not found, so fallback to raw status
+  return translated !== key ? translated : status
 }
 
 /** Badge color of a route status */

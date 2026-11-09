@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import type { TrackPoint } from '@plusone/gpx-toolbox-utils'
 import { calculateHaversineDistance } from '@plusone/gpx-toolbox-utils'
 
@@ -6,6 +8,7 @@ type TrackInfoProps = {
 }
 
 export function TrackInfo({ points }: TrackInfoProps) {
+  const { t } = useTranslation()
   const totalDistance = calculateTotalDistance(points)
   const elevationGain = calculateElevationGain(points)
   const duration = calculateDuration(points)
@@ -15,14 +18,14 @@ export function TrackInfo({ points }: TrackInfoProps) {
 
   return (
     <div style={styles.panel}>
-      <h3 style={styles.title}>Track-Info</h3>
+      <h3 style={styles.title}>{t('trackInfo.title')}</h3>
       <div style={styles.grid}>
-        <Stat label="Distanz" value={`${formatDistance(totalDistance)}`} />
-        <Stat label="Höhenmeter ↑" value={`${Math.round(elevationGain)} m`} />
-        <Stat label="Dauer" value={formatDuration(duration)} />
-        <Stat label="Ø Geschw." value={`${avgSpeed} km/h`} />
-        <Stat label="Max Geschw." value={`${maxSpeed} km/h`} />
-        <Stat label="Zeit" value={timeRange} />
+        <Stat label={t('trackInfo.distance')} value={`${formatDistance(totalDistance)}`} />
+        <Stat label={t('trackInfo.elevationGain')} value={`${Math.round(elevationGain)} m`} />
+        <Stat label={t('trackInfo.duration')} value={formatDuration(duration)} />
+        <Stat label={t('trackInfo.avgSpeed')} value={`${avgSpeed} km/h`} />
+        <Stat label={t('trackInfo.maxSpeed')} value={`${maxSpeed} km/h`} />
+        <Stat label={t('trackInfo.time')} value={timeRange} />
       </div>
     </div>
   )
@@ -97,7 +100,7 @@ function formatDuration(seconds: number): string {
 }
 
 function formatTime(date: Date): string {
-  return date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
+  return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
 }
 
 type StatProps = {

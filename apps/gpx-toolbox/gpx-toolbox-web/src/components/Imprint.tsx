@@ -1,16 +1,19 @@
+import { useTranslation } from 'react-i18next'
+
 /**
  * Imprint (Impressum) of GPX-Toolcat, required for telemedia in Germany (§ 5 DDG). Public, like the privacy
  * policy, so it can be read before logging in.
  */
 export function Imprint() {
+  const { t } = useTranslation()
   return (
     <article style={styles.page}>
       <a href="/" style={styles.back}>
-        ← Zurück
+        {t('imprint.back')}
       </a>
-      <h1 style={styles.title}>Impressum</h1>
+      <h1 style={styles.title}>{t('imprint.title')}</h1>
 
-      <h2 style={styles.heading}>Angaben gemäß § 5 DDG</h2>
+      <h2 style={styles.heading}>{t('imprint.legalNotice')}</h2>
       <p style={styles.text}>
         Martin Gansler
         <br />
@@ -21,9 +24,9 @@ export function Imprint() {
         Deutschland
       </p>
 
-      <h2 style={styles.heading}>Kontakt</h2>
+      <h2 style={styles.heading}>{t('imprint.contact')}</h2>
       <p style={styles.text}>
-        E-Mail: <a href="mailto:gpx-toolbox@martingansler.de">gpx-toolbox@martingansler.de</a>
+        {t('imprint.email')}: <a href="mailto:gpx-toolbox@martingansler.de">gpx-toolbox@martingansler.de</a>
       </p>
 
       <p style={styles.text}>

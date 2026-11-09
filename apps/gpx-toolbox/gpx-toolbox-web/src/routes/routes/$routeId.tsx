@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 
 import { parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 import {
@@ -41,6 +42,7 @@ function RouteDetailPage() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const isMobile = useIsMobile()
+  const { t, i18n } = useTranslation()
   // Mobile: the map replaces the overview in the sidebar instead of sitting next to it
   const [showMap, setShowMap] = useState(false)
   const [showForm, setShowForm] = useState(false)
@@ -167,15 +169,16 @@ function RouteDetailPage() {
       if (formNotes) body.notes = formNotes
       await createActivityMutation.mutateAsync({ routeId, data: body as never })
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : 'Unbekannter Fehler')
+      setFormError(err instanceof Error ? err.message : t('routeDetail.unknownError'))
     } finally {
       setFormSubmitting(false)
     }
   }
 
-  if (isLoading) return <div style={styles.loading}>Lade...</div>
-  if (isError) return <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>
-  if (!route) return <div style={styles.error}>Route nicht gefunden</div>
+  if (isLoading) return <div style={styles.loading}>{t('routeDetail.loading')}</div>
+  if (isError)
+    return <div style={styles.error}>{error instanceof Error ? error.message : t('routeDetail.unknownError')}</div>
+  if (!route) return <div style={styles.error}>{t('routeDetail.routeNotFound')}</div>
 
   const activities = route.activities ?? []
 
@@ -184,7 +187,7 @@ function RouteDetailPage() {
       <SidebarLayout
         header={
           <Link to={from === 'compare' ? '/compare' : '/routes'} style={styles.backLink}>
-            ← Zurück{from === 'compare' ? ' zum Vergleich' : ' zur Übersicht'}
+            {from === 'compare' ? t('routeDetail.backToCompare') : t('routeDetail.backToOverview')}
           </Link>
         }
       >
@@ -195,7 +198,7 @@ function RouteDetailPage() {
               <button
                 onClick={() => setShowMap((v) => !v)}
                 style={styles.mapToggle}
-                aria-label="Karte anzeigen"
+                aria-label={t('routeDetail.showMap')}
                 aria-pressed={showMap}
               >
                 🗺
@@ -219,19 +222,19 @@ function RouteDetailPage() {
           {route.stats && points.length < 2 && (
             <div style={styles.stats}>
               <div style={styles.statRow}>
-                <span style={styles.statLabel}>Distanz</span>
+                <span style={styles.statLabel}>{t('routeDetail.distance')}</span>
                 <span style={styles.statValue}>
                   {formatDistanceShort((route.stats as { distance?: number } | null)?.distance ?? 0)}
                 </span>
               </div>
               <div style={styles.statRow}>
-                <span style={styles.statLabel}>Höhenmeter ↑</span>
+                <span style={styles.statLabel}>{t('routeDetail.elevationGain')}</span>
                 <span style={styles.statValue}>
                   {formatElevationGain((route.stats as { elevationGain?: number } | null)?.elevationGain ?? 0)}
                 </span>
               </div>
               <div style={styles.statRow}>
-                <span style={styles.statLabel}>Abstieg ↓</span>
+                <span style={styles.statLabel}>{t('routeDetail.elevationLoss')}</span>
                 <span style={styles.statValue}>
                   {formatElevationGain((route.stats as { elevationLoss?: number } | null)?.elevationLoss ?? 0)}
                 </span>
@@ -281,9 +284,11 @@ function RouteDetailPage() {
         {/* Activities */}
         <div style={styles.activitiesSection}>
           <div style={styles.activitiesHeader}>
-            <h3 style={styles.activitiesHeading}>Aktivitäten ({activities.length})</h3>
+            <h3 style={styles.activitiesHeading}>
+              {t('routeDetail.activities')} ({activities.length})
+            </h3>
             <button onClick={() => setShowForm(!showForm)} style={styles.addButton}>
-              + Aktivität
+              {t('routeDetail.addActivity')}
             </button>
           </div>
 
@@ -299,34 +304,34 @@ function RouteDetailPage() {
               />
               <input
                 type="text"
-                placeholder="Titel"
+                placeholder={t('routeDetail.title')}
                 value={formTitle}
                 onChange={(e) => setFormTitle(e.target.value)}
                 style={styles.input}
               />
               <input
                 type="number"
-                placeholder="Dauer (Sek)"
+                placeholder={t('routeDetail.duration')}
                 value={formDuration}
                 onChange={(e) => setFormDuration(e.target.value)}
                 style={styles.input}
               />
               <input
                 type="number"
-                placeholder="Ø HR"
+                placeholder={t('routeDetail.avgHr')}
                 value={formAvgHr}
                 onChange={(e) => setFormAvgHr(e.target.value)}
                 style={styles.input}
               />
               <input
                 type="number"
-                placeholder="Max HR"
+                placeholder={t('routeDetail.maxHr')}
                 value={formMaxHr}
                 onChange={(e) => setFormMaxHr(e.target.value)}
                 style={styles.input}
               />
               <textarea
-                placeholder="Notizen"
+                placeholder={t('routeDetail.notes')}
                 value={formNotes}
                 onChange={(e) => setFormNotes(e.target.value)}
                 style={styles.textarea}
@@ -334,7 +339,7 @@ function RouteDetailPage() {
               {formError && <div style={styles.error}>{formError}</div>}
               <div style={styles.formActions}>
                 <button type="submit" disabled={formSubmitting} style={styles.submitButton}>
-                  {formSubmitting ? 'Speichern...' : 'Speichern'}
+                  {formSubmitting ? t('routeDetail.saving') : t('routeDetail.save')}
                 </button>
                 <button
                   type="button"
@@ -344,7 +349,7 @@ function RouteDetailPage() {
                   }}
                   style={styles.cancelButton}
                 >
-                  Abbrechen
+                  {t('routeDetail.cancel')}
                 </button>
               </div>
             </form>
@@ -365,11 +370,11 @@ function RouteDetailPage() {
           ).map((f) => (
             <div key={f.id} style={styles.activityCard}>
               <div style={styles.activityHeader}>
-                <span style={styles.activityDate}>{new Date(f.riddenAt).toLocaleDateString('de-DE')}</span>
+                <span style={styles.activityDate}>{new Date(f.riddenAt).toLocaleDateString(i18n.language)}</span>
                 <button
                   onClick={() => setPendingDelete({ kind: 'activity', id: f.id })}
                   style={styles.deleteButton}
-                  aria-label="Aktivität löschen"
+                  aria-label={t('routeDetail.deleteActivityLabel')}
                 >
                   🗑
                 </button>
@@ -409,34 +414,40 @@ function RouteDetailPage() {
         <SidebarDivider />
 
         <button onClick={() => setPendingDelete({ kind: 'route' })} style={styles.deleteRouteButton}>
-          🗑 Route löschen
+          {t('routeDetail.deleteRoute')}
         </button>
       </SidebarLayout>
 
       {pendingDelete?.kind === 'route' && (
         <ConfirmDialog
-          title="Route löschen"
+          title={t('routeDetail.deleteRouteTitle')}
           message={
             activities.length === 0
-              ? `„${route.name}“ wird endgültig gelöscht.`
-              : `„${route.name}“ wird endgültig gelöscht, ${activities.length === 1 ? 'die zugehörige Aktivität' : `die ${activities.length} zugehörigen Aktivitäten`} ebenfalls.`
+              ? t('routeDetail.deleteRouteMessage', { name: route.name })
+              : t('routeDetail.deleteRouteWithActivities', {
+                  name: route.name,
+                  activityMsg:
+                    activities.length === 1
+                      ? t('routeDetail.deleteActivityOne')
+                      : t('routeDetail.deleteActivityMany', { count: activities.length }),
+                })
           }
-          confirmLabel="Löschen"
+          confirmLabel={t('routeDetail.delete')}
           danger
           pending={deleteRouteMutation.isPending}
-          error={deleteRouteMutation.isError ? 'Route konnte nicht gelöscht werden.' : null}
+          error={deleteRouteMutation.isError ? t('routeDetail.deleteRouteError') : null}
           onConfirm={() => void handleConfirmDelete()}
           onCancel={closeDeleteDialog}
         />
       )}
       {pendingDelete?.kind === 'activity' && (
         <ConfirmDialog
-          title="Aktivität löschen"
-          message="Die Aktivität wird endgültig gelöscht. Die Route bleibt erhalten."
-          confirmLabel="Löschen"
+          title={t('routeDetail.deleteActivityTitle')}
+          message={t('routeDetail.deleteActivityMessage')}
+          confirmLabel={t('routeDetail.delete')}
           danger
           pending={deleteActivityMutation.isPending}
-          error={deleteActivityMutation.isError ? 'Aktivität konnte nicht gelöscht werden.' : null}
+          error={deleteActivityMutation.isError ? t('routeDetail.deleteActivityError') : null}
           onConfirm={() => void handleConfirmDelete()}
           onCancel={closeDeleteDialog}
         />

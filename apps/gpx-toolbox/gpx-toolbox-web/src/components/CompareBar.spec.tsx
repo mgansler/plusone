@@ -29,7 +29,7 @@ describe('CompareBar', () => {
     render(<CompareBar />)
 
     expect(screen.getByText('Vergleich (1)')).toBeTruthy()
-    expect(screen.getByText('Mindestens eine weitere Route hinzufügen')).toBeTruthy()
+    expect(screen.getByText('Füge Routen hinzu, um sie zu vergleichen.')).toBeTruthy()
     expect(screen.queryByRole('link')).toBeNull()
   })
 
@@ -40,7 +40,7 @@ describe('CompareBar', () => {
     })
     render(<CompareBar />)
 
-    expect(screen.getByRole('link', { name: 'Vergleichen →' }).getAttribute('href')).toBe('/compare')
+    expect(screen.getByRole('link', { name: 'Vergleich →' }).getAttribute('href')).toBe('/compare')
   })
 
   it('passes through from parameter when provided', () => {
@@ -50,7 +50,7 @@ describe('CompareBar', () => {
     })
     render(<CompareBar from="nearby" />)
 
-    expect(screen.getByRole('link', { name: 'Vergleichen →' }).getAttribute('href')).toBe('/compare?from=nearby')
+    expect(screen.getByRole('link', { name: 'Vergleich →' }).getAttribute('href')).toBe('/compare?from=nearby')
   })
 
   it('removes single routes and clears the list', () => {
@@ -60,11 +60,11 @@ describe('CompareBar', () => {
     })
     render(<CompareBar />)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Runde A aus dem Vergleich entfernen' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Runde A Entfernen' }))
     expect(screen.queryByText('Runde A')).toBeNull()
     expect(screen.getByText('Vergleich (1)')).toBeTruthy()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Leeren' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Alle entfernen' }))
     expect(screen.queryByLabelText('Vergleichsliste')).toBeNull()
   })
 })

@@ -1,4 +1,6 @@
+import i18n from 'i18next'
 import { type ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { type QueryKey, useQueryClient } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 
@@ -35,9 +37,9 @@ function errorMessage(error: unknown): string {
     const message =
       typeof data === 'object' && data !== null ? (data as { message?: string | Array<string> }).message : data
     if (message) return Array.isArray(message) ? message.join(', ') : String(message)
-    if (error.response) return `Fehler ${error.response.status}`
+    if (error.response) return i18n.t('stravaImport.error', { status: error.response.status })
   }
-  return error instanceof Error ? error.message : 'Unbekannter Fehler'
+  return error instanceof Error ? error.message : i18n.t('stravaImport.unknownError')
 }
 
 /**
@@ -46,6 +48,7 @@ function errorMessage(error: unknown): string {
  * already exist with exactly the same track are skipped, so the import can be repeated.
  */
 export function StravaExportImportModal({ invalidateQueryKeys, onClose }: StravaExportImportModalProps) {
+  const { t } = useTranslation()
   const [stravaExport, setStravaExport] = useState<StravaExport | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null)
@@ -77,14 +80,14 @@ export function StravaExportImportModal({ invalidateQueryKeys, onClose }: Strava
     try {
       const found = await readStravaExport(files)
       if (!found) {
-        setError('In diesem Ordner gibt es keine routes.csv. Wähle den entpackten Ordner des Strava-Exports.')
+        setError(t('stravaImport.noRoutesCsv'))
       } else if (found.routes.length === 0) {
-        setError('Die routes.csv enthält keine Routen.')
+        setError(t('stravaImport.emptyRoutesCsv'))
       } else {
         setStravaExport(found)
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Der Ordner konnte nicht gelesen werden.')
+      setError(err instanceof Error ? err.message : t('stravaImport.readError'))
     }
   }
 
@@ -108,7 +111,7 @@ export function StravaExportImportModal({ invalidateQueryKeys, onClose }: Strava
       setProgress({ done: index, total: routes.length })
 
       if (!route.file) {
-        outcome.failed.push({ name: route.name, reason: `Die Datei ${route.filename} fehlt im Ordner.` })
+        outcome.failed.push({ name: route.name, reason: t('stravaImport.fileMissing', { filename: route.filename }) })
         continue
       }
 
@@ -124,8 +127,7 @@ export function StravaExportImportModal({ invalidateQueryKeys, onClose }: Strava
         // does not report the flag. Going on would copy every route that already exists.
         if (typeof created.duplicate !== 'boolean') {
           outcome.imported++
-          outcome.abortReason =
-            'Der Server kennt das Überspringen schon vorhandener Routen nicht, vermutlich läuft noch eine alte Version. Starte den Server neu und wiederhole den Import.'
+          outcome.abortReason = t('stravaImport.serverOld')
           break
         }
         if (created.duplicate) outcome.duplicates++
@@ -142,11 +144,11 @@ export function StravaExportImportModal({ invalidateQueryKeys, onClose }: Strava
   }
 
   return (
-    <Modal title="Strava-Export importieren" onClose={onClose} maxWidth={480}>
+    <Modal title={t('stravaImport.title')} onClose={onClose} maxWidth={480}>
       {result ? (
         <div role="status" style={styles.body}>
           <p style={styles.summary}>
-            {result.cancelled || result.abortReason ? 'Der Import wurde abgebrochen.' : 'Der Import ist fertig.'}
+            {result.cancelled || result.abortReason ? t('stravaImport.cancelled') : t('stravaImport.finished')}
           </p>
           {result.abortReason && (
             <div role="alert" style={{ ...modalStyles.error, margin: 0 }}>
@@ -154,37 +156,49 @@ export function StravaExportImportModal({ invalidateQueryKeys, onClose }: Strava
             </div>
           )}
           <ul style={styles.list}>
-            <li>{result.imported} Routen importiert</li>
-            {result.duplicates > 0 && <li>{result.duplicates} übersprungen, weil sie schon vorhanden sind</li>}
-            {result.failed.length > 0 && <li>{result.failed.length} fehlgeschlagen</li>}
+            <li>{t('stravaImport.imported', { count: result.imported })}</li>
+            {result.duplicates > 0 && <li>{t('stravaImport.skipped', { count: result.duplicates })}</li>}
+            {result.failed.length > 0 && <li>{t('stravaImport.failed', { count: result.failed.length })}</li>}
             {(result.cancelled || result.abortReason) && (
-              <li>{result.total - result.imported - result.duplicates - result.failed.length} nicht mehr bearbeitet</li>
+              <li>
+                {t('stravaImport.remaining', {
+                  count: result.total - result.imported - result.duplicates - result.failed.length,
+                })}
+              </li>
             )}
           </ul>
           {result.failed.length > 0 && (
             <ul style={styles.failures}>
               {result.failed.slice(0, MAX_LISTED_FAILURES).map((failure, index) => (
                 <li key={index}>
-                  {failure.name || 'Ohne Namen'}: {failure.reason}
+                  {failure.name || t('stravaImport.noName')}: {failure.reason}
                 </li>
               ))}
               {result.failed.length > MAX_LISTED_FAILURES && (
-                <li>und {result.failed.length - MAX_LISTED_FAILURES} weitere</li>
+                <li>{t('stravaImport.andMore', { count: result.failed.length - MAX_LISTED_FAILURES })}</li>
               )}
             </ul>
           )}
           <div style={modalStyles.actions}>
             <button type="button" onClick={onClose} style={modalStyles.submitButton}>
-              Schließen
+              {t('stravaImport.close')}
             </button>
           </div>
         </div>
       ) : importing ? (
         <div style={styles.body}>
           <p style={styles.summary}>
-            Importiere Route {Math.min(progress.done + 1, progress.total)} von {progress.total} …
+            {t('stravaImport.importing', {
+              current: Math.min(progress.done + 1, progress.total),
+              total: progress.total,
+            })}
           </p>
-          <progress value={progress.done} max={progress.total} aria-label="Fortschritt" style={styles.progress} />
+          <progress
+            value={progress.done}
+            max={progress.total}
+            aria-label={t('stravaImport.progress')}
+            style={styles.progress}
+          />
           <div style={modalStyles.actions}>
             <button
               type="button"
@@ -193,16 +207,17 @@ export function StravaExportImportModal({ invalidateQueryKeys, onClose }: Strava
               }}
               style={modalStyles.cancelButton}
             >
-              Abbrechen
+              {t('stravaImport.cancel')}
             </button>
           </div>
         </div>
       ) : (
         <div style={styles.body}>
           <p style={styles.text}>
-            Wähle den entpackten Ordner deines Strava-Exports. Gelesen werden nur die <code>routes.csv</code> und die
-            GPX-Dateien im Ordner <code>routes</code>. Der Rest des Exports bleibt auf deinem Gerät. Routen, die du
-            schon hast, werden übersprungen, du kannst den Import also wiederholen.
+            {t('stravaImport.description', {
+              routesCsv: '<code>routes.csv</code>',
+              routesFolder: '<code>routes</code>',
+            })}
           </p>
 
           <label style={styles.picker}>
@@ -214,7 +229,7 @@ export function StravaExportImportModal({ invalidateQueryKeys, onClose }: Strava
               onChange={handleFolder}
               style={{ display: 'none' }}
             />
-            {stravaExport ? 'Anderen Ordner wählen' : '📁 Ordner auswählen'}
+            {stravaExport ? t('stravaImport.selectOtherFolder') : t('stravaImport.selectFolder')}
           </label>
 
           {error && (
@@ -225,14 +240,14 @@ export function StravaExportImportModal({ invalidateQueryKeys, onClose }: Strava
 
           {stravaExport && (
             <p role="status" style={styles.text}>
-              {routes.length} Routen gefunden.
-              {missing > 0 && ` Zu ${missing} davon fehlt die GPX-Datei, sie werden nicht importiert.`}
+              {t('stravaImport.routesFound', { count: routes.length })}
+              {missing > 0 && ` ${t('stravaImport.missingGpx', { count: missing })}`}
             </p>
           )}
 
           <div style={modalStyles.actions}>
             <button type="button" onClick={onClose} style={modalStyles.cancelButton}>
-              Abbrechen
+              {t('stravaImport.cancel')}
             </button>
             <button
               type="button"
@@ -243,7 +258,7 @@ export function StravaExportImportModal({ invalidateQueryKeys, onClose }: Strava
                 opacity: stravaExport && missing < routes.length ? 1 : 0.5,
               }}
             >
-              Importieren
+              {t('stravaImport.import')}
             </button>
           </div>
         </div>

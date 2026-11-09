@@ -8,18 +8,18 @@ describe('comparing routes', () => {
 
   it('compares routes selected in the route list', () => {
     cy.findByRole('link', { name: /Hausrunde/ }).within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
-    cy.findByText('Mindestens eine weitere Route hinzufügen').should('be.visible')
+    cy.findByText('Füge Routen hinzu, um sie zu vergleichen.').should('be.visible')
     cy.findByRole('link', { name: /Bergtour/ }).within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
 
     // The selection survives a reload
     cy.reload()
-    cy.findByLabelText('Vergleichsliste').within(() => {
+    cy.findByLabelText('Vergleich').within(() => {
       cy.findByText('Vergleich (2)').should('be.visible')
-      cy.findByRole('link', { name: 'Vergleichen →' }).click()
+      cy.findByRole('link', { name: 'Vergleich →' }).click()
     })
 
     cy.location('pathname').should('eq', '/compare')
-    cy.findByRole('heading', { name: 'Routenvergleich' }).should('be.visible')
+    cy.findByRole('heading', { name: 'Vergleich' }).should('be.visible')
     // The first row holds the column headings
     cy.findAllByRole('row').should('have.length', 3)
     cy.findAllByRole('row').eq(1).should('contain', 'Hausrunde').and('contain', 'Referenz')

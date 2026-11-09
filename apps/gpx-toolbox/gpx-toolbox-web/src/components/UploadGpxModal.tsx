@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent, type DragEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { type QueryKey, useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { Modal, modalStyles } from './Modal'
@@ -24,6 +25,7 @@ export function UploadGpxModal({
   invalidateQueryKeys,
   onClose,
 }: UploadGpxModalProps) {
+  const { t } = useTranslation()
   const [name, setName] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [dragging, setDragging] = useState(false)
@@ -46,7 +48,7 @@ export function UploadGpxModal({
   function handleFile(selectedFile: File) {
     // Shown inline: a second modal on top of this one would be clumsy
     if (!selectedFile.name.toLowerCase().endsWith('.gpx')) {
-      setFileError('Bitte nur GPX-Dateien hochladen.')
+      setFileError(t('upload.gpxOnly'))
       return
     }
     setFileError(null)
@@ -110,7 +112,7 @@ export function UploadGpxModal({
           ) : (
             <div style={styles.dropContent}>
               <span style={styles.dropIcon}>📁</span>
-              <span style={styles.dropText}>GPX-Datei hierher ziehen oder klicken</span>
+              <span style={styles.dropText}>{t('upload.dropFile')}</span>
             </div>
           )}
         </label>
@@ -131,19 +133,20 @@ export function UploadGpxModal({
           required={nameRequired}
         />
 
-        <p style={styles.consent}>
-          Enthält die Datei Herzfrequenzwerte, werden sie gespeichert. Das sind Gesundheitsdaten, mit dem Hochladen
-          willigst du in die Speicherung ein (
-          <a href="/datenschutz" target="_blank" rel="noopener noreferrer" style={styles.consentLink}>
-            Datenschutzerklärung
-          </a>
-          ).
-        </p>
+        <p
+          style={styles.consent}
+          dangerouslySetInnerHTML={{
+            __html: t('upload.consent', {
+              linkStart: `<a href="/datenschutz" target="_blank" rel="noopener noreferrer" style="color: #475569;">`,
+              linkEnd: `</a>`,
+            }),
+          }}
+        />
 
         {/* Actions */}
         <div style={modalStyles.actions}>
           <button type="button" onClick={onClose} style={modalStyles.cancelButton}>
-            Abbrechen
+            {t('upload.cancel')}
           </button>
           <button
             type="submit"
@@ -153,7 +156,7 @@ export function UploadGpxModal({
               opacity: canSubmit ? 1 : 0.5,
             }}
           >
-            {mutation.isPending ? 'Hochladen…' : 'Hochladen'}
+            {mutation.isPending ? t('upload.uploading') : t('upload.upload')}
           </button>
         </div>
       </form>

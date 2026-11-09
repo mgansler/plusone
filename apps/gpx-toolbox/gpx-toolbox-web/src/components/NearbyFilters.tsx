@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import type { PlaceSearch } from '../hooks/usePlaceSearch'
 import type { SearchArea } from '../hooks/useSearchArea'
 
@@ -14,11 +16,13 @@ type NearbyFiltersProps = {
 
 /** Search form of the nearby routes: place, coordinates, GPS position and radius. Takes the width it is given. */
 export function NearbyFilters({ place, area, searching, error }: NearbyFiltersProps) {
+  const { t } = useTranslation()
+
   return (
     <>
       <div style={styles.section}>
         <label htmlFor="nearby-place" style={styles.label}>
-          Ort suchen
+          {t('nearby.searchPlace')}
         </label>
         <div style={styles.placeRow}>
           <input
@@ -30,16 +34,16 @@ export function NearbyFilters({ place, area, searching, error }: NearbyFiltersPr
               if (e.key === 'Enter') void place.search()
             }}
             style={styles.input}
-            placeholder="z. B. Ulm, Schwäbische Alb"
+            placeholder={t('nearby.placePlaceholder')}
           />
           <button onClick={() => void place.search()} style={styles.searchButton} disabled={place.loading}>
-            {place.loading ? '…' : 'Suchen'}
+            {place.loading ? '…' : t('nearby.search')}
           </button>
         </div>
         {place.error && <div style={styles.placeError}>{place.error}</div>}
         {place.candidates.length > 0 && (
           <div style={styles.candidates}>
-            <div style={styles.candidatesTitle}>Welcher Ort ist gemeint?</div>
+            <div style={styles.candidatesTitle}>{t('nearby.whichPlace')}</div>
             {place.candidates.map((candidate) => (
               <button key={candidate.id} onClick={() => place.pick(candidate)} style={styles.candidate}>
                 {candidate.label}
@@ -47,20 +51,20 @@ export function NearbyFilters({ place, area, searching, error }: NearbyFiltersPr
             ))}
           </div>
         )}
-        <div style={styles.hint}>Tipp: auf die Karte klicken oder den Marker ziehen, um den Suchort zu setzen.</div>
+        <div style={styles.hint}>{t('nearby.hint')}</div>
       </div>
 
       <div style={styles.section}>
         <div style={styles.coordinateRow}>
           <CoordinateInput
-            label="Breitengrad (lat)"
+            label={t('nearby.lat')}
             value={area.lat}
             onChange={area.setLat}
             onBlur={area.centerOnCurrent}
             placeholder="48.77"
           />
           <CoordinateInput
-            label="Längengrad (lng)"
+            label={t('nearby.lng')}
             value={area.lng}
             onChange={area.setLng}
             onBlur={area.centerOnCurrent}
@@ -68,13 +72,13 @@ export function NearbyFilters({ place, area, searching, error }: NearbyFiltersPr
           />
         </div>
         <button onClick={area.locateMe} style={styles.gpsButton} disabled={area.usingGps}>
-          {area.usingGps ? 'GPS...' : 'GPS-Position'}
+          {area.usingGps ? t('nearby.gpsLoading') : t('nearby.gpsPosition')}
         </button>
       </div>
 
       <div style={styles.section}>
         <label htmlFor="nearby-radius" style={styles.label}>
-          Radius: {area.radius >= 1 ? `${area.radius} km` : `${area.radius * 1000} m`}
+          {t('nearby.radius')}: {area.radius >= 1 ? `${area.radius} km` : `${area.radius * 1000} m`}
         </label>
         <input
           id="nearby-radius"
@@ -89,8 +93,8 @@ export function NearbyFilters({ place, area, searching, error }: NearbyFiltersPr
       </div>
 
       {error && <div style={styles.error}>{error}</div>}
-      {area.lat == null && <div style={styles.loading}>Standort wird ermittelt...</div>}
-      {searching && <div style={styles.loading}>Suche...</div>}
+      {area.lat == null && <div style={styles.loading}>{t('nearby.locationLoading')}</div>}
+      {searching && <div style={styles.loading}>{t('nearby.searching')}</div>}
     </>
   )
 }

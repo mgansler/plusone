@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { createFileRoute, Link, redirect, useNavigate } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 
 import { calculateAvgSpeed, calculateTotalDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 import {
@@ -38,6 +39,7 @@ type Weather = {
 }
 
 function ActivityDetailPage() {
+  const { t, i18n } = useTranslation()
   const { activityId } = Route.useParams()
   const isMobile = useIsMobile()
   const navigate = useNavigate()
@@ -105,9 +107,10 @@ function ActivityDetailPage() {
     }
   }
 
-  if (isLoading) return <div style={styles.loading}>Lade...</div>
-  if (isError) return <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>
-  if (!activity) return <div style={styles.error}>Aktivität nicht gefunden</div>
+  if (isLoading) return <div style={styles.loading}>{t('activities.loading')}</div>
+  if (isError)
+    return <div style={styles.error}>{error instanceof Error ? error.message : t('activities.unknownError')}</div>
+  if (!activity) return <div style={styles.error}>{t('activities.notFound')}</div>
 
   const parentRoute = activity.route as
     { name?: string; status?: string; stats?: { distance?: number; elevationGain?: number } } | undefined | null
@@ -123,14 +126,14 @@ function ActivityDetailPage() {
       <SidebarLayout
         header={
           <Link to="/activities" style={styles.backLink}>
-            ← Zurück zur Übersicht
+            {t('activities.backToOverview')}
           </Link>
         }
       >
         <div>
           <h2 style={styles.heading}>
             {activity.riddenAt &&
-              new Date(activity.riddenAt).toLocaleDateString('de-DE', {
+              new Date(activity.riddenAt).toLocaleDateString(i18n.language, {
                 weekday: 'long',
                 day: '2-digit',
                 month: 'long',
@@ -156,23 +159,28 @@ function ActivityDetailPage() {
         </div>
 
         <div style={styles.section}>
-          <h3 style={styles.sectionTitle}>Aktivität</h3>
+          <h3 style={styles.sectionTitle}>{t('activities.activity')}</h3>
           <div style={styles.statsGrid}>
-            {distance != null && <Stat label="Distanz" value={formatDistance(distance)} />}
+            {distance != null && <Stat label={t('activities.distance')} value={formatDistance(distance)} />}
             {points.length < 2 && parentRoute?.stats?.elevationGain != null && (
-              <Stat label="Höhenmeter ↑" value={`${Math.round(parentRoute.stats.elevationGain)} hm`} />
+              <Stat label={t('activities.elevationGain')} value={`${Math.round(parentRoute.stats.elevationGain)} hm`} />
             )}
-            {duration != null && <Stat label="Dauer" value={formatDuration(duration)} />}
+            {duration != null && <Stat label={t('activities.duration')} value={formatDuration(duration)} />}
             {duration != null && distance != null && duration > 0 && (
-              <Stat label="Ø Geschw." value={`${calculateAvgSpeed(distance, duration)} km/h`} />
+              <Stat label={t('activities.avgSpeed')} value={`${calculateAvgSpeed(distance, duration)} km/h`} />
             )}
-            {avgHr != null && <Stat label="Ø Herzfrequenz" value={`${avgHr} bpm`} />}
-            {maxHr != null && <Stat label="Max Herzfrequenz" value={`${maxHr} bpm`} />}
+            {avgHr != null && <Stat label={t('activities.avgHeartRate')} value={`${avgHr} bpm`} />}
+            {maxHr != null && <Stat label={t('activities.maxHeartRate')} value={`${maxHr} bpm`} />}
             {weather?.temperature2m?.min != null && (
-              <Stat label="Temperatur" value={`${weather.temperature2m.min}° – ${weather.temperature2m.max}°`} />
+              <Stat
+                label={t('activities.temperature')}
+                value={`${weather.temperature2m.min}° – ${weather.temperature2m.max}°`}
+              />
             )}
-            {weather?.rain?.sum != null && <Stat label="Regen" value={`${weather.rain.sum} mm`} />}
-            {weather?.windGusts?.max != null && <Stat label="Windböen" value={`${weather.windGusts.max} km/h`} />}
+            {weather?.rain?.sum != null && <Stat label={t('activities.rain')} value={`${weather.rain.sum} mm`} />}
+            {weather?.windGusts?.max != null && (
+              <Stat label={t('activities.windGusts')} value={`${weather.windGusts.max} km/h`} />
+            )}
           </div>
           {activity.notes && <p style={styles.notes}>{activity.notes as unknown as string}</p>}
         </div>
@@ -193,18 +201,27 @@ function ActivityDetailPage() {
         <SidebarDivider />
 
         <button onClick={() => setConfirmDelete(true)} style={styles.deleteButton}>
-          🗑 Aktivität löschen
+          {t('activities.deleteActivity')}
         </button>
       </SidebarLayout>
 
       {confirmDelete && (
         <ConfirmDialog
-          title="Aktivität löschen"
-          message={`${activity.title ? `„${activity.title}“` : 'Die Aktivität'} wird endgültig gelöscht.${parentRoute?.name ? ` Die Route „${parentRoute.name}“ bleibt erhalten.` : ''}`}
-          confirmLabel="Löschen"
+          title={t('activities.deleteActivityTitle')}
+          message={
+            parentRoute?.name
+              ? t('activities.deleteActivityMessageWithRoute', {
+                  title: activity.title ? `„${activity.title}“` : t('activities.activity'),
+                  routeName: parentRoute.name,
+                })
+              : t('activities.deleteActivityMessage', {
+                  title: activity.title ? `„${activity.title}“` : t('activities.activity'),
+                })
+          }
+          confirmLabel={t('activities.delete')}
           danger
           pending={deleteActivityMutation.isPending}
-          error={deleteActivityMutation.isError ? 'Aktivität konnte nicht gelöscht werden.' : null}
+          error={deleteActivityMutation.isError ? t('activities.deleteError') : null}
           onConfirm={() => void handleDeleteActivity()}
           onCancel={() => {
             setConfirmDelete(false)

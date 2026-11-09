@@ -1,6 +1,7 @@
 import { type RefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useQueries } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import L from 'leaflet'
 
 import { parseGpx } from '@plusone/gpx-toolbox-utils'
@@ -49,6 +50,7 @@ function formatMeters(meters: number): string {
 }
 
 function ComparePage() {
+  const { t } = useTranslation()
   const { from } = Route.useSearch()
   const isMobile = useIsMobile()
   const { items, remove, makeReference, clear } = useCompareList()
@@ -117,7 +119,7 @@ function ComparePage() {
 
   const backLink = (
     <Link to={from === 'nearby' ? '/nearby' : '/routes'} style={styles.backLink}>
-      {isMobile ? '← Zurück' : `← Zurück${from === 'nearby' ? ' zur Suche' : ' zur Übersicht'}`}
+      {isMobile ? t('compare.back') : from === 'nearby' ? t('compare.backToSearch') : t('compare.backToOverview')}
     </Link>
   )
 
@@ -128,10 +130,10 @@ function ComparePage() {
       {isMobile && (
         <div style={styles.mobileHeader}>
           {backLink}
-          <span style={styles.mobileTitle}>Vergleich</span>
+          <span style={styles.mobileTitle}>{t('compare.title')}</span>
           {rows.length > 0 ? (
             <button type="button" onClick={clear} style={styles.textButton}>
-              Leeren
+              {t('compare.clearAll')}
             </button>
           ) : (
             <span />
@@ -141,19 +143,22 @@ function ComparePage() {
 
       {!isMobile && (
         <SidebarLayout header={backLink}>
-          <h2 style={styles.heading}>Routenvergleich</h2>
+          <h2 style={styles.heading}>{t('compare.title')}</h2>
 
           {items.length < 2 ? (
             <p style={styles.hint}>
-              Füge mindestens zwei Routen über „+ Vergleich" in der{' '}
-              <Link to="/routes" style={styles.link}>
-                Routenliste
-              </Link>{' '}
-              oder unter{' '}
-              <Link to="/nearby" style={styles.link}>
-                In der Nähe
-              </Link>{' '}
-              hinzu.
+              {t('compare.noRoutesHint', {
+                routesLink: (
+                  <Link to="/routes" style={styles.link}>
+                    {t('routes.title')}
+                  </Link>
+                ),
+                nearbyLink: (
+                  <Link to="/nearby" style={styles.link}>
+                    {t('nav.nearby')}
+                  </Link>
+                ),
+              })}
             </p>
           ) : null}
 
@@ -171,7 +176,7 @@ function ComparePage() {
             <>
               <SidebarDivider />
               <button type="button" onClick={clear} style={styles.clearButton}>
-                Vergleichsliste leeren
+                {t('compare.clearList')}
               </button>
             </>
           )}
@@ -187,9 +192,7 @@ function ComparePage() {
             highlightedId={highlightedId}
             onHighlight={setHighlightedId}
           />
-          {isMobile && items.length < 2 && (
-            <div style={styles.mobileHint}>Füge mindestens zwei Routen über „+ Vergleich" hinzu.</div>
-          )}
+          {isMobile && items.length < 2 && <div style={styles.mobileHint}>{t('compare.noRoutesHintMobile')}</div>}
         </div>
 
         {!isMobile && (
@@ -198,7 +201,7 @@ function ComparePage() {
               <CompareElevationProfile tracks={tracks} onHover={setHover} />
             ) : (
               <div style={styles.profileHint}>
-                {rows.some((r) => r.isLoading) ? 'Lade Höhenprofile…' : 'Keine Routen zum Anzeigen'}
+                {rows.some((r) => r.isLoading) ? t('compare.loadingProfile') : t('compare.noRoutesToDisplay')}
               </div>
             )}
           </div>
@@ -213,7 +216,7 @@ function ComparePage() {
               side="top"
               open={listOpen}
               onClose={() => setListOpen(false)}
-              label="Routenliste"
+              label={t('compare.routeList')}
               backdrop={false}
               style={{ top: TOPBAR_HEIGHT + MOBILE_HEADER_HEIGHT }}
               bodyStyle={styles.darkSheet}
@@ -224,7 +227,7 @@ function ComparePage() {
                   expanded={listOpen}
                   arrow={listOpen ? '▲' : '▼'}
                 >
-                  Routen
+                  {t('compare.routes')}
                 </SheetTab>
               }
             >
@@ -244,7 +247,7 @@ function ComparePage() {
               side="bottom"
               open={profileOpen}
               onClose={() => setProfileOpen(false)}
-              label="Höhenprofil"
+              label={t('compare.profile')}
               backdrop={false}
               style={{ height: '30vh' }}
               bodyStyle={styles.darkSheet}
@@ -256,7 +259,7 @@ function ComparePage() {
                   arrow={profileOpen ? '▼' : '▲'}
                   wide
                 >
-                  Höhenprofil
+                  {t('compare.profile')}
                 </SheetTab>
               }
             >
@@ -320,6 +323,7 @@ function CompareTable({
   /** Column headings; the narrow mobile list leaves them out */
   showHead?: boolean
 }) {
+  const { t } = useTranslation()
   const reference = rows[0]
 
   return (
@@ -327,9 +331,9 @@ function CompareTable({
       {showHead && (
         <thead>
           <tr>
-            <th style={{ ...styles.th, textAlign: 'left' }}>Route</th>
-            <th style={styles.th}>Strecke</th>
-            <th style={styles.th}>Höhenmeter</th>
+            <th style={{ ...styles.th, textAlign: 'left' }}>{t('compare.route')}</th>
+            <th style={styles.th}>{t('compare.strecke')}</th>
+            <th style={styles.th}>{t('compare.hohenmeter')}</th>
           </tr>
         </thead>
       )}
@@ -358,22 +362,22 @@ function CompareTable({
                 </div>
                 <div style={styles.rowActions}>
                   {isReference ? (
-                    <span style={styles.referenceBadge}>Referenz</span>
+                    <span style={styles.referenceBadge}>{t('compare.reference')}</span>
                   ) : (
                     <button type="button" onClick={() => onMakeReference(row.item.id)} style={styles.textButton}>
-                      Als Referenz
+                      {t('compare.setReference')}
                     </button>
                   )}
                   <button
                     type="button"
                     onClick={() => onRemove(row.item.id)}
                     style={styles.textButton}
-                    aria-label={`${row.name} aus dem Vergleich entfernen`}
+                    aria-label={t('compare.removeFromCompare', { name: row.name })}
                   >
-                    Entfernen
+                    {t('compare.remove')}
                   </button>
                 </div>
-                {row.isError && <div style={styles.error}>Route nicht gefunden</div>}
+                {row.isError && <div style={styles.error}>{t('compare.routeNotFound')}</div>}
               </td>
               <StatCell
                 value={row.distance}

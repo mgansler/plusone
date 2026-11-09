@@ -1,3 +1,5 @@
+import i18n from 'i18next'
+
 /** Share a GPX file using the Web Share API (mobile only). Falls back to clipboard copy on HTTP/unsupported browsers. */
 export async function shareGpx(routeId: string, routeName: string): Promise<void> {
   const token = localStorage.getItem('gpx-toolbox-jwt')
@@ -26,7 +28,7 @@ export async function shareGpx(routeId: string, routeName: string): Promise<void
     // Fallback: copy GPX text to clipboard (works over HTTP on iOS Safari)
     try {
       await navigator.clipboard.writeText(gpxText)
-      alert(`GPX-Text für „${routeName}" wurde in die Zwischenablage kopiert. Füge ihn in eine andere App ein.`)
+      alert(i18n.t('share.copied', { name: routeName }))
     } catch {
       // If clipboard API is also unavailable, offer download as last resort
       const blob = new Blob([gpxText], { type: 'application/gpx+xml' })

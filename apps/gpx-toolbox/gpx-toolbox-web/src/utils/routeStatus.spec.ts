@@ -1,8 +1,25 @@
-import { describe, expect, it } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
+import i18n from 'i18next'
 
 import { routeStatusColor, routeStatusLabel } from './routeStatus'
 
+const deTranslations = {
+  routeStatus: {
+    planned: 'Geplant',
+    ridden: 'Gefahren',
+    foundOnline: 'Online gefunden',
+  },
+}
+
 describe('routeStatus', () => {
+  beforeAll(async () => {
+    await i18n.init({
+      lng: 'de',
+      fallbackLng: 'de',
+      resources: { de: { translation: deTranslations } },
+    })
+  })
+
   it('labels all route statuses of the API', () => {
     expect(routeStatusLabel('planned')).toBe('Geplant')
     expect(routeStatusLabel('ridden')).toBe('Gefahren')

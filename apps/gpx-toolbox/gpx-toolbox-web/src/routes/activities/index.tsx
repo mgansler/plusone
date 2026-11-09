@@ -1,5 +1,6 @@
 import { type RefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import L from 'leaflet'
 
 import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
@@ -29,6 +30,7 @@ export const Route = createFileRoute('/activities/')({
 
 function ActivitiesPage() {
   const isMobile = useIsMobile()
+  const { t, i18n } = useTranslation()
   const mapRef: RefObject<L.Map | null> = useRef(null)
   const [page, setPage] = useState(1)
   const [dateFrom, setDateFrom] = useState('')
@@ -155,7 +157,7 @@ function ActivitiesPage() {
   const filterControls = (
     <>
       <label style={styles.filterField}>
-        <span style={styles.filterLabel}>Von</span>
+        <span style={styles.filterLabel}>{t('activities.dateFrom')}</span>
         <input
           type="date"
           value={dateFrom}
@@ -167,7 +169,7 @@ function ActivitiesPage() {
         />
       </label>
       <label style={styles.filterField}>
-        <span style={styles.filterLabel}>Bis</span>
+        <span style={styles.filterLabel}>{t('activities.dateTo')}</span>
         <input
           type="date"
           value={dateTo}
@@ -179,7 +181,7 @@ function ActivitiesPage() {
         />
       </label>
       <RangeFilter
-        label="Distanz"
+        label={t('activities.distance')}
         unit="km"
         value={distanceKm}
         onChange={(range) => {
@@ -188,7 +190,7 @@ function ActivitiesPage() {
         }}
       />
       <RangeFilter
-        label="Höhenmeter"
+        label={t('activities.elevation')}
         unit="hm"
         value={elevationM}
         onChange={(range) => {
@@ -207,14 +209,14 @@ function ActivitiesPage() {
           }}
           style={styles.resetButton}
         >
-          Filter zurücksetzen
+          {t('activities.filters')} zurücksetzen
         </button>
       )}
 
       <div style={styles.filterSpacer} />
 
       <label style={styles.filterField}>
-        <span style={styles.filterLabel}>Sortieren nach</span>
+        <span style={styles.filterLabel}>{t('activities.filters')}</span>
         <select
           value={sortBy}
           onChange={(e) => {
@@ -223,7 +225,7 @@ function ActivitiesPage() {
           }}
           style={styles.input}
         >
-          {Object.entries(sortLabels).map(([value, label]) => (
+          {Object.entries(getSortLabels(t)).map(([value, label]) => (
             <option key={value} value={value}>
               {label}
             </option>
@@ -236,9 +238,9 @@ function ActivitiesPage() {
           setPage(1)
         }}
         style={styles.orderButton}
-        title={order === 'DESC' ? 'Absteigend' : 'Aufsteigend'}
+        title={t('activities.orderDesc')}
       >
-        {order === 'DESC' ? '↓ Absteigend' : '↑ Aufsteigend'}
+        {order === 'DESC' ? `↓ ${t('activities.orderDesc')}` : `↑ ${t('activities.orderAsc')}`}
       </button>
     </>
   )
@@ -254,7 +256,8 @@ function ActivitiesPage() {
             style={styles.orderButton}
             aria-expanded={filtersOpen}
           >
-            Filter &amp; Sortierung{activeFilterCount > 0 && ` (${activeFilterCount})`}
+            {t('activities.filterAndSort')}
+            {activeFilterCount > 0 && ` (${activeFilterCount})`}
           </button>
         </div>
       ) : (
@@ -264,10 +267,12 @@ function ActivitiesPage() {
       <div style={styles.container}>
         <div style={isMobile ? { ...styles.sidebar, ...styles.sidebarMobile } : styles.sidebar}>
           <div style={styles.headingRow}>
-            <h2 style={styles.heading}>Aktivitäten ({total})</h2>
+            <h2 style={styles.heading}>
+              {t('activities.title')} ({total})
+            </h2>
             <div style={styles.headingActions}>
               <button onClick={() => setShowUploadModal(true)} style={actionButtonStyle}>
-                📤 Upload
+                {t('activities.upload')}
               </button>
             </div>
           </div>
@@ -276,23 +281,25 @@ function ActivitiesPage() {
           <div style={styles.summary}>
             <div style={styles.summaryItem}>
               <span style={styles.summaryValue}>{formatDurationShort(totalDuration)}</span>
-              <span style={styles.summaryLabel}>Gesamtdauer</span>
+              <span style={styles.summaryLabel}>{t('activities.duration')}</span>
             </div>
             <div style={styles.summaryItem}>
               <span style={styles.summaryValue}>{formatDistanceShort(totalDistance)}</span>
-              <span style={styles.summaryLabel}>Distanz</span>
+              <span style={styles.summaryLabel}>{t('activities.distance')}</span>
             </div>
             <div style={styles.summaryItem}>
               <span style={styles.summaryValue}>{formatElevationGain(totalElevation)}</span>
-              <span style={styles.summaryLabel}>Höhenmeter</span>
+              <span style={styles.summaryLabel}>{t('activities.elevation')}</span>
             </div>
           </div>
 
           {/* Error */}
-          {isError && <div style={styles.error}>{error instanceof Error ? error.message : 'Unbekannter Fehler'}</div>}
+          {isError && (
+            <div style={styles.error}>{error instanceof Error ? error.message : t('activities.unknownError')}</div>
+          )}
 
           {/* Loading */}
-          {isLoading && <div style={styles.loading}>Lade...</div>}
+          {isLoading && <div style={styles.loading}>{t('activities.loading')}</div>}
 
           {/* Activities */}
           {activities.length > 0 && (
@@ -315,7 +322,7 @@ function ActivitiesPage() {
                     {/* Line 1: date, title, route status */}
                     <div style={styles.activityLine}>
                       <span style={styles.activityDate}>
-                        {new Date(f.riddenAt).toLocaleDateString('de-DE', {
+                        {new Date(f.riddenAt).toLocaleDateString(i18n.language, {
                           day: '2-digit',
                           month: '2-digit',
                           year: 'numeric',
@@ -392,13 +399,13 @@ function ActivitiesPage() {
           side="bottom"
           open={filtersOpen}
           onClose={() => setFiltersOpen(false)}
-          label="Filter und Sortierung"
+          label={t('activities.filtersAndSorting')}
           style={{ height: 'auto', maxHeight: '80vh', display: 'flex', flexDirection: 'column' }}
         >
           <div style={styles.sheetFilters}>
             {filterControls}
             <button type="button" onClick={() => setFiltersOpen(false)} style={styles.doneButton}>
-              Fertig
+              {t('activities.done')}
             </button>
           </div>
         </Sheet>
@@ -406,9 +413,9 @@ function ActivitiesPage() {
 
       {showUploadModal && (
         <UploadGpxModal
-          heading="Aktivität hochladen"
+          heading={t('activities.uploadActivity')}
           upload={(file, name) => importGpxActivity({ file, title: name })}
-          namePlaceholder="Titel (optional, sonst aus GPX)"
+          namePlaceholder={t('activities.uploadPlaceholder')}
           nameRequired={false}
           invalidateQueryKeys={[getListAllActivitiesQueryKey(), getListRoutesQueryKey()]}
           onClose={() => setShowUploadModal(false)}
@@ -491,12 +498,14 @@ function TrackClickHandler({
 
 type RouteStats = { distance?: number; elevationGain?: number }
 
-const sortLabels: Partial<Record<ListAllActivitiesSortBy, string>> = {
-  [ListAllActivitiesSortBy.riddenAt]: 'Datum',
-  [ListAllActivitiesSortBy.duration]: 'Dauer',
-  [ListAllActivitiesSortBy.distance]: 'Distanz',
-  [ListAllActivitiesSortBy.elevationGain]: 'Höhenmeter',
-  [ListAllActivitiesSortBy.avgHr]: 'Ø Herzfrequenz',
+function getSortLabels(t: (key: string) => string): Partial<Record<ListAllActivitiesSortBy, string>> {
+  return {
+    [ListAllActivitiesSortBy.riddenAt]: t('activities.dateFrom'),
+    [ListAllActivitiesSortBy.duration]: t('activities.duration'),
+    [ListAllActivitiesSortBy.distance]: t('activities.distance'),
+    [ListAllActivitiesSortBy.elevationGain]: t('activities.elevation'),
+    [ListAllActivitiesSortBy.avgHr]: t('activities.avgHr'),
+  }
 }
 
 function RangeFilter({
