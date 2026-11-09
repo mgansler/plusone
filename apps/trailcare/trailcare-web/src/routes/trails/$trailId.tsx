@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 
 import { useGetCareEntries, useGetTrail } from '@plusone/trailcare-api-client'
 
@@ -19,14 +19,15 @@ export const Route = createFileRoute('/trails/$trailId')({
 function TrailPage() {
   const trailId = Number(Route.useParams().trailId)
   const { isAdmin } = useSession()
+  const router = useRouter()
   const { data: trail, error } = useGetTrail(trailId)
   const { data: entries } = useGetCareEntries(trailId)
   const { sweepNow, isPending } = useRecordCare(trailId, trail?.name ?? '')
 
   const back = (
-    <Link to="/" className="back-link" aria-label="Zurück zur Übersicht">
+    <button type="button" className="back-link" aria-label="Zurück zur Übersicht" onClick={() => router.history.back()}>
       <BackIcon className="back-icon" />
-    </Link>
+    </button>
   )
 
   return (

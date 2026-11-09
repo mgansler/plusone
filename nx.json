@@ -105,7 +105,8 @@
           "plugin": "@nx/cypress/plugin"
         },
         "options": {
-          "config-file": "./cypress.config.ts"
+          "config-file": "./cypress.config.ts",
+          "browser": "chrome"
         }
       }
     ],

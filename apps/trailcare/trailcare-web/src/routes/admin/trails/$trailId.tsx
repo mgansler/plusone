@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate, useRouter } from '@tanstack/react-router'
 import type { FormEvent } from 'react'
 import { useEffect, useState } from 'react'
 
@@ -17,11 +17,17 @@ export const Route = createFileRoute('/admin/trails/$trailId')({
 function EditTrailPage() {
   const trailId = Number(Route.useParams().trailId)
   const { data: trail } = useGetTrail(trailId)
+  const router = useRouter()
 
   const back = (
-    <Link to="/admin" className="back-link" aria-label="Zurück zur Verwaltung">
+    <button
+      type="button"
+      className="back-link"
+      aria-label="Zurück zur Verwaltung"
+      onClick={() => router.history.back()}
+    >
       <BackIcon className="back-icon" />
-    </Link>
+    </button>
   )
 
   return (

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useMemo, useState } from 'react'
 
 import { useGetTrailAreas } from '@plusone/trailcare-api-client'
@@ -22,11 +22,12 @@ function AdminPage() {
   const result = useMemo(() => filterTrailAreas(areas ?? [], query), [areas, query])
   const { isCollapsed, toggle } = useCollapsedAreas('trailcare-admin-collapsed-areas')
   const isSearching = query.trim().length > 0
+  const router = useRouter()
 
   const back = (
-    <Link to="/" className="back-link" aria-label="Zurück zur Übersicht">
+    <button type="button" className="back-link" aria-label="Zurück zur Übersicht" onClick={() => router.history.back()}>
       <BackIcon className="back-icon" />
-    </Link>
+    </button>
   )
 
   return (

@@ -88,7 +88,7 @@ describe('trail care', () => {
     // A fallen tree does not count as sweeping
     cy.findByText('Vor 3 Tagen gefegt').should('be.visible')
 
-    cy.findByRole('link', { name: 'Zurück zur Übersicht' }).click()
+    cy.findByRole('button', { name: 'Zurück zur Übersicht' }).click()
     trailRow('Saubuckel').should('contain.text', 'Gestern: Baum im Trail')
   })
 

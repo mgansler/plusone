@@ -9,7 +9,7 @@ import { routeTree } from './routeTree.gen'
 import './styles.css'
 
 const queryClient = createQueryClient()
-const router = createRouter({ routeTree, context: { queryClient } })
+const router = createRouter({ routeTree, context: { queryClient }, scrollRestoration: true })
 
 declare module '@tanstack/react-router' {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- module augmentation needs an interface
