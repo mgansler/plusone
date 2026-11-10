@@ -19,11 +19,11 @@ export async function shareGpx(routeId: string, routeName: string): Promise<void
     .replace(/\s+/g, ' ')
     .trim()}.gpx`
   const file = new File([gpxText], fileName, {
-    type: 'application/gpx+xml',
+    type: 'application/xml',
   })
 
   if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-    await navigator.share({ files: [file], title: routeName })
+    await navigator.share({ files: [file] })
   } else {
     // Fallback: copy GPX text to clipboard (works over HTTP on iOS Safari)
     try {
