@@ -573,7 +573,6 @@ export function useGetHealthStatus<TData = Awaited<ReturnType<typeof getHealthSt
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetHealthStatus<TData = Awaited<ReturnType<typeof getHealthStatus>>, TError = GetHealthStatus503>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -710,7 +709,6 @@ export function useListRoutes<TData = Awaited<ReturnType<typeof listRoutes>>, TE
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listRoutes>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useListRoutes<TData = Awaited<ReturnType<typeof listRoutes>>, TError = unknown>(
   params?: ListRoutesParams,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listRoutes>>, TError, TData>> },
@@ -788,7 +786,6 @@ export function useExportRoute<TData = Awaited<ReturnType<typeof exportRoute>>, 
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof exportRoute>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useExportRoute<TData = Awaited<ReturnType<typeof exportRoute>>, TError = unknown>(
   id: string,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof exportRoute>>, TError, TData>> },
@@ -867,7 +864,6 @@ export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearby
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
   params: FindNearbyRoutesParams,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> },
@@ -937,7 +933,6 @@ export function useGetRoute<TData = Awaited<ReturnType<typeof getRoute>>, TError
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoute>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetRoute<TData = Awaited<ReturnType<typeof getRoute>>, TError = unknown>(
   id: string,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoute>>, TError, TData>> },
@@ -1113,7 +1108,6 @@ export function useGoogleAuthRedirect<TData = Awaited<ReturnType<typeof googleAu
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof googleAuthRedirect>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGoogleAuthRedirect<TData = Awaited<ReturnType<typeof googleAuthRedirect>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof googleAuthRedirect>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -1191,7 +1185,6 @@ export function useGoogleCallback<TData = Awaited<ReturnType<typeof googleCallba
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof googleCallback>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGoogleCallback<TData = Awaited<ReturnType<typeof googleCallback>>, TError = unknown>(
   params?: GoogleCallbackParams,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof googleCallback>>, TError, TData>> },
@@ -1265,7 +1258,6 @@ export function useAuthStatus<TData = Awaited<ReturnType<typeof authStatus>>, TE
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof authStatus>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useAuthStatus<TData = Awaited<ReturnType<typeof authStatus>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof authStatus>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -1429,7 +1421,6 @@ export function useListRouteActivities<TData = Awaited<ReturnType<typeof listRou
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listRouteActivities>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useListRouteActivities<TData = Awaited<ReturnType<typeof listRouteActivities>>, TError = unknown>(
   routeId: string,
   params?: ListRouteActivitiesParams,
@@ -1588,7 +1579,6 @@ export function useGetRouteActivity<TData = Awaited<ReturnType<typeof getRouteAc
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteActivity>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetRouteActivity<TData = Awaited<ReturnType<typeof getRouteActivity>>, TError = unknown>(
   routeId: string,
   id: string,
@@ -1840,7 +1830,6 @@ export function useGetRouteActivityWeather<
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteActivityWeather>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetRouteActivityWeather<
   TData = Awaited<ReturnType<typeof getRouteActivityWeather>>,
   TError = unknown,
@@ -1927,7 +1916,6 @@ export function useListAllActivities<TData = Awaited<ReturnType<typeof listAllAc
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listAllActivities>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useListAllActivities<TData = Awaited<ReturnType<typeof listAllActivities>>, TError = unknown>(
   params?: ListAllActivitiesParams,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listAllActivities>>, TError, TData>> },
@@ -2005,7 +1993,6 @@ export function useGetActivity<TData = Awaited<ReturnType<typeof getActivity>>, 
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActivity>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetActivity<TData = Awaited<ReturnType<typeof getActivity>>, TError = unknown>(
   id: string,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActivity>>, TError, TData>> },

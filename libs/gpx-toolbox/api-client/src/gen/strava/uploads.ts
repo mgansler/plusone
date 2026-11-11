@@ -18,31 +18,37 @@ export const createUpload = (
   createUploadBody?: CreateUploadBody,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  const formData = new FormData()
-  if (createUploadBody?.file !== undefined) {
-    formData.append(`file`, createUploadBody.file)
-  }
-  if (createUploadBody?.name !== undefined) {
-    formData.append(`name`, createUploadBody.name)
-  }
-  if (createUploadBody?.description !== undefined) {
-    formData.append(`description`, createUploadBody.description)
-  }
-  if (createUploadBody?.trainer !== undefined) {
-    formData.append(`trainer`, createUploadBody.trainer)
-  }
-  if (createUploadBody?.commute !== undefined) {
-    formData.append(`commute`, createUploadBody.commute)
-  }
-  if (createUploadBody?.tags !== undefined) {
-    formData.append(`tags`, createUploadBody.tags)
-  }
-  if (createUploadBody?.data_type !== undefined) {
-    formData.append(`data_type`, createUploadBody.data_type)
-  }
-  if (createUploadBody?.external_id !== undefined) {
-    formData.append(`external_id`, createUploadBody.external_id)
-  }
+  const formData =
+    createUploadBody === undefined
+      ? undefined
+      : (() => {
+          const formData = new FormData()
+          if (createUploadBody?.file !== undefined) {
+            formData.append(`file`, createUploadBody.file)
+          }
+          if (createUploadBody?.name !== undefined) {
+            formData.append(`name`, createUploadBody.name)
+          }
+          if (createUploadBody?.description !== undefined) {
+            formData.append(`description`, createUploadBody.description)
+          }
+          if (createUploadBody?.trainer !== undefined) {
+            formData.append(`trainer`, createUploadBody.trainer)
+          }
+          if (createUploadBody?.commute !== undefined) {
+            formData.append(`commute`, createUploadBody.commute)
+          }
+          if (createUploadBody?.tags !== undefined) {
+            formData.append(`tags`, createUploadBody.tags)
+          }
+          if (createUploadBody?.data_type !== undefined) {
+            formData.append(`data_type`, createUploadBody.data_type)
+          }
+          if (createUploadBody?.external_id !== undefined) {
+            formData.append(`external_id`, createUploadBody.external_id)
+          }
+          return formData
+        })()
 
   return axios.default.post(`/uploads`, formData, options)
 }

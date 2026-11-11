@@ -373,7 +373,6 @@ export function useGetAdminStats<TData = Awaited<ReturnType<typeof getAdminStats
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetAdminStats<TData = Awaited<ReturnType<typeof getAdminStats>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminStats>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -483,7 +482,6 @@ export function useLogout<TData = Awaited<ReturnType<typeof logout>>, TError = u
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useLogout<TData = Awaited<ReturnType<typeof logout>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof logout>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -593,7 +591,6 @@ export function useProfile<TData = Awaited<ReturnType<typeof profile>>, TError =
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useProfile<TData = Awaited<ReturnType<typeof profile>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof profile>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -658,7 +655,6 @@ export function useRefresh<TData = Awaited<ReturnType<typeof refresh>>, TError =
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useRefresh<TData = Awaited<ReturnType<typeof refresh>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof refresh>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -969,7 +965,6 @@ export function useFindArticlesInfinite<
   },
   queryClient?: QueryClient,
 ): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useFindArticlesInfinite<
   TData = InfiniteData<Awaited<ReturnType<typeof findArticles>>, FindArticlesParams['cursor']>,
   TError = unknown,
@@ -1052,7 +1047,6 @@ export function useFindArticles<TData = Awaited<ReturnType<typeof findArticles>>
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findArticles>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useFindArticles<TData = Awaited<ReturnType<typeof findArticles>>, TError = unknown>(
   params?: FindArticlesParams,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findArticles>>, TError, TData>> },
@@ -1130,7 +1124,6 @@ export function useRecentlyReadArticles<TData = Awaited<ReturnType<typeof recent
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof recentlyReadArticles>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useRecentlyReadArticles<TData = Awaited<ReturnType<typeof recentlyReadArticles>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof recentlyReadArticles>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -1195,7 +1188,6 @@ export function useBootInfo<TData = Awaited<ReturnType<typeof bootInfo>>, TError
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof bootInfo>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useBootInfo<TData = Awaited<ReturnType<typeof bootInfo>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof bootInfo>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -1316,7 +1308,6 @@ export function useGetUserFeeds<TData = Awaited<ReturnType<typeof getUserFeeds>>
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserFeeds>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetUserFeeds<TData = Awaited<ReturnType<typeof getUserFeeds>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserFeeds>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -1497,7 +1488,6 @@ export function useGetFeedSettings<TData = Awaited<ReturnType<typeof getFeedSett
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFeedSettings>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetFeedSettings<TData = Awaited<ReturnType<typeof getFeedSettings>>, TError = unknown>(
   id: string,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFeedSettings>>, TError, TData>> },
@@ -1647,7 +1637,6 @@ export function useGetFeedTags<TData = Awaited<ReturnType<typeof getFeedTags>>, 
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFeedTags>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetFeedTags<TData = Awaited<ReturnType<typeof getFeedTags>>, TError = unknown>(
   id: string,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFeedTags>>, TError, TData>> },
@@ -1803,7 +1792,6 @@ export function useGetTags<TData = Awaited<ReturnType<typeof getTags>>, TError =
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTags>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetTags<TData = Awaited<ReturnType<typeof getTags>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTags>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -1963,7 +1951,6 @@ export function useGetHealthStatus<TData = Awaited<ReturnType<typeof getHealthSt
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetHealthStatus<TData = Awaited<ReturnType<typeof getHealthStatus>>, TError = GetHealthStatus503>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -2062,7 +2049,6 @@ export function useGetUsers<TData = Awaited<ReturnType<typeof getUsers>>, TError
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsers>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetUsers<TData = Awaited<ReturnType<typeof getUsers>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsers>>, TError, TData>> },
   queryClient?: QueryClient,

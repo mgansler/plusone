@@ -653,7 +653,6 @@ export function useGetTrailsOfArea<TData = Awaited<ReturnType<typeof getTrailsOf
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailsOfArea>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetTrailsOfArea<TData = Awaited<ReturnType<typeof getTrailsOfArea>>, TError = unknown>(
   trailAreaId: number,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailsOfArea>>, TError, TData>> },
@@ -828,7 +827,6 @@ export function useGetHealthStatus<TData = Awaited<ReturnType<typeof getHealthSt
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetHealthStatus<TData = Awaited<ReturnType<typeof getHealthStatus>>, TError = GetHealthStatus503>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -924,7 +922,6 @@ export function useGetSunriseSunsetForTrailArea<
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetSunriseSunsetForTrailArea<
   TData = Awaited<ReturnType<typeof getSunriseSunsetForTrailArea>>,
   TError = unknown,
@@ -1006,7 +1003,6 @@ export function useGetCountries<TData = Awaited<ReturnType<typeof getCountries>>
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCountries>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetCountries<TData = Awaited<ReturnType<typeof getCountries>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCountries>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -1084,7 +1080,6 @@ export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas>>, TError = unknown>(
   params?: GetTrailAreasParams,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>> },
@@ -1175,7 +1170,6 @@ export function useGetWeatherDataForTrailArea<
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getWeatherDataForTrailArea>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetWeatherDataForTrailArea<
   TData = Awaited<ReturnType<typeof getWeatherDataForTrailArea>>,
   TError = unknown,
@@ -1269,7 +1263,6 @@ export function useGetElevationForCoordinates<
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getElevationForCoordinates>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetElevationForCoordinates<
   TData = Awaited<ReturnType<typeof getElevationForCoordinates>>,
   TError = unknown,

@@ -374,7 +374,6 @@ export function useDiscoveredDevices<TData = Awaited<ReturnType<typeof discovere
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof discoveredDevices>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useDiscoveredDevices<TData = Awaited<ReturnType<typeof discoveredDevices>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof discoveredDevices>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -570,7 +569,6 @@ export function useDeviceList<TData = Awaited<ReturnType<typeof deviceList>>, TE
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof deviceList>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useDeviceList<TData = Awaited<ReturnType<typeof deviceList>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof deviceList>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -651,7 +649,6 @@ export function useDeviceDetails<TData = Awaited<ReturnType<typeof deviceDetails
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof deviceDetails>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useDeviceDetails<TData = Awaited<ReturnType<typeof deviceDetails>>, TError = unknown>(
   macAddress: string,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof deviceDetails>>, TError, TData>> },
@@ -1001,7 +998,6 @@ export function useCurrentDeviceSettings<TData = Awaited<ReturnType<typeof curre
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof currentDeviceSettings>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useCurrentDeviceSettings<TData = Awaited<ReturnType<typeof currentDeviceSettings>>, TError = unknown>(
   macAddress: string,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof currentDeviceSettings>>, TError, TData>> },
@@ -1150,7 +1146,6 @@ export function useGetHealthStatus<TData = Awaited<ReturnType<typeof getHealthSt
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetHealthStatus<TData = Awaited<ReturnType<typeof getHealthStatus>>, TError = GetHealthStatus503>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -1288,7 +1283,6 @@ export function useCurrentLocation<TData = Awaited<ReturnType<typeof currentLoca
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof currentLocation>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useCurrentLocation<TData = Awaited<ReturnType<typeof currentLocation>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof currentLocation>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -1364,7 +1358,6 @@ export function useGetLocationData<TData = Awaited<ReturnType<typeof getLocation
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationData>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetLocationData<TData = Awaited<ReturnType<typeof getLocationData>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationData>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -1426,9 +1419,7 @@ export type TriggerAppleShortcutsCommandMutationResult = NonNullable<
 export type TriggerAppleShortcutsCommandMutationError = void
 export type TriggerAppleShortcutsCommandMutationVariables = { hash: string }
 
-/**
- * @summary Trigger a predefined command via apple shortcuts.
- */
+/** @summary Trigger a predefined command via apple shortcuts. */
 export const useTriggerAppleShortcutsCommand = <TError = void, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
@@ -1486,6 +1477,7 @@ export const getToggleDevicePowerStateQueryOptions = <
 export type ToggleDevicePowerStateQueryResult = NonNullable<Awaited<ReturnType<typeof toggleDevicePowerState>>>
 export type ToggleDevicePowerStateQueryError = unknown
 
+/** @summary Toggles devices on and off. */
 export function useToggleDevicePowerState<TData = Awaited<ReturnType<typeof toggleDevicePowerState>>, TError = unknown>(
   macAddress: string,
   options: {
@@ -1501,6 +1493,7 @@ export function useToggleDevicePowerState<TData = Awaited<ReturnType<typeof togg
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** @summary Toggles devices on and off. */
 export function useToggleDevicePowerState<TData = Awaited<ReturnType<typeof toggleDevicePowerState>>, TError = unknown>(
   macAddress: string,
   options?: {
@@ -1516,15 +1509,13 @@ export function useToggleDevicePowerState<TData = Awaited<ReturnType<typeof togg
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** @summary Toggles devices on and off. */
 export function useToggleDevicePowerState<TData = Awaited<ReturnType<typeof toggleDevicePowerState>>, TError = unknown>(
   macAddress: string,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof toggleDevicePowerState>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-/**
- * @summary Toggles devices on and off.
- */
-
+/** @summary Toggles devices on and off. */
 export function useToggleDevicePowerState<TData = Awaited<ReturnType<typeof toggleDevicePowerState>>, TError = unknown>(
   macAddress: string,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof toggleDevicePowerState>>, TError, TData>> },
@@ -1658,7 +1649,6 @@ export function useGetCommands<TData = Awaited<ReturnType<typeof getCommands>>, 
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCommands>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetCommands<TData = Awaited<ReturnType<typeof getCommands>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCommands>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -1738,7 +1728,6 @@ export function useGetCommand<TData = Awaited<ReturnType<typeof getCommand>>, TE
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCommand>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetCommand<TData = Awaited<ReturnType<typeof getCommand>>, TError = unknown>(
   commandId: number,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCommand>>, TError, TData>> },

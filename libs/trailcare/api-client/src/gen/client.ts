@@ -364,7 +364,6 @@ export function useGetHealthStatus<TData = Awaited<ReturnType<typeof getHealthSt
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetHealthStatus<TData = Awaited<ReturnType<typeof getHealthStatus>>, TError = GetHealthStatus503>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getHealthStatus>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -411,6 +410,7 @@ export const getGetTrailAreasQueryOptions = <
 export type GetTrailAreasQueryResult = NonNullable<Awaited<ReturnType<typeof getTrailAreas>>>
 export type GetTrailAreasQueryError = unknown
 
+/** All trail areas with their trails and sweep status */
 export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas>>, TError = unknown>(
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>> &
@@ -425,6 +425,7 @@ export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** All trail areas with their trails and sweep status */
 export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas>>, TError = unknown>(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>> &
@@ -439,11 +440,12 @@ export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** All trail areas with their trails and sweep status */
 export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
+/** All trail areas with their trails and sweep status */
 export function useGetTrailAreas<TData = Awaited<ReturnType<typeof getTrailAreas>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrailAreas>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -512,7 +514,6 @@ export function useGetTrail<TData = Awaited<ReturnType<typeof getTrail>>, TError
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrail>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetTrail<TData = Awaited<ReturnType<typeof getTrail>>, TError = unknown>(
   trailId: number,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getTrail>>, TError, TData>> },
@@ -559,6 +560,7 @@ export const getGetCareEntriesQueryOptions = <TData = Awaited<ReturnType<typeof 
 export type GetCareEntriesQueryResult = NonNullable<Awaited<ReturnType<typeof getCareEntries>>>
 export type GetCareEntriesQueryError = unknown
 
+/** Care log of a trail, newest first */
 export function useGetCareEntries<TData = Awaited<ReturnType<typeof getCareEntries>>, TError = unknown>(
   trailId: number,
   options: {
@@ -574,6 +576,7 @@ export function useGetCareEntries<TData = Awaited<ReturnType<typeof getCareEntri
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** Care log of a trail, newest first */
 export function useGetCareEntries<TData = Awaited<ReturnType<typeof getCareEntries>>, TError = unknown>(
   trailId: number,
   options?: {
@@ -589,12 +592,13 @@ export function useGetCareEntries<TData = Awaited<ReturnType<typeof getCareEntri
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** Care log of a trail, newest first */
 export function useGetCareEntries<TData = Awaited<ReturnType<typeof getCareEntries>>, TError = unknown>(
   trailId: number,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareEntries>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
+/** Care log of a trail, newest first */
 export function useGetCareEntries<TData = Awaited<ReturnType<typeof getCareEntries>>, TError = unknown>(
   trailId: number,
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareEntries>>, TError, TData>> },
@@ -788,6 +792,7 @@ export type DeleteCareEntryMutationResult = NonNullable<Awaited<ReturnType<typeo
 export type DeleteCareEntryMutationError = unknown
 export type DeleteCareEntryMutationVariables = { entryId: number }
 
+/** Undo for the creator, delete for admins */
 export const useDeleteCareEntry = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
@@ -840,6 +845,7 @@ export const getGetSweepSettingsQueryOptions = <
 export type GetSweepSettingsQueryResult = NonNullable<Awaited<ReturnType<typeof getSweepSettings>>>
 export type GetSweepSettingsQueryError = unknown
 
+/** Traffic light thresholds for all trails */
 export function useGetSweepSettings<TData = Awaited<ReturnType<typeof getSweepSettings>>, TError = unknown>(
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSweepSettings>>, TError, TData>> &
@@ -854,6 +860,7 @@ export function useGetSweepSettings<TData = Awaited<ReturnType<typeof getSweepSe
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** Traffic light thresholds for all trails */
 export function useGetSweepSettings<TData = Awaited<ReturnType<typeof getSweepSettings>>, TError = unknown>(
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSweepSettings>>, TError, TData>> &
@@ -868,11 +875,12 @@ export function useGetSweepSettings<TData = Awaited<ReturnType<typeof getSweepSe
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** Traffic light thresholds for all trails */
 export function useGetSweepSettings<TData = Awaited<ReturnType<typeof getSweepSettings>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSweepSettings>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
+/** Traffic light thresholds for all trails */
 export function useGetSweepSettings<TData = Awaited<ReturnType<typeof getSweepSettings>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSweepSettings>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -938,6 +946,7 @@ export type UpdateSweepSettingsMutationBody = SweepSettingsDto
 export type UpdateSweepSettingsMutationError = unknown
 export type UpdateSweepSettingsMutationVariables = { data: SweepSettingsDto }
 
+/** Changes the traffic light for all trails that have no thresholds of their own */
 export const useUpdateSweepSettings = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
@@ -1136,6 +1145,7 @@ export type DeleteTrailAreaMutationResult = NonNullable<Awaited<ReturnType<typeo
 export type DeleteTrailAreaMutationError = unknown
 export type DeleteTrailAreaMutationVariables = { trailAreaId: number }
 
+/** Deletes the area including its trails and care log */
 export const useDeleteTrailArea = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
@@ -1294,6 +1304,7 @@ export type DeleteTrailMutationResult = NonNullable<Awaited<ReturnType<typeof de
 export type DeleteTrailMutationError = unknown
 export type DeleteTrailMutationVariables = { trailId: number }
 
+/** Deletes the trail including its care log */
 export const useDeleteTrail = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
@@ -1371,7 +1382,6 @@ export function useGetAccessPasswords<TData = Awaited<ReturnType<typeof getAcces
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccessPasswords>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetAccessPasswords<TData = Awaited<ReturnType<typeof getAccessPasswords>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccessPasswords>>, TError, TData>> },
   queryClient?: QueryClient,
@@ -1571,6 +1581,7 @@ export type DeleteAccessPasswordMutationResult = NonNullable<Awaited<ReturnType<
 export type DeleteAccessPasswordMutationError = unknown
 export type DeleteAccessPasswordMutationVariables = { accessPasswordId: number }
 
+/** Deletes the password and logs out its devices */
 export const useDeleteAccessPassword = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
@@ -1646,6 +1657,7 @@ export type RotateAccessPasswordMutationBody = RotateAccessPasswordDto
 export type RotateAccessPasswordMutationError = unknown
 export type RotateAccessPasswordMutationVariables = { accessPasswordId: number; data: RotateAccessPasswordDto }
 
+/** New password, logs out all its devices */
 export const useRotateAccessPassword = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
@@ -1724,7 +1736,6 @@ export function useGetSession<TData = Awaited<ReturnType<typeof getSession>>, TE
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSession>>, TError, TData>> },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
 export function useGetSession<TData = Awaited<ReturnType<typeof getSession>>, TError = unknown>(
   options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSession>>, TError, TData>> },
   queryClient?: QueryClient,

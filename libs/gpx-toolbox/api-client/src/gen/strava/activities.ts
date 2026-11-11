@@ -30,37 +30,43 @@ export const createActivity = (
   createActivityBody?: CreateActivityBody,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  const formData = new FormData()
-  if (createActivityBody?.name !== undefined) {
-    formData.append(`name`, createActivityBody.name)
-  }
-  if (createActivityBody?.type !== undefined) {
-    formData.append(`type`, createActivityBody.type)
-  }
-  if (createActivityBody?.sport_type !== undefined) {
-    formData.append(`sport_type`, createActivityBody.sport_type)
-  }
-  if (createActivityBody?.start_date_local !== undefined) {
-    formData.append(`start_date_local`, createActivityBody.start_date_local)
-  }
-  if (createActivityBody?.elapsed_time !== undefined) {
-    formData.append(`elapsed_time`, createActivityBody.elapsed_time.toString())
-  }
-  if (createActivityBody?.description !== undefined) {
-    formData.append(`description`, createActivityBody.description)
-  }
-  if (createActivityBody?.distance !== undefined) {
-    formData.append(`distance`, createActivityBody.distance.toString())
-  }
-  if (createActivityBody?.trainer !== undefined) {
-    formData.append(`trainer`, createActivityBody.trainer.toString())
-  }
-  if (createActivityBody?.commute !== undefined) {
-    formData.append(`commute`, createActivityBody.commute.toString())
-  }
-  if (createActivityBody?.tags !== undefined) {
-    formData.append(`tags`, createActivityBody.tags)
-  }
+  const formData =
+    createActivityBody === undefined
+      ? undefined
+      : (() => {
+          const formData = new FormData()
+          if (createActivityBody?.name !== undefined) {
+            formData.append(`name`, createActivityBody.name)
+          }
+          if (createActivityBody?.type !== undefined) {
+            formData.append(`type`, createActivityBody.type)
+          }
+          if (createActivityBody?.sport_type !== undefined) {
+            formData.append(`sport_type`, createActivityBody.sport_type)
+          }
+          if (createActivityBody?.start_date_local !== undefined) {
+            formData.append(`start_date_local`, createActivityBody.start_date_local)
+          }
+          if (createActivityBody?.elapsed_time !== undefined) {
+            formData.append(`elapsed_time`, createActivityBody.elapsed_time.toString())
+          }
+          if (createActivityBody?.description !== undefined) {
+            formData.append(`description`, createActivityBody.description)
+          }
+          if (createActivityBody?.distance !== undefined) {
+            formData.append(`distance`, createActivityBody.distance.toString())
+          }
+          if (createActivityBody?.trainer !== undefined) {
+            formData.append(`trainer`, createActivityBody.trainer.toString())
+          }
+          if (createActivityBody?.commute !== undefined) {
+            formData.append(`commute`, createActivityBody.commute.toString())
+          }
+          if (createActivityBody?.tags !== undefined) {
+            formData.append(`tags`, createActivityBody.tags)
+          }
+          return formData
+        })()
 
   return axios.default.post(`/activities`, formData, options)
 }

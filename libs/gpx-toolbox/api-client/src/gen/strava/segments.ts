@@ -67,10 +67,16 @@ export const starSegment = (
   starSegmentBody?: StarSegmentBody,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  const formData = new FormData()
-  if (starSegmentBody?.starred !== undefined) {
-    formData.append(`starred`, starSegmentBody.starred.toString())
-  }
+  const formData =
+    starSegmentBody === undefined
+      ? undefined
+      : (() => {
+          const formData = new FormData()
+          if (starSegmentBody?.starred !== undefined) {
+            formData.append(`starred`, starSegmentBody.starred.toString())
+          }
+          return formData
+        })()
 
   return axios.default.put(`/segments/${id}/starred`, formData, options)
 }
