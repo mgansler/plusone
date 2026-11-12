@@ -15952,21 +15952,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:18.0.10":
+  version: 18.0.10
+  resolution: "dotenv@npm:18.0.10"
+  bin:
+    dotenv: dist/cli.cjs
+  checksum: 10c0/f07945aeb35f78fe54495025fb10c155cbefa15bdd04a4063aba8519d2756c647ce43f3e0cacbab1e5a7200376f740cbe3e4e7432571ecf4d99eeade7c1dd3a7
+  languageName: node
+  linkType: hard
+
 "dotenv@npm:18.0.3":
   version: 18.0.3
   resolution: "dotenv@npm:18.0.3"
   bin:
     dotenv: dist/index.cjs
   checksum: 10c0/0132d3dba2022808c31d0c8191cd8567351c8a1b932f751237cfe502563b9eaab309754bd66e5965f2ccee887c3527f883e29016cb4d691df8519e7fc3d452fd
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:18.0.9":
-  version: 18.0.9
-  resolution: "dotenv@npm:18.0.9"
-  bin:
-    dotenv: dist/index.cjs
-  checksum: 10c0/62a70960e611f1d26bf5ade0e0baa7850513f65d56789ba282c8ae7f690411d364457d33d4302b2611cc18157d03dea589ac7e33f1aa85b8f69737b8c05cf726
   languageName: node
   linkType: hard
 
@@ -16591,18 +16591,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-cypress@npm:7.0.3":
-  version: 7.0.3
-  resolution: "eslint-plugin-cypress@npm:7.0.3"
+"eslint-plugin-cypress@npm:7.0.4":
+  version: 7.0.4
+  resolution: "eslint-plugin-cypress@npm:7.0.4"
   dependencies:
-    globals: "npm:^17.13.0"
+    globals: "npm:^17.14.0"
   peerDependencies:
     "@typescript-eslint/parser": ">=8"
     eslint: ">=10"
   peerDependenciesMeta:
     "@typescript-eslint/parser":
       optional: true
-  checksum: 10c0/42c584eebd82bf12e68dac6484f4074bb95be2d8fd136123bf2e8a5cb06b3c58b7bde950fc66c50cf128b62a229cafb268ee8b79831d83a695949b862a89de19
+  checksum: 10c0/03f8fc2a85b39c66d06781153ceb43e567a7a85a41769551534752c5f7ed593a90f69e5c1ff999203562da84cd9b0fb716b90cabfe3a37886a9a3f26ade3801e
   languageName: node
   linkType: hard
 
@@ -18150,7 +18150,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^17.13.0":
+"globals@npm:^17.14.0":
   version: 17.14.0
   resolution: "globals@npm:17.14.0"
   checksum: 10c0/422d17c24e87170d4aa566b97a53339ae451c2f4d78512594a7ca951cdb939bc4a85c10071e6dcf77ca63de48713a77f2e71eb9214e44880233dff2090e92731
@@ -20653,10 +20653,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:6.2.15":
-  version: 6.2.15
-  resolution: "jose@npm:6.2.15"
-  checksum: 10c0/0e72e53ead0e01adc4598438f889e753622043806a7ba0c802f7cd7da17466e5a6167a63b4b4e67490944c9f88eb0dd5c81c05aca2c38a72718443632a7b37b5
+"jose@npm:6.2.16":
+  version: 6.2.16
+  resolution: "jose@npm:6.2.16"
+  checksum: 10c0/c2a12b4237cca45194d516377901f83a51c2045c7ac5dbff3c4d8f231f1e9a057bce1f8d1cb5b2943b1d28856d163a25491b593b6f342ac135250e31115c2978
   languageName: node
   linkType: hard
 
@@ -23953,10 +23953,10 @@ __metadata:
     core-js: "npm:3.51.0"
     css-loader: "npm:7.1.5"
     cypress: "npm:16.2.1"
-    dotenv: "npm:18.0.9"
+    dotenv: "npm:18.0.10"
     eslint: "npm:10.14.0"
     eslint-config-prettier: "npm:10.1.8"
-    eslint-plugin-cypress: "npm:7.0.3"
+    eslint-plugin-cypress: "npm:7.0.4"
     eslint-plugin-import-x: "npm:4.18.0"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-react: "npm:7.37.5"
@@ -23979,7 +23979,7 @@ __metadata:
     jest-junit: "npm:17.0.0"
     jest-util: "npm:30.5.1"
     jiti: "npm:2.7.0"
-    jose: "npm:6.2.15"
+    jose: "npm:6.2.16"
     jsdom: "npm:31.0.0"
     jsonc-eslint-parser: "npm:3.3.0"
     leaflet: "npm:1.9.4"
@@ -29635,9 +29635,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:8.22.1":
-  version: 8.22.1
-  resolution: "ws@npm:8.22.1"
+"ws@npm:8.22.2":
+  version: 8.22.2
+  resolution: "ws@npm:8.22.2"
   peerDependencies:
     bufferutil: ^4.0.1
     utf-8-validate: ">=5.0.2"
@@ -29646,7 +29646,7 @@ __metadata:
       optional: true
     utf-8-validate:
       optional: true
-  checksum: 10c0/858ccc31e56a7549c25d0bfd522b65c64f7bffdc5460eeb4c29517d34728d34de102d2ebf8296160c8b4594fd45ead6a324acd9a1ea0b0b8742bbed4d52d9a51
+  checksum: 10c0/77e7f9b2a4b790419bbc799b519a74e856ad0adb46ba0b22445f96d493ca6d4c8758643dc07f1de1f0609ed318bc329571d09a3e6b5327677b5ec31aca730a45
   languageName: node
   linkType: hard
 
