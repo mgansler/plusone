@@ -22,6 +22,7 @@ const results = [
     status: 'ridden',
     source: 'manualImport',
     polyline: [],
+    createdAt: '2024-01-01T00:00:00Z',
   },
   {
     id: 'b',
@@ -31,6 +32,7 @@ const results = [
     status: 'planned',
     source: 'manualImport',
     polyline: [],
+    createdAt: '2024-01-02T00:00:00Z',
   },
 ] satisfies Array<NearbyRouteResponseDto>
 

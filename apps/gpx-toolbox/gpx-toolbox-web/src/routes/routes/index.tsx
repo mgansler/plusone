@@ -1,30 +1,22 @@
-import { type RefObject, useEffect, useMemo, useRef, useState } from 'react'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { useMemo, useState } from 'react'
+import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import L from 'leaflet'
+import type L from 'leaflet'
 
-import { calculateHaversineDistance, parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
-import {
-  getListRoutesQueryKey,
-  importGpx,
-  ImportRouteUploadDtoSource,
-  ListRoutesSortBy,
-  useListRoutes,
-} from '@plusone/gpx-toolbox-api-client'
+import { useListRoutes } from '@plusone/gpx-toolbox-api-client'
 
 import { CompareBar } from '../../components/CompareBar'
-import { CompareToggleButton } from '../../components/CompareToggleButton'
+import { COORDINATE_DECIMALS } from '../../components/CoordinateInput'
 import { Map as MapView } from '../../components/Map'
-import { SegmentOverlay } from '../../components/SegmentOverlay'
-import { PointDetails } from '../../components/PointDetails'
-import { StravaExportImportModal } from '../../components/StravaExportImportModal'
-import { UploadGpxModal } from '../../components/UploadGpxModal'
-import { actionButtonStyle } from '../../components/actionButtonStyle'
+import { NearbyFilters } from '../../components/NearbyFilters'
+import { NearbyResults } from '../../components/NearbyResults'
+import { usePlaceSearch } from '../../hooks/usePlaceSearch'
+import { useProfilePointMarker, useResultTrackLayers, useSearchAreaLayers } from '../../hooks/useNearbyMapLayers'
+import { useRouteSelection } from '../../hooks/useRouteSelection'
+import { useSearchArea } from '../../hooks/useSearchArea'
+import { Sheet } from '../../layout/Sheet'
 import { useIsMobile } from '../../layout/useIsMobile'
-import { routeStatusColor, routeStatusLabel } from '../../utils/routeStatus'
-import { sourceColors, sourceLabels } from '../../utils/routeColors'
-import { formatDistanceShort, formatElevationGain } from '../../utils/format'
-import { shareGpx } from '../../utils/share'
+import { Z_INDEX } from '../../layout/tokens'
 
 export const Route = createFileRoute('/routes/')({
   component: RoutesPage,
@@ -33,388 +25,239 @@ export const Route = createFileRoute('/routes/')({
 function RoutesPage() {
   const isMobile = useIsMobile()
   const { t } = useTranslation()
-  const mapRef: RefObject<L.Map | null> = useRef(null)
-  const [page, setPage] = useState(1)
-  const [statusFilter, setStatusFilter] = useState<string>('')
-  const [sortBy, setSortBy] = useState(ListRoutesSortBy.createdAt)
-  const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null)
-  const [selectedPoint, setSelectedPoint] = useState<{ point: TrackPoint; event: L.LeafletMouseEvent } | null>(null)
-  const [segmentRange, setSegmentRange] = useState<[number, number]>([0, 0])
-  const segmentInitializedRef = useRef(false)
-  const [showUploadModal, setShowUploadModal] = useState(false)
-  const [showExportModal, setShowExportModal] = useState(false)
+  const [map, setMap] = useState<L.Map | null>(null)
+  // Mobile: the search form is a bottom sheet, the results a sheet from the right; one is open at a time
+  const [filtersOpen, setFiltersOpen] = useState(false)
+  const [resultsOpen, setResultsOpen] = useState(false)
+  const [sortBy, setSortBy] = useState<'distance' | 'name' | 'createdAt'>('distance')
 
-  const { data, isLoading, error, isError } = useListRoutes({
-    page,
-    limit: 50,
-    sortBy,
-    ...(statusFilter && { status: statusFilter }),
+  const area = useSearchArea(map)
+  const place = usePlaceSearch(area.pickLocation)
+  const selection = useRouteSelection(map)
+  const resetLocateRef = { current: (): void => undefined }
+
+  const {
+    data: listResult,
+    isLoading: searching,
+    error,
+    isError,
+  } = useListRoutes(
+    area.lat != null && area.lng != null ? { lat: area.lat, lng: area.lng, radius: area.radius } : undefined,
+    { query: { enabled: area.lat != null && area.lng != null } },
+  )
+  const results = listResult?.items
+  const sortedResults = useMemo(() => {
+    if (!results) return results
+    switch (sortBy) {
+      case 'name':
+        return [...results].sort((a, b) => a.name.localeCompare(b.name))
+      case 'createdAt':
+        return [...results].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      default:
+        return results
+    }
+  }, [results, sortBy])
+  const hasResults = sortedResults != null && sortedResults.length > 0
+
+  useSearchAreaLayers(map, area, resetLocateRef.current)
+  useResultTrackLayers(map, {
+    results,
+    selectedDetail: selection.detail,
+    highlightedRoute: selection.highlightedRoute,
+    onHover: selection.setHovered,
+    onToggle: selection.toggle,
   })
+  useProfilePointMarker(map, selection.profilePoint)
 
-  type RouteListResponse = {
-    items: Array<{
-      id: string
-      name: string
-      description?: string | null
-      source: string
-      status: string
-      stats?: Record<string, unknown>
-      ratingTags?: Array<unknown>
-      notes?: string | null
-      activities?: Array<{ id: string }>
-      createdAt: string
-      updatedAt: string
-    }>
-    total: number
-    page: number
-    limit: number
-    totalPages: number
+  const center: [number, number] | undefined = area.lat != null && area.lng != null ? [area.lat, area.lng] : undefined
+
+  const filters = (
+    <>
+      <NearbyFilters
+        place={place}
+        area={area}
+        searching={searching}
+        error={isError ? (error instanceof Error ? error.message : t('nearby.unknownError')) : null}
+      />
+      <div style={styles.sortRow}>
+        <label style={styles.sortLabel}>{t('nearby.sortBy')}:</label>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as 'distance' | 'name' | 'createdAt')}
+          style={styles.select}
+        >
+          <option value="distance">{t('nearby.nearest')}</option>
+          <option value="createdAt">{t('nearby.newest')}</option>
+          <option value="name">{t('nearby.nameAZ')}</option>
+        </select>
+      </div>
+    </>
+  )
+
+  const heading = (
+    <div style={styles.sidebarHeader}>
+      <h2 style={styles.heading}>{t('nearby.title')}</h2>
+      {isMobile && (
+        <button
+          type="button"
+          onClick={() => setFiltersOpen(false)}
+          style={styles.closeButton}
+          title={t('nearby.close')}
+        >
+          <CloseIcon />
+        </button>
+      )}
+    </div>
+  )
+
+  function toggleFilters() {
+    setFiltersOpen((open) => !open)
+    setResultsOpen(false)
   }
 
-  const routes = ((data as unknown as RouteListResponse | undefined)?.items ?? []) as Array<{
-    id: string
-    name: string
-    source: string
-    status: string
-    stats?: Record<string, unknown>
-  }>
-  const totalPages = (data as unknown as RouteListResponse | undefined)?.totalPages ?? 1
-  const total = (data as unknown as RouteListResponse | undefined)?.total ?? 0
-
-  // Fetch GPX content for selected route using direct fetch
-  const [gpxText, setGpxText] = useState<string | null>(null)
-
-  useEffect(() => {
-    // The track is only drawn on the map, which mobile does not show
-    if (!selectedRouteId || isMobile) return
-    setGpxText(null)
-
-    // Get auth token (same key as auth-context.tsx)
-    const token = localStorage.getItem('gpx-toolbox-jwt')
-    if (!token) {
-      console.error('[RoutesPage] No auth token found (key: gpx-toolbox-jwt)')
-      return
-    }
-
-    fetch(`/api/routes/${selectedRouteId}/export`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then(async (response) => {
-        if (!response.ok) {
-          const errorText = await response.text()
-          console.error('[RoutesPage] HTTP error:', response.status, errorText)
-          return
-        }
-        const text = await response.text()
-        setGpxText(text)
-      })
-      .catch((err) => {
-        console.error('[RoutesPage] Fetch error:', err)
-      })
-    return () => {
-      // No cleanup needed for fetch
-    }
-  }, [selectedRouteId, isMobile])
-
-  const points = gpxText ? parseGpx(gpxText) : []
-
-  function handleRouteClick(route: (typeof routes)[number]) {
-    setSelectedRouteId(route.id)
-    setSelectedPoint(null)
-    setSegmentRange([0, 0])
+  function toggleResults() {
+    setResultsOpen((open) => !open)
+    setFiltersOpen(false)
   }
 
-  // Total distance in km for the selected route
-  const totalDist = useMemo(() => {
-    if (points.length < 2) return 0
-    let dist = 0
-    for (let i = 1; i < points.length; i++) {
-      dist += calculateHaversineDistance(points[i - 1], points[i])
-    }
-    return dist / 1000
-  }, [points])
-
-  useEffect(() => {
-    if (totalDist > 0 && !segmentInitializedRef.current) {
-      segmentInitializedRef.current = true
-      setSegmentRange([0, totalDist])
-    }
-  }, [totalDist])
-
-  function handlePointClick(point: TrackPoint, event: L.LeafletMouseEvent) {
-    setSelectedPoint((prev) => {
-      if (prev?.point === point) return null
-      return { point, event }
-    })
-  }
-
-  const stats = routes.map((r) => (r.stats as { distance?: number } | null)?.distance ?? 0)
-  const totalDistance = stats.reduce((a, b) => a + b, 0)
-  const totalElevation = routes.reduce((sum, r) => {
-    const e = (r.stats as { elevationGain?: number } | null)?.elevationGain ?? 0
-    return sum + e
-  }, 0)
-
+  // The map keeps its position among the container's children in both layouts,
+  // so crossing the breakpoint does not recreate the Leaflet map.
   return (
     <div style={styles.container}>
-      <div style={isMobile ? { ...styles.sidebar, ...styles.sidebarMobile } : styles.sidebar}>
-        <div style={styles.headingRow}>
-          <h2 style={styles.heading}>
-            {t('routes.title')} ({total})
-          </h2>
-          <div style={styles.headingActions}>
-            <button onClick={() => setShowUploadModal(true)} style={actionButtonStyle}>
-              {t('routes.upload')}
-            </button>
-            {!isMobile && (
-              <button onClick={() => setShowExportModal(true)} style={actionButtonStyle}>
-                {t('routes.stravaExport')}
-              </button>
-            )}
-          </div>
+      {!isMobile && (
+        <div style={styles.sidebar}>
+          {heading}
+          {filters}
+          {hasResults && (
+            <div style={styles.results}>
+              <h3 style={styles.resultCount}>{t('nearby.routesFound', { count: sortedResults.length })}</h3>
+              <NearbyResults results={sortedResults} selection={selection} />
+            </div>
+          )}
+          <CompareBar from="routes" />
         </div>
+      )}
 
-        {/* Summary */}
-        <div style={styles.summary}>
-          <div style={styles.summaryItem}>
-            <span style={styles.summaryValue}>{formatDistanceShort(totalDistance)}</span>
-            <span style={styles.summaryLabel}>{t('routes.distance')}</span>
-          </div>
-          <div style={styles.summaryItem}>
-            <span style={styles.summaryValue}>{formatElevationGain(totalElevation)}</span>
-            <span style={styles.summaryLabel}>{t('routes.elevation')}</span>
-          </div>
-        </div>
-
-        {/* Filters */}
-        <div style={styles.filters}>
-          <select
-            value={statusFilter}
-            onChange={(e) => {
-              setStatusFilter(e.target.value)
-              setPage(1)
-            }}
-            style={styles.select}
-          >
-            <option value="">{t('routes.allStatus')}</option>
-            <option value="planned">{t('routes.planned')}</option>
-            <option value="ridden">{t('routes.ridden')}</option>
-            <option value="foundOnline">{t('routes.foundOnline')}</option>
-          </select>
-          <select value={sortBy} onChange={(e) => setSortBy(e.target.value as ListRoutesSortBy)} style={styles.select}>
-            <option value="createdAt">{t('routes.newest')}</option>
-            <option value="name">{t('routes.nameAZ')}</option>
-          </select>
-        </div>
-
-        {/* Error */}
-        {isError && <div style={styles.error}>{error instanceof Error ? error.message : t('routes.unknownError')}</div>}
-
-        {/* Loading */}
-        {isLoading && <div style={styles.loading}>{t('routes.loading')}</div>}
-
-        {/* Routes */}
-        {routes.length > 0 && (
-          <div style={styles.routeList}>
-            {routes.map((r) => (
-              <Link
-                key={r.id}
-                to="/routes/$routeId"
-                params={{ routeId: r.id }}
-                onClick={() => handleRouteClick(r)}
-                style={{
-                  ...styles.routeCard,
-                  backgroundColor: selectedRouteId === r.id ? '#e3f2fd' : '#fff',
-                }}
-              >
-                <button
-                  onClick={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    shareGpx(r.id, r.name)
-                  }}
-                  style={styles.shareButton}
-                  title={t('routes.shareGpx')}
-                >
-                  📤
-                </button>
-                <div style={styles.routeName}>{r.name}</div>
-                {r.stats && (
-                  <div style={styles.routeStats}>
-                    <span>{formatDistanceShort((r.stats as { distance?: number } | null)?.distance ?? 0)}</span>
-                    <span>
-                      {formatElevationGain((r.stats as { elevationGain?: number } | null)?.elevationGain ?? 0)}
-                    </span>
-                  </div>
-                )}
-                <div style={styles.routeMeta}>
-                  <span style={{ ...styles.badge, backgroundColor: sourceColors[r.source] || '#9e9e9e' }}>
-                    {sourceLabels[r.source] || r.source}
-                  </span>
-                  <span style={{ ...styles.badge, backgroundColor: routeStatusColor(r.status) }}>
-                    {routeStatusLabel(r.status)}
-                  </span>
-                  {(() => {
-                    const activities = (r as { activities?: Array<{ id: string }> }).activities
-                    if (activities && activities.length > 0)
-                      return (
-                        <span style={styles.badge}>
-                          {activities.length} {t('routes.activities')}
-                        </span>
-                      )
-                    return null
-                  })()}
-                  <span style={styles.compareToggle}>
-                    <CompareToggleButton id={r.id} name={r.name} />
-                  </span>
-                </div>
-              </Link>
-            ))}
+      <div style={styles.mapArea}>
+        <MapView
+          onMapReady={setMap}
+          center={center}
+          onLocate={area.pickLocation}
+          onResetLocateReady={(reset) => {
+            resetLocateRef.current = reset
+          }}
+        />
+        {area.lat != null && area.lng != null && (
+          <div style={styles.centerMarker}>
+            {area.lat.toFixed(COORDINATE_DECIMALS)}, {area.lng.toFixed(COORDINATE_DECIMALS)}
           </div>
         )}
-
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div style={styles.pagination}>
-            <button disabled={page === 1} onClick={() => setPage(page - 1)} style={styles.pageButton}>
-              ←
-            </button>
-            <span style={styles.pageInfo}>
-              {page} / {totalPages}
-            </span>
-            <button disabled={page === totalPages} onClick={() => setPage(page + 1)} style={styles.pageButton}>
-              →
-            </button>
-          </div>
-        )}
-
-        <CompareBar />
       </div>
 
-      {/* Mobile shows the list only */}
-      {!isMobile && (
-        <div style={styles.mapArea}>
-          {/* key forces fresh mount on navigation to ensure clean Leaflet lifecycle */}
-          <MapView key="routes-list" mapRef={mapRef}>
-            {points.length > 1 && segmentRange[1] - segmentRange[0] >= 0.01 && mapRef.current && (
-              <>
-                {/* key forces fresh mount when route/points change */}
-                <SegmentOverlay
-                  key={`routes-list-${points.length}-${segmentRange[0]}-${segmentRange[1]}`}
-                  points={points}
-                  mapInstance={mapRef.current}
-                  range={segmentRange}
-                  totalDistKm={totalDist}
-                  fitBounds={segmentRange[0] === 0 && segmentRange[1] >= totalDist}
-                >
-                  <TrackClickHandler
-                    points={points}
-                    range={segmentRange}
-                    totalDistKm={totalDist}
-                    mapInstance={mapRef.current}
-                    onPointClick={handlePointClick}
-                  />
-                </SegmentOverlay>
-              </>
-            )}
-          </MapView>
-        </div>
-      )}
-      {selectedPoint && <PointDetails point={selectedPoint.point} />}
-      {showExportModal && (
-        <StravaExportImportModal
-          invalidateQueryKeys={[getListRoutesQueryKey()]}
-          onClose={() => setShowExportModal(false)}
-        />
-      )}
+      {isMobile && (
+        <>
+          <button
+            type="button"
+            onClick={toggleFilters}
+            style={styles.filterButton}
+            aria-expanded={filtersOpen}
+            aria-label={filtersOpen ? t('nearby.searchClose') : t('nearby.searchOpen')}
+          >
+            {filtersOpen ? <CloseIcon size={24} /> : <MenuIcon />}
+          </button>
 
-      {showUploadModal && (
-        <UploadGpxModal
-          heading={t('routes.upload')}
-          upload={(file, name) => importGpx({ file, name, source: ImportRouteUploadDtoSource.manualImport })}
-          namePlaceholder={t('routeDetail.title') + ' (optional)'}
-          nameRequired={false}
-          invalidateQueryKeys={[getListRoutesQueryKey()]}
-          onClose={() => setShowUploadModal(false)}
-        />
+          <Sheet side="bottom" open={filtersOpen} onClose={() => setFiltersOpen(false)} label={t('nearby.searchSheet')}>
+            <div style={styles.sheetContent}>
+              {heading}
+              {filters}
+            </div>
+          </Sheet>
+
+          <Sheet
+            side="right"
+            open={resultsOpen && hasResults}
+            onClose={() => setResultsOpen(false)}
+            label={t('nearby.results')}
+            style={{ bottom: 20 }}
+            handle={
+              <button
+                type="button"
+                onClick={toggleResults}
+                disabled={!hasResults}
+                aria-expanded={resultsOpen && hasResults}
+                aria-label={hasResults ? t('nearby.results') : t('nearby.noRoutes')}
+                title={
+                  hasResults
+                    ? resultsOpen
+                      ? t('nearby.close')
+                      : `${sortedResults.length} ${t('nearby.routes')}`
+                    : t('nearby.noRoutes')
+                }
+                style={styles.resultsTab}
+              >
+                <span style={{ color: hasResults ? '#2196f3' : '#ccc' }}>{resultsOpen && hasResults ? '▶' : '◀'}</span>
+              </button>
+            }
+          >
+            <div style={styles.resultsHeader}>
+              <h3 style={styles.resultsTitle}>{t('nearby.routesFound', { count: sortedResults?.length ?? 0 })}</h3>
+              <button
+                type="button"
+                onClick={() => setResultsOpen(false)}
+                style={styles.closeButton}
+                title={t('nearby.close')}
+              >
+                <CloseIcon />
+              </button>
+            </div>
+            <div style={styles.resultsList}>
+              <CompareBar from="routes" />
+              {sortedResults && <NearbyResults results={sortedResults} selection={selection} />}
+            </div>
+          </Sheet>
+        </>
       )}
     </div>
   )
 }
 
-/** Invisible click handler that maps clicks to the nearest track point in the selected range */
-function TrackClickHandler({
-  points,
-  range,
-  totalDistKm: _totalDistKm,
-  mapInstance,
-  onPointClick,
-}: {
-  points: Array<TrackPoint>
-  range: [number, number]
-  totalDistKm: number
-  mapInstance: L.Map
-  onPointClick: (point: TrackPoint, event: L.LeafletMouseEvent) => void
-}) {
-  const layerRef = useRef<L.LayerGroup | null>(null)
+function CloseIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <line x1={18} y1={6} x2={6} y2={18} />
+      <line x1={6} y1={6} x2={18} y2={18} />
+    </svg>
+  )
+}
 
-  const startIdx = findClosestIndex(points, range[0])
-  const endIdx = findClosestIndex(points, range[1])
-  const visiblePoints = points.slice(startIdx, endIdx + 1)
-
-  function findClosestIndex(pts: Array<TrackPoint>, targetDistKm: number): number {
-    let dist = 0
-    for (let i = 1; i < pts.length; i++) {
-      if (dist / 1000 >= targetDistKm) return i - 1
-      dist += calculateHaversineDistance(pts[i - 1], pts[i])
-    }
-    return pts.length - 1
-  }
-
-  useEffect(() => {
-    if (visiblePoints.length < 2) return
-
-    const layer = L.layerGroup()
-
-    const coords: Array<[number, number]> = visiblePoints.map((p) => [p.latitude, p.longitude] as [number, number])
-
-    const clickable = L.polyline(coords, {
-      color: '#fff',
-      weight: 20,
-      interactive: true,
-      opacity: 0,
-    })
-
-    clickable.on('click', (e: L.LeafletMouseEvent) => {
-      const clickLatLng = e.latlng
-      let minDist = Infinity
-      let nearestPoint: TrackPoint | null = null
-      for (const pt of visiblePoints) {
-        const dist = calculateHaversineDistance(
-          { latitude: clickLatLng.lat, longitude: clickLatLng.lng },
-          { latitude: pt.latitude, longitude: pt.longitude },
-        )
-        if (dist < minDist) {
-          minDist = dist
-          nearestPoint = pt
-        }
-      }
-
-      if (nearestPoint) {
-        onPointClick(nearestPoint, e)
-      }
-    })
-
-    clickable.addTo(layer)
-    layerRef.current = layer
-
-    return () => {
-      layer.remove()
-      layerRef.current = null
-    }
-  }, [visiblePoints, mapInstance, onPointClick])
-
-  return null
+function MenuIcon() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <line x1={3} y1={6} x2={21} y2={6} />
+      <line x1={3} y1={12} x2={21} y2={12} />
+      <line x1={3} y1={18} x2={21} y2={18} />
+    </svg>
+  )
 }
 
 const styles = {
@@ -422,161 +265,134 @@ const styles = {
     display: 'flex',
     height: '100%',
     width: '100%',
+    position: 'relative' as const,
   } as const,
   sidebar: {
-    width: 400,
+    width: 360,
     flexShrink: 0,
     overflowY: 'auto',
     borderRight: '1px solid #e0e0e0',
     padding: 16,
     backgroundColor: '#fafafa',
   } as const,
-  sidebarMobile: {
-    width: '100%',
-    borderRight: 'none',
+  sidebarHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  } as const,
+  sheetContent: {
+    flex: 1,
+    minHeight: 0,
+    overflowY: 'auto',
+    padding: 16,
+  } as const,
+  filterButton: {
+    position: 'fixed',
+    bottom: 16,
+    right: 16,
+    zIndex: Z_INDEX.floatingButton,
+    width: 48,
+    height: 48,
+    borderRadius: '50%',
+    border: 'none',
+    backgroundColor: '#fff',
+    boxShadow: '0 2px 12px rgba(0,0,0,0.25)',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#333',
+  } as const,
+  resultsTab: {
+    width: 28,
+    height: 100,
+    border: 'none',
+    borderRadius: '12px 0 0 12px',
+    backgroundColor: '#fff',
+    boxShadow: '-3px 2px 12px rgba(0,0,0,0.15)',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 14,
+  } as const,
+  resultsHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '12px 16px',
+    borderBottom: '1px solid #e0e0e0',
+    flexShrink: 0,
+  } as const,
+  resultsTitle: {
+    margin: 0,
+    fontSize: 15,
+    fontWeight: 600,
+  } as const,
+  resultsList: {
+    flex: 1,
+    overflowY: 'auto',
+    padding: 12,
+  } as const,
+  closeButton: {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: 4,
+    color: '#666',
+    display: 'flex',
+    alignItems: 'center',
   } as const,
   mapArea: {
     flex: 1,
     position: 'relative',
     minWidth: 0,
   } as const,
-  headingRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  } as const,
-  headingActions: {
-    display: 'flex',
-    gap: 8,
-    alignItems: 'center',
-  } as const,
   heading: {
-    margin: '0 0 12px',
+    margin: '0 0 16px',
     fontSize: 20,
     fontWeight: 600,
+    flex: 1,
   } as const,
-  summary: {
-    display: 'flex',
-    gap: 24,
-    padding: '12px 16px',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    marginBottom: 12,
+  results: {
+    marginTop: 16,
   } as const,
-  summaryItem: {
+  resultCount: {
+    fontSize: 14,
+    fontWeight: 500,
+    color: '#666',
+    margin: '0 0 8px',
+  } as const,
+  sortRow: {
     display: 'flex',
-    flexDirection: 'column' as const,
     alignItems: 'center',
-  } as const,
-  summaryValue: {
-    fontSize: 18,
-    fontWeight: 700,
-    color: '#1e293b',
-  } as const,
-  summaryLabel: {
-    fontSize: 11,
-    color: '#64748b',
-    textTransform: 'uppercase' as const,
-  } as const,
-  filters: {
-    display: 'flex',
     gap: 8,
-    marginBottom: 12,
+    marginTop: 12,
+  } as const,
+  sortLabel: {
+    fontSize: 13,
+    color: '#666',
+    whiteSpace: 'nowrap' as const,
   } as const,
   select: {
     flex: 1,
     padding: '6px 8px',
-    fontSize: 13,
     border: '1px solid #ccc',
     borderRadius: 4,
+    fontSize: 13,
     backgroundColor: '#fff',
   } as const,
-  error: {
-    padding: '8px 12px',
-    backgroundColor: '#ffebee',
-    color: '#c62828',
-    borderRadius: 4,
-    marginBottom: 12,
-    fontSize: 13,
-  } as const,
-  loading: {
-    padding: 16,
-    textAlign: 'center' as const,
-    color: '#666',
-  } as const,
-  routeList: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    gap: 8,
-  } as const,
-  routeCard: {
-    position: 'relative' as const,
-    padding: 12,
-    borderRadius: 6,
-    cursor: 'pointer',
-    border: '1px solid #e0e0e0',
-    transition: 'background-color 0.15s',
-    textDecoration: 'none',
-    color: 'inherit',
-  } as const,
-  routeName: {
-    fontWeight: 600,
-    fontSize: 14,
-    marginBottom: 4,
-  } as const,
-  routeStats: {
-    display: 'flex',
-    gap: 12,
-    fontSize: 13,
-    color: '#64748b',
-    marginBottom: 4,
-  } as const,
-  routeMeta: {
-    display: 'flex',
-    gap: 4,
-    alignItems: 'center',
-  } as const,
-  compareToggle: {
-    marginLeft: 'auto',
-  } as const,
-  shareButton: {
-    position: 'absolute' as const,
-    top: 8,
-    right: 8,
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    fontSize: 16,
-    padding: '2px 4px',
-    lineHeight: 1,
-  } as const,
-  badge: {
-    display: 'inline-block',
-    padding: '2px 8px',
-    borderRadius: 10,
-    fontSize: 11,
-    color: '#fff',
+  centerMarker: {
+    position: 'absolute',
+    bottom: 16,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    padding: '8px 16px',
+    borderRadius: 20,
+    fontSize: 12,
     fontWeight: 500,
-  } as const,
-  pagination: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 12,
-    marginTop: 12,
-    padding: 8,
-  } as const,
-  pageButton: {
-    padding: '4px 12px',
-    border: '1px solid #ccc',
-    borderRadius: 4,
-    backgroundColor: '#fff',
-    cursor: 'pointer',
-    fontSize: 14,
-  } as const,
-  pageInfo: {
-    fontSize: 13,
-    color: '#666',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+    zIndex: 1000,
   } as const,
 }

@@ -1,9 +1,18 @@
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import type { PlaceSearch } from '../hooks/usePlaceSearch'
 import type { SearchArea } from '../hooks/useSearchArea'
 
-import { CoordinateInput } from './CoordinateInput'
+/** Logarithmic radius steps in km: 200m, 500m, 1km, 2km, 5km, 10km, 20km, 50km, unlimited */
+const RADIUS_STEPS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 500] as const
+
+/** Format a radius value in km for display */
+function formatRadius(km: number, t: (key: string) => string): string {
+  if (km >= 500) return t('nearby.unlimited')
+  if (km >= 1) return `${km} km`
+  return `${Math.round(km * 1000)} m`
+}
 
 type NearbyFiltersProps = {
   place: PlaceSearch
@@ -17,6 +26,19 @@ type NearbyFiltersProps = {
 /** Search form of the nearby routes: place, coordinates, GPS position and radius. Takes the width it is given. */
 export function NearbyFilters({ place, area, searching, error }: NearbyFiltersProps) {
   const { t } = useTranslation()
+
+  // Find the closest matching index for the current radius
+  const radiusIndex = useMemo(() => {
+    const idx = RADIUS_STEPS.indexOf(area.radius as (typeof RADIUS_STEPS)[0])
+    return idx >= 0
+      ? idx
+      : RADIUS_STEPS.findIndex((step, i) => {
+          if (i === RADIUS_STEPS.length - 1) return true
+          return area.radius <= step
+        })
+  }, [area.radius])
+
+  const radiusLabel = formatRadius(RADIUS_STEPS[radiusIndex], t)
 
   return (
     <>
@@ -55,39 +77,20 @@ export function NearbyFilters({ place, area, searching, error }: NearbyFiltersPr
       </div>
 
       <div style={styles.section}>
-        <div style={styles.coordinateRow}>
-          <CoordinateInput
-            label={t('nearby.lat')}
-            value={area.lat}
-            onChange={area.setLat}
-            onBlur={area.centerOnCurrent}
-            placeholder="48.77"
-          />
-          <CoordinateInput
-            label={t('nearby.lng')}
-            value={area.lng}
-            onChange={area.setLng}
-            onBlur={area.centerOnCurrent}
-            placeholder="9.16"
-          />
-        </div>
-        <button onClick={area.locateMe} style={styles.gpsButton} disabled={area.usingGps}>
-          {area.usingGps ? t('nearby.gpsLoading') : t('nearby.gpsPosition')}
-        </button>
-      </div>
-
-      <div style={styles.section}>
         <label htmlFor="nearby-radius" style={styles.label}>
-          {t('nearby.radius')}: {area.radius >= 1 ? `${area.radius} km` : `${area.radius * 1000} m`}
+          {t('nearby.radius')}: {radiusLabel}
         </label>
         <input
           id="nearby-radius"
           type="range"
-          min={0.5}
-          max={30}
-          step={0.5}
-          value={area.radius}
-          onChange={(e) => area.setRadius(parseFloat(e.target.value))}
+          min={0}
+          max={RADIUS_STEPS.length - 1}
+          step={1}
+          value={radiusIndex}
+          onChange={(e) => {
+            const index = parseInt(e.target.value, 10)
+            area.setRadius(RADIUS_STEPS[index])
+          }}
           style={styles.range}
         />
       </div>
@@ -118,10 +121,6 @@ const styles = {
     borderRadius: 4,
     marginBottom: 8,
     boxSizing: 'border-box',
-  } as const,
-  coordinateRow: {
-    display: 'flex',
-    gap: 8,
   } as const,
   placeRow: {
     display: 'flex',
@@ -180,18 +179,6 @@ const styles = {
   } as const,
   range: {
     width: '100%',
-  } as const,
-  gpsButton: {
-    width: '100%',
-    padding: '10px 16px',
-    fontSize: 14,
-    fontWeight: 500,
-    backgroundColor: '#2196f3',
-    color: '#fff',
-    border: 'none',
-    borderRadius: 4,
-    cursor: 'pointer',
-    marginTop: 8,
   } as const,
   error: {
     padding: '8px 12px',

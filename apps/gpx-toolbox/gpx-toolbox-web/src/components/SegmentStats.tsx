@@ -9,6 +9,7 @@ import {
   calculateMaxSpeed,
   calculateTotalDistance,
   getTimeRange,
+  hasTimestamps,
 } from '@plusone/gpx-toolbox-utils'
 
 import { formatDistance, formatDuration } from '../utils/format'
@@ -40,10 +41,14 @@ export function SegmentStats({ points }: SegmentStatsProps) {
       <Stat label={t('segmentStats.distance')} value={formatDistance(totalDistance)} />
       <Stat label={t('segmentStats.elevationGain')} value={`${Math.round(elevationGain)} m`} />
       <Stat label={t('segmentStats.elevationLoss')} value={`${Math.round(elevationLoss)} m`} />
-      <Stat label={t('segmentStats.duration')} value={formatDuration(duration)} />
-      <Stat label={t('segmentStats.avgSpeed')} value={`${avgSpeed} km/h`} />
-      <Stat label={t('segmentStats.maxSpeed')} value={`${maxSpeed} km/h`} />
-      <Stat label={t('segmentStats.time')} value={timeRange} />
+      {hasTimestamps(points) ? (
+        <>
+          <Stat label={t('segmentStats.duration')} value={formatDuration(duration)} />
+          <Stat label={t('segmentStats.avgSpeed')} value={`${avgSpeed} km/h`} />
+          <Stat label={t('segmentStats.maxSpeed')} value={`${maxSpeed} km/h`} />
+          <Stat label={t('segmentStats.time')} value={timeRange} />
+        </>
+      ) : null}
     </div>
   )
 }

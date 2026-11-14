@@ -8,8 +8,6 @@ import markerIcon2xUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import markerIconUrl from 'leaflet/dist/images/marker-icon.png'
 import markerShadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-import { mapLocateCircleFill, mapLocateMarkerFill, mapLocateMarkerRing } from '../utils/routeColors'
-
 /**
  * Leaflet derives the default marker image path from the CSS background URL of `.leaflet-default-icon-path`.
  * Vite inlines that image as a data URL in production builds, which breaks the derivation, so set the URLs explicitly.
@@ -30,27 +28,19 @@ const tileLayers: Record<string, string> = {
   Satellite: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
 }
 
-/**
- * Style of the "my location" dot. The plugin's marker draws a circle using `radius`,
- * but its typings only allow `PathOptions | MarkerOptions`, hence the separate constant.
- */
-const locateMarkerStyle: L.CircleMarkerOptions = {
-  radius: 5,
-  color: mapLocateMarkerRing,
-  fillColor: mapLocateMarkerFill,
-  fillOpacity: 0.9,
-  weight: 2,
-}
-
 type MapProps = {
   children?: ReactNode
   center?: [number, number]
   zoom?: number
   mapRef?: RefObject<L.Map | null>
   onMapReady?: (map: L.Map | null) => void
+  /** Called when the locate button finds the user's position, so the caller can update the search area */
+  onLocate?: (lat: number, lng: number) => void
+  /** Called once the map is ready so the caller can get a handle to reset the locate button */
+  onResetLocateReady?: (resetLocate: () => void) => void
 }
 
-export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProps) {
+export function Map({ children, center, zoom = 12, mapRef, onMapReady, onLocate, onResetLocateReady }: MapProps) {
   const { t } = useTranslation()
   const [initCenter, setInitCenter] = useState<[number, number] | null>(null)
   const mapDomRef = useRef<HTMLDivElement>(null)
@@ -61,6 +51,10 @@ export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProp
   mapRefRef.current = mapRef
   const onMapReadyRef = useRef(onMapReady)
   onMapReadyRef.current = onMapReady
+  const onLocateRef = useRef(onLocate)
+  onLocateRef.current = onLocate
+  const onResetLocateReadyRef = useRef(onResetLocateReady)
+  onResetLocateReadyRef.current = onResetLocateReady
 
   // Initial centering from browser location
   useEffect(() => {
@@ -102,19 +96,30 @@ export function Map({ children, center, zoom = 12, mapRef, onMapReady }: MapProp
     // Scale control (metric + imperial)
     L.control.scale({ imperial: true, position: 'bottomleft' }).addTo(map)
 
-    // Locate control (leaflet-locatecontrol plugin)
-    new LocateControl({
+    // Locate control (leaflet-locatecontrol plugin) — only used for its button;
+    // the search area layers (marker + circle) visualize the center, so hide the control's own visuals
+    const locateControl = new LocateControl({
       position: 'topleft',
       strings: { title: t('map.locateTitle') },
       flyTo: true,
-      markerStyle: locateMarkerStyle,
-      circleStyle: {
-        color: mapLocateMarkerRing,
-        fillColor: mapLocateCircleFill,
-        fillOpacity: 0.1,
-        weight: 1,
+      locateOptions: {
+        maxZoom: 15,
       },
+      drawMarker: false,
+      drawCircle: false,
     }).addTo(map)
+
+    // Expose a reset function so the caller can clear the locate button state
+    // when the user manually moves the search center (click, drag marker)
+    if (onResetLocateReadyRef.current) {
+      onResetLocateReadyRef.current(() => locateControl.stop())
+    }
+
+    // If the caller provides an onLocate callback, use it instead of the default behavior
+    // so the caller can update the search area (e.g. show the search radius)
+    map.on('locationfound', (e: L.LocationEvent) => {
+      onLocateRef.current?.(e.latlng.lat, e.latlng.lng)
+    })
 
     // Children (e.g. track overlays) — rendered by their own React components that directly manipulate the map
     if (children) {

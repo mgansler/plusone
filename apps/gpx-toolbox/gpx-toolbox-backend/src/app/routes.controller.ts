@@ -38,7 +38,6 @@ import {
   QueryRouteDto,
   UpdateRouteDto,
 } from './dto/route.dto'
-import { NearbyRouteResponseDto } from './dto/nearby-route-response.dto'
 import { ListRoutesResponseDto, RouteResponseDto } from './dto/list-routes-response.dto'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { JwtPayload } from './jwt.strategy'
@@ -77,9 +76,21 @@ export class RoutesController {
   @Get()
   @ApiOperation({ operationId: 'listRoutes' })
   @ApiBearerAuth()
+  @ApiQuery({ name: 'lat', type: Number, required: false, description: 'Center latitude for nearby search' })
+  @ApiQuery({ name: 'lng', type: Number, required: false, description: 'Center longitude for nearby search' })
+  @ApiQuery({ name: 'radius', type: Number, required: false, description: 'Radius in kilometers for nearby search' })
   @ApiOkResponse({ type: ListRoutesResponseDto, description: 'List of routes' })
-  async findAll(@Req() req: Request & { user: JwtPayload }, @Query() query: QueryRouteDto) {
-    return this.routesService.findAll(query, req.user.sub)
+  async listRoutes(
+    @Req() req: Request & { user: JwtPayload },
+    @Query() query: QueryRouteDto,
+    @Query('lat', new ParseFloatPipe({ optional: true })) latitude?: number,
+    @Query('lng', new ParseFloatPipe({ optional: true })) longitude?: number,
+    @Query('radius', new ParseFloatPipe({ optional: true })) radius?: number,
+  ) {
+    if (latitude != null && longitude != null && radius != null) {
+      return this.routesService.findNearby(latitude, longitude, radius, query, req.user.sub)
+    }
+    return this.routesService.findNearby(null, null, null, query, req.user.sub)
   }
 
   @Get(':id/export')
@@ -96,22 +107,6 @@ export class RoutesController {
     response.setHeader('Content-Type', 'application/gpx+xml')
     response.setHeader('Content-Disposition', 'attachment; filename="route.gpx"')
     response.send(gpxContent)
-  }
-
-  @Get('nearby')
-  @ApiOperation({ operationId: 'findNearbyRoutes' })
-  @ApiBearerAuth()
-  @ApiQuery({ name: 'lat', type: Number })
-  @ApiQuery({ name: 'lng', type: Number })
-  @ApiQuery({ name: 'radius', type: Number, description: 'Radius in kilometers' })
-  @ApiOkResponse({ type: [NearbyRouteResponseDto], description: 'Routes within radius' })
-  async findNearby(
-    @Req() req: Request & { user: JwtPayload },
-    @Query('lat', ParseFloatPipe) latitude: number,
-    @Query('lng', ParseFloatPipe) longitude: number,
-    @Query('radius', ParseFloatPipe) radius: number,
-  ) {
-    return this.routesService.findNearby(latitude, longitude, radius, req.user.sub)
   }
 
   @Get(':id')

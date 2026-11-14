@@ -7,6 +7,7 @@ import { slicePointsByDistance } from '../utils/track'
 import { mapClickHandler, mapHoverMarker } from '../utils/routeColors'
 
 import { Map } from './Map'
+import { SegmentLegend } from './SegmentLegend'
 import { SegmentOverlay } from './SegmentOverlay'
 import { PointDetails } from './PointDetails'
 
@@ -65,15 +66,23 @@ export function SegmentMap({ points, range, totalDistKm, hoveredPoint }: Segment
     <div style={styles.mapArea}>
       <Map onMapReady={setMapInstance} />
       {showSegment && mapInstance && (
-        <SegmentOverlay
-          points={points}
-          mapInstance={mapInstance}
-          range={range}
-          totalDistKm={totalDistKm}
-          fitBounds={range[0] === 0 && range[1] >= totalDistKm}
-        >
-          <TrackClickHandler points={points} range={range} mapInstance={mapInstance} onPointClick={handlePointClick} />
-        </SegmentOverlay>
+        <>
+          <SegmentOverlay
+            points={points}
+            mapInstance={mapInstance}
+            range={range}
+            totalDistKm={totalDistKm}
+            fitBounds={range[0] === 0 && range[1] >= totalDistKm}
+          >
+            <TrackClickHandler
+              points={points}
+              range={range}
+              mapInstance={mapInstance}
+              onPointClick={handlePointClick}
+            />
+          </SegmentOverlay>
+          <SegmentLegend />
+        </>
       )}
       {selectedPoint && <PointDetails point={selectedPoint} onClose={() => setSelectedPoint(null)} />}
     </div>

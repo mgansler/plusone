@@ -16,7 +16,7 @@ describe('authentication', () => {
     // Back from Google (mock) with the JWT, which is removed from the URL
     cy.location('pathname').should('eq', '/routes')
     cy.location('hash').should('eq', '')
-    cy.findByRole('heading', { name: 'Routen (0)' }).should('be.visible')
+    cy.findByRole('heading', { name: 'Routen in der Nähe' }).should('be.visible')
     cy.findByText(GOOGLE_USER.name).should('be.visible')
     cy.getCookie('gpx_toolbox_oauth').should('be.null')
 

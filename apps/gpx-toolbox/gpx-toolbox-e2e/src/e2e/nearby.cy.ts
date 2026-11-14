@@ -1,31 +1,8 @@
-// The search measures the distance to the midpoint of a route; this is the midpoint of the Hausrunde fixture
-const HAUSRUNDE = { latitude: 48.7898, longitude: 9.2029 }
-
-/** The midpoint of the Bergtour fixture is about 10.5 km away from the one of the Hausrunde */
-const RADIUS_TO_REACH_BERGTOUR_KM = 15
+import { HAUSRUNDE, RADIUS_TO_REACH_BERGTOUR_KM, setRadius, visitRoutesAt } from '../support/nearby-helpers'
 
 /** Open /nearby with the browser located at `position`, so the search does not wait for a permission prompt */
 function visitNearbyAt(position: { latitude: number; longitude: number }) {
-  cy.visit('/nearby', {
-    onBeforeLoad(win) {
-      Object.defineProperty(win.navigator, 'geolocation', {
-        configurable: true,
-        value: {
-          getCurrentPosition: (onFound: PositionCallback) => onFound({ coords: position } as GeolocationPosition),
-        },
-      })
-    },
-  })
-}
-
-/** Move the radius slider; React only notices a value set through the native setter followed by an input event */
-function setRadius(km: number) {
-  cy.findByLabelText(/^Radius:/).then(($slider) => {
-    const slider = $slider[0] as HTMLInputElement
-    const win = slider.ownerDocument.defaultView as Window & typeof globalThis
-    Object.getOwnPropertyDescriptor(win.HTMLInputElement.prototype, 'value')?.set?.call(slider, String(km))
-    slider.dispatchEvent(new win.Event('input', { bubbles: true }))
-  })
+  visitRoutesAt(position)
 }
 
 function uploadRoutes() {
@@ -125,7 +102,7 @@ describe('nearby routes on mobile', () => {
       cy.findAllByRole('button', { name: '+ Vergleich' })
         .should('have.length', 2)
         .each(($button) => cy.wrap($button).click())
-      cy.findByLabelText('Vergleich').within(() => {
+      cy.findByRole('region', { name: 'Vergleich' }).within(() => {
         cy.findByText('Vergleich (2)').should('be.visible')
         cy.findByRole('link', { name: 'Vergleich →' }).click()
       })
@@ -146,6 +123,6 @@ describe('nearby routes on mobile', () => {
     cy.findByRole('dialog', { name: 'Höhenprofil' }).should('be.visible')
 
     cy.findByRole('link', { name: '← Zurück' }).click()
-    cy.location('pathname').should('eq', '/nearby')
+    cy.location('pathname').should('eq', '/routes')
   })
 })

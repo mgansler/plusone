@@ -1,19 +1,30 @@
+import { HAUSRUNDE, RADIUS_TO_REACH_BERGTOUR_KM, setRadius, visitRoutesAt } from '../support/nearby-helpers'
+
 describe('comparing routes', () => {
   beforeEach(() => {
-    cy.visitLoggedIn('/routes')
+    cy.visitLoggedIn('/settings')
     cy.uploadRoute('hausrunde.gpx')
     cy.uploadRoute('bergtour.gpx')
-    cy.reload()
+    visitRoutesAt(HAUSRUNDE)
+    // Expand radius to find both routes
+    setRadius(RADIUS_TO_REACH_BERGTOUR_KM)
+    cy.findByText('2 Routen gefunden').should('be.visible')
   })
 
-  it('compares routes selected in the route list', () => {
-    cy.findByRole('link', { name: /Hausrunde/ }).within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
+  it('compares routes selected in the nearby results', () => {
+    cy.findByText('Hausrunde')
+      .parent()
+      .within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
     cy.findByText('Füge Routen hinzu, um sie zu vergleichen.').should('be.visible')
-    cy.findByRole('link', { name: /Bergtour/ }).within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
+    cy.findByText('Bergtour')
+      .parent()
+      .within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
 
     // The selection survives a reload
     cy.reload()
-    cy.findByLabelText('Vergleich').within(() => {
+    // Re-set radius after reload
+    setRadius(RADIUS_TO_REACH_BERGTOUR_KM)
+    cy.findByRole('region', { name: 'Vergleich' }).within(() => {
       cy.findByText('Vergleich (2)').should('be.visible')
       cy.findByRole('link', { name: 'Vergleich →' }).click()
     })
@@ -35,8 +46,12 @@ describe('comparing routes', () => {
   })
 
   it('shows a removed route as not found', () => {
-    cy.findByRole('link', { name: /Hausrunde/ }).within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
-    cy.findByRole('link', { name: /Bergtour/ }).within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
+    cy.findByText('Hausrunde')
+      .parent()
+      .within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
+    cy.findByText('Bergtour')
+      .parent()
+      .within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
     cy.task('db:reset')
     cy.visitLoggedIn('/compare')
 

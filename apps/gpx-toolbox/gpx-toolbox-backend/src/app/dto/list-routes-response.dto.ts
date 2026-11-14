@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 
+import { NearbyRouteResponseDto } from './nearby-route-response.dto'
+
 export class ListRoutesResponseDto {
   @ApiProperty({ description: 'Total number of routes', example: 42 })
   total: number
@@ -13,8 +15,8 @@ export class ListRoutesResponseDto {
   @ApiProperty({ description: 'Total number of pages', example: 1 })
   totalPages: number
 
-  @ApiProperty({ description: 'List of routes', type: 'array' })
-  items: Array<RouteResponseDto>
+  @ApiProperty({ description: 'List of routes', type: [NearbyRouteResponseDto] })
+  items: Array<NearbyRouteResponseDto>
 }
 
 export class RouteResponseDto {

@@ -5,7 +5,7 @@ import { mockViewport } from '../layout/mockViewport'
 
 import { TopBar } from './TopBar'
 
-const NAV_LABELS = ['In der Nähe', 'Routen', 'Aktivitäten', 'Utils', 'Einstellungen']
+const NAV_LABELS = ['Routen', 'Aktivitäten', 'Utils', 'Einstellungen']
 
 describe('TopBar', () => {
   afterEach(() => {

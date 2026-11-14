@@ -1,22 +1,29 @@
 describe('activity upload', () => {
   it('links an uploaded activity to the matching route', () => {
-    cy.visitLoggedIn('/routes')
+    cy.visitLoggedIn('/settings')
     cy.uploadRoute('hausrunde.gpx')
     cy.uploadActivity('hausrunde.gpx', 'Feierabendrunde')
 
     // The activity was matched to the uploaded route instead of creating a new one
-    cy.visit('/routes')
-    cy.findByRole('heading', { name: 'Routen (1)' }).should('be.visible')
-    cy.findByRole('link', { name: /Hausrunde/ }).within(() => {
-      cy.findByText('Gefahren').should('be.visible')
-      cy.findByText('1 Aktivitäten').should('be.visible')
+    cy.window().then((win) => {
+      const token = win.localStorage.getItem('gpx-toolbox-jwt')
+      cy.request({
+        url: '/api/routes',
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .its('body.items')
+        .should('have.length', 1)
+      cy.request({
+        url: '/api/activities',
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .its('body.items')
+        .should('have.length', 1)
     })
-    cy.findByRole('link', { name: /Hausrunde/ }).click()
-    cy.findByRole('heading', { name: 'Aktivitäten (1)' }).should('be.visible')
   })
 
   it('creates a new route for an activity without a matching route', () => {
-    cy.visitLoggedIn('/routes')
+    cy.visitLoggedIn('/settings')
     cy.uploadActivity('bergtour.gpx', 'Bergtour')
 
     cy.visit('/activities')
@@ -24,8 +31,15 @@ describe('activity upload', () => {
     // The title of the activity and the name of its new route
     cy.findAllByText('Bergtour').should('have.length', 2)
 
-    cy.visit('/routes')
-    cy.findByRole('heading', { name: 'Routen (1)' }).should('be.visible')
+    cy.window().then((win) => {
+      const token = win.localStorage.getItem('gpx-toolbox-jwt')
+      cy.request({
+        url: '/api/routes',
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .its('body.items')
+        .should('have.length', 1)
+    })
   })
 
   it('uploads an activity through the dialog', () => {

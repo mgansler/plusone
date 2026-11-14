@@ -32,7 +32,6 @@ const { mutation } = vi.hoisted(() => ({
 }))
 
 vi.mock('@plusone/gpx-toolbox-api-client', () => ({
-  getFindNearbyRoutesQueryKey: () => [],
   getGetRouteQueryKey: () => [],
   getListAllActivitiesQueryKey: () => [],
   getListRouteActivitiesQueryKey: () => [],

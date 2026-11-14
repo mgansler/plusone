@@ -269,9 +269,11 @@ describe('DTO type shapes', () => {
       source: 'manualImport',
       stats: { distance: 5000 },
       polyline: [{ lat: 48.0, lng: 11.0 }],
+      createdAt: '2024-01-01T00:00:00Z',
     }
     expect(dto.distance).toBe(1500)
     expect(dto.distanceKm).toBe('1.50')
+    expect(dto.createdAt).toBe('2024-01-01T00:00:00Z')
   })
 
   it('ListRoutesResponseDto has all expected fields', () => {

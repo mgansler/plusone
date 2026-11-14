@@ -160,88 +160,6 @@ export class RoutesService {
   }
 
   /**
-   * List routes with optional filters and pagination.
-   *
-   * Note: JSON field filters (distance, elevation) are applied in-memory
-   * because SQLite/Prisma JSON path filtering has limited support.
-   */
-  async findAll(
-    query: QueryRouteDto,
-    userId: string,
-  ): Promise<{
-    items: Array<FormattedRoute>
-    total: number
-    page: number
-    limit: number
-    totalPages: number
-  }> {
-    const {
-      status,
-      source,
-      sortBy = 'createdAt',
-      order = 'DESC',
-      minDistance,
-      maxDistance,
-      minElevation,
-      maxElevation,
-      page = 1,
-      limit = 50,
-    } = query
-
-    // Build Prisma where clause (only non-JSON fields)
-    const where: Prisma.RouteWhereInput = { userId }
-
-    if (status) {
-      where.status = status
-    }
-    if (source) {
-      where.source = source
-    }
-
-    // Fetch all matching routes (SQLite JSON filtering is limited)
-    const allRoutes = await this.prismaService.route.findMany({
-      where,
-      orderBy: { [sortBy]: order === 'ASC' ? Prisma.SortOrder.asc : Prisma.SortOrder.desc },
-      // The list shows the number of activities per route
-      include: { activities: { orderBy: { riddenAt: 'desc' } } },
-    })
-
-    // Apply JSON field filters in-memory
-    let filtered = allRoutes
-
-    if (minDistance || maxDistance) {
-      filtered = filtered.filter((route) => {
-        const stats = this.parseJsonField(route.stats) as { distance?: number }
-        const dist = stats.distance ?? 0
-        if (minDistance && dist < minDistance) return false
-        if (maxDistance && dist > maxDistance) return false
-        return true
-      })
-    }
-
-    if (minElevation || maxElevation) {
-      filtered = filtered.filter((route) => {
-        const stats = this.parseJsonField(route.stats) as { elevationGain?: number }
-        const elev = stats.elevationGain ?? 0
-        if (minElevation && elev < minElevation) return false
-        if (maxElevation && elev > maxElevation) return false
-        return true
-      })
-    }
-
-    const total = filtered.length
-    const paginated = filtered.slice((page - 1) * limit, page * limit)
-
-    return {
-      items: paginated.map((r) => this.formatRoute(r)),
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    }
-  }
-
-  /**
    * Update a route.
    */
   async update(id: string, dto: UpdateRouteDto, userId: string): Promise<FormattedRoute> {
@@ -291,13 +209,41 @@ export class RoutesService {
   }
 
   /**
-   * Find routes within a radius of a point.
+   * Find routes with optional filters.
+   * When latitude/longitude/radius are provided, filters by proximity.
+   * QueryRouteDto filters (status, source, distance, elevation, sort, pagination) are always applied.
    * Uses Haversine distance to calculate distance from center to route midpoint.
    */
-  async findNearby(latitude: number, longitude: number, radiusKm: number, userId: string) {
+  async findNearby(
+    latitude: number | null,
+    longitude: number | null,
+    radiusKm: number | null,
+    query: QueryRouteDto,
+    userId: string,
+  ) {
+    const {
+      status,
+      source,
+      sortBy = 'createdAt',
+      order = 'DESC',
+      minDistance,
+      maxDistance,
+      minElevation,
+      maxElevation,
+      page = 1,
+      limit = 50,
+    } = query
+
+    // Build Prisma where clause
+    const where: Prisma.RouteWhereInput = { userId }
+    if (status) where.status = status
+    if (source) where.source = source
+
+    // Fetch routes – use Prisma orderBy when not doing nearby search
+    const hasLocation = latitude != null && longitude != null && radiusKm != null
     const routes = await this.prismaService.route.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
+      where,
+      orderBy: hasLocation ? undefined : { [sortBy]: order === 'ASC' ? Prisma.SortOrder.asc : Prisma.SortOrder.desc },
     })
 
     const results = routes
@@ -305,29 +251,77 @@ export class RoutesService {
         const polyline = parsePolyline(route.polyline)
         if (polyline.length === 0) return null
 
-        // Use route midpoint for distance calculation
-        const midIndex = Math.floor(polyline.length / 2)
-        const midPoint = polyline[midIndex]
-        const distance = this.calculateHaversineDistance(latitude, longitude, midPoint.lat, midPoint.lng)
+        // Apply distance/elevation filters from QueryRouteDto
+        const stats = this.parseJsonField(route.stats) as { distance?: number; elevationGain?: number }
+        const dist = stats.distance ?? 0
+        const elev = stats.elevationGain ?? 0
+        if (minDistance && dist < minDistance) return null
+        if (maxDistance && dist > maxDistance) return null
+        if (minElevation && elev < minElevation) return null
+        if (maxElevation && elev > maxElevation) return null
 
-        if (distance <= radiusKm * 1000) {
-          return {
-            id: route.id,
-            name: route.name,
-            distance: Math.round(distance),
-            distanceKm: (distance / 1000).toFixed(2),
-            status: route.status,
-            source: route.source,
-            stats: route.stats,
-            polyline: downsamplePolyline(polyline, NEARBY_POLYLINE_MAX_POINTS),
-          }
+        // Calculate distance if nearby search
+        let distance = 0
+        if (latitude != null && longitude != null) {
+          const midIndex = Math.floor(polyline.length / 2)
+          const midPoint = polyline[midIndex]
+          distance = this.calculateHaversineDistance(latitude, longitude, midPoint.lat, midPoint.lng)
+          if (radiusKm != null && distance > radiusKm * 1000) return null
         }
-        return null
+
+        return {
+          id: route.id,
+          name: route.name,
+          distance: Math.round(distance),
+          distanceKm: (distance / 1000).toFixed(2),
+          status: route.status,
+          source: route.source,
+          stats: route.stats,
+          polyline: downsamplePolyline(polyline, NEARBY_POLYLINE_MAX_POINTS),
+          createdAt: route.createdAt.toISOString(),
+        }
       })
       .filter((item): item is NonNullable<typeof item> => item !== null)
-      .sort((a, b) => a.distance - b.distance)
 
-    return results
+    // Sort: by distance for nearby search, otherwise client-side for JSON-based sort fields
+    if (hasLocation) {
+      results.sort((a, b) => a.distance - b.distance)
+    } else if (sortBy !== 'createdAt') {
+      // Prisma already sorted by createdAt; for other fields, sort in-memory
+      results.sort((a, b) => {
+        const aStats = this.parseJsonField(a.stats) as { distance?: number; elevationGain?: number }
+        const bStats = this.parseJsonField(b.stats) as { distance?: number; elevationGain?: number }
+        let cmp: number
+        switch (sortBy) {
+          case 'name':
+            cmp = a.name.localeCompare(b.name)
+            break
+          case 'distance':
+            cmp = (aStats.distance ?? 0) - (bStats.distance ?? 0)
+            break
+          case 'elevationGain':
+            cmp = (aStats.elevationGain ?? 0) - (bStats.elevationGain ?? 0)
+            break
+          case 'updatedAt':
+            cmp = a.createdAt.localeCompare(b.createdAt)
+            break
+          default:
+            cmp = 0
+        }
+        return order === 'ASC' ? cmp : -cmp
+      })
+    }
+
+    const total = results.length
+    const paginated = results.slice((page - 1) * limit, page * limit)
+
+    return {
+      items: paginated,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    }
   }
 
   private formatRoute(route: RouteWithActivities): FormattedRoute {

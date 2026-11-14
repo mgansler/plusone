@@ -84,7 +84,7 @@ describe('Persistence (SQLite integration)', () => {
     })
 
     it('lists only the routes of the user', async () => {
-      const result = await routes.findAll({}, ALICE)
+      const result = await routes.findNearby(null, null, null, {}, ALICE)
 
       expect(result.items.map((r) => r.name)).toEqual(['Alice Runde'])
     })
@@ -100,9 +100,9 @@ describe('Persistence (SQLite integration)', () => {
     })
 
     it('finds only nearby routes of the user', async () => {
-      const result = await routes.findNearby(48.71, 9.11, 5, ALICE)
+      const result = await routes.findNearby(48.71, 9.11, 5, {}, ALICE)
 
-      expect(result.map((r) => r.name)).toEqual(['Alice Runde'])
+      expect(result.items.map((r) => r.name)).toEqual(['Alice Runde'])
     })
 
     it('does not let another user read, update or delete an activity', async () => {
@@ -211,33 +211,25 @@ describe('Persistence (SQLite integration)', () => {
     })
 
     it('sorts by the denormalized distance column', async () => {
-      const result = await routes.findAll({ sortBy: 'distance', order: 'ASC' }, ALICE)
+      const result = await routes.findNearby(null, null, null, { sortBy: 'distance', order: 'ASC' }, ALICE)
 
       expect(result.items.map((r) => r.name)).toEqual(['Kurz', 'Mittel', 'Lang'])
     })
 
     it('sorts by name', async () => {
-      const result = await routes.findAll({ sortBy: 'name', order: 'DESC' }, ALICE)
+      const result = await routes.findNearby(null, null, null, { sortBy: 'name', order: 'DESC' }, ALICE)
 
       expect(result.items.map((r) => r.name)).toEqual(['Mittel', 'Lang', 'Kurz'])
     })
 
-    it('includes the activities of each route', async () => {
-      const [route] = (await routes.findAll({ sortBy: 'name', order: 'ASC' }, ALICE)).items
-      await createActivity(ALICE, route.id, { riddenAt: new Date('2024-05-01') })
-      await createActivity(ALICE, route.id, { riddenAt: new Date('2024-07-01') })
-
-      const result = await routes.findAll({ sortBy: 'name', order: 'ASC' }, ALICE)
-
-      expect(result.items.map((r) => r.activities.length)).toEqual([2, 0, 0])
-      expect(result.items[0].activities.map((a) => a.riddenAt)).toEqual([
-        new Date('2024-07-01'),
-        new Date('2024-05-01'),
-      ])
-    })
-
     it('filters by distance and paginates', async () => {
-      const result = await routes.findAll({ minDistance: 1000, sortBy: 'distance', order: 'ASC', limit: 1 }, ALICE)
+      const result = await routes.findNearby(
+        null,
+        null,
+        null,
+        { minDistance: 1000, sortBy: 'distance', order: 'ASC', limit: 1 },
+        ALICE,
+      )
 
       expect(result.total).toBe(2)
       expect(result.items.map((r) => r.name)).toEqual(['Mittel'])

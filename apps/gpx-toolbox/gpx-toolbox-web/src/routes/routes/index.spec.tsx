@@ -1,47 +1,104 @@
 import { render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { compareList } from '../../hooks/useCompareList'
 import { mockViewport } from '../../layout/mockViewport'
 
 import { Route } from './index'
 
-const routes = [
+const nearbyResults = [
   {
     id: 'a',
     name: 'Hausrunde',
-    source: 'manualImport',
-    status: 'ridden',
-    stats: { distance: 12300, elevationGain: 250 },
+    polyline: [
+      { lat: 48.1, lng: 11.6 },
+      { lat: 48.2, lng: 11.7 },
+    ],
+    distance: 12.3,
+    elevationGain: 250,
   },
   {
     id: 'b',
     name: 'Bergtour',
-    source: 'manualImport',
-    status: 'planned',
-    stats: { distance: 45000, elevationGain: 900 },
+    polyline: [
+      { lat: 47.5, lng: 10.2 },
+      { lat: 47.6, lng: 10.4 },
+    ],
+    distance: 45,
+    elevationGain: 900,
   },
 ]
 
 vi.mock('@tanstack/react-router', () => ({
   createFileRoute: () => (options: object) => options,
-  Link: ({ children }: { children: ReactNode }) => <a href="/">{children}</a>,
 }))
 
 vi.mock('@plusone/gpx-toolbox-api-client', () => ({
-  ListRoutesSortBy: { createdAt: 'createdAt', name: 'name' },
   useListRoutes: () => ({
-    data: { items: routes, total: 2, page: 1, limit: 50, totalPages: 1 },
+    data: nearbyResults,
     isLoading: false,
     isError: false,
     error: null,
   }),
+  useGetRoute: () => ({ data: undefined }),
+  useExportRoute: () => ({ data: undefined, isLoading: false }),
 }))
 
 // Leaflet needs a real browser
 vi.mock('../../components/Map', () => ({
   Map: () => <div role="region" aria-label="Karte" />,
+}))
+
+// Mock the hooks that use Leaflet map instance
+vi.mock('../../hooks/useSearchArea', () => ({
+  useSearchArea: () => ({
+    lat: 48.13,
+    lng: 11.56,
+    radius: 2,
+    setLat: vi.fn(),
+    setLng: vi.fn(),
+    setRadius: vi.fn(),
+    usingGps: false,
+    locateMe: vi.fn(),
+    pickLocation: vi.fn(),
+    centerOnCurrent: vi.fn(),
+  }),
+}))
+
+vi.mock('../../hooks/usePlaceSearch', () => ({
+  usePlaceSearch: () => ({
+    place: '',
+    setPlace: vi.fn(),
+    loading: false,
+    error: null,
+    candidates: [],
+    search: vi.fn(),
+    pick: vi.fn(),
+  }),
+}))
+
+vi.mock('../../hooks/useRouteSelection', () => ({
+  useRouteSelection: () => ({
+    selectedRoute: null,
+    hoveredRoute: null,
+    highlightedRoute: null,
+    setHovered: vi.fn(),
+    toggle: vi.fn(),
+    selectFromList: vi.fn(),
+    detail: undefined,
+    points: [],
+    distanceKm: 0,
+    hasElevation: false,
+    gpxLoading: false,
+    profilePoint: null,
+    setProfilePoint: vi.fn(),
+  }),
+}))
+
+vi.mock('../../hooks/useNearbyMapLayers', () => ({
+  useSearchAreaLayers: vi.fn(),
+  useResultTrackLayers: vi.fn(),
+  useProfilePointMarker: vi.fn(),
 }))
 
 function RoutesPage() {
@@ -50,38 +107,24 @@ function RoutesPage() {
 }
 
 describe('RoutesPage', () => {
-  beforeEach(() => {
-    compareList.clear()
-  })
-
   afterEach(() => {
     vi.unstubAllGlobals()
   })
 
-  it('shows the route list next to the map on desktop', () => {
+  it('shows the nearby search next to the map on desktop', () => {
     mockViewport(false)
     render(<RoutesPage />)
 
-    expect(screen.getByRole('heading', { name: 'Routen (2)' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Routen in der Nähe' })).toBeTruthy()
     expect(screen.getByRole('region', { name: 'Karte' })).toBeTruthy()
-    expect(screen.getByRole('button', { name: /Strava-Export/ })).toBeTruthy()
   })
 
-  it('shows the route list without map and Strava export on mobile', () => {
+  it('shows the filter button on mobile', () => {
     mockViewport(true)
     render(<RoutesPage />)
 
-    expect(screen.getByRole('heading', { name: 'Routen (2)' })).toBeTruthy()
-    expect(screen.getByText('Hausrunde')).toBeTruthy()
-    expect(screen.queryByRole('region', { name: 'Karte' })).toBeNull()
-    expect(screen.queryByRole('button', { name: /Strava-Export/ })).toBeNull()
-  })
-
-  it('lets the list take the full width on mobile', () => {
-    mockViewport(true)
-    render(<RoutesPage />)
-
-    const sidebar = screen.getByRole('heading', { name: 'Routen (2)' }).parentElement?.parentElement as HTMLElement
-    expect(sidebar.style.width).toBe('100%')
+    // On mobile, the heading is inside the bottom sheet (hidden initially),
+    // but the filter button is visible
+    expect(screen.getByRole('button', { name: /Suche/ })).toBeTruthy()
   })
 })

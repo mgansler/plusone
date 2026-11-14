@@ -37,6 +37,7 @@
     "gpsPosition": "GPS Position",
     "gpsLoading": "GPS...",
     "radius": "Radius",
+    "unlimited": "Unlimited",
     "locationLoading": "Determining location...",
     "routesFound": "{{count}} routes found",
     "noRoutes": "No routes found",
@@ -48,7 +49,11 @@
     "noProfile": "No elevation profile available",
     "searchOpen": "Open search",
     "searchClose": "Close search",
-    "searchSheet": "Search"
+    "searchSheet": "Search",
+    "sortBy": "Sort by",
+    "nearest": "Nearest",
+    "newest": "Newest first",
+    "nameAZ": "Name A-Z"
   },
   "routeStatus": {
     "planned": "Planned",
@@ -227,6 +232,13 @@
     "andMore": "and {{count}} more",
     "error": "Error {{status}}",
     "unknownError": "Unknown error"
+  },
+  "segmentBreakdown": {
+    "title": "Segment Breakdown",
+    "uphill": "Climb",
+    "downhill": "Descent",
+    "flat": "Flat",
+    "segments": "{{count}} segment |||| {{count}} segments"
   },
   "segmentStats": {
     "selectPoints": "Select at least 2 points",

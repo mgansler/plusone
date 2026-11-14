@@ -57,19 +57,6 @@ export interface ImportRouteResultDto {
   duplicate: boolean
 }
 
-export interface ListRoutesResponseDto {
-  /** Total number of routes */
-  total: number
-  /** Current page number */
-  page: number
-  /** Items per page */
-  limit: number
-  /** Total number of pages */
-  totalPages: number
-  /** List of routes */
-  items: unknown[]
-}
-
 export interface PolylinePointDto {
   lat: number
   lng: number
@@ -97,6 +84,21 @@ export interface NearbyRouteResponseDto {
   stats?: NearbyRouteResponseDtoStats
   /** Simplified route track for overview maps */
   polyline: PolylinePointDto[]
+  /** Creation timestamp */
+  createdAt: string
+}
+
+export interface ListRoutesResponseDto {
+  /** Total number of routes */
+  total: number
+  /** Current page number */
+  page: number
+  /** Items per page */
+  limit: number
+  /** Total number of pages */
+  totalPages: number
+  /** List of routes */
+  items: NearbyRouteResponseDto[]
 }
 
 /**
@@ -406,6 +408,12 @@ export type ListRoutesParams = {
   page?: number
   /** Page size */
   limit?: number
+  /** Center latitude for nearby search */
+  lat?: number
+  /** Center longitude for nearby search */
+  lng?: number
+  /** Radius in kilometers for nearby search */
+  radius?: number
 }
 
 export enum ListRoutesSortBy {
@@ -415,13 +423,6 @@ export enum ListRoutesSortBy {
   createdAt = 'createdAt',
   updatedAt = 'updatedAt',
 }
-export type FindNearbyRoutesParams = {
-  lat: number
-  lng: number
-  /** Radius in kilometers */
-  radius: number
-}
-
 export type GoogleCallbackParams = {
   /** OAuth state parameter */
   state?: unknown
@@ -792,84 +793,6 @@ export function useExportRoute<TData = Awaited<ReturnType<typeof exportRoute>>, 
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
   const queryOptions = getExportRouteQueryOptions(id, options)
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>
-  }
-
-  return withQueryKey(query, queryOptions.queryKey)
-}
-
-export const findNearbyRoutes = (params: FindNearbyRoutesParams, signal?: AbortSignal) => {
-  return customAxiosInstance<NearbyRouteResponseDto[]>({ url: `/api/routes/nearby`, method: 'GET', params, signal })
-}
-
-export const getFindNearbyRoutesQueryKey = (params?: FindNearbyRoutesParams) => {
-  return [`/api/routes/nearby`, ...(params ? [params] : [])] as const
-}
-
-export const getFindNearbyRoutesQueryOptions = <TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
-  params: FindNearbyRoutesParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> },
-) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = queryOptions?.queryKey ?? getFindNearbyRoutesQueryKey(params)
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof findNearbyRoutes>>> = ({ signal }) =>
-    findNearbyRoutes(params, signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof findNearbyRoutes>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type FindNearbyRoutesQueryResult = NonNullable<Awaited<ReturnType<typeof findNearbyRoutes>>>
-export type FindNearbyRoutesQueryError = unknown
-
-export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
-  params: FindNearbyRoutesParams,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof findNearbyRoutes>>,
-          TError,
-          Awaited<ReturnType<typeof findNearbyRoutes>>
-        >,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
-  params: FindNearbyRoutesParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof findNearbyRoutes>>,
-          TError,
-          Awaited<ReturnType<typeof findNearbyRoutes>>
-        >,
-        'initialData'
-      >
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
-  params: FindNearbyRoutesParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useFindNearbyRoutes<TData = Awaited<ReturnType<typeof findNearbyRoutes>>, TError = unknown>(
-  params: FindNearbyRoutesParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findNearbyRoutes>>, TError, TData>> },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getFindNearbyRoutesQueryOptions(params, options)
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
     queryKey: DataTag<QueryKey, TData, TError>

@@ -32,4 +32,7 @@ export class NearbyRouteResponseDto {
 
   @ApiProperty({ type: [PolylinePointDto], description: 'Simplified route track for overview maps' })
   polyline: Array<PolylinePointDto>
+
+  @ApiProperty({ description: 'Creation timestamp', example: '2024-01-01T00:00:00.000Z' })
+  createdAt: string
 }

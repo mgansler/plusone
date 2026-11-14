@@ -13,7 +13,7 @@ export function CompareBar({ from }: { from?: string } = {}) {
   const canCompare = items.length >= 2
 
   return (
-    <div style={styles.bar} aria-label={t('compare.title')}>
+    <div role="region" style={styles.bar} aria-label={t('compare.title')}>
       <div style={styles.header}>
         <span style={styles.title}>
           {t('compare.title')} ({items.length})

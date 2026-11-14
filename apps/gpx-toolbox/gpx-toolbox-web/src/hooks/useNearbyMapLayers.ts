@@ -20,16 +20,21 @@ function trackStyle(isHighlighted: boolean, hasHighlight: boolean): TrackStyle {
 /**
  * Draggable marker and radius circle at the search center. A click anywhere on the map moves the center there.
  * The layers are kept across renders and updated in place.
+ * @param onResetLocate - Called when the user manually moves the search center, so the locate button can be reset.
  */
 export function useSearchAreaLayers(
   map: L.Map | null,
   { lat, lng, radius, setLat, setLng }: Pick<SearchArea, 'lat' | 'lng' | 'radius' | 'setLat' | 'setLng'>,
+  onResetLocate?: () => void,
 ) {
   const markerRef = useRef<L.Marker | null>(null)
   const circleRef = useRef<L.Circle | null>(null)
   // Latest search center for the deferred layer creation below
   const centerRef = useRef({ lat, lng, radius })
   centerRef.current = { lat, lng, radius }
+  // Stable ref for onResetLocate so it can be called inside event handlers
+  const onResetLocateRef = useRef(onResetLocate)
+  onResetLocateRef.current = onResetLocate
 
   useEffect(() => {
     if (!map) return
@@ -50,6 +55,7 @@ export function useSearchAreaLayers(
           const p = marker.getLatLng()
           setLat(p.lat)
           setLng(p.lng)
+          onResetLocateRef.current?.()
         })
         markerRef.current = marker
       }
@@ -67,6 +73,7 @@ export function useSearchAreaLayers(
       onMapClick = (e: L.LeafletMouseEvent) => {
         setLat(e.latlng.lat)
         setLng(e.latlng.lng)
+        onResetLocateRef.current?.()
       }
       map.on('click', onMapClick)
     }, 50)
@@ -118,21 +125,30 @@ export function useResultTrackLayers(
       const points = r.id === selectedDetail?.id && selectedPolyline.length >= 2 ? selectedPolyline : r.polyline
       if (points.length < 2) return
 
-      const track = L.polyline(
-        points.map((p) => [p.lat, p.lng] as [number, number]),
-        {
-          ...routeStyle(index),
-          ...trackStyle(r.id === highlighted, highlighted != null),
-          // Keep track clicks from moving the search center (map click handler)
-          bubblingMouseEvents: false,
-        },
-      )
+      const coords = points.map((p) => [p.lat, p.lng] as [number, number])
+
+      const track = L.polyline(coords, {
+        ...routeStyle(index),
+        ...trackStyle(r.id === highlighted, highlighted != null),
+        // Keep track clicks from moving the search center (map click handler)
+        bubblingMouseEvents: false,
+      })
         .bindTooltip(r.name, { sticky: true })
+        .addTo(layer)
+      trackLayers.set(r.id, track)
+
+      // Wider invisible hit area so routes are easier to tap on mobile
+      L.polyline(coords, {
+        color: '#fff',
+        weight: 20,
+        interactive: true,
+        opacity: 0,
+        bubblingMouseEvents: false,
+      })
         .on('mouseover', () => onHover(r.id, true))
         .on('mouseout', () => onHover(r.id, false))
         .on('click', () => onToggle(r.id))
         .addTo(layer)
-      trackLayers.set(r.id, track)
     })
     layer.addTo(map)
     if (highlighted) trackLayers.get(highlighted)?.bringToFront()

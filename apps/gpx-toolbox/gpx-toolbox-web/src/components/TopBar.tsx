@@ -5,7 +5,6 @@ import { TOPBAR_HEIGHT, Z_INDEX } from '../layout/tokens'
 import { useIsMobile } from '../layout/useIsMobile'
 
 const NAV_HREFS = [
-  { href: '/nearby', key: 'nearby' },
   { href: '/routes', key: 'routes' },
   { href: '/activities', key: 'activities' },
   { href: '/utils', key: 'utils' },

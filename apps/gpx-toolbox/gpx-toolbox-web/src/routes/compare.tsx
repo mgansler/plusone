@@ -51,7 +51,6 @@ function formatMeters(meters: number): string {
 
 function ComparePage() {
   const { t } = useTranslation()
-  const { from } = Route.useSearch()
   const isMobile = useIsMobile()
   const { items, remove, makeReference, clear } = useCompareList()
   const mapRef: RefObject<L.Map | null> = useRef(null)
@@ -118,8 +117,8 @@ function ComparePage() {
   }, [isMobile])
 
   const backLink = (
-    <Link to={from === 'nearby' ? '/nearby' : '/routes'} style={styles.backLink}>
-      {isMobile ? t('compare.back') : from === 'nearby' ? t('compare.backToSearch') : t('compare.backToOverview')}
+    <Link to="/routes" style={styles.backLink}>
+      {isMobile ? t('compare.back') : t('compare.backToOverview')}
     </Link>
   )
 
@@ -151,11 +150,6 @@ function ComparePage() {
                 routesLink: (
                   <Link to="/routes" style={styles.link}>
                     {t('routes.title')}
-                  </Link>
-                ),
-                nearbyLink: (
-                  <Link to="/nearby" style={styles.link}>
-                    {t('nav.nearby')}
                   </Link>
                 ),
               })}
@@ -455,15 +449,23 @@ function CompareMap({
     const layer = L.layerGroup()
     const lines = linesRef.current
     for (const track of tracks) {
-      const line = L.polyline(
-        track.points.map((p) => [p.latitude, p.longitude] as [number, number]),
-        { ...track, opacity: 0.9, weight: track.id === highlightedIdRef.current ? 7 : 4 },
-      )
+      const coords = track.points.map((p) => [p.latitude, p.longitude] as [number, number])
+
+      const line = L.polyline(coords, { ...track, opacity: 0.9, weight: track.id === highlightedIdRef.current ? 7 : 4 })
         .bindTooltip(track.name, { sticky: true })
+        .addTo(layer)
+      lines.set(track.id, line)
+
+      // Wider invisible hit area so routes are easier to tap on mobile
+      L.polyline(coords, {
+        color: '#fff',
+        weight: 20,
+        interactive: true,
+        opacity: 0,
+      })
         .on('mouseover', () => onHighlight(track.id))
         .on('mouseout', () => onHighlight(null))
         .addTo(layer)
-      lines.set(track.id, line)
     }
     layer.addTo(map)
     if (highlightedIdRef.current) lines.get(highlightedIdRef.current)?.bringToFront()

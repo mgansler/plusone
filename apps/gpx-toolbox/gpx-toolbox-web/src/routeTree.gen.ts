@@ -15,7 +15,6 @@ import { Route as CompareRouteImport } from './routes/compare'
 import { Route as DatenschutzRouteImport } from './routes/datenschutz'
 import { Route as ImpressumRouteImport } from './routes/impressum'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as NearbyRouteImport } from './routes/nearby'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as UtilsRouteImport } from './routes/utils'
 import { Route as ActivitiesIndexRouteImport } from './routes/activities/index'
@@ -51,11 +50,6 @@ const ImpressumRoute = ImpressumRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NearbyRoute = NearbyRouteImport.update({
-  id: '/nearby',
-  path: '/nearby',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -96,7 +90,6 @@ export interface FileRoutesByFullPath {
   '/datenschutz': typeof DatenschutzRoute
   '/impressum': typeof ImpressumRoute
   '/login': typeof LoginRoute
-  '/nearby': typeof NearbyRoute
   '/settings': typeof SettingsRoute
   '/utils': typeof UtilsRoute
   '/activities/$activityId': typeof ActivitiesActivityIdRoute
@@ -111,7 +104,6 @@ export interface FileRoutesByTo {
   '/datenschutz': typeof DatenschutzRoute
   '/impressum': typeof ImpressumRoute
   '/login': typeof LoginRoute
-  '/nearby': typeof NearbyRoute
   '/settings': typeof SettingsRoute
   '/utils': typeof UtilsRoute
   '/activities/$activityId': typeof ActivitiesActivityIdRoute
@@ -127,7 +119,6 @@ export interface FileRoutesById {
   '/datenschutz': typeof DatenschutzRoute
   '/impressum': typeof ImpressumRoute
   '/login': typeof LoginRoute
-  '/nearby': typeof NearbyRoute
   '/settings': typeof SettingsRoute
   '/utils': typeof UtilsRoute
   '/activities/$activityId': typeof ActivitiesActivityIdRoute
@@ -144,7 +135,6 @@ export interface FileRouteTypes {
     | '/datenschutz'
     | '/impressum'
     | '/login'
-    | '/nearby'
     | '/settings'
     | '/utils'
     | '/activities/$activityId'
@@ -159,7 +149,6 @@ export interface FileRouteTypes {
     | '/datenschutz'
     | '/impressum'
     | '/login'
-    | '/nearby'
     | '/settings'
     | '/utils'
     | '/activities/$activityId'
@@ -174,7 +163,6 @@ export interface FileRouteTypes {
     | '/datenschutz'
     | '/impressum'
     | '/login'
-    | '/nearby'
     | '/settings'
     | '/utils'
     | '/activities/$activityId'
@@ -190,7 +178,6 @@ export interface RootRouteChildren {
   DatenschutzRoute: typeof DatenschutzRoute
   ImpressumRoute: typeof ImpressumRoute
   LoginRoute: typeof LoginRoute
-  NearbyRoute: typeof NearbyRoute
   SettingsRoute: typeof SettingsRoute
   UtilsRoute: typeof UtilsRoute
   ActivitiesActivityIdRoute: typeof ActivitiesActivityIdRoute
@@ -241,13 +228,6 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/nearby': {
-      id: '/nearby'
-      path: '/nearby'
-      fullPath: '/nearby'
-      preLoaderRoute: typeof NearbyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -302,7 +282,6 @@ const rootRouteChildren: RootRouteChildren = {
   DatenschutzRoute: DatenschutzRoute,
   ImpressumRoute: ImpressumRoute,
   LoginRoute: LoginRoute,
-  NearbyRoute: NearbyRoute,
   SettingsRoute: SettingsRoute,
   UtilsRoute: UtilsRoute,
   ActivitiesActivityIdRoute: ActivitiesActivityIdRoute,

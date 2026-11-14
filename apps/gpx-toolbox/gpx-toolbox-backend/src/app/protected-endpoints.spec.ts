@@ -25,7 +25,6 @@ describe('Protected endpoints', () => {
   let token: string
 
   const routesService = {
-    findAll: vi.fn(),
     findById: vi.fn(),
     update: vi.fn(),
     remove: vi.fn(),
@@ -84,7 +83,7 @@ describe('Protected endpoints', () => {
       const forged = new JwtService({ secret: 'other' }).sign({ sub: 'user-1' })
 
       await request(app.getHttpServer()).get('/routes').set('Authorization', `Bearer ${forged}`).expect(401)
-      expect(routesService.findAll).not.toHaveBeenCalled()
+      expect(routesService.findNearby).not.toHaveBeenCalled()
     })
 
     it('rejects an expired token', async () => {
@@ -97,15 +96,15 @@ describe('Protected endpoints', () => {
       const noSub = sign({ name: 'no user id' })
 
       await request(app.getHttpServer()).get('/routes').set('Authorization', `Bearer ${noSub}`).expect(401)
-      expect(routesService.findAll).not.toHaveBeenCalled()
+      expect(routesService.findNearby).not.toHaveBeenCalled()
     })
 
     it('passes the user id of the token to the service', async () => {
-      routesService.findAll.mockResolvedValue({ items: [] })
+      routesService.findNearby.mockResolvedValue({ items: [] })
 
       await get('/routes').expect(200)
 
-      expect(routesService.findAll).toHaveBeenCalledWith(expect.anything(), 'user-1')
+      expect(routesService.findNearby).toHaveBeenCalledWith(null, null, null, expect.anything(), 'user-1')
     })
   })
 
@@ -150,20 +149,17 @@ describe('Protected endpoints', () => {
     })
 
     it('parses the nearby query as numbers', async () => {
-      routesService.findNearby.mockResolvedValue([])
+      routesService.findNearby.mockResolvedValue({ items: [] })
 
-      await get('/routes/nearby?lat=48.5&lng=9.25&radius=10').expect(200)
+      await get('/routes?lat=48.5&lng=9.25&radius=10').expect(200)
 
-      expect(routesService.findNearby).toHaveBeenCalledWith(48.5, 9.25, 10, 'user-1')
+      expect(routesService.findNearby).toHaveBeenCalledWith(48.5, 9.25, 10, expect.anything(), 'user-1')
     })
 
-    it.each(['/routes/nearby?lat=48.5&lng=9.25', '/routes/nearby?lat=abc&lng=9.25&radius=10'])(
-      'rejects an incomplete or invalid nearby query: %s',
-      async (url) => {
-        await get(url).expect(400)
-        expect(routesService.findNearby).not.toHaveBeenCalled()
-      },
-    )
+    it('rejects invalid lat/lng/radius query params', async () => {
+      await get('/routes?lat=abc&lng=9.25&radius=10').expect(400)
+      expect(routesService.findNearby).not.toHaveBeenCalled()
+    })
   })
 
   describe('activities', () => {

@@ -17,6 +17,7 @@ import { downloadFile, slicePointsByDistance } from '../utils/track'
 
 import { DistanceRangeSlider } from './DistanceRangeSlider'
 import { ElevationProfile } from './ElevationProfile'
+import { SegmentBreakdown } from './SegmentBreakdown'
 import { SegmentStats } from './SegmentStats'
 import { SidebarDivider } from './SidebarLayout'
 
@@ -90,6 +91,8 @@ export function TrackAnalysis({
             <ExportButtons points={points} name={name} fileName={baseName} />
           </div>
 
+          <SidebarDivider />
+          <SegmentBreakdown points={points} />
           <SidebarDivider />
         </>
       )}

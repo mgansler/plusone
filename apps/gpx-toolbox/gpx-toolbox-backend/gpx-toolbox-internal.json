@@ -377,6 +377,33 @@
               "default": 50,
               "type": "number"
             }
+          },
+          {
+            "name": "lat",
+            "required": false,
+            "in": "query",
+            "description": "Center latitude for nearby search",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "lng",
+            "required": false,
+            "in": "query",
+            "description": "Center longitude for nearby search",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "radius",
+            "required": false,
+            "in": "query",
+            "description": "Radius in kilometers for nearby search",
+            "schema": {
+              "type": "number"
+            }
           }
         ],
         "responses": {
@@ -418,62 +445,6 @@
         "responses": {
           "200": {
             "description": "GPX file content"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "",
-        "tags": [
-          "routes"
-        ]
-      }
-    },
-    "/api/routes/nearby": {
-      "get": {
-        "operationId": "findNearbyRoutes",
-        "parameters": [
-          {
-            "name": "lat",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "lng",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "radius",
-            "required": true,
-            "in": "query",
-            "description": "Radius in kilometers",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Routes within radius",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NearbyRouteResponseDto"
-                  }
-                }
-              }
-            }
           }
         },
         "security": [
@@ -1375,42 +1346,6 @@
           "duplicate"
         ]
       },
-      "ListRoutesResponseDto": {
-        "type": "object",
-        "properties": {
-          "total": {
-            "type": "number",
-            "description": "Total number of routes",
-            "example": 42
-          },
-          "page": {
-            "type": "number",
-            "description": "Current page number",
-            "example": 1
-          },
-          "limit": {
-            "type": "number",
-            "description": "Items per page",
-            "example": 50
-          },
-          "totalPages": {
-            "type": "number",
-            "description": "Total number of pages",
-            "example": 1
-          },
-          "items": {
-            "type": "array",
-            "description": "List of routes"
-          }
-        },
-        "required": [
-          "total",
-          "page",
-          "limit",
-          "totalPages",
-          "items"
-        ]
-      },
       "PolylinePointDto": {
         "type": "object",
         "properties": {
@@ -1471,6 +1406,11 @@
             "items": {
               "$ref": "#/components/schemas/PolylinePointDto"
             }
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Creation timestamp",
+            "example": "2024-01-01T00:00:00.000Z"
           }
         },
         "required": [
@@ -1480,7 +1420,47 @@
           "distanceKm",
           "status",
           "source",
-          "polyline"
+          "polyline",
+          "createdAt"
+        ]
+      },
+      "ListRoutesResponseDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "description": "Total number of routes",
+            "example": 42
+          },
+          "page": {
+            "type": "number",
+            "description": "Current page number",
+            "example": 1
+          },
+          "limit": {
+            "type": "number",
+            "description": "Items per page",
+            "example": 50
+          },
+          "totalPages": {
+            "type": "number",
+            "description": "Total number of pages",
+            "example": 1
+          },
+          "items": {
+            "description": "List of routes",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NearbyRouteResponseDto"
+            }
+          }
+        },
+        "required": [
+          "total",
+          "page",
+          "limit",
+          "totalPages",
+          "items"
         ]
       },
       "RouteResponseDto": {

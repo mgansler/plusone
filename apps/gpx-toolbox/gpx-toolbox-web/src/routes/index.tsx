@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
-import { isMobileViewport } from '../layout/useIsMobile'
 import { useAuth } from '../lib/auth-context'
 
-/** Root redirect: mobile goes to /nearby, desktop goes to /routes */
+/** Root redirect: authenticated users go to /routes */
 function RootRedirect() {
   const navigate = useNavigate()
   const { isAuthenticated, isLoading } = useAuth()
@@ -15,8 +14,7 @@ function RootRedirect() {
       navigate({ to: '/login', replace: true })
       return
     }
-    const target = isMobileViewport() ? '/nearby' : '/routes'
-    navigate({ to: target, replace: true })
+    navigate({ to: '/routes', replace: true })
   }, [isAuthenticated, isLoading, navigate])
 
   return null

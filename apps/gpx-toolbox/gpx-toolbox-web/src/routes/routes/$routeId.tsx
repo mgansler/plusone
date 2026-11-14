@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 
 import { parseGpx, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 import {
-  getFindNearbyRoutesQueryKey,
   getGetRouteQueryKey,
   getListAllActivitiesQueryKey,
   getListRouteActivitiesQueryKey,
@@ -125,7 +124,6 @@ function RouteDetailPage() {
         queryClient.removeQueries({ queryKey: getGetRouteQueryKey(routeId) })
         compareList.remove(routeId)
         void queryClient.invalidateQueries({ queryKey: getListRoutesQueryKey() })
-        void queryClient.invalidateQueries({ queryKey: getFindNearbyRoutesQueryKey() })
         void queryClient.invalidateQueries({ queryKey: getListAllActivitiesQueryKey() })
         void navigate({ to: '/routes' })
       },

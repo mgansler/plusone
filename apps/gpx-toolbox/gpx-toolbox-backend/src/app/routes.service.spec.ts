@@ -171,31 +171,59 @@ describe('RoutesService', () => {
     })
   })
 
-  describe('findAll', () => {
-    it('returns paginated routes', async () => {
-      const mockRoutes = Array.from({ length: 7 }, (_, i) => ({
-        id: `route-${i}`,
-        name: `Route ${i}`,
-        description: null,
-        source: 'manualImport',
-        status: 'planned',
-        ratingTags: [],
-        notes: null,
-        stats: JSON.stringify({ distance: 5000 + i * 1000, elevationGain: 100 + i * 50 }),
-        polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        activities: [],
-      }))
-
+  describe('findNearby without location (list all with filters)', () => {
+    it('returns paginated routes when no location provided', async () => {
+      const mockRoutes = [
+        {
+          id: 'route-1',
+          name: 'Route 1',
+          status: 'planned',
+          source: 'manualImport',
+          stats: JSON.stringify({ distance: 5000, elevationGain: 100 }),
+          polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
+          createdAt: new Date('2024-01-01'),
+        },
+      ]
       mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
 
-      const result = await service.findAll({ page: 1, limit: 5 }, userId)
+      const result = await service.findNearby(null, null, null, {}, userId)
 
-      expect(result.total).toBe(7)
-      expect(result.items).toHaveLength(5)
-      expect(result.totalPages).toBe(2)
-      expect(result.page).toBe(1)
+      expect(result.items).toHaveLength(1)
+      expect(result.items[0].name).toBe('Route 1')
+      expect(result.items[0].distance).toBe(0)
+      expect(result.total).toBe(1)
+    })
+
+    it('filters by status', async () => {
+      const mockRoutes = [
+        {
+          id: 'route-1',
+          name: 'Ridden Route',
+          status: 'ridden',
+          source: 'manualImport',
+          stats: JSON.stringify({ distance: 5000, elevationGain: 100 }),
+          polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
+          createdAt: new Date('2024-01-01'),
+        },
+        {
+          id: 'route-2',
+          name: 'Planned Route',
+          status: 'planned',
+          source: 'manualImport',
+          stats: JSON.stringify({ distance: 3000, elevationGain: 50 }),
+          polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
+          createdAt: new Date('2024-01-02'),
+        },
+      ]
+      mockPrisma.route.findMany.mockImplementation((opts: any) => {
+        const filtered = mockRoutes.filter((r) => !opts.where.status || r.status === opts.where.status)
+        return Promise.resolve(filtered)
+      })
+
+      const result = await service.findNearby(null, null, null, { status: 'ridden' }, userId)
+
+      expect(result.items).toHaveLength(1)
+      expect(result.items[0].name).toBe('Ridden Route')
     })
 
     it('filters by minDistance', async () => {
@@ -203,119 +231,104 @@ describe('RoutesService', () => {
         {
           id: 'route-1',
           name: 'Short Route',
-          description: null,
-          source: 'manualImport',
           status: 'planned',
-          ratingTags: [],
-          notes: null,
+          source: 'manualImport',
           stats: JSON.stringify({ distance: 3000, elevationGain: 50 }),
           polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
           createdAt: new Date(),
-          updatedAt: new Date(),
-          activities: [],
         },
         {
           id: 'route-2',
           name: 'Long Route',
-          description: null,
-          source: 'manualImport',
           status: 'planned',
-          ratingTags: [],
-          notes: null,
+          source: 'manualImport',
           stats: JSON.stringify({ distance: 10000, elevationGain: 200 }),
           polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
           createdAt: new Date(),
-          updatedAt: new Date(),
-          activities: [],
         },
       ]
-
       mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
 
-      const result = await service.findAll({ minDistance: 5000 }, userId)
+      const result = await service.findNearby(null, null, null, { minDistance: 5000 }, userId)
 
       expect(result.items).toHaveLength(1)
       expect(result.items[0].name).toBe('Long Route')
     })
 
-    it('filters by maxDistance', async () => {
-      const mockRoutes = [
-        {
-          id: 'route-1',
-          name: 'Short Route',
-          description: null,
-          source: 'manualImport',
-          status: 'planned',
-          ratingTags: [],
-          notes: null,
-          stats: JSON.stringify({ distance: 3000, elevationGain: 50 }),
-          polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          activities: [],
-        },
-        {
-          id: 'route-2',
-          name: 'Long Route',
-          description: null,
-          source: 'manualImport',
-          status: 'planned',
-          ratingTags: [],
-          notes: null,
-          stats: JSON.stringify({ distance: 10000, elevationGain: 200 }),
-          polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          activities: [],
-        },
-      ]
-
-      mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
-
-      const result = await service.findAll({ maxDistance: 5000 }, userId)
-
-      expect(result.items).toHaveLength(1)
-      expect(result.items[0].name).toBe('Short Route')
-    })
-
-    it('filters by minElevation', async () => {
+    it('filters by maxElevation', async () => {
       const mockRoutes = [
         {
           id: 'route-1',
           name: 'Flat Route',
-          description: null,
-          source: 'manualImport',
           status: 'planned',
-          ratingTags: [],
-          notes: null,
+          source: 'manualImport',
           stats: JSON.stringify({ distance: 5000, elevationGain: 50 }),
           polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
           createdAt: new Date(),
-          updatedAt: new Date(),
-          activities: [],
         },
         {
           id: 'route-2',
           name: 'Mountain Route',
-          description: null,
-          source: 'manualImport',
           status: 'planned',
-          ratingTags: [],
-          notes: null,
+          source: 'manualImport',
           stats: JSON.stringify({ distance: 8000, elevationGain: 500 }),
           polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
           createdAt: new Date(),
-          updatedAt: new Date(),
-          activities: [],
         },
       ]
-
       mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
 
-      const result = await service.findAll({ minElevation: 100 }, userId)
+      const result = await service.findNearby(null, null, null, { maxElevation: 100 }, userId)
 
       expect(result.items).toHaveLength(1)
-      expect(result.items[0].name).toBe('Mountain Route')
+      expect(result.items[0].name).toBe('Flat Route')
+    })
+
+    it('sorts by name', async () => {
+      const mockRoutes = [
+        {
+          id: 'route-2',
+          name: 'Zebra',
+          status: 'planned',
+          source: 'manualImport',
+          stats: JSON.stringify({ distance: 5000, elevationGain: 100 }),
+          polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
+          createdAt: new Date(),
+        },
+        {
+          id: 'route-1',
+          name: 'Alpha',
+          status: 'planned',
+          source: 'manualImport',
+          stats: JSON.stringify({ distance: 3000, elevationGain: 50 }),
+          polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
+          createdAt: new Date(),
+        },
+      ]
+      mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
+
+      const result = await service.findNearby(null, null, null, { sortBy: 'name', order: 'ASC' }, userId)
+
+      expect(result.items.map((r) => r.name)).toEqual(['Alpha', 'Zebra'])
+    })
+
+    it('paginates results', async () => {
+      const mockRoutes = Array.from({ length: 7 }, (_, i) => ({
+        id: `route-${i}`,
+        name: `Route ${i}`,
+        status: 'planned',
+        source: 'manualImport',
+        stats: JSON.stringify({ distance: 5000, elevationGain: 100 }),
+        polyline: JSON.stringify([{ lat: 48.0, lng: 11.0 }]),
+        createdAt: new Date(),
+      }))
+      mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
+
+      const result = await service.findNearby(null, null, null, { page: 1, limit: 3 }, userId)
+
+      expect(result.items).toHaveLength(3)
+      expect(result.total).toBe(7)
+      expect(result.totalPages).toBe(3)
     })
   })
 
@@ -332,6 +345,7 @@ describe('RoutesService', () => {
             { lat: 48.0001, lng: 11.0001 }, // ~100m from center
             { lat: 48.0002, lng: 11.0002 },
           ]),
+          createdAt: new Date('2024-01-15'),
         },
         {
           id: 'far-1',
@@ -343,17 +357,18 @@ describe('RoutesService', () => {
             { lat: 48.1, lng: 11.1 }, // ~14km from center
             { lat: 48.1001, lng: 11.1001 },
           ]),
+          createdAt: new Date('2024-02-20'),
         },
       ]
 
       mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
 
-      const results = await service.findNearby(48.0, 11.0, 1, userId) // 1km radius
+      const result = await service.findNearby(48.0, 11.0, 1, {}, userId) // 1km radius
 
-      expect(results).toHaveLength(1)
-      expect(results[0].name).toBe('Nearby Route')
-      expect(results[0].distance).toBeLessThan(1000)
-      expect(results[0].polyline).toEqual([
+      expect(result.items).toHaveLength(1)
+      expect(result.items[0].name).toBe('Nearby Route')
+      expect(result.items[0].distance).toBeLessThan(1000)
+      expect(result.items[0].polyline).toEqual([
         { lat: 48.0001, lng: 11.0001 },
         { lat: 48.0002, lng: 11.0002 },
       ])
@@ -362,9 +377,9 @@ describe('RoutesService', () => {
     it('returns empty array when no routes exist', async () => {
       mockPrisma.route.findMany.mockResolvedValue([])
 
-      const results = await service.findNearby(48.0, 11.0, 10, userId)
+      const result = await service.findNearby(48.0, 11.0, 10, {}, userId)
 
-      expect(results).toEqual([])
+      expect(result.items).toEqual([])
     })
 
     it('returns empty array when route has empty polyline', async () => {
@@ -376,12 +391,13 @@ describe('RoutesService', () => {
           source: 'manualImport',
           stats: JSON.stringify({ distance: 0, elevationGain: 0 }),
           polyline: JSON.stringify([]),
+          createdAt: new Date('2024-01-01'),
         },
       ])
 
-      const results = await service.findNearby(48.0, 11.0, 10, userId)
+      const result = await service.findNearby(48.0, 11.0, 10, {}, userId)
 
-      expect(results).toEqual([])
+      expect(result.items).toEqual([])
     })
 
     it('sorts results by distance ascending', async () => {
@@ -396,6 +412,7 @@ describe('RoutesService', () => {
             { lat: 48.0005, lng: 11.0005 }, // ~500m
             { lat: 48.0006, lng: 11.0006 },
           ]),
+          createdAt: new Date('2024-03-10'),
         },
         {
           id: 'near-1',
@@ -407,16 +424,17 @@ describe('RoutesService', () => {
             { lat: 48.0001, lng: 11.0001 }, // ~100m
             { lat: 48.0002, lng: 11.0002 },
           ]),
+          createdAt: new Date('2024-01-05'),
         },
       ]
 
       mockPrisma.route.findMany.mockResolvedValue(mockRoutes)
 
-      const results = await service.findNearby(48.0, 11.0, 10, userId)
+      const result = await service.findNearby(48.0, 11.0, 10, {}, userId)
 
-      expect(results).toHaveLength(2)
-      expect(results[0].name).toBe('Closer Route')
-      expect(results[1].name).toBe('Farther Route')
+      expect(result.items).toHaveLength(2)
+      expect(result.items[0].name).toBe('Closer Route')
+      expect(result.items[1].name).toBe('Farther Route')
     })
   })
 

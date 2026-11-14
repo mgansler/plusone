@@ -79,20 +79,6 @@ describe('NearbyFilters', () => {
     expect(screen.getByRole('button', { name: '…' }).hasAttribute('disabled')).toBe(true)
   })
 
-  it('asks for the GPS position', () => {
-    const { area } = renderFilters()
-
-    fireEvent.click(screen.getByRole('button', { name: 'GPS-Position' }))
-
-    expect(area.locateMe).toHaveBeenCalledTimes(1)
-  })
-
-  it('disables the GPS button while locating', () => {
-    renderFilters({ area: { usingGps: true } })
-
-    expect(screen.getByRole('button', { name: 'GPS...' }).hasAttribute('disabled')).toBe(true)
-  })
-
   it('shows the radius in km or m', () => {
     const { unmount } = render(
       <NearbyFilters place={placeSearch()} area={searchArea({ radius: 2 })} searching={false} error={null} />,
@@ -104,12 +90,18 @@ describe('NearbyFilters', () => {
     expect(screen.getByLabelText('Radius: 500 m')).toBeTruthy()
   })
 
+  it('shows unlimited radius', () => {
+    render(<NearbyFilters place={placeSearch()} area={searchArea({ radius: 500 })} searching={false} error={null} />)
+    expect(screen.getByLabelText('Radius: Unbegrenzt')).toBeTruthy()
+  })
+
   it('changes the radius', () => {
     const { area } = renderFilters()
 
-    fireEvent.change(screen.getByLabelText('Radius: 2 km'), { target: { value: '5' } })
+    // Slider is index-based: index 6 corresponds to 20 km (RADIUS_STEPS[6] = 20)
+    fireEvent.change(screen.getByLabelText('Radius: 2 km'), { target: { value: '6' } })
 
-    expect(area.setRadius).toHaveBeenCalledWith(5)
+    expect(area.setRadius).toHaveBeenCalledWith(20)
   })
 
   it('shows what is going on', () => {

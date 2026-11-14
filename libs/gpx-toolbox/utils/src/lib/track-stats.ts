@@ -59,7 +59,6 @@ function formatDuration(totalSeconds: number): string {
 // ──────────────────────────────────────────────────
 // Track-level statistics
 // ──────────────────────────────────────────────────
-
 /**
  * Compute the total distance of a track (sum of all segment distances).
  */
@@ -74,7 +73,7 @@ export function calculateTotalDistance(points: Array<{ latitude: number; longitu
 /**
  * Compute cumulative elevation gain (only positive elevation changes).
  */
-export function calculateElevationGain(points: { elevation: number }[]): number {
+export function calculateElevationGain(points: Array<{ elevation: number }>): number {
   let gain = 0
   for (let i = 1; i < points.length; i++) {
     const diff = points[i].elevation - points[i - 1].elevation
@@ -86,7 +85,7 @@ export function calculateElevationGain(points: { elevation: number }[]): number 
 /**
  * Compute cumulative elevation loss (only negative elevation changes).
  */
-export function calculateElevationLoss(points: { elevation: number }[]): number {
+export function calculateElevationLoss(points: Array<{ elevation: number }>): number {
   let loss = 0
   for (let i = 1; i < points.length; i++) {
     const diff = points[i - 1].elevation - points[i].elevation
@@ -96,9 +95,17 @@ export function calculateElevationLoss(points: { elevation: number }[]): number 
 }
 
 /**
+ * Check if the track has timestamps or is just a route
+ */
+export function hasTimestamps(points: Array<{ time: Date }>): boolean {
+  if (points.length < 2) return false
+  return !isNaN(points[0].time.getTime())
+}
+
+/**
  * Compute the duration between first and last point in seconds.
  */
-export function calculateDuration(points: { time: Date }[]): number {
+export function calculateDuration(points: Array<{ time: Date }>): number {
   if (points.length < 2) return 0
   return (points[points.length - 1].time.getTime() - points[0].time.getTime()) / 1000
 }
@@ -136,7 +143,7 @@ export function calculateMaxSpeed(
 /**
  * Compute the time range as "HH:mm – HH:mm" string.
  */
-export function getTimeRange(points: { time: Date }[]): string {
+export function getTimeRange(points: Array<{ time: Date }>): string {
   if (points.length < 2) return ''
   const start = points[0].time
   const end = points[points.length - 1].time

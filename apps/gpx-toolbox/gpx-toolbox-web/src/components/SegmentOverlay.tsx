@@ -1,9 +1,16 @@
 import { type ReactNode, useCallback, useEffect, useMemo, useRef } from 'react'
 import L from 'leaflet'
 
-import { calculateHaversineDistance, type TrackPoint } from '@plusone/gpx-toolbox-utils'
+import { calculateHaversineDistance, segmentTrack, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 
-import { mapEndMarker, mapFullTrack, mapSelectedSegment, mapStartMarker } from '../utils/routeColors'
+import { mapEndMarker, mapSelectedSegment, mapStartMarker } from '../utils/routeColors'
+
+// Colors for segment types on the map — match SegmentBreakdown colors
+const SEGMENT_COLORS: Record<string, string> = {
+  uphill: '#22c55e',
+  downhill: '#f97316',
+  flat: '#60a5fa',
+}
 
 type SegmentOverlayProps = {
   points: Array<TrackPoint>
@@ -53,21 +60,28 @@ export function SegmentOverlay({
     (container: HTMLElement, selected: Array<TrackPoint>) => {
       const layer = L.layerGroup()
 
-      // ── Full track (greyed out) ──────────────────────────────────────────
-      const fullCoords: Array<[number, number]> = points.map((p) => [p.latitude, p.longitude] as [number, number])
-      L.polyline(fullCoords, {
-        color: mapFullTrack,
-        weight: 2,
-        opacity: 0.4,
-        interactive: false,
-      }).addTo(layer)
+      // ── Full track segmented by type (uphill/downhill/flat) ──────────────
+      if (points.length >= 2) {
+        const segments = segmentTrack(points)
+        for (const seg of segments) {
+          const type = seg.type ?? 'flat'
+          const coords: Array<[number, number]> = seg.points.map((p) => [p.latitude, p.longitude] as [number, number])
+          L.polyline(coords, {
+            color: SEGMENT_COLORS[type] || '#94a3b8',
+            weight: 5,
+            opacity: 0.85,
+            interactive: false,
+          }).addTo(layer)
+        }
+      }
 
-      // ── Selected segment (highlighted) ───────────────────────────────────
+      // ── Selected segment (highlighted overlay) ───────────────────────────
+      // Draw a thin, semi-transparent highlight on top so segment colors remain visible.
       const selectedCoords: Array<[number, number]> = selected.map((p) => [p.latitude, p.longitude] as [number, number])
       L.polyline(selectedCoords, {
         color: mapSelectedSegment,
-        weight: 4,
-        opacity: 0.9,
+        weight: 2,
+        opacity: 0.5,
         interactive: false,
       }).addTo(layer)
 
@@ -93,6 +107,7 @@ export function SegmentOverlay({
         requestAnimationFrame(() => {
           const c = mapInstance.getContainer()
           if (!c || !document.contains(c)) return
+          const fullCoords: Array<[number, number]> = points.map((p) => [p.latitude, p.longitude] as [number, number])
           const bounds = L.latLngBounds(fullCoords)
           mapInstance.fitBounds(bounds, { padding: [50, 50] })
         })
