@@ -3,13 +3,21 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import type L from 'leaflet'
 
-import { useListRoutes } from '@plusone/gpx-toolbox-api-client'
+import {
+  getListRoutesQueryKey,
+  importGpx,
+  ImportRouteUploadDtoSource,
+  useListRoutes,
+} from '@plusone/gpx-toolbox-api-client'
 
 import { CompareBar } from '../../components/CompareBar'
 import { COORDINATE_DECIMALS } from '../../components/CoordinateInput'
 import { Map as MapView } from '../../components/Map'
 import { NearbyFilters } from '../../components/NearbyFilters'
 import { NearbyResults } from '../../components/NearbyResults'
+import { StravaExportImportModal } from '../../components/StravaExportImportModal'
+import { UploadGpxModal } from '../../components/UploadGpxModal'
+import { actionButtonStyle } from '../../components/actionButtonStyle'
 import { usePlaceSearch } from '../../hooks/usePlaceSearch'
 import { useProfilePointMarker, useResultTrackLayers, useSearchAreaLayers } from '../../hooks/useNearbyMapLayers'
 import { useRouteSelection } from '../../hooks/useRouteSelection'
@@ -30,6 +38,8 @@ function RoutesPage() {
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [resultsOpen, setResultsOpen] = useState(false)
   const [sortBy, setSortBy] = useState<'distance' | 'name' | 'createdAt'>('distance')
+  const [showUploadModal, setShowUploadModal] = useState(false)
+  const [showExportModal, setShowExportModal] = useState(false)
 
   const area = useSearchArea(map)
   const place = usePlaceSearch(area.pickLocation)
@@ -97,6 +107,16 @@ function RoutesPage() {
   const heading = (
     <div style={styles.sidebarHeader}>
       <h2 style={styles.heading}>{t('nearby.title')}</h2>
+      <div style={styles.headingActions}>
+        <button onClick={() => setShowUploadModal(true)} style={actionButtonStyle}>
+          {t('routes.upload')}
+        </button>
+        {!isMobile && (
+          <button onClick={() => setShowExportModal(true)} style={actionButtonStyle}>
+            {t('routes.stravaExport')}
+          </button>
+        )}
+      </div>
       {isMobile && (
         <button
           type="button"
@@ -217,6 +237,22 @@ function RoutesPage() {
           </Sheet>
         </>
       )}
+      {showExportModal && (
+        <StravaExportImportModal
+          invalidateQueryKeys={[getListRoutesQueryKey()]}
+          onClose={() => setShowExportModal(false)}
+        />
+      )}
+      {showUploadModal && (
+        <UploadGpxModal
+          heading={t('routes.upload')}
+          upload={(file, name) => importGpx({ file, name, source: ImportRouteUploadDtoSource.manualImport })}
+          namePlaceholder={t('routeDetail.title') + ' (optional)'}
+          nameRequired={false}
+          invalidateQueryKeys={[getListRoutesQueryKey()]}
+          onClose={() => setShowUploadModal(false)}
+        />
+      )}
     </div>
   )
 }
@@ -279,6 +315,13 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: 8,
+    flexWrap: 'wrap' as const,
+  } as const,
+  headingActions: {
+    display: 'flex',
+    gap: 8,
+    alignItems: 'center',
   } as const,
   sheetContent: {
     flex: 1,
