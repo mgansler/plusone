@@ -3341,9 +3341,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cypress/webpack-dev-server@npm:6.1.2":
-  version: 6.1.2
-  resolution: "@cypress/webpack-dev-server@npm:6.1.2"
+"@cypress/webpack-dev-server@npm:6.2.0":
+  version: 6.2.0
+  resolution: "@cypress/webpack-dev-server@npm:6.2.0"
   dependencies:
     find-up: "npm:6.3.0"
     fs-extra: "npm:9.1.0"
@@ -3357,7 +3357,7 @@ __metadata:
     webpack-merge: "npm:^5.4.0"
   peerDependencies:
     cypress: ">=15.0.0"
-  checksum: 10c0/7e1708baf95d483115debc27047865c4f5d5fce93d12f101330965adda9757877adb54e5fcf651acb3eb5c917caca1c410ddaac818a754961a789461d15bdd99
+  checksum: 10c0/7cd6b0012de0da4948d439c58bf6130ccafb20aab27018038da7e9d86e43c3675690c98151d3b4654769cc5ed637d6e7029bd6ba7b2a63f37c4bd5b6dcbb9155
   languageName: node
   linkType: hard
 
@@ -3921,14 +3921,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/config-array@npm:^0.23.5":
-  version: 0.23.5
-  resolution: "@eslint/config-array@npm:0.23.5"
+"@eslint/config-array@npm:^0.23.6":
+  version: 0.23.6
+  resolution: "@eslint/config-array@npm:0.23.6"
   dependencies:
     "@eslint/object-schema": "npm:^3.0.5"
     debug: "npm:^4.3.1"
-    minimatch: "npm:^10.2.4"
-  checksum: 10c0/b24833c4c76e78ee075d306cd3f095db46b2db0f90cc13a6ee6e4275f9889731c05bf5403ab5fefb79c756e07ac9184ed0e04570341382f9eccbccc80e6d1a0c
+    minimatch: "npm:^11.0.5"
+  checksum: 10c0/adf798a55b4f58e1db954347633ca2c07c51d413590f274f77d1d94d3413de3d321e3558e313f616a822cb76d90e9c378ec6dd2f49b3e51a2070e61f4405f2ae
   languageName: node
   linkType: hard
 
@@ -13788,15 +13788,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"brace-expansion@npm:^5.0.8":
-  version: 5.0.9
-  resolution: "brace-expansion@npm:5.0.9"
-  dependencies:
-    balanced-match: "npm:^4.0.2"
-  checksum: 10c0/3dea38884a1c3c8b1c9c44a7402a0c76fca460f70cffb3127242b0b4cbf4472019e022ade021eec44838ff19f1dac2625dfd11dd459d7e1e055b0698a8d52fec
-  languageName: node
-  linkType: hard
-
 "braces@npm:^3.0.3, braces@npm:~3.0.2":
   version: 3.0.3
   resolution: "braces@npm:3.0.3"
@@ -16675,9 +16666,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-cypress@npm:7.0.4":
-  version: 7.0.4
-  resolution: "eslint-plugin-cypress@npm:7.0.4"
+"eslint-plugin-cypress@npm:7.0.5":
+  version: 7.0.5
+  resolution: "eslint-plugin-cypress@npm:7.0.5"
   dependencies:
     globals: "npm:^17.14.0"
   peerDependencies:
@@ -16686,7 +16677,7 @@ __metadata:
   peerDependenciesMeta:
     "@typescript-eslint/parser":
       optional: true
-  checksum: 10c0/03f8fc2a85b39c66d06781153ceb43e567a7a85a41769551534752c5f7ed593a90f69e5c1ff999203562da84cd9b0fb716b90cabfe3a37886a9a3f26ade3801e
+  checksum: 10c0/aa13ba2463ecebf1db332038f7ec3cabacf5c7e7b3ea4ccbcd8358355dcbd340d30b73886599fa983b8c354951378b45e246ddb3b7ce60372255f95eb375e0c3
   languageName: node
   linkType: hard
 
@@ -16844,13 +16835,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:10.14.0":
-  version: 10.14.0
-  resolution: "eslint@npm:10.14.0"
+"eslint@npm:10.15.0":
+  version: 10.15.0
+  resolution: "eslint@npm:10.15.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.8.0"
     "@eslint-community/regexpp": "npm:^4.12.2"
-    "@eslint/config-array": "npm:^0.23.5"
+    "@eslint/config-array": "npm:^0.23.6"
     "@eslint/config-helpers": "npm:^0.7.0"
     "@eslint/core": "npm:^1.2.1"
     "@eslint/plugin-kit": "npm:^0.7.3"
@@ -16875,7 +16866,7 @@ __metadata:
     imurmurhash: "npm:^0.1.4"
     is-glob: "npm:^4.0.0"
     json-stable-stringify-without-jsonify: "npm:^1.0.1"
-    minimatch: "npm:^10.2.6"
+    minimatch: "npm:^11.0.5"
     natural-compare: "npm:^1.4.0"
     optionator: "npm:^0.9.3"
   peerDependencies:
@@ -16885,7 +16876,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 10c0/738cdd0a1aa37b8bddefb5c89206f9f202540e8fce57f7ef82649b5bdf0acd67f7b9f2724f538b11149bd9bfdd14605125568cf73b319baec007866677af72dd
+  checksum: 10c0/81775d3bc273007b3b6f08d114f57b0c83527e8ebbb89674726bbd29b66883a6fef016a0271e05014a067d1c1079514c5523df96b86740fdfe65ef56abacb030
   languageName: node
   linkType: hard
 
@@ -18871,9 +18862,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-cli@npm:1.87.0":
-  version: 1.87.0
-  resolution: "i18next-cli@npm:1.87.0"
+"i18next-cli@npm:1.88.0":
+  version: 1.88.0
+  resolution: "i18next-cli@npm:1.88.0"
   dependencies:
     "@croct/json5-parser": "npm:^0.2.2"
     "@formatjs/icu-messageformat-parser": "npm:^3.5.22"
@@ -18898,7 +18889,7 @@ __metadata:
     yocto-spinner: "npm:^1.2.2"
   bin:
     i18next-cli: dist/esm/cli.js
-  checksum: 10c0/6dbb0bc76c31d274d82307f7fc5d68761772d43f022bdd4a41b5b1125415b4a4ba97c43c23178be89397b7a9a682158f87c47cda6f926ade142e5ce0b0d739a8
+  checksum: 10c0/444baef980573d2cad11f78110d31b3d513396c3fce8f2202972e2274c8fed8c60c0b5ade04d859283fbc28f1e5e1300d215758d428419366bb6f41d15c58c17
   languageName: node
   linkType: hard
 
@@ -22126,15 +22117,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.2.4, minimatch@npm:^10.2.6":
-  version: 10.2.6
-  resolution: "minimatch@npm:10.2.6"
-  dependencies:
-    brace-expansion: "npm:^5.0.8"
-  checksum: 10c0/4559a836243b98bd4d17ea9f7edae698717c76399eea7be374f3737f33164e4907f19e9726891ddeb122f750a5a7fa80d2ac43e851d6e5984dc4ff42ec127d3a
-  languageName: node
-  linkType: hard
-
 "minimatch@npm:^11.0.4, minimatch@npm:^11.0.5":
   version: 11.0.5
   resolution: "minimatch@npm:11.0.5"
@@ -23932,7 +23914,7 @@ __metadata:
     "@babel/preset-env": "npm:8.0.7"
     "@babel/preset-react": "npm:8.0.1"
     "@babel/preset-typescript": "npm:8.0.7"
-    "@cypress/webpack-dev-server": "npm:6.1.2"
+    "@cypress/webpack-dev-server": "npm:6.2.0"
     "@emotion/react": "npm:11.14.0"
     "@emotion/styled": "npm:11.14.1"
     "@eslint/eslintrc": "npm:3.3.7"
@@ -24025,9 +24007,9 @@ __metadata:
     css-loader: "npm:7.1.5"
     cypress: "npm:16.3.0"
     dotenv: "npm:18.0.10"
-    eslint: "npm:10.14.0"
+    eslint: "npm:10.15.0"
     eslint-config-prettier: "npm:10.1.8"
-    eslint-plugin-cypress: "npm:7.0.4"
+    eslint-plugin-cypress: "npm:7.0.5"
     eslint-plugin-import-x: "npm:4.18.1"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-react: "npm:7.37.5"
@@ -24041,7 +24023,7 @@ __metadata:
     husky: "npm:9.1.7"
     i18next: "npm:27.1.1"
     i18next-browser-languagedetector: "npm:8.3.0"
-    i18next-cli: "npm:1.87.0"
+    i18next-cli: "npm:1.88.0"
     i18next-http-backend: "npm:4.0.10"
     isbot: "npm:5.2.3"
     isomorphic-fetch: "npm:3.0.0"
@@ -24066,7 +24048,7 @@ __metadata:
     passport-http: "npm:0.3.0"
     passport-jwt: "npm:4.0.1"
     passport-local: "npm:1.0.0"
-    postcss: "npm:8.5.32"
+    postcss: "npm:8.5.33"
     prettier: "npm:3.10.1"
     prisma: "npm:7.10.1"
     react: "npm:19.3.1"
@@ -24522,14 +24504,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.5.32":
-  version: 8.5.32
-  resolution: "postcss@npm:8.5.32"
+"postcss@npm:8.5.33":
+  version: 8.5.33
+  resolution: "postcss@npm:8.5.33"
   dependencies:
     nanoid: "npm:^3.3.20"
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.2"
-  checksum: 10c0/5fa6cad84e277c2ced965dc7e8e7c0b8d7e5b76a6835591b57a43fde46e671d0c8428d365e9141c080abaae5441d495ed77ffd7472c5bd41d6c2154bd03c01d7
+  checksum: 10c0/8711c5ad32a798813ae52dd51024881915ecc6171030f9cc1d3766d1969da20ade4cf71a645d7e54668cb45cb9622eac938dc1ce91fe1f9a0fa5f0bc8cbaa05a
   languageName: node
   linkType: hard
 
