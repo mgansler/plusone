@@ -25,7 +25,7 @@ describe('trail care', () => {
   }
 
   function trailRow(name: string) {
-    return inArea().findByText(name).closest('li')
+    return inArea().findByText(name).closest('.trail-row')
   }
 
   it('shows the traffic light per trail', () => {

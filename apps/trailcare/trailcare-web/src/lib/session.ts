@@ -12,6 +12,8 @@ export function useSession() {
     retry: refetch,
     isAuthenticated: data?.authenticated === true,
     isAdmin: data?.role === Role.ADMIN,
+    isCareTeam: data?.role === Role.CARE_TEAM,
+    isCareTeamOrAdmin: data?.role === Role.CARE_TEAM || data?.role === Role.ADMIN,
   }
 }
 

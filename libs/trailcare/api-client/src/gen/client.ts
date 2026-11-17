@@ -45,6 +45,22 @@ export interface CareEntryDto {
   undoableUntil?: string
 }
 
+export interface CareNeedCategoryRefDto {
+  id: number
+  name: string
+  description?: string
+}
+
+export interface CareNeedDto {
+  id: number
+  category: CareNeedCategoryRefDto
+  description?: string
+  isDone: boolean
+  doneAt?: string
+  createdAt: string
+  updatedAt: string
+}
+
 export interface TrailDto {
   id: number
   name: string
@@ -62,6 +78,10 @@ export interface TrailDto {
   /** Calendar days since the last sweep, 0 = today */
   daysSinceSwept?: number
   lastCareEntry?: CareEntryDto
+  /** Care needs for this trail, only for CARE_TEAM and ADMIN */
+  careNeeds?: CareNeedDto[]
+  /** True when the trail has active (not done) care needs, only for CARE_TEAM and ADMIN */
+  hasActiveCareNeeds?: boolean
 }
 
 export interface TrailAreaDto {
@@ -85,6 +105,28 @@ export interface UpdateCareEntryDto {
   comment?: string
   /** Empty string removes the name */
   performedBy?: string
+}
+
+export interface CareNeedCategoryDto {
+  id: number
+  name: string
+  description?: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CreateCareNeedDto {
+  /** Category ID */
+  categoryId: number
+  description?: string
+}
+
+export interface UpdateCareNeedDto {
+  /** Category ID */
+  categoryId?: number
+  /** Empty string removes the description */
+  description?: string
+  isDone?: boolean
 }
 
 export interface SweepSettingsDto {
@@ -144,12 +186,16 @@ export interface AccessPasswordDto {
   lastUsedAt?: string
   createdAt: string
   updatedAt: string
+  /** True when this password grants CARE_TEAM role instead of USER */
+  isCareTeam: boolean
 }
 
 export interface CreateAccessPasswordDto {
   label: string
   /** Generated when omitted */
   password?: string
+  /** Grant CARE_TEAM role instead of USER */
+  isCareTeam?: boolean
 }
 
 export interface AccessPasswordWithSecretDto {
@@ -160,11 +206,15 @@ export interface AccessPasswordWithSecretDto {
   lastUsedAt?: string
   createdAt: string
   updatedAt: string
+  /** True when this password grants CARE_TEAM role instead of USER */
+  isCareTeam: boolean
   password: string
 }
 
 export interface UpdateAccessPasswordDto {
   label: string
+  /** Grant CARE_TEAM role instead of USER */
+  isCareTeam?: boolean
 }
 
 export interface RotateAccessPasswordDto {
@@ -178,9 +228,20 @@ export interface BackupInfoDto {
   createdAt: string
 }
 
+export interface CreateCareNeedCategoryDto {
+  name: string
+  description?: string
+}
+
+export interface UpdateCareNeedCategoryDto {
+  name?: string
+  description?: string
+}
+
 export enum Role {
   USER = 'USER',
   ADMIN = 'ADMIN',
+  CARE_TEAM = 'CARE_TEAM',
 }
 export interface SessionResponseDto {
   authenticated: boolean
@@ -816,6 +877,365 @@ export const useDeleteCareEntry = <TError = unknown, TContext = unknown>(
   TContext
 > => {
   return useMutation(getDeleteCareEntryMutationOptions(options), queryClient)
+}
+
+/**
+ * List active care need categories
+ */
+export const getCareNeedCategories = (signal?: AbortSignal) => {
+  return customAxiosInstance<CareNeedCategoryDto[]>({ url: `/api/care-need-categories`, method: 'GET', signal })
+}
+
+export const getGetCareNeedCategoriesQueryKey = () => {
+  return [`/api/care-need-categories`] as const
+}
+
+export const getGetCareNeedCategoriesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getCareNeedCategories>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeedCategories>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetCareNeedCategoriesQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCareNeedCategories>>> = ({ signal }) =>
+    getCareNeedCategories(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getCareNeedCategories>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetCareNeedCategoriesQueryResult = NonNullable<Awaited<ReturnType<typeof getCareNeedCategories>>>
+export type GetCareNeedCategoriesQueryError = unknown
+
+/** List active care need categories */
+export function useGetCareNeedCategories<TData = Awaited<ReturnType<typeof getCareNeedCategories>>, TError = unknown>(
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeedCategories>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCareNeedCategories>>,
+          TError,
+          Awaited<ReturnType<typeof getCareNeedCategories>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** List active care need categories */
+export function useGetCareNeedCategories<TData = Awaited<ReturnType<typeof getCareNeedCategories>>, TError = unknown>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeedCategories>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCareNeedCategories>>,
+          TError,
+          Awaited<ReturnType<typeof getCareNeedCategories>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** List active care need categories */
+export function useGetCareNeedCategories<TData = Awaited<ReturnType<typeof getCareNeedCategories>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeedCategories>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** List active care need categories */
+export function useGetCareNeedCategories<TData = Awaited<ReturnType<typeof getCareNeedCategories>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeedCategories>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetCareNeedCategoriesQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
+/**
+ * All care needs for a trail
+ */
+export const getCareNeeds = (trailId: number, signal?: AbortSignal) => {
+  return customAxiosInstance<CareNeedDto[]>({ url: `/api/care-needs/${trailId}`, method: 'GET', signal })
+}
+
+export const getGetCareNeedsQueryKey = (trailId: number) => {
+  return [`/api/care-needs/${trailId}`] as const
+}
+
+export const getGetCareNeedsQueryOptions = <TData = Awaited<ReturnType<typeof getCareNeeds>>, TError = unknown>(
+  trailId: number,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeeds>>, TError, TData>> },
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetCareNeedsQueryKey(trailId)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCareNeeds>>> = ({ signal }) => getCareNeeds(trailId, signal)
+
+  return { queryKey, queryFn, enabled: trailId !== null && trailId !== undefined, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getCareNeeds>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetCareNeedsQueryResult = NonNullable<Awaited<ReturnType<typeof getCareNeeds>>>
+export type GetCareNeedsQueryError = unknown
+
+/** All care needs for a trail */
+export function useGetCareNeeds<TData = Awaited<ReturnType<typeof getCareNeeds>>, TError = unknown>(
+  trailId: number,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeeds>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCareNeeds>>,
+          TError,
+          Awaited<ReturnType<typeof getCareNeeds>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** All care needs for a trail */
+export function useGetCareNeeds<TData = Awaited<ReturnType<typeof getCareNeeds>>, TError = unknown>(
+  trailId: number,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeeds>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCareNeeds>>,
+          TError,
+          Awaited<ReturnType<typeof getCareNeeds>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** All care needs for a trail */
+export function useGetCareNeeds<TData = Awaited<ReturnType<typeof getCareNeeds>>, TError = unknown>(
+  trailId: number,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeeds>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** All care needs for a trail */
+export function useGetCareNeeds<TData = Awaited<ReturnType<typeof getCareNeeds>>, TError = unknown>(
+  trailId: number,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeeds>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetCareNeedsQueryOptions(trailId, options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
+/**
+ * Add a care need to a trail
+ */
+export const createCareNeed = (trailId: number, createCareNeedDto: CreateCareNeedDto, signal?: AbortSignal) => {
+  return customAxiosInstance<CareNeedDto>({
+    url: `/api/care-needs/${trailId}`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: createCareNeedDto,
+    signal,
+  })
+}
+
+export const getCreateCareNeedMutationKey = () => ['createCareNeed'] as const
+
+export const getCreateCareNeedMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createCareNeed>>,
+    TError,
+    CreateCareNeedMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createCareNeed>>,
+  TError,
+  CreateCareNeedMutationVariables,
+  TContext
+> => {
+  const mutationKey = getCreateCareNeedMutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof createCareNeed>>, CreateCareNeedMutationVariables> = (
+    props,
+  ) => {
+    const { trailId, data } = props ?? {}
+
+    return createCareNeed(trailId, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type CreateCareNeedMutationResult = NonNullable<Awaited<ReturnType<typeof createCareNeed>>>
+export type CreateCareNeedMutationBody = CreateCareNeedDto
+export type CreateCareNeedMutationError = unknown
+export type CreateCareNeedMutationVariables = { trailId: number; data: CreateCareNeedDto }
+
+/** Add a care need to a trail */
+export const useCreateCareNeed = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof createCareNeed>>,
+      TError,
+      CreateCareNeedMutationVariables,
+      TContext
+    >
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<Awaited<ReturnType<typeof createCareNeed>>, TError, CreateCareNeedMutationVariables, TContext> => {
+  return useMutation(getCreateCareNeedMutationOptions(options), queryClient)
+}
+
+/**
+ * Update a care need
+ */
+export const updateCareNeed = (id: number, updateCareNeedDto: UpdateCareNeedDto, signal?: AbortSignal) => {
+  return customAxiosInstance<CareNeedDto>({
+    url: `/api/care-needs/${id}`,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    data: updateCareNeedDto,
+    signal,
+  })
+}
+
+export const getUpdateCareNeedMutationKey = () => ['updateCareNeed'] as const
+
+export const getUpdateCareNeedMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateCareNeed>>,
+    TError,
+    UpdateCareNeedMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateCareNeed>>,
+  TError,
+  UpdateCareNeedMutationVariables,
+  TContext
+> => {
+  const mutationKey = getUpdateCareNeedMutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCareNeed>>, UpdateCareNeedMutationVariables> = (
+    props,
+  ) => {
+    const { id, data } = props ?? {}
+
+    return updateCareNeed(id, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type UpdateCareNeedMutationResult = NonNullable<Awaited<ReturnType<typeof updateCareNeed>>>
+export type UpdateCareNeedMutationBody = UpdateCareNeedDto
+export type UpdateCareNeedMutationError = unknown
+export type UpdateCareNeedMutationVariables = { id: number; data: UpdateCareNeedDto }
+
+/** Update a care need */
+export const useUpdateCareNeed = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof updateCareNeed>>,
+      TError,
+      UpdateCareNeedMutationVariables,
+      TContext
+    >
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<Awaited<ReturnType<typeof updateCareNeed>>, TError, UpdateCareNeedMutationVariables, TContext> => {
+  return useMutation(getUpdateCareNeedMutationOptions(options), queryClient)
+}
+
+/**
+ * Delete a care need
+ */
+export const deleteCareNeed = (id: number, signal?: AbortSignal) => {
+  return customAxiosInstance<void>({ url: `/api/care-needs/${id}`, method: 'DELETE', signal })
+}
+
+export const getDeleteCareNeedMutationKey = () => ['deleteCareNeed'] as const
+
+export const getDeleteCareNeedMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteCareNeed>>,
+    TError,
+    DeleteCareNeedMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteCareNeed>>,
+  TError,
+  DeleteCareNeedMutationVariables,
+  TContext
+> => {
+  const mutationKey = getDeleteCareNeedMutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCareNeed>>, DeleteCareNeedMutationVariables> = (
+    props,
+  ) => {
+    const { id } = props ?? {}
+
+    return deleteCareNeed(id)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type DeleteCareNeedMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCareNeed>>>
+
+export type DeleteCareNeedMutationError = unknown
+export type DeleteCareNeedMutationVariables = { id: number }
+
+/** Delete a care need */
+export const useDeleteCareNeed = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteCareNeed>>,
+      TError,
+      DeleteCareNeedMutationVariables,
+      TContext
+    >
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<Awaited<ReturnType<typeof deleteCareNeed>>, TError, DeleteCareNeedMutationVariables, TContext> => {
+  return useMutation(getDeleteCareNeedMutationOptions(options), queryClient)
 }
 
 /**
@@ -1889,6 +2309,295 @@ export function useDownloadBackup<TData = Awaited<ReturnType<typeof downloadBack
   }
 
   return withQueryKey(query, queryOptions.queryKey)
+}
+
+/**
+ * List active care need categories
+ */
+export const getCareNeedCategories2 = (signal?: AbortSignal) => {
+  return customAxiosInstance<CareNeedCategoryDto[]>({ url: `/api/admin/care-need-categories`, method: 'GET', signal })
+}
+
+export const getGetCareNeedCategories2QueryKey = () => {
+  return [`/api/admin/care-need-categories`] as const
+}
+
+export const getGetCareNeedCategories2QueryOptions = <
+  TData = Awaited<ReturnType<typeof getCareNeedCategories2>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeedCategories2>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetCareNeedCategories2QueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCareNeedCategories2>>> = ({ signal }) =>
+    getCareNeedCategories2(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getCareNeedCategories2>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetCareNeedCategories2QueryResult = NonNullable<Awaited<ReturnType<typeof getCareNeedCategories2>>>
+export type GetCareNeedCategories2QueryError = unknown
+
+/** List active care need categories */
+export function useGetCareNeedCategories2<TData = Awaited<ReturnType<typeof getCareNeedCategories2>>, TError = unknown>(
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeedCategories2>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCareNeedCategories2>>,
+          TError,
+          Awaited<ReturnType<typeof getCareNeedCategories2>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** List active care need categories */
+export function useGetCareNeedCategories2<TData = Awaited<ReturnType<typeof getCareNeedCategories2>>, TError = unknown>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeedCategories2>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCareNeedCategories2>>,
+          TError,
+          Awaited<ReturnType<typeof getCareNeedCategories2>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** List active care need categories */
+export function useGetCareNeedCategories2<TData = Awaited<ReturnType<typeof getCareNeedCategories2>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeedCategories2>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** List active care need categories */
+export function useGetCareNeedCategories2<TData = Awaited<ReturnType<typeof getCareNeedCategories2>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getCareNeedCategories2>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetCareNeedCategories2QueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
+export const createCareNeedCategory = (createCareNeedCategoryDto: CreateCareNeedCategoryDto, signal?: AbortSignal) => {
+  return customAxiosInstance<CareNeedCategoryDto>({
+    url: `/api/admin/care-need-categories`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: createCareNeedCategoryDto,
+    signal,
+  })
+}
+
+export const getCreateCareNeedCategoryMutationKey = () => ['createCareNeedCategory'] as const
+
+export const getCreateCareNeedCategoryMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createCareNeedCategory>>,
+    TError,
+    CreateCareNeedCategoryMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createCareNeedCategory>>,
+  TError,
+  CreateCareNeedCategoryMutationVariables,
+  TContext
+> => {
+  const mutationKey = getCreateCareNeedCategoryMutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createCareNeedCategory>>,
+    CreateCareNeedCategoryMutationVariables
+  > = (props) => {
+    const { data } = props ?? {}
+
+    return createCareNeedCategory(data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type CreateCareNeedCategoryMutationResult = NonNullable<Awaited<ReturnType<typeof createCareNeedCategory>>>
+export type CreateCareNeedCategoryMutationBody = CreateCareNeedCategoryDto
+export type CreateCareNeedCategoryMutationError = unknown
+export type CreateCareNeedCategoryMutationVariables = { data: CreateCareNeedCategoryDto }
+
+export const useCreateCareNeedCategory = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof createCareNeedCategory>>,
+      TError,
+      CreateCareNeedCategoryMutationVariables,
+      TContext
+    >
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof createCareNeedCategory>>,
+  TError,
+  CreateCareNeedCategoryMutationVariables,
+  TContext
+> => {
+  return useMutation(getCreateCareNeedCategoryMutationOptions(options), queryClient)
+}
+
+export const updateCareNeedCategory = (
+  id: number,
+  updateCareNeedCategoryDto: UpdateCareNeedCategoryDto,
+  signal?: AbortSignal,
+) => {
+  return customAxiosInstance<CareNeedCategoryDto>({
+    url: `/api/admin/care-need-categories/${id}`,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    data: updateCareNeedCategoryDto,
+    signal,
+  })
+}
+
+export const getUpdateCareNeedCategoryMutationKey = () => ['updateCareNeedCategory'] as const
+
+export const getUpdateCareNeedCategoryMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateCareNeedCategory>>,
+    TError,
+    UpdateCareNeedCategoryMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateCareNeedCategory>>,
+  TError,
+  UpdateCareNeedCategoryMutationVariables,
+  TContext
+> => {
+  const mutationKey = getUpdateCareNeedCategoryMutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateCareNeedCategory>>,
+    UpdateCareNeedCategoryMutationVariables
+  > = (props) => {
+    const { id, data } = props ?? {}
+
+    return updateCareNeedCategory(id, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type UpdateCareNeedCategoryMutationResult = NonNullable<Awaited<ReturnType<typeof updateCareNeedCategory>>>
+export type UpdateCareNeedCategoryMutationBody = UpdateCareNeedCategoryDto
+export type UpdateCareNeedCategoryMutationError = unknown
+export type UpdateCareNeedCategoryMutationVariables = { id: number; data: UpdateCareNeedCategoryDto }
+
+export const useUpdateCareNeedCategory = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof updateCareNeedCategory>>,
+      TError,
+      UpdateCareNeedCategoryMutationVariables,
+      TContext
+    >
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof updateCareNeedCategory>>,
+  TError,
+  UpdateCareNeedCategoryMutationVariables,
+  TContext
+> => {
+  return useMutation(getUpdateCareNeedCategoryMutationOptions(options), queryClient)
+}
+
+/**
+ * Soft deletes the category (only if not used by any care need)
+ */
+export const deleteCareNeedCategory = (id: number, signal?: AbortSignal) => {
+  return customAxiosInstance<void>({ url: `/api/admin/care-need-categories/${id}`, method: 'DELETE', signal })
+}
+
+export const getDeleteCareNeedCategoryMutationKey = () => ['deleteCareNeedCategory'] as const
+
+export const getDeleteCareNeedCategoryMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteCareNeedCategory>>,
+    TError,
+    DeleteCareNeedCategoryMutationVariables,
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteCareNeedCategory>>,
+  TError,
+  DeleteCareNeedCategoryMutationVariables,
+  TContext
+> => {
+  const mutationKey = getDeleteCareNeedCategoryMutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteCareNeedCategory>>,
+    DeleteCareNeedCategoryMutationVariables
+  > = (props) => {
+    const { id } = props ?? {}
+
+    return deleteCareNeedCategory(id)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type DeleteCareNeedCategoryMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCareNeedCategory>>>
+
+export type DeleteCareNeedCategoryMutationError = unknown
+export type DeleteCareNeedCategoryMutationVariables = { id: number }
+
+/** Soft deletes the category (only if not used by any care need) */
+export const useDeleteCareNeedCategory = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteCareNeedCategory>>,
+      TError,
+      DeleteCareNeedCategoryMutationVariables,
+      TContext
+    >
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteCareNeedCategory>>,
+  TError,
+  DeleteCareNeedCategoryMutationVariables,
+  TContext
+> => {
+  return useMutation(getDeleteCareNeedCategoryMutationOptions(options), queryClient)
 }
 
 export const getSession = (signal?: AbortSignal) => {

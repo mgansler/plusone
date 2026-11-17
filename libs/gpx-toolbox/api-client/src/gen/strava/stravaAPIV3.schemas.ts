@@ -146,6 +146,8 @@ export type GetEffortsBySegmentId200Item = {
   athlete?: {
     /** The unique identifier of the athlete */
     id?: number
+    /** The unique identifier of the upload in string format */
+    id_str?: string
   }
   /** The effort's moving time */
   moving_time?: number
@@ -293,6 +295,8 @@ export type CreateActivityBody = {
   trainer?: number
   /** Set to 1 to mark as commute. */
   commute?: number
+  /** Set the activity's visibility to a more restrictive visibility setting (Followers Only or Only Me) by passing followers_only or only_me */
+  visibility?: string
   /** Activity tags to set, sent as form fields keyed by tag name with a boolean value, e.g. `tags[WithPet]=true` (true adds, false removes). Supported tags: WithPet, Recovery, Competition, ForACause, Commute. Any other tag is rejected. This cannot be combined with the legacy commute param in the same request. */
   tags?: string
 }
@@ -440,6 +444,8 @@ export type UpdateActivityByIdBody = {
   type?: UpdateActivityByIdBodyType
   /** An enumeration of the sport types an activity may have. Distinct from ActivityType in that it has new types (e.g. MountainBikeRide) */
   sport_type?: UpdateActivityByIdBodySportType
+  /** The visibility of the activity. Can only be set to a more restrictive visibility setting than currently set on the activity (Followers Only or Only Me) by passing followers_only or only_me */
+  visibility?: string
   /** Identifier for the gear associated with the activity. ‘none’ clears gear from activity */
   gear_id?: string
 }
@@ -461,11 +467,15 @@ export type GetLoggedInAthleteActivities200Item = {
 } & {
   /** The identifier provided at upload time */
   external_id?: string
+  /** The unique identifier of the upload in string format */
+  id_str?: string
   /** The identifier of the upload that resulted in this activity */
   upload_id?: number
   athlete?: {
     /** The unique identifier of the athlete */
     id?: number
+    /** The unique identifier of the upload in string format */
+    id_str?: string
   }
   /** The name of the activity */
   name?: string
@@ -607,9 +617,9 @@ export type GetLoggedInAthleteActivities200Item = {
    * @minimum 1
    */
   athlete_count?: number
-  /** The number of Instagram photos for this activity */
+  /** Deprecated, use total_photo_count */
   photo_count?: number
-  /** The number of Instagram and Strava photos for this activity */
+  /** The number of media items (photo & video) attached to this activity */
   total_photo_count?: number
   map?: {
     /** The identifier of the map */
@@ -667,6 +677,8 @@ export type GetLapsByActivityId200ItemActivity = {
 export type GetLapsByActivityId200ItemAthlete = {
   /** The unique identifier of the athlete */
   id?: number
+  /** The unique identifier of the upload in string format */
+  id_str?: string
 }
 
 export type GetLapsByActivityId200Item = {
@@ -751,6 +763,8 @@ export type GetCommentsByActivityIdParams = {
 export type GetCommentsByActivityId200ItemAthlete = {
   /** The unique identifier of the athlete */
   id?: number
+  /** The unique identifier of the upload in string format */
+  id_str?: string
 } & {
   /** Resource state, indicates level of detail. Possible values: 1 -> "meta", 2 -> "summary", 3 -> "detail" */
   resource_state?: number
@@ -802,6 +816,8 @@ export type GetKudoersByActivityIdParams = {
 export type GetKudoersByActivityId200Item = {
   /** The unique identifier of the athlete */
   id?: number
+  /** The unique identifier of the upload in string format */
+  id_str?: string
 } & {
   /** Resource state, indicates level of detail. Possible values: 1 -> "meta", 2 -> "summary", 3 -> "detail" */
   resource_state?: number
@@ -922,6 +938,8 @@ export type GetRoutesByAthleteIdParams = {
 export type GetRoutesByAthleteId200ItemAthlete = {
   /** The unique identifier of the athlete */
   id?: number
+  /** The unique identifier of the upload in string format */
+  id_str?: string
 } & {
   /** Resource state, indicates level of detail. Possible values: 1 -> "meta", 2 -> "summary", 3 -> "detail" */
   resource_state?: number
@@ -1129,6 +1147,8 @@ export type CreateUploadBody = {
   trainer?: string
   /** Whether the resulting activity should be tagged as a commute. */
   commute?: string
+  /** Set the activity's visibility to a more restrictive visibility setting (Followers Only or Only Me) by passing followers_only or only_me */
+  visibility?: string
   /** Activity tags to set on the resulting activity, sent as form fields keyed by tag name with a boolean value, e.g. `tags[WithPet]=true` (true adds, false removes). Supported tags: WithPet, Recovery, Competition, ForACause, Commute. Any other tag is rejected. This cannot be combined with the legacy commute param in the same request. */
   tags?: string
   /** The format of the uploaded file. */

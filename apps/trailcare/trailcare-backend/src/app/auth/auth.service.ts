@@ -40,14 +40,17 @@ export class AuthService implements OnModuleInit {
       return { role: Role.ADMIN }
     }
 
-    const accessPasswords = await this.prisma.accessPassword.findMany({ select: { id: true, passwordHash: true } })
+    const accessPasswords = await this.prisma.accessPassword.findMany({
+      select: { id: true, passwordHash: true, isCareTeam: true },
+    })
     for (const accessPassword of accessPasswords) {
       if (await verifyPassword(password, accessPassword.passwordHash)) {
         await this.prisma.accessPassword.update({
           where: { id: accessPassword.id },
           data: { lastUsedAt: new Date() },
         })
-        return { role: Role.USER, accessPasswordId: accessPassword.id }
+        const role = accessPassword.isCareTeam ? Role.CARE_TEAM : Role.USER
+        return { role, accessPasswordId: accessPassword.id }
       }
     }
 

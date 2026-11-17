@@ -9,6 +9,7 @@ const DAY_MS = 24 * 60 * 60 * 1000
 export const SESSION_TTL_MS: Record<Role, number> = {
   // Trail crews should stay logged in on their phones
   [Role.USER]: 180 * DAY_MS,
+  [Role.CARE_TEAM]: 180 * DAY_MS,
   [Role.ADMIN]: 7 * DAY_MS,
 }
 

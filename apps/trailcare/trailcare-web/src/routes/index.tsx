@@ -7,6 +7,7 @@ import { SweepStatus, useGetTrailAreas } from '@plusone/trailcare-api-client'
 import { AppHeader } from '../components/app-header'
 import { AreaSorter } from '../components/area-sorter'
 import { AreaToggle } from '../components/area-toggle'
+import { CareNeedPreview } from '../components/care-need-preview'
 import { SearchField } from '../components/search-field'
 import { TrailRow } from '../components/trail-row'
 import { errorMessage } from '../lib/api-error'
@@ -27,13 +28,17 @@ function collapsedSummary(trails: Array<TrailDto>): string {
 }
 
 function HomePage() {
-  const { isAdmin } = useSession()
+  const { isAdmin, isCareTeamOrAdmin } = useSession()
   const { data: areas, isLoading, error } = useGetTrailAreas({ query: { refetchInterval: 60_000 } })
   const [query, setQuery] = useState('')
+  const [careNeedsOnly, setCareNeedsOnly] = useState(false)
   const [isSorting, setIsSorting] = useState(false)
   const areaOrder = useAreaOrder('trailcare-area-order')
   const sortedAreas = useMemo(() => areaOrder.sort(areas ?? []), [areaOrder, areas])
-  const result = useMemo(() => filterTrailAreas(sortedAreas, query), [sortedAreas, query])
+  const result = useMemo(
+    () => filterTrailAreas(sortedAreas, { query, careNeedsOnly }),
+    [sortedAreas, query, careNeedsOnly],
+  )
   const { isCollapsed, toggle } = useCollapsedAreas('trailcare-collapsed-areas')
   const isSearching = query.trim().length > 0
   const canSort = sortedAreas.length > 1 && !isSearching
@@ -43,6 +48,15 @@ function HomePage() {
       <AppHeader />
       <main className="content">
         <SearchField value={query} onChange={setQuery} placeholder="Trail suchen" label="Trail nach Name suchen" />
+
+        {isCareTeamOrAdmin && (
+          <div className="list-tools">
+            <label className="toggle-label">
+              <input type="checkbox" checked={careNeedsOnly} onChange={(e) => setCareNeedsOnly(e.target.checked)} />
+              Nur pflegebedürftig
+            </label>
+          </div>
+        )}
 
         {canSort && (
           <div className="list-tools">
@@ -103,11 +117,12 @@ function HomePage() {
                   ) : (
                     <ul className="trail-list">
                       {area.trails.map((trail) => (
-                        <TrailRow
-                          key={trail.id}
-                          trail={trail}
-                          matchedAlias={result.matches.get(trail.id)?.matchedAlias}
-                        />
+                        <li key={trail.id}>
+                          <TrailRow trail={trail} matchedAlias={result.matches.get(trail.id)?.matchedAlias} />
+                          {trail.careNeeds && trail.careNeeds.length > 0 && (
+                            <CareNeedPreview careNeeds={trail.careNeeds} />
+                          )}
+                        </li>
                       ))}
                     </ul>
                   )}

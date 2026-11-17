@@ -29,15 +29,19 @@ export class AccessPasswordService {
   async create(input: CreateAccessPasswordDto): Promise<AccessPasswordWithSecretDto> {
     const password = input.password ?? generatePassword()
     const created = await this.prisma.accessPassword.create({
-      data: { label: input.label, passwordHash: await hashPassword(password) },
+      data: { label: input.label, passwordHash: await hashPassword(password), isCareTeam: input.isCareTeam ?? false },
       include: this.sessionCount(),
     })
     return { ...toDto(created), password }
   }
 
   async updateLabel(id: number, input: UpdateAccessPasswordDto): Promise<AccessPasswordDto> {
+    const data: any = { label: input.label }
+    if (input.isCareTeam !== undefined) {
+      data.isCareTeam = input.isCareTeam
+    }
     const updated = await this.prisma.accessPassword
-      .update({ where: { id }, data: { label: input.label }, include: this.sessionCount() })
+      .update({ where: { id }, data, include: this.sessionCount() })
       .catch((error) => rethrowPrismaError(error, ''))
     return toDto(updated)
   }
@@ -78,5 +82,6 @@ function toDto(password: AccessPasswordWithCount): AccessPasswordDto {
     lastUsedAt: password.lastUsedAt ?? undefined,
     createdAt: password.createdAt,
     updatedAt: password.updatedAt,
+    isCareTeam: password.isCareTeam,
   }
 }

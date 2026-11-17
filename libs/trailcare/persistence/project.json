@@ -29,12 +29,23 @@
         }
       ]
     },
+    "prisma-seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn ts-node libs/trailcare/persistence/prisma/seed.ts"
+      }
+    },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
         "commands": ["tsc --noEmit -p libs/trailcare/persistence/tsconfig.lib.json"],
         "parallel": false
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "prisma-generate"
+        }
+      ]
     }
   }
 }

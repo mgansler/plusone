@@ -16,18 +16,35 @@ export function normalize(text: string): string {
 
 export type SearchMatch = { matchedAlias?: string }
 
+export type FilterOptions = {
+  query?: string
+  careNeedsOnly?: boolean
+}
+
 /** Filter trails by name or alias, areas without matches are dropped. Matching on the area name keeps all its trails. */
 export function filterTrailAreas(
   areas: Array<TrailAreaDto>,
-  query: string,
+  options: FilterOptions = {},
 ): { areas: Array<TrailAreaDto>; matches: Map<number, SearchMatch> } {
+  const { query = '', careNeedsOnly = false } = options
   const matches = new Map<number, SearchMatch>()
   const needle = normalize(query)
-  if (!needle) {
-    return { areas, matches }
+
+  let filtered = areas
+
+  // Filter by care needs first
+  if (careNeedsOnly) {
+    filtered = filtered.flatMap((area) => {
+      const trails = area.trails.filter((trail) => trail.hasActiveCareNeeds)
+      return trails.length > 0 ? [{ ...area, trails }] : []
+    })
   }
 
-  const filtered = areas.flatMap((area) => {
+  if (!needle) {
+    return { areas: filtered, matches }
+  }
+
+  const result = filtered.flatMap((area) => {
     if (normalize(area.name).includes(needle)) {
       return [area]
     }
@@ -45,5 +62,5 @@ export function filterTrailAreas(
     return trails.length > 0 ? [{ ...area, trails }] : []
   })
 
-  return { areas: filtered, matches }
+  return { areas: result, matches }
 }

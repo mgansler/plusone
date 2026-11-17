@@ -29,6 +29,7 @@ model Trail {
   sweepYellowMaxDays Int?
 
   careEntries CareEntry[]
+  careNeeds   CareNeed[]
 
   trailArea   TrailArea @relation(fields: [trailAreaId], references: [id], onDelete: Cascade)
   trailAreaId Int
@@ -94,6 +95,7 @@ model AccessPassword {
   sessions     Session[]
 
   lastUsedAt DateTime?
+  isCareTeam Boolean   @default(false)
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 }
@@ -101,6 +103,7 @@ model AccessPassword {
 enum Role {
   USER
   ADMIN
+  CARE_TEAM
 }
 
 model Session {
@@ -114,4 +117,33 @@ model Session {
   accessPasswordId Int?
 
   createdAt DateTime @default(now())
+}
+
+model CareNeedCategory {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  description String?
+  deletedAt   DateTime?
+
+  careNeeds   CareNeed[]
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model CareNeed {
+  id          Int              @id @default(autoincrement())
+  category    CareNeedCategory @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  description String?
+  isDone      Boolean          @default(false)
+  doneAt      DateTime?
+
+  trail   Trail @relation(fields: [trailId], references: [id], onDelete: Cascade)
+  trailId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([trailId, isDone])
 }

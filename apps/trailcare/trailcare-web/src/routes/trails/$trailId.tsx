@@ -6,6 +6,7 @@ import { AppHeader } from '../../components/app-header'
 import { Blaze } from '../../components/blaze'
 import { CareEntryForm } from '../../components/care-entry-form'
 import { CareLog } from '../../components/care-log'
+import { CareNeedChecklist } from '../../components/care-need-checklist'
 import { BackIcon, BroomIcon } from '../../components/icons'
 import { errorMessage } from '../../lib/api-error'
 import { sweptLabel } from '../../lib/format'
@@ -18,7 +19,7 @@ export const Route = createFileRoute('/trails/$trailId')({
 
 function TrailPage() {
   const trailId = Number(Route.useParams().trailId)
-  const { isAdmin } = useSession()
+  const { isAdmin, isCareTeamOrAdmin } = useSession()
   const router = useRouter()
   const { data: trail, error } = useGetTrail(trailId)
   const { data: entries } = useGetCareEntries(trailId)
@@ -68,6 +69,8 @@ function TrailPage() {
               <h2 className="section-title">Pflegelog</h2>
               {entries && <CareLog entries={entries} />}
             </section>
+
+            {isCareTeamOrAdmin && <CareNeedChecklist trailId={trail.id} />}
           </>
         )}
       </main>

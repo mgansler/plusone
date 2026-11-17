@@ -15,6 +15,9 @@ import { AccessPasswordService } from './access-password.service'
 import { AdminController } from './admin.controller'
 import { AuthModule } from './auth/auth.module'
 import { BackupService } from './backup.service'
+import { CareNeedCategoryService } from './care-need-category.service'
+import { CareNeedController } from './care-need.controller'
+import { CareNeedService } from './care-need.service'
 import { CareController } from './care.controller'
 import { CareService } from './care.service'
 import { configSchema } from './config'
@@ -39,10 +42,12 @@ import { TrailService } from './trail.service'
     PrismaModule,
     AuthModule,
   ],
-  controllers: [HealthController, TrailController, CareController, AdminController],
+  controllers: [HealthController, TrailController, CareController, CareNeedController, AdminController],
   providers: [
     TrailService,
     CareService,
+    CareNeedService,
+    CareNeedCategoryService,
     AccessPasswordService,
     BackupService,
     // useExisting allows tests to override the guard

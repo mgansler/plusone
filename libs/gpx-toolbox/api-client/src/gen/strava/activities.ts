@@ -62,6 +62,9 @@ export const createActivity = (
           if (createActivityBody?.commute !== undefined) {
             formData.append(`commute`, createActivityBody.commute.toString())
           }
+          if (createActivityBody?.visibility !== undefined) {
+            formData.append(`visibility`, createActivityBody.visibility)
+          }
           if (createActivityBody?.tags !== undefined) {
             formData.append(`tags`, createActivityBody.tags)
           }

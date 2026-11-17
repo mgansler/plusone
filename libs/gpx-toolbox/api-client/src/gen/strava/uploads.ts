@@ -38,6 +38,9 @@ export const createUpload = (
           if (createUploadBody?.commute !== undefined) {
             formData.append(`commute`, createUploadBody.commute)
           }
+          if (createUploadBody?.visibility !== undefined) {
+            formData.append(`visibility`, createUploadBody.visibility)
+          }
           if (createUploadBody?.tags !== undefined) {
             formData.append(`tags`, createUploadBody.tags)
           }

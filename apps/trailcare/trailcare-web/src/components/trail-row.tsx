@@ -26,7 +26,7 @@ export function TrailRow({ trail, matchedAlias }: TrailRowProps) {
   )
 
   return (
-    <li className="trail-row" data-status={trail.sweepStatus} data-just-swept={isSuccess || undefined}>
+    <div className="trail-row" data-status={trail.sweepStatus} data-just-swept={isSuccess || undefined}>
       <Link to="/trails/$trailId" params={{ trailId: String(trail.id) }} className="trail-row-link">
         <Blaze status={trail.sweepStatus} value={trail.daysSinceSwept ?? '–'} />
         <span className="trail-row-text">
@@ -52,7 +52,7 @@ export function TrailRow({ trail, matchedAlias }: TrailRowProps) {
       >
         {isSuccess ? <CheckIcon className="sweep-icon" /> : <BroomIcon className="sweep-icon" />}
       </button>
-    </li>
+    </div>
   )
 }
 

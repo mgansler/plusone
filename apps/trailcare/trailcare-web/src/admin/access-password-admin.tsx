@@ -39,18 +39,20 @@ export function AccessPasswordAdmin() {
   const [secret, setSecret] = useState<AccessPasswordWithSecretDto | null>(null)
   const [label, setLabel] = useState('')
   const [password, setPassword] = useState('')
+  const [isCareTeam, setIsCareTeam] = useState(false)
 
   const create = useCreateAccessPassword(useAdminMutationOptions())
 
   const onCreate = (event: FormEvent) => {
     event.preventDefault()
     create.mutate(
-      { data: { label, password: password || undefined } },
+      { data: { label, password: password || undefined, isCareTeam } },
       {
         onSuccess: (created) => {
           setSecret(created)
           setLabel('')
           setPassword('')
+          setIsCareTeam(false)
         },
       },
     )
@@ -96,6 +98,12 @@ export function AccessPasswordAdmin() {
             />
           </label>
         </div>
+        <fieldset className="field-group">
+          <label className="field-checkbox">
+            <input type="checkbox" checked={isCareTeam} onChange={(event) => setIsCareTeam(event.target.checked)} />
+            <span>Pflegeteam-Zugriff – darf Pflegebedarfe sehen und verwalten</span>
+          </label>
+        </fieldset>
         <button className="button button-primary" type="submit" disabled={create.isPending || !label.trim()}>
           Passwort anlegen
         </button>
@@ -115,11 +123,23 @@ function AccessPasswordItem({
   const [label, setLabel] = useState(accessPassword.label)
   const options = useAdminMutationOptions()
   const rename = useUpdateAccessPassword(useAdminMutationOptions(() => setIsRenaming(false)))
+  const toggleRole = useUpdateAccessPassword(options)
   const rotate = useRotateAccessPassword(options)
   const remove = useDeleteAccessPassword(options)
 
   const devices = accessPassword.activeSessions
   const devicesText = devices === 1 ? '1 Gerät angemeldet' : `${devices} Geräte angemeldet`
+
+  const onToggleCareTeam = () => {
+    const newRole = accessPassword.isCareTeam ? 'USER' : 'CARE_TEAM'
+    const roleText = newRole === 'CARE_TEAM' ? 'Pflegeteam-Zugriff gewähren' : 'Pflegeteam-Zugriff entziehen'
+    if (window.confirm(`„${accessPassword.label}": ${roleText}?`)) {
+      toggleRole.mutate({
+        accessPasswordId: accessPassword.id,
+        data: { label: accessPassword.label, isCareTeam: newRole === 'CARE_TEAM' },
+      })
+    }
+  }
 
   const onRotate = () => {
     const custom = window.prompt(
@@ -166,7 +186,10 @@ function AccessPasswordItem({
       ) : (
         <>
           <div className="admin-password-text">
-            <span className="admin-password-label">{accessPassword.label}</span>
+            <span className="admin-password-label">
+              {accessPassword.label}
+              {accessPassword.isCareTeam && <span className="badge badge-care-team">Pflegeteam</span>}
+            </span>
             <span className="hint">
               {devicesText},{' '}
               {accessPassword.lastUsedAt
@@ -177,6 +200,9 @@ function AccessPasswordItem({
           <div className="button-row">
             <button className="text-button" onClick={() => setIsRenaming(true)}>
               Umbenennen
+            </button>
+            <button className="text-button" onClick={onToggleCareTeam} disabled={toggleRole.isPending}>
+              {accessPassword.isCareTeam ? 'Von Pflegeteam entfernen' : 'Zu Pflegeteam hinzufügen'}
             </button>
             <button className="text-button" onClick={onRotate} disabled={rotate.isPending}>
               Passwort ändern

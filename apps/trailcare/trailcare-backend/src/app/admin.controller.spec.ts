@@ -4,6 +4,7 @@ import request from 'supertest'
 import { AccessPasswordService } from './access-password.service'
 import { AdminController } from './admin.controller'
 import { BackupService } from './backup.service'
+import { CareNeedCategoryService } from './care-need-category.service'
 import { AS_ADMIN, AS_USER, createControllerTestApp } from './controller-test-app'
 import { TrailService } from './trail.service'
 
@@ -29,6 +30,12 @@ describe('AdminController', () => {
     listBackups: vi.fn(),
     downloadBackup: vi.fn(),
   }
+  const careNeedCategoryService = {
+    list: vi.fn(),
+    create: vi.fn(),
+    update: vi.fn(),
+    softDelete: vi.fn(),
+  }
 
   beforeAll(async () => {
     app = await createControllerTestApp({
@@ -37,6 +44,7 @@ describe('AdminController', () => {
         { provide: TrailService, useValue: trailService },
         { provide: AccessPasswordService, useValue: accessPasswordService },
         { provide: BackupService, useValue: backupService },
+        { provide: CareNeedCategoryService, useValue: careNeedCategoryService },
       ],
     })
   })

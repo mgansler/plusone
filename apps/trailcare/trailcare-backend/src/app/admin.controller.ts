@@ -5,6 +5,7 @@ import { Response } from 'express'
 import { AccessPasswordService } from './access-password.service'
 import { AdminOnly } from './auth/auth.decorators'
 import { BackupService } from './backup.service'
+import { CareNeedCategoryService } from './care-need-category.service'
 import { SESSION_COOKIE } from './auth/session-cookie'
 import {
   AccessPasswordDto,
@@ -13,6 +14,7 @@ import {
   RotateAccessPasswordDto,
   UpdateAccessPasswordDto,
 } from './dto/access-password.dto'
+import { CareNeedCategoryDto, CreateCareNeedCategoryDto, UpdateCareNeedCategoryDto } from './dto/care-need-category.dto'
 import { BackupInfoDto } from './dto/backup.dto'
 import { SweepSettingsDto } from './dto/sweep-settings.dto'
 import { CreateTrailDto, TrailAreaInputDto, TrailAreaResponseDto, TrailDto, UpdateTrailDto } from './dto/trail.dto'
@@ -27,6 +29,7 @@ export class AdminController {
     private readonly trailService: TrailService,
     private readonly accessPasswordService: AccessPasswordService,
     private readonly backupService: BackupService,
+    private readonly careNeedCategoryService: CareNeedCategoryService,
   ) {}
 
   @Get('sweep-settings')
@@ -155,5 +158,37 @@ export class AdminController {
       res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`)
       res.send(buffer)
     })
+  }
+
+  @Get('care-need-categories')
+  @ApiOperation({ operationId: 'getCareNeedCategories', description: 'List active care need categories' })
+  @ApiOkResponse({ type: [CareNeedCategoryDto] })
+  getCareNeedCategories() {
+    return this.careNeedCategoryService.list()
+  }
+
+  @Post('care-need-categories')
+  @ApiOperation({ operationId: 'createCareNeedCategory' })
+  @ApiOkResponse({ type: CareNeedCategoryDto })
+  createCareNeedCategory(@Body() body: CreateCareNeedCategoryDto) {
+    return this.careNeedCategoryService.create(body)
+  }
+
+  @Put('care-need-categories/:id')
+  @ApiOperation({ operationId: 'updateCareNeedCategory' })
+  @ApiOkResponse({ type: CareNeedCategoryDto })
+  updateCareNeedCategory(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateCareNeedCategoryDto) {
+    return this.careNeedCategoryService.update(id, body)
+  }
+
+  @Delete('care-need-categories/:id')
+  @HttpCode(204)
+  @ApiOperation({
+    operationId: 'deleteCareNeedCategory',
+    description: 'Soft deletes the category (only if not used by any care need)',
+  })
+  @ApiNoContentResponse()
+  deleteCareNeedCategory(@Param('id', ParseIntPipe) id: number) {
+    return this.careNeedCategoryService.softDelete(id)
   }
 }

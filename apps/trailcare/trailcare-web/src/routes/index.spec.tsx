@@ -9,7 +9,7 @@ import { renderApp } from '../test/render-app'
 const UNDOABLE = () => new Date(Date.now() + 15_000).toISOString()
 
 function row(name: string) {
-  return screen.getByText(name).closest('li') as HTMLElement
+  return screen.getByText(name).closest('.trail-row') as HTMLElement
 }
 
 describe('trail list', () => {

@@ -5,6 +5,7 @@ import { ArrayMaxSize, IsArray, IsInt, IsOptional, IsString, Max, MaxLength, Min
 import { SweepStatus } from '../sweep-status'
 
 import { CareEntryDto } from './care-entry.dto'
+import { CareNeedDto } from './care-need.dto'
 
 const trim = ({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim() : value)
 const trimAll = ({ value }: { value: unknown }) =>
@@ -46,6 +47,14 @@ export class TrailDto {
 
   @ApiPropertyOptional({ type: CareEntryDto })
   lastCareEntry?: CareEntryDto
+
+  @ApiPropertyOptional({ type: [CareNeedDto], description: 'Care needs for this trail, only for CARE_TEAM and ADMIN' })
+  careNeeds?: Array<CareNeedDto>
+
+  @ApiPropertyOptional({
+    description: 'True when the trail has active (not done) care needs, only for CARE_TEAM and ADMIN',
+  })
+  hasActiveCareNeeds?: boolean
 }
 
 export class TrailAreaDto {

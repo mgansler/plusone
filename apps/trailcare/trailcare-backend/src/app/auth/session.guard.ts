@@ -4,7 +4,13 @@ import { Request } from 'express'
 
 import { Role } from '@plusone/trailcare-persistence'
 
-import { IS_ADMIN_ONLY, IS_PUBLIC, RequestWithSession } from './auth.decorators'
+import {
+  IS_ADMIN_ONLY,
+  IS_CARE_TEAM_OR_ADMIN,
+  IS_PUBLIC,
+  isCareTeamOrAdmin,
+  RequestWithSession,
+} from './auth.decorators'
 import { readSessionToken } from './session-cookie'
 import { SessionService } from './session.service'
 
@@ -35,6 +41,10 @@ export class SessionGuard implements CanActivate {
     }
 
     if (this.reflector.getAllAndOverride<boolean>(IS_ADMIN_ONLY, targets) && session.role !== Role.ADMIN) {
+      throw new ForbiddenException()
+    }
+
+    if (this.reflector.getAllAndOverride<boolean>(IS_CARE_TEAM_OR_ADMIN, targets) && !isCareTeamOrAdmin(session.role)) {
       throw new ForbiddenException()
     }
 

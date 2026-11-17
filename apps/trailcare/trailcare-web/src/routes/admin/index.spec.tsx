@@ -14,6 +14,7 @@ const PASSWORDS: Array<AccessPasswordDto> = [
     lastUsedAt: new Date().toISOString(),
     createdAt: '2026-10-01T10:00:00.000Z',
     updatedAt: '2026-10-01T10:00:00.000Z',
+    isCareTeam: false,
   },
   {
     id: 2,
@@ -21,6 +22,7 @@ const PASSWORDS: Array<AccessPasswordDto> = [
     activeSessions: 1,
     createdAt: '2026-10-20T10:00:00.000Z',
     updatedAt: '2026-10-20T10:00:00.000Z',
+    isCareTeam: false,
   },
 ]
 
@@ -277,7 +279,9 @@ describe('admin page', () => {
       expect(within(revealed).getByText('abcd-efgh-jkmn')).toBeTruthy()
       expect(within(revealed).getByText('Gäste')).toBeTruthy()
       // Leaving the password empty lets the backend generate one
-      expect(fakeApi.bodies('POST', '/api/admin/access-passwords')).toEqual([{ label: 'Gäste', password: undefined }])
+      expect(fakeApi.bodies('POST', '/api/admin/access-passwords')).toEqual([
+        { label: 'Gäste', password: undefined, isCareTeam: false },
+      ])
 
       fireEvent.click(within(revealed).getByRole('button', { name: 'Kopieren' }))
       expect(writeText).toHaveBeenCalledWith('abcd-efgh-jkmn')
@@ -296,7 +300,7 @@ describe('admin page', () => {
 
       await screen.findByRole('status')
       expect(fakeApi.bodies('POST', '/api/admin/access-passwords')).toEqual([
-        { label: 'Crew Nord', password: 'eigenes-pw' },
+        { label: 'Crew Nord', password: 'eigenes-pw', isCareTeam: false },
       ])
     })
 

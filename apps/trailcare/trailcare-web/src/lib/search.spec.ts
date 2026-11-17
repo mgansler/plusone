@@ -28,22 +28,22 @@ describe('search', () => {
   })
 
   it('returns everything for an empty query', () => {
-    expect(filterTrailAreas(areas, '  ').areas).toBe(areas)
+    expect(filterTrailAreas(areas, { query: '  ' }).areas).toBe(areas)
   })
 
   it('matches names without umlauts', () => {
-    const { areas: result } = filterTrailAreas(areas, 'aeffle')
+    const { areas: result } = filterTrailAreas(areas, { query: 'aeffle' })
     expect(result).toHaveLength(1)
     expect(result[0].trails.map((t) => t.name)).toEqual(['Äffle und Pferdle'])
   })
 
   it('matches aliases and reports them', () => {
-    const { areas: result, matches } = filterTrailAreas(areas, 'yoyo')
+    const { areas: result, matches } = filterTrailAreas(areas, { query: 'yoyo' })
     expect(result[0].trails.map((t) => t.id)).toEqual([2])
     expect(matches.get(2)).toEqual({ matchedAlias: 'Yoyo' })
   })
 
   it('keeps all trails when the area matches', () => {
-    expect(filterTrailAreas(areas, 'heslach').areas[0].trails).toHaveLength(2)
+    expect(filterTrailAreas(areas, { query: 'heslach' }).areas[0].trails).toHaveLength(2)
   })
 })

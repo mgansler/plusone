@@ -2,8 +2,10 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 
 import { CareType, Prisma, PrismaService } from '@plusone/trailcare-persistence'
 
+import { isCareTeamOrAdmin } from './auth/auth.decorators'
 import { ActiveSession } from './auth/session.service'
 import { toCareEntryDto } from './care-entry.mapper'
+import { toCareNeedDto } from './care-need.mapper'
 import { SweepSettingsDto } from './dto/sweep-settings.dto'
 import { CreateTrailDto, TrailAreaDto, TrailAreaInputDto, TrailDto, UpdateTrailDto } from './dto/trail.dto'
 import { rethrowPrismaError } from './prisma-errors'
@@ -15,6 +17,7 @@ const trailInclude = {
   trailArea: { select: { name: true } },
   aliases: { orderBy: { name: 'asc' } },
   careEntries: { orderBy: { id: 'desc' }, take: 1 },
+  careNeeds: { orderBy: { createdAt: 'asc' }, include: { category: true } },
 } satisfies Prisma.TrailInclude
 
 type TrailWithRelations = Prisma.TrailGetPayload<{ include: typeof trailInclude }>
@@ -166,7 +169,7 @@ function toTrailDto(
   const { status, daysSinceSwept } = computeSweepStatus(lastSweptAt, thresholds)
   const lastCareEntry = trail.careEntries[0]
 
-  return {
+  const result: TrailDto = {
     id: trail.id,
     name: trail.name,
     trailAreaId: trail.trailAreaId,
@@ -179,6 +182,15 @@ function toTrailDto(
     daysSinceSwept,
     lastCareEntry: lastCareEntry && toCareEntryDto(lastCareEntry, session),
   }
+
+  // Care needs are only visible to CARE_TEAM and ADMIN
+  if (session && isCareTeamOrAdmin(session.role)) {
+    const careNeeds = trail.careNeeds.map(toCareNeedDto)
+    result.careNeeds = careNeeds
+    result.hasActiveCareNeeds = careNeeds.some((cn) => !cn.isDone)
+  }
+
+  return result
 }
 
 function validateThresholds(green: number, yellow: number) {

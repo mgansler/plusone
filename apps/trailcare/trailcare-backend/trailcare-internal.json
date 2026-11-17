@@ -463,6 +463,197 @@
         ]
       }
     },
+    "/api/care-need-categories": {
+      "get": {
+        "description": "List active care need categories",
+        "operationId": "getCareNeedCategories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CareNeedCategoryDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "care-needs"
+        ]
+      }
+    },
+    "/api/care-needs/{trailId}": {
+      "get": {
+        "description": "All care needs for a trail",
+        "operationId": "getCareNeeds",
+        "parameters": [
+          {
+            "name": "trailId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CareNeedDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "care-needs"
+        ]
+      },
+      "post": {
+        "description": "Add a care need to a trail",
+        "operationId": "createCareNeed",
+        "parameters": [
+          {
+            "name": "trailId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCareNeedDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CareNeedDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "care-needs"
+        ]
+      }
+    },
+    "/api/care-needs/{id}": {
+      "patch": {
+        "description": "Update a care need",
+        "operationId": "updateCareNeed",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCareNeedDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CareNeedDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "care-needs"
+        ]
+      },
+      "delete": {
+        "description": "Delete a care need",
+        "operationId": "deleteCareNeed",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "care-needs"
+        ]
+      }
+    },
     "/api/admin/sweep-settings": {
       "get": {
         "description": "Traffic light thresholds for all trails",
@@ -1033,6 +1224,146 @@
         ]
       }
     },
+    "/api/admin/care-need-categories": {
+      "get": {
+        "description": "List active care need categories",
+        "operationId": "getCareNeedCategories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CareNeedCategoryDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      },
+      "post": {
+        "operationId": "createCareNeedCategory",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCareNeedCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CareNeedCategoryDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/admin/care-need-categories/{id}": {
+      "put": {
+        "operationId": "updateCareNeedCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCareNeedCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CareNeedCategoryDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      },
+      "delete": {
+        "description": "Soft deletes the category (only if not used by any care need)",
+        "operationId": "deleteCareNeedCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
     "/api/auth/session": {
       "get": {
         "operationId": "getSession",
@@ -1189,6 +1520,60 @@
           "createdAt"
         ]
       },
+      "CareNeedCategoryRefDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "CareNeedDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "category": {
+            "$ref": "#/components/schemas/CareNeedCategoryRefDto"
+          },
+          "description": {
+            "type": "string"
+          },
+          "isDone": {
+            "type": "boolean"
+          },
+          "doneAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "category",
+          "isDone",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
       "TrailDto": {
         "type": "object",
         "properties": {
@@ -1239,6 +1624,17 @@
           },
           "lastCareEntry": {
             "$ref": "#/components/schemas/CareEntryDto"
+          },
+          "careNeeds": {
+            "description": "Care needs for this trail, only for CARE_TEAM and ADMIN",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CareNeedDto"
+            }
+          },
+          "hasActiveCareNeeds": {
+            "type": "boolean",
+            "description": "True when the trail has active (not done) care needs, only for CARE_TEAM and ADMIN"
           }
         },
         "required": [
@@ -1322,6 +1718,65 @@
           "performedBy": {
             "type": "string",
             "description": "Empty string removes the name"
+          }
+        }
+      },
+      "CareNeedCategoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateCareNeedDto": {
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "number",
+            "description": "Category ID"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "categoryId"
+        ]
+      },
+      "UpdateCareNeedDto": {
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "number",
+            "description": "Category ID"
+          },
+          "description": {
+            "type": "string",
+            "description": "Empty string removes the description"
+          },
+          "isDone": {
+            "type": "boolean"
           }
         }
       },
@@ -1448,6 +1903,10 @@
           "updatedAt": {
             "format": "date-time",
             "type": "string"
+          },
+          "isCareTeam": {
+            "type": "boolean",
+            "description": "True when this password grants CARE_TEAM role instead of USER"
           }
         },
         "required": [
@@ -1455,7 +1914,8 @@
           "label",
           "activeSessions",
           "createdAt",
-          "updatedAt"
+          "updatedAt",
+          "isCareTeam"
         ]
       },
       "CreateAccessPasswordDto": {
@@ -1467,6 +1927,10 @@
           "password": {
             "type": "string",
             "description": "Generated when omitted"
+          },
+          "isCareTeam": {
+            "type": "boolean",
+            "description": "Grant CARE_TEAM role instead of USER"
           }
         },
         "required": [
@@ -1498,6 +1962,10 @@
             "format": "date-time",
             "type": "string"
           },
+          "isCareTeam": {
+            "type": "boolean",
+            "description": "True when this password grants CARE_TEAM role instead of USER"
+          },
           "password": {
             "type": "string"
           }
@@ -1508,6 +1976,7 @@
           "activeSessions",
           "createdAt",
           "updatedAt",
+          "isCareTeam",
           "password"
         ]
       },
@@ -1516,6 +1985,10 @@
         "properties": {
           "label": {
             "type": "string"
+          },
+          "isCareTeam": {
+            "type": "boolean",
+            "description": "Grant CARE_TEAM role instead of USER"
           }
         },
         "required": [
@@ -1550,11 +2023,37 @@
           "createdAt"
         ]
       },
+      "CreateCareNeedCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateCareNeedCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
       "Role": {
         "type": "string",
         "enum": [
           "USER",
-          "ADMIN"
+          "ADMIN",
+          "CARE_TEAM"
         ]
       },
       "SessionResponseDto": {

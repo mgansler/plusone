@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator'
+import { IsBoolean, IsOptional, IsString, MaxLength, MinLength } from 'class-validator'
 
 const trim = ({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim() : value)
 
@@ -22,6 +22,9 @@ export class AccessPasswordDto {
 
   @ApiProperty()
   updatedAt: Date
+
+  @ApiProperty({ description: 'True when this password grants CARE_TEAM role instead of USER' })
+  isCareTeam: boolean
 }
 
 /** Only returned right after creating or rotating, the plain password is never stored */
@@ -44,6 +47,11 @@ export class CreateAccessPasswordDto {
   @MinLength(6)
   @MaxLength(200)
   password?: string
+
+  @ApiPropertyOptional({ description: 'Grant CARE_TEAM role instead of USER' })
+  @IsOptional()
+  @IsBoolean()
+  isCareTeam?: boolean
 }
 
 export class UpdateAccessPasswordDto {
@@ -53,6 +61,11 @@ export class UpdateAccessPasswordDto {
   @MinLength(1)
   @MaxLength(100)
   label: string
+
+  @ApiPropertyOptional({ description: 'Grant CARE_TEAM role instead of USER' })
+  @IsOptional()
+  @IsBoolean()
+  isCareTeam?: boolean
 }
 
 export class RotateAccessPasswordDto {

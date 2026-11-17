@@ -5,6 +5,7 @@ import { useGetTrailAreas } from '@plusone/trailcare-api-client'
 
 import { AccessPasswordAdmin } from '../../admin/access-password-admin'
 import { BackupAdmin } from '../../admin/backup-admin'
+import { CareNeedCategoryAdmin } from '../../admin/care-need-category-admin'
 import { SweepSettingsAdmin } from '../../admin/sweep-settings-admin'
 import { CreateTrailAreaForm, TrailAreaAdmin } from '../../admin/trail-area-admin'
 import { AppHeader } from '../../components/app-header'
@@ -20,7 +21,7 @@ export const Route = createFileRoute('/admin/')({
 function AdminPage() {
   const { data: areas } = useGetTrailAreas()
   const [query, setQuery] = useState('')
-  const result = useMemo(() => filterTrailAreas(areas ?? [], query), [areas, query])
+  const result = useMemo(() => filterTrailAreas(areas ?? [], { query }), [areas, query])
   const { isCollapsed, toggle } = useCollapsedAreas('trailcare-admin-collapsed-areas')
   const isSearching = query.trim().length > 0
   const router = useRouter()
@@ -72,6 +73,11 @@ function AdminPage() {
         <section>
           <h2 className="section-title">Zugangspasswörter</h2>
           <AccessPasswordAdmin />
+        </section>
+
+        <section>
+          <h2 className="section-title">Pflegebedarf-Kategorien</h2>
+          <CareNeedCategoryAdmin />
         </section>
 
         <section>
