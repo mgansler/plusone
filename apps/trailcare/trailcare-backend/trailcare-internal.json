@@ -944,6 +944,95 @@
         ]
       }
     },
+    "/api/admin/backups": {
+      "get": {
+        "description": "List all available database backups",
+        "operationId": "listBackups",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BackupInfoDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/admin/backup": {
+      "post": {
+        "description": "Create a manual database backup using VACUUM INTO",
+        "operationId": "createBackup",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupInfoDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/admin/backups/{fileName}/download": {
+      "get": {
+        "description": "Download a specific backup file",
+        "operationId": "downloadBackup",
+        "parameters": [
+          {
+            "name": "fileName",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "trailcare_session": []
+          }
+        ],
+        "summary": "",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
     "/api/auth/session": {
       "get": {
         "operationId": "getSession",
@@ -1441,6 +1530,25 @@
             "description": "Generated when omitted"
           }
         }
+      },
+      "BackupInfoDto": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "sizeBytes": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fileName",
+          "sizeBytes",
+          "createdAt"
+        ]
       },
       "Role": {
         "type": "string",

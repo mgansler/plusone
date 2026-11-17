@@ -3,6 +3,7 @@ import request from 'supertest'
 
 import { AccessPasswordService } from './access-password.service'
 import { AdminController } from './admin.controller'
+import { BackupService } from './backup.service'
 import { AS_ADMIN, AS_USER, createControllerTestApp } from './controller-test-app'
 import { TrailService } from './trail.service'
 
@@ -23,6 +24,11 @@ describe('AdminController', () => {
     rotate: vi.fn(),
     delete: vi.fn(),
   }
+  const backupService = {
+    createBackup: vi.fn(),
+    listBackups: vi.fn(),
+    downloadBackup: vi.fn(),
+  }
 
   beforeAll(async () => {
     app = await createControllerTestApp({
@@ -30,6 +36,7 @@ describe('AdminController', () => {
       providers: [
         { provide: TrailService, useValue: trailService },
         { provide: AccessPasswordService, useValue: accessPasswordService },
+        { provide: BackupService, useValue: backupService },
       ],
     })
   })

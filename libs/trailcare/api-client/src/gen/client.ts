@@ -172,6 +172,12 @@ export interface RotateAccessPasswordDto {
   password?: string
 }
 
+export interface BackupInfoDto {
+  fileName: string
+  sizeBytes: number
+  createdAt: string
+}
+
 export enum Role {
   USER = 'USER',
   ADMIN = 'ADMIN',
@@ -1675,6 +1681,214 @@ export const useRotateAccessPassword = <TError = unknown, TContext = unknown>(
   TContext
 > => {
   return useMutation(getRotateAccessPasswordMutationOptions(options), queryClient)
+}
+
+/**
+ * List all available database backups
+ */
+export const listBackups = (signal?: AbortSignal) => {
+  return customAxiosInstance<BackupInfoDto[]>({ url: `/api/admin/backups`, method: 'GET', signal })
+}
+
+export const getListBackupsQueryKey = () => {
+  return [`/api/admin/backups`] as const
+}
+
+export const getListBackupsQueryOptions = <
+  TData = Awaited<ReturnType<typeof listBackups>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listBackups>>, TError, TData>>
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getListBackupsQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listBackups>>> = ({ signal }) => listBackups(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listBackups>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListBackupsQueryResult = NonNullable<Awaited<ReturnType<typeof listBackups>>>
+export type ListBackupsQueryError = unknown
+
+/** List all available database backups */
+export function useListBackups<TData = Awaited<ReturnType<typeof listBackups>>, TError = unknown>(
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof listBackups>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listBackups>>,
+          TError,
+          Awaited<ReturnType<typeof listBackups>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** List all available database backups */
+export function useListBackups<TData = Awaited<ReturnType<typeof listBackups>>, TError = unknown>(
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listBackups>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listBackups>>,
+          TError,
+          Awaited<ReturnType<typeof listBackups>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** List all available database backups */
+export function useListBackups<TData = Awaited<ReturnType<typeof listBackups>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listBackups>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** List all available database backups */
+export function useListBackups<TData = Awaited<ReturnType<typeof listBackups>>, TError = unknown>(
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listBackups>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getListBackupsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
+}
+
+/**
+ * Create a manual database backup using VACUUM INTO
+ */
+export const createBackup = (signal?: AbortSignal) => {
+  return customAxiosInstance<BackupInfoDto>({ url: `/api/admin/backup`, method: 'POST', signal })
+}
+
+export const getCreateBackupMutationKey = () => ['createBackup'] as const
+
+export const getCreateBackupMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof createBackup>>, TError, void, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof createBackup>>, TError, void, TContext> => {
+  const mutationKey = getCreateBackupMutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof createBackup>>, void> = () => {
+    return createBackup()
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type CreateBackupMutationResult = NonNullable<Awaited<ReturnType<typeof createBackup>>>
+
+export type CreateBackupMutationError = unknown
+
+/** Create a manual database backup using VACUUM INTO */
+export const useCreateBackup = <TError = unknown, TContext = unknown>(
+  options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof createBackup>>, TError, void, TContext> },
+  queryClient?: QueryClient,
+): UseMutationResult<Awaited<ReturnType<typeof createBackup>>, TError, void, TContext> => {
+  return useMutation(getCreateBackupMutationOptions(options), queryClient)
+}
+
+/**
+ * Download a specific backup file
+ */
+export const downloadBackup = (fileName: string, signal?: AbortSignal) => {
+  return customAxiosInstance<void>({ url: `/api/admin/backups/${fileName}/download`, method: 'GET', signal })
+}
+
+export const getDownloadBackupQueryKey = (fileName: string) => {
+  return [`/api/admin/backups/${fileName}/download`] as const
+}
+
+export const getDownloadBackupQueryOptions = <TData = Awaited<ReturnType<typeof downloadBackup>>, TError = unknown>(
+  fileName: string,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadBackup>>, TError, TData>> },
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getDownloadBackupQueryKey(fileName)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof downloadBackup>>> = ({ signal }) =>
+    downloadBackup(fileName, signal)
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: fileName !== null && fileName !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof downloadBackup>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+}
+
+export type DownloadBackupQueryResult = NonNullable<Awaited<ReturnType<typeof downloadBackup>>>
+export type DownloadBackupQueryError = unknown
+
+/** Download a specific backup file */
+export function useDownloadBackup<TData = Awaited<ReturnType<typeof downloadBackup>>, TError = unknown>(
+  fileName: string,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadBackup>>, TError, TData>> &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof downloadBackup>>,
+          TError,
+          Awaited<ReturnType<typeof downloadBackup>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** Download a specific backup file */
+export function useDownloadBackup<TData = Awaited<ReturnType<typeof downloadBackup>>, TError = unknown>(
+  fileName: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadBackup>>, TError, TData>> &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof downloadBackup>>,
+          TError,
+          Awaited<ReturnType<typeof downloadBackup>>
+        >,
+        'initialData'
+      >
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** Download a specific backup file */
+export function useDownloadBackup<TData = Awaited<ReturnType<typeof downloadBackup>>, TError = unknown>(
+  fileName: string,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadBackup>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** Download a specific backup file */
+export function useDownloadBackup<TData = Awaited<ReturnType<typeof downloadBackup>>, TError = unknown>(
+  fileName: string,
+  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadBackup>>, TError, TData>> },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getDownloadBackupQueryOptions(fileName, options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>
+  }
+
+  return withQueryKey(query, queryOptions.queryKey)
 }
 
 export const getSession = (signal?: AbortSignal) => {

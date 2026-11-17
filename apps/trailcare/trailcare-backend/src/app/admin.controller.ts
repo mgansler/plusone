@@ -1,8 +1,10 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Post, Put, Res } from '@nestjs/common'
 import { ApiCookieAuth, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Response } from 'express'
 
 import { AccessPasswordService } from './access-password.service'
 import { AdminOnly } from './auth/auth.decorators'
+import { BackupService } from './backup.service'
 import { SESSION_COOKIE } from './auth/session-cookie'
 import {
   AccessPasswordDto,
@@ -11,6 +13,7 @@ import {
   RotateAccessPasswordDto,
   UpdateAccessPasswordDto,
 } from './dto/access-password.dto'
+import { BackupInfoDto } from './dto/backup.dto'
 import { SweepSettingsDto } from './dto/sweep-settings.dto'
 import { CreateTrailDto, TrailAreaInputDto, TrailAreaResponseDto, TrailDto, UpdateTrailDto } from './dto/trail.dto'
 import { TrailService } from './trail.service'
@@ -23,6 +26,7 @@ export class AdminController {
   constructor(
     private readonly trailService: TrailService,
     private readonly accessPasswordService: AccessPasswordService,
+    private readonly backupService: BackupService,
   ) {}
 
   @Get('sweep-settings')
@@ -127,5 +131,29 @@ export class AdminController {
   @ApiNoContentResponse()
   deleteAccessPassword(@Param('accessPasswordId', ParseIntPipe) accessPasswordId: number) {
     return this.accessPasswordService.delete(accessPasswordId)
+  }
+
+  @Get('backups')
+  @ApiOperation({ operationId: 'listBackups', description: 'List all available database backups' })
+  @ApiOkResponse({ type: [BackupInfoDto] })
+  listBackups() {
+    return this.backupService.listBackups()
+  }
+
+  @Post('backup')
+  @ApiOperation({ operationId: 'createBackup', description: 'Create a manual database backup using VACUUM INTO' })
+  @ApiOkResponse({ type: BackupInfoDto })
+  createBackup() {
+    return this.backupService.createBackup()
+  }
+
+  @Get('backups/:fileName/download')
+  @ApiOperation({ operationId: 'downloadBackup', description: 'Download a specific backup file' })
+  downloadBackup(@Param('fileName') fileName: string, @Res() res: Response) {
+    this.backupService.downloadBackup(fileName).then(({ buffer, fileName }) => {
+      res.setHeader('Content-Type', 'application/octet-stream')
+      res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`)
+      res.send(buffer)
+    })
   }
 }

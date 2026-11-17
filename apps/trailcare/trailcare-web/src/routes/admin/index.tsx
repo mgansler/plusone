@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { useGetTrailAreas } from '@plusone/trailcare-api-client'
 
 import { AccessPasswordAdmin } from '../../admin/access-password-admin'
+import { BackupAdmin } from '../../admin/backup-admin'
 import { SweepSettingsAdmin } from '../../admin/sweep-settings-admin'
 import { CreateTrailAreaForm, TrailAreaAdmin } from '../../admin/trail-area-admin'
 import { AppHeader } from '../../components/app-header'
@@ -71,6 +72,11 @@ function AdminPage() {
         <section>
           <h2 className="section-title">Zugangspasswörter</h2>
           <AccessPasswordAdmin />
+        </section>
+
+        <section>
+          <h2 className="section-title">Datenbank-Backups</h2>
+          <BackupAdmin />
         </section>
       </main>
     </div>

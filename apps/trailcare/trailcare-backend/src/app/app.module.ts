@@ -4,6 +4,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
 import { ServeStaticModule } from '@nestjs/serve-static'
+import { ScheduleModule } from '@nestjs/schedule'
 import { TerminusModule } from '@nestjs/terminus'
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 
@@ -13,6 +14,7 @@ import { PrismaModule } from '@plusone/trailcare-persistence'
 import { AccessPasswordService } from './access-password.service'
 import { AdminController } from './admin.controller'
 import { AuthModule } from './auth/auth.module'
+import { BackupService } from './backup.service'
 import { CareController } from './care.controller'
 import { CareService } from './care.service'
 import { configSchema } from './config'
@@ -32,6 +34,7 @@ import { TrailService } from './trail.service'
       renderPath: new RegExp(/^(?!\/api\/).*/),
     }),
     ThrottlerModule.forRoot([{ ttl: 1_000, limit: 50 }]),
+    ScheduleModule.forRoot(),
     TerminusModule,
     PrismaModule,
     AuthModule,
@@ -41,6 +44,7 @@ import { TrailService } from './trail.service'
     TrailService,
     CareService,
     AccessPasswordService,
+    BackupService,
     // useExisting allows tests to override the guard
     ThrottlerGuard,
     { provide: APP_GUARD, useExisting: ThrottlerGuard },

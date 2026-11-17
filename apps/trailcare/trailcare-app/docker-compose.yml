@@ -8,6 +8,8 @@ services:
       TRAILCARE_ADMIN_PASSWORD: ${TRAILCARE_ADMIN_PASSWORD}
       # Only used on the very first start, change it in the admin area afterwards
       TRAILCARE_INITIAL_ACCESS_PASSWORD: ${TRAILCARE_INITIAL_ACCESS_PASSWORD}
+      TRAILCARE_BACKUP_DIR: '/usr/trailcare/sqlite/backups'
+      TRAILCARE_BACKUP_MAX: 7
     volumes:
       - sqlite:/usr/trailcare/sqlite/
     labels:
