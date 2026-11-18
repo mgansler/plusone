@@ -1,5 +1,6 @@
 const nx = require('@nx/eslint-plugin')
 const eslintPluginImport = require('eslint-plugin-import-x')
+const eslintPluginReactHooks = require('eslint-plugin-react-hooks')
 
 module.exports = [
   ...nx.configs['flat/base'],
@@ -11,11 +12,14 @@ module.exports = [
   {
     plugins: {
       import: eslintPluginImport,
+      'react-hooks': eslintPluginReactHooks,
     },
   },
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
       '@nx/enforce-module-boundaries': [
         'error',
         {

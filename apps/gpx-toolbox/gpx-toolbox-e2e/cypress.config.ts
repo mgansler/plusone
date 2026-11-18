@@ -61,5 +61,5 @@ export default defineConfig({
       return preset.setupNodeEvents(on, config)
     },
   },
-  retries: 2,
+  // retries: 2,
 })

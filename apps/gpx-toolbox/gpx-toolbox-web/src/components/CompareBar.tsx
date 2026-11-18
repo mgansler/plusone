@@ -39,9 +39,14 @@ export function CompareBar({ from }: { from?: string } = {}) {
         ))}
       </ul>
       {canCompare ? (
-        <Link to="/compare" search={from ? { from } : undefined} style={styles.compareButton}>
-          {t('compare.title')} →
-        </Link>
+        <div style={styles.actionRow}>
+          <Link to="/compare" search={from ? { from } : undefined} style={styles.compareButton}>
+            {t('compare.title')} →
+          </Link>
+          <Link to="/combine" style={styles.combineButton}>
+            {t('compare.combineSelected')}
+          </Link>
+        </div>
       ) : (
         <div style={styles.hint}>{t('compare.noRoutes')}</div>
       )}
@@ -117,8 +122,13 @@ const styles = {
     color: '#94a3b8',
     cursor: 'pointer',
   } as const,
+  actionRow: {
+    display: 'flex',
+    gap: 8,
+  } as const,
   compareButton: {
     display: 'block',
+    flex: 1,
     padding: '8px 12px',
     fontSize: 14,
     fontWeight: 500,
@@ -126,6 +136,18 @@ const styles = {
     textDecoration: 'none',
     color: '#fff',
     backgroundColor: '#2563eb',
+    borderRadius: 6,
+  } as const,
+  combineButton: {
+    display: 'block',
+    flex: 1,
+    padding: '8px 12px',
+    fontSize: 14,
+    fontWeight: 500,
+    textAlign: 'center',
+    textDecoration: 'none',
+    color: '#fff',
+    backgroundColor: '#16a34a',
     borderRadius: 6,
   } as const,
   hint: {

@@ -7,6 +7,7 @@ import { useIsMobile } from '../layout/useIsMobile'
 const NAV_HREFS = [
   { href: '/routes', key: 'routes' },
   { href: '/activities', key: 'activities' },
+  { href: '/combine', key: 'combine' },
   { href: '/utils', key: 'utils' },
   { href: '/settings', key: 'settings' },
 ] as const

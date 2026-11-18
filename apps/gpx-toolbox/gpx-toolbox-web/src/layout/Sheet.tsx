@@ -6,7 +6,7 @@ const SLIDE_MS = 250
 
 type SheetProps = {
   /** Edge of the viewport the sheet slides in from */
-  side: 'top' | 'bottom' | 'right'
+  side: 'top' | 'bottom' | 'right' | 'left'
   open: boolean
   onClose: () => void
   /** Accessible name of the sheet */
@@ -91,22 +91,26 @@ const panelStyles = {
   top: { left: 0, right: 0, top: TOPBAR_HEIGHT, height: '30vh' },
   bottom: { left: 0, right: 0, bottom: 0, height: '60vh' },
   right: { top: TOPBAR_HEIGHT, right: 0, bottom: 0, width: 320, maxWidth: '85vw' },
+  left: { top: TOPBAR_HEIGHT, left: 0, bottom: 0, width: 320, maxWidth: '85vw' },
 } satisfies Record<SheetProps['side'], CSSProperties>
 
 const closedStyles = {
   top: { transform: 'translateY(-100%)' },
   bottom: { transform: 'translateY(100%)' },
   right: { transform: 'translateX(100%)' },
+  left: { transform: 'translateX(-100%)' },
 } satisfies Record<SheetProps['side'], CSSProperties>
 
 const bodyStyles = {
   top: { borderRadius: '0 0 12px 12px', boxShadow: '0 4px 20px rgba(0,0,0,0.25)' },
   bottom: { borderRadius: '12px 12px 0 0', boxShadow: '0 -4px 20px rgba(0,0,0,0.15)' },
   right: { borderRadius: '12px 0 0 12px', boxShadow: '-4px 0 20px rgba(0,0,0,0.2)' },
+  left: { borderRadius: '0 12px 12px 0', boxShadow: '4px 0 20px rgba(0,0,0,0.2)' },
 } satisfies Record<SheetProps['side'], CSSProperties>
 
 const handleStyles = {
   top: { position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)' },
   bottom: { position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)' },
   right: { position: 'absolute', right: '100%', top: '50%', transform: 'translateY(-50%)' },
+  left: { position: 'absolute', left: '100%', top: '50%', transform: 'translateY(-50%)' },
 } satisfies Record<SheetProps['side'], CSSProperties>

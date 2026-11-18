@@ -285,6 +285,44 @@ export interface UpdateActivityDto {
   weather?: string
 }
 
+export interface CoordinateDto {
+  /** Latitude in degrees */
+  latitude: number
+  /** Longitude in degrees */
+  longitude: number
+}
+
+/**
+ * BRouter routing profile
+ */
+export enum BRouterRequestDtoProfile {
+  fastbike = 'fastbike',
+  trekking = 'trekking',
+  'mtb-zossebart' = 'mtb-zossebart',
+}
+export interface BRouterRequestDto {
+  /** Array of coordinate objects defining the route points */
+  points: CoordinateDto[]
+  /** BRouter routing profile */
+  profile?: BRouterRequestDtoProfile
+}
+
+export interface BRouterResponseDto {
+  /** GPX XML string of the calculated route */
+  gpx: string
+}
+
+export interface BRouterRouteDto {
+  /** GPX XML string of the route */
+  gpx: string
+  /** Alternative index (0, 1, 2) */
+  alternativeIdx: number
+}
+
+export interface BRouterRoutesResponseDto {
+  routes: BRouterRouteDto[]
+}
+
 export enum GetHealthStatus200Status {
   ok = 'ok',
   degraded = 'degraded',
@@ -2046,4 +2084,102 @@ export const useDeleteActivity = <TError = unknown, TContext = unknown>(
   queryClient?: QueryClient,
 ): UseMutationResult<Awaited<ReturnType<typeof deleteActivity>>, TError, DeleteActivityMutationVariables, TContext> => {
   return useMutation(getDeleteActivityMutationOptions(options), queryClient)
+}
+
+/**
+ * @summary Calculate a route using BRouter
+ */
+export const getRoute2 = (bRouterRequestDto: BRouterRequestDto, signal?: AbortSignal) => {
+  return customAxiosInstance<BRouterResponseDto>({
+    url: `/api/brouter/route`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: bRouterRequestDto,
+    signal,
+  })
+}
+
+export const getGetRoute2MutationKey = () => ['getRoute2'] as const
+
+export const getGetRoute2MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof getRoute2>>, TError, GetRoute2MutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof getRoute2>>, TError, GetRoute2MutationVariables, TContext> => {
+  const mutationKey = getGetRoute2MutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof getRoute2>>, GetRoute2MutationVariables> = (props) => {
+    const { data } = props ?? {}
+
+    return getRoute2(data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type GetRoute2MutationResult = NonNullable<Awaited<ReturnType<typeof getRoute2>>>
+export type GetRoute2MutationBody = BRouterRequestDto
+export type GetRoute2MutationError = unknown
+export type GetRoute2MutationVariables = { data: BRouterRequestDto }
+
+/** @summary Calculate a route using BRouter */
+export const useGetRoute2 = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof getRoute2>>, TError, GetRoute2MutationVariables, TContext>
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<Awaited<ReturnType<typeof getRoute2>>, TError, GetRoute2MutationVariables, TContext> => {
+  return useMutation(getGetRoute2MutationOptions(options), queryClient)
+}
+
+/**
+ * @summary Calculate 3 route alternatives using BRouter
+ */
+export const getRoutes = (bRouterRequestDto: BRouterRequestDto, signal?: AbortSignal) => {
+  return customAxiosInstance<BRouterRoutesResponseDto>({
+    url: `/api/brouter/routes`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: bRouterRequestDto,
+    signal,
+  })
+}
+
+export const getGetRoutesMutationKey = () => ['getRoutes'] as const
+
+export const getGetRoutesMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<Awaited<ReturnType<typeof getRoutes>>, TError, GetRoutesMutationVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<typeof getRoutes>>, TError, GetRoutesMutationVariables, TContext> => {
+  const mutationKey = getGetRoutesMutationKey()
+  const { mutation: mutationOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } }
+
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof getRoutes>>, GetRoutesMutationVariables> = (props) => {
+    const { data } = props ?? {}
+
+    return getRoutes(data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type GetRoutesMutationResult = NonNullable<Awaited<ReturnType<typeof getRoutes>>>
+export type GetRoutesMutationBody = BRouterRequestDto
+export type GetRoutesMutationError = unknown
+export type GetRoutesMutationVariables = { data: BRouterRequestDto }
+
+/** @summary Calculate 3 route alternatives using BRouter */
+export const useGetRoutes = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof getRoutes>>, TError, GetRoutesMutationVariables, TContext>
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<Awaited<ReturnType<typeof getRoutes>>, TError, GetRoutesMutationVariables, TContext> => {
+  return useMutation(getGetRoutesMutationOptions(options), queryClient)
 }

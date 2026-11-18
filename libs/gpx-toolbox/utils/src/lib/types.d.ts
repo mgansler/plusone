@@ -27,7 +27,7 @@ export type RawSegment = {
 
 export type ProcessedSegment = {
   type: SegmentType
-  points: TrackPoint[]
+  points: Array<TrackPoint>
   totalDistance: number
   elevationGain: number
   averageHeartRate?: number
@@ -52,7 +52,7 @@ export type SegmentOverview = {
 }
 
 export type TrackOverview = {
-  segments: SegmentOverview[]
+  segments: Array<SegmentOverview>
   totalDistance: number
   totalDuration: number
   overallAvgHeartRate: number | null

@@ -50,6 +50,17 @@
         }
       }
     },
+    "test": {
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}", "{workspaceRoot}/coverage/libs/gpx-toolbox-api-client"],
+      "options": {
+        "config": "./vite.config.mts"
+      },
+      "configurations": {
+        "coverage": {
+          "coverage": true
+        }
+      }
+    },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {

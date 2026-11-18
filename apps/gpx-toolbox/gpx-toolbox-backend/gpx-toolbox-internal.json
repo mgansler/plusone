@@ -1256,6 +1256,80 @@
           "activities"
         ]
       }
+    },
+    "/api/brouter/route": {
+      "post": {
+        "operationId": "getRoute",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BRouterRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Route calculated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BRouterResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Calculate a route using BRouter",
+        "tags": [
+          "brouter"
+        ]
+      }
+    },
+    "/api/brouter/routes": {
+      "post": {
+        "operationId": "getRoutes",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BRouterRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Routes calculated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BRouterRoutesResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Calculate 3 route alternatives using BRouter",
+        "tags": [
+          "brouter"
+        ]
+      }
     }
   },
   "info": {
@@ -1764,6 +1838,93 @@
             "description": "Weather conditions summary"
           }
         }
+      },
+      "CoordinateDto": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "description": "Latitude in degrees",
+            "example": 48.8566
+          },
+          "longitude": {
+            "type": "number",
+            "description": "Longitude in degrees",
+            "example": 2.3522
+          }
+        },
+        "required": [
+          "latitude",
+          "longitude"
+        ]
+      },
+      "BRouterRequestDto": {
+        "type": "object",
+        "properties": {
+          "points": {
+            "description": "Array of coordinate objects defining the route points",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CoordinateDto"
+            }
+          },
+          "profile": {
+            "type": "string",
+            "description": "BRouter routing profile",
+            "enum": [
+              "fastbike",
+              "trekking",
+              "mtb-zossebart"
+            ],
+            "default": "fastbike"
+          }
+        },
+        "required": [
+          "points"
+        ]
+      },
+      "BRouterResponseDto": {
+        "type": "object",
+        "properties": {
+          "gpx": {
+            "type": "string",
+            "description": "GPX XML string of the calculated route"
+          }
+        },
+        "required": [
+          "gpx"
+        ]
+      },
+      "BRouterRouteDto": {
+        "type": "object",
+        "properties": {
+          "gpx": {
+            "type": "string",
+            "description": "GPX XML string of the route"
+          },
+          "alternativeIdx": {
+            "type": "number",
+            "description": "Alternative index (0, 1, 2)"
+          }
+        },
+        "required": [
+          "gpx",
+          "alternativeIdx"
+        ]
+      },
+      "BRouterRoutesResponseDto": {
+        "type": "object",
+        "properties": {
+          "routes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BRouterRouteDto"
+            }
+          }
+        },
+        "required": [
+          "routes"
+        ]
       }
     }
   }

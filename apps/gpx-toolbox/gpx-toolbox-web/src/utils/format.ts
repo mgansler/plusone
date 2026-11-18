@@ -46,7 +46,7 @@ export function formatDistanceShort(meters: number): string {
   return `${Math.round(meters)} m`
 }
 
-/** Elevation gain in "Höhenmeter", e.g. "350 hm" */
+/** Elevation gain in meters, e.g. "350 hm" */
 export function formatElevationGain(meters: number): string {
   return `${Math.round(meters)} hm`
 }

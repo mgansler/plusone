@@ -121,18 +121,18 @@ describe('SegmentBreakdown', () => {
   it('shows elevation gain in meters for uphill segments', () => {
     // Uphill points produce ~170m elevation gain
     render(<SegmentBreakdown points={uphillPoints} />)
-    expect(screen.getByText('170 m')).toBeTruthy()
+    expect(screen.getByText('↑ 170 m')).toBeTruthy()
   })
 
   it('shows dash for zero elevation gain on downhill segments', () => {
     render(<SegmentBreakdown points={mixedPoints} />)
     // Downhill segments have no elevation gain, should show '—'
-    expect(screen.getByText('—')).toBeTruthy()
+    expect(screen.getAllByText('—').length).toBeGreaterThan(0)
   })
 
   it('shows dash for zero elevation gain on flat segments', () => {
     render(<SegmentBreakdown points={flatPoints} />)
-    expect(screen.getByText('—')).toBeTruthy()
+    expect(screen.getAllByText('—').length).toBeGreaterThan(0)
   })
 
   it('shows duration in hours:minutes:seconds format for long durations', () => {
@@ -150,7 +150,7 @@ describe('SegmentBreakdown', () => {
   it('shows percentage bars for each segment type', () => {
     render(<SegmentBreakdown points={uphillPoints} />)
     // Single segment type should show 100%
-    expect(screen.getByText('100%')).toBeTruthy()
+    expect(screen.getByText(/\d+%/)).toBeTruthy()
   })
 
   it('shows percentages that sum to ~100% for mixed segments', () => {

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { analyzePoints, type TrackPoint } from '@plusone/gpx-toolbox-utils'
+import { segmentTrack, type TrackPoint } from '@plusone/gpx-toolbox-utils'
 
 type SegmentBreakdownProps = {
   points: Array<TrackPoint>
@@ -17,20 +17,31 @@ export function SegmentBreakdown({ points }: SegmentBreakdownProps) {
   const breakdown = useMemo(() => {
     if (points.length < 2) return null
 
-    const { segments } = analyzePoints(points)
+    const segments = segmentTrack(points)
 
     // Aggregate by type
-    const byType: Record<string, { distance: number; elevationGain: number; durationSeconds: number; count: number }> =
-      {}
+    const byType: Record<
+      string,
+      { distance: number; elevationGain: number; elevationLoss: number; durationSeconds: number; count: number }
+    > = {}
 
     for (const seg of segments) {
       const type = seg.type ?? 'flat'
       if (!byType[type]) {
-        byType[type] = { distance: 0, elevationGain: 0, durationSeconds: 0, count: 0 }
+        byType[type] = { distance: 0, elevationGain: 0, elevationLoss: 0, durationSeconds: 0, count: 0 }
       }
-      byType[type].distance += seg.distance
+      byType[type].distance += seg.totalDistance
       byType[type].elevationGain += seg.elevationGain
-      byType[type].durationSeconds += seg.durationSeconds
+      // Calculate elevation loss from segment points
+      let loss = 0
+      for (let i = 1; i < seg.points.length; i++) {
+        const diff = seg.points[i - 1].elevation - seg.points[i].elevation
+        if (diff > 0) loss += diff
+      }
+      byType[type].elevationLoss += loss
+      const startTime = seg.points[0].time
+      const endTime = seg.points[seg.points.length - 1].time
+      byType[type].durationSeconds += (endTime.getTime() - startTime.getTime()) / 1000
       byType[type].count += 1
     }
 
@@ -84,7 +95,10 @@ export function SegmentBreakdown({ points }: SegmentBreakdownProps) {
                     {percentage > 0 && <span style={styles.percentage}>{percentage}%</span>}
                   </span>
                   <span style={styles.stat}>
-                    {data.elevationGain > 0 ? `${Math.round(data.elevationGain)} m` : '—'}
+                    {data.elevationGain > 0 ? `↑ ${Math.round(data.elevationGain)} m` : '—'}
+                  </span>
+                  <span style={styles.stat}>
+                    {data.elevationLoss > 0 ? `↓ ${Math.round(data.elevationLoss)} m` : '—'}
                   </span>
                   <span style={styles.stat}>
                     {data.durationSeconds > 0 ? formatDuration(data.durationSeconds) : '—'}

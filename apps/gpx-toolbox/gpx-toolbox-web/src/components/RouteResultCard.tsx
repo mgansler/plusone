@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 
 import { formatElevation } from '../utils/format'
@@ -63,7 +64,16 @@ export function RouteResultCard({
       >
         📤
       </button>
-      <div style={styles.name}>{route.name}</div>
+      <div style={styles.name}>
+        <span>{route.name}</span>
+        <Link
+          to="/routes/$routeId"
+          params={{ routeId: route.id }}
+          style={{ ...styles.name, color: '#2196f3', textDecoration: 'none', marginLeft: 4 }}
+        >
+          {t('nav.details')}
+        </Link>
+      </div>
       <div style={styles.distance}>{route.distanceKm} km</div>
       <div style={styles.meta}>
         <span style={{ ...styles.badge, backgroundColor: routeSourceColor(route.source) }}>{route.source}</span>

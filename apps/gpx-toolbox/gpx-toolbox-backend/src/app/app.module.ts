@@ -18,6 +18,7 @@ import { AuthModule } from './auth.module'
 import { ImportModule } from './import.module'
 import { RidesModule } from './rides.module'
 import { ActivitiesModule } from './activities.module'
+import { BRouterModule } from './brouter.module'
 import { JwtStrategy } from './jwt.strategy'
 
 @Module({
@@ -40,6 +41,7 @@ import { JwtStrategy } from './jwt.strategy'
     ImportModule,
     RidesModule,
     ActivitiesModule,
+    BRouterModule,
   ],
   controllers: [HealthController],
   providers: [AppService, JwtStrategy],

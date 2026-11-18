@@ -17,8 +17,10 @@ function serializeTrackPoint(point: TrackPoint): string {
   const lines: string[] = [
     `      <trkpt lat="${point.latitude}" lon="${point.longitude}">`,
     `        <ele>${point.elevation}</ele>`,
-    `        <time>${point.time.toISOString()}</time>`,
   ]
+  if (point.time != null && !isNaN(point.time.getTime())) {
+    lines.push(`        <time>${point.time.toISOString()}</time>`)
+  }
 
   const extensionChildren: string[] = []
   if (typeof point.hr === 'number') {

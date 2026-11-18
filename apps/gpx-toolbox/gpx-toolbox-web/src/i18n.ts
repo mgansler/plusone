@@ -10,6 +10,7 @@ i18n
   .init({
     detection: {
       order: ['navigator'],
+      caches: [],
     },
     fallbackLng: 'en',
     load: 'languageOnly',

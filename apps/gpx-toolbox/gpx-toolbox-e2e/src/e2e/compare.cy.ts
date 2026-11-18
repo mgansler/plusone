@@ -14,9 +14,11 @@ describe('comparing routes', () => {
   it('compares routes selected in the nearby results', () => {
     cy.findByText('Hausrunde')
       .parent()
+      .parent()
       .within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
     cy.findByText('Füge Routen hinzu, um sie zu vergleichen.').should('be.visible')
     cy.findByText('Bergtour')
+      .parent()
       .parent()
       .within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
 
@@ -48,8 +50,10 @@ describe('comparing routes', () => {
   it('shows a removed route as not found', () => {
     cy.findByText('Hausrunde')
       .parent()
+      .parent()
       .within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
     cy.findByText('Bergtour')
+      .parent()
       .parent()
       .within(() => cy.findByRole('button', { name: '+ Vergleich' }).click())
     cy.task('db:reset')
