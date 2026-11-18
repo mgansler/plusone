@@ -1169,11 +1169,14 @@ fieldset.field-row > legend {
 
 .care-need-tag {
   display: inline-block;
+  max-width: 100%;
   padding: 2px 8px;
   border-radius: 12px;
   background: var(--bg-secondary);
   font-size: 0.8rem;
   color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 

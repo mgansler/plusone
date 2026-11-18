@@ -41,8 +41,6 @@ export function CareNeedChecklist({ trailId }: CareNeedChecklistProps) {
   const active = careNeeds.filter((cn) => !cn.isDone)
   const done = careNeeds.filter((cn) => cn.isDone)
 
-  console.log(active)
-
   return (
     <section>
       <h2 className="section-title">Pflegebedarf</h2>
