@@ -10527,12 +10527,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/user-event@npm:14.6.10":
-  version: 14.6.10
-  resolution: "@testing-library/user-event@npm:14.6.10"
+"@testing-library/user-event@npm:14.6.12":
+  version: 14.6.12
+  resolution: "@testing-library/user-event@npm:14.6.12"
   peerDependencies:
     "@testing-library/dom": ">=7.21.4"
-  checksum: 10c0/abf7caf8c8151137f356889ef987db43eee8fab2897d95f33b00ec490aef529e5e8418f118ca10d9e442e0433bf4a7012b75c7b41f68cddb61a135854f3b7360
+  checksum: 10c0/6b5b1c8219a17b00d6fcc968f9d257a62d3be3a5fa05b9373d26a965e272613f8a58c3d716b8ba226741fd1c77ecced6db23118020813ed2731e73ab944edbe3
   languageName: node
   linkType: hard
 
@@ -18773,16 +18773,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-proxy-middleware@npm:4.2.1":
-  version: 4.2.1
-  resolution: "http-proxy-middleware@npm:4.2.1"
+"http-proxy-middleware@npm:4.2.2":
+  version: 4.2.2
+  resolution: "http-proxy-middleware@npm:4.2.2"
   dependencies:
     debug: "npm:^4.4.3"
-    httpxy: "npm:^0.5.4"
+    httpxy: "npm:^0.5.6"
     is-glob: "npm:^4.0.3"
     is-plain-obj: "npm:^4.1.0"
     micromatch: "npm:^4.0.8"
-  checksum: 10c0/7cc306ebccd050fc38140861f40360caed79b08cf250219050326177594da1593cffee128346b36a569c8ab9f0579678fd0bda15af818567991814070c158c9a
+  checksum: 10c0/184863919445103caa6e5202570d780350ebb17c7f3a9b9adf1d3fe11a319bb51ce61ecbb6ccafb67927e4af635ca4f8161f44eb4592462455ca60376302b1c1
   languageName: node
   linkType: hard
 
@@ -18851,10 +18851,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"httpxy@npm:^0.5.4":
-  version: 0.5.5
-  resolution: "httpxy@npm:0.5.5"
-  checksum: 10c0/7be52cbfbd4157b4ac3aa22124d06081e8ffc50a185622e43c0ce8229bbcd7411d016f4a364fecb694325ed312823efbf51c70fa8049563a8b6b617642914cd3
+"httpxy@npm:^0.5.6":
+  version: 0.5.6
+  resolution: "httpxy@npm:0.5.6"
+  checksum: 10c0/595c5d9a65718e85d4e9852051beefd51dd9468f782d7e27c1db92d0d581b7b6abdd92765ee6e4a52c37804708cb52331110ff9a836afaf0d4039d953925f3ca
   languageName: node
   linkType: hard
 
@@ -21099,12 +21099,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"leaflet.locatecontrol@npm:0.90.1":
-  version: 0.90.1
-  resolution: "leaflet.locatecontrol@npm:0.90.1"
+"leaflet.locatecontrol@npm:0.91.0":
+  version: 0.91.0
+  resolution: "leaflet.locatecontrol@npm:0.91.0"
   peerDependencies:
-    leaflet: ^1.9.0 || >=2.0.0-alpha.1
-  checksum: 10c0/7b203c0991bb4948f3cbc3a71dc370bbe969288ecf32144caf0f19692a5e0e6ae1986c042fe26dc84574790d4719a6a764dcbc551c676511bd68fd24b1aa091a
+    leaflet: ^1.9.0 || ^2.0.0-beta.1
+  checksum: 10c0/12000f90ed5059e2dad4074b87ff4c8e42abb5dc3e4196a18b690e85dcdf1aa050958abd989fd8e49d807587bbc3aaadbb11bb990516ff06d7643b731961f72b
   languageName: node
   linkType: hard
 
@@ -21464,12 +21464,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:17.6.0":
-  version: 17.6.0
-  resolution: "lint-staged@npm:17.6.0"
+"lint-staged@npm:17.6.1":
+  version: 17.6.1
+  resolution: "lint-staged@npm:17.6.1"
   dependencies:
     picomatch: "npm:^4.0.7"
-    string-argv: "npm:^0.3.2"
+    string-argv: "npm:^0.4.0"
     tinyexec: "npm:^1.3.1"
     yaml: "npm:^2.9.1"
   dependenciesMeta:
@@ -21477,7 +21477,7 @@ __metadata:
       optional: true
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 10c0/016905cebb46de70ff8de63db8527592d595709b31982f274677f252ac2037f2e446c92e0662ef6ba6a0dbf42e36324ae30df4d8b4cbc5032d219343cc306512
+  checksum: 10c0/4c7433079bc174c531ccaab68bc7171f726a65c1961abbc9b26617f6d427bae76c926688124c2c2519c7540150755025207644dba50de0ba3ce65bfb1b05f7e8
   languageName: node
   linkType: hard
 
@@ -24039,7 +24039,7 @@ __metadata:
     "@testing-library/dom": "npm:10.4.2"
     "@testing-library/jest-dom": "npm:7.0.1"
     "@testing-library/react": "npm:16.3.3"
-    "@testing-library/user-event": "npm:14.6.10"
+    "@testing-library/user-event": "npm:14.6.12"
     "@types/bcrypt": "npm:6.0.0"
     "@types/better-sqlite3": "npm:9.6.0"
     "@types/express": "npm:5.0.6"
@@ -24100,8 +24100,8 @@ __metadata:
     jsdom: "npm:31.0.1"
     jsonc-eslint-parser: "npm:3.3.0"
     leaflet: "npm:1.9.4"
-    leaflet.locatecontrol: "npm:0.90.1"
-    lint-staged: "npm:17.6.0"
+    leaflet.locatecontrol: "npm:0.91.0"
+    lint-staged: "npm:17.6.1"
     lodash: "npm:4.18.1"
     msw: "npm:3.0.6"
     nx: "npm:24.0.6"
@@ -26983,6 +26983,13 @@ __metadata:
   version: 0.3.2
   resolution: "string-argv@npm:0.3.2"
   checksum: 10c0/75c02a83759ad1722e040b86823909d9a2fc75d15dd71ec4b537c3560746e33b5f5a07f7332d1e3f88319909f82190843aa2f0a0d8c8d591ec08e93d5b8dec82
+  languageName: node
+  linkType: hard
+
+"string-argv@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "string-argv@npm:0.4.0"
+  checksum: 10c0/73bd6f146bb2054e020f00863c37c53ac2c0f575910d69114f9ba15cc18f7d46912e0fa5bd08a178a7f624fdfdcb7c62b46af0b65df579efece9085307aaed19
   languageName: node
   linkType: hard
 
